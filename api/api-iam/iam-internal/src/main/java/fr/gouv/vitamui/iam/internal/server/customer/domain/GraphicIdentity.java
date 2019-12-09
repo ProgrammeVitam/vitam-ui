@@ -47,4 +47,8 @@ public class GraphicIdentity {
 
     String logoDataBase64;
 
+    // Theme based Graphical identity
+    String mainColor;
+    String secondaryColor;
+
 }

@@ -32,11 +32,11 @@
         }
 
         &.active {
-            color: $greeny-blue;
-            border-color: $greeny-blue;
+            color: var(--vitamui-secondary);
+            border-color: var(--vitamui-secondary);
 
             .vitamui-remove-chip {
-                border-color: $greeny-blue;
+                border-color: var(--vitamui-secondary);
             }
         }
     }

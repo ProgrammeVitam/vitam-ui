@@ -31,7 +31,7 @@
 
 .user-app {
     i {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
 
         &.chevron-icon {
             font-size: 24px;
@@ -62,7 +62,7 @@
 
 .settings-app {
     i {
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
 
         &.chevron-icon {
             font-size: 24px;
@@ -83,7 +83,7 @@
 }
 
 .archive-tile {
-    background-color: $blood-orange;
+    background-color: var(--vitamui-primary);
     color: $white;
 
     i {

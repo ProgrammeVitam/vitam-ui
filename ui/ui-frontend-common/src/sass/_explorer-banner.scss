@@ -13,7 +13,7 @@
 
         > i {
             font-size: 18px;
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             background: #e7f5f2;
             border-radius: 15px;
             width: 30px;
@@ -24,7 +24,7 @@
         }
 
         &:hover > i {
-            background-color: $greeny-blue;
+            background-color: var(--vitamui-secondary);
             color: #fff;
         }
     }

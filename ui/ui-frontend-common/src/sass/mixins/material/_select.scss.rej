@@ -1,0 +1,20 @@
+diff a/ui/ui-frontend-common/src/sass/mixins/material/_select.scss b/ui/ui-frontend-common/src/sass/mixins/material/_select.scss	(rejected hunks)
+@@ -29,15 +29,15 @@
+     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
+         background: none;
+     }
+-  
++
+     .mat-option.mat-selected:not(.mat-option-multiple) {
+         font-weight: 500;
+-        color: $greeny-blue;
++        color: var(--vitamui-secondary);
+ 
+         &:before {
+             content: 'check';
+             font-family: 'Material Icons';
+-            color: $greeny-blue;
++            color: var(--vitamui-secondary);
+             display: block;
+             position: absolute;
+             left: 10px;

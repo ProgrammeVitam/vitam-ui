@@ -24,7 +24,7 @@
     width: 100%;
 
     &.active > i {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 
     &.upside-down > i {

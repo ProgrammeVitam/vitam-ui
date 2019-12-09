@@ -1,7 +1,7 @@
 @import '../../../../sass/variables/colors';
 
 .banner-subrogation {
-    background: $greeny-blue;
+    background: var(--vitamui-secondary);
     border-radius: 0;
     max-width: none;
     width: 100%;

@@ -38,7 +38,7 @@ label {
     display: block;
 
     .required-marker {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
     }
 
     small {
@@ -196,7 +196,7 @@ button > small {
     color: #a5a5a5;
 
     .upload {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 
 }

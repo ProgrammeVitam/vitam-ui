@@ -2,7 +2,7 @@
 
     .mat-checkbox-frame {
         border-radius: 3px;
-        border: 1px solid $greeny-blue;
+        border: 1px solid var(--vitamui-secondary);
         background: white;
     }
 
@@ -13,7 +13,7 @@
     }
 
     .mat-checkbox-checkmark-path {
-        stroke: $greeny-blue !important;
+        stroke: var(--vitamui-secondary) !important;
         stroke-width: 5px;
     }
 
@@ -21,17 +21,17 @@
 
 .mat-pseudo-checkbox.vitamui-checkbox {
     border: 1px solid;
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     box-sizing: content-box;
 
     &.mat-pseudo-checkbox-checked,
     &.mat-pseudo-checkbox-indeterminate {
         background: transparent;
-        border-color: $greeny-blue;
+        border-color: var(--vitamui-secondary);
     }
 
     &:after {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         top: 4px;
         left: 3px;
     }

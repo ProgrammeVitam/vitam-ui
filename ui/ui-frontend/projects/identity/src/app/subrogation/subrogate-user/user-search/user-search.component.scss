@@ -78,7 +78,7 @@ $input-height: 70px;
         width: $input-height - 20px;
         height: $input-height - 20px;
         border-radius: 50%;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
         color: $white;
         line-height: $input-height - 20px;
         text-align: center;

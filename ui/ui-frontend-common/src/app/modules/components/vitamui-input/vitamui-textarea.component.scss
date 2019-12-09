@@ -92,6 +92,6 @@ label {
     pointer-events: none;
 
     .required-marker {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
     }
 }

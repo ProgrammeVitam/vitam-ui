@@ -24,7 +24,7 @@
     stroke-dashoffset: 0;
     animation: dash 1.5s ease-in-out infinite;
     stroke-linecap: square;
-    stroke: $blood-orange;
+    stroke: var(--vitamui-primary);
 }
 @keyframes rotate {
     100% {
