@@ -63,6 +63,8 @@ export class StartupService {
 
   private CURRENT_TENANT_IDENTIFIER: string;
 
+  private themeWrapper = document.querySelector('body');
+
   constructor(
     private logger: Logger,
     private authService: AuthService,
@@ -81,6 +83,10 @@ export class StartupService {
         this.authService.loginUrl = this.configurationData.CAS_URL;
         this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
+
+        // TODO set the colors returned from the back-end - How to get customer's values ? Or not load here ?
+        this.themeWrapper.style.setProperty('--vitamui-primary', '#81B');
+        this.themeWrapper.style.setProperty('--vitamui-secondary', '#A2F');
       })
       .then(() => this.refreshUser().toPromise())
       .then(() => this.applicationService.list().toPromise());

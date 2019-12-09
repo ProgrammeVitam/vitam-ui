@@ -50,7 +50,7 @@
 @mixin login-link {
   font-family: Roboto;
   font-size: 15px;
-  color: $greeny-blue;
+  color: var(--vitamui-secondary);
 }
 
 @mixin vitamui-input-placeholder {

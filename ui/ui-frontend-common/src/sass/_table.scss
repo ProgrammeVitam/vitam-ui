@@ -207,7 +207,7 @@ table.vitamui-table {
     transition: color 200ms ease-out;
 
     &.active {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 
     > i {
@@ -228,6 +228,6 @@ table.vitamui-table {
     color: $greyish;
 
     &.active {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 }

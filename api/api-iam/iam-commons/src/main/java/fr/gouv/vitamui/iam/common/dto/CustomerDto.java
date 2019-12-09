@@ -113,4 +113,7 @@ public class CustomerDto extends IdDto {
     private String identifier;
 
     private boolean hasCustomGraphicIdentity = false;
+
+    private String mainColor;
+    private String secondaryColor;
 }

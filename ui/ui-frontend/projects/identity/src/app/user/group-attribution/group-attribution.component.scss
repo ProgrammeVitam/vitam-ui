@@ -86,7 +86,7 @@ button.primary {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
         color: $white;
         line-height: 30px;
         text-align: center;
@@ -199,7 +199,7 @@ input[type=radio] {
 }
 
 .radio-label {
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     display: inline-block;
     cursor: pointer;
     font-weight: bold;
@@ -208,7 +208,7 @@ input[type=radio] {
 
 input[type=radio]:checked + label{
     color: $white;
-    background: $greeny-blue;
+    background: var(--vitamui-secondary);
 }
 
 .radio-group {

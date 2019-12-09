@@ -31,7 +31,7 @@ label {
     @include elevation-1;
 
     &.slide-toggle-on {
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
     }
 
     &:hover {
