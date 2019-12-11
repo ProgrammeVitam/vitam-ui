@@ -152,7 +152,9 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
             dto.setAddress(VitamUIUtils.copyProperties(customer.getAddress(), new AddressDto()));
         }
         if (customer.getGraphicIdentity() != null) {
-            dto.setHasCustomGraphicIdentity(customer.getGraphicIdentity().isHasCustomGraphicIdentity());
+            GraphicIdentity graphicalIdentity = customer.getGraphicIdentity();
+            dto.setHasCustomGraphicIdentity(graphicalIdentity.isHasCustomGraphicIdentity());
+            dto.setThemeColors(graphicalIdentity.getThemeColors());
         }
 
         final List<Owner> owners = ownerRepository.findAll(Query.query(Criteria.where("customerId").is(dto.getId())));

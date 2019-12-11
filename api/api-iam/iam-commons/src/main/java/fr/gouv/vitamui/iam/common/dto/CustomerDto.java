@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -114,6 +116,5 @@ public class CustomerDto extends IdDto {
 
     private boolean hasCustomGraphicIdentity = false;
 
-    private String mainColor;
-    private String secondaryColor;
+    private Map<String, String> themeColors = new HashMap<>();
 }

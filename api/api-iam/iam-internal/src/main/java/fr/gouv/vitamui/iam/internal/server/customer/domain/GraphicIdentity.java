@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.domain;
 
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,7 +50,6 @@ public class GraphicIdentity {
     String logoDataBase64;
 
     // Theme based Graphical identity
-    String mainColor;
-    String secondaryColor;
+    Map<String, String> themeColors;
 
 }
