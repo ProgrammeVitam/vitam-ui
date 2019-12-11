@@ -40,6 +40,7 @@ import { tap } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
+import { CustomerApiService } from './api/customer-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
@@ -69,6 +70,7 @@ export class StartupService {
     private logger: Logger,
     private authService: AuthService,
     private applicationService: ApplicationService,
+    private customerApiService: CustomerApiService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
     @Inject(WINDOW_LOCATION) private location: any
@@ -84,12 +86,81 @@ export class StartupService {
         this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
 
-        // TODO set the colors returned from the back-end - How to get customer's values ? Or not load here ?
-        this.themeWrapper.style.setProperty('--vitamui-primary', '#81B');
-        this.themeWrapper.style.setProperty('--vitamui-secondary', '#A2F');
+        console.log('Configs? ', data);
+        console.log('Colors: ', data.THEME_COLORS);
+
+        // Make a specific themeColors object ?
+        const themeColors = {
+          '--vitamui-primary': data.THEME_COLORS.mainColor || '#DD2',
+          '--vitamui-promary-dark': data.THEME_COLORS.mainColor_dark || this.convertToDarkColor(data.THEME_COLORS.mainColor) || '#AA1',
+          '--vitamui-promary-light': data.THEME_COLORS.mainColor_light || this.convertToLightColor(data.THEME_COLORS.mainColor) || '#FF5',
+          '--vitamui-secondary': data.THEME_COLORS.secondaryColor || '#33F',
+          '--vitamui-secondary-dark':
+            data.THEME_COLORS.secondaryColor_dark || this.convertToDarkColor(data.THEME_COLORS.secondaryColor) || '#11E',
+          '--vitamui-secondary-light':
+            data.THEME_COLORS.secondaryColor_light || this.convertToLightColor(data.THEME_COLORS.secondaryColor) || '#66F',
+        };
+
+        // Apply colors on theme !
+        for (const themeColorsKey in themeColors) {
+          if (themeColors.hasOwnProperty(themeColorsKey)) {
+            this.themeWrapper.style.setProperty(themeColorsKey, themeColors[themeColorsKey]);
+          }
+        }
+
       })
       .then(() => this.refreshUser().toPromise())
       .then(() => this.applicationService.list().toPromise());
+  }
+
+  // TODO: Make a service for color updates ?
+  convertToLightColor(color: string) {
+    if (!color) {
+      return color;
+    }
+
+    const max = 255;
+    const rgbValue = this.hexToRgb(color);
+
+    const lightRGBvalue = {
+      r: Math.floor(rgbValue.r + (max - rgbValue.r) * 0.1),
+      g: Math.floor(rgbValue.g + (max - rgbValue.g) * 0.1),
+      b: Math.floor(rgbValue.b + (max - rgbValue.b) * 0.1)
+    };
+    return '#' + this.toHex(lightRGBvalue.r) + this.toHex(lightRGBvalue.g) + this.toHex(lightRGBvalue.b);
+  }
+
+  convertToDarkColor(color: string) {
+    if (!color) {
+      return color;
+    }
+
+    const rgbValue = this.hexToRgb(color);
+    const darkRGBvalue = {
+      r: Math.floor(rgbValue.r * 0.9),
+      g: Math.floor(rgbValue.g * 0.9),
+      b: Math.floor(rgbValue.b * 0.9)
+    };
+    return '#' + this.toHex(darkRGBvalue.r) + this.toHex(darkRGBvalue.g) + this.toHex(darkRGBvalue.b);
+  }
+
+  toHex(componentValue: number) {
+    const hex = componentValue.toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }
+
+  hexToRgb(hex) {
+    console.log('hex: ', hex);
+
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) =>  r + r + g + g + b + b );
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {

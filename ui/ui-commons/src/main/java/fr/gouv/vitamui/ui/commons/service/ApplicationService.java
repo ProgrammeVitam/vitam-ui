@@ -111,19 +111,26 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return properties.getBaseUrl().getPortal();
     }
 
-    public Map<String, String> getConf() {
-        final Map<String, String> configurationData = new HashMap<>();
+    public Map<String, Object> getConf() {
+        final Map<String, Object> configurationData = new HashMap<>();
         configurationData.put(CommonConstants.PORTAL_URL, properties.getBaseUrl().getPortal());
         // TODO check if it s used
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
+
+        Map<String, String> themeColorMap = new HashMap<>();
+        themeColorMap.put("mainColor", "#81B");
+        themeColorMap.put("mainColor_light", "#A2F");
+        // themeColorMap.put("secondaryColor", "#A2F");
+        configurationData.put("THEME_COLORS", themeColorMap);
+
         return configurationData;
     }
 
     private String getCasLoginUrl() {
-        return casExternalUrl + "/login?service=" + casCallbackUrl;
+            return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
 
 

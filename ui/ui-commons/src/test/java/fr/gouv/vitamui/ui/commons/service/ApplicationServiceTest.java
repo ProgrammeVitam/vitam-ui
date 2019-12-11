@@ -77,7 +77,7 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
 
     @Test
     public void testGetConfiguration() {
-        final Map<String, String> map = service.getConf();
+        final Map<String, Object> map = service.getConf();
         Assert.assertNotNull(map);
         Assert.assertEquals("http://portal.vitamui.com", map.get(CommonConstants.PORTAL_URL));
     }

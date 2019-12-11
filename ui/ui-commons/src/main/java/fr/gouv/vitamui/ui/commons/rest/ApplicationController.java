@@ -90,7 +90,7 @@ public class ApplicationController extends AbstractUiRestController {
     @GetMapping
     @RequestMapping(method = RequestMethod.GET, value = "/conf")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, String> getConfiguration() {
+    public Map<String, Object> getConfiguration() {
         LOGGER.info("Get configuration");
         return service.getConf();
     }
