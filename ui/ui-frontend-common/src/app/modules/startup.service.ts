@@ -50,6 +50,8 @@ import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
 
 const WARNING_DURATION = 2000;
+const DARK_SUFFIX = '-dark';
+const LIGHT_SUFFIX = '-light';
 
 @Injectable({
   providedIn: 'root'
@@ -85,35 +87,72 @@ export class StartupService {
         this.authService.loginUrl = this.configurationData.CAS_URL;
         this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
+      })
+      .then(() => this.refreshUser().toPromise())
+      .then(() => {
 
-        console.log('Configs? ', data);
-        console.log('Colors: ', data.THEME_COLORS);
+        const applicationColorMap = this.configurationData.THEME_COLORS;
+        const customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
 
-        // Make a specific themeColors object ?
+        console.log('Application Colors: ', applicationColorMap);
+        console.log('Customer Colors: ', customerColorMap);
+
         const themeColors = {
-          '--vitamui-primary': data.THEME_COLORS.mainColor || '#DD2',
-          '--vitamui-promary-dark': data.THEME_COLORS.mainColor_dark || this.convertToDarkColor(data.THEME_COLORS.mainColor) || '#AA1',
-          '--vitamui-promary-light': data.THEME_COLORS.mainColor_light || this.convertToLightColor(data.THEME_COLORS.mainColor) || '#FF5',
-          '--vitamui-secondary': data.THEME_COLORS.secondaryColor || '#33F',
-          '--vitamui-secondary-dark':
-            data.THEME_COLORS.secondaryColor_dark || this.convertToDarkColor(data.THEME_COLORS.secondaryColor) || '#11E',
-          '--vitamui-secondary-light':
-            data.THEME_COLORS.secondaryColor_light || this.convertToLightColor(data.THEME_COLORS.secondaryColor) || '#66F',
+          '--vitamui-primary': this.getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
+          '--vitamui-promary-dark': this.getColorFromMaps('vitamui-promary-dark', '#AA1', applicationColorMap, customerColorMap),
+          '--vitamui-promary-light': this.getColorFromMaps('vitamui-promary-light', '#FF5', applicationColorMap, customerColorMap),
+          '--vitamui-secondary': this.getColorFromMaps('vitamui-secondary', '#5cbaa9', applicationColorMap, customerColorMap),
+          '--vitamui-secondary-dark': this.getColorFromMaps('vitamui-secondary-dark', '#11E', applicationColorMap, customerColorMap),
+          '--vitamui-secondary-light': this.getColorFromMaps('vitamui-secondary-light', '#66F', applicationColorMap, customerColorMap),
         };
 
-        // Apply colors on theme !
+        console.log('Theme colors: ', themeColors);
+
         for (const themeColorsKey in themeColors) {
           if (themeColors.hasOwnProperty(themeColorsKey)) {
             this.themeWrapper.style.setProperty(themeColorsKey, themeColors[themeColorsKey]);
           }
         }
-
       })
-      .then(() => this.refreshUser().toPromise())
       .then(() => this.applicationService.list().toPromise());
   }
 
   // TODO: Make a service for color updates ?
+  getColorFromMaps(colorName: string, defaultValue: string, applicationColorMap: any, customerColorMap: any) {
+    console.log('Get color for: ', colorName);
+
+    const customColor = this.getColorFromMap(colorName, customerColorMap);
+    if ( customColor ) {
+      console.log('Return custom color: ', customColor);
+      return customColor;
+    }
+
+    const applicationColor = this.getColorFromMap(colorName, applicationColorMap);
+    if ( applicationColor ) {
+      console.log('Return application color: ', applicationColor);
+      return applicationColor;
+    }
+
+    console.log('Return default value: ', defaultValue);
+    return defaultValue;
+  }
+
+  getColorFromMap(colorName: string, colorMap: any) {
+    if (!colorMap) { return null; }
+
+    if (colorMap[colorName]) {
+      return colorMap[colorName];
+    }
+    if ( colorName.endsWith(DARK_SUFFIX) && colorMap[colorName.substring(0, -DARK_SUFFIX.length)] ) {
+      return this.convertToDarkColor(colorMap[colorName.substring(0, -DARK_SUFFIX.length)]);
+    }
+    if ( colorName.endsWith(LIGHT_SUFFIX) && colorMap[colorName.substring(0, -LIGHT_SUFFIX.length)] ) {
+      return this.convertToLightColor(colorMap[colorName.substring(0, -LIGHT_SUFFIX.length)]);
+    }
+
+    return null;
+  }
+
   convertToLightColor(color: string) {
     if (!color) {
       return color;

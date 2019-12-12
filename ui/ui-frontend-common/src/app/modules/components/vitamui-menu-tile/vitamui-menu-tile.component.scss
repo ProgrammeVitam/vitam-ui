@@ -40,7 +40,7 @@
     }
 
     &.highlight {
-        border: 1px solid $blood-orange;
+        border: 1px solid var(--vitamui-primary);
     }
 }
 
@@ -71,7 +71,7 @@
     }
 
     &.highlight {
-        border: 1px solid $greeny-blue;
+        border: 1px solid var(--vitamui-secondary);
 
     }
 

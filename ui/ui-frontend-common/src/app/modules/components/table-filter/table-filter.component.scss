@@ -3,8 +3,8 @@
 
 .table-filter-panel {
     @include elevation-3;
-    background: #FFFFFF;
-    border: 1px solid $greeny-blue;
+    background: $charcoal-grey;
+    border: 1px solid var(--vitamui-secondary);
     border-radius: 5px;
 }
 

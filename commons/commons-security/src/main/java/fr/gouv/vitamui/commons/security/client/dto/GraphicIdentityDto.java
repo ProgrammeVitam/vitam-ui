@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.security.client.dto;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -48,5 +49,7 @@ public class GraphicIdentityDto implements Serializable {
     boolean hasCustomGraphicIdentity;
 
     String logoDataBase64;
+
+    Map<String, String> themeColors;
 
 }

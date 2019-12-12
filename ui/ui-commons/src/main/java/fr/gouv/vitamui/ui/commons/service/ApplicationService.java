@@ -89,6 +89,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
+    @Value("${theme.theme-colors}")
+    private Map<String, String> themeColors;
+
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, IamExternalRestClientFactory factory) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
@@ -119,12 +122,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
-
-        Map<String, String> themeColorMap = new HashMap<>();
-        themeColorMap.put("mainColor", "#81B");
-        themeColorMap.put("mainColor_light", "#A2F");
-        // themeColorMap.put("secondaryColor", "#A2F");
-        configurationData.put("THEME_COLORS", themeColorMap);
+        configurationData.put(CommonConstants.THEME_COLORS, themeColors);
 
         return configurationData;
     }

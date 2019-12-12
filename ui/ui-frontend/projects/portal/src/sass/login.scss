@@ -57,7 +57,7 @@
         }
 
         &.ng-invalid.ng-touched {
-            border-color: #ff0000;
+            border-color: $red;
         }
 
         &[disabled] {
@@ -84,7 +84,7 @@
         box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
         padding: 0 30px;
         transition: opacity 200ms ease-in-out;
-        border: 1px solid $blood-orange;
+        border: 1px solid var(--vitamui-primary);
 
 
 

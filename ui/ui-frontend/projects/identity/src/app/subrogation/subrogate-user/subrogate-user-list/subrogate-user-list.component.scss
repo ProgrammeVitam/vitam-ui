@@ -28,7 +28,7 @@
     background-color: var(--vitamui-secondary);
     color: $white;
     text-align: center;
-    border: 1px solid $greeny-blue;
+    border: 1px solid var(--vitamui-secondary);
     cursor: pointer;
     &[disabled] {
         opacity: 0.4;
