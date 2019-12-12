@@ -1,7 +1,7 @@
 @mixin mat-select-panel {
     border-radius: 5px;
     background-color: white;
-    border: solid 1px $greeny-blue;
+    border: solid 1px var(--vitamui-secondary);
     padding: 10px 0;
 
     .mat-select-content {

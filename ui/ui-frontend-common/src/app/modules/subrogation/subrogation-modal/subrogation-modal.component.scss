@@ -49,7 +49,7 @@ button > small {
     line-height: normal;
     letter-spacing: -0.8px;
     text-align: left;
-    color: #485053;
+    color: $charcoal-grey;
     color: var(--charcoal-grey);
     margin-left: 20px;
 }
@@ -71,7 +71,7 @@ button > small {
     width: 300px;
     height: 200px;
     border-radius: 6px;
-    background-color: #ffffff;
+    background-color: $charcoal-grey;
     box-shadow: 0 0 30px 0 rgba(197, 195, 195, 0.3);
     margin: auto;
 }
@@ -80,7 +80,7 @@ button > small {
     font-family: Roboto;
     font-size: 15px;
     font-weight: 500;
-    color: #ffffff;
+    color: $charcoal-grey;
     border: none;
     background-color: #c1c1c1;
     margin-top: 41px;

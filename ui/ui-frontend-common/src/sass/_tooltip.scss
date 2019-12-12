@@ -16,8 +16,8 @@
         display: block;
         height: 0px;
         width: 0px;
-        border: 12.5px solid $greeny-blue;
-        border-color: transparent $greeny-blue $greeny-blue transparent;
+        border: 12.5px solid var(--vitamui-secondary);
+        border-color: transparent var(--vitamui-secondary) var(--vitamui-secondary) transparent;
     }
 
     &.vitamui-tooltip-bottom {
@@ -27,7 +27,7 @@
         &:before {
             top: 100%;
             left: 24px;
-            border-color: $greeny-blue transparent transparent $greeny-blue;
+            border-color: var(--vitamui-secondary) transparent transparent var(--vitamui-secondary);
         }
     }
 

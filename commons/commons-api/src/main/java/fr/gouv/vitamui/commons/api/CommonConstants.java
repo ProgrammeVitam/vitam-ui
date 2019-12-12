@@ -185,6 +185,8 @@ public class CommonConstants {
 
     public static final String UI_URL = "UI_URL";
 
+    public static final String THEME_COLORS = "THEME_COLORS";
+
     /**
      * Constant contains redirect URL for cas after logout
      */

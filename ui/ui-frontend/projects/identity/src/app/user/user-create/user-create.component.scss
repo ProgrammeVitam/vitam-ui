@@ -306,7 +306,7 @@ input[type=radio]:checked + label{
 }
 
 .radio-group {
-    border: solid 1px $greeny-blue;
+    border: solid 1px var(--vitamui-secondary);
     display: inline-block;
     margin: 20px;
     border-radius: 5px;

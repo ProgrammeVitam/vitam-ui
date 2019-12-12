@@ -18,7 +18,7 @@
     padding: 4px 30px;
     font-size: 12px;
     font-weight: 400;
-    color: #ff0000;
+    color: $red;
     font-family: 'Roboto';
 }
 
@@ -45,7 +45,7 @@ input[type=email].vitamui-input {
     }
 
     &.ng-invalid.ng-touched {
-        border-color: #ff0000;
+        border-color: $red;
     }
 
     &[disabled] {
