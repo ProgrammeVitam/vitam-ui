@@ -43,7 +43,9 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
@@ -57,6 +59,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.property.ApplicationConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 
 /**
@@ -72,6 +75,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private final ApplicationExternalRestClient client;
 
     private final CasLogoutUrl casLogoutUrl;
+
+    @Autowired
+    private ApplicationConfig applicationConfig;
 
     @Value("${cas.external-url}")
     @NotNull
@@ -89,8 +95,12 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
-    @Value("${theme.theme-colors}")
-    private Map<String, String> themeColors;
+    private Map<String, String> themeColors = new HashMap<>();
+
+    @ConfigurationProperties("theme")
+    private Map<String, String> getColors() {
+        return themeColors;
+    }
 
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, IamExternalRestClientFactory factory) {
         this.properties = properties;
@@ -122,7 +132,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
-        configurationData.put(CommonConstants.THEME_COLORS, themeColors);
+
+        LOGGER.info("themes: " + applicationConfig.getThemeColors());
+        configurationData.put(CommonConstants.THEME_COLORS, getColors());
 
         return configurationData;
     }
