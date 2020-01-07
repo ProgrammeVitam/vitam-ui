@@ -43,9 +43,9 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
@@ -59,13 +59,14 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.ui.commons.property.ApplicationConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 
 /**
  *
  *
  */
+@EnableConfigurationProperties
+@ConfigurationProperties
 public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
@@ -75,9 +76,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private final ApplicationExternalRestClient client;
 
     private final CasLogoutUrl casLogoutUrl;
-
-    @Autowired
-    private ApplicationConfig applicationConfig;
 
     @Value("${cas.external-url}")
     @NotNull
@@ -95,12 +93,19 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
-    private Map<String, String> themeColors = new HashMap<>();
+    public class Theme {
+        Map<String, String> colors;
 
-    @ConfigurationProperties("theme")
-    private Map<String, String> getColors() {
-        return themeColors;
+        public Map<String, String> getColors() {
+            return colors;
+        }
+
+        public void setColors(Map<String, String> colors) {
+            this.colors = colors;
+        }
     }
+
+    private Theme theme = new Theme();
 
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, IamExternalRestClientFactory factory) {
         this.properties = properties;
@@ -133,9 +138,12 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
 
-        LOGGER.info("themes: " + applicationConfig.getThemeColors());
-        configurationData.put(CommonConstants.THEME_COLORS, getColors());
+        LOGGER.info("UI: " + getCasLoginUrl());
+        LOGGER.info("theme: " + theme);
+        LOGGER.info("colors: " + theme.getColors());
+        configurationData.put(CommonConstants.THEME_COLORS, theme);
 
+        LOGGER.info("config: " + configurationData);
         return configurationData;
     }
 
