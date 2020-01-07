@@ -47,4 +47,7 @@ public interface UIProperties {
     public RestClientConfiguration getIamExternalClient();
 
     public Integer getLimitPagination();
+
+    public Map<String, String> getThemeColors();
+
 }
