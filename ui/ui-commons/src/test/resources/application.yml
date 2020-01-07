@@ -38,6 +38,11 @@ cas:
     trust-store: src/test/resources/truststore.jks
     trust-store-password: trustpwd
 
+theme:
+  colors:
+    vitamui-primary: "#1B8"
+    vitamui-primary-light: "#3DA"
+
 logging:
   level:
     root: WARN
