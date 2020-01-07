@@ -62,4 +62,7 @@ public class UIPropertiesImpl implements UIProperties {
     private BaseUrl baseUrl = new BaseUrl();
 
     private RestClientConfiguration iamExternalClient;
+
+    private Map<String, String> themeColors;
+
 }

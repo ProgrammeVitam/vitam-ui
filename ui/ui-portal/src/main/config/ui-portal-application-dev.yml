@@ -25,6 +25,10 @@ management:
       enabled: false
 
 ui-portal:
+  theme-colors:
+    c1: blue
+    c2: red
+
   iam-external-client:
     server-host: localhost
     server-port: 8083

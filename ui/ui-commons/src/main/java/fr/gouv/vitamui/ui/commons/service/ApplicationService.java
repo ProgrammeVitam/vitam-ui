@@ -93,21 +93,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
-    public class Theme {
-        Map<String, String> colors;
-
-        public Map<String, String> getColors() {
-            return colors;
-        }
-
-        public void setColors(Map<String, String> colors) {
-            this.colors = colors;
-        }
-    }
-
-    private Theme theme = new Theme();
-
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, IamExternalRestClientFactory factory) {
+    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         if (this.properties == null) {
@@ -116,11 +102,11 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         else if (this.properties.getBaseUrl() == null) {
             LOGGER.warn("base-url properties not provided");
         }
-        this.client = factory.getApplicationExternalRestClient();
+        client = factory.getApplicationExternalRestClient();
     }
 
     public Collection<ApplicationDto> getApplications(final ExternalHttpContext context, final boolean filterApp) {
-        QueryDto query = new QueryDto(QueryOperator.AND);
+        final QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
         return client.getAll(context, Optional.of(query.toJson()));
     }
@@ -137,20 +123,19 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
+        configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
 
         LOGGER.info("UI: " + getCasLoginUrl());
-        LOGGER.info("theme: " + theme);
-        LOGGER.info("colors: " + theme.getColors());
-        configurationData.put(CommonConstants.THEME_COLORS, theme);
+        LOGGER.info("theme: " + properties.getThemeColors());
+        LOGGER.info("colors: " + properties.getThemeColors());
 
         LOGGER.info("config: " + configurationData);
         return configurationData;
     }
 
     private String getCasLoginUrl() {
-            return casExternalUrl + "/login?service=" + casCallbackUrl;
+        return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
-
 
     @Override
     public ApplicationExternalRestClient getClient() {
