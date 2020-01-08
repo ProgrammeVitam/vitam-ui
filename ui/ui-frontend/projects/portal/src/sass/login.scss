@@ -49,7 +49,7 @@
         border: 1px solid transparent;
 
         &:focus {
-            border-color: #a6a6a6;
+            border-color: $greyish-two;
         }
 
         &.ng-valid.ng-touched {

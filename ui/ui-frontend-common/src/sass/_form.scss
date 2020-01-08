@@ -37,7 +37,7 @@ input[type=email].vitamui-input {
     @include elevation-1;
 
     &:focus {
-        border-color: #a6a6a6;
+        border-color: $greyish-two;
     }
 
     &.ng-valid.ng-touched {

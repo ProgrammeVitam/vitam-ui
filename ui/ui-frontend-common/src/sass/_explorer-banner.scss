@@ -9,7 +9,7 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        border-right: 1px solid #f7f8fb;
+        border-right: 1px solid $pale-grey;
 
         > i {
             font-size: 18px;
@@ -25,7 +25,7 @@
 
         &:hover > i {
             background-color: var(--vitamui-secondary);
-            color: #fff;
+            color: $white;
         }
     }
 
