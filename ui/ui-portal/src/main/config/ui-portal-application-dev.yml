@@ -26,8 +26,9 @@ management:
 
 ui-portal:
   theme-colors:
-    c1: blue
-    c2: red
+    vitamui-primary: "#1B8"
+    vitamui-primary-light: "#3DA"
+    vitamui-secondary: "#62C"
 
   iam-external-client:
     server-host: localhost

@@ -19,11 +19,11 @@
     .mat-option.mat-active,
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled) {
-        background-color: transparentize($greeny-blue, 0.85);
+        background-color: RGBA($greeny-blue, 0.85);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
-        background-color: transparentize($greeny-blue, 0.85);
+        background-color: RGBA($greeny-blue, 0.85);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
