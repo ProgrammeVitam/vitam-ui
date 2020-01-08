@@ -94,16 +94,14 @@ export class StartupService {
         const applicationColorMap = this.configurationData.THEME_COLORS;
         const customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
 
-        console.log('Application Colors: ', applicationColorMap);
-        console.log('Customer Colors: ', customerColorMap);
-
         const themeColors = {
-          '--vitamui-primary': this.getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
-          '--vitamui-promary-dark': this.getColorFromMaps('vitamui-promary-dark', '#AA1', applicationColorMap, customerColorMap),
-          '--vitamui-promary-light': this.getColorFromMaps('vitamui-promary-light', '#FF5', applicationColorMap, customerColorMap),
-          '--vitamui-secondary': this.getColorFromMaps('vitamui-secondary', '#5cbaa9', applicationColorMap, customerColorMap),
-          '--vitamui-secondary-dark': this.getColorFromMaps('vitamui-secondary-dark', '#11E', applicationColorMap, customerColorMap),
-          '--vitamui-secondary-light': this.getColorFromMaps('vitamui-secondary-light', '#66F', applicationColorMap, customerColorMap),
+          '--vitamui-primary': getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
+          '--vitamui-primary-light': getColorFromMaps('vitamui-primary-light', '#ff8559', applicationColorMap, customerColorMap),
+          '--vitamui-primary-light-20': getColorFromMaps('vitamui-primary-light', '#ffa789', applicationColorMap, customerColorMap),
+          '--vitamui-secondary': getColorFromMaps('vitamui-secondary', '#5cbaa9', applicationColorMap, customerColorMap),
+          '--vitamui-secondary-light': getColorFromMaps('vitamui-secondary-light', '#81cabd', applicationColorMap, customerColorMap),
+          '--vitamui-secondary-light-8': getColorFromMaps('vitamui-secondary-light-8', '#7ac7b9', applicationColorMap, customerColorMap),
+          '--vitamui-secondary-dark-5': getColorFromMaps('vitamui-secondary-dark', '#52aa9a', applicationColorMap, customerColorMap)
         };
 
         console.log('Theme colors: ', themeColors);
@@ -115,91 +113,6 @@ export class StartupService {
         }
       })
       .then(() => this.applicationService.list().toPromise());
-  }
-
-  // TODO: Make a service for color updates ?
-  getColorFromMaps(colorName: string, defaultValue: string, applicationColorMap: any, customerColorMap: any) {
-    console.log('Get color for: ', colorName);
-
-    const customColor = this.getColorFromMap(colorName, customerColorMap);
-    if ( customColor ) {
-      console.log('Return custom color: ', customColor);
-      return customColor;
-    }
-
-    const applicationColor = this.getColorFromMap(colorName, applicationColorMap);
-    if ( applicationColor ) {
-      console.log('Return application color: ', applicationColor);
-      return applicationColor;
-    }
-
-    console.log('Return default value: ', defaultValue);
-    return defaultValue;
-  }
-
-  getColorFromMap(colorName: string, colorMap: any) {
-    if (!colorMap) { return null; }
-
-    if (colorMap[colorName]) {
-      return colorMap[colorName];
-    }
-    if ( colorName.endsWith(DARK_SUFFIX) && colorMap[colorName.substring(0, -DARK_SUFFIX.length)] ) {
-      return this.convertToDarkColor(colorMap[colorName.substring(0, -DARK_SUFFIX.length)]);
-    }
-    if ( colorName.endsWith(LIGHT_SUFFIX) && colorMap[colorName.substring(0, -LIGHT_SUFFIX.length)] ) {
-      return this.convertToLightColor(colorMap[colorName.substring(0, -LIGHT_SUFFIX.length)]);
-    }
-
-    return null;
-  }
-
-  convertToLightColor(color: string) {
-    if (!color) {
-      return color;
-    }
-
-    const max = 255;
-    const rgbValue = this.hexToRgb(color);
-
-    const lightRGBvalue = {
-      r: Math.floor(rgbValue.r + (max - rgbValue.r) * 0.1),
-      g: Math.floor(rgbValue.g + (max - rgbValue.g) * 0.1),
-      b: Math.floor(rgbValue.b + (max - rgbValue.b) * 0.1)
-    };
-    return '#' + this.toHex(lightRGBvalue.r) + this.toHex(lightRGBvalue.g) + this.toHex(lightRGBvalue.b);
-  }
-
-  convertToDarkColor(color: string) {
-    if (!color) {
-      return color;
-    }
-
-    const rgbValue = this.hexToRgb(color);
-    const darkRGBvalue = {
-      r: Math.floor(rgbValue.r * 0.9),
-      g: Math.floor(rgbValue.g * 0.9),
-      b: Math.floor(rgbValue.b * 0.9)
-    };
-    return '#' + this.toHex(darkRGBvalue.r) + this.toHex(darkRGBvalue.g) + this.toHex(darkRGBvalue.b);
-  }
-
-  toHex(componentValue: number) {
-    const hex = componentValue.toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  }
-
-  hexToRgb(hex) {
-    console.log('hex: ', hex);
-
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, (m, r, g, b) =>  r + r + g + g + b + b );
-
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {

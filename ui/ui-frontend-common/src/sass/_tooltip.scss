@@ -34,11 +34,11 @@
     &.vitamui-tooltip-end:before {
         left: auto;
         right: 24px;
-        border-color: #52AA9A transparent transparent #52AA9A;
+        border-color: var(--vitamui-secondary-dark-5) transparent transparent var(--vitamui-secondary-dark-5);
     }
 
     &.vitamui-tooltip-end.vitamui-tooltip-top:before {
-        border-color: transparent #52AA9A #52AA9A transparent;
+        border-color: transparent var(--vitamui-secondary-dark-5) var(--vitamui-secondary-dark-5) transparent;
     }
 
     .vitamui-tooltip-content {
@@ -51,7 +51,7 @@
     .vitamui-tooltip-icon {
         display: flex;
         font-size: 34px;
-        background-color: #52AA9A;
+        background-color: var(--vitamui-secondary-dark-5);
         align-items: center;
         padding: 15px 15px;
         border-radius: 0 10px 10px 0;

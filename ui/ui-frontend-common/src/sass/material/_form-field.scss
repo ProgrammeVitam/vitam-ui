@@ -9,7 +9,7 @@
 
     &.mat-focused {
         .mat-form-field-label {
-            color: #a6a6a6;
+            color: $greyish-two;
         }
     }
 
@@ -22,7 +22,7 @@
     }
 
     .mat-form-field-label {
-        color: #a6a6a6;
+        color: $greyish-two;
         font-weight: 400;
 
         .mat-form-field-required-marker {

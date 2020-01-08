@@ -19,7 +19,7 @@
     }
 
     .history-event-date {
-        color: #a6a6a6;
+        color: $greyish-two;
     }
 
     .history-event-outcome {
@@ -69,7 +69,7 @@
         top: 0;
         width: 16px;
         height: 16px;
-        background: #fff;
+        background: $white;
         border: 2px solid #e4e4e4;
         border-radius: 50%;
     }

@@ -3,7 +3,7 @@
 
 .table-filter-panel {
     @include elevation-3;
-    background: #ffffff;
+    background: $white;
     border: 1px solid var(--vitamui-secondary);
     border-radius: 5px;
 }
