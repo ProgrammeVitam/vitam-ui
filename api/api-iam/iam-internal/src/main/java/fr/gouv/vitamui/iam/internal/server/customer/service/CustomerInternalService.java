@@ -86,6 +86,7 @@ import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
@@ -174,8 +175,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         beforeCreate(dto);
         dto.setId(generateSuperId());
+        LOGGER.debug("DTO: " + dto);
         final Customer entity = convertFromDtoToEntity(dto);
 
+        LOGGER.debug("entity: " + entity);
         if (customerData.getLogo().isPresent()) {
             try {
                 entity.getGraphicIdentity().setHasCustomGraphicIdentity(true);
@@ -317,15 +320,30 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "hasCustomGraphicIdentity" :
+                    LOGGER.debug("Update GraphicalIdentity");
                     final boolean newCustomGraphicIdentityValue = CastUtils.toBoolean(entry.getValue());
                     logbooks.add(new EventDiffDto(CustomerConverter.CUSTOM_GRAPHIC_IDENTITY_KEY, customer.getGraphicIdentity().isHasCustomGraphicIdentity(),
                             newCustomGraphicIdentityValue));
                     processGraphicIdentityPatch(newCustomGraphicIdentityValue, customer, logo);
                     break;
+                case "themeColors":
+                    LOGGER.debug("Update Theme Colors");
+                    // Check value as map ?
+                    Object themeColorsValue = entry.getValue();
+                    LOGGER.debug("Theme: " + themeColorsValue);
+                    if (themeColorsValue instanceof Map) {
+                        Map<String, String> themeColors = (Map)themeColorsValue;
+                        LOGGER.debug("Colors: " + themeColorsValue);
+                        customer.getGraphicIdentity().setThemeColors(themeColors);
+                    } else {
+                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>");
+                    }
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
+        LOGGER.debug("Customer: ", customer);
         iamLogbookService.updateCustomerEvent(customer, logbooks);
     }
 

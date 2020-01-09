@@ -130,8 +130,10 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         if (dto.getAddress() != null) {
             customer.setAddress(VitamUIUtils.copyProperties(dto.getAddress(), new Address()));
         }
+
         customer.setGraphicIdentity(new GraphicIdentity());
         customer.getGraphicIdentity().setHasCustomGraphicIdentity(dto.isHasCustomGraphicIdentity());
+        customer.getGraphicIdentity().setThemeColors(dto.getThemeColors());
 
         return customer;
     }

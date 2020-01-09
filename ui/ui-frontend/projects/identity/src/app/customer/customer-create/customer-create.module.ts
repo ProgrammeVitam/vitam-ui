@@ -49,6 +49,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
+import { CustomerColorsInputComponent } from './customer-colors-input/customer-colors-input.component';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { CustomerCreateValidators } from './customer-create.validators';
   ],
   declarations: [
     CustomerCreateComponent,
+    CustomerColorsInputComponent
   ],
   entryComponents: [CustomerCreateComponent],
   providers: [CustomerCreateValidators]

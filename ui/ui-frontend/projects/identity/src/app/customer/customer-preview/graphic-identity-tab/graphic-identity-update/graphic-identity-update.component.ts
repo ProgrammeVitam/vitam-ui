@@ -155,7 +155,9 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     if (!this.isGraphicIdentityFormValid) { return; }
     const formData = {
       id : this.customer.id,
-      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value };
+      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value
+      // TODO Add themeColors !
+    };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(
       () => {
@@ -170,6 +172,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   isGraphicIdentityFormValid() {
     return this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
             (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
+    // TODO: Update me to add themeColors !
+    // FIXME: What if we dont want to update imageURL ? Can we test image OR themeColors updates
   }
 
 }
