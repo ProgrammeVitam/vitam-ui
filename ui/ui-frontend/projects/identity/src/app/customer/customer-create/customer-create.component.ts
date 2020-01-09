@@ -108,6 +108,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
+      themeColors: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ])
@@ -162,7 +163,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.form.invalid) { return; }
     this.creating = true;
-    this.customerService.create(this.form.value, this.imageToUpload).subscribe(
+
+    const customer: Customer = this.updateForCustomerModel(this.form.value);
+
+    this.customerService.create(customer, this.imageToUpload).subscribe(
       () => {
         this.dialogRef.close(true);
       },
@@ -170,6 +174,19 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.creating = false;
         console.error(error);
       });
+  }
+
+  updateForCustomerModel(formValue: any): Customer {
+    const { themeColors, ...customer } = formValue;
+
+    if ( themeColors.length > 0 ) {
+      customer.themeColors = {};
+      for (const color of themeColors) {
+        customer.themeColors[color.colorName] = color.colorValue;
+      }
+    }
+
+    return customer;
   }
 
   onImageDropped(files: FileList) {

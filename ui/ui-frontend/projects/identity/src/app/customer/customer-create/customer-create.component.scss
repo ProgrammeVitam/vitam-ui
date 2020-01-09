@@ -212,6 +212,15 @@ button > small {
     }
 }
 
+.field-color-name {
+  width: 300px + $field-spacing / 2;
+  margin-right: $field-spacing;
+}
+
+.field-color-value {
+  width: 150px + $field-spacing / 2;
+}
+
 .error-message {
     color: $red;
     font-size: 14px;

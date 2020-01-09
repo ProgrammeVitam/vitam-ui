@@ -125,11 +125,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
 
-        LOGGER.info("UI: " + getCasLoginUrl());
-        LOGGER.info("theme: " + properties.getThemeColors());
-        LOGGER.info("colors: " + properties.getThemeColors());
-
-        LOGGER.info("config: " + configurationData);
         return configurationData;
     }
 
