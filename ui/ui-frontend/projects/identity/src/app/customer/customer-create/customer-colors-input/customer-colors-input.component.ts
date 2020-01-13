@@ -1,6 +1,6 @@
 import { ENTER } from '@angular/cdk/keycodes';
-import {Component, forwardRef, Input} from '@angular/core';
-import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from '@angular/forms';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 
 class Color {
   colorName: string;

@@ -11,8 +11,10 @@ spring:
 
 ui-identity:
   theme-colors:
-    vitamui-primary: "#82A"
-    vitamui-secondary: "#70F"
+    vitamui-primary: "#702382"
+    vitamui-primary-light: "#992fb1"
+    vitamui-primary-light-20: "#ba52d1"
+    vitamui-secondary: "#7FA1D4"
 
   iam-external-client:
     server-host: localhost

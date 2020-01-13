@@ -69,17 +69,20 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, logo: SafeUrl },
     private formBuilder: FormBuilder,
     private customerService: CustomerService
-    ) {
-      this.customer = this.data.customer;
-      this.logoUrl = this.data.logo;
-      this.graphicIdentityForm = this.formBuilder.group({
-        hasCustomGraphicIdentity: null
-      });
-    }
+  ) {
+    this.customer = this.data.customer;
+    this.logoUrl = this.data.logo;
+    this.graphicIdentityForm = this.formBuilder.group({
+      hasCustomGraphicIdentity: null,
+      themeColors: null
+    });
+  }
 
   ngOnInit() {
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
+
+    this.graphicIdentityForm.get('themeColors').setValue(this.getThemeColors(this.customer.themeColors));
 
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
@@ -93,8 +96,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         this.imageToUpload = null;
         this.imageUrl = null;
       }
-  });
-}
+    });
+  }
 
   onCancel() {
     this.dialogRef.close();
@@ -155,23 +158,45 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     if (!this.isGraphicIdentityFormValid) { return; }
     const formData = {
       id : this.customer.id,
-      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value
-      // TODO Add themeColors !
+      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
+      themeColors: this.updateForCustomerModel(this.graphicIdentityForm.get('themeColors').value)
     };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error) => {
-        this.dialogRef.close(false);
-        console.error(error);
-      });
+        () => {
+          this.dialogRef.close(true);
+        },
+        (error) => {
+          this.dialogRef.close(false);
+          console.error(error);
+        });
+  }
+
+  getThemeColors(themeColors: any): any[] {
+    const formData: any[] = [];
+
+    for (const color in themeColors) {
+      if (themeColors.hasOwnProperty(color)) {
+        const colorToUpdate = { colorName: color, colorValue: themeColors[color]};
+        formData.push(colorToUpdate);
+      }
+    }
+
+    return formData;
+  }
+
+  updateForCustomerModel(formData: any): any {
+    const themeColors: any = {};
+    for (const color of formData) {
+      themeColors[color.colorName] = color.colorValue;
+    }
+
+    return themeColors;
   }
 
   isGraphicIdentityFormValid() {
     return this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
-            (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
+      (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
     // TODO: Update me to add themeColors !
     // FIXME: What if we dont want to update imageURL ? Can we test image OR themeColors updates
   }

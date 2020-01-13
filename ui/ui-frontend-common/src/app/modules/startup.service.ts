@@ -97,7 +97,7 @@ export class StartupService {
         const themeColors = {
           '--vitamui-primary': getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
           '--vitamui-primary-light': getColorFromMaps('vitamui-primary-light', '#ff8559', applicationColorMap, customerColorMap),
-          '--vitamui-primary-light-20': getColorFromMaps('vitamui-primary-light', '#ffa789', applicationColorMap, customerColorMap),
+          '--vitamui-primary-light-20': getColorFromMaps('vitamui-primary-light-20', '#ffa789', applicationColorMap, customerColorMap),
           '--vitamui-secondary': getColorFromMaps('vitamui-secondary', '#5cbaa9', applicationColorMap, customerColorMap),
           '--vitamui-secondary-light': getColorFromMaps('vitamui-secondary-light', '#81cabd', applicationColorMap, customerColorMap),
           '--vitamui-secondary-light-8': getColorFromMaps('vitamui-secondary-light-8', '#7ac7b9', applicationColorMap, customerColorMap),

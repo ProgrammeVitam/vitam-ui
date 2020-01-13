@@ -47,13 +47,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
+import { CustomerColorsInputModule } from './customer-colors-input/customer-colors-input.module';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
-import { CustomerColorsInputComponent } from './customer-colors-input/customer-colors-input.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    CustomerColorsInputModule,
     SharedModule,
     MatButtonToggleModule,
     MatFormFieldModule,
@@ -66,8 +67,7 @@ import { CustomerColorsInputComponent } from './customer-colors-input/customer-c
     VitamUICommonModule
   ],
   declarations: [
-    CustomerCreateComponent,
-    CustomerColorsInputComponent
+    CustomerCreateComponent
   ],
   entryComponents: [CustomerCreateComponent],
   providers: [CustomerCreateValidators]

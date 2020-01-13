@@ -16,7 +16,9 @@
 </div>
 <div class="vitamui-chip-list">
   <div *ngFor="let color of colors" class="vitamui-chip">
-    <div class="vitamui-chip-content" [style.background-color]="color.colorValue">{{color.colorName}}</div>
+    <div class="vitamui-chip-content">
+      <i class="openvitamui-icon openvitamui-icon-triangle" [style.color]="color.colorValue"></i>&nbsp;{{color.colorName}}
+    </div>
     <div class="vitamui-remove-chip" (click)="remove(color)">
       <i class="material-icons">clear</i>
     </div>
