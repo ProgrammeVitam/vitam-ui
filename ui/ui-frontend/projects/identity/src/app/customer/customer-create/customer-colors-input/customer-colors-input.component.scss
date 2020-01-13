@@ -1,0 +1,11 @@
+$field-spacing: 15px;
+
+.field-color-name {
+  width: 300px + $field-spacing / 2;
+  margin-right: $field-spacing;
+}
+
+.field-color-value {
+  width: 150px + $field-spacing / 2;
+  margin-right: $field-spacing;
+}

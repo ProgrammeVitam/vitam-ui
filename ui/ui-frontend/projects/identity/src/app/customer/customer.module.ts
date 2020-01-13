@@ -74,12 +74,13 @@ import { TenantService } from './tenant.service';
     OwnerCreateModule,
     TenantCreateModule,
     MatSidenavModule,
-    CustomerRoutingModule,
+    CustomerRoutingModule
   ],
   declarations: [
     CustomerComponent,
     CustomerPopupComponent
   ],
+  exports: [ ],
   providers: [
     CustomerResolver,
     CustomerService,
