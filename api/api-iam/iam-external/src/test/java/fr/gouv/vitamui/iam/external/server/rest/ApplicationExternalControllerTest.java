@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,7 +23,7 @@ public class ApplicationExternalControllerTest extends ApiIamControllerTest<Appl
     @MockBean
     private ApplicationExternalService service;
 
-    private ApplicationExternalController mockedController = MvcUriComponentsBuilder.on(ApplicationExternalController.class);
+    private final ApplicationExternalController mockedController = MvcUriComponentsBuilder.on(ApplicationExternalController.class);
 
     @Test
     public void testGetAllApplications() {
@@ -50,7 +48,7 @@ public class ApplicationExternalControllerTest extends ApiIamControllerTest<Appl
 
     @Override
     protected ApplicationDto buildDto() {
-        ApplicationDto app = new ApplicationDto();
+        final ApplicationDto app = new ApplicationDto();
         app.setUrl("url");
         app.setIdentifier("id");
         app.setId("1");
@@ -73,7 +71,7 @@ public class ApplicationExternalControllerTest extends ApiIamControllerTest<Appl
 
     @Override
     protected String[] getServices() {
-        return new String[] {ServicesData.SERVICE_APPLICATIONS};
+        return new String[] { ServicesData.SERVICE_APPLICATIONS };
     }
 
     @Override

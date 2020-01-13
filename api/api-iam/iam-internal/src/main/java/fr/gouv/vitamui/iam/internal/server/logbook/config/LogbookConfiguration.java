@@ -40,9 +40,6 @@ import fr.gouv.vitamui.iam.internal.server.config.Converters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.logbook.service.EventService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;

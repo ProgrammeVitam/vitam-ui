@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,8 +57,8 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
  */
 public abstract class AbstractCrudWebService<T extends IdDto> {
 
-    protected Collection<T> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
-        return getClient().getAll(context);
+    public List<T> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
+        return getClient().getAll(context, criteria);
     }
 
     public T create(final ExternalHttpContext c, final T dto) {

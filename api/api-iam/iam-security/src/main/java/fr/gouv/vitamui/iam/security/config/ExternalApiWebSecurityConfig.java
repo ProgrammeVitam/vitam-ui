@@ -38,7 +38,6 @@ package fr.gouv.vitamui.iam.security.config;
 
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;

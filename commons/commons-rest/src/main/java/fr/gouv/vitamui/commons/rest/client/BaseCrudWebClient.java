@@ -99,8 +99,9 @@ public abstract class BaseCrudWebClient<C extends AbstractHttpContext, D extends
      * @return
      */
     public D getOne(final C context, final String id, Optional<String> criteria) throws NotFoundException {
-        return webClient.get().uri(getPathUrl() + "/" + id).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).attribute("criteria", criteria).retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException).bodyToMono(getDtoClass()).block();
+        return webClient.get().uri(getPathUrl() + "/" + id).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
+                .attribute(CRITERIA_QUERY_PARAM, criteria).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
+                .bodyToMono(getDtoClass()).block();
     }
 
     /**
@@ -110,6 +111,20 @@ public abstract class BaseCrudWebClient<C extends AbstractHttpContext, D extends
      */
     public List<D> getAll(final C context) {
         return webClient.get().uri(getPathUrl()).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve()
+                .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException).bodyToMono(getDtoListClass()).block();
+    }
+
+    /**
+     * Retrieve all By Criteria
+     * @param context
+     * @param criteria
+     * @return
+     */
+    public List<D> getAll(final C context, final Optional<String> criteria) {
+        final URIBuilder builder = getUriBuilderFromUrl();
+        criteria.ifPresent(c -> builder.addParameter(CRITERIA_QUERY_PARAM, c));
+
+        return webClient.get().uri(buildUriBuilder(builder)).headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context))).retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException).bodyToMono(getDtoListClass()).block();
     }
 
