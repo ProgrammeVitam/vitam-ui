@@ -68,7 +68,7 @@ export class VitamUIInputComponent implements ControlValueAccessor {
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('input', { static: false }) private input: ElementRef;
+  @ViewChild('vitamUIInput', { static: false }) private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
@@ -105,6 +105,14 @@ export class VitamUIInputComponent implements ControlValueAccessor {
     const badInput = this.input.nativeElement.validity.badInput;
     this.labelFloat = badInput || this.value !== null;
     this.onChange(value);
+  }
+
+  onValueChange(value: string) {
+    if(this.type === 'number') {
+      this.onNumberChange(Number(value));
+    }else {
+      this.onTextChange(value);
+    }
   }
 
   onFocus() {
