@@ -93,7 +93,6 @@ export class StartupService {
 
         const applicationColorMap = this.configurationData.THEME_COLORS;
         const customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
-
         const themeColors = {
           '--vitamui-primary': getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
           '--vitamui-primary-light': getColorFromMaps('vitamui-primary-light', '#ff8559', applicationColorMap, customerColorMap),
@@ -104,7 +103,8 @@ export class StartupService {
           '--vitamui-secondary-dark-5': getColorFromMaps('vitamui-secondary-dark', '#52aa9a', applicationColorMap, customerColorMap)
         };
 
-        console.log('Theme colors: ', themeColors);
+        const logo64 = this.configurationData.LOGO;
+        console.log('Logo: ', logo64);
 
         for (const themeColorsKey in themeColors) {
           if (themeColors.hasOwnProperty(themeColorsKey)) {
@@ -149,6 +149,12 @@ export class StartupService {
       this.logger.log(this, 'startup data exists.', this.configurationData);
     } else {
       this.logger.log(this, 'startup data does not exists');
+    }
+  }
+
+  getLogo(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.LOGO;
     }
   }
 

@@ -1,5 +1,8 @@
 <nav class="vitamui-navbar">
-  <a href="{{portalUrl}}" class="vitamui-navbar-logo"><img src="../../../../assets/navbar-logo-vitamui.png"></a>
+  <a href="{{portalUrl}}" class="vitamui-navbar-logo">
+    <img *ngIf="base64Logo" [src]="trustedAppLogoUrl">
+    <img *ngIf="!base64Logo" src="../../../../assets/navbar-logo.svg">
+  </a>
 
   <ul class="menu">
 

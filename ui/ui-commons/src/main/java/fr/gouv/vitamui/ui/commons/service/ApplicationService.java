@@ -118,12 +118,24 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     public Map<String, Object> getConf() {
         final Map<String, Object> configurationData = new HashMap<>();
         configurationData.put(CommonConstants.PORTAL_URL, properties.getBaseUrl().getPortal());
-        // TODO check if it s used
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
+
+        final Path logoPath = Paths.get(properties.getLogoURI());
+        String base64Logo = null;
+        try {
+            base64Logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoPath));
+        }
+        catch (IOException e) {
+            LOGGER.warn("Error while resolve application logo");
+            e.printStackTrace();
+        }
+        if (base64Logo != null) {
+            configurationData.put(CommonConstants.LOGO, base64Logo);
+        }
 
         return configurationData;
     }
