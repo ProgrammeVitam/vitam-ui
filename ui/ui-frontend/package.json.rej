@@ -1,0 +1,10 @@
+diff a/ui/ui-frontend/package.json b/ui/ui-frontend/package.json	(rejected hunks)
+@@ -59,7 +59,7 @@
+     "moment": "^2.24.0",
+     "rxjs": "^6.5.2",
+     "tslib": "^1.9.0",
+-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.25.tgz",
++    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.26.tgz",
+     "underscore": "^1.9.1",
+     "web-animations-js": "github:angular/web-animations-js#release_pr208",
+     "zone.js": "~0.9.1"

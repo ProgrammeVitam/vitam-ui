@@ -197,8 +197,6 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   isGraphicIdentityFormValid() {
     return this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
       (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
-    // TODO: Update me to add themeColors !
-    // FIXME: What if we dont want to update imageURL ? Can we test image OR themeColors updates
   }
 
 }

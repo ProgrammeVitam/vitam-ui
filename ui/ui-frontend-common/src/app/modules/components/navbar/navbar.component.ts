@@ -68,9 +68,11 @@ export class NavbarComponent {
   @Output() customerSelect = new EventEmitter<string>();
 
   portalUrl: string;
+  base64Logo: string;
   currentUser: AuthUser;
   hasAccountProfile = false;
   trustedInlineLogoUrl: SafeUrl;
+  trustedAppLogoUrl: SafeUrl;
 
   constructor(
     public authService: AuthService,
@@ -78,6 +80,12 @@ export class NavbarComponent {
     private subrogationService: SubrogationService,
     private domSanitizer: DomSanitizer) {
     this.portalUrl = startupService.getPortalUrl();
+    this.base64Logo = startupService.getLogo();
+
+    if (this.base64Logo) {
+      this.trustedAppLogoUrl = this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + this.base64Logo);
+    }
+
     if (this.authService.user) {
       this.currentUser = this.authService.user;
       if (this.currentUser.basicCustomer) {

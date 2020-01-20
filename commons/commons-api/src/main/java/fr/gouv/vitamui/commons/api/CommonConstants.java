@@ -183,6 +183,8 @@ public class CommonConstants {
 
     public static final String UI_URL = "UI_URL";
 
+    public static final String ASSET_FOLDER = "ASSET_FOLDER";
+
     public static final String THEME_COLORS = "THEME_COLORS";
 
     /**
@@ -258,4 +260,5 @@ public class CommonConstants {
 
     public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
 
+    public static final String LOGO = "LOGO";
 }
