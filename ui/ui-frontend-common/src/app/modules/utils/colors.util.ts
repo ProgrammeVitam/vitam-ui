@@ -17,6 +17,7 @@ class HSL {
  * @param defaultColor the color default value if no overriding in priority and fallback maps
  * @param fallbackMap the fallback map. The function will search in it if no color is found in priority map. Should be application config
  * @param priorityMap the priority map. If the color is found in it, the fallbackMap is not used. Should be customer config
+ * @return The hex RBG color find or computed from all sources
  */
 export function getColorFromMaps(name: string, defaultColor: string, fallbackMap: any, priorityMap: any): string {
 

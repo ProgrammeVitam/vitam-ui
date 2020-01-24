@@ -113,11 +113,4 @@ public class Customer extends IdDocument {
 
     @NotNull
     private GraphicIdentity graphicIdentity;
-
-    @Override public String toString() {
-        return "Customer{" + "identifier='" + identifier + '\'' + ", code='" + code + '\'' + ", name='" + name + '\'' + ", companyName='" + companyName + '\''
-                + ", enabled=" + enabled + ", language='" + language + '\'' + ", passwordRevocationDelay=" + passwordRevocationDelay + ", otp=" + otp
-                + ", emailDomains=" + emailDomains + ", defaultEmailDomain='" + defaultEmailDomain + '\'' + ", address=" + address + ", readonly=" + readonly
-                + ", subrogeable=" + subrogeable + ", graphicIdentity=" + graphicIdentity + '}';
-    }
 }

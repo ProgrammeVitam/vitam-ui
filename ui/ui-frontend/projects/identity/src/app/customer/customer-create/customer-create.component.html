@@ -182,14 +182,12 @@
               </p>
             </div>
           </div>
+
+          <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
         </div>
-
-        <!-- TODO: Color picker -->
-        <!-- FIXME: Placeholder => placeholder="domaine.xyz" i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder" -->
-        <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">

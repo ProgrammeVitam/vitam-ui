@@ -55,5 +55,5 @@ export interface Customer extends Id {
   owners: Owner[];
   readonly: boolean;
   hasCustomGraphicIdentity: boolean;
-  themeColors: any;
+  themeColors: Map<string, string>;
 }

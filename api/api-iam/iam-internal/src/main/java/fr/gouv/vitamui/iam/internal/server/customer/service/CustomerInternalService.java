@@ -175,10 +175,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         beforeCreate(dto);
         dto.setId(generateSuperId());
-        LOGGER.debug("DTO: " + dto);
         final Customer entity = convertFromDtoToEntity(dto);
 
-        LOGGER.debug("entity: " + entity);
         if (customerData.getLogo().isPresent()) {
             try {
                 entity.getGraphicIdentity().setHasCustomGraphicIdentity(true);
@@ -327,23 +325,18 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     processGraphicIdentityPatch(newCustomGraphicIdentityValue, customer, logo);
                     break;
                 case "themeColors":
-                    LOGGER.debug("Update Theme Colors");
-                    // Check value as map ?
                     Object themeColorsValue = entry.getValue();
-                    LOGGER.debug("Theme: " + themeColorsValue);
                     if (themeColorsValue instanceof Map) {
                         Map<String, String> themeColors = (Map)themeColorsValue;
-                        LOGGER.debug("Colors: " + themeColorsValue);
                         customer.getGraphicIdentity().setThemeColors(themeColors);
                     } else {
-                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>");
+                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>. Ignore it");
                     }
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
-        LOGGER.debug("Customer: ", customer);
         iamLogbookService.updateCustomerEvent(customer, logbooks);
     }
 

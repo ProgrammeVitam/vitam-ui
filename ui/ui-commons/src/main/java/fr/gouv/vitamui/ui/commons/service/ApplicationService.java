@@ -124,19 +124,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
 
-        final Path logoPath = Paths.get(properties.getLogoURI());
-        String base64Logo = null;
-        try {
-            base64Logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoPath));
-        }
-        catch (IOException e) {
-            LOGGER.warn("Error while resolve application logo");
-            e.printStackTrace();
-        }
-        if (base64Logo != null) {
-            configurationData.put(CommonConstants.LOGO, base64Logo);
-        }
-
         return configurationData;
     }
 
@@ -147,5 +134,19 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @Override
     public ApplicationExternalRestClient getClient() {
         return client;
+    }
+
+    public String getBase64Asset(String fileName) {
+        final Path assetFile = Paths.get(properties.getAssets(), fileName);
+        String base64Logo = null;
+        try {
+            base64Logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
+        }
+        catch (IOException e) {
+            LOGGER.warn("Error while resolve file");
+            e.printStackTrace();
+            return  null;
+        }
+        return base64Logo;
     }
 }

@@ -34,7 +34,9 @@
       {{ message }}
     </div>
 
-    <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
+    <div style="padding-bottom: 30px">
+      <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
+    </div>
 
     <div class="actions">
       <button type="button" class="btn primary" [disabled]="!isGraphicIdentityFormValid()" i18n="Update customer graphic identity@@updateCustomerGraphicIdentityButton" (click)="updateGraphicIdentity()">Valider</button>

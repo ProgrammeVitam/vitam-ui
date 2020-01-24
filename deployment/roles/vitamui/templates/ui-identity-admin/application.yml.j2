@@ -62,6 +62,7 @@ ui-identity:
         key-password: {{ password_truststore }} # TODO OMA : revoir
       hostname-verification: false
 {% endif %}
+  assets: "{{ vitamui_services.ui_identity_admin.dirs.assets }}"
   base-url:
 {% if vitamui.portal.base_url is defined %}
     portal: "{{ vitamui.portal.base_url }}"

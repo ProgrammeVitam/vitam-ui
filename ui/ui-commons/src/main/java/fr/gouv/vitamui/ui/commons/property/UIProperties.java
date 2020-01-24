@@ -50,6 +50,6 @@ public interface UIProperties {
 
     public Map<String, String> getThemeColors();
 
-    public String getLogoURI();
+    public String getAssets();
 
 }
