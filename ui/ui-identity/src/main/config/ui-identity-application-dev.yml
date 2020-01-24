@@ -15,9 +15,7 @@ ui-identity:
     vitamui-primary-light: "#992fb1"
     vitamui-primary-light-20: "#ba52d1"
     vitamui-secondary: "#7FA1D4"
-
-  logoURI: "/home/lubla/vitamui/test_logo.png"
-
+  assets: /vitamui/assets/ui-identity
   iam-external-client:
     server-host: localhost
     server-port: 8083

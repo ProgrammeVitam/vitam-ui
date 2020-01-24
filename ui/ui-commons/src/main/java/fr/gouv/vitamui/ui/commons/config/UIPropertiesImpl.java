@@ -65,4 +65,5 @@ public class UIPropertiesImpl implements UIProperties {
 
     private Map<String, String> themeColors;
 
+    private String assets;
 }

@@ -51,9 +51,4 @@ public class GraphicIdentity {
 
     // Theme based Graphical identity
     Map<String, String> themeColors;
-
-    @Override public String toString() {
-        return "GraphicIdentity{" + "hasCustomGraphicIdentity=" + hasCustomGraphicIdentity + ", logoDataBase64='" + logoDataBase64 + '\'' + ", themeColors="
-                + themeColors + '}';
-    }
 }

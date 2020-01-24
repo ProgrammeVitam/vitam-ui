@@ -94,4 +94,20 @@ public class ApplicationController extends AbstractUiRestController {
         LOGGER.info("Get configuration");
         return service.getConf();
     }
+
+    /**
+     * Return asset file as base64 data
+     * @param fileName the file to get from assets
+     * @return the file as base64 string
+     */
+    @ApiOperation(value = "Get Asset File")
+    @GetMapping
+    @RequestMapping(method = RequestMethod.GET, value = "/asset")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, Object> getAsset(@RequestParam() final String fileName) {
+        LOGGER.info("Get Asset {}", fileName);
+        Map<String, Object> file = new HashMap<>();
+        file.put(fileName, service.getBase64Asset(fileName));
+        return file;
+    }
 }

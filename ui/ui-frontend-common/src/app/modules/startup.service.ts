@@ -72,7 +72,6 @@ export class StartupService {
     private logger: Logger,
     private authService: AuthService,
     private applicationService: ApplicationService,
-    private customerApiService: CustomerApiService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
     @Inject(WINDOW_LOCATION) private location: any
@@ -89,6 +88,10 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
+      .then(() => this.applicationApi.getAsset('navbar-logo.svg').toPromise())
+      .then((data: any) => {
+        this.configurationData.LOGO = data['navbar-logo.svg'];
+      })
       .then(() => {
 
         const applicationColorMap = this.configurationData.THEME_COLORS;
@@ -102,9 +105,6 @@ export class StartupService {
           '--vitamui-secondary-light-8': getColorFromMaps('vitamui-secondary-light-8', '#7ac7b9', applicationColorMap, customerColorMap),
           '--vitamui-secondary-dark-5': getColorFromMaps('vitamui-secondary-dark', '#52aa9a', applicationColorMap, customerColorMap)
         };
-
-        const logo64 = this.configurationData.LOGO;
-        console.log('Logo: ', logo64);
 
         for (const themeColorsKey in themeColors) {
           if (themeColors.hasOwnProperty(themeColorsKey)) {

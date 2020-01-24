@@ -1,0 +1,17 @@
+diff a/deployment/environment/group_vars/all/vitamui_services.yml b/deployment/environment/group_vars/all/vitamui_services.yml	(rejected hunks)
+@@ -157,6 +157,7 @@ vitamui_services:
+     dirs:
+       config: /vitamui/conf/ui-identity
+       log:    /vitamui/log/ui-identity
++      assets: /vitamui/assets/ui-identity
+ 
+     server_name: "{{ vitamui_env_name }}-identity.teamvitamui.com"
+     java_opts: -Xms128m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true
+@@ -211,6 +212,7 @@ vitamui_services:
+     dirs:
+       config: /vitamui/conf/ui-portal
+       log:    /vitamui/log/ui-portal
++      assets: /vitamui/assets/ui-portal
+     server_name: "{{ vitamui_env_name }}-portal.teamvitamui.com"
+     java_opts: -Xms128m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true
+     access_log_enabled: false

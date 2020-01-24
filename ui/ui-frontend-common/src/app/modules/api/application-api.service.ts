@@ -60,4 +60,8 @@ export class ApplicationApiService {
     return this.http.get<AppConfiguration>(this.apiUrl + '/conf');
   }
 
+  getAsset(fileName: string): Observable<AppConfiguration> {
+    return this.http.get<AppConfiguration>(`${this.apiUrl}/asset?fileName=${fileName}`);
+  }
+
 }
