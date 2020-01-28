@@ -41,4 +41,7 @@ app-table-filter-option .vitamui-icon {
 .table-filter-icon {
     display: flex;
     align-items: center;
+    span.badge-state {
+        margin-left: 18px;
+    }
 }
