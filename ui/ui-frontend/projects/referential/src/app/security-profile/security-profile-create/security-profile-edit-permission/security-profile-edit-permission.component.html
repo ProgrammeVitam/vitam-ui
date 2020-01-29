@@ -1,0 +1,49 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="loaded">
+  <div>
+    <table  class="dlab-table">
+      <thead  class="permissionHeader">
+      <tr  class="ng-tns-c10-3 ">
+        <th  [class]="small? 'smallServiceCol' : 'serviceCol'">Service</th>
+        <th  [class]="small? 'smallToggleCol' : 'toggleCol'">Lecture</th>
+        <th  [class]="small? 'smallToggleCol' : 'toggleCol'">Ecriture</th>
+        <th  [class]="small? 'smallToggleCol' : 'toggleCol'">Suppression</th>
+      </tr>
+      </thead>
+      <tbody class="permissionTable" >
+      <tr  class="dlab-table-row ng-tns-c10-3 ng-star-inserted no-hover" *ngFor="let permission of permissions.apiPermissions">
+        <td  [class]="small? 'smallServiceCol' : 'serviceCol'">{{permission.name}}</td>
+        <td  [class]="small? 'smallToggleCol' : 'toggleCol'"
+             matTooltipClass="vitamui-tooltip"
+             [matTooltip]="permission.readPermission && permission.readPermission.description">
+          <vitamui-common-slide-toggle *ngIf="permission.readPermission"
+                                       [formControlName]="getPermissionString(permission.service, permission.readPermission, 'read')"
+                                       [checked]="permission.readPermission.activated"
+                                       [disabled]="forceDisabled || !permission.readPermission"
+                                       (change)="onSubmit()">
+          </vitamui-common-slide-toggle>
+        </td>
+        <td  [class]="small? 'smallToggleCol' : 'toggleCol'"
+             matTooltipClass="vitamui-tooltip"
+             [matTooltip]="permission.writePermission && permission.writePermission.description">
+          <vitamui-common-slide-toggle *ngIf="permission.writePermission"
+                                       [formControlName]="getPermissionString(permission.service, permission.writePermission, 'update')"
+                                       [checked]="permission.writePermission.activated"
+                                       [disabled]="forceDisabled || !permission.writePermission"
+                                       (change)="onSubmit()">
+          </vitamui-common-slide-toggle>
+        </td>
+        <td  [class]="small? 'smallToggleCol' : 'toggleCol'"
+             matTooltipClass="vitamui-tooltip"
+             [matTooltip]="permission.deletePermission && permission.deletePermission.description">
+          <vitamui-common-slide-toggle *ngIf="permission.deletePermission"
+                                       [formControlName]="getPermissionString(permission.service, permission.deletePermission, 'delete')"
+                                       [checked]="permission.deletePermission.activated"
+                                       [disabled]="forceDisabled || !permission.deletePermission"
+                                       (change)="onSubmit()">
+          </vitamui-common-slide-toggle>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</form>

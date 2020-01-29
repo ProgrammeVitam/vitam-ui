@@ -1,0 +1,1 @@
+export const FILE_FORMAT_EXTERNAL_PREFIX = 'EXTERNAL_';

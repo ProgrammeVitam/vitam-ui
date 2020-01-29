@@ -42,12 +42,19 @@
     </scm>
 
     <repositories>
-        <!-- <id>vitam</id> to be defined in Profiles -->
+        <repository>
+            <id>vitam</id>
+            <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <!--<repositories>
+        <!- - <id>vitam</id> to be defined in Profiles - ->
         <repository>
             <id>shibboleth-maven</id>
             <url>https://build.shibboleth.net/nexus/content/repositories/releases/</url>
         </repository>
-    </repositories>
+    </repositories>-->
     <distributionManagement>
         <!-- <id>vitam</id> to be defined in Profiles -->
     </distributionManagement>
@@ -85,7 +92,7 @@
         <commons.text.version>1.4</commons.text.version>
         <easymock.version>3.4</easymock.version>
         <embedded.mongo.version>2.1.2</embedded.mongo.version>
-		<fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
+        <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
         <javax.el.version.version>3.0.0</javax.el.version.version>
         <gson.version>2.8.2</gson.version>
@@ -100,6 +107,7 @@
         <jaxb.version>2.3.0</jaxb.version>
         <jlibs.version>2.2.2</jlibs.version>
         <junit.version>4.12</junit.version>
+        <assertj.version>3.15.0</assertj.version>
         <jruby.complete.version>1.7.26</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.3</logback.version>
@@ -109,6 +117,7 @@
         <pac4j.version>3.8.3</pac4j.version>
         <poi.version>3.17</poi.version>
         <powermock.version>2.0.2</powermock.version>
+        <fop.version>2.4</fop.version>
         <!-- Temporary fix for Multipart upload issues cf
         https://github.com/spring-projects/spring-framework/issues/23372
         https://github.com/reactor/reactor-netty/issues/820
@@ -126,12 +135,13 @@
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <swagger.version>2.8.0</swagger.version>
         <trang.version>20181222</trang.version>
-        <vitam.version>2.6.3-1</vitam.version>
+        <vitam.version>2.15.1-1</vitam.version>
+        
         <xml.apis-version>1.4.01</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.2.5</xom.version>
-		<xdocreport.version>2.0.1</xdocreport.version>
-		<xerces.version>2.12.0</xerces.version>
+        <xdocreport.version>2.0.1</xdocreport.version>
+        <xerces.version>2.12.0</xerces.version>
 
         <!-- Web Pack -->
         <node.version>v12.4.0</node.version>
@@ -203,10 +213,10 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-            	<groupId>fr.gouv.vitamui.commons</groupId>
-            	<artifactId>commons-logbook</artifactId>
-            	<version>${project.version}</version>
-        	</dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-logbook</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui.commons</groupId>
                 <artifactId>commons-mongo</artifactId>
@@ -216,12 +226,12 @@
                 <groupId>fr.gouv.vitamui.commons</groupId>
                 <artifactId>commons-rest</artifactId>
                 <version>${project.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>fr.gouv.vitam</groupId>
-						<artifactId>logbook-common</artifactId>
-					</exclusion>
-				</exclusions>
+                <exclusions>
+                    <exclusion>
+                        <groupId>fr.gouv.vitam</groupId>
+                        <artifactId>logbook-common</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui.commons</groupId>
@@ -236,6 +246,31 @@
             <dependency>
                 <groupId>fr.gouv.vitamui.commons</groupId>
                 <artifactId>commons-vitam</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-internal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-internal-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-external</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-external-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -285,6 +320,11 @@
                 <artifactId>ui-commons</artifactId>
                 <type>test-jar</type>
                 <scope>test</scope>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>ui-referential</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -451,11 +491,11 @@
             </dependency>
 
             <!-- Metrics -->
-			<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-prometheus</artifactId>
-				<version>${micrometer.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
+            </dependency>
 
             <!-- VITAM -->
             <dependency>
@@ -498,10 +538,10 @@
                         <groupId>javax.mail</groupId>
                         <artifactId>mailapi</artifactId>
                     </exclusion>
-					<exclusion>
-						<groupId>io.netty</groupId>
-						<artifactId>netty-all</artifactId>
-					</exclusion>
+                    <exclusion>
+                        <groupId>io.netty</groupId>
+                        <artifactId>netty-all</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -510,8 +550,8 @@
                 <version>${vitam.version}</version>
             </dependency>
             <dependency>
-				<groupId>fr.gouv.vitam</groupId>
-				<artifactId>logbook-common</artifactId>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>logbook-common</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
 
@@ -541,20 +581,20 @@
             </dependency>
 
             <!-- Utils -->
-			<!-- Temporary fix for Multipart upload issues cf
-	        https://github.com/spring-projects/spring-framework/issues/23372
-	        https://github.com/reactor/reactor-netty/issues/820
-	         -->
-			<dependency>
-				<groupId>io.projectreactor.netty</groupId>
-				<artifactId>reactor-netty</artifactId>
-				<version>${reactor.netty.version}</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.synchronoss.cloud</groupId>
-			    <artifactId>nio-multipart-parser</artifactId>
-			    <version>${nio.multipart.parser.version}</version>
-			</dependency>
+            <!-- Temporary fix for Multipart upload issues cf
+            https://github.com/spring-projects/spring-framework/issues/23372
+            https://github.com/reactor/reactor-netty/issues/820
+             -->
+            <dependency>
+                <groupId>io.projectreactor.netty</groupId>
+                <artifactId>reactor-netty</artifactId>
+                <version>${reactor.netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.synchronoss.cloud</groupId>
+                <artifactId>nio-multipart-parser</artifactId>
+                <version>${nio.multipart.parser.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -574,10 +614,10 @@
             </dependency>
 
             <dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-compress</artifactId>
-				<version>${commons.compress.version}</version>
-			</dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons.compress.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -629,10 +669,10 @@
             </dependency>
 
             <dependency>
-			    <groupId>javax.el</groupId>
-			    <artifactId>javax.el-api</artifactId>
-			    <version>${javax.el.version.version}</version>
-			</dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.version.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -648,6 +688,11 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-csv</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
@@ -712,22 +757,28 @@
                 <artifactId>xom</artifactId>
                 <version>${xom.version}</version>
             </dependency>
-	    	<dependency>
-				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
-				<version>${bouncycastle.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
             <!-- convert relaxng to xsd -->
             <dependency>
-			    <groupId>org.relaxng</groupId>
-			    <artifactId>trang</artifactId>
-			    <version>${trang.version}</version>
-			</dependency>
-			<!-- convert xsd to xml -->
+                <groupId>org.relaxng</groupId>
+                <artifactId>trang</artifactId>
+                <version>${trang.version}</version>
+            </dependency>
+            <!-- convert xsd to xml -->
             <dependency>
-			    <groupId>in.jlibs</groupId>
-			    <artifactId>jlibs-xsd</artifactId>
-			    <version>${jlibs.version}</version>
+                <groupId>in.jlibs</groupId>
+                <artifactId>jlibs-xsd</artifactId>
+                <version>${jlibs.version}</version>
+            </dependency>
+			<!-- convert to PDF -->
+			<dependency>
+				<groupId>org.apache.xmlgraphics</groupId>
+				<artifactId>fop</artifactId>
+				<version>2.4</version>
 			</dependency>
 
             <!-- Test -->
@@ -769,16 +820,23 @@
                 <version>${powermock.version}</version>
             </dependency>
             <dependency>
-				<groupId>org.powermock</groupId>
-				<artifactId>powermock-api-mockito2</artifactId>
-				<version>${powermock.version}</version>
-			</dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito2</artifactId>
+                <version>${powermock.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.skyscreamer</groupId>
                 <artifactId>jsonassert</artifactId>
                 <version>${jsonassert.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+			    <groupId>org.assertj</groupId>
+			    <artifactId>assertj-core</artifactId>
+			    <version>${assertj.version}</version>
+			    <scope>test</scope>
+			</dependency>
+            
 
             <!-- CUCUMBER SERENITY -->
             <dependency>
@@ -798,12 +856,12 @@
                 <version>${serenity.spring.version}</version>
                 <scope>test</scope>
             </dependency>
-			<dependency>
-				<groupId>com.github.stefanbirkner</groupId>
-				<artifactId>fake-sftp-server-rule</artifactId>
-				<version>${fake.sftp.server.rule.version}</version>
-	            <scope>test</scope>
-			</dependency>
+            <dependency>
+                <groupId>com.github.stefanbirkner</groupId>
+                <artifactId>fake-sftp-server-rule</artifactId>
+                <version>${fake.sftp.server.rule.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- XDocReport convert ODT to PDF -->
             <dependency>
@@ -1172,7 +1230,7 @@
             <properties>
                 <angular.build.profile>:prod</angular.build.profile>
                 <angular.test.profile>:conf-ci</angular.test.profile>
-        		<rpm.publication.env>stable</rpm.publication.env>
+                <rpm.publication.env>stable</rpm.publication.env>
             </properties>
             <build>
                 <resources>
@@ -1193,8 +1251,8 @@
             </build>
         </profile>
 
-		<!-- This profile is used to build & test & push npm packages to repo. -->
- 		<profile>
+        <!-- This profile is used to build & test & push npm packages to repo. -->
+        <profile>
             <id>npm-publish</id>
             <properties>
                 <angular.build.profile></angular.build.profile>
@@ -1205,18 +1263,18 @@
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
-			            <executions>
-			                <execution>
-			                    <id>npm publish</id>
-			                    <phase>install</phase>
-			                    <goals>
-			                        <goal>npm</goal>
-			                    </goals>
-			                    <configuration>
-			                        <arguments>run publish --loglevel warn</arguments>
-			                    </configuration>
-			                </execution>
-			            </executions>
+                        <executions>
+                            <execution>
+                                <id>npm publish</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>run publish --loglevel warn</arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -1243,7 +1301,8 @@
                                     <skip>${rpm.skip}</skip>
                                     <arguments>
                                         <argument>-f</argument>
-                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile</argument>
+                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile
+                                        </argument>
                                         <argument>rpm</argument>
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
@@ -1278,7 +1337,8 @@
                                 </goals>
                                 <configuration>
                                     <skip>${rpm.skip}</skip>
-                                    <executable>${maven.multiModuleProjectDirectory}/tools/packaging/publish.sh</executable>
+                                    <executable>${maven.multiModuleProjectDirectory}/tools/packaging/publish.sh
+                                    </executable>
                                     <workingDirectory>target</workingDirectory>
                                     <arguments>
                                         <argument>${env.SERVICE_RPM_REPOSITORY_URL}/upload/${rpm.publication.env}/Packages</argument>
@@ -1352,19 +1412,25 @@
                 <angular.build.profile></angular.build.profile>
                 <angular.test.profile>:sonar</angular.test.profile>
                 <!-- Set project configuration file for test coverage -->
-                <angular.additional.test.informations>--karma-config=${maven.multiModuleProjectDirectory}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js</angular.additional.test.informations>
+                <angular.additional.test.informations>
+                    --karma-config=${maven.multiModuleProjectDirectory}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js
+                </angular.additional.test.informations>
                 <maven.test.failure.ignore>true</maven.test.failure.ignore>
                 <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java, **/*spec.ts, **/*.scss, **/*.css</sonar.coverage.exclusions>
+                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java, **/*spec.ts, **/*.scss,
+                    **/*.css
+                </sonar.coverage.exclusions>
                 <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.host.url />
+                <sonar.host.url/>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
-                <sonar.login />
-                <sonar.typescript.lcov.reportPaths>${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/archive/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/commons/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/flow/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/identity/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/portal/lcov.info</sonar.typescript.lcov.reportPaths>
+                <sonar.login/>
+                <sonar.typescript.lcov.reportPaths>
+                    ${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/archive/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/commons/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/flow/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/identity/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/portal/lcov.info
+                </sonar.typescript.lcov.reportPaths>
             </properties>
         </profile>
 
@@ -1400,13 +1466,13 @@
             <id>swagger</id>
             <build>
                 <plugins>
-                	<plugin>
-	                    <groupId>org.apache.maven.plugins</groupId>
-	                    <artifactId>maven-surefire-plugin</artifactId>
-	                    <configuration>
-	                        <test>SwaggerJsonFileGenerationTest.java</test>
-	                    </configuration>
-	                </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <test>SwaggerJsonFileGenerationTest.java</test>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -1417,10 +1483,10 @@
             <build>
                 <plugins>
 
-					<plugin>
-						<groupId>io.github.swagger2markup</groupId>
-						<artifactId>swagger2markup-maven-plugin</artifactId>
-						<version>${maven.swagger2markup.plugin.version}</version>
+                    <plugin>
+                        <groupId>io.github.swagger2markup</groupId>
+                        <artifactId>swagger2markup-maven-plugin</artifactId>
+                        <version>${maven.swagger2markup.plugin.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>io.github.swagger2markup</groupId>
@@ -1433,66 +1499,71 @@
                                 <version>${maven.swagger2markup.plugin.version}</version>
                             </dependency>
                         </dependencies>
-						<configuration>
-							<swaggerInput>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json</swaggerInput>
-							<outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
-							<config>
-								<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-								<swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
-								<swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
-								<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-							</config>
+                        <configuration>
+                            <swaggerInput>
+                                ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json
+                            </swaggerInput>
+                            <outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
+                            <config>
+                                <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+                                <swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
+                                <swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
+                                <swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+                            </config>
                             <skip>${swagger.skip}</skip>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>convertSwagger2markup</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.asciidoctor</groupId>
-						<artifactId>asciidoctor-maven-plugin</artifactId>
-						<version>${maven.asciidoctor.plugin.version}</version>
-						<dependencies>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>convertSwagger2markup</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>${maven.asciidoctor.plugin.version}</version>
+                        <dependencies>
                             <dependency>
                                 <groupId>org.asciidoctor</groupId>
                                 <artifactId>asciidoctorj-pdf</artifactId>
                                 <version>${asciidoctorj.pdf.version}</version>
                             </dependency>
-							<dependency>
-								<groupId>org.jruby</groupId>
-								<artifactId>jruby-complete</artifactId>
-								<version>${jruby.complete.version}</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<sourceDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/config/</sourceDirectory>
-							<sourceDocumentName>index.adoc</sourceDocumentName>
-							<backend>html5</backend>
-							<outputDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
-							<attributes>
-								<toc>left</toc>
-								<toclevels>3</toclevels>
+                            <dependency>
+                                <groupId>org.jruby</groupId>
+                                <artifactId>jruby-complete</artifactId>
+                                <version>${jruby.complete.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <sourceDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/config/
+                            </sourceDirectory>
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
+                            <backend>html5</backend>
+                            <outputDirectory>
+                                ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
+                            </outputDirectory>
+                            <attributes>
+                                <toc>left</toc>
+                                <toclevels>3</toclevels>
                                 <numbered></numbered>
                                 <hardbreaks></hardbreaks>
                                 <sectlinks></sectlinks>
                                 <sectanchors></sectanchors>
-								<generated>${project.build.directory}/generated-sources/swagger/</generated>
-							</attributes>
+                                <generated>${project.build.directory}/generated-sources/swagger/</generated>
+                            </attributes>
                             <skip>${swagger.skip}</skip>
-						</configuration>
-						<executions>
-							<execution>
-								<id>output-html</id>
-								<phase>generate-resources</phase>
-								<goals>
-									<goal>process-asciidoc</goal>
-								</goals>
-							</execution>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>output-html</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                            </execution>
                             <execution>
                                 <id>output-pdf</id>
                                 <phase>generate-resources</phase>
@@ -1501,28 +1572,30 @@
                                 </goals>
                                 <configuration>
                                     <backend>pdf</backend>
-                                    <outputDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
+                                    <outputDirectory>
+                                        ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
+                                    </outputDirectory>
                                 </configuration>
                             </execution>
-						</executions>
-					</plugin>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
-	       	<!-- Repositories used for swagger doc generation  -->
+            <!-- Repositories used for swagger doc generation  -->
             <pluginRepositories>
-		        <pluginRepository>
-					<id>jcenter-snapshots</id>
-					<name>jcenter</name>
-					<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
-		        </pluginRepository>
-		        <pluginRepository>
-		            <snapshots>
-		                <enabled>false</enabled>
-		            </snapshots>
-		            <id>jcenter-releases</id>
-		            <name>jcenter</name>
-		            <url>http://jcenter.bintray.com</url>
-		        </pluginRepository>
+                <pluginRepository>
+                    <id>jcenter-snapshots</id>
+                    <name>jcenter</name>
+                    <url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>jcenter-releases</id>
+                    <name>jcenter</name>
+                    <url>https://jcenter.bintray.com</url>
+                </pluginRepository>
             </pluginRepositories>
         </profile>
 
@@ -1570,6 +1643,30 @@
                 <serverId>vitam</serverId>
                 <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
             </properties>
+
+        </profile>
+
+        <profile>
+            <!-- Profile to use for all Vitam internal developers -->
+            <id>vitam-external</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <!-- Dépôts Maven privés -->
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <url>http://download.programmevitam.fr/vitam_repository/${vitam.version}/mvn_repo/</url>
+                </repository>
+            </distributionManagement>
+
+
+            <repositories>
+                <repository>
+                    <id>vitam</id>
+                    <url>http://download.programmevitam.fr/vitam_repository/${vitam.version}/mvn_repo/</url>
+                </repository>
+            </repositories>
 
         </profile>
 

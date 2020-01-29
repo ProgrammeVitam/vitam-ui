@@ -10,7 +10,7 @@ spring:
         register: false
 
 server:
-  host: dev.vitamui.com
+  host: dev-portal.vitamui.com
   port: 9000
   scheme: https
   ssl:
@@ -39,17 +39,16 @@ ui-portal:
         key-password: jkspasswd
       hostname-verification: false
   base-url:
-    portal: "https://dev.vitamui.com:4200"
-    admin-identity: "https://dev.vitamui.com:4201/identity"
-    identity: "https://dev.vitamui.com:4201/identity"
+    portal: "https://dev-portal.vitamui.com:4200"
+
 
 ui:
-  url: "https://dev.vitamui.com:4200"
-  redirect-url: https://dev.vitamui.com:9000/${ui-prefix}
+  url: "https://dev-portal.vitamui.com:4200"
+  redirect-url: https://dev-portal.vitamui.com:9000/${ui-prefix}
 
 cas:
-  internal-url: https://dev.vitamui.com:8080/cas
-  external-url: https://dev.vitamui.com:8080/cas
+  internal-url: https://dev-cas.vitamui.com:8080/cas
+  external-url: https://dev-cas.vitamui.com:8080/cas
   callback-url: ${ui.url}/portal-api/callback
   ssl:
     trust-store: src/main/config/truststore.jks

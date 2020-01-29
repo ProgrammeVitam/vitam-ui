@@ -1,0 +1,57 @@
+<div class="app-container" [class.modal-container]="isModalMenu">
+    <div class="row">
+        <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let appUser of userApplications"
+            [application]="appUser" [isModalMenu]="isModalMenu" (appSelect)="selectApp($event)">
+        </vitamui-common-menu-tile-updated>
+    </div>
+</div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="referentialApplications?.length > 0"
+     i18n="Referential category@@PortalReferentialCategory">Référentiels</div>
+<div class="app-container" [class.modal-container]="isModalMenu">
+  <div class="row">
+    <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+                              *ngFor="let appAdmin of referentialApplications" [application]="appAdmin" [isModalMenu]="isModalMenu"
+                              (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+  </div>
+</div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="opauditApplications?.length > 0"
+    i18n="operations and audits category@@PortalOpauditCategory">Audits et opérations</div>
+<div class="app-container" [class.modal-container]="isModalMenu">
+    <div class="row">
+        <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+            *ngFor="let appAdmin of opauditApplications" [application]="appAdmin" [isModalMenu]="isModalMenu"
+            (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+    </div>
+</div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="techAdminApplications?.length > 0"
+     i18n="operations and audits category@@PortalOpauditCategory">Administration Technique</div>
+<div class="app-container" [class.modal-container]="isModalMenu">
+  <div class="row">
+    <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+                                      *ngFor="let appAdmin of techAdminApplications" [application]="appAdmin" [isModalMenu]="isModalMenu"
+                                      (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+  </div>
+</div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="adminApplications?.length > 0"
+    i18n="Management category@@PortalManagementCategory">Management</div>
+<div class="app-container" [class.modal-container]="isModalMenu">
+    <div class="row">
+        <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+            *ngFor="let appAdmin of adminApplications" [application]="appAdmin" [isModalMenu]="isModalMenu"
+            (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+    </div>
+</div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="settingsApplications?.length > 0"
+    i18n="Settings category@@PortalSettingsCategory">Paramétrage</div>
+<div class="app-container">
+    <div class="row">
+        <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+            *ngFor="let appSettings of settingsApplications" [application]="appSettings" [isModalMenu]="isModalMenu"
+            (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+    </div>
+</div>

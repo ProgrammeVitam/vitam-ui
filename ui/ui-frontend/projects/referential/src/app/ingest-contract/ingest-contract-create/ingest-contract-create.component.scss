@@ -1,0 +1,98 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+$field-spacing: 15px;
+
+.header {
+  padding: 30px 60px 0 60px;
+}
+
+.content {
+  padding: 0px 60px 60px 60px;
+}
+
+h2 {
+  font-size: 26px;
+  line-height: 46px;
+  margin-top: 23px;
+  margin-bottom: 37px;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+}
+
+.actions > button:not(:last-child) {
+  margin-right: 20px;
+}
+
+.form-group {
+  padding-bottom: 30px;
+}
+
+.field-tooltip {
+  cursor: default;
+  margin-left: 10px;
+  color: $greeny-blue;
+}
+
+.select-tooltip {
+  top: 15px;
+  position: relative;
+}
+
+.radio-tooltip {
+  top: -10px;
+  position: relative;
+}
+
+label {
+  color: $charcoal-grey;
+  font-size: 15px;
+  line-height: normal;
+  margin-bottom: 10px;
+  display: block;
+
+  .required-marker {
+    color: $blood-orange;
+  }
+
+  small {
+    color: #a5a5a5;
+    font-size: inherit;
+  }
+}
+
+.underline {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.inline-label {
+  padding-top: 5px;
+}
+
+button.primary {
+  margin-right: 20px;
+}
+
+button.back {
+  margin-top: 60px;
+}
+
+button > small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.hint {
+  color: #a5a5a5;
+  font-size: 15px;
+}
+
+.error-message {
+  color: $red;
+  font-size: 14px;
+  margin-bottom: 30px;
+}

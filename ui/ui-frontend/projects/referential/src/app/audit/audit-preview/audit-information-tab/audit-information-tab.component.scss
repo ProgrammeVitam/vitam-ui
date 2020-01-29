@@ -1,0 +1,12 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+label {
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  color: $light-grey;
+}
+
+label + div {
+  font-weight: bold;
+  word-break: break-all;
+}

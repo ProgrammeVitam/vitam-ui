@@ -2,8 +2,8 @@
     @include status-badge;
 
     &:after {
-        background-color: #50d166;
-        border: solid 2px #ffffff;
+        background-color: $green;
+        border: solid 2px $white;
     }
 
     &.status-badge-mini {
@@ -16,7 +16,7 @@
 
     &:after {
         background-color: $red;
-        border: solid 2px #ffffff;
+        border: solid 2px $white;
     }
 
     &.status-badge-mini {
@@ -28,8 +28,8 @@
     @include status-badge;
 
     &:after {
-        background-color: #ffa610;
-        border: solid 2px #ffffff;
+        background-color: $mustard-yellow;
+        border: solid 2px $white;
     }
 
     &.status-badge-mini {
@@ -41,8 +41,8 @@
     @include status-badge;
 
     &:after {
-        background-color: #dadada;
-        border: solid 2px #ffffff;
+        background-color: $light-grey;
+        border: solid 2px $white;
     }
 
     &.status-badge-mini {
@@ -54,7 +54,7 @@
     @include status-badge;
 
     &:after {
-        background-color: #474D4A;
+        background-color: $dark-grey;
         border: solid 2px $white;
     }
 

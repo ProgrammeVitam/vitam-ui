@@ -20,9 +20,24 @@
     ],
     "noImplicitAny": true,
     "paths": {
-      "vitamui-demo": ["./projects/demo/src"],
-      "vitamui-identity": ["./projects/identity/src/app/"],
-      "vitamui-portal": ["./projects/portal/src/app/"]
+      "vitamui-demo": [
+        "./projects/demo/src"
+      ],
+      "vitamui-identity": [
+        "./projects/identity/src/app/"
+      ],
+      "vitamui-portal": [
+        "./projects/portal/src/app/"
+      ],
+      "vitamui-referential": [
+        "./projects/referential/src/app/"
+      ],
+      "vitamui-library": [
+        "dist/vitamui-library"
+      ],
+      "vitamui-library/*": [
+        "dist/vitamui-library/*"
+      ]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true

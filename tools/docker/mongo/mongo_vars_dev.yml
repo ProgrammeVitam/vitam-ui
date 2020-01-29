@@ -1,4 +1,3 @@
-
 # Variables used for development purposes (templating...)
 mongodb_vitamuiScripts_version:
   - "1.0.0"
@@ -14,7 +13,7 @@ mongod_output_dir_entry_point: "{{lookup('env','PWD')}}/mongo-entrypoint"
 # REGEX APPLIES ON RELATIVE SCRIPT PATH
 # Notes: entries are not duplicated, first regex match rule applies
 mongod_scripts_load_order:
-  - "iam/1.0.0/create_users_ref.js.j2"     # first script mandatory
+  - "iam/1.0.0/create_users_ref.js.j2" # first script mandatory
   - "iam/1.0.0/.*_ref.js"
   - "iam/1.0.0/.*_demo.js"
   - "iam/1.0.0/security.populate_certificates_dev.js.j2"
@@ -43,7 +42,7 @@ vitamui_platform_informations:
     zip_code: change-it
     city: change-it
     country: change-it
-  proof_tenant: 3
+  proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
 
@@ -91,13 +90,9 @@ mongod_dbpwd_iam: mongod_dbpwd_iam
 mongod_dbuser_cas: mongod_dbuser_cas
 mongod_dbpwd_cas: mongod_dbpwd_cas
 
-
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 # Security context cert value override
 vitamui_security_contexts:
-
   ui_identity:
     cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-identity/ui-identity.pem') | cert_to_str() }}"
 
@@ -105,13 +100,12 @@ vitamui_security_contexts:
     cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-portal/ui-portal.pem') | cert_to_str() }}"
 
   cas:
-     cert_data: "{{ lookup('file', pki_dir +'/dev/certs/cas-server/cas-server.pem') | cert_to_str() }}"
+    cert_data: "{{ lookup('file', pki_dir +'/dev/certs/cas-server/cas-server.pem') | cert_to_str() }}"
 
 # ----------------------------------------------------------------------------------------------------------------------
 # cas services cert value override
 
 cas_services_configs:
-
   ui_portal:
     name: "Portal Application"
     serviceId: "^https://.*.vitamui.com:9000.*"
@@ -130,17 +124,27 @@ cas_services_configs:
     logoutType : "FRONT_CHANNEL"
     logoutUrl: "https://dev.vitamui.com:9001/logout"
 
+  ui_referential:
+    name: "Referential Management Application"
+    serviceId: "^https://.*.vitamui.com:9002.*"
+    logoutType : "FRONT_CHANNEL"
+    logoutUrl: "https://ddev.vitamui.com:9002/logout"
+
   mobile:
     serviceId: "vitamuimobile"
     name: "VITAMUI Mobile OAuth"
-    clientId : "vitamuimobile"
+    clientId: "vitamuimobile"
     clientSecret: "vitamuimobilesecret"
 
 vitamui_services:
+  ui_portal:
+    server_name: dev-portal.vitamui.com:4201
+
   ui_identity:
-    server_name: dev.vitamui.com:4201
+    server_name: dev-identity.vitamui.com:4201
 
   ui_identity_admin:
-    server_name: dev.vitamui.com:4201
+    server_name: dev-identity.vitamui.com:4201
 
-
+  ui_referential:
+    server_name: dev-referential.vitamui.com:4202

@@ -2,6 +2,164 @@ use iam;
 
 db.applications.remove({});
 
+// -------- VITAM ADMINISTRATION -----
+
+db.applications.insert({
+    "identifier" : "INGEST_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/ingest-contract",
+    "icon" : "vitamui-icon vitamui-icon-contrat",
+    "name" : "Contrats d'entrée",
+    "category" : "referential",
+    "position" : NumberInt(2),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, créer et modifier les contrats d'entrée",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "ACCESS_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/access-contract",
+    "icon" : "vitamui-icon vitamui-icon-contrat",
+    "name" : "Contrats d'accès",
+    "category" : "referential",
+    "position" : NumberInt(1),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, créer et modifier les contrats d'accès",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "AGENCIES_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/agency",
+    "icon" : "vitamui-icon vitamui-icon-agent",
+    "name" : "Services Agent",
+    "category" : "referential",
+    "position" : NumberInt(3),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les services agents",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "FILE_FORMATS_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/file-format",
+    "icon" : "vitamui-icon vitamui-icon-fichiers",
+    "name" : "Formats de fichiers",
+    "category" : "referential",
+    "position" : NumberInt(12),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les formats de fichiers",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "CONTEXTS_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/context",
+    "icon" : "vitamui-icon vitamui-icon-securite",
+    "name" : "Contextes applicatifs",
+    "category" : "referential",
+    "position" : NumberInt(4),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les contextes applicatifs",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "SECURITY_PROFILES_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/security-profile",
+    "icon" : "vitamui-icon vitamui-icon-securite",
+    "name" : "Profils de sécurité",
+    "category" : "referential",
+    "position" : NumberInt(5),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils de sécurité",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "ONTOLOGY_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/ontology",
+    "icon" : "vitamui-icon vitamui-icon-ontologie",
+    "name" : "Ontologie",
+    "category" : "referential",
+    "position" : NumberInt(20),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer ou Supprimer les ontologies",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "AUDIT_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/audit",
+    "icon" : "vitamui-icon vitamui-icon-audit",
+    "name" : "Audits",
+    "category" : "opaudit",
+    "position" : NumberInt(13),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Lancer des audits",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "SECURE_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/securisation",
+    "icon" : "vitamui-icon vitamui-icon-operation",
+    "name" : "Opération de sécurisations",
+    "category" : "opaudit",
+    "position" : NumberInt(14),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Opération de sécurisations",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "DSL_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/dsl",
+    "icon" : "vitamui-icon vitamui-icon-dsl",
+    "name" : "Requêtes DSL",
+    "category" : "techadmin",
+    "position" : NumberInt(15),
+    "hasCustomerList" : false,
+    "hasTenantList" : false,
+    "hasHighlight" : false,
+    "tooltip" : "Rechercher des UA à partir d'une requête DSL personnalisée",
+    "target" : "_self"
+});
+
+db.applications.insert({
+    "identifier" : "PROBATIVE_VALUE_APP",
+    "url" : "https://{{ vitamui_services.ui_referential.server_name }}/probative-value",
+    "icon" : "vitamui-icon vitamui-icon-releve",
+    "name" : "Relevé de valeur probante",
+    "category" : "opaudit",
+    "position" : NumberInt(13),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Exporter un relevé de valeur probante",
+    "target" : "_self"
+});
+
+// --------- VITAM UI -------------
+
 db.applications.insert({
     "identifier" : "CUSTOMERS_APP",
     "url": "https://{{ vitamui_services.ui_identity_admin.server_name }}/customer",

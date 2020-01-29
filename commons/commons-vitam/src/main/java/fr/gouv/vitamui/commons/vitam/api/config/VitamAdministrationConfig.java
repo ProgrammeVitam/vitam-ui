@@ -40,6 +40,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ProfileService;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
@@ -51,6 +52,11 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     @Bean
     public AccessContractService geAccessContractService() {
         return new AccessContractService(adminExternalClient());
+    }
+
+    @Bean
+    public AgencyService getAgencyService() {
+        return new AgencyService(adminExternalClient());
     }
 
     @Bean

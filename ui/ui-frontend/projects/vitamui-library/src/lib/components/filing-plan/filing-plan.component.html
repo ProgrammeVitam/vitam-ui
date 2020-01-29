@@ -1,0 +1,43 @@
+<div class="dlab-sidepanel">
+  <div class="dlab-sidepanel-body">
+    <mat-tree
+      [dataSource]="nestedDataSource"
+      [treeControl]="nestedTreeControl"
+      class="filing-tree"
+    >
+      <mat-tree-node *matTreeNodeDef="let node">
+        <li class="mat-tree-node filing-tree-node">
+          <vitamui-library-node
+            disabled
+            [tenantIdentifier]="tenantIdentifier"
+            [node]="node"
+            (nodeToggle)="nestedTreeControl.toggle(node)"
+            (labelClick)="emitVitamId(node)"
+          ></vitamui-library-node>
+        </li>
+      </mat-tree-node>
+
+      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+        <li>
+          <div class="mat-tree-node filing-tree-node">
+            <vitamui-library-node
+              [tenantIdentifier]="tenantIdentifier"
+              [node]="node"
+              [expanded]="nestedTreeControl.isExpanded(node)"
+              (nodeToggle)="nestedTreeControl.toggle(node)"
+              (labelClick)="emitVitamId(node)"
+            ></vitamui-library-node>
+          </div>
+          <ul [class.filing-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+            <ng-container matTreeNodeOutlet></ng-container>
+          </ul>
+        </li>
+      </mat-nested-tree-node>
+
+    </mat-tree>
+    <div class="loader" *ngIf="filingPlanService.pending">
+        <mat-spinner diameter="50" color="accent"></mat-spinner>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,6 @@
+<mat-card class="vitamui-card" [ngClass]="{'card-fill' : showAction}">
+    {{value}}
+    <button mat-button (click)="buttonClicked()" *ngIf="showAction">
+        <i class="material-icons">close</i>
+    </button>
+</mat-card>

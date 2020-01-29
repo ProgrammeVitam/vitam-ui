@@ -84,9 +84,13 @@ public class UnitService {
     }
 
     public RequestResponse<JsonNode> searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-
         final RequestResponse<JsonNode> result = accessExternalClient.selectUnits(vitamContext, dslQuery);
         VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    public RequestResponse<JsonNode> searchUnitsWithErrors(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+        final RequestResponse<JsonNode> result = accessExternalClient.selectUnits(vitamContext, dslQuery);
         return result;
     }
 

@@ -55,6 +55,10 @@ export class TenantService {
     return this.tenantApi.getOne(id);
   }
 
+  getAll() {
+    return this.tenantApi.getAllByParams(new HttpParams());
+  }
+
   getTenantsByCustomerIds(customerIds: string[]) {
     const criterionArray: any[] = [];
     criterionArray.push({ key: 'customerId', value: customerIds, operator: Operators.in });

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.commons.api.domain;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
@@ -187,13 +188,6 @@ public class ServicesData {
 
     public static final String ROLE_CHECK_USERS = CHECK_ROLE_PREFIX + SERVICE_USERS;
 
-    //------------------------------------ OPERATION -------------------------------------------
-
-    public static final String SERVICE_OPERATIONS = "OPERATIONS";
-
-    public static final String ROLE_GET_OPERATIONS = GET_ROLE_PREFIX + SERVICE_OPERATIONS;
-
-    public static final String ROLE_GET_FILE_OPERATION = GET_ROLE_PREFIX + "FILE_" + SERVICE_OPERATIONS;
 
     //------------------------------------ ACCOUNTS -------------------------------------------
 
@@ -222,7 +216,111 @@ public class ServicesData {
 
     //------------------------------------ ACCESS CONTRACT -----------------------------------------
 
-    public static final String ROLE_CREATE_ACCESS_CONTRACTS = CREATE_ROLE_PREFIX + "ACCESS_CONTRACTS";
+    public static final String SERVICE_ACCESS_CONTRACT = "ACCESS_CONTRACTS";
+
+    public static final String ROLE_CREATE_ACCESS_CONTRACTS = CREATE_ROLE_PREFIX + SERVICE_ACCESS_CONTRACT;
+
+    public static final String ROLE_GET_ACCESS_CONTRACTS = GET_ROLE_PREFIX + SERVICE_ACCESS_CONTRACT;
+
+    public static final String ROLE_UPDATE_ACCESS_CONTRACTS = UPDATE_ROLE_PREFIX + SERVICE_ACCESS_CONTRACT;
+
+    //------------------------------------ INGEST CONTRACT -----------------------------------------
+
+    public static final String SERVICE_INGEST_CONTRACT = "INGEST_CONTRACTS";
+
+    public static final String ROLE_CREATE_INGEST_CONTRACTS = CREATE_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
+
+    public static final String ROLE_GET_INGEST_CONTRACTS = GET_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
+
+    public static final String ROLE_UPDATE_INGEST_CONTRACTS = UPDATE_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
+
+    //------------------------------------ AGENCIES -----------------------------------------
+
+    public static final String SERVICE_AGENCIES = "AGENCIES";
+
+    public static final String ROLE_GET_AGENCIES = GET_ROLE_PREFIX  + SERVICE_AGENCIES;
+
+    public static final String ROLE_CREATE_AGENCIES = CREATE_ROLE_PREFIX + SERVICE_AGENCIES;
+
+    public static final String ROLE_UPDATE_AGENCIES = UPDATE_ROLE_PREFIX + SERVICE_AGENCIES;
+
+    public static final String ROLE_DELETE_AGENCIES = DELETE_ROLE_PREFIX + SERVICE_AGENCIES;
+
+    public static final String ROLE_EXPORT_AGENCIES = EXPORT_ROLE_PREFIX + SERVICE_AGENCIES;
+
+    //---------------------------------- FILE FORMATS --------------------------------------------
+
+    public static final String SERVICE_FILE_FORMATS = "FILE_FORMATS";
+
+    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX  + SERVICE_FILE_FORMATS;
+
+    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX+ SERVICE_FILE_FORMATS;
+
+    public static final String ROLE_UPDATE_FILE_FORMATS = UPDATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+
+    public static final String ROLE_DELETE_FILE_FORMATS = DELETE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+
+    public static final String ROLE_EXPORT_FILE_FORMATS = EXPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+
+    //------------------------------------ CONTEXTS -----------------------------------------
+
+    public static final String SERVICE_CONTEXTS = "CONTEXTS";
+
+    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX+ SERVICE_CONTEXTS;
+
+    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX  + SERVICE_CONTEXTS;
+
+    public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
+
+
+    //-------------------------------- SECURITY PROFILE ---------------------------------------
+
+    public static final String SERVICE_SECURITY_PROFILES = "SECURITY_PROFILES";
+
+    public static final String ROLE_GET_SECURITY_PROFILES = GET_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
+
+    public static final String ROLE_CREATE_SECURITY_PROFILES = CREATE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
+
+    public static final String ROLE_UPDATE_SECURITY_PROFILES = UPDATE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
+
+    public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
+
+
+    //------------------------------------ ONTOLOGIES -----------------------------------------
+
+    public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
+
+    public static final String ROLE_GET_ONTOLOGIES = CREATE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    //------------------------------------- OPERATIONS --------------------------------------------
+
+    public static final String SERVICE_OPERATIONS = "OPERATIONS";
+
+    public static final String ROLE_GET_OPERATIONS = GET_ROLE_PREFIX + SERVICE_OPERATIONS;
+
+    public static final String ROLE_GET_FILE_OPERATION = GET_ROLE_PREFIX + "FILE_" + SERVICE_OPERATIONS;
+
+    public static final String SERVICE_AUDITS = "AUDITS";
+
+    public static final String ROLE_RUN_AUDITS = ROLE_PREFIX + "RUN_" + SERVICE_AUDITS;
+
+    public static final String SERVICE_PROBATIVE_VALUE = "PROBATIVE_VALUE";
+
+    public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
+
+
+    /** Management Contracts and Profiles are used in IngestContract forms **/
+    //----------------------------------- MANAGEMENT CONTRACTS --------------------------------------
+
+    public static final String ROLE_GET_MANAGEMENT_CONTRACTS = ROLE_PREFIX + "GET_MANAGEMENT_CONTRACTS";
+
+    //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
+
+    public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
 
     //@formatter:off
 
@@ -264,8 +362,46 @@ public class ServicesData {
             ROLE_CAS_SUBROGATIONS,
 
 
-            ROLE_CHECK_USERS, ROLE_CHECK_TENANTS,
-            ROLE_CREATE_ACCESS_CONTRACTS
+            ROLE_CHECK_USERS,
+            ROLE_CHECK_TENANTS,
+
+            ROLE_CREATE_ACCESS_CONTRACTS,
+            ROLE_GET_ACCESS_CONTRACTS,
+            ROLE_UPDATE_ACCESS_CONTRACTS,
+
+            ROLE_CREATE_INGEST_CONTRACTS,
+            ROLE_GET_INGEST_CONTRACTS,
+            ROLE_UPDATE_INGEST_CONTRACTS,
+
+            ROLE_GET_AGENCIES,
+            ROLE_UPDATE_AGENCIES,
+            ROLE_CREATE_AGENCIES,
+            ROLE_DELETE_AGENCIES,
+            ROLE_EXPORT_AGENCIES,
+
+            ROLE_GET_FILE_FORMATS,
+            ROLE_DELETE_FILE_FORMATS,
+            ROLE_CREATE_FILE_FORMATS,
+            ROLE_UPDATE_FILE_FORMATS,
+
+            ROLE_GET_CONTEXTS,
+            ROLE_CREATE_CONTEXTS,
+            ROLE_UPDATE_CONTEXTS,
+
+            ROLE_GET_SECURITY_PROFILES,
+            ROLE_UPDATE_SECURITY_PROFILES,
+            ROLE_CREATE_SECURITY_PROFILES,
+            ROLE_DELETE_SECURITY_PROFILES,
+
+
+            ROLE_GET_ONTOLOGIES,
+            ROLE_CREATE_ONTOLOGIES,
+            ROLE_DELETE_ONTOLOGIES,
+
+            ROLE_RUN_AUDITS,
+            ROLE_GET_OPERATIONS,
+            ROLE_RUN_PROBATIVE_VALUE
+
             );
 
     /**
@@ -328,10 +464,46 @@ public class ServicesData {
 
             ROLE_CHECK_USERS, ROLE_CHECK_TENANTS,
             ROLE_GET_ALL_ACCESS_CONTRACTS,
-            ROLE_CREATE_ACCESS_CONTRACTS,
 
             ROLE_GET_OPERATIONS,
-            ROLE_GET_FILE_OPERATION
+            ROLE_GET_FILE_OPERATION,
+
+            ROLE_CREATE_ACCESS_CONTRACTS,
+            ROLE_GET_ACCESS_CONTRACTS,
+            ROLE_UPDATE_ACCESS_CONTRACTS,
+
+            ROLE_CREATE_INGEST_CONTRACTS,
+            ROLE_GET_INGEST_CONTRACTS,
+            ROLE_UPDATE_INGEST_CONTRACTS,
+
+            ROLE_GET_AGENCIES,
+            ROLE_UPDATE_AGENCIES,
+            ROLE_CREATE_AGENCIES,
+            ROLE_DELETE_AGENCIES,
+            ROLE_EXPORT_AGENCIES,
+
+            ROLE_GET_FILE_FORMATS,
+            ROLE_DELETE_FILE_FORMATS,
+            ROLE_CREATE_FILE_FORMATS,
+            ROLE_UPDATE_FILE_FORMATS,
+
+
+            ROLE_GET_CONTEXTS,
+            ROLE_CREATE_CONTEXTS,
+            ROLE_UPDATE_CONTEXTS,
+
+            ROLE_GET_SECURITY_PROFILES,
+            ROLE_UPDATE_SECURITY_PROFILES,
+            ROLE_CREATE_SECURITY_PROFILES,
+            ROLE_DELETE_SECURITY_PROFILES,
+
+
+            ROLE_GET_ONTOLOGIES,
+            ROLE_CREATE_ONTOLOGIES,
+            ROLE_DELETE_ONTOLOGIES,
+
+            ROLE_RUN_AUDITS,
+            ROLE_RUN_PROBATIVE_VALUE
 
             );
     //@formatter:on

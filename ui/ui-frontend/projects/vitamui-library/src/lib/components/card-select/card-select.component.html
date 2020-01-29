@@ -1,0 +1,15 @@
+<div class="row multi-select-row" *ngIf="!disabled">
+    <div class="col-8">
+        <vitamui-library-input #input type="text" required [placeholder]="placeholder" [disabled]="values.size==size" (keydown.enter)="addElement(input)"> </vitamui-library-input>
+    </div>
+    <div class="col-4">
+        <button type="button" class="btn add-button" (click)="addElement(input)" [disabled]="values.size==size">
+            <i class="material-icons">add_circle_outline</i> <span>{{label}}</span>
+        </button>
+    </div>
+</div>
+<div class="row multi-select-row">
+    <div clas="col-12">
+        <vitamui-card-group [values]="values" (valuesChange)="changeValue($event)" [showAction]="!disabled"></vitamui-card-group>
+    </div>
+</div>

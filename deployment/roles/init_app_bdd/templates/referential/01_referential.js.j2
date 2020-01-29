@@ -1,0 +1,824 @@
+print("START 01_referential.js");
+
+// +++++++++++++++++++++++++++++++++++++++ IAM DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_referential.js : START iam database update");
+
+db = db.getSiblingDB('{{ mongodb.iam.db }}')
+
+// ========================================= PROFILES =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.profiles.update(
+    { "_id" : "system_access_contract" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(99),
+            "name" : "Access Profile",
+            "description" : "Access Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "ACCESS_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_ACCESS_CONTRACTS" },
+                { "name": "ROLE_CREATE_ACCESS_CONTRACTS" },
+                { "name": "ROLE_UPDATE_ACCESS_CONTRACTS" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_access_contract" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_ingest_contract" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(97),
+            "name" : "Ingest Profile",
+            "description" : "Ingest Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "INGEST_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_INGEST_CONTRACTS" },
+                { "name": "ROLE_CREATE_INGEST_CONTRACTS" },
+                { "name": "ROLE_UPDATE_INGEST_CONTRACTS" },
+                { "name": "ROLE_GET_MANAGEMENT_CONTRACTS" },
+                { "name": "ROLE_GET_ARCHIVE_PROFILES" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_ingest_contract" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_ontology" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(95),
+            "name" : "Ontology Profile",
+            "description" : "Ontology Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "ONTOLOGY_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_ONTOLOGIES" },
+                { "name": "ROLE_CREATE_ONTOLOGIES" },
+                { "name": "ROLE_DELETE_ONTOLOGIES" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_ontology" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_agencies" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(100),
+            "name" : "Agencies Profile",
+            "description" : "Agencies Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "AGENCIES_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_AGENCIES" },
+                { "name": "ROLE_CREATE_AGENCIES" },
+                { "name": "ROLE_UPDATE_AGENCIES" },
+                { "name": "ROLE_DELETE_AGENCIES" },
+                { "name": "ROLE_EXPORT_AGENCIES" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_agencies" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_file_format" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(101),
+            "name" : "File Formats Profile",
+            "description" : "File Formats Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "FILE_FORMATS_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_FILE_FORMATS" },
+                { "name": "ROLE_CREATE_FILE_FORMATS" },
+                { "name": "ROLE_UPDATE_FILE_FORMATS" },
+                { "name": "ROLE_DELETE_FILE_FORMATS" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_file_format" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_context" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(102),
+            "name" : "Context Profile",
+            "description" : "Context Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "CONTEXTS_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_CONTEXTS" },
+                { "name": "ROLE_CREATE_CONTEXTS" },
+                { "name": "ROLE_UPDATE_CONTEXTS" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_context" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_security_profile" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(103),
+            "name" : "Security Profiles Profile",
+            "description" : "Security Profiles Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "SECURITY_PROFILES_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_SECURITY_PROFILES" },
+                { "name": "ROLE_CREATE_SECURITY_PROFILES" },
+                { "name": "ROLE_UPDATE_SECURITY_PROFILES" },
+                { "name": "ROLE_DELETE_SECURITY_PROFILES" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_security_profile" 
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_audit" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(104),
+            "name" : "Audit Profile",
+            "description" : "Audit Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "AUDIT_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_OPERATIONS" },
+                { "name": "ROLE_RUN_AUDITS" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_audit"
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_secure" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(105),
+            "name" : "Secure Profile",
+            "description" : "Secure Profile",
+            "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "SECURE_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_OPERATIONS" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_secure"
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_dsl" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(106),
+            "name" : "Requêtes DSL",
+            "description" : "Lancement de recherches par DSL",
+            "tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "DSL_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : []
+        },
+        "$setOnInsert": {
+            "_id" : "system_dsl"
+        }
+    },
+    { "upsert":true }
+);
+
+db.profiles.update(
+    { "_id" : "system_probative_value" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(107),
+            "name" : "Probative Value Profile",
+            "description" : "Probative Value Profile",
+            "tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            "applicationName" : "PROBATIVE_VALUE_APP",
+            "enabled" : true,
+            "readonly" : true,
+            "level" : "",
+            "customerId" : "system_customer",
+            "roles" : [
+                { "name": "ROLE_GET_OPERATIONS" },
+                { "name": "ROLE_RUN_PROBATIVE_VALUE" }
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_probative_value"
+        }
+    },
+    { "upsert":true }
+);
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_access_contract"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_access_contract" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_ingest_contract"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ingest_contract" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_agencies"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_agencies" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_file_format"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_file_format" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_context"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_context" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_security_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_security_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_ontology"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ontology" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_audit"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_audit" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_secure"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_secure" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_dsl"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_dsl" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_probative_value"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_probative_value" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+
+// ====================================== APPLICATIONS ======================================
+
+
+db.applications.update(
+    { "identifier" : "AUDIT_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/audit",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/audit",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-audit",
+            "name" : "Audits",
+            "category" : "opaudit",
+            "position" : NumberInt(13),
+            "hasCustomerList" : false,
+            "hasTenantList" : true,
+            "hasHighlight" : false,
+            "tooltip" : "Lancer des audits",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "AUDIT_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "SECURE_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/securisation",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/securisation",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-operation",
+            "name" : "Opération de sécurisations",
+            "category" : "opaudit",
+            "position" : NumberInt(14),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Opération de sécurisations",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "SECURE_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "INGEST_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/ingest-contract",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/ingest-contract",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-contrat",
+            "name" : "Contrats d'entrée",
+            "category" : "referential",
+            "position" : NumberInt(2),
+            "hasCustomerList" : false,
+            "hasTenantList" : true,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, créer et modifier les contrats d'entrée",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "INGEST_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "ACCESS_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/access-contract",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/access-contract",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-contrat",
+            "name" : "Contrats d'accès",
+            "category" : "referential",
+            "position" : NumberInt(1),
+            "hasCustomerList" : false,
+            "hasTenantList" : true,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, créer et modifier les contrats d'accès",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "ACCESS_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "AGENCIES_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/agency",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/agency",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-agent",
+            "name" : "Services Agent",
+            "category" : "referential",
+            "position" : NumberInt(3),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, Créer, Modifier ou Supprimer les services agents",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "AGENCIES_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "FILE_FORMATS_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/file-format",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/file-format",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-fichiers",
+            "name" : "Formats de fichiers",
+            "category" : "referential",
+            "position" : NumberInt(12),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, Créer, Modifier ou Supprimer les formats de fichiers",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "FILE_FORMATS_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "CONTEXTS_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/context",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/context",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-securite",
+            "name" : "Contextes applicatifs",
+            "category" : "referential",
+            "position" : NumberInt(4),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, Créer, Modifier ou Supprimer les contextes applicatifs",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "CONTEXTS_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "SECURITY_PROFILES_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/security-profile",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/security-profile",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-securite",
+            "name" : "Profils de sécurité",
+            "category" : "referential",
+            "position" : NumberInt(5),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils de sécurité",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "SECURITY_PROFILES_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "ONTOLOGY_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/ontology",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/ontology",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-ontologie",
+            "name" : "Ontologie",
+            "category" : "referential",
+            "position" : NumberInt(20),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Accéder, Créer ou Supprimer les ontologies",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "ONTOLOGY_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "DSL_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/dsl",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/dsl",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-dsl",
+            "name" : "Requêtes DSL",
+            "category" : "techadmin",
+            "position" : NumberInt(15),
+            "hasCustomerList" : false,
+            "hasTenantList" : false,
+            "hasHighlight" : false,
+            "tooltip" : "Rechercher des UA à partir d'une requête DSL personnalisée",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "DSL_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+db.applications.update(
+    { "identifier" : "PROBATIVE_VALUE_APP" },
+    {
+        "$set" : {
+{% if vitamui.referential.base_url is defined %}
+        	"url": "{{ vitamui.referential.base_url }}/probative-value",
+{% else %}
+            "url" : "{{ url_prefix }}/referential/probative-value",
+{% endif %}
+            "icon" : "vitamui-icon vitamui-icon-releve",
+            "name" : "Relevé de valeur probante",
+            "category" : "opaudit",
+            "position" : NumberInt(13),
+            "hasCustomerList" : false,
+            "hasTenantList" : true,
+            "hasHighlight" : false,
+            "tooltip" : "Exporter un relevé de valeur probante",
+            "target" : "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "PROBATIVE_VALUE_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+
+
+
+print("INFO 01_referential.js : END iam database update");
+
+// +++++++++++++++++++++++++++++++++++++++ SECURITY DATABASE ++++++++++++++++++++++++++++++++++
+
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("INFO 01_referential.js : START security update");
+
+db.contexts.update(
+    { "_id" : "ui_referential_context" },
+    {
+        "$set" : {
+            "name": "Contexte UI Referential",
+            "fullAccess" : true,
+            "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+            "roleNames" : [
+                "ROLE_GET_ACCESS_CONTRACTS", "ROLE_CREATE_ACCESS_CONTRACTS", "ROLE_UPDATE_ACCESS_CONTRACTS",
+                "ROLE_GET_INGEST_CONTRACTS", "ROLE_CREATE_INGEST_CONTRACTS", "ROLE_UPDATE_INGEST_CONTRACTS", "ROLE_GET_MANAGEMENT_CONTRACTS", "ROLE_GET_ARCHIVE_PROFILES",
+                "ROLE_GET_ONTOLOGIES", "ROLE_CREATE_ONTOLOGIES", "ROLE_DELETE_ONTOLOGIES",
+                "ROLE_GET_AGENCIES", "ROLE_UPDATE_AGENCIES", "ROLE_CREATE_AGENCIES", "ROLE_DELETE_AGENCIES", "ROLE_EXPORT_AGENCIES",
+                "ROLE_GET_FILE_FORMATS", "ROLE_UPDATE_FILE_FORMATS", "ROLE_CREATE_FILE_FORMATS", "ROLE_DELETE_FILE_FORMATS",
+                "ROLE_GET_CONTEXTS", "ROLE_UPDATE_CONTEXTS", "ROLE_CREATE_CONTEXTS",
+                "ROLE_GET_SECURITY_PROFILES", "ROLE_UPDATE_SECURITY_PROFILES", "ROLE_CREATE_SECURITY_PROFILES", "ROLE_DELETE_SECURITY_PROFILES",
+                "ROLE_GET_OPERATIONS", "ROLE_RUN_AUDITS", "ROLE_RUN_PROBATIVE_VALUE"
+            ]
+        },
+        "$setOnInsert": {
+            "_id" : "ui_referential_context" 
+        }
+    },
+    { "upsert":true }
+);
+
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_referential"]|first }}/ui-referential.pem', 'ui_referential_context') }}
+
+print("INFO 01_referential.js : END security update");
+
+// +++++++++++++++++++++++++++++++++++++++ CAS DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_referential.js : START cas database update");
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+
+db.services.update(
+    { "_id" :  NumberInt(4) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.referential.base_url is defined %}
+        	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
+{% else %}
+	        "serviceId": "^{{ url_prefix }}/referential/.*",
+{% endif %}
+            "name": "Referential Access Management Application",
+            "logoutType" : "FRONT_CHANNEL",
+            "logoutUrl": "{{ url_prefix }}/referential/logout",
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+            }
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(4) 
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_referential.js : END cas database update");
+
+
+print("END 01_referential.js");

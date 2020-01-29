@@ -1,0 +1,43 @@
+debug: false
+
+spring:
+  profiles:
+    active: swagger
+
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: referential-internal
+  identityServerId: 1
+
+server:
+  host:
+  port: 7087
+
+management:
+  server:
+    address: localhost
+    port: 7187
+
+clients:
+  iam-internal:
+    server-host: localhost
+    server-port: 7083
+
+swagger:
+ file-path: file:../../../tools/swagger/docs/api-internal/referential-internal/swagger.json
+
+logging:
+  level:
+    fr.gouv.vitamui.referential: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+    fr.gouv.vitam.access: DEBUG
+    fr.gouv.vitam.access.*: DEBUG
+#    org.springframework.core.env: DEBUG
+

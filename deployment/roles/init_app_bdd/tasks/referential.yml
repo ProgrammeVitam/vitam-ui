@@ -1,0 +1,28 @@
+---
+- name: prepare directory for referential scripts
+  file:
+    path: "{{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/referential"
+    state: directory
+    owner: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: 0755
+
+- name: Copy the referential database scripts files
+  template:
+    src: "{{ item }}"
+    dest: "{{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/referential/{{ item | basename | regex_replace('\\.j2$') }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: 0755
+  with_fileglob:
+    - "{{ role_path }}/templates/referential/*"
+  tags:
+    - update_mongodb_configuration
+
+- name: Load referential scripts in database
+  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/referential/{{ item | basename | regex_replace('\\.j2$') }}"
+  no_log: "{{ hide_passwords_during_deploy }}"
+  with_fileglob:
+    - "{{ role_path }}/templates/referential/*"
+  tags:
+    - update_mongodb_configuration

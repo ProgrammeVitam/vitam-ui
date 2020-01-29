@@ -1,0 +1,59 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+
+    <div class="row">
+        <div class="col-10 form-control">
+            <vitamui-common-input formControlName="shortName" placeholder="Nom" disabled="disabled"
+                i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+            </vitamui-common-input>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 form-control">
+            <mat-form-field class="vitamui-mat-select">
+                <mat-select formControlName="type" [disabled]="isInternal" placeholder="Type" panelclass="vitamui-mat-select">
+                   <mat-option *ngFor='let type of types' [value]="type.key">{{type.label}}</mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_up</i>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+            </mat-form-field>
+        </div>
+
+        <div class="col-10 form-control">
+            <mat-form-field class="vitamui-mat-select">
+                <mat-select formControlName="collections" [disabled]="isInternal" placeholder="Collections" panelclass="vitamui-mat-select"
+                    multiple>
+                  <mat-option *ngFor='let collection of collections' [value]="collection.key">{{collection.label}}</mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_up</i>
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10 form-control">
+            <vitamui-common-textarea formControlName="description" [disabled]="isInternal" placeholder="Description" [rows]="3">
+                <ng-container *ngIf="form.get('description')?.touched">
+                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
+                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                    </vitamui-common-input-error>
+                </ng-container>
+            </vitamui-common-textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-10">
+            <span>Date de création</span> : {{inputOntology?.creationDate | date: 'dd/MM/yyyy'}}
+        </div>
+    </div>
+
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+  </div>
+</form>

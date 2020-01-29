@@ -1,0 +1,4 @@
+<label class="radio-label"  [ngClass]="{'checked' : checked}">
+    <input #input type="radio" [value]="value" (click)="changed()">
+    <span> {{label}} </span>
+</label>

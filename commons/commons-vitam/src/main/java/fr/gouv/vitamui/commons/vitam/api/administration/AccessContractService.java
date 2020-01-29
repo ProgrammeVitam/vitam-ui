@@ -100,6 +100,7 @@ public class AccessContractService {
     public RequestResponse createAccessContracts(final VitamContext vitamContext, final List<AccessContractModelDto> accessContractModels)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeAccessContracts(accessContractModels)) {
+            LOGGER.error("BAIS: {}", byteArrayInputStream.toString());
             return adminExternalClient.createAccessContracts(vitamContext, byteArrayInputStream);
         }
     }

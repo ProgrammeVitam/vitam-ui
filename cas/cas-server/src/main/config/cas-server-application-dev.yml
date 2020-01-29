@@ -3,7 +3,7 @@ server:
     key-store: file:src/main/config/cas-server.jks
     key-store-password: jkspasswd
     key-password: jkspasswd
-  host: dev.vitamui.com
+  host: dev-cas.vitamui.com
   port: 8080
 
 
@@ -37,7 +37,7 @@ cas.webflow.crypto.enabled: false
 cas.authn.pac4j.cookie.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
 
-cas.server.prefix: https://dev.vitamui.com:8080/cas
+cas.server.prefix: https://dev-cas.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 
 cas.serviceRegistry.mongo.clientUri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
@@ -120,7 +120,7 @@ cas.smsProvider.twilio.token: 982e4b1cffaaaac491305d984d43df9f
 mfa.sms.sender: "+33644602712"
 
 
-vitamui.portal.url: https://dev.vitamui.com:4200/
+vitamui.portal.url: https://dev-portal.vitamui.com:4200/
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x

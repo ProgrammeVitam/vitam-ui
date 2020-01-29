@@ -1,0 +1,36 @@
+spring:
+  api:
+    name: API Referential - Gestion des référentiels
+    description: Ces APIS sont utilisés pour configurer les référentiels
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+referential-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  referential-internal-client:
+    server-host: localhost
+    server-port: 7087
+    secure: false
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+swagger:
+  layer: api-external

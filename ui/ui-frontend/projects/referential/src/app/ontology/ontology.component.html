@@ -1,0 +1,40 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-ontology-preview *ngIf="openedItem" (previewClose)="closePanel()" [inputOntology]="openedItem"></app-ontology-preview>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <div class="vitamui-header">
+      <div class="vitamui-container">
+        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
+
+        <h2>
+          Paramétrer les <strong>Ontologies</strong>
+        </h2>
+
+        <div class="controls">
+
+          <vitamui-common-search-bar
+            name="ontology-search"
+            (search)="onSearchSubmit($event)"
+            placeholder="Nom, ID" i18n-placeholder="@@ontologySearchPlaceholder"
+          ></vitamui-common-search-bar>
+
+          <div class="actions">
+            <button class="btn secondary" (click)="openCreateOntologyDialog()">
+              <i class="vitamui-icon vitamui-icon-add-ontologie btn-create"></i> <span i18n="Create ontology button label@@ontologyListCreateButton">Créer une ontologie</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="vitamui-body vitamui-container">
+      <app-ontology-list (ontologyClick)="showOntology($event)" [search]="search"></app-ontology-list>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

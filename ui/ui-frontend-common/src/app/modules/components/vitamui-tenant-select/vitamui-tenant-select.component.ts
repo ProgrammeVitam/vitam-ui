@@ -58,8 +58,8 @@ export class VitamUITenantSelectComponent implements OnInit {
     constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
       this.route.data.subscribe((data) => {
         this.appId = data.appId;
-    });
-  }
+      });
+    }
 
     ngOnInit() {
       if (this.authService.user) {

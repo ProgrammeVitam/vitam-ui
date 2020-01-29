@@ -1,0 +1,60 @@
+<form [formGroup]="selectNodesForm" class="side-form" (keydown.enter)="$event.preventDefault()">
+  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification du noeud de rattachement SIP</h2>
+
+        <h2>Noeud de rattachement (SIP)</h2>
+        <vitamui-library-filing-plan [formControl]="linkParentIdControl"
+                                     [tenantIdentifier]="tenantIdentifier"
+                                     [accessContract]="accessContractId"
+                                     [mode]="FILING_PLAN_MODE_SOLO"
+        ></vitamui-library-filing-plan>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification des noeuds de rattachement AU</h2>
+        <h2>Noeud de rattachement (UA)</h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <vitamui-radio-group formControlName="checkParentLink">
+                <vitamui-radio label="Autorisé" value="AUTHORIZED" [checked]="true"></vitamui-radio>
+                <vitamui-radio label="Obligatoire" value="REQUIRED"></vitamui-radio>
+                <vitamui-radio label="Interdit" value="UNAUTHORIZED"></vitamui-radio>
+              </vitamui-radio-group>
+            </div>
+            <div class="col">
+              <i class="material-icons field-tooltip radio-tooltip" style="top: 20px;"
+                 matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
+                 matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+        </div>
+
+        <vitamui-library-filing-plan [formControl]="checkParentIdControl"
+                                     [tenantIdentifier]="1"
+                                     [accessContract]="'AllInOne'"
+                                     [mode]="FILING_PLAN_MODE_INC"
+        ></vitamui-library-filing-plan>
+
+        <div class="actions">
+          <button type="button" class="btn primary" i18n="Update accessContract nodes@@updateAccessContractNodesButton" (click)="updateIngestContractNodes()">Valider</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>

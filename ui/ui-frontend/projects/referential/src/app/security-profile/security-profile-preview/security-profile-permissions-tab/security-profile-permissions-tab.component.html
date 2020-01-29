@@ -1,0 +1,13 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+
+  <div *ngIf="form.value.fullAccess">
+    Tous les accès sont autorisés.
+  </div>
+
+  <div *ngIf="!form.value.fullAccess">
+    <app-security-profile-edit-permission formControlName="permissions" [small]="true"></app-security-profile-edit-permission>
+  </div>
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+  </div>
+</form>

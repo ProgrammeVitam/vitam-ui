@@ -24,12 +24,10 @@ ui-identity:
         key-password: jkspasswd
       hostname-verification: false
   base-url:
-    portal: "https://dev.vitamui.com:4200"
-    admin-identity: "https://dev.vitamui.com:4201/"
-    identity: "https://dev.vitamui.com:4201/"
+    portal: "https://dev-portal.vitamui.com:4200"
 
 server:
-  host: dev.vitamui.com
+  host: dev-identity.vitamui.com
   port: 9001
   scheme: https
   ssl:
@@ -46,12 +44,12 @@ management:
       enabled: false
 
 ui:
-  url: "https://dev.vitamui.com:4201"
-  redirect-url: https://dev.vitamui.com:9001/${ui-prefix}
+  url: "https://dev-identity.vitamui.com:4201"
+  redirect-url: https://dev-identity.vitamui.com:9001/${ui-prefix}
 
 cas:
-  internal-url: https://dev.vitamui.com:8080/cas
-  external-url: https://dev.vitamui.com:8080/cas
+  internal-url: https://dev-cas.vitamui.com:8080/cas
+  external-url: https://dev-cas.vitamui.com:8080/cas
   callback-url: ${ui.url}/identity-api/callback
   ssl:
     trust-store: src/main/config/truststore.jks
