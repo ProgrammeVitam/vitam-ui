@@ -5,10 +5,10 @@ print("START cas_services_ref.js");
 db.services.insert({
 	"_id": NumberInt(1),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
-	"serviceId": "^{{ url_prefix }}/.*",
+	"serviceId": "^{{ vitamui.portal.base_url|default(url_prefix) }}/.*",
 	"name": "Portal Application",
 	"logoutType" : "FRONT_CHANNEL",
-	"logoutUrl": "{{ url_prefix }}/logout",
+	"logoutUrl": "{{ vitamui.portal.base_url|default(url_prefix) }}/logout",
 	"attributeReleasePolicy": {
   		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
 	}
@@ -17,10 +17,18 @@ db.services.insert({
 db.services.insert({
 	"_id" : NumberInt(2),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.identity.base_url is defined %}
+	"serviceId": "^{{ vitamui.identity.base_url }}/.*",
+{% else %}
 	"serviceId": "^{{ url_prefix }}/identity/.*",
+{% endif %}
 	"name": "Identity Access Management Application",
 	"logoutType" : "FRONT_CHANNEL",
+{% if vitamui.identity.base_url is defined %}
+	"logoutUrl": "{{ vitamui.identity.base_url }}/logout",
+{% else %}
 	"logoutUrl": "{{ url_prefix }}/identity/logout",
+{% endif %}
 	"attributeReleasePolicy": {
   		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
 	}
@@ -29,10 +37,18 @@ db.services.insert({
 db.services.insert({
 	"_id" : NumberInt(3),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.identity_admin.base_url is defined %}
+	"serviceId": "^{{ vitamui.identity_admin.base_url }}/.*",
+{% else %}
 	"serviceId": "^{{ url_prefix }}/identity-admin/.*",
+{% endif %}
 	"name": "Identity Admin Access Management Application",
 	"logoutType" : "FRONT_CHANNEL",
+{% if vitamui.identity_admin.base_url is defined %}
+	"logoutUrl": "{{ vitamui.identity_admin.base_url }}/logout",
+{% else %}
 	"logoutUrl": "{{ url_prefix }}/identity-admin/logout",
+{% endif %}
 	"attributeReleasePolicy": {
   		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
 	}

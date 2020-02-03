@@ -57,17 +57,37 @@ ui-identity:
       hostname-verification: false
 {% endif %}
   base-url:
-    portal: "{{ url_prefix }}" # TODO OMA : revoir avec les redirections du RP
+{% if vitamui.portal.base_url is defined %}
+    portal: "{{ vitamui.portal.base_url }}"
+{% else %}
+    portal: "{{ url_prefix }}"
+{% endif %}
+{% if vitamui.identity_admin.base_url is defined %}
+    admin-identity: "{{ vitamui.identity_admin.base_url }}"
+{% else %}
     admin-identity: "{{ url_prefix }}/identity-admin" # TODO OMA : revoir avec les redirections du RP
+{% endif %}
+{% if vitamui.identity.base_url is defined %}
+    identity: "{{ vitamui.identity.base_url }}"
+{% else %}
     identity: "{{ url_prefix }}/identity" # TODO OMA : revoir avec les redirections du RP
+{% endif %}
 
 ui:
+{% if vitamui_struct.base_url is defined %}
+  url: "{{ vitamui_struct.base_url }}"
+{% else %}
   url: "{{ url_prefix }}/identity-admin"
+{% endif %}
   redirect-url: ${ui.url}/${ui-prefix}
 
 cas:
+{% if vitamui.cas_server.base_url is defined %}
+  external-url: "{{ vitamui.cas_server.base_url}}"
+{% else %}
   external-url: "{{ url_prefix }}/cas"
-  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}/cas
+{% endif %}
+  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
   callback-url: ${ui.url}/identity-api/callback
 {% if vitamui.cas_server.secure|lower == "true" %}
   ssl:

@@ -4,7 +4,11 @@ db.applications.remove({});
 
 db.applications.insert({
     "identifier" : "CUSTOMERS_APP",
+{% if vitamui.identity_admin.base_url is defined %}
+	"url": "{{ vitamui.identity_admin.base_url }}/customer",
+{% else %}
     "url": "{{ url_prefix }}/identity-admin/customer",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-bank",
     "name": "Organisations",
     "category": "settings",
@@ -18,7 +22,11 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "USERS_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/user",
+{% else %}
     "url": "{{ url_prefix }}/identity/user",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-user-keys",
     "name": "Utilisateurs",
     "category": "administrators",
@@ -32,7 +40,11 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "GROUPS_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/group",
+{% else %}
     "url": "{{ url_prefix }}/identity/group",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-keys",
     "name": "Groupes de profils",
     "category": "settings",
@@ -46,7 +58,11 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "PROFILES_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/profile",
+{% else %}
     "url": "{{ url_prefix }}/identity/profile",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-admin-key",
     "name": "Profils APP Utilisateurs",
     "category": "settings",
@@ -60,7 +76,11 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "SUBROGATIONS_APP",
+{% if vitamui.identity_admin.base_url is defined %}
+	"url": "{{ vitamui.identity_admin.base_url }}/subrogation",
+{% else %}
     "url": "{{ url_prefix }}/identity-admin/subrogation",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-link",
     "name": "Subrogation",
     "category": "administrators",
@@ -74,7 +94,11 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "HIERARCHY_PROFILE_APP",
+{% if vitamui.identity.base_url is defined %}
+    "url": "{{ vitamui.identity.base_url }}/profile-hierarchy",
+{% else %}
     "url": "{{ url_prefix }}/identity/profile-hierarchy",
+{% endif %}
     "icon": "vitamui-icon vitamui-icon-user-key",
     "name": "Hiérarchisation des Profils",
     "category": "settings",
@@ -88,7 +112,7 @@ db.applications.insert({
 
 db.applications.insert({
     "identifier" : "ACCOUNTS_APP",
-    "url": "{{ url_prefix }}/account",
+    "url": "{{ vitamui.portal.base_url|default(url_prefix) }}/account",
     "icon": "vitamui-icon vitamui-icon-user",
     "name": "Mon compte",
     "category": "users",

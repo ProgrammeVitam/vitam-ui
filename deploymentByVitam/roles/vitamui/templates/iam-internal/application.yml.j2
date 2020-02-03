@@ -12,7 +12,7 @@ spring:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.iam.internal.server: DEBUG
+    fr.gouv.vitamui.iam.internal.server: {{ vitamui_struct.log.vitamui_level }}
 
 server:
   port: {{ vitamui_struct.port_service }}
@@ -59,7 +59,12 @@ security:
 {% endif %}
 
 login:
-  url: {{ url_prefix }}/cas/login #TODO OMA : pointer sur l'URL de login de cas-server ; revoir avec Romain
+{% if vitamui.cas_server.base_url is defined %}
+  url: {{ vitamui.cas_server.base_url }}
+{% else %}
+  url: {{ url_prefix }}/cas/login
+{% endif %}
+
 
 cas-client:
   server-host: {{ vitamui.cas_server.host }}
@@ -75,15 +80,15 @@ cas-client:
 
 cas.reset.password.url: {{ vitamui.cas_server.reset_password_url }}
 
-login.attempts.maximum.failures: 5
-login.attempts.time.interval: 20
+login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure|default('5') }}
+login.attempts.time.interval: {{ vitamui_struct.login_interval|default('20') }}
 
 vitam.tenant.init.mandatory: true # true/false, see with Romain for further info ... later...
 
 logbook:
   scheduling:
-    enabled: true # TODO OMA : faire une variable...
+    enabled: {{ vitamui_struct.logbook.enabled|lower }}
     sendEventToVitamTasks:
-      delay: 60000 # TODO OMA: variable ; default to 60000 ; see Romain for info.. later...
+      delay: {{ vitamui_struct.logbook.delay }}
 
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
