@@ -90,7 +90,7 @@
         <javax.el.version.version>3.0.0</javax.el.version.version>
         <gson.version>2.8.2</gson.version>
         <guava.version>25.1-jre</guava.version>
-        <hibernate.validator.version>6.0.17.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.1.0.Final</hibernate.validator.version>
         <http.client.version>4.5.9</http.client.version>
         <http.core.version>4.4.11</http.core.version>
         <jackson.version>2.9.9</jackson.version>
