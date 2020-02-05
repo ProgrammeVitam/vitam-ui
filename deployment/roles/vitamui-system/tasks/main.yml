@@ -1,0 +1,89 @@
+---
+- name: Deactivate firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+  when: deactivate_firewalld is defined and deactivate_firewalld|bool
+
+# tasks file for vitamui-system
+- name: Setup epel-release
+  yum:
+    name: epel-release
+    state: present
+
+- name: Clean all yum caches
+  command: yum clean all --enablerepo=*
+  tags:
+    - yum
+
+- name: Setup system packages
+  include_role:
+    name: tools/vitamui-ospackage
+  vars:
+    ospackage_banner: "bootstrap_system"
+    packages: "{{ vitamui_system_packages }}"
+  tags:
+    - system
+
+- name: Update system
+  command: yum update -y
+  tags:
+    - yum
+  when: system_upgrade is defined and system_upgrade|bool
+
+- name: Setup ntp
+  yum:
+    name: ntp
+    state: present
+    update_cache: yes
+  tags:
+    - ntp
+
+- name: Ensure ntp is started
+  service:
+    name: ntpd
+    state: started
+    enabled: true
+  tags:
+    - ntp
+#
+#- name: Test ntp synchronized
+#  command: ntpstat
+#  register: ntpstat_result
+#  tags:
+#    - ntp
+#
+#- name: Try force ntp sync
+#  block:
+#
+#  - name: Stop ntpd service
+#    service:
+#      name: ntpd
+#      state: stopped
+#    tags:
+#      - ntp
+#
+#  - name: Force ntp sync
+#    command: ntpd -qg
+#    tags:
+#      - ntp
+#
+#  - name: Check ntp synchronized
+#    command: ntpstat
+#    register: ntpstat_result
+#    failed_when:  ntpstat_result != 0
+#    tags:
+#      - ntp
+#
+#  # name: Start ntp deamon to force sync
+#  - service:
+#      name: ntpd
+#      state: started
+#      enabled: true
+#    tags:
+#      - ntp
+#
+#
+#
+#  when: ntpstat_result.rc != "0"

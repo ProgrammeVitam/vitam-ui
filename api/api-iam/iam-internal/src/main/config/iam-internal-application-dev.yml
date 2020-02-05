@@ -1,0 +1,70 @@
+debug: false
+
+spring:
+  profiles:
+    active: swagger
+
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: iam-internal
+  identityServerId: 1
+
+server:
+  host:
+  port: 7083
+
+management:
+  server:
+    address: localhost
+    port: 7183
+
+security:
+  host: localhost
+  port: 8084
+
+cas-client:
+  server-host: dev.vitamui.com
+  server-port: 8080
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: src/main/config/truststore.jks
+      key-password: jkspasswd
+    hostname-verification: false
+
+cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+
+login:
+  url: http://dev.vitamui.com:8080/cas/login
+
+login.attempts.maximum.failures: 5
+login.attempts.time.interval: 20
+
+logbook:
+  scheduling:
+    enabled: false
+    sendEventToVitamTasks:
+      delay: 10000
+
+vitam.tenant.init.mandatory: false
+
+customer.init.config.file: src/main/config/customer-init.yml
+
+logging:
+  level:
+    fr.gouv.vitamui.commons.mongo.service: DEBUG
+    fr.gouv.vitamui.iam.internal.server: DEBUG
+    fr.gouv.vitamui.commons.logbook.scheduler: DEBUG
+    # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+

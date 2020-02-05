@@ -1,0 +1,9 @@
+---
+# defaults file for vitamui-logstash
+logstash_packages:
+  - name: vitamui-logstash
+    version: "{{ vitamui_version }}"
+
+logstash_config_dir: /vitamui/conf/logstash/
+logstash_log_dir: /vitamui/log/logstash/
+logstash_data_dir: /vitamui/data/logstash/

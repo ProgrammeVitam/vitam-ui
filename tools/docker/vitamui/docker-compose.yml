@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  vitamui:
+    image: docker.vitamui.com/vitamui:${VITAMUI_VERSION}
+    container_name: vitamui_build
+    privileged: true
+    #cap_drop:
+    #- SYS_ADMIN
+        #security_opt:
+        #- seccomp=unconfined
+        #    volumes:
+        #- "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    command: ["/usr/sbin/init"]

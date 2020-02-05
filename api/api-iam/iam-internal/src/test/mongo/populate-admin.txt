@@ -1,0 +1,69 @@
+# add admin profiles
+db.profiles.insert({
+  "_id" : "adminprofileusers",
+   "name" : "adminprofileusers",
+   "description" : "adminprofileusers",
+   "tenantId" : "vitamui",
+   "applicationName" : "USERS", "roles": { "GET_USERS" : null, "CREATE_USERS" : null, "UPDATE_USERS" : null, "DELETE_USERS" : null, "GET_USERS_PROFILE" : null }
+});
+db.profiles.insert({
+  "_id" : "adminprofilegroups",
+   "name" : "adminprofilegroups",
+   "description" : "adminprofilegroups",
+   "tenantId" : "vitamui",
+   "applicationName" : "GROUPS", "roles": { "GET_GROUPS" : null, "CREATE_GROUPS" : null, "UPDATE_GROUPS" : null, "DELETE_GROUPS" : null }
+});
+db.profiles.insert({
+  "_id" : "adminprofileprofiles",
+   "name" : "adminprofileprofiles",
+   "description" : "adminprofileprofiles",
+   "tenantId" : "vitamui",
+   "applicationName" : "PROFILES", "roles": { "GET_PROFILES" : null, "CREATE_PROFILES" : null, "UPDATE_PROFILES" : null, "DELETE_PROFILES" : null }
+});
+db.profiles.insert({
+  "_id" : "adminprofileproviders",
+   "name" : "adminprofileproviders",
+   "description" : "adminprofileproviders",
+   "tenantId" : "vitamui",
+   "applicationName" : "PROVIDERS", "roles": { "GET_PROVIDERS" : null, "CREATE_PROVIDERS" : null, "UPDATE_PROVIDERS" : null, "DELETE_PROVIDERS" : null }
+});
+db.profiles.insert({
+  "_id" : "adminprofiletenants",
+   "name" : "adminprofiletenants",
+   "description" : "adminprofiletenants",
+   "tenantId" : "vitamui",
+   "applicationName" : "TENANTS", "roles": { "GET_TENANTS" : null, "CREATE_TENANTS" : null, "UPDATE_TENANTS" : null, "DELETE_TENANTS" : null }
+});
+db.profiles.insert({
+  "_id" : "adminprofilecustomers",
+   "name" : "adminprofilecustomers",
+   "description" : "adminprofilecustomers",
+   "tenantId" : "vitamui",
+   "applicationName" : "CUSTOMERS", "roles": { "GET_CUSTOMERS" : null, "CREATE_CUSTOMERS" : null, "UPDATE_CUSTOMERS" : null, "DELETE_CUSTOMERS" : null }
+});
+
+# add admin profile group
+db.groups.insert({
+  "_id" : "admingroup",
+   "name" : "admingroup",
+   "description" : "admingroup",
+   "profileIds" : [ "adminprofileusers", "adminprofilegroups", "adminprofileprofiles", "adminprofileproviders", "adminprofiletenants", "adminprofilecustomers" ],
+   "customerId" : "fakecustomerId"
+});
+
+# add admin user
+db.users.insert({
+  "_id" : "adminuser",
+  "enabled" : true,
+  "password" : "neverused",
+  "email" : "jerome.leleu@vitamui.com",
+  "firstname" : "Jérôme",
+  "lastname" : "LELEU",
+  "mobile" : "0605040302",
+  "attributes" : {  },
+  "mfa" : false,
+  "surrogates" : [ ],
+  "groupId" : "admingroup",
+  "canLogin" : true,
+  "customerId" : "fakecustomerId"
+});

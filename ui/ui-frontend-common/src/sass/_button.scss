@@ -1,0 +1,194 @@
+.btn {
+    @include elevation-1;
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    background: $white;
+    border: 1px solid $greeny-blue;
+    color: $greeny-blue;
+    border-radius: 25px;
+    height: 50px;
+    padding: 0px 30px;
+    cursor: pointer;
+    transition: box-shadow 200ms ease-out, opacity 200ms ease-out, background-color 200ms ease-out, color 200ms ease-out;
+    white-space: nowrap;
+    font-weight: 500;
+    outline: none;
+
+    > i.vitamui-icon {
+        font-size: 24px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    &:not([disabled]):not(.disabled) {
+
+        &:hover {
+            @include elevation-2;
+        }
+
+        &:focus, &:active {
+            @include elevation-0;
+        }
+
+    }
+
+    &.active {
+        background-color: $greeny-blue;
+        color:white;
+    }
+}
+
+.btn.primary {
+    @include button-primary;
+    border-color: $blood-orange;
+    background-color: $blood-orange;
+
+    .mat-progress-spinner circle, .mat-spinner circle {
+        stroke: white
+    }
+
+    &.active {
+        background-color: white;
+        color: $blood-orange;
+    }
+}
+
+.btn.secondary {
+    @include button-primary;
+    font-weight: 600;
+    background-color: $greeny-blue;
+
+    .mat-progress-spinner circle, .mat-spinner circle {
+        stroke: white
+    }
+
+    &.active {
+        background-color: white;
+        color: $greeny-blue;
+    }
+}
+
+.btn.cancel {
+    @include button-primary;
+    border: none;
+    background-color: #c1c1c1;
+}
+
+.btn[disabled], .btn-circle[disabled],
+.btn.disabled, .btn-circle.disabled {
+    @include elevation-0;
+    opacity: 0.4;
+}
+
+.btn-circle {
+    @include elevation-1;
+
+    border-radius: 50%;
+    border: 1px solid $greeny-blue;
+    color: $greeny-blue;
+    background: $white;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+
+    transition: box-shadow 200ms ease-out, opacity 200ms ease-out, background-color 200ms ease-out;
+
+    > i {
+        font-size: 22px;
+        vertical-align: middle;
+    }
+
+    &:not([disabled]):not(.disabled) {
+
+        &:hover {
+            @include elevation-2;
+        }
+
+        &:focus, &:active {
+            @include elevation-0;
+        }
+
+    }
+
+    &.active {
+        background-color: $greeny-blue;
+        color:white;
+    }
+
+    &.primary {
+        border: none;
+        background: $greeny-blue;
+        color: $white;
+    }
+}
+
+.btn-link {
+    // TODO Rename variable to vitamui-link
+    @include login-link;
+    background: none;
+    border: none;
+    color: $greeny-blue;
+    text-decoration: underline;
+    padding: 0;
+    transition: color 200ms ease-out;
+    cursor: pointer;
+
+    &:hover, &:focus, &:active {
+        color: #45ccb4;
+    }
+}
+
+.btn-double-icons {
+    position: relative;
+
+    i:first-child {
+        font-size: 18px;
+        position: absolute;
+        top: 4px;
+        left: 6px;
+    }
+
+    i:last-child {
+        font-size: 18px;
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+    }
+}
+
+button.back {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    color: $greeny-blue;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+
+    i {
+        display: block;
+        font-size: 18px;
+        color: $greeny-blue;
+        background-color: #e7f5f2;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        line-height: 30px;
+        margin-right: 10px;
+        transition: color 200ms ease-out, background-color 200ms ease-out;
+    }
+
+    &:hover i {
+        background-color: $greeny-blue;
+        color: $white;
+    }
+}

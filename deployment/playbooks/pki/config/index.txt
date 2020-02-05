@@ -1,0 +1,11 @@
+V	300111140144Z		0CCBFCC3A63F21C56883E3FD5D2AAB16	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_root_vitamui
+V	230113140148Z		0CCBFCC3A63F21C56883E3FD5D2AAB17	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140149Z		0CCBFCC3A63F21C56883E3FD5D2AAB18	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140150Z		0CCBFCC3A63F21C56883E3FD5D2AAB19	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140151Z		0CCBFCC3A63F21C56883E3FD5D2AAB1A	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140152Z		0CCBFCC3A63F21C56883E3FD5D2AAB1B	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140153Z		0CCBFCC3A63F21C56883E3FD5D2AAB1C	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230113140154Z		0CCBFCC3A63F21C56883E3FD5D2AAB1D	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=*.vitamui.com
+V	230113140212Z		0CCBFCC3A63F21C56883E3FD5D2AAB1E	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=jkspasswd
+V	230113140216Z		0CCBFCC3A63F21C56883E3FD5D2AAB1F	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=jkspasswd
+V	230113140219Z		0CCBFCC3A63F21C56883E3FD5D2AAB20	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=jkspasswd

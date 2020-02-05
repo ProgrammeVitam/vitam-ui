@@ -1,0 +1,6 @@
+- name: Execute commons tasks before running all play
+  import_playbook: commons.yml
+
+- hosts: os_repository
+  roles:
+    - tools/create-mirror-repository

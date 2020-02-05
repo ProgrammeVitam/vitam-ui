@@ -1,0 +1,64 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+  <cdk-step>
+    <div class="content">
+      <h2 i18n="user subrogate@@SubrogateUser">Subrogation d'utilisateur</h2>
+
+      <form [formGroup]="form">
+          <div class="d-flex">
+            <vitamui-common-input class="field-email" formControlName="emailFirstPart" maxlength="50" required placeholder="Adresse e-mail de l'utilisateur" i18n-placeholder="subrogation email@@subrogateUserEmail">
+              <ng-container *ngIf="form.get('emailFirstPart')?.touched">
+                <vitamui-common-input-error *ngIf="form?.get('emailFirstPart')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                <!-- <vitamui-common-input-error *ngIf="!!form?.get('email')?.errors?.pattern">Format e-mail incorrect</vitamui-common-input-error> -->
+              </ng-container>
+            </vitamui-common-input>
+            <span class="layer">@</span>
+
+            <mat-form-field class="field-domain vitamui-mat-select">
+              <mat-select formControlName="domain" required panelClass="vitamui-mat-select">
+                <mat-option value="{{domainTmp}}" *ngFor="let domainTmp of domains; let index = index">
+                  {{ domainTmp }}
+                </mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+        </form>
+
+      <div class="actions">
+        <button type="button" class="btn primary" appStepperNext (click)="askForSubrogation()" i18n="subrogation ask@@SubrogationAskButton">
+          Demander la subrogation
+        </button>
+        <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel subrogation creation@@subrogationCancelButton">Annuler</button>
+      </div>
+    </div>
+  </cdk-step>
+
+  <cdk-step>
+    <div class="content">
+      <h2 i18n="subrogation wait@@SubrogationWaitAcceptation" >Attente de l'acceptation de l'utilisateur</h2>
+
+      <p *ngIf="user?.firstname && user?.lastname" class="subrogated-user-info" i18n="subrogate user fullName@@subrogateTitleUserFullName">
+        Vous avez demandé à subroger l'utilisateur {{ user?.firstname }} {{ user?.lastname }}
+      </p>
+
+      <p *ngIf="!user?.firstname || !user?.lastname" class="subrogated-user-info" i18n="subrogate user email@@subrogateTitleUserEmail">
+        Vous avez demandé à subroger l'utilisateur {{ user?.email }}
+      </p>
+
+      <div class="spinner">
+        <mat-spinner *ngIf="pending === true" diameter="100" color="accent"></mat-spinner>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn cancel-subrogation" (click)="cancelSubrogation()" i18n="Cancel subrogation creation@@subrogationCancelButton">Annuler</button>
+      </div>
+    </div>
+  </cdk-step>
+</vitamui-common-stepper>

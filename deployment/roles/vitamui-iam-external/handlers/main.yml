@@ -1,0 +1,6 @@
+---
+# handlers file for vitamui.iam-external
+- name: restart iam-external service
+  service:
+    name: vitamui-iam-external
+    state: restarted

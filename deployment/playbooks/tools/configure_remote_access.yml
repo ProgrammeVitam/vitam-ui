@@ -1,0 +1,22 @@
+- name: Execute commons tasks before running all play
+  import_playbook: commons.yml
+
+- hosts: bastion
+  any_errors_fatal: yes
+  # Load environnement overrides ;
+  pre_tasks:
+  - include_vars: "{{ inventory_dir }}/overrides.yml"
+    failed_when: false
+
+  roles:
+    - { role: tools/configure-remote-access, target_type: bastion }
+
+- hosts: configure-remote-access:!bastion
+  any_errors_fatal: yes
+  # Load environnement overrides ;
+  pre_tasks:
+  - include_vars: "{{ inventory_dir }}/overrides.yml"
+    failed_when: false
+
+  roles:
+    - { role: tools/configure-remote-access, target_type: server }

@@ -1,0 +1,86 @@
+@import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
+
+:host {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+label {
+    display: flex;
+    align-items: center;
+
+    > span {
+        color: $charcoal-grey-two;
+        font-size: 15px;
+        font-weight: 400;
+    }
+}
+
+.slide-toggle {
+    width: 70px;
+    min-width: 70px;
+    height: 30px;
+    margin-right: 18px;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background-color: #8f8f8f;
+    transition: background-color 100ms ease-in-out, box-shadow 200ms ease-out;
+    @include elevation-1;
+
+    &.slide-toggle-on {
+        background-color: $greeny-blue;
+    }
+
+    &:hover {
+        @include elevation-2;
+    }
+
+    .slide-toggle-inner {
+        display: flex;
+
+        .slide-toggle-label {
+            overflow: hidden;
+            width: 44px;
+            line-height: 22px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: $white;
+            transition: margin-left 100ms ease-in-out;
+
+            &:first-child {
+                padding-left: 4px;
+            }
+
+            &:last-child {
+                padding-right: 4px;
+            }
+        }
+
+        .slide-toggle-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 11px;
+            background-color: $white;
+            box-shadow: 0 0 10px 0 rgba(115, 115, 115, 0.5);
+            cursor: grab;
+        }
+    }
+
+    &:not(.slide-toggle-on) {
+
+        .slide-toggle-label:first-child {
+            margin-left: -40px;
+        }
+
+    }
+
+    &.slide-toggle-disabled {
+        opacity: 0.4;
+        @include elevation-0;
+    }
+
+}

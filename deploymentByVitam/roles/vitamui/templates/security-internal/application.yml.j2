@@ -1,0 +1,42 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+  data:
+    mongodb:
+      uri: "mongodb://{{ mongodb.security.user }}:{{ mongodb.security.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.security.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+
+
+server:
+  port: {{ vitamui_struct.port_service }}
+{% if vitamui_struct.secure|lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_manager_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks
+    trust-store-password: {{ password_truststore_server }}
+    client-auth: need #WAZA ???
+{% endif %}
+  tomcat:
+    accesslog:
+      enabled: "{{ vitamui_struct.jvm_log }}"
+      directory: "{{ vitamui_folder_log }}"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false

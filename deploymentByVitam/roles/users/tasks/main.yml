@@ -1,0 +1,21 @@
+---
+
+- name: "Ensure {{ vitamui_defaults.users.group }} group exists"
+  group:
+    name: "{{ vitamui_defaults.users.group }}"
+    state: present
+
+
+- name: "Ensure {{ vitamui_defaults.users.vitamui }} user exists"
+  user:
+    name: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    state: present
+    shell: /bin/bash
+
+- name: "Ensure {{ vitamui_defaults.users.vitamuidb }} user exists"
+  user:
+    name: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    state: present
+    shell: /bin/bash

@@ -1,0 +1,11 @@
+<div class="vitamui-body" [class.modal-body]="isModalMenu">
+  <div class="vitamui-container">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let option of customers" (click)="selectCustomerId(option.value)">
+        <div class="customer-box clickable" [class.modal-customer-box]="isModalMenu">
+          <i class="vitamui-icon vitamui-icon-bank"></i> <span [innerHTML]="option.label"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

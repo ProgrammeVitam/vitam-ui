@@ -1,0 +1,42 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~material-design-icons/iconfont/material-icons.css';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
+@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
+@import '~ui-frontend-common/sass/theme';
+
+@import 'login';
+
+@import '~bootstrap/scss/bootstrap-grid';
+
+body {
+    margin: 0;
+    color: #485053;
+    font-family: 'Roboto', sans-serif;
+    background: #f7f8fb;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 390px;
+    z-index: -1;
+}
+
+.primary {
+    color: $blood-orange;
+}
+
+h2 {
+    color: $charcoal-grey;
+    font-weight: 500;
+}
+
+.material-icons {
+    vertical-align: middle;
+}

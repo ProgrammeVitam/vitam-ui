@@ -1,0 +1,35 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.vitamui-header {
+    background: none;
+
+    .vitamui-container {
+        padding-bottom: 0px;
+    }
+
+}
+
+.bg-fingerprint {
+    z-index: -2;
+    position: fixed;
+    bottom: -70px;
+    right: -20px;
+    width: 700px;
+}
+
+.vitamui-navbar-logo img {
+    // width: 135px;
+    display: block;
+}
+
+.account-picture {
+    margin-right: 20px;
+}
+
+.account {
+    display:flex;
+    align-items: center;
+    padding-top: 5px;
+    cursor:pointer
+}
+

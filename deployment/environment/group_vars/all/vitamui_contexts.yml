@@ -1,0 +1,22 @@
+---
+vitamui_security_contexts:
+
+  ui_identity:
+    context_id: ui_identity_context
+    cert_id: ui-identity_cert
+    cert_data: "{{ lookup('file', pki_dir + '/certs/ui-identity/ui-identity.pem') | cert_to_str() }}"
+
+  ui_portal:
+    context_id: ui_portal_context
+    cert_id: ui-portal_cert
+    cert_data: "{{ lookup('file', pki_dir + '/certs/ui-portal/ui-portal.pem') | cert_to_str() }}"
+
+  cas:
+     context_id: cas_context
+     cert_id: cas-server_cert
+     cert_data: "{{ lookup('file', pki_dir +'/certs/cas-server/cas-server.pem') | cert_to_str() }}"
+
+  ui_identity_admin:
+     context_id: ui_admin_identity_context
+     cert_id: ui-identity-admin_cert
+     cert_data: "{{ lookup('file', pki_dir +'/certs/ui-identity-admin/ui-identity-admin.pem') | cert_to_str() }}"

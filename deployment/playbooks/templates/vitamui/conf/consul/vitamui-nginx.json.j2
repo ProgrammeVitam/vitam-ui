@@ -1,0 +1,19 @@
+{
+{# TODO : check probe is correct / verify file installation is made in vitamui-nginx role #}
+  "service": {
+     "name": "vitamui-nginxproxy",
+     "port": 80,
+     "address": "{{ hostvars[groups['zone-vitamui-rp'][0]].ip_service }}",
+     "enable_tag_override": false,
+     "checks": [
+        {
+            "notes": "nginx reverse proxy running",
+            "http": "https://{{ hostvars[groups['zone-vitamui-rp'][0]].ip_service }}:80/status",
+            "method": "GET",
+            "interval": "10s",
+            "timeout": "1s"
+        }
+     ]
+  }
+}
+

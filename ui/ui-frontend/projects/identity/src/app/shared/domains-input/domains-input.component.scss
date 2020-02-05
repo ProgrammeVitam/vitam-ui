@@ -1,0 +1,74 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+    width: 100%;
+    display: block;
+}
+
+mat-chip i,
+mat-chip span {
+    vertical-align: middle;
+}
+
+.domain-input-control {
+    // margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+
+    > span {
+        font-size: 26px;
+        margin-right: 10px;
+    }
+
+    .domain-input-wrapper {
+        position: relative;
+        margin-right: 15px;
+        flex-grow: 1;
+
+        mat-spinner {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+        }
+    }
+}
+
+.vitamui-chip-list {
+    padding-left: 34px;
+}
+
+:host.domains-input-mini {
+    .domain-input-control {
+        button, input {
+            height: 34px;
+            border-radius: 17px;
+        }
+
+        > span {
+            font-size: 18px;
+        }
+
+        mat-spinner {
+            right: 8px;
+            top: 8px;
+        }
+    }
+
+    .vitamui-chip-list {
+        padding-left: 27px;
+    }
+
+}
+
+.vitamui-input-errors {
+    min-height: 20px;
+}
+
+input[type=text].vitamui-input.ng-invalid {
+    border-color: $greyish-two;
+
+    &.ng-dirty:focus {
+        border-color: $red;
+    }
+}

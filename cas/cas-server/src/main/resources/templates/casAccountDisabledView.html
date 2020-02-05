@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{screen.accountdisabled.heading}">CAS Account Disabled View</title>
+</head>
+
+<body id="cas">
+<div layout:fragment="content">
+    <div>
+        <h2 th:utext="#{screen.accountdisabled.heading}">This account has been disabled.</h2>
+        <p th:utext="#{screen.accountdisabled.message}">Please contact the system administrator to regain
+            access.</p>
+    </div>
+</div>
+</div>
+</body>
+</html>

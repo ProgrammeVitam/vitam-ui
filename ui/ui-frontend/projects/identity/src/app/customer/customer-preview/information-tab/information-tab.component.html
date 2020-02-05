@@ -1,0 +1,168 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input
+        formControlName="code"
+        maxlength="20"
+        label="Code client" i18n-label="Customer code@@customerPreviewLabelCode"
+        [validator]="form?.get('code')?.validator"
+        [asyncValidator]="form?.get('code')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6">
+      <vitamui-common-editable-input
+        formControlName="identifier"
+        maxlength="12"
+        label="Identifiant" i18n-label="Identifier@@CustomerDetailLabelIdentifier"
+        [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator"
+      >
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        label="Nom" i18n-label="Customer name@@customerPreviewLabelName"
+        [validator]="form?.get('name')?.validator"
+        [asyncValidator]="form?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input
+        formControlName="companyName"
+        maxlength="250"
+        label="Raison sociale" i18n-label="Customer company name@@customerPreviewLabelCompanyName"
+        [validator]="form?.get('companyName')?.validator"
+        [asyncValidator]="form?.get('companyName')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <ng-container formGroupName="address">
+    <div class="row">
+      <div class="col-12 form-control">
+        <vitamui-common-editable-input
+          formControlName="street"
+          maxlength="250"
+          label="N° et nom de rue" i18n-label="Street number and name Name@@customerPreviewLabelStreetNumberName"
+          [validator]="form?.get('address.street')?.validator"
+          [asyncValidator]="form?.get('address.street')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 form-control">
+        <vitamui-common-editable-input
+          formControlName="zipCode"
+          maxlength="10"
+          label="Code postal" i18n-label="Customer Zip Code@@customerPreviewLabelZipCode"
+          [validator]="form?.get('address.zipCode')?.validator"
+          [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input
+          formControlName="city"
+          maxlength="100"
+          label="Ville" i18n-label="Customer city@@customerPreviewLabelCity"
+          [validator]="form?.get('address.city')?.validator"
+          [asyncValidator]="form?.get('address.city')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-select
+          formControlName="country"
+          label="Pays" i18n-label="Customer country@@customerPreviewLabelCountry"
+          [validator]="form?.get('address.country')?.validator"
+          [asyncValidator]="form?.get('address.country')?.asyncValidator"
+        >
+          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="DK" content="Danemark"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="ES" content="Espagne"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="IT" content="Italie"></vitamui-common-editable-option>
+        </vitamui-common-editable-select>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-select
+        formControlName="language"
+        label="Langue de l'interface (par défault pour l'utilisateur)" i18n-label="Customer default language@@customerPreviewLabelLanguage"
+        [validator]="form?.get('language')?.validator"
+        [asyncValidator]="form?.get('language')?.asyncValidator"
+      >
+        <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish"></vitamui-common-editable-option>
+        <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench"></vitamui-common-editable-option>
+      </vitamui-common-editable-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-select
+        formControlName="passwordRevocationDelay"
+        label="Révocation du mot de passe (depuis le dernier changement)" i18n-label="Password revocation delay (from the last modification)@@customerPreviewLabelPasswordRevocation"
+        [validator]="form?.get('passwordRevocationDelay')?.validator"
+        [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
+      >
+        <vitamui-common-editable-option [value]="6" content="6 mois" i18n-content="6 months@@customerPreviewPasswordRevocationDelayOption6Months"></vitamui-common-editable-option>
+        <vitamui-common-editable-option [value]="9" content="9 mois" i18n-content="9 months@@customerPreviewPasswordRevocationDelayOption9Months"></vitamui-common-editable-option>
+        <vitamui-common-editable-option [value]="12" content="12 mois" i18n-content="12 months@@customerPreviewPasswordRevocationDelayOption12Months"></vitamui-common-editable-option>
+      </vitamui-common-editable-select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-toggle-group
+        formControlName="otp"
+        label="Validation en deux étapes" i18n-label="Two steps validation@@customerPreviewLabelTwoStepsValidation"
+        [validator]="form?.get('otp')?.validator"
+        [asyncValidator]="form?.get('otp')?.asyncValidator"
+      >
+        <vitamui-common-editable-button-toggle value="DISABLED" content="Non" i18n-content="OTP deactivate button@@customerPreviewOTPDeactivatedButton"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="OPTIONAL" content="Optionnelle" i18n-content="OTP activate button@@customerPreviewOTPOptionalButton"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="MANDATORY" content="Obligatoire" i18n-content="OTP mandatory button@@customerPreviewOTPMandatoryButton"></vitamui-common-editable-button-toggle>
+      </vitamui-common-editable-toggle-group>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <app-editable-domain-input
+        formControlName="emailDomains"
+        label="Domaines" i18n-label="Customer email domains@@customerPreviewLabelDomains"
+        [validator]="form?.get('emailDomains')?.validator"
+        [asyncValidator]="form?.get('emailDomains')?.asyncValidator"
+        [defaultDomain]="form.get('defaultEmailDomain').value"
+        (defaultDomainChange)="form.get('defaultEmailDomain').setValue($event)"
+      ></app-editable-domain-input>
+    </div>
+  </div>
+</form>

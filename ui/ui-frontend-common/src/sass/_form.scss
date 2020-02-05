@@ -1,0 +1,79 @@
+.read-only-field {
+    display: inline-block;
+    min-height: 50px;
+    width: 100%;
+    padding: 7px 20px 7px 25px;
+    vertical-align: top;
+    margin-bottom: 20px;
+
+    label {
+        font-size: 13px;
+        color: $greyish-two;
+        font-weight: normal;
+    }
+}
+
+.vitamui-input-errors {
+    width: 100%;
+    padding: 4px 30px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #ff0000;
+    font-family: 'Roboto';
+}
+
+input[type=text].vitamui-input,
+input[type=password].vitamui-input,
+input[type=email].vitamui-input {
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    transition: border-color 200ms ease-out;
+    height: 50px;
+    padding: 0 30px;
+    border: 1px solid transparent;
+    width: 100%;
+    max-width: 300px;
+    @include elevation-1;
+
+    &:focus {
+        border-color: #a6a6a6;
+    }
+
+    &.ng-valid.ng-touched {
+        border-color: #43ea2a;
+    }
+
+    &.ng-invalid.ng-touched {
+        border-color: #ff0000;
+    }
+
+    &[disabled] {
+        opacity: 0.4;
+    }
+
+    &.vitamui-small {
+        height: 34px;
+        border-radius: 17px;
+    }
+
+    &::-webkit-input-placeholder {
+        color: $greyish-two;
+        font-weight: 400;
+    }
+
+    &::-moz-placeholder {
+        color: $greyish-two;
+        font-weight: 400;
+    }
+
+    &:-ms-input-placeholder {
+        color: $greyish-two;
+        font-weight: 400;
+    }
+
+    &:-moz-placeholder {
+        color: $greyish-two;
+        font-weight: 400;
+    }
+}

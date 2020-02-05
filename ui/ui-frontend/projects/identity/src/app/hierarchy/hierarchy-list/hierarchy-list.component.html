@@ -1,0 +1,42 @@
+<table
+  class="vitamui-table"
+  vitamuiCommonInfiniteScroll
+  (vitamuiScroll)="onScroll()"
+>
+  <thead>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-admin-key vitamui-row-icon"></i></th>
+      <th i18n="Profile name@@hierarchyListHeaderName">Nom du profil administrateur</th>
+      <th i18n="Profile identifier@@hierarchyListHeaderIdentifier">Identifiant</th>
+      <th i18n="Profile application@@hierarchyListHeaderApplication">Application</th>
+      <th i18n="Description@@hierarchyListHeaderDescription">Description</th>
+      <th i18n="Description@@hierarchyListHeaderLevel">Niveau</th>
+      <th i18n="Users count@@hierarchyListHeaderUsersCount">Nombre d'utilisateurs</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let profile of dataSource" class="clickable" (click)="profileClick.emit(profile)">
+      <td>
+        <i class="vitamui-icon vitamui-icon-admin-key vitamui-row-icon"
+            [class.status-badge-green]="profile.enabled"
+            [class.status-badge-grey]="!profile?.enabled"></i>
+      </td>
+      <td>{{ profile.name }}</td>
+      <td>{{ profile.identifier }}</td>
+      <td>{{ getApplicationName(profile.applicationName) }}</td>
+      <td>{{ profile.description | truncate:50 }}</td>
+      <td>{{ profile.level }}</td>
+      <td>{{ profile.usersCount }}</td>
+    </tr>
+  </tbody>
+
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && hierarchyService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <span *ngIf="!pending && !hierarchyService.canLoadMore">Fin des résultats</span>
+</div>

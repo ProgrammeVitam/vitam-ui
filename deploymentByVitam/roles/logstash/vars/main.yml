@@ -1,0 +1,7 @@
+---
+
+logstash_log_dir: "{{ vitamui_defaults.folder.root_path }}/log/logstash"
+logstash_tmp_dir: "{{ vitamui_defaults.folder.root_path }}/tmp/logstash"
+logstash_conf_dir: "{{ vitamui_defaults.folder.root_path }}/conf/logstash"
+logstash_confextra_dir: "{{ logstash_conf_dir }}/extra"
+logstash_data_dir: "{{ vitamui_defaults.folder.root_path }}/data/logstash"

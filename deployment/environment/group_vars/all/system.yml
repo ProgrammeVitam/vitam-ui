@@ -1,0 +1,40 @@
+# System user/group running vitamui and vitamuidb services
+vitamui_system_user: vitamui
+vitamui_system_group: vitamui
+vitamui_db_system_user: vitamuidb
+
+deactivate_firewalld: false
+
+
+# Poll interval when waitng
+service_wait_poll_interval: 0.5
+
+
+# Basic
+vitamui_system_packages:
+
+  # FOr sync servers:
+  - name: ntp
+    version: latest
+
+  # For archive utilities
+  - name: tar
+    version: latest
+
+  - name: gzip
+    version: latest
+
+  - name: bzip2
+    version: latest
+
+  - name: unzip
+    version: latest
+
+svc_connect_timeout: 1
+svc_up_timeout: 300
+svc_poll_interval: 3
+
+
+
+
+

@@ -1,0 +1,9 @@
+<button
+  class="btn-orderby"
+  [class.active]="orderBy===orderByKey"
+  [class.upside-down]="orderBy===orderByKey && direction==='ASC'"
+  (click)="toggleOrder()"
+>
+  <ng-content></ng-content>
+  <i class="material-icons">keyboard_arrow_down</i>
+</button>

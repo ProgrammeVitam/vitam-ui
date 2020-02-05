@@ -1,0 +1,53 @@
+<div class="sub-table-container">
+  <table class="vitamui-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Code propriétaire</th>
+        <th>Propriétaire</th>
+        <th>Code coffre</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let tenant of myTenants" class="vitamui-table-row">
+        <td class="clickable" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))">
+          <i *ngIf="tenant.proof" class="vitamui-icon vitamui-icon-safe proof-icon" matTooltip="Coffre des éléments de preuve"
+              i18n-matTooltip="Proof safe info hint@@proofSafeInfo"
+              matTooltipClass="vitamui-tooltip"></i>
+          <i *ngIf="tenant.proof" class="vitamui-icon vitamui-icon-key proof-icon"></i>
+          <i *ngIf="!tenant.proof"class="vitamui-icon vitamui-icon-safe vitamui-row-icon"></i> <i *ngIf="!tenant.proof" class="vitamui-icon vitamui-icon-key vitamui-row-icon"></i>
+        </td>
+        <td class="clickable" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))"> {{ getOwner(tenant?.ownerId)?.code }}</td>
+        <td class="clickable" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))"> {{ getOwner(tenant?.ownerId)?.name }}</td>
+        <td class="clickable" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))"> {{ tenant?.identifier }}</td>
+        <td></td>
+      </tr>
+
+      <tr *ngFor="let owner of ownersWithoutTenant" class="vitamui-table-row">
+        <td class="clickable" (click)="ownerClick.emit(owner)">
+          <i class="vitamui-icon vitamui-icon-key vitamui-row-icon"></i>
+        </td>
+        <td class="clickable" (click)="ownerClick.emit(owner)"> {{ owner?.code }}</td>
+        <td class="clickable" (click)="ownerClick.emit(owner)"> {{ owner?.name }}</td>
+        <td></td>
+        <td>
+          <div class="actions">
+            <button class="btn-circle primary" (click)="openCreateTenantDialog(owner)">
+              <i class="vitamui-icon vitamui-icon-safe-plus"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footer">
+    <button (click)="openCreateOwnerDialog()" class="btn-add-owner">
+      <span class="btn-circle primary">
+        <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
+      </span>
+      <span class="btn-link" i18n="Add owner button@@OwnerListAddOwnerButton">Ajouter un propriétaire</span>
+    </button>
+  </div>
+</div>

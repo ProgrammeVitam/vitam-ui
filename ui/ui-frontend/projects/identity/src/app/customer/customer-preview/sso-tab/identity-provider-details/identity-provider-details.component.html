@@ -1,0 +1,85 @@
+<form [formGroup]="form">
+
+  <div class="row">
+    <div class="col-5">
+      <vitamui-common-slide-toggle formControlName="enabled" i18n="IDP Active@@idpFormLabelEnabled">IDP Actif</vitamui-common-slide-toggle>
+    </div>
+    <div class="col-5">
+        <vitamui-common-editable-input
+        formControlName="identifier"
+        maxlength="12"
+        label="Identifiant" i18n-label="IDP identifiant@@idpFormLabelIdentifier"
+        [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator"
+      >
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-5 form-control">
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        label="Nom IDP" i18n-label="IDP name@@idpFormLabelName"
+        [validator]="form?.get('name')?.validator"
+        [asyncValidator]="form?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+
+    <div class="col-7 form-control">
+      <vitamui-common-editable-toggle-group
+        formControlName="internal"
+        label="Type" i18n-label="Type@@idpFormLabelType"
+        [validator]="form?.get('internal')?.validator"
+        [asyncValidator]="form?.get('internal')?.asyncValidator"
+      >
+        <vitamui-common-editable-button-toggle [value]="true" content="Interne" i18n-content="Internal@@idpFormTypeButtonInternal"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle [value]="false" content="Externe" i18n-content="External@@idpFormTypeButtonExternal"></vitamui-common-editable-button-toggle>
+      </vitamui-common-editable-toggle-group>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
+    </div>
+    <div class="col-6">
+      <vitamui-common-editable-file
+        [formControl]="idpMetadata"
+        accept=".xml"
+        label="Metadata de l'IDP" i18n-label="Metadata@@idpFormLabelMetadata"
+        [validator]="idpMetadata?.validator"
+        [asyncValidator]="idpMetadata?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </vitamui-common-editable-file>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <app-editable-patterns
+        formControlName="patterns"
+        label="Patterns" i18n-label="Patterns@@idpFormLabelPatterns"
+        [options]="domains"
+        [validator]="form?.get('patterns')?.validator"
+        [asyncValidator]="form?.get('patterns')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </app-editable-patterns>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="identityProvider.technicalName">
+    <div class="col-12">
+        <div class="read-only-field">
+          <label>Identifiant SSO</label>
+          <div>{{identityProvider.technicalName}}</div>
+        </div>
+    </div>
+  </div>
+
+</form>

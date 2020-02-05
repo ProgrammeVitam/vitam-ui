@@ -1,0 +1,22 @@
+:host {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+
+    &:hover, &:active {
+        background: rgba(92, 186, 169, 0.15);
+    }
+
+    &.table-filter-option-separator:not(:first-child) {
+        border-top: 1px solid #ECECEC;
+    }
+
+    &.table-filter-option-separator:not(:last-child) {
+        border-bottom: 1px solid #ECECEC;
+    }
+}
+
+.vitamui-checkbox {
+    margin-right: 15px;
+}

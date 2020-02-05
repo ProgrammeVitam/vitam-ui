@@ -1,0 +1,14 @@
+<div class="table-filter-panel">
+  <div *ngIf="showSearchBar" class="table-filter-header">
+    <div class="table-filter-search-input">
+      <input type="text" [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)" (keydown)="onInputKeyDown($event)">
+      <i *ngIf="!searchText; else cancelButton" class="material-icons search-icon">search</i>
+      <ng-template #cancelButton>
+        <button class="btn-search-cancel" (click)="cancelSearch()"><i class="material-icons">clear</i></button>
+      </ng-template>
+    </div>
+  </div>
+  <div class="table-filter-content">
+    <ng-content></ng-content>
+  </div>
+</div>

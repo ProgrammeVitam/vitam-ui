@@ -1,0 +1,4 @@
+---
+# handlers file for create-repository
+- name: reload nginx
+  service: name=nginx state=reloaded

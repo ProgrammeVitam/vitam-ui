@@ -1,0 +1,27 @@
+---
+
+# Example of vault.yml
+
+# Credentials for vitamui repository
+vitamui_repository_user: vitamui_repo_user
+vitamui_repository_password: vitamui_repo_pwd
+
+# DATABASES USERS
+mongod_dbuser_admin: admin
+mongod_dbpwd_admin: admin
+
+mongod_dbuser_security: api-security
+mongod_dbpwd_security: api-security
+
+mongod_dbuser_iam: api-iam
+mongod_dbpwd_iam: api-iam
+
+mongod_dbuser_cas: cas
+mongod_dbpwd_cas: cas
+
+mongod_express_basicauth_username: mongo-exp-user
+mongod_express_basicauth_password: change-it
+
+nginx_cert_key_password: change-it
+
+mongod_replicaset_passphrase: changemeforprod

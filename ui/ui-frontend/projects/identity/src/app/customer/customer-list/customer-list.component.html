@@ -1,0 +1,69 @@
+<table
+  class="vitamui-table"
+  vitamuiCommonInfiniteScroll
+  (vitamuiScroll)="onScroll()"
+>
+  <thead>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i></th>
+      <th i18n="Customer code column header@@customerListCustomerCodeHeader">Code Client</th>
+      <th i18n="Customer name column header@@customerListNameHeader">Client</th>
+      <th i18n="Customer company name column header@@customerListCompanyNameHeader">Raison Sociale</th>
+      <th i18n="SSO column header@@customerListSSOHeader">SSO</th>
+      <th i18n="Two steps validation column header@@customerListTwoStepsValidationHeader">Validation en deux étapes</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody vitamuiCommonCollapseContainer>
+    <ng-container *ngFor="let customer of dataSource; let index = index">
+
+      <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'">
+        <td [vitamuiCommonCollapseTriggerFor]="row">
+          <i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i>
+          <i class="material-icons caret" [@arrow]="row.state">keyboard_arrow_up</i>
+        </td>
+        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.code }}</td>
+        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.name }}</td>
+        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.companyName }}</td>
+        <td class="clickable" (click)="customerClick.emit(customer)">
+          <ng-container *ngIf="customer?.idp" i18n="OTP active@@customerListIDPActiveYes">Oui</ng-container>
+          <ng-container *ngIf="!customer?.idp" i18n="OTP not active@@customerListIDPActiveNo">Non</ng-container>
+        </td>
+        <td class="clickable" (click)="customerClick.emit(customer)" i18n="OTP not active@@customerListOTPState">
+          {customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire}}
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
+              <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="customer-sub-table no-hover">
+        <td></td>
+        <td colspan="7">
+          <app-owner-list
+            class="collapsable"
+            [customer]="customer"
+            (ownerClick)="ownerClick.emit($event)"
+            (tenantClick)="tenantClick.emit($event)"
+            [vitamuiCommonCollapse]
+            #row="vitamuiCommonCollapse"
+            [@expansion]="row.state"
+          ></app-owner-list>
+        </td>
+      </tr>
+
+    </ng-container>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && customerListService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <!-- <span *ngIf="!pending && !customerListService.canLoadMore">Fin des résultats</span> -->
+</div>

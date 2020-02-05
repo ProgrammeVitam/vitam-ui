@@ -1,0 +1,59 @@
+@import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
+
+$animation-time: 150ms;
+
+.vitamui-autocomplete {
+  position: relative;
+
+> input {
+@include elevation-1;
+  background: white;
+  border-radius: 25px;
+  background-color: $white;
+  border: solid 1px #f0f0f0;
+  height: 50px;
+  width: 100%;
+  padding: 10px 40px 10px 29px;
+  transition: padding $animation-time ease-out;
+
+&:focus {
+   outline: none;
+ }
+}
+
+&.disabled {
+   opacity: 0.4;
+ }
+
+> i {
+  font-size: 24px;
+  position: absolute;
+  right: 16px;
+  top: 14px;
+  pointer-events: none;
+  color: $blood-orange;
+}
+
+.input-label {
+  color: #a6a6a6;
+  position: absolute;
+  left: 30px;
+  top: 16px;
+  font-size: 15px;
+  pointer-events: none;
+  transform-origin: left;
+  transition: transform $animation-time ease-out, top $animation-time ease-out;
+}
+
+&.label-up {
+.input-label {
+  transform: scale(0.7) translateY(-15px);
+}
+
+> input {
+  padding-top: 30px;
+}
+}
+
+}

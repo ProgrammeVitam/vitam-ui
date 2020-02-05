@@ -1,0 +1,40 @@
+<table
+  class="vitamui-table"
+  vitamuiCommonInfiniteScroll
+  (vitamuiScroll)="onScroll()"
+>
+  <thead>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i></th>
+      <th i18n="Group name@@profileGroupListHeaderName">Nom du groupe</th>
+      <th i18n="Group ID@@profileGroupListHeaderID">Identifiant</th>
+      <th i18n="Description@@profileGroupListHeaderDescription">Description</th>
+      <th i18n="Description@@profileGroupListHeaderLevel">Niveau</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let group of dataSource" class="clickable" (click)="groupClick.emit(group)">
+      <td>
+        <i
+          class="vitamui-icon vitamui-icon-keys vitamui-row-icon status-badge"
+          [class.status-badge-green]="group?.enabled"
+          [class.status-badge-red]="!group?.enabled"
+        ></i>
+      </td>
+      <td>{{ group.name }}</td>
+      <td>{{ group.identifier }}</td>
+      <td>{{ group.description | truncate:50 }}</td>
+      <td>{{ group.level }}</td>
+    </tr>
+  </tbody>
+
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && groupService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <!-- <span *ngIf="!pending && !profileGroupService.canLoadMore">Fin des résultats</span> -->
+</div>

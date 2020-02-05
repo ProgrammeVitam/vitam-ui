@@ -1,0 +1,33 @@
+.step-email {
+
+    h1 {
+        margin-bottom: 40px;
+    }
+
+    h1 img {
+        vertical-align: middle;
+    }
+
+    .vitam-logo {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+
+    form {
+        display: flex;
+        margin-bottom: 30px;
+
+        .form-control {
+            flex-grow: 1;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        button[type=submit] {
+            margin-left: 20px;
+        }
+    }
+}

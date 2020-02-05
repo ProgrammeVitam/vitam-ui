@@ -1,0 +1,6 @@
+<ng-container *ngFor="let step of steps; let i = index; let isLast = last">
+  <div class="step" [@stepTransition]="_getAnimationDirection(i)" [attr.tabindex]="selectedIndex === i ? 0 : null"
+    [attr.aria-expanded]="selectedIndex === i">
+    <ng-container [ngTemplateOutlet]="step.content"></ng-container>
+  </div>
+</ng-container>

@@ -1,0 +1,40 @@
+@import '../../../../sass/variables/colors';
+
+.vitamui-navbar-logo img {
+    // width: 135px;
+    display: block;
+}
+
+.portal-logo {
+    width: 280px;
+    height: 100px;
+    display: block;
+    margin-right: 28%;
+
+    img {
+        margin: auto;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+    }
+}
+
+.logo {
+    margin-left: 20px;
+}
+
+.application-logo {
+    margin-right: 30px;
+}
+
+.account-picture {
+    margin-right: 17px;
+    font-size: 30px;
+    padding-top: 10px;
+}
+
+.account {
+    display:flex;
+    align-items: center;
+    padding-top: 5px;
+    cursor:pointer
+}

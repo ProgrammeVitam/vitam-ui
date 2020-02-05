@@ -1,0 +1,89 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+  data:
+    mongodb:
+      uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.iam.internal.server: DEBUG
+
+server:
+  port: {{ vitamui_struct.port_service }}
+{% if vitamui_struct.secure|lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }} # TODO OMA : revoir
+    key-password: {{ password_manager_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks
+    trust-store-password: {{ password_truststore_server }}
+    client-auth: need
+{% endif %}
+  tomcat:
+    accesslog:
+      enabled: "{{ vitamui_struct.jvm_log|lower }}"
+      directory: "{{ vitamui_folder_log }}"
+
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+security:
+  host: {{ vitamui.security_internal.host }}
+  port: {{ vitamui.security_internal.port_service }}
+{% if vitamui.security_internal.secure|lower == "true" %}
+  secure: true
+  ssl-configuration:
+    keystore:
+      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+      key-password: {{ password_keystore }}
+      type: JKS
+    truststore:
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+      key-password: {{ password_truststore }}
+    hostname-verification: false
+{% endif %}
+
+login:
+  url: {{ url_prefix }}/cas/login #TODO OMA : pointer sur l'URL de login de cas-server ; revoir avec Romain
+
+cas-client:
+  server-host: {{ vitamui.cas_server.host }}
+  server-port: {{ vitamui.cas_server.port_service }}
+{% if vitamui.cas_server.secure|lower == "true" %}
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+      key-password: {{ password_truststore }}
+    hostname-verification: false
+{% endif %}
+
+cas.reset.password.url: {{ vitamui.cas_server.reset_password_url }}
+
+login.attempts.maximum.failures: 5
+login.attempts.time.interval: 20
+
+vitam.tenant.init.mandatory: true # true/false, see with Romain for further info ... later...
+
+logbook:
+  scheduling:
+    enabled: true # TODO OMA : faire une variable...
+    sendEventToVitamTasks:
+      delay: 60000 # TODO OMA: variable ; default to 60000 ; see Romain for info.. later...
+
+customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml

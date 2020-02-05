@@ -1,0 +1,13 @@
+/vitamui/log/__NAME__/*log {
+    create 0644 __USER__ __GROUP__
+    daily
+    rotate 10
+    missingok
+    notifempty
+    compress
+    sharedscripts
+    postrotate
+        /bin/kill -USR1 `cat /vitamui/run/__NAME__/nginx.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}
+

@@ -1,0 +1,39 @@
+@import '../../../../sass/variables/colors';
+
+.btn-orderby {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 30px;
+    height: 30px;
+    color: #d8d8d8;
+    transition: color 200ms ease-out;
+    white-space: nowrap;
+
+    &.active {
+        color: $greeny-blue;
+    }
+
+    &.upside-down > i {
+        transform: rotate(180deg);
+    }
+
+    > i {
+        transition: transform 200ms ease-out;
+    }
+
+}
+
+.order-dropdown-container {
+    padding: 10px 0;
+    background: white;
+    box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3);
+    border-radius: 5px;
+    min-width: 100px;
+}

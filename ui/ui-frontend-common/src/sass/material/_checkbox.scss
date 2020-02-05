@@ -1,0 +1,38 @@
+.mat-checkbox {
+
+    .mat-checkbox-frame {
+        border-radius: 3px;
+        border: 1px solid $greeny-blue;
+        background: white;
+    }
+
+    &.mat-checkbox-checked .mat-checkbox-background,
+    .mat-checkbox-background {
+        background: transparent;
+        margin: 2px;
+    }
+
+    .mat-checkbox-checkmark-path {
+        stroke: $greeny-blue !important;
+        stroke-width: 5px;
+    }
+
+}
+
+.mat-pseudo-checkbox.vitamui-checkbox {
+    border: 1px solid;
+    color: $greeny-blue;
+    box-sizing: content-box;
+
+    &.mat-pseudo-checkbox-checked,
+    &.mat-pseudo-checkbox-indeterminate {
+        background: transparent;
+        border-color: $greeny-blue;
+    }
+
+    &:after {
+        color: $greeny-blue;
+        top: 4px;
+        left: 3px;
+    }
+}

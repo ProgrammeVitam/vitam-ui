@@ -1,0 +1,43 @@
+# TECHNICAL PROPERTIES / DON'T put environment properties
+# This property can be override by a config file give at run time with spring.config.location
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API IAM (Identity Access Management)
+    description: This API is used to manage customers, tenants, identity providers, users with their profiles and their profiles groups. This is for an internal use only.
+    version: v1
+  mvc:
+    favicon:
+      enabled : false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    jmx:
+      domain: ${server-identity.identityRole}
+      unique-names: true
+    web.exposure.include: info,health,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+
+metrics:
+  reporterInterval: 1
+  reporterIntervalUnit: MINUTES
+  index: metrics-vitam-jvm
+
+# 4 (hours) * 60 (minutes)
+token.ttl: 240
+token.additional.ttl: 15
+subrogaton.token.ttl: 165
+api.token.ttl: 480
+generic.users.subrogation.ttl: 180
+subrogation.ttl: 30
+
+cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day

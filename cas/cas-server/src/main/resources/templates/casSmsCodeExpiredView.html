@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{screen.mfa.sms.expired.pagetitle}"></title>
+</head>
+
+<body id="cas">
+<div layout:fragment="content">
+
+    <div class="mfa-expired">
+
+        <p class="text1" th:utext="#{screen.mfa.sms.expired.text1}"/>
+
+        <form method="post" id="resendCodeForm">
+            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+            <input type="hidden" name="_eventId" value="resend"/>
+            <a class="button" th:utext="#{screen.mfa.sms.expired.resend(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>

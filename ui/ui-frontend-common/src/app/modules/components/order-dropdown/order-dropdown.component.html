@@ -1,0 +1,23 @@
+<button
+  class="btn-orderby"
+  #origin="cdkOverlayOrigin"
+  cdkOverlayOrigin
+  (click)="dropdownOpen=true"
+  [class.active]="active"
+  [class.upside-down]="active && direction==='ASC'"
+>
+  <i class="material-icons">keyboard_arrow_down</i>
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOpen]="dropdownOpen"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="transparent-backdrop"
+  (backdropClick)="dropdownOpen=false"
+>
+  <div class="order-dropdown-container">
+    <ng-content></ng-content>
+  </div>
+</ng-template>

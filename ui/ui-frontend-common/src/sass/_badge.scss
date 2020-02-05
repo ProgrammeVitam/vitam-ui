@@ -1,0 +1,79 @@
+.status-badge-green {
+    @include status-badge;
+
+    &:after {
+        background-color: #50d166;
+        border: solid 2px #ffffff;
+    }
+
+    &.status-badge-mini {
+        @include status-badge-mini;
+    }
+}
+
+.status-badge-red {
+    @include status-badge;
+
+    &:after {
+        background-color: $red;
+        border: solid 2px #ffffff;
+    }
+
+    &.status-badge-mini {
+        @include status-badge-mini;
+    }
+}
+
+.status-badge-orange {
+    @include status-badge;
+
+    &:after {
+        background-color: #ffa610;
+        border: solid 2px #ffffff;
+    }
+
+    &.status-badge-mini {
+        @include status-badge-mini;
+    }
+}
+
+.status-badge-grey {
+    @include status-badge;
+
+    &:after {
+        background-color: #dadada;
+        border: solid 2px #ffffff;
+    }
+
+    &.status-badge-mini {
+        @include status-badge-mini;
+    }
+}
+
+.status-badge-dark-grey {
+    @include status-badge;
+
+    &:after {
+        background-color: #474D4A;
+        border: solid 2px $white;
+    }
+
+    &.status-badge-mini {
+        @include status-badge-mini;
+    }
+}
+
+.status-badge-icon-cross {
+
+    &:after {
+        border: none;
+        font-family: 'vitamui-icon';
+        content: '\ea0f';
+        font-size: 8px;
+        line-height: 8px;
+        color: $white;
+
+    }
+}
+
+

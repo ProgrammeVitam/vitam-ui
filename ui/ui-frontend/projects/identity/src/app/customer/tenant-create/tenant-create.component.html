@@ -1,0 +1,16 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="100" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="content">
+    <h2 i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{data?.owner?.name}}"</h2>
+
+    <vitamui-common-input formControlName="name" required placeholder="Nom du coffre" i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder"></vitamui-common-input>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
+      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
+    </div>
+  </div>
+</form>

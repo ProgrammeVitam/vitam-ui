@@ -1,0 +1,88 @@
+---
+
+- name: check vitam_site_name is correctly set
+  fail: msg="{{ vitam_site_name }} not correctly configured"
+  when: vitam_site_name|regex_search('[^a-zA-Z0-9\\-]') # found a bug ; no "_" allowed
+
+
+- name: Install {{ consul.package_name }} package
+  package:
+    name: "{{ consul.package_name }}"
+    state: latest
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  notify:
+    - restart consul
+
+- name: rustine VITAMUI ensure vitam user is member of vitamui group
+  user:
+    name: vitam
+    groups: vitam, {{ vitamui_defaults.users.group }}
+
+- name: Enable {{ consul.service_name }} service
+  service:
+    name: "{{ consul.service_name }}"
+    enabled: true
+  notify:
+      - restart consul
+
+#### Configuration ####
+
+- name: Check that the consul directories exist
+  file:
+    path: "{{ vitam_defaults.folder.root_path }}/{{ item }}/consul"
+    state: directory
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  with_items:
+    - app
+    - bin
+    - conf
+    - lib
+    - log
+    - data
+    - tmp
+  notify:
+    - restart consul
+
+- name: Deploy consul common configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ consul.conf_folder }}/{{ item }}"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+  with_items:
+    - "consul.json"
+  notify:
+      - reload consul
+
+# Ensure that the installation is complete and consul up before setting up the system-wide dns resolver...
+- meta: flush_handlers
+
+- name: "Ensure {{ consul.service_name }} service is started"
+  service:
+    name: "{{ consul.service_name }}"
+    state: started
+
+# Changing the resolv.conf doesn't work into a docker container...
+- name: Add consul nameserver to resolv.conf
+  blockinfile:
+    backup: yes
+    dest: /etc/resolv.conf
+    insertbefore: BOF # necessary or this entry won't be asked
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      nameserver 127.0.0.1
+  when: inventory_hostname not in single_vm_hostnames
+
+- meta: flush_handlers
+
+- name: Wait for consul port to be open
+  wait_for:
+    host: "127.0.0.1"
+    port: 53
+    state: "started"

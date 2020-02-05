@@ -1,0 +1,22 @@
+<label>
+  <div class="slide-toggle" [class.slide-toggle-on]="checked" [class.slide-toggle-disabled]="disabled">
+    <input
+      class="cdk-visually-hidden"
+      [required]="required"
+      [tabIndex]="tabIndex"
+      [checked]="checked"
+      [disabled]="disabled"
+      [attr.name]="name"
+      type="checkbox"
+      (click)="toggle()"
+      (blur)="onTouched()"
+    >
+    <div class="slide-toggle-inner">
+      <div class="slide-toggle-label">ON</div>
+      <div class="slide-toggle-thumb">
+      </div>
+      <div class="slide-toggle-label">OFF</div>
+    </div>
+  </div>
+  <span><ng-content></ng-content></span>
+</label>

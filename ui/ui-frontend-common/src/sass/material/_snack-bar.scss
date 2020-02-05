@@ -1,0 +1,60 @@
+.vitamui-snack-bar.mat-snack-bar-container {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: $greeny-blue;
+    max-width: none;
+    width: 100vw;
+    margin: 0;
+    border-radius: 0;
+}
+
+.vitamui-snack-bar-container {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    > i {
+        color: white;
+        opacity: 0.5;
+        font-size: 36px;
+    }
+}
+
+.vitamui-snack-bar-content {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    vertical-align: middle;
+
+    > i.vitamui-icon {
+        color: white;
+        margin-right: 10px;
+    }
+
+    a {
+        color: white;
+        font-weight: bold;
+    }
+}
+
+.download-link {
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: underline;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 15px;
+}

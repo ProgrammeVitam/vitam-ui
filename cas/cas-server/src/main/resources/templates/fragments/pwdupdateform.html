@@ -1,0 +1,128 @@
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var policyPattern = /*[[${policyPattern}]]*/;
+
+    /*]]>*/
+</script>
+
+	<header>
+		<p th:utext="${expiredPass} ? #{screen.expiredpass.heading} : #{screen.mustchangepass.heading}">
+			Change Password Heading
+		</p><br><br>
+	</header>
+	<form id="passwordManagementForm" th:if="${passwordManagementEnabled}" method="post" th:object="${password}" class="password-init">
+
+       <div class="form-control w85">
+
+           <input required class="required"
+               type="password"
+               name="password" placeholder="Nouveau mot de passe *"
+               id="password"
+               size="25"
+               tabindex="2" oninput="checkRules();"
+               th:accesskey="#{screen.welcome.label.password.accesskey}"
+               th:field="*{password}">
+       </div>
+       <br>
+       <div class="form-control flex">
+
+           <input required class="required"
+               type="password"
+               name="confirmedPassword" placeholder="Confirmer le nouveau mot de passe *"
+               id="confirmedPassword"
+               size="25"
+               tabindex="2" oninput="checkRules();"
+               th:accesskey="#{screen.welcome.label.password.accesskey}"
+               th:field="*{confirmedPassword}"/>
+           <span id="capslock-on" style="display:none;">
+               <p>
+                   <i class="fa fa-exclamation-circle"></i>
+                   <span th:utext="#{screen.capslock.on}"/>
+               </p>
+           </span>
+	       <button type="submit" class="vitamui-primary" name="submit" id="submit" accesskey="s" th:value="#{screen.pm.button.submit}" disabled="true">
+	       OK
+	       </button>
+		</div>
+
+        <br>
+        <div th:if="${#fields.hasErrors('*')}">
+			<span th:each="err : ${#fields.errors('*')}" th:utext="${err}">Error text</span>
+        </div>
+
+		<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+		<input type="hidden" name="_eventId" value="submit"/>
+
+
+		<p th:unless="${passwordManagementEnabled}" th:utext="${expiredPass} ? #{screen.expiredpass.message} : #{screen.mustchangepass.message}">
+ 			Expired/Must Change Password text
+	    </p>
+
+	</form>
+
+	<div class="helper password-helper">
+		<span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
+		<ul>
+			<li id="security-one">
+				<span th:utext="#{screen.pm.init.security.one}"></span>
+				<i class="material-icons">check</i>
+			</li>
+			<li id="security-two">
+				<span th:utext="#{screen.pm.init.security.two}"></span>
+				<i class="material-icons">check</i>
+			</li>
+			<li id="security-three">
+				<span th:utext="#{screen.pm.init.security.three}"></span>
+				<i class="material-icons">check</i>
+			</li>
+			<li id="security-four">
+				<span th:utext="#{screen.pm.init.security.four}"></span>
+				<i class="material-icons">check</i>
+			</li>
+		</ul>
+	</div>
+
+<script>
+        function checkRules() {
+
+        	var password = $("#password").val();
+        	var confirmPassword = $("#confirmedPassword").val();
+
+			checkLength(password);
+			checkLowerAndUpperCase(password);
+			checkContainsDigitsOrSpecialCharacters(password);
+			checkPasswordAndConfirmPasswordMatches(password,confirmPassword);
+        }
+
+        function checkLength(password) {
+        	checkRule(password.length > 7, "#security-one");
+        }
+
+        function checkLowerAndUpperCase(password) {
+			checkRule(password.toUpperCase() != password && password.toLowerCase() != password,"#security-two");
+        }
+
+        function checkContainsDigitsOrSpecialCharacters(password) {
+       		var format = /[$@!%*#?&=\-\/:;\(\)"\.,\?!'\[\]{}^\+\=_\\\|~<>`]/;
+        	var valid = hasNumber(password) && format.test(password);
+        	checkRule(valid, "#security-three");
+        }
+
+        function checkPasswordAndConfirmPasswordMatches(password, confirmPassword) {
+        	checkRule(password == confirmPassword && password.length > 0,"#security-four");
+        }
+
+        function checkRule(valid, liToVerify) {
+        	if(valid) {
+        		$(liToVerify).addClass("valid");
+        	} else {
+        		$(liToVerify).removeClass("valid");
+        	}
+        }
+
+        function hasNumber(myString) {
+        	return /\d/.test(myString);
+        }
+
+</script>

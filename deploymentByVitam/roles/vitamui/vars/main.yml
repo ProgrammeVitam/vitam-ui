@@ -1,0 +1,14 @@
+---
+
+# vars file for common
+vitamui_folder_app: "{{ vitamui_defaults.folder.root_path }}/app/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_bin: "{{ vitamui_defaults.folder.root_path }}/bin/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_conf: "{{ vitamui_defaults.folder.root_path }}/conf/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_data: "{{ vitamui_defaults.folder.root_path }}/data/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_lib: "{{ vitamui_defaults.folder.root_path }}/lib/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_log: "{{ vitamui_defaults.folder.root_path }}/log/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_scripts: "{{ vitamui_defaults.folder.root_path }}/script/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_tmp: "{{ vitamui_defaults.folder.root_path }}/tmp/{{ vitamui_struct.vitamui_component }}"
+
+vitamui_conf_consul: "{{ consul.conf_folder }}"
+service_consul: "{{ consul.service_name }}"

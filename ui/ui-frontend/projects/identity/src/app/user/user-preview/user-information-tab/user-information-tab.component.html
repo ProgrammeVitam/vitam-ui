@@ -1,0 +1,166 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-10 form-control">
+      <p *ngIf="user?.status === 'ENABLED'" i18n="user info tab enabled@@userInfoTabEnabled">Compte actif</p>
+      <p *ngIf="user?.status === 'DISABLED'" i18n="user info tab disabled@@userInfoTabDisabled">Compte désactivé
+      </p>
+      <p class="status-warning" *ngIf="user?.status === 'BLOCKED'" i18n="user info tab blocked@@userInfoTabBlocked">
+        Compte bloqué <ng-container *ngIf="user?.lastConnection">(depuis le {{ user?.lastConnection | date: 'medium' }})
+        </ng-container>
+      </p>
+      <p class="status-warning" *ngIf="user?.status === 'ANONYM'" i18n="user info tab anonym@@userInfoTabAnonym">
+        Compte effacé</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-8 form-control">
+      <vitamui-common-editable-input formControlName="identifier" label="Identifiant"
+        i18n-label="user info tab identifier@@UserInfoTabIdentifier" [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator">
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="lastname" [validator]="form?.get('lastname')?.validator" label="Nom"
+        i18n-label="user info tab lastname@@UserInfoTabLastname">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="firstname" [validator]="form?.get('firstname')?.validator" label="Prénom"
+        i18n-label="user info tab firstname@@UserInfoTabFirstname">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-email-input formControlName="email" [validator]="form?.get('email')?.validator"
+        [asyncValidator]="form?.get('email')?.asyncValidator" [domains]="clientEmailDomains" label="Adresse E-mail"
+        i18n-label="user info tab email@@UserInfoTabEmail">
+        <vitamui-common-field-error errorKey="email" i18n="Required field error hint@@formErrorRequiredField">Champ requis
+        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueEmail" i18n="Existing email error hint@@formErrorExistingEmail">E-mail
+          déjà existant</vitamui-common-field-error>
+      </vitamui-common-editable-email-input>
+    </div>
+  </div>
+
+  <ng-container formGroupName="address">
+    <div class="row">
+      <div class="col-12 form-control">
+        <vitamui-common-editable-input formControlName="street" maxlength="250" label="N° et nom de rue"
+          i18n-label="Street number and name Name@@userPreviewLabelStreetNumberName"
+          [validator]="form?.get('address.street')?.validator"
+          [asyncValidator]="form?.get('address.street')?.asyncValidator">
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+            requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input formControlName="zipCode" maxlength="10" label="Code postal"
+          i18n-label="User Zip Code@@userPreviewLabelZipCode" [validator]="form?.get('address.zipCode')?.validator"
+          [asyncValidator]="form?.get('address.zipCode')?.asyncValidator">
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+            requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input formControlName="city" maxlength="100" label="Ville"
+          i18n-label="User city@@userPreviewLabelCity" [validator]="form?.get('address.city')?.validator"
+          [asyncValidator]="form?.get('address.city')?.asyncValidator">
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+            requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-select formControlName="country" label="Pays" i18n-label="User country@@userPreviewLabelCountry"
+          [validator]="form?.get('address.country')?.validator"
+          [asyncValidator]="form?.get('address.country')?.asyncValidator">
+          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="DK" content="Danemark"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="ES" content="Espagne"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="IT" content="Italie"></vitamui-common-editable-option>
+        </vitamui-common-editable-select>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="level" label="Niveau du groupe"
+        i18n-label="user info tab userGroupTag@@UserInfoTabUserGroupTag"></vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-select formControlName="language" label="Langue de l'interface"
+        i18n-label="user info tab language@@UserInfoTabLanguage">
+        <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish">
+        </vitamui-common-editable-option>
+        <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench">
+        </vitamui-common-editable-option>
+      </vitamui-common-editable-select>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="mobile" [validator]="form?.get('mobile')?.validator"
+        label="Numéro de mobile" i18n-label="user info tab mobile@@UserInfoTabMobile">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern" i18n="Mobile format error hint@@mobileFormatError">Format
+          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator" label="Numéro de fixe"
+        i18n-label="user info tab phone@@UserInfoTabPhone">
+        <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format
+          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="type" i18n="userType label@@userCreateTypeInputLabel">
+      Type
+    </label>
+    <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+      <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">
+        Nominatif</mat-button-toggle>
+      <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-slide-toggle formControlName="subrogeable" i18n="Subrogate Account@@accountSubrogableToggleLabel">
+        Compte subrogeable par le support</vitamui-common-slide-toggle>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-slide-toggle formControlName="otp" [matTooltipDisabled]="!showTooltip"
+        matTooltip="Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile"
+        i18n-matTooltip="Activate otp info hint@@fillMobileForOtpActivation" matTooltipClass="vitamui-tooltip"
+        i18n="Two steps validation identity@@userTwoStepsValidation">Validation en deux étapes
+      </vitamui-common-slide-toggle>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,6 @@
+---
+# handlers file for vitamui.iam-internal
+- name: restart iam-internal service
+  service:
+    name: vitamui-iam-internal
+    state: restarted

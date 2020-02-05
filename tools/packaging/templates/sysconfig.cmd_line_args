@@ -1,0 +1,1 @@
+CMD_LINE_ARGS=-Dvitam.config.folder="/vitamui/conf/__NAME__/" -Dvitamui.templates.folder="/vitamui/conf/__NAME__/templates/" -jar "/vitamui/app/__NAME__/__JAR_FILE__" --spring.config.additional-location="/vitamui/conf/__NAME__/application.yml"

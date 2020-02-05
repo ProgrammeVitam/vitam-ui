@@ -1,0 +1,28 @@
+debug: false
+
+spring:
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: security-internal
+  identityServerId: 1
+
+server:
+  port: 8084
+management:
+  server:
+    address: localhost
+    port: 8184
+    ssl:
+      enabled: false
+
+logging.level.fr.gouv.vitamui: DEBUG

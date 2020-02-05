@@ -1,0 +1,28 @@
+table {
+    width: 100%;
+
+    th {
+        width: 50%;
+        text-align: left;
+    }
+
+    td {
+        width: 50%;
+        vertical-align: top;
+        padding-top: 10px;
+    }
+
+    ul {
+        padding: 0;
+        align-items: flex-start;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        li {
+            width: 250px;
+        }
+    }
+}

@@ -1,0 +1,53 @@
+debug: false
+
+spring:
+  profiles:
+    active: swagger
+
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: iam-external
+  identityServerId: 1
+
+server:
+  host:
+  port: 8083
+  ssl:
+    key-store: src/main/config/iam-external.jks
+    key-store-password: jkspasswd
+    key-password: jkspasswd
+    trust-store: src/main/config/truststore.jks
+    trust-store-password: jkspasswd
+    client-auth: need
+management:
+  server:
+    address: localhost
+    port: 8183
+    ssl:
+      enabled: false
+
+iam-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    fr.gouv.vitamui.iam.security: DEBUG
+    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

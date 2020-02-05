@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  mongo-dev:
+    image: mongo:4.0.6
+    container_name: vitamui-mongo
+    hostname: vitamui-mongo
+#    environment:
+        # provide your credentials here
+#        - MONGO_INITDB_ROOT_USERNAME=root
+#        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+    ports:
+        # 27018 is selected in order to avoid a conflict with Vitam docker instance
+      - "27018:27018"
+    volumes:
+        # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
+      - "$PWD/mongo-entrypoint/:/vitamui/scripts/mongo/data"
+      - "$PWD/replica-set/:/vitamui/scripts/mongo/replica-set"
+
+    # no --auth is needed here as presence of username and password add this option automatically
+    command: mongod --replSet "rs0" --port=27018

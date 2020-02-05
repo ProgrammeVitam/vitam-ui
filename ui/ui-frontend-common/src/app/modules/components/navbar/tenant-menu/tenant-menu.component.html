@@ -1,0 +1,5 @@
+<button class="vitamui-menu-button" [disabled]="tenantMenuService.tenants?.length <= 1" (click)="openTenantMenu()">
+  <i class="vitamui-icon vitamui-icon-safe"></i>
+  <span *ngIf="tenantMenuService.activeTenantIdentifier">{{ tenantMenuService.activeTenant.name }}</span>
+  <span *ngIf="!tenantMenuService.activeTenantIdentifier" i18n="@@menuTenant">Coffres</span>
+</button>

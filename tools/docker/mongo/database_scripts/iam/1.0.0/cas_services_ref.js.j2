@@ -1,0 +1,41 @@
+use cas;
+
+print("START cas_services_ref.js");
+
+db.services.insert({
+	"_id": NumberInt(1),
+	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"serviceId": "{{ cas_services_configs.ui_portal.serviceId }}",
+	"name": "{{ cas_services_configs.ui_portal.name }}",
+	"logoutType" : "{{ cas_services_configs.ui_portal.logoutType }}",
+	"logoutUrl": "{{ cas_services_configs.ui_portal.logoutUrl }}",
+	"attributeReleasePolicy": {
+  		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : NumberInt(2),
+	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"serviceId": "{{ cas_services_configs.ui_identity.serviceId }}",
+	"name": "{{ cas_services_configs.ui_identity.name }}",
+	"logoutType" : "{{ cas_services_configs.ui_identity.logoutType }}",
+	"logoutUrl": "{{ cas_services_configs.ui_identity.logoutUrl }}",
+	"attributeReleasePolicy": {
+  		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+db.services.insert({
+	"_id" : NumberInt(3),
+	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"serviceId": "{{ cas_services_configs.ui_identity_admin.serviceId }}",
+	"name": "{{ cas_services_configs.ui_identity_admin.name }}",
+	"logoutType" : "{{ cas_services_configs.ui_identity_admin.logoutType }}",
+	"logoutUrl": "{{ cas_services_configs.ui_identity_admin.logoutUrl }}",
+	"attributeReleasePolicy": {
+  		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
+print("END cas_services_ref.js");

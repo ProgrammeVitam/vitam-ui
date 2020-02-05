@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>iam-security</artifactId>
+	<packaging>jar</packaging>
+	<name>VITAMUI Iam Security</name>
+	<description>VITAMUI Iam Security</description>
+
+	<parent>
+		<groupId>fr.gouv.vitamui</groupId>
+		<artifactId>api-iam</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- VITAMUI -->
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-internal-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>security-client</artifactId>
+		</dependency>
+
+		<!-- VITAM -->
+		<dependency>
+			<groupId>fr.gouv.vitam</groupId>
+			<artifactId>common-public</artifactId>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+
+		<!-- PAC4J -->
+		<dependency>
+			<groupId>org.pac4j</groupId>
+			<artifactId>pac4j-saml</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- UTIL -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-json</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Documentation -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
+
+		<!-- TEST -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-external-client</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-test</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,26 @@
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START security.populate_certificates_ref.js");
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_identity"]|first }}/ui-identity.pem', 'ui_identity_context') }}
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_portal"]|first }}/ui-portal.pem', 'ui_portal_context') }}
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_cas_server"]|first }}/cas-server.pem', 'cas_context') }}
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_identity_admin"]|first }}/ui-identity-admin.pem', 'ui_admin_identity_context') }}
+
+print("END security.populate_certificates_ref.js");

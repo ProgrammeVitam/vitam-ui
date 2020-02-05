@@ -1,0 +1,49 @@
+{
+  "data_dir": "{{ consul_folder_data }}",
+  "node_name": "{{ ansible_hostname }}",
+  "log_level": "INFO",
+  "enable_syslog": true,
+  "advertise_addr": "{{ hostvars[inventory_hostname][consul.network] }}",
+  "enable_script_checks": true,
+
+
+  {% if inventory_hostname in groups['hosts_vitamui_consul_server'] %}
+
+  {% if consul_remote_sites is defined %}
+    {% if consul_remote_sites is sequence %}
+      {% if consul_remote_sites|length > 0 %}
+      "retry_join_wan": [ {% for item in consul_remote_sites %}{% for address_wan in item.wan %}"{{ address_wan }}"{% if not loop.last %},{% endif %}{% endfor %}{% if not loop.last %},{% endif %}{% endfor %} ],
+  "translate_wan_addrs": true,
+  {% endif %}{% endif %}{% endif %}
+
+  "bootstrap_expect": {{ groups['hosts_vitamui_consul_server']|length }},
+  "server": true,
+  "ui": true,
+  "addresses" : {
+      "http": "{{ ip_admin }}"
+  },
+  {% endif %}
+  "bind_addr": "{{ hostvars[inventory_hostname][consul.network] }}",
+{% if (dns_servers|length > 0) and ("" not in dns_servers) %}
+  "recursors": [ "{{ dns_servers|join('", "') }}" ],
+{% endif %}
+  "domain": "consul",
+  "datacenter": "{{ vitam_site_name }}",
+  "retry_join": [ {% for item in groups['hosts_vitamui_consul_server'] %}"{{ hostvars[item][consul.network] }}"{% if not loop.last %},{% endif %}{% endfor %} ],
+  "retry_interval": "{{ consul.retry_interval }}s",
+  "enable_syslog": true,
+  "disable_remote_exec": true,
+  "disable_update_check": true,
+  "encrypt": "{{ consul_encrypt }}",
+  "ports": {
+    "dns" : 53
+  },
+  "checks" : [
+    {
+        "name": "Check Consul DNS resolution for node",
+        "args": ["/usr/bin/getent", "ahostsv4", "{{ ansible_hostname }}.node.{{ consul_domain }}"],
+        "interval": "{{ consul.check_internal }}s",
+        "timeout": "{{ consul.check_timeout }}s"
+      }
+  ]
+}

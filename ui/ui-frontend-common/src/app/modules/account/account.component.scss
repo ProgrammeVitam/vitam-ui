@@ -1,0 +1,23 @@
+@import '../../../sass/variables/colors';
+
+h2 {
+    display: flex;
+    align-items: center;
+
+    i {
+        margin-right: 15px;
+    }
+}
+
+.vitamui-header {
+    background-image: url('../../../assets/account-header-bg.jpg');
+}
+
+.div-btn {
+    display: flex;
+    align-items: center;
+    margin-bottom: 47px;
+}
+.btn-header {
+    margin-right: 20px;
+}

@@ -1,0 +1,35 @@
+- name: Execute commons tasks before running any play
+  import_playbook: ../commons.yml
+  tags:
+    - always
+
+
+- hosts: "{{ target | default('backup') }}"
+  gather_facts: true
+
+  pre_tasks:
+    - include_vars: "{{ inventory_dir }}/overrides.yml"
+      tags: always
+
+  tasks:
+
+    - name: Init backup directory
+      file:
+        path: "{{ backup.local_dir }}"
+        state: directory
+        owner: "{{ backup.local_dir_owner }}"
+        group: "{{ backup.local_dir_group }}"
+
+    - name: Install nfs client needed package
+      yum:
+        name: nfs-utils
+        state: present
+
+    - name: Set backup mountpoint
+      mount:
+        path: "{{ backup.local_dir }}"
+        src: "{{ backup.nfs_host }}:{{ backup.nfs_export }}"
+        fstype: nfs
+        state: mounted
+        boot: yes
+

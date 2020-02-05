@@ -1,0 +1,42 @@
+<form [formGroup]="graphicIdentityForm">
+  <div class="content">
+    <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
+
+    <div class="form-group">
+      <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher le logo du client</vitamui-common-slide-toggle>
+    </div>
+
+    <div class="d-flex">
+      <div class="upload-text">
+        <div class="upload" i18n="Customer graphical identity upload label@@customerGraphicalIdentityUploadLabel"><span class="underline" (click)="addLogo()">Sélectionner</span> le logo du client</div>
+        <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max 280px * 100px)</div>
+      </div>
+      <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
+        vitamuiDragAndDrop
+        (fileToUploadEmitter)="onImageDropped($event)"
+        (fileDragOverEmitter)="onImageDragOver($event)"
+        (fileDragLeaveEmitter)="onImageDragLeave($event)">
+        <div *ngIf="logoUrl && !imageUrl && hasCustomGraphicIdentity" class="image-container">
+          <img class="logo-image" [src]="logoUrl"/>
+        </div>
+        <div *ngIf="imageUrl" class="image-container">
+          <img class="logo-image" [src]="imageUrl"/>
+        </div>
+        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)">
+        <div class="drop-area">
+          <p *ngIf="(!imageUrl && !logoUrl) || !hasCustomGraphicIdentity" class="logo-drop">
+            ou faire glisser le logo<br>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="error-message" *ngIf="hasError">
+      {{ message }}
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary" [disabled]="!isGraphicIdentityFormValid()" i18n="Update customer graphic identity@@updateCustomerGraphicIdentityButton" (click)="updateGraphicIdentity()">Valider</button>
+      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+    </div>
+</div>
+</form>

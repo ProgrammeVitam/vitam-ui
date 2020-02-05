@@ -1,0 +1,64 @@
+debug: false
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  jmx:
+    default-domain: test-app # Need to change endpoints bean name when there is multiple instance of spring boot
+  cloud:
+    consul:
+      discovery:
+        enabled: false
+        register: false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+server-identity:
+  identityName: vitamui
+  identityRole: vitam-vitamui-test-app
+  identityServerId: 1
+
+vitam-ingest-client:
+  config-path: "@project.build.testOutputDirectory@/"
+  type: "MOCK"
+
+vitam-access-client:
+  config-path: "@project.build.testOutputDirectory@/"
+  type: "PRODUCTION"
+
+rest-client1:
+  server-host: restapp1.service.consul
+  server-port: 12345678
+  secure: true
+  ssl-configuration:
+    keystore:
+      key-path: "@project.build.testOutputDirectory@/keystore_rest-app.p12"
+      key-password: azerty
+    truststore:
+      key-path: "@project.build.testOutputDirectory@/truststore_rest-app.jks"
+      key-password: azerty
+    hostname-verification: true
+
+rest-client2:
+  server-host: restapp2.service.consul
+  server-port: 87654321
+  secure: false
+
+http-pool:
+  max-total: 500
+  max-per-route: 50
+  host-configurations:
+  - scheme: http
+    host: localhost
+    port: 12345678
+    max-per-route: 20
+  - scheme: https
+    host: localhost
+    port: 87654321
+    max-per-route: 10
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    fr.gouv.vitam: DEBUG

@@ -1,0 +1,22 @@
+Host *
+    ForwardAgent yes
+    # Deativate SSH IP checking (useful when your server DNS changes)
+    CheckHostIP no
+    # Get host entry in clear so it's easier to remove a host from the host key checking
+    HashKnownHosts no
+    # To correct lattern for the archivecopoc we don"t use host key checking
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    # Easily for
+    NoHostAuthenticationForLocalhost yes
+    #
+    HostKeyAlgorithms ssh-rsa
+
+
+Host bastion
+    Hostname 192.168.33.10
+    User  vitamuiroot
+    IdentityFile ./vagrant/ssh/vitamuiroot_rsa
+
+Host
+    ProxyJump bastion

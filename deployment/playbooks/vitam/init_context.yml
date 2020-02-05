@@ -1,0 +1,29 @@
+#
+# Role that create vitam customers context.
+
+#
+# "vitam_contexts_config" : Configuration in environment/security.yml
+#
+# By default, all entries in vitam_contexts_config will be processed.
+# To process only one entry, call playbook wit extra parameter  -e security_config=[CTX_NAME].
+#
+#
+
+- hosts: localhost
+  gather_facts: false
+  # Preload security vars:
+  pre_tasks:
+    - include_vars: "{{ inventory_dir }}/security.yml"
+      tags: always
+
+  tasks:
+    - include_role:
+        name: vitam/init_contexts
+      vars:
+        ctx_name: "{{ item.key }}"
+        ctx: "{{ item.value }}"
+      with_dict: "{{ vitam_contexts_config }}"
+      # Filter to use only one key of the dict if precised in cmd line with -e securiy_config=[CONF_ID]
+      when:  security_config is undefined or (security_config is defined and security_config == ctx_name)
+      tags:
+        - fstemplate

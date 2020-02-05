@@ -1,0 +1,19 @@
+---
+# defaults file for vitamui-nginx-proxy
+vitamui_nginx_proxy_packages:
+  - name: vitamui-nginx
+    version: "{{ vitamui_version }}"
+
+vitamui_nginx_proxy_user: vitamui
+vitamui_nginx_proxy_group: vitamui
+
+vitamui_nginx_proxy_port: 80
+
+vitamui_nginx_proxy_conf_dir:  /vitamui/conf/nginx
+vitamui_nginx_proxy_vhosts_conf_dir:  "{{ vitamui_nginx_proxy_conf_dir }}/conf.d"
+vitamui_nginx_proxy_log_dir:   /vitamui/log/nginx
+vitamui_nginx_proxy_data_dir:  /vitamui/data/nginx
+vitamui_nginx_proxy_run_dir:   /vitamui/run/nginx
+vitamui_nginx_proxy_tmp_dir:  /vitamui/tmp/nginx
+
+

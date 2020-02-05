@@ -1,0 +1,55 @@
+[hosts]
+
+[hosts:children]
+vitamui
+nginx
+hosts-consul-server # either this way or include another inventory...
+
+[hosts-consul-server]
+# put here vitam consul servers, if this way...
+
+[nginx]
+# put list
+
+[vitamui:children]
+zone-data
+zone-admin
+zone-internal
+zone-external
+zone-front
+
+[zone-data: children]
+mongod
+
+[zone-internal:children]
+iam_internal
+
+[zone-external:children]
+iam_external
+
+[zone-admin:children]
+mongo-express
+logstash
+
+[zone-front:children]
+portal
+
+[mongod]
+# put list here
+
+[mongo-express]
+# put list here
+
+[logstash]
+# put list here
+
+[iam_external]
+# put list here
+
+[iam_internal]
+# put list here
+
+[portal]
+# put list here
+
+

@@ -1,0 +1,19 @@
+.mat-menu-panel.nav-menu {
+    border-radius: 10px;
+    margin-top: 4px;
+
+    .mat-menu-item {
+        font-size: 16px;
+        height: 60px;
+        line-height: 60px;
+    }
+}
+
+.search.mat-autocomplete-panel {
+    border-radius: 43.5px;
+    margin-top: 10px;
+
+    .mat-option {
+        padding: 0px 36px;
+    }
+}

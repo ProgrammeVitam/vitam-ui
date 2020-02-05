@@ -1,0 +1,53 @@
+# This configuration file indicates profiles , profiles groups and users automatically create when a new customer or customer tenant is created.
+# Put as many as you want following the template given
+customer-init:
+  # Default profiles for each customer created
+  profiles:
+  #- name: profileName
+  #  description: desc
+  #  level: 1
+  #  app-name: app
+  #  roles:
+  #    - role_1
+  #    - role_2
+  #    - role_3
+  #  ...
+  # Default profiles groups for each customer created
+  profiles-groups:
+  #- name: group1
+  #   description: desc
+  #   level: 2
+  #   profiles:
+  #     - profileName
+  #  ...
+  # Default users for each customer created
+  users:
+  #- last-name: lastName
+  #   first-name: firstName
+  #   profiles-group-name: group1
+  #   level: 1
+  #   email-prefix: a@mail.com
+
+  # Default profiles for each tenant created
+  tenant-profiles:
+  #- name: profileName
+  #  description: desc
+  #  level: 1
+  #  app-name: app
+  #  roles:
+  #   - role_1
+  #   - role_2
+  #   - role_3
+  #  ...
+
+  # Other Default profiles for admin group
+  admin-profiles:
+  #- name: profileName
+  #  description: desc
+  #  level: 1
+  #  app-name: app
+  #  roles:
+  #   - role_1
+  #   - role_2
+  #   - role_3
+  #  ...

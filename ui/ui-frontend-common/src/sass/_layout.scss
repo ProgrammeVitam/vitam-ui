@@ -1,0 +1,70 @@
+.vitamui-header {
+    background-image: url('/assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+
+    .vitamui-container {
+        padding-bottom: 62px;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+        text-align: right;
+        justify-content: space-between;
+
+        .btn {
+            margin-left: 20px;
+        }
+
+        .actions {
+            display: flex;
+        }
+    }
+
+    > h2 {
+        // TODO Rename this variable in angular-commons
+        @include login-title;
+        margin-top: 67.5px;
+
+        img {
+            width: 37px;
+            vertical-align: middle;
+            margin-right: 17px;
+        }
+    }
+}
+
+.vitamui-container {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.vitamui-body {
+    padding-top: 25px;
+    min-height: 700px;
+}
+
+.bg-fingerprint {
+    z-index: -2;
+    position: fixed;
+    bottom: -70px;
+    right: -20px;
+    width: 700px;
+}
+
+.vitamui-header > .vitamui-container > h2 {
+    // TODO Rename this variable in angular-commons
+    @include login-title;
+    margin-top: 67.5px;
+    color: $charcoal-grey;
+    font-weight: 500;
+
+    img {
+        width: 37px;
+        vertical-align: middle;
+        margin-right: 17px;
+    }
+}

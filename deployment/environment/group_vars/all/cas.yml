@@ -1,0 +1,22 @@
+cas_services_configs:
+
+  ui_portal:
+    _id: "NumberInt(1)"
+    serviceId: "^https://{{ vitamui_services.ui_portal.server_name }}.*"
+    name: "Portal Application"
+    logoutType : "FRONT_CHANNEL"
+    logoutUrl: "https://{{ vitamui_services.ui_portal.server_name }}/logout"
+
+  ui_identity:
+    _id: "NumberInt(2)"
+    serviceId: "^https://{{ vitamui_services.ui_identity.server_name }}.*"
+    name: "Identity Access Management Application"
+    logoutType : "FRONT_CHANNEL"
+    logoutUrl: "https://{{ vitamui_services.ui_identity.server_name }}/logout"
+
+  ui_identity_admin:
+    _id: "NumberInt(5)"
+    serviceId: "^https://{{ vitamui_services.ui_identity_admin.server_name }}.*"
+    name: "Identity Admin Access Management Application"
+    logoutType : "FRONT_CHANNEL"
+    logoutUrl: "https://{{ vitamui_services.ui_identity_admin.server_name }}/logout"

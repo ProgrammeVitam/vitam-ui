@@ -1,0 +1,46 @@
+#logging.level.org.springframework: DEBUG
+
+spring:
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+  api:
+    name: API IAM (Identity Access Management)
+    description: This API is used to manage customers, tenants, identity providers, users with their profiles and their profiles groups. This is for an internal use only.
+    version: v1
+
+login.url: http://cas/login
+
+security:
+  host: xxx
+  port: 8080
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+spring.data.mongodb.port: 0
+
+login.attempts.maximum.failures: 5
+login.attempts.time.interval: 20
+
+token.ttl: 15
+token.additional.ttl: 15
+subrogaton.token.ttl: 165
+api.token.ttl: 480
+generic.users.subrogation.ttl: 180
+subrogation.ttl: 30
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false
+
+customer.init.config.file: src/test/resources/customer-init.yml
+
+cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+

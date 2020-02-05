@@ -1,0 +1,157 @@
+---
+####################
+# PRECOMPUTE LOCALLY FILES BEFORE SENDING IF DEBUG NEEDED
+####################
+
+- name: "Create directory where templates will be dumped {{ tmp_dir }}/vitam_contexts/{{ ctx_name }}"
+  file:
+    path: "{{ tmp_dir }}/vitam_contexts/{{ ctx_name }}"
+    state: directory
+    recurse: yes
+  delegate_to: localhost
+  become: false
+  # Execute only if tag fstemplate is given to ansible command line
+  tags:
+    - never
+    - fstemplate
+
+- name: "Dump security_profile templates sent for {{ ctx.security_profile }}"
+  copy:
+    content:  "{{lookup('template', templates_dir + 'tools/vitam_contexts/security_profile.json.j2')}}"
+    dest: "{{ tmp_dir }}/vitam_contexts/{{ ctx_name }}/security_profile.json"
+  delegate_to: localhost
+  become: false
+  # Execute only if tag fstemplate is given to ansible command line
+  tags:
+    - never
+    - fstemplate
+
+- name: "Dump context templates sent for {{ ctx.context }}"
+  copy:
+    content: "{{lookup('template', templates_dir + 'tools/vitam_contexts/context.json.j2')}}"
+    dest: "{{ tmp_dir }}/vitam_contexts/{{ ctx_name }}/context.json"
+  delegate_to: localhost
+  become: false
+  # Execute only if tag fstemplate is given to ansible command line
+  tags:
+    - never
+    - fstemplate
+
+- name: "Dump certificat sent for {{ ctx.context }}"
+  copy:
+    content: "{{ lookup('file', ctx.certificate_file) | b64encode }}"
+    dest: "{{ tmp_dir }}/vitam_contexts/{{ ctx_name }}/certificate"
+  delegate_to: localhost
+  become: false
+  # Execute only if tag fstemplate is given to ansible command line
+  tags:
+    - never
+    - fstemplate
+
+
+####################
+# DELETE CONTEXT IF EXIST
+# Need to be done before SecurityProfile
+####################
+
+- name: Check if Context already exist
+  uri:
+    method: GET
+    body: '{ "$query" : { "$eq" : { "Identifier": "{{ ctx.context }}" } } }'
+    status_code: 200
+    url: "{{ functional_adm_url }}/v1/admin/contexts"
+    headers:
+      X-Tenant-Id: "{{vitam_tenant_admin}}"
+    body_format: json
+  register: functional_adm_response
+  run_once: true
+
+- name: Modify json & convert to dict...
+  set_fact:
+    functional_adm_json: "{{ functional_adm_response.json |regex_replace('\\$hits', 'hits') }}"
+  run_once: true
+
+- name: Delete Context from functional-administration
+  uri:
+    method: DELETE
+    status_code: 204
+    url: "{{ functional_adm_url }}/v1/admin/context/{{ ctx.context }}"
+    body_format: "json"
+    headers:
+      X-Tenant-Id: "{{vitam_tenant_admin}}"
+  run_once: true
+  when: functional_adm_json.hits.total != 0
+
+####################
+# SecurityProfile
+####################
+
+- name: Check if SecurityProfile already exist
+  uri:
+    method: GET
+    body: '{ "$query" : { "$eq" : { "Identifier": "{{ ctx.security_profile }}" } } }'
+    status_code: 200
+    url: "{{ functional_adm_url }}/v1/admin/securityprofiles"
+    headers:
+      X-Tenant-Id: "{{vitam_tenant_admin}}"
+    body_format: json
+  register: functional_adm_response
+  run_once: true
+
+- name: Modify json & convert to dict...
+  set_fact:
+    functional_adm_json: "{{ functional_adm_response.json |regex_replace('\\$hits', 'hits') }}"
+  run_once: true
+
+- name: Delete SecurityProfile from functional-administration
+  uri:
+    method: DELETE
+    status_code: 204
+    url: "{{ functional_adm_url }}/v1/admin/securityprofiles/{{  ctx.security_profile }}"
+    body_format: "json"
+    headers:
+      X-Tenant-Id: "{{ vitam_tenant_admin }}"
+  run_once: true
+  when: functional_adm_json.hits.total != 0
+
+
+
+- name: Import SecurityProfile to functional-administration
+  uri:
+    method: POST
+    body: "{{lookup('template', templates_dir + 'tools/vitam_contexts/security_profile.json.j2')}}"
+    status_code: 200,201
+    url: "{{ functional_adm_url }}/v1/admin/securityprofiles"
+    body_format: "json"
+    headers:
+      X-Tenant-Id: "{{ vitam_tenant_admin }}"
+  run_once: true
+
+###################
+# CONTEXT
+###################
+
+- name: Import Context to functional-administration
+  uri:
+    method: POST
+    body: "{{lookup('template', templates_dir + 'tools/vitam_contexts/context.json.j2')}}"
+    status_code: 200,201
+    url: "{{ functional_adm_url }}/v1/admin/contexts"
+    body_format: "json"
+    headers:
+      X-Tenant-Id: "{{vitam_tenant_admin}}"
+  run_once: true
+
+###################
+# Certificat
+###################
+
+- name: Upload context certificates into security-internal
+  uri:
+    method: POST
+    body: "{ \"contextId\" : \"{{ ctx.context }}\" , \"certificate\" : \"{{ lookup('file', ctx.certificate_file) | b64encode }}\" }"
+    status_code: 201
+    url: "{{ security_internal_url }}/v1/api/identity"
+    body_format: "json"
+  run_once: true
+

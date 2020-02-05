@@ -1,0 +1,26 @@
+kibana:
+    header_value: "reporting"
+    import_delay: 10
+    import_retries: 10
+    log:
+        baseuri: "kibana_log"
+        api_call_timeout: 120
+        groupe: "log"
+        port: 5601
+        default_index_pattern: "logstash-vitam*"
+        check_consul: 10 # in seconds
+        # default shards & replica
+        shards: 5
+        replica: 1
+        # pour index logstash-*
+        metrics:
+            shards: 5
+            replica: 1
+        # pour index metrics-vitam-*
+        logs:
+            shards: 5
+            replica: 1
+        # pour index metricbeat-*
+        metricbeat:
+            shards: 5 # must be a factor of 30
+            replica: 1

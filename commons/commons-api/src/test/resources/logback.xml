@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- Send debug messages to System.out -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- By default, encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+		<encoder>
+			<pattern>%d{ISO8601} [[%thread]] [%X{X-Request-Id}]  %-5level %logger - %replace(%caller{1..2}){'Caller\+1	 at |\n',''} : %msg %rootException%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- <appender name="FILE" class="ch.qos.logback.core.FileAppender"> -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>/tmp/vitamui/commons-api.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>30</maxHistory>
+      		<totalSizeCap>5GB</totalSizeCap>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{ISO8601} [[%thread]] [%X{X-Request-Id}] %-5level %logger - %replace(%caller{1..2}){'Caller\+1     at |\n',''} : %msg %rootException%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+		<syslogHost>192.168.111.11</syslogHost>
+		<facility>local0</facility>
+		<suffixPattern>vitamui-commons-api: %d{ISO8601} [[%thread]] [%X{X-Request-Id}] %-5level %logger - %replace(%caller{1..2}){'Caller\+1     at |\n',''} : %msg %rootException%n</suffixPattern>
+	</appender>
+
+	<!-- By default, the level of the root level is set to TRACE -->
+	<root level="ERROR">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="SYSLOG" />
+	</root>
+
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="fr.gouv.vitamui" level="INFO"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger" level="INFO"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger.debug" level="DEBUG"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger.error" level="ERROR"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger.info" level="INFO"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger.trace" level="TRACE"/>
+    <logger name="fr.gouv.vitamui.commons.api.logger.warn" level="WARN"/>
+
+</configuration>

@@ -1,0 +1,5 @@
+<button class="vitamui-menu-button" [disabled]="customers?.length <= 1" (click)="openCustomerMenu()">
+  <i class="vitamui-icon vitamui-icon-bank"></i>
+  <span *ngIf="activeCustomer">{{ activeCustomer?.label }}</span>
+  <span *ngIf="!activeCustomer" i18n="@@menuCustomer">Organisations</span>
+</button>

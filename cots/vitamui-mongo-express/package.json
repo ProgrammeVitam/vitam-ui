@@ -1,0 +1,14 @@
+{
+  "name": "vitamui-mongo-express",
+  "version": "0.1.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "mongo-express": "^0.49.0"
+  }
+}

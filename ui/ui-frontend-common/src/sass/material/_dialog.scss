@@ -1,0 +1,23 @@
+.vitamui-dialog > .mat-dialog-container {
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.vitamui-confirm-dialog > .mat-dialog-container {
+    border-radius: 20px;
+    padding: 40px 60px 30px 40px;
+
+    .mat-dialog-actions {
+        margin-bottom: 0;
+        padding-top: 30px;
+
+        button + button {
+            margin-left: 20px;
+        }
+    }
+}
+
+.error-dialog-backdrop {
+    background: url('/assets/login-bg.jpg');
+    background-size: cover;
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{screen.accountbadconfiguration.heading}">Account bad configuration View</title>
+</head>
+
+<body id="cas">
+<div layout:fragment="content">
+    <div>
+        <h2 th:utext="#{screen.accountbadconfiguration.heading}">This account has not properly configured.</h2>
+        <p th:utext="#{screen.accountbadconfiguration.message}">Please contact the system administrator to regain access.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+---
+
+- name: Ensure parent dir is OK ith correct permissions for VITAM
+  file:
+    path: "{{ vitam_defaults.folder.root_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0555
+
+# FIXME : put it in group_vars (root/root/555)
+- name: Ensure {{ vitam_defaults.folder.root_path }} sub-directories exist
+  file:
+    path: "{{ vitam_defaults.folder.root_path }}/{{ item }}"
+    owner: root
+    group: root
+    state: directory
+    mode: 0555
+  with_items:
+    - app
+    - bin
+    - conf
+    - data
+    - lib
+    - log
+    - script
+    - tmp

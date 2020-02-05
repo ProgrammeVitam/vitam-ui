@@ -1,0 +1,19 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.form-group {
+    padding-bottom: 30px;
+
+    label{
+        padding-right: 30px;
+        font-size: 15px;
+        font-weight: 500;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+    }
+}
+
+.status-warning {
+    color: $red;
+}

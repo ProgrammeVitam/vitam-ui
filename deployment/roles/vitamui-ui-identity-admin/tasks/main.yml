@@ -1,0 +1,58 @@
+---
+- name: debug ui-identity-admin
+  debug:
+    msg: Installing ui-identity-admin
+  when: debug is defined
+
+
+# use a shotcut to the current api config
+- set_fact:
+    service: "{{ vitamui_services.ui_identity_admin }}"
+  tags:
+    - fstemplate
+
+- name: "{{ service.id }} Install packages"
+  include_role:
+    name: tools/vitamui-ospackage
+  vars:
+    ospackage_banner: "{{service.id}}"
+    packages: "{{ service.packages }}"
+
+- name: Execute templating role
+  import_role:
+    name: tools/vitamui-filesystem-template
+  vars:
+    fstemplate_src_dir: "{{ playbook_dir }}/templates"
+    fstemplate_filter_pattern: "{{  service.dirs.config }}"
+    fstemplate_task_banner: "{{ service.id }}"
+    fstemplate_user_owner: "{{ service.user }}"
+    fstemplate_group_owner: "{{ service.group }}"
+    fstemplate_notify_handlers:
+      # Restart service unit
+      - name: "{{ service.service_unit }}"
+        state: restarted
+  tags:
+    - fstemplate
+
+
+- name: Start service + enabled at boot
+  service:
+    name: "{{ service.service_unit}}"
+    state: started
+    enabled: yes
+  tags:
+    - start
+
+- name: Wait for service to start
+  pause:
+    seconds: "{{ service.wait_start.delay }}"
+
+- name: Wait for service/admin port to be available
+  wait_for:
+    sleep: "{{ service.wait_start.poll_interval }}"
+    connect_timeout: "{{ service.wait_start.poll_interval}}"
+    host: "{{ ip_service }}"
+    port: "{{ service.port }}"
+    timeout: 120
+  tags:
+    - start

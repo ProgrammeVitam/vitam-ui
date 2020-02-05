@@ -1,0 +1,79 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+# --------
+# WIRELESS : put your network prefix
+# ip_prefix = "192.168.1."
+# if_name = "wlan0"
+# --------
+
+########################################################################################################################
+# VITAMUI
+########################################################################################################################
+ config.vm.define "vitamui1" do |config|
+    config.vm.hostname = "vitamui1"
+    config.vm.provider :virtualbox do |vb|
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    end
+    config.vm.box_check_update = false
+
+# --------
+# WIRELESS
+#    config.vm.network "public_network", :bridge => if_name,  ip: ip_prefix + "11"
+# --------
+
+# --------
+# WIRED CONNECTION
+    config.vm.network "private_network", ip: "192.168.33.11"
+    config.vm.network "private_network", ip: "192.168.44.11"
+# ---------
+
+    config.vm.box = "centos/7"
+    config.vm.provider "virtualbox" do |v|
+      v.memory = "2048"
+      v.gui = false
+    end
+    # Provision vm :
+    # Configuration en user vgrant
+    config.vm.provision "shell", path: "./provision/add_user.sh"
+    config.vm.provision "shell", path: "./provision/ssh_config.sh"
+    config.vm.provision "shell", path: "./provision/system_base.sh"
+    config.vm.provision "shell", path: "./provision/network.sh"
+ end
+
+
+########################################################################################################################
+# VITAM1
+########################################################################################################################
+ config.vm.define "vitam1" do |config|
+    config.vm.hostname = "vitam1"
+    config.vm.provider :virtualbox do |vb|
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+    end
+    config.vm.box_check_update = false
+# --------
+# WIRELESS
+#    config.vm.network "public_network", :bridge => if_name,  ip: ip_prefix + "10"
+# --------
+
+# --------
+# WIRED CONNECTION
+    config.vm.network "private_network", ip: "192.168.33.12"
+    config.vm.network "private_network", ip: "192.168.44.12"
+# ---------
+
+   config.vm.box = "centos/7"
+    config.vm.provider "virtualbox" do |v|
+      v.memory = "2048"
+      v.gui = false
+    end
+    # Provision vm :
+    # Configuration en user vgrant
+    config.vm.provision "shell", path: "./provision/add_user.sh"
+    config.vm.provision "shell", path: "./provision/ssh_config.sh"
+    config.vm.provision "shell", path: "./provision/system_base.sh"
+    config.vm.provision "shell", path: "./provision/network.sh"
+ end
+
+end

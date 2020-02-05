@@ -1,0 +1,33 @@
+@import 'indigo-pink.css';
+@import 'material-icons.css';
+@import 'theme';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
+@import 'material-custom';
+@import 'login';
+@import 'password-recovery';
+@import 'step-email';
+@import 'step-password';
+@import 'mfa-sms';
+
+body {
+    margin: 0;
+    color: #485053;
+    font-family: 'Roboto', sans-serif;
+    background: #f7f8fb;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.primary {
+    color: $blood-orange;
+}
+
+.picto-attention {
+  width: 31px;
+  height: 28px;
+  object-fit: contain;
+}

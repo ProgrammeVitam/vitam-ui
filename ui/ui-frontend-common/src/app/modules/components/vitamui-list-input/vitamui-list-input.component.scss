@@ -1,0 +1,72 @@
+@import '../../../../sass/variables/colors';
+
+$anim-timing: 150ms ease-out;
+
+:host {
+    width: 100%;
+    display: block;
+}
+
+mat-chip i,
+mat-chip span {
+    vertical-align: middle;
+}
+
+.list-input-control {
+    // margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+
+    .list-input-wrapper {
+        position: relative;
+        margin-right: 15px;
+        flex-grow: 1;
+
+        mat-spinner {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+        }
+    }
+}
+
+input.vitamui-input {
+    width: 100%;
+}
+
+.vitamui-chip-list {
+    margin-bottom: 20px;
+    padding-left: 34px;
+}
+
+:host.list-input-mini {
+    .list-input-control {
+        button, input {
+            height: 34px;
+            border-radius: 17px;
+        }
+
+        > span {
+            font-size: 18px;
+        }
+
+        mat-spinner {
+            right: 8px;
+            top: 8px;
+        }
+    }
+
+    .vitamui-chip-list {
+        padding-left: 27px;
+    }
+
+}
+
+.vitamui-input-errors {
+    min-height: 20px;
+}
+
+.required-marker {
+    color: $blood-orange;
+}

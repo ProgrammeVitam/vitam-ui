@@ -1,0 +1,85 @@
+@import '../variables/colors';
+
+.vitamui-button-toggle-group.mat-button-toggle-group {
+    box-shadow: none;
+    border-radius: 5px;
+    background-color: $white;
+    border: solid 1px $greeny-blue;
+
+    .mat-button-toggle {
+
+        &.cdk-focused .mat-button-toggle-focus-overlay {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mat-button-toggle-label-content {
+            color: $greeny-blue;
+            font-size: 15px;
+            padding: 0 20px;
+            line-height: 32px;
+        }
+    }
+
+    .mat-button-toggle-checked,
+    .mat-button-toggle-disabled.mat-button-toggle-checked {
+        background-color: $greeny-blue;
+
+        .mat-button-toggle-label-content {
+            color: $white;
+        }
+    }
+
+    .mat-button-toggle-disabled {
+        background-color: $white;
+        opacity: 0.4;
+    }
+}
+
+.vitamui-button-toggle-group-big {
+    &.mat-button-toggle-group-appearance-standard,
+    &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {
+        border: none;
+
+        .mat-button-toggle {
+            border: 1px solid #E4E4E4;
+            border-radius: 10px;
+            white-space: normal;
+            min-height: 80px;
+            align-items: center;
+            display: flex;
+
+            .mat-button-toggle-label-content {
+                padding: 15px 20px;
+                font-size: 18px;
+                font-weight: bold;
+                line-height: 1;
+                text-align: left;
+
+                small {
+                    font-size: 13px;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .mat-button-toggle + .mat-button-toggle {
+            border-left: 1px solid #E4E4E4;
+            margin-left: 12px;
+
+            &.mat-button-toggle-checked {
+                border-color: $greeny-blue;
+            }
+        }
+
+        .mat-button-toggle-checked {
+            background-color: $greeny-blue;
+            border-color: $greeny-blue;
+            color: white;
+
+            .mat-button-toggle-focus-overlay {
+                border-bottom: none;
+            }
+        }
+
+    }
+}

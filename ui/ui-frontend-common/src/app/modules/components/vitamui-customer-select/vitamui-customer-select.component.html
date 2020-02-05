@@ -1,0 +1,12 @@
+<img src="assets/bg-customer-select.svg" class="customer-bg"/>
+
+<div class="vitamui-header">
+  <div class="vitamui-container">
+      <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="hideTenantMenu" [hideCustomerMenu]="hideCustomerMenu" [customers]="customers" (customerSelect)="selectCustomerInNavbar($event)"></vitamui-common-navbar>
+      <h2 i18n="Application research customer label@@customerSearchLabel">
+          Mes <strong> Organisations</strong>
+      </h2>
+  </div>
+</div>
+
+<vitamui-common-customer-select-content [customers]="customers" [isModalMenu]="false"></vitamui-common-customer-select-content>

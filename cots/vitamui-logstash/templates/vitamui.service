@@ -1,0 +1,17 @@
+[Unit]
+Description=vitamui logstash service wrapper
+
+[Service]
+Type=simple
+User=vitamuidb
+Group=vitamui
+# Environnment config vars moved in vitamui/conf/logstash
+EnvironmentFile=-/vitamui/conf/logstash/sysconfig/logstash
+ExecStart=/vitamui/app/logstash/bin/logstash "--path.settings" "/vitamui/conf/logstash/"
+Restart=always
+WorkingDirectory=/
+Nice=19
+LimitNOFILE=16384
+
+[Install]
+WantedBy=multi-user.target

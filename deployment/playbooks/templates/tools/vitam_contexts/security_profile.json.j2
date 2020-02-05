@@ -1,0 +1,10 @@
+[{
+    "Identifier": "{{ ctx.security_profile }}",
+    "Name": "{{ ctx.security_profile }}",
+{% if ctx.permissions == "all" %}
+    "FullAccess": true
+{% else %}
+    "FullAccess": False,
+    "Permissions": {{ ctx.permissions }}
+{% endif %}
+}]

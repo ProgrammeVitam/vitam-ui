@@ -1,0 +1,9 @@
+---
+# defaults file for vitamui-consul
+consul_agent_packages:
+  - name: vitam-consul
+    version: "{{ vitamui_version }}"
+
+consul_encrypt: "changeme"
+consul_retry_join: 127.0.0.1
+consul_conf_dir: /vitam/conf/consul

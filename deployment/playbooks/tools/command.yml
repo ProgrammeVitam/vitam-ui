@@ -1,0 +1,51 @@
+#
+# Playbook to run a command on target pattern.
+#
+# Call with:
+#  ansible-playbook -i [HOST_FILE] playbooks/tools/command.yml -e "target=[HOST OR PATTERN]"
+#
+#  * the command to execute is given by user at prompt.
+#  * the command to execute can be templated will all vars providen by hosts file
+#  * To deactivate prompt and script command call ansible-playbook with param :
+#     -e "cmd=' ... cmd here ....  '"
+#
+#  * Once templated, commands are shown to user and a prompt ask for confirmation for running command.
+#    To automate confirmation:
+#
+#     -e "confirm=false"
+#
+#
+#
+#
+
+- hosts: "{{ target | mandatory }}"
+  vars:
+    confirm: true
+  vars_prompt:
+    - name: "cmd"
+      prompt: "Enter the shell to execute on nodes (can be templated)"
+      private: no
+
+  tasks:
+    - name: "Show command that will be executed"
+      debug:
+        msg: "{{ inventory_hostname }}$ {{ cmd }}"
+        verbosity: 0
+
+    - name: "Confirm executing command"
+      pause:
+      when: confirm
+
+    - name: "Execute command"
+      shell: "{{ cmd }}"
+      register: cmd_result
+
+    - name: "Show result"
+      debug:
+        msg: |
+          >> rc: {{ cmd_result.rc }}
+          >> stdout:
+          {{ cmd_result.stdout }}
+          >> stderr:
+          {{ cmd_result.stderr }}
+        verbosity: 0

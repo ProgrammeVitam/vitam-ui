@@ -1,0 +1,6 @@
+---
+# handlers file for vitamui.security-internal
+- name: restart security-internal service
+  service:
+    name: vitamui-security-internal
+    state: restarted
