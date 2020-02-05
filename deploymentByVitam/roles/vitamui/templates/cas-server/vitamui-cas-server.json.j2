@@ -5,7 +5,7 @@
      "port": {{ vitamui.cas_server.port_service | int }},
      "address": "{{ ip_service }}",
      "enable_tag_override": false,
-     "tags": ["cas-server"],
+     "tags": ["{{ consul_tags.split(", ")|join('", "') }}"],
      "checks": [
         {
             "notes": "cas server port opened",
