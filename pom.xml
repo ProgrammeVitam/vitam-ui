@@ -93,7 +93,7 @@
         <hibernate.validator.version>6.0.17.Final</hibernate.validator.version>
         <http.client.version>4.5.9</http.client.version>
         <http.core.version>4.4.11</http.core.version>
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.10.2</jackson.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
         <javax.ws.rs.version>2.0.1</javax.ws.rs.version>
