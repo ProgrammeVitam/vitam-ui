@@ -113,7 +113,7 @@
         https://github.com/spring-projects/spring-framework/issues/23372
         https://github.com/reactor/reactor-netty/issues/820
          -->
-        <reactor.netty.version>0.8.6.RELEASE</reactor.netty.version>
+        <reactor.netty.version>0.8.12.RELEASE</reactor.netty.version>
         <selma.version>1.0</selma.version>
         <serenity.cucumber.version>1.9.7</serenity.cucumber.version>
         <serenity.maven.plugin>1.9.19</serenity.maven.plugin>
