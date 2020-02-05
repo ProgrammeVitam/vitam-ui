@@ -1,0 +1,55 @@
+@import '../../../../sass/variables/colors';
+
+.wrapper {
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.ml-15 {
+    margin-left: 15px;
+}
+
+.fields {
+    width: 190px;
+    height: 50px;
+}
+
+.fields-inline {
+    width: 400px;
+    height: 50px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.form-colum {
+    display: flex;
+    flex-direction: column;
+}
+
+form label{
+    font-size: 13px;
+    color: $greyish-two;
+    font-weight: normal;
+}
+
+.language-select {
+    margin-left: 12px;
+    width: 200px;
+}
+
+.profile-description {
+   font-size: 15px;
+}
+
+vitamui-slide-toggle {
+    margin-left: 20px;
+}

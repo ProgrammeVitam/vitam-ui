@@ -1,0 +1,5 @@
+---
+
+mongod_memory: ""
+service_name: "{{ mongodb.service_name }}"
+consul_service: "{{ consul.service_name }}"

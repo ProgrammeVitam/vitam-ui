@@ -1,0 +1,69 @@
+<form [formGroup]="form">
+
+  <vitamui-common-slide-toggle formControlName="enabled" i18n="Enabled@@profileFormLabelEnabled"
+  matTooltip="Profil encore attribué à un groupe" [matTooltipDisabled]="profile?.groupsCount == 0" matTooltipClass="vitamui-tooltip">
+    Profil <span *ngIf="!form?.get('enabled').value">in</span>actif
+  </vitamui-common-slide-toggle>
+
+  <div class="row">
+      <div class="col-12">
+        <vitamui-common-editable-input
+          formControlName="identifier"
+          maxlength="12"
+          label="Identifiant" i18n-label="Identifier@@profileDetailLabelIdentifier"
+          [validator]="form?.get('identifier')?.validator"
+          [asyncValidator]="form?.get('identifier')?.asyncValidator"
+        >
+        </vitamui-common-editable-input>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-8">
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        label="Nom" i18n-label="Name@@profileDetailLabelName"
+        [validator]="form?.get('name')?.validator"
+        [asyncValidator]="form?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-5">
+      <div class="read-only-field">
+          <label>Niveau du profil</label>
+          <div>{{userLevel}}</div>
+      </div>
+    </div>
+    <div class="col-5" matTooltip="Ce profil est affecté à un groupe" i18n-matTooltip="@@CantModifyLevel" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
+      <vitamui-common-editable-level-input
+        formControlName="level"
+        maxlength="250"
+        [prefix]="userLevel"
+        label="Sous Niveau" i18n-label="Name@@profileDetailLabelLevel"
+        [validator]="form?.get('level')?.validator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)</vitamui-common-field-error>
+      </vitamui-common-editable-level-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <vitamui-common-editable-textarea
+        formControlName="description"
+        maxlength="250"
+        label="Description" i18n-label="Description@@profileDetailLabelDescription"
+        [validator]="form?.get('description')?.validator"
+      >
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      </vitamui-common-editable-textarea>
+    </div>
+  </div>
+</form>

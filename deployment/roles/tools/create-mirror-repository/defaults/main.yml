@@ -1,0 +1,15 @@
+---
+# defaults file for create-repository
+user_repo: vitamuiroot
+rpm_repo_directory: /vitamuiroot/repos/public
+#
+vitam_remote_repository: "https://changeme:changeme@changeme/vitam/"
+vitamui_remote_repository: "https://changeme:changeme@changeme/stable/"
+#
+cron_rule_vitam_min: "0"
+cron_rule_vitam_hour: "0"
+cron_rule_vitam_day: "*"
+#
+cron_rule_vitamui_min: "0"
+cron_rule_vitamui_hour: "0"
+cron_rule_vitamui_day: "*"

@@ -1,0 +1,70 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+$field-spacing: 15px;
+
+h3 {
+    margin-bottom: 10px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+}
+
+.form-group {
+    padding-bottom: 30px;
+}
+
+button:last-child {
+    margin-top: 20px;
+}
+
+.group-name {
+    display: flex;
+
+    h3 {
+        margin-top: 0px;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+ul.profile-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 3px;
+        background-color: #f8f8f8;
+        flex-grow: 1;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 14px;
+    }
+
+    > li:not(:last-child) {
+        margin-bottom: 15px;
+    }
+
+    .profile-details {
+        > span {
+            vertical-align: middle;
+        }
+
+        > i {
+            margin-left: 10px;
+            color: $greeny-blue;
+        }
+    }
+
+}

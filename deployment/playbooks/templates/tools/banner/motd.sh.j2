@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#Colours
+RED="\033[01;31m"
+WHITE="\033[01;37m"
+GREEN="\033[01;32m"
+
+NC="\033[00m"
+
+echo -e "${WHITE}***********************************************************************************************"
+
+figlet {{ banner_title }};
+
+echo -e "${RED}*************************************************************************************************"
+
+CPUMOD=$(cat /proc/cpuinfo | grep -m 1 -w 'model name' | awk -F: '{print $2}')
+HOSTNAME=$(uname -n)
+KERNEL=$(uname -r)
+MEMTOTAL=$(cat /proc/meminfo | grep -m 1 -w 'MemTotal' | awk -F: '{print $2}')
+MEMFREE=$(cat /proc/meminfo | grep -m 1 -w 'MemFree' | awk -F: '{print $2}')
+SWAPTOTAL=$(cat /proc/meminfo | grep -m 1 -w 'SwapTotal' | awk -F: '{print $2}')
+SWAPFREE=$(cat /proc/meminfo | grep -m 1 -w 'SwapFree' | awk -F: '{print $2}')
+
+echo -e ""
+echo -e "${WHITE} Welcome ${YELLOW}${USER} ${WHITE}"
+echo -e ""
+
+echo -e "${WHITE} Date: "`date`
+echo -e ""
+
+echo -e "${WHITE} Hostname:   ${GREEN}${HOSTNAME}"
+echo -e "${WHITE} CPU Model: ${GREEN}${CPUMOD}"
+echo -e ""
+echo -e "${WHITE} Total Memory: ${GREEN}${MEMTOTAL}"
+echo -e "${WHITE} Free Memory: ${GREEN}${MEMFREE}"
+echo -e ""
+echo -e "${WHITE} Swap Total:    ${GREEN}${SWAPTOTAL}"
+echo -e "${WHITE} Swap Free:    ${GREEN}${SWAPFREE}"
+echo -e ""
+echo -e ""
+echo -e "${WHITE} Link to the main documentation : ${GREEN}https://documentation.vitamui.com/"
+echo -e ""
+echo -e "${RED}*************************************************************************************************"
+# Reset Terminal Colour Back to Normal
+echo -e "${NC}"

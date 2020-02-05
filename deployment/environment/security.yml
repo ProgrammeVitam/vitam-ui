@@ -1,0 +1,55 @@
+---
+#
+# Vars for playbooks/vitam/init_contexts.yml
+#
+
+
+# Vitam api urls:
+functional_adm_url: "http://{{ hostvars[groups['hosts-functional-admin'][0]].ip_admin }}:{{ vitam_vars.functional_administration.port_admin }}"
+admin_external_url: "https://{{ hostvars[groups['hosts-access-external'][0]].ip_admin }}:{{ vitam_vars.accessexternal.port_service }}"
+security_internal_url: "http://{{ hostvars[groups['hosts-security-internal'][0]].ip_admin }}:{{ vitam_vars.security_internal.port_admin }}"
+security_business_url: "http://{{ hostvars[groups['hosts-security-internal'][0]].ip_admin }}:{{ vitam_vars.security_internal.port_service }}"
+
+# Vitam contexts
+vitam_contexts_config:
+  # ------ vitamui context (functional context used by
+  vitamui:
+    security_profile: "vitamui-security-profile"
+    context: "vitamui-context"
+    enable_control: false
+    certificate_file: "{{ pki_dir }}/vitam/client-external/vitamui-vitam-external.crt"
+    tenants: "{{ vitam_tenant_vitamui }}"
+    permissions: all
+
+
+#  example:
+#    security_profile: "example-security-profile"
+#    context_id: "example-context"
+#    enable_control: false
+#    certificate_file: "{{ pki_dir }}/vitam/client-external/vitamui-vitam-external.crt"
+#    tenants: [100,101,102]
+#    permissions:
+#      - "dipexport:id:dip:read"
+#      - "dipexport:create"
+#      - "dipexportv2:create"
+#      - "objects:read"
+#      - "units:id:objects:read:binary"
+#      - "units:id:objects:read:json"
+#      - "units:id:read:json"
+#      - "units:id:update"
+#      - "units:read"
+#      - "units:update"
+#      - "unitsWithInheritedRules:read"
+#      - "operations:id:read"
+#      - "operations:id:read:status"
+#      - "operations:read"
+#      - "ingests:create"
+#      - "ingests:id:archivetransfertreply:read"
+#      - "ingests:id:manifests:read"
+#      - "logbookobjectslifecycles:id:read"
+#      - "logbookoperations:id:read"
+#      - "logbookoperations:read"
+#      - "logbookunitlifecycles:id:read"
+#      - "storageaccesslog:read:binary"
+#
+#

@@ -1,0 +1,50 @@
+
+customer-init:
+  profiles:
+    - name: profile1
+      description: desc1
+      level: 1
+      app-name: app1
+      roles:
+       - role_1
+       - role_2
+       - role_3
+    - name: profile2
+      description: desc2
+      level: 2
+      app-name: app2
+      roles:
+       - role_2
+       - role_3
+
+  profiles-groups:
+    - name: group1
+      description: desc3
+      level: 1
+      profiles:
+        - profile1
+
+  users:
+    - last-name: lastName
+      first-name: firstName
+      profiles-group-name: group1
+      level: 1
+      email-prefix: a
+
+  tenant-profiles:
+    - name: profile3
+      description: desc4
+      level: 1
+      app-name: app2
+      roles:
+       - role_1
+       - role_2
+       - role_3
+
+  admin-profiles:
+    - name: profile4
+      description:
+      level:
+      app-name: app1
+      roles:
+        - role_3

@@ -1,0 +1,28 @@
+<div class="vitamui-snack-bar-container">
+
+  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
+
+    <ng-container *ngSwitchCase="'SUBRO_ACCEPT'" i18n="@@notificationSubrogationAccept">
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SUBRO_CANCEL'" i18n="@@notificationSubrogationCancel">
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> Votre demande de subrogation a bien été annulée
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SUBRO_DENY'" i18n="@@notificationSubrogationDenied">
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> Votre demande de subrogation a été refusée
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SUBRO_UNAVAILABLE'" i18n="@@notificationSubrogationUnavailable">
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> La subrogation pour cet utilisateur est momentanément impossible
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'SUBRO_ALREADY_RUNNING_WITH_OTHER_USERS'" i18n="@@notificationSubrogationAlreadyRunningWithOtherUsers">
+      <i class="vitamui-icon vitamui-icon-link banner-icon"></i> Vous avez déjà une subrogation en cours avec l'utilisateur : {{data.email}}
+    </ng-container>
+  </span>
+
+  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+
+</div>

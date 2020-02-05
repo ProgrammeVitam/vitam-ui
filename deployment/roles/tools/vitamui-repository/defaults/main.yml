@@ -1,0 +1,11 @@
+---
+# defaults file for vitamui-repository
+# Credentials for vitamui repository - VAULTIT!
+vitamui_repository_user: anonymous
+vitamui_repository_password: anonymous
+
+# To update with public repository hostname and auth
+vitamui_repository_url: "https://{{ vitamui_repository_user  }}:{{ vitamui_repository_password }}@repo.vitamui.com/dev/"
+
+# Repository file namex
+vitamui_repository_name: vitamui

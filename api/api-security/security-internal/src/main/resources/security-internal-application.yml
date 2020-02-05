@@ -1,0 +1,25 @@
+# TECHNICAL PROPERTIES / DON'T put environment properties
+# This property can be override by a config file give at run time with spring.config.location
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API Security Internal
+    description: This API is used to manage certificates for HTTPS access and their associated contexts. This API is used for internal purposes only.
+    version: v1
+  mvc:
+    favicon:
+      enabled : false
+
+management:
+  endpoints:
+    jmx:
+      domain: ${server-identity.identityRole}
+      unique-names: true
+      web.exposure.include: info,health,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true

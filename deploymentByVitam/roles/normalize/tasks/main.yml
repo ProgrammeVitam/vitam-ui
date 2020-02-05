@@ -1,0 +1,5 @@
+---
+
+- import_tasks: vitamui.yml
+
+- import_tasks: vitam.yml

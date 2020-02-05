@@ -1,0 +1,21 @@
+debug: false
+
+spring:
+  api:
+    name: API Security Internal
+    description: This API is used to manage certificates for HTTPS access and their associated contexts. This API is used for internal purposes only.
+    version: v1
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: security-internal
+  identityServerId: 1
+
+spring.data.mongodb.port: 0
+

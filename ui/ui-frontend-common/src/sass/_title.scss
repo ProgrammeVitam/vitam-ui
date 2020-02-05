@@ -1,0 +1,13 @@
+.vitamui-header > .vitamui-container > h2 {
+    // TODO Rename this variable in angular-commons
+    @include login-title;
+    margin-top: 67.5px;
+    color: $charcoal-grey;
+    font-weight: 500;
+
+    img {
+        width: 37px;
+        vertical-align: middle;
+        margin-right: 17px;
+    }
+}

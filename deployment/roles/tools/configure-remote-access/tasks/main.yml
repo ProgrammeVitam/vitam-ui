@@ -1,0 +1,68 @@
+---
+# tasks file for configure_remote_access
+- name: Check target_type precised when role calling
+  assert:
+    that:
+    - "target_type in ['bastion','server']"
+    msg: "target_type must be precised when calling role whis eiter 'bastion' or 'server' value"
+
+- name: Creating vitamuiroot user
+  user:
+    name: vitamuiroot
+    home: "{{ vitamuiroot_user.home }}"
+    create_home: yes
+    append: yes
+    groups: "{{ vitamuiroot_user.groups }}"
+    password: "{{ vitamuiroot_user.passwd | password_hash('sha512') }}"
+
+- name: Push vitamuiroot user authorized key in server
+  authorized_key:
+    user: vitamuiroot
+    manage_dir: true
+    state: present
+    key: "{{ vitamuiroot_user.key}}"
+
+- name: Ensure sshd is rightly configured
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.pattern }}"
+    line: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload ssh
+  with_items: "{{ sshd_config_lines }}"
+
+- name: Ensure sshd allows agent forwarding
+  when: target_type == "bastion"
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.pattern }}"
+    line: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload ssh
+  with_items:
+    - pattern: "^AllowAgentForwarding"
+      value: "AllowAgentForwarding yes"
+
+- name: Update local ssh config with bastion connection
+  when: target_type == "bastion"
+  delegate_to: localhost
+  connection: local
+  run_once: true
+  template:
+    src: "ssh_bastion_server_password.j2"
+    dest: "{{ ssh_client_config_path }}"
+
+- name: Update local ssh config with bastion connection
+  when: target_type == "server"
+  delegate_to: localhost
+  connection: local
+  run_once: true
+  template:
+    src: "ssh_bastion_server_key.j2"
+    dest: "{{ ssh_client_config_path }}"

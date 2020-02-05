@@ -1,0 +1,23 @@
+// Switch to security database
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+// Create security user
+
+if (! db.getUser("{{ mongodb.security.user }}")) {
+    db.createUser(
+        {
+            user: "{{ mongodb.security.user }}",
+            pwd: "{{ mongodb.security.password }}",
+            roles: {{ mongodb.security.roles }}
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.security.user }}",
+        {
+            pwd: "{{ mongodb.security.password }}",
+            roles: {{ mongodb.security.roles }}
+        }
+    )
+}

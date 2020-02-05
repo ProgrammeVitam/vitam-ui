@@ -1,0 +1,9 @@
+
+- hosts: all
+  roles:
+    - tools/vitamui-repository
+    - vitamui-consul
+
+- hosts: cas
+  roles:
+    - vitamui-cas-server

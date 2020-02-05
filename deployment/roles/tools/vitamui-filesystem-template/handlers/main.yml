@@ -1,0 +1,8 @@
+---
+# handlers file for vitamui-filesystem-template
+- name: services handlers
+  service:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ fstemplate_notify_handlers }}"
+  when: vitamui_template_debug is undefined or not vitamui_template_debug|bool

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	  <layout class="ch.qos.logback.classic.PatternLayout">
+	      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+	  </layout>
+	</appender>
+
+	<logger name="fr.gouv.vitamui.commons.rest" level="DEBUG">
+	  <appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="org.springframework" level="WARN">
+	  <appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="org.springframework.boot.autoconfigure.security" level="INFO">
+	  <appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="ch.qos.logback" level="ERROR">
+	  <appender-ref ref="STDOUT"/>
+	</logger>
+
+	<root level="error">
+	    <appender-ref ref="STDOUT"/>
+	</root>
+
+</configuration>

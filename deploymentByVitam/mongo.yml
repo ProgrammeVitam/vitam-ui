@@ -1,0 +1,9 @@
+---
+
+- hosts: hosts_vitamui_mongod
+  roles:
+        - mongo_common
+        - mongo
+        - mongo_configure
+        - init_bdd
+        - { role: mongo-express, when: "mongo_express is defined and mongo_express|lower == 'true'"}

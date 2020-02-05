@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  vitam:
+    image: docker.vitamui.com/vitam:r6
+    container_name: vitam
+    hostname: vitam
+    network_mode: bridge
+#    networks:
+#      vitam_network:
+#        ipv4_address: 172.16.238.2
+    dns:
+      - 127.0.0.1
+      - 8.8.8.8
+    # Need for systemd
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+    tmpfs:
+      - /run
+      - /tmp:exec
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "80:80"
+      - "8082:8082"
+      - "9102:9102"
+      - "9104:9104"
+      - "9200:9200" # elasticsearch-data
+      - "9300:9300" # elasticsearch-data
+      - "9000:9000"
+      - "9002:9002"
+      - "9900:9900"
+      - "27016:27016"
+      - "27017:27017" # mongo
+      - "8000-8010:8000-8010"
+      - "8100-8110:8100-8110"
+      - "8200-8210:8200-8210"
+      - "8090:8090"
+      - "8300-8310:8300-8310" # consul
+      - "8443-8445:8443-8445"
+      - "9201:9201" # elasticsearch-log
+      - "9301:9301" # elasticsearch-log
+      - "5601:5601" # kibana-log
+      - "8500:8500" # consul ui
+      - "10514:10514" # logstash
+
+#networks:
+#  vitam_network:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 172.16.238.0/24

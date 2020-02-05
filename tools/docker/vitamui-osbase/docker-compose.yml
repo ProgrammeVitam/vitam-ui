@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  vitamui-osbase:
+    image: docker.vitamui.com/vitamui-osbase:${VITAMUI_VERSION}
+    container_name: vitamui-osbase
+    privileged: true
+    cap_drop:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+    volumes:
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      vitamui_build_network:
+        ipv4_address: 172.16.239.2
+    ports:
+      - "2218:2218"
+    privileged: true
+    dns:
+      - 8.8.8.8
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    command: ["/usr/sbin/init"]
+
+networks:
+  vitamui_build_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24

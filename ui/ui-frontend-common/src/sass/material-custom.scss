@@ -1,0 +1,18 @@
+.vitamui-select.mini-select.mat-form-field {
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+
+    .mat-form-field-flex {
+        height: 34px;
+        padding-left: 25px;
+    }
+
+    .mat-form-field-infix {
+        width: 100%;
+    }
+}
+
+.pattern-select .vitamui-select.mat-form-field .mat-form-field-wrapper {
+    padding-bottom: 20px;
+}

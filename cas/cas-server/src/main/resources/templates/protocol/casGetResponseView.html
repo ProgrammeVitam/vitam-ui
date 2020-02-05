@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta charset="UTF-8"/>
+    <title>Vitam-UI</title>
+
+    <meta http-equiv="refresh" th:attr="content=${'1; url=' + url}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
+    <link th:href="@{/css/cas.css}" rel="stylesheet"/>
+</head>
+<body class="login bg-portal">
+<div class="background bg-success"></div>
+
+<div class="login-box success">
+    <div class="content">
+        <h1>Connexion établie et sécurisée</h1>
+        <i class="material-icons check-icon">check</i>
+    </div>
+    <img th:src="@{/images/vitamui-logo.png}" class="logo">
+</div>
+
+</body>
+</html>

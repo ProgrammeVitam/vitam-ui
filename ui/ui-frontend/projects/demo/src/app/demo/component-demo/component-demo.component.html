@@ -1,0 +1,8 @@
+<h2>Components</h2>
+
+<nav mat-tab-nav-bar [backgroundColor]="'background'">
+  <a mat-tab-link [routerLink]="['angular']" routerLinkActive #angularRoute="routerLinkActive" [active]="angularRoute.isActive">Angular</a>
+  <a mat-tab-link [routerLink]="['css']" routerLinkActive #cssRoute="routerLinkActive" [active]="cssRoute.isActive">CSS</a>
+</nav>
+
+<router-outlet></router-outlet>

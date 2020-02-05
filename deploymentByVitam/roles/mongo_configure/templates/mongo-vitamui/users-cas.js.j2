@@ -1,0 +1,23 @@
+// Switch to cas database
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+// Create cas user
+
+if (! db.getUser("{{ mongodb.cas.user }}")) {
+    db.createUser(
+        {
+            user: "{{ mongodb.cas.user }}",
+            pwd: "{{ mongodb.cas.password }}",
+            roles: {{ mongodb.cas.roles }}
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.cas.user }}",
+        {
+            pwd: "{{ mongodb.cas.password }}",
+            roles: {{ mongodb.cas.roles }}
+        }
+    )
+}

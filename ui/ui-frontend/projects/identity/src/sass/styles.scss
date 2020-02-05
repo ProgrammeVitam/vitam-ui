@@ -1,0 +1,19 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~material-design-icons/iconfont/material-icons.css';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+
+@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
+@import '~ui-frontend-common/sass/theme';
+
+$grid-gutter-width: 20px;
+
+@import '~bootstrap/scss/bootstrap-grid';
+
+@import 'material-theme';
+@import 'form';
+@import 'login';
+@import 'sidepanel';
+@import 'profile-tag';
+@import 'vitamui-tab-group';
+@import 'tooltip';

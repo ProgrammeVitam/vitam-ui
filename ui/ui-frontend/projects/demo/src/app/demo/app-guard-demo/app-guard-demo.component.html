@@ -1,0 +1,18 @@
+<h2>App Guard</h2>
+
+<div>
+  <h3>Example app routes</h3>
+  <ul>
+    <li><a routerLink="account">ACCOUNTS_APP</a></li>
+    <li><a routerLink="subrogation">SUBROGATIONS_APP</a></li>
+    <li><a routerLink="customers">CUSTOMERS_APP</a></li>
+  </ul>
+  <p>
+    Below is a routerLink that is should fail and redirect the user to the portal
+  </p>
+  <ul>
+    <li><a routerLink="fake-app">DOES_NOT_EXIST_APP</a></li>
+  </ul>
+</div>
+<h3>Guarded page below</h3>
+<router-outlet></router-outlet>

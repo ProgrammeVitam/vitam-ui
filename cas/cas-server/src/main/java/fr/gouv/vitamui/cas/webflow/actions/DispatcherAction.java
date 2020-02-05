@@ -1,0 +1,174 @@
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+package fr.gouv.vitamui.cas.webflow.actions;
+
+import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.lang.StringUtils;
+import org.apereo.cas.CasProtocolConstants;
+import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.web.support.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.webflow.action.AbstractAction;
+import org.springframework.webflow.execution.Event;
+import org.springframework.webflow.execution.RequestContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Optional;
+
+/**
+ * This class can dispatch the user:
+ * - either to the password page
+ * - or to an external IdP (authentication delegation)
+ * - or to the disabled account page if the user is not linked to any identity provider.
+ *
+ *
+ */
+@Getter
+@Setter
+public class DispatcherAction extends AbstractAction {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DispatcherAction.class);
+
+    private final ProvidersService providersService;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final CasExternalRestClient casExternalRestClient;
+
+    @Value("${cas.authn.surrogate.separator}")
+    private String separator;
+
+    @Autowired
+    private Utils utils;
+
+    @Autowired
+    public DispatcherAction(final ProvidersService providersService,
+                            final IdentityProviderHelper identityProviderHelper,
+                            final CasExternalRestClient casExternalRestClient) {
+        this.providersService = providersService;
+        this.identityProviderHelper = identityProviderHelper;
+        this.casExternalRestClient = casExternalRestClient;
+    }
+
+    @Override
+    protected Event doExecute(final RequestContext requestContext) throws IOException {
+
+        final UsernamePasswordCredential credential = (UsernamePasswordCredential) WebUtils.getCredential(requestContext);
+        final String username = credential.getUsername().toLowerCase();
+        String dispatchedUser = username;
+        String surrogate = null;
+        if (username.contains(separator)) {
+            dispatchedUser = StringUtils.substringAfter(username, separator);
+            if (username.startsWith(separator)) {
+                WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
+            } else {
+                surrogate = StringUtils.substringBefore(username, separator);
+            }
+        }
+        LOGGER.debug("Dispatching user: {} / surrogate: {}", dispatchedUser, surrogate);
+
+        // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
+        try {
+            final UserDto dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
+            if (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED) {
+                return userDisabled(dispatchedUser);
+            }
+        } catch (final InvalidFormatException e) {
+            return userDisabled(dispatchedUser);
+        } catch (final NotFoundException e) {
+        }
+        if (surrogate != null) {
+            try {
+                final UserDto surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
+                if (surrogateDto != null && surrogateDto.getStatus() != UserStatusEnum.ENABLED) {
+                    LOGGER.error("Bad status for surrogate: {}", surrogate);
+                    return userDisabled(surrogate);
+                }
+            } catch (final InvalidFormatException e) {
+                return userDisabled(surrogate);
+            } catch (final NotFoundException e) {
+            }
+        }
+
+        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        boolean isInternal;
+        final SamlIdentityProviderDto provider = (SamlIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
+        if (provider != null) {
+            isInternal = provider.getInternal();
+        } else {
+            return new Event(this, "badConfiguration");
+        }
+        if (isInternal) {
+            request.removeAttribute(Constants.SURROGATE);
+            LOGGER.debug("Redirect the user to the password page...");
+            return success();
+        } else {
+
+            // save the surrogate as a request attribute if he exists for the DelegatedClientWebflowManager
+            if (surrogate != null) {
+                LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
+                request.setAttribute(Constants.SURROGATE, surrogate);
+            }
+
+            final Service service = (Service) requestContext.getFlowScope().get(CasProtocolConstants.PARAMETER_SERVICE);
+            request.setAttribute(CasProtocolConstants.PARAMETER_SERVICE, service);
+
+            return utils.performClientRedirection(this, provider.getSaml2Client(), requestContext);
+        }
+    }
+
+    private Event userDisabled(final String emailUser) {
+        LOGGER.error("Bad status for user: {}", emailUser);
+        return new Event(this, "disabled");
+    }
+}

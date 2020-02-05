@@ -1,0 +1,7 @@
+server:
+     port: 0
+
+server-identity :
+  identityName: identityName
+  identityRole: identityRole
+  identityServerId: 1

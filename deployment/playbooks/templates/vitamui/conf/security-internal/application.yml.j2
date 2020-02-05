@@ -1,0 +1,38 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+  data:
+    mongodb:
+      uri: {{ service.mongo_uri }}
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ service.id }}
+  identityServerId: 1
+
+logging:
+    config: {{ service.dirs.config }}/logback.xml
+
+server:
+  port: {{ service.port }}
+  ssl:
+    key-store: "{{ service.dirs.config }}/security-internal.jks"
+    key-store-password: jkspasswd
+    key-password: jkspasswd
+    trust-store: "{{ service.dirs.config }}/truststore.jks"
+    trust-store-password: jkspasswd
+    client-auth: need
+  tomcat:
+    accesslog:
+        enabled: "{{ service.access_log_enabled }}"
+        directory: "{{ service.dirs.log }}"
+
+management:
+  server:
+    port: {{ service.admin_port }}
+    ssl:
+      enabled: false

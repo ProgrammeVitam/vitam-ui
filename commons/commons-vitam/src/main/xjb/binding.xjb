@@ -1,0 +1,34 @@
+<jxb:bindings version="2.0"
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+	xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+	xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<jxb:bindings
+		schemaLocation="http://www.w3.org/1999/xlink.xsd" node="/xs:schema">
+
+		<jxb:bindings
+			node="//xs:attributeGroup[@name='locatorAttrs']">
+			<jxb:bindings node=".//xs:attribute[@ref='xlink:title']">
+				<jxb:property name="title1" />
+			</jxb:bindings>
+		</jxb:bindings>
+
+		<jxb:bindings
+			node="//xs:attributeGroup[@name='arcAttrs']">
+			<jxb:bindings node=".//xs:attribute[@ref='xlink:title']">
+				<jxb:property name="title2" />
+			</jxb:bindings>
+		</jxb:bindings>
+	</jxb:bindings>
+
+<!-- 	<jxb:globalBindings> -->
+<!-- 		<xjc:simple /> -->
+<!-- 		<xjc:serializable uid="-1" /> -->
+<!-- 		<jxb:javaType name="java.util.Calendar" -->
+<!-- 			xmlType="xs:dateTime" -->
+<!-- 			parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime" -->
+<!-- 			printMethod="javax.xml.bind.DatatypeConverter.printDateTime" /> -->
+<!-- 	</jxb:globalBindings> -->
+
+</jxb:bindings>

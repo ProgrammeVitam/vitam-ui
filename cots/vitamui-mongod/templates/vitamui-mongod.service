@@ -1,0 +1,22 @@
+[Unit]
+Description=High-performance, schema-free document-oriented database
+After=network.target
+After=syslog.target
+
+[Service]
+Type=simple
+Environment="LC_ALL=C"
+ExecStart=/usr/bin/mongod  -f /vitamui/conf/__NAME__/mongod.conf run
+Restart=always
+User=__USER__
+Group=__GROUP__
+# ulimits
+LimitFSIZE=infinity
+LimitCPU=infinity
+LimitAS=infinity
+LimitNOFILE=64000
+LimitRSS=infinity
+LimitNPROC=64000
+
+[Install]
+WantedBy=multi-user.target

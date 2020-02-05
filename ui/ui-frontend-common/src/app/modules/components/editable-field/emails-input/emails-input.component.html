@@ -1,0 +1,20 @@
+<div class="domain-input-control">
+    <div class="domain-input-wrapper">
+        <input class="vitamui-input" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
+        <mat-spinner *ngIf="control.pending" [diameter]="spinnerDiameter" color="accent"></mat-spinner>
+    </div>
+    <button type="button" class="btn secondary" (click)="add()" [disabled]="buttonAddDisabled()" i18n="Email input add button@@emailsInputAddButton">Ajouter</button>
+    </div>
+    <div class="vitamui-input-errors">
+        <div *ngIf="control?.errors?.pattern" i18n="Wrong format (name@domain.xyz)@@emailInputErrorFormat">Format incorrect (nom@domaine.xyz)</div>
+        <div *ngIf="control?.errors?.unknownUser"  i18n="Unknow manager field error hint@@unknownManagerErrorRequiredField">Utilisateur non valide</div>
+    </div>
+    <div class="vitamui-chip-list">
+    <div *ngFor="let email of emails" class="vitamui-chip">
+        <div class="vitamui-chip-content">{{ email }}</div>
+        <div class="vitamui-remove-chip" (click)="remove(email)">
+        <i class="material-icons">clear</i>
+        </div>
+    </div>
+</div>
+

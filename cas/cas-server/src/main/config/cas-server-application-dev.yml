@@ -1,0 +1,148 @@
+server:
+  ssl:
+    key-store: file:src/main/config/cas-server.jks
+    key-store-password: jkspasswd
+    key-password: jkspasswd
+  host: dev.vitamui.com
+  port: 8080
+
+
+vitamui.cas.tenant.identifier: 11
+vitamui.cas.identity: cas
+iam-client:
+  server-host: localhost
+  server-port: 8083
+  secure: true
+  ssl-configuration:
+    keystore:
+      key-path: src/main/config/cas-server.jks
+      key-password: jkspasswd
+      type: JKS
+    truststore:
+      key-path: src/main/config/truststore.jks
+      key-password: jkspasswd
+    hostname-verification: false
+
+
+cas.authn.accept.users:
+
+
+cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
+
+
+cas.tgc.path: /cas
+cas.tgc.secure: false
+cas.tgc.crypto.enabled: false
+cas.webflow.crypto.enabled: false
+cas.authn.pac4j.cookie.crypto.enabled: true
+cas.authn.pm.reset.crypto.enabled: true
+
+cas.server.prefix: https://dev.vitamui.com:8080/cas
+login.url: ${cas.server.prefix}/login
+
+cas.serviceRegistry.mongo.clientUri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+
+#cas.serviceRegistry.mongo.port: 27018
+#cas.serviceRegistry.mongo.databaseName: cas
+#cas.serviceRegistry.mongo.authenticationDatabaseName: cas
+#cas.serviceRegistry.mongo.replicaSet: rs0
+cas.serviceRegistry.mongo.collection: services
+#cas.serviceRegistry.mongo.userId: mongod_dbuser_cas
+#cas.serviceRegistry.mongo.password: mongod_dbpwd_cas
+
+
+cas.authn.surrogate.separator: ","
+## Useless because of IamSurrogateRestAuthenticationService:
+# cas.authn.surrogate.rest.url: xxx
+# cas.authn.surrogate.rest.method: GET
+cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
+
+
+cas.authn.pm.enabled: true
+
+## Useless because of IamRestPasswordManagementService:
+# cas.authn.pm.rest.endpointUrlEmail: xxx
+# cas.authn.pm.rest.endpointUrlSecurityQuestions: xxx
+# cas.authn.pm.rest.endpointUrlChange: xxx
+
+cas.authn.pm.policyPattern: '^(?=.*[$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
+
+cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
+cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
+cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
+cas.authn.pm.reset.expirationMinutes: 10
+cas.authn.pm.reset.mail.attributeName: xxx
+cas.authn.pm.reset.securityQuestionsEnabled: false
+cas.authn.pm.autoLogin: true
+
+# Used to sign/encrypt the password-reset link
+# cas.authn.pm.reset.crypto.encryption.key:
+# cas.authn.pm.reset.crypto.signing.key:
+# cas.authn.pm.reset.crypto.enabled: true
+
+
+spring.mail.host: smtp.gmail.com
+spring.mail.port: 587
+spring.mail.username: no-reply@vitamui.com
+spring.mail.password: f3CT953iDzGT7xj9
+spring.mail.testConnection: false
+spring.mail.properties.mail.smtp.auth: true
+spring.mail.properties.mail.smtp.starttls.enable: true
+
+
+cas.authn.mfa.globalProviderId: mfa-sms
+
+
+cas.authn.throttle.failure.threshold: 2
+cas.authn.throttle.failure.rangeSeconds: 3
+
+
+cas:
+  logout:
+    followServiceRedirects: true
+    redirectParameter: next
+
+
+endpoints.enabled: true
+endpoints.sensitive: false
+management.security.enabled: false
+cas.monitor.endpoints.sensitive: false
+cas.monitor.endpoints.enabled: true
+#management.metrics.export.prometheus.sensitive: false
+#management.metrics.export.prometheus.enabled: true
+cas.adminPagesSecurity.ip: .*
+management.context-path: /actuator
+
+
+# for SMS:
+cas.smsProvider.twilio.accountId: AC3942c2fee9478d0295b3051735860e3b
+cas.smsProvider.twilio.token: 982e4b1cffaaaac491305d984d43df9f
+mfa.sms.sender: "+33644602712"
+
+
+vitamui.portal.url: https://dev.vitamui.com:4200/
+
+
+token.api.cas: tokcas_ie6UZsEcHIWrfv2x
+
+
+ip.header: X-Real-IP
+
+
+# 8 hours in seconds
+api.token.ttl: 28800
+
+
+server-identity :
+  identityName: CAS
+  identityRole: SSO
+  identityServerId: 1
+
+
+logging:
+  config: src/main/config/logback-dev.xml
+  level:
+    org.springframework.amqp: 'OFF'
+    org.springframework.context.annotation: 'OFF'
+    org.springframework.boot.devtools: 'OFF'
+    org.apereo.inspektr.audit.support: 'OFF'

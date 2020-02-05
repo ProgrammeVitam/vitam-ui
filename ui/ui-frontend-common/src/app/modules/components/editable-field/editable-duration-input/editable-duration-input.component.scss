@@ -1,0 +1,251 @@
+@import '../../../../../sass/variables/colors';
+@import '../../../../../sass/mixins/elevation';
+
+$input-height: 50px;
+$anim-timing: 150ms ease-out;
+
+input {
+    color: $charcoal-grey;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Roboto';
+    background: none;
+    border: none;
+    transition: margin $anim-timing;
+    outline: none;
+    width: 100%;
+}
+
+.align {
+    align-items: center;
+}
+
+::ng-deep .vitamui-mat-select.vitamui-mat-select-mini.mat-form-field {
+    width: 350px;
+    margin-left: 10px;
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0;
+    }
+
+    .mat-form-field-flex {
+        height: 34px;
+        padding-left: 25px;
+    }
+
+    .mat-form-field-infix {
+        width: 100%;
+    }
+}
+
+.vitamui-duration-input {
+    @include elevation-1;
+    display:flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+    border-radius: 87px;
+    background-color: $white;
+    background-color: var(--white);
+    border: solid 1px #f0f0f0;
+}
+
+.unite {
+    width: 23px;
+    height: 49px;
+    background-color: #e5f6f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+input {
+    border:none;
+}
+
+.days {
+    width: 35px;
+    margin-left: 15px;
+    outline: none;
+}
+
+.hours {
+    width: 35px;
+    margin-left: 15px;
+    outline: none;
+}
+
+.minutes {
+    width: 35px;
+    margin-left: 15px;
+    outline: none;
+}
+
+$input-height: 50px;
+$anim-timing: 150ms ease-out;
+
+:host {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+
+    &:not(.readonly) {
+        margin-bottom: 12px;
+    }
+}
+
+.editable-field {
+    @include elevation-1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    min-height: $input-height;
+    width: 100%;
+    border-radius: $input-height / 2;
+    border: solid 1px #f0f0f0;
+    background-color: $white;
+    padding: 7px 45px 7px 25px;
+    transition: border-color $anim-timing;
+    vertical-align: top;
+    cursor: pointer;
+    outline: none;
+
+    &.squarish {
+        border-radius: 10px;
+    }
+
+    i.edit-icon {
+        color: $greeny-blue;
+        opacity: 0;
+        // margin-left: 18px;
+        transition: opacity $anim-timing;
+        position: absolute;
+        right: 20px;
+        pointer-events: none;
+    }
+
+    &:hover:not(.edit-mode), &:focus:not(.edit-mode) {
+        border-color: $greeny-blue;
+
+        i.edit-icon {
+            opacity: 1;
+        }
+    }
+}
+
+.editable-field-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    align-self: stretch;
+    flex-grow: 1;
+    position: relative;
+    max-width: 100%;
+
+    .editable-field-label {
+        position: absolute;
+        font-size: 13px;
+        color: $greyish-two;
+        font-weight: normal;
+        transform-origin: left;
+        transition: transform $anim-timing;
+        white-space: nowrap;
+    }
+
+    .editable-field-text-content {
+        margin-top: 16px;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-weight: 500;
+    }
+
+    .editable-field-control {
+        display: none;
+        height: 100%;
+    }
+}
+
+.editable-field.edit-mode {
+    border-color: $greeny-blue;
+    padding-right: 25px;
+
+    .editable-field-content {
+        .editable-field-label {
+            transform: scale((11 / 13)) translateY(-30px);
+        }
+
+        .editable-field-text-content {
+            display: none;
+        }
+
+        .editable-field-control {
+            display: flex;
+        }
+    }
+}
+
+.editable-field-actions {
+    width: 85px;
+    height: $input-height;
+    border-radius: $input-height / 2;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+    z-index: 1;
+    margin: 10px 0 10px 10px;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        background: none;
+        border: none;
+        color: white;
+        height: $input-height - 20px;
+        width: $input-height - 20px;
+        padding: 0;
+        border-radius: ($input-height - 10px) / 2;
+        transition: opacity 200ms ease-out, background-color 200ms ease-out;
+
+        &:disabled {
+            opacity: 0.4;
+        }
+
+        > i {
+            font-size: 18px;
+        }
+
+        &.editable-field-confirm {
+            background-color: #74c41c;
+
+            &:hover, &:active, &:focus {
+                background-color: lighten(#74c41c, 15%);
+            }
+        }
+
+        &.editable-field-cancel {
+            background-color: #ea0101;
+
+            &:hover, &:active, &:focus {
+                background-color: lighten(#ea0101, 15%);
+            }
+        }
+    }
+}
+
+:host.editable-field-square .editable-field {
+    border-radius: 10px;
+}
+
+.vitamui-input-errors {
+    padding: 4px 25px;
+    overflow: hidden;
+}
+
+.text-error {
+    font-size: 12px;
+    font-weight: 400;
+    color: $red;
+    font-family: 'Roboto';
+}

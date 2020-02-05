@@ -1,0 +1,43 @@
+.vitamui-autocomplete-panel {
+    border-radius: 5px;
+    background-color: $white;
+    border: solid 1px #f0f0f0;
+
+    &.mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+        box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+    }
+
+    .mat-option {
+        height: 40px;
+    }
+
+    .mat-option:not(:last-child) {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .mat-option:hover:not(.mat-option-disabled),
+    .mat-option:focus:not(.mat-option-disabled),
+    .mat-option.mat-active {
+        background: transparentize($greeny-blue, 0.85);
+    }
+
+    .mat-option-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        color: #808080;
+
+        .vitamui-option-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        > i {
+            color: $greeny-blue;
+            margin-left: 10px;
+        }
+
+    }
+
+}

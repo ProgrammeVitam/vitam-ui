@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=fr.gouv.vitamui.commons.logbook.config.LogbookAutoConfiguration

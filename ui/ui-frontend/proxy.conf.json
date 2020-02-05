@@ -1,0 +1,14 @@
+{
+  "/identity-api": {
+    "target": "https://dev.vitamui.com:9001/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
+  },
+  "/portal-api": {
+    "target": "https://dev.vitamui.com:9000/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
+  }
+}

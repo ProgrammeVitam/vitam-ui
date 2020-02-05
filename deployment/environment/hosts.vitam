@@ -1,0 +1,211 @@
+[hosts]
+
+[hosts:children]
+vitam
+vitamui
+
+
+[vitam:children]
+hosts-consul-server
+hosts-ingest-external
+hosts-access-external
+hosts-ihm-demo
+hosts-elasticsearch-log
+hosts-functionnal-admin
+hosts-security-internal
+
+
+# SERVER LIST vitamui machines
+[vitamui:children]
+zone-vitamui-rp
+zone-vitamui-ui
+zone-vitamui-cas
+zone-vitamui-app
+zone-vitamui-data
+zone-vitamui-infra
+zone-vitamui-admin
+
+
+########################################################
+# ZONE Infra
+[zone-vitamui-infra:children]
+hosts-vitamui-logstash
+
+[hosts-vitamui-logstash]
+# EDIT
+# not for the moment...
+#vitam-env-vitamuifo-app-01.vitam-env
+
+########################################################
+# ZONE Data
+
+[zone-vitamui-data:children]
+hosts-vitamui-mongod
+
+[hosts-vitamui-mongod]
+# EDIT
+vitam-env-vitamuifo-app-02.vitam-env   mongo_express=yes   mongo_rs_bootstrap=yes
+
+########################################################
+# ZONE reverseproxy
+
+[zone-vitamui-rp:children]
+hosts-vitamui-reverseproxy
+
+[hosts-vitamui-reverseproxy]
+# EDIT
+vitam-env-vitamuifo-app-03.vitam-env
+#localhost
+
+########################################################
+# ZONE APP
+
+[zone-vitamui-app:children]
+hosts-iam-internal
+hosts-iam-external
+hosts-vitamui-security-internal
+
+[hosts-iam-internal]
+# EDIT
+vitam-env-vitamuifo-app-02.vitam-env
+
+[hosts-iam-external]
+# EDIT
+vitam-env-vitamuifo-app-01.vitam-env
+
+[hosts-vitamui-security-internal]
+vitam-env-vitamuifo-app-02.vitam-env
+
+########################################################
+# ZONE UI
+
+[zone-vitamui-ui:children]
+hosts-ui-identity
+hosts-ui-portal
+hosts-ui-search
+
+[hosts-ui-identity]
+# EDIT
+vitam-env-vitamuifo-app-02.vitam-env
+
+[hosts-ui-portal]
+# EDIT
+vitam-env-vitamuifo-app-01.vitam-env
+
+[hosts-ui-search]
+# EDIT
+vitam-env-vitamuifo-app-01.vitam-env
+
+########################################################
+# ZONE ADMIN
+
+[zone-vitamui-admin:children]
+hosts-ui-identity-admin
+
+[hosts-ui-identity-admin]
+# EDIT
+vitam-env-vitamuifo-app-02.vitam-env
+
+########################################################
+# ZONE CAS
+
+[zone-vitamui-cas:children]
+hosts-cas-server
+
+[hosts-cas-server]
+# EDIT
+# vitam-env-vitamuifo-app-01.vitam-env
+
+########################################################
+# ZONE TOOLS
+
+# SERVER LIST bastion
+#
+# Jump servers where ssh jump will be installed
+#
+[bastion]
+# EDIT
+
+
+
+# SERVER LIST os_repository
+#
+# Servers hosting vitamui yum repository
+#
+[os_repository]
+# EDIT
+
+
+
+# SERVER LIST remote deployer
+#
+# Server where all tools needed for executing vitamui/vitam playbooks will be installed
+#
+[deployer]
+# EDIT
+
+
+# SERVER LIST remote access config
+#
+# Servers needing ssh acces configured. The role needs user/password for ssh connect and set's up vitamuiroot user + public key auth
+#
+[configure-remote-access]
+# EDIT
+
+
+# SERVER LIST backup
+#
+# Servers where backup mount / dir will be installed
+#
+[backup]
+# EDIT
+
+
+
+#
+# **************************************    ZONES VITAM   ******************************************************
+#
+
+# MINIMUM REQUIRED IN ZONE VITAM
+[hosts-consul-server]
+vitam-env-vitamuibo-app-01.vitam-env
+
+[hosts-ingest-external]
+vitam-env-vitamuibo-app-02.vitam-env
+
+[hosts-access-external]
+vitam-env-vitamuibo-app-02.vitam-env
+
+[hosts-ihm-demo]
+vitam-env-vitamuibo-app-02.vitam-env
+
+# [hosts-elasticsearch-log]
+# localhost
+
+[hosts-elasticsearch-log]
+vitam-env-vitamuibo-app-01.vitam-env
+
+[hosts-functionnal-admin]
+vitam-env-vitamuibo-app-03.vitam-env
+
+[hosts-security-internal]
+vitam-env-vitamuibo-app-03.vitam-env
+
+########################################################
+# VARS - common VITAMUI and VITAM
+########################################################
+[hosts:vars]
+ansible_ssh_user=centos
+ansible_become=true
+
+## Uncomment and fill for remote deploy
+#ansible_connection=ssh
+#ansible_ssh_user=vitamuiroot
+#ansible_become_pass=vitamuiroot
+#ansible_ssh_common_args='-F ssh/config'
+
+## Activate vitam instance proxying on nginx
+#vitam_ihm_demo_proxy=false
+
+## Activate consul_ui_proxy instance
+#consul_ui_proxy=false

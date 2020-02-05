@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--@(id?) (Date , MessageIdentifier , ArchivalAgreement? , CodeListVersions
+	, DataObjectPackage , ArchivalAgency , TransferringAgency) -->
+<ArchiveTransfer
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1" xmlns:ns="anyNS"
+	ns:anyAttr="anyValue">
+	<Date>2019-05-20T14:06:44</Date>
+	<!--@(schemeDataURI?, schemeID?, schemeAgencyName?, schemeAgencyID?, schemeName?,
+		schemeVersionID?, schemeURI?) -->
+	<MessageIdentifier>MessageIdentifier1</MessageIdentifier>
+	<!--@(schemeDataURI?, schemeID?, schemeAgencyName?, schemeAgencyID?, schemeName?,
+		schemeVersionID?, schemeURI?) -->
+	<ArchivalAgreement>ArchivalAgreement1</ArchivalAgreement>
+	<!--@(id?) (ReplyCodeListVersion? , MessageDigestAlgorithmCodeListVersion?
+		, MimeTypeCodeListVersion? , EncodingCodeListVersion? , FileFormatCodeListVersion?
+		, CompressionAlgorithmCodeListVersion? , DataObjectVersionCodeListVersion?
+		, StorageRuleCodeListVersion? , AppraisalRuleCodeListVersion? , AccessRuleCodeListVersion?
+		, DisseminationRuleCodeListVersion? , ReuseRuleCodeListVersion? , ClassificationRuleCodeListVersion?
+		, AuthorizationReasonCodeListVersion? , RelationshipCodeListVersion?) -->
+	<CodeListVersions>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<ReplyCodeListVersion>ReplyCodeListVersion0</ReplyCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<MessageDigestAlgorithmCodeListVersion>MessageDigestAlgorithmCodeListVersion0
+		</MessageDigestAlgorithmCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<MimeTypeCodeListVersion>MimeTypeCodeListVersion0
+		</MimeTypeCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<EncodingCodeListVersion>EncodingCodeListVersion0
+		</EncodingCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<FileFormatCodeListVersion>FileFormatCodeListVersion0
+		</FileFormatCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<CompressionAlgorithmCodeListVersion>CompressionAlgorithmCodeListVersion0
+		</CompressionAlgorithmCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<DataObjectVersionCodeListVersion>DataObjectVersionCodeListVersion0
+		</DataObjectVersionCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<StorageRuleCodeListVersion>StorageRuleCodeListVersion0
+		</StorageRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<AppraisalRuleCodeListVersion>AppraisalRuleCodeListVersion0
+		</AppraisalRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<AccessRuleCodeListVersion>AccessRuleCodeListVersion0
+		</AccessRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<DisseminationRuleCodeListVersion>DisseminationRuleCodeListVersion0
+		</DisseminationRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<ReuseRuleCodeListVersion>ReuseRuleCodeListVersion0
+		</ReuseRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<ClassificationRuleCodeListVersion>ClassificationRuleCodeListVersion0
+		</ClassificationRuleCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<AuthorizationReasonCodeListVersion>AuthorizationReasonCodeListVersion0
+		</AuthorizationReasonCodeListVersion>
+		<!--@(listName?, listAgencyID?, listSchemeURI?, listID?, listAgencyName?,
+			listURI?, listVersionID?) -->
+		<RelationshipCodeListVersion>RelationshipCodeListVersion0
+		</RelationshipCodeListVersion>
+	</CodeListVersions>
+	<!--@(id?) (BinaryDataObject* , DescriptiveMetadata , ManagementMetadata) -->
+	<DataObjectPackage>
+		<!--@(id) (Uri , MessageDigest , Size , FormatIdentification , FileInfo) -->
+		<BinaryDataObject id="id1">
+			<Uri>Uri1</Uri>
+			<!--@(algorithm) -->
+			<MessageDigest algorithm="SHA-512">TWVzc2FnZURpZ2VzdDE=
+			</MessageDigest>
+			<Size>866</Size>
+			<FormatIdentification>FormatIdentification1</FormatIdentification>
+			<!--(Filename) -->
+			<FileInfo>
+				<Filename>Filename1</Filename>
+			</FileInfo>
+		</BinaryDataObject>
+		<!--(ArchiveUnit*) -->
+		<DescriptiveMetadata>
+			<!--@(id) (Management , Content , ArchiveUnit*) -->
+			<ArchiveUnit id="id2">
+				<!--(UpdateOperation) -->
+				<Management>
+					<!--(ArchiveUnitIdentifierKey | SystemId) -->
+					<UpdateOperation>
+						<SystemId>SystemId1</SystemId>
+						<!--(MetadataName , MetadataValue) -->
+						<ArchiveUnitIdentifierKey>
+							<MetadataName>OriginatingSystemId</MetadataName>
+							<MetadataValue>MetadataValue1</MetadataValue>
+						</ArchiveUnitIdentifierKey>
+					</UpdateOperation>
+				</Management>
+				<!--(DescriptionLevel , Title) -->
+				<Content>
+					<DescriptionLevel>File</DescriptionLevel>
+					<Title>Elements de preuve</Title>
+				</Content>
+				<!--@(id) (Management? , Content , DataObjectReference) -->
+				<ArchiveUnit id="id3">
+					<!--(AppraisalRule) -->
+					<Management>
+						<!--((Rule , StartDate) , FinalAction) -->
+						<AppraisalRule>
+							<!--@(id?) -->
+							<Rule>F5-1</Rule>
+							<StartDate>2019-05-20</StartDate>
+							<FinalAction>Keep</FinalAction>
+						</AppraisalRule>
+					</Management>
+					<!--(DescriptionLevel , Title , OriginatingAgencyArchiveUnitIdentifier
+						, Description , DocumentType , Status , Keyword , Keyword , Keyword , Keyword
+						, Keyword , Keyword , OriginatingAgency , SubmissionAgency , CreatedDate
+						, ReceivedDate , StartDate , EndDate) -->
+					<Content>
+						<DescriptionLevel>Item</DescriptionLevel>
+						<Title>Title1</Title>
+						<OriginatingAgencyArchiveUnitIdentifier>OriginatingAgencyArchiveUnitIdentifier1
+						</OriginatingAgencyArchiveUnitIdentifier>
+						<Description>Description1</Description>
+						<DocumentType>Bordereau de sortie</DocumentType>
+						<Status>Status1</Status>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>KeywordContent1</KeywordContent>
+							<KeywordReference>DownloadFilename</KeywordReference>
+						</Keyword>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>SERIAL_DOCUMENT</KeywordContent>
+							<KeywordReference>ArchiveType</KeywordReference>
+						</Keyword>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>PRESERVE</KeywordContent>
+							<KeywordReference>FinalActionDetail</KeywordReference>
+						</Keyword>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>KeywordContent2</KeywordContent>
+							<KeywordReference>Client</KeywordReference>
+						</Keyword>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>KeywordContent3</KeywordContent>
+							<KeywordReference>Tenant</KeywordReference>
+						</Keyword>
+						<!--(KeywordContent , KeywordReference) -->
+						<Keyword>
+							<KeywordContent>KeywordContent4</KeywordContent>
+							<KeywordReference>Date de génération</KeywordReference>
+						</Keyword>
+						<!--(Identifier) -->
+						<OriginatingAgency>
+							<Identifier>Identifier1</Identifier>
+						</OriginatingAgency>
+						<!--(Identifier) -->
+						<SubmissionAgency>
+							<Identifier>Identifier2</Identifier>
+						</SubmissionAgency>
+						<CreatedDate>2019-05-20T14:06:44</CreatedDate>
+						<ReceivedDate>2019-05-20T14:06:44</ReceivedDate>
+						<StartDate>2019-05-20</StartDate>
+						<EndDate>2019-05-20T14:06:44</EndDate>
+					</Content>
+					<!--@(id?) (DataObjectReferenceId) -->
+					<DataObjectReference>
+						<DataObjectReferenceId>DataObjectReferenceId1
+						</DataObjectReferenceId>
+					</DataObjectReference>
+				</ArchiveUnit>
+			</ArchiveUnit>
+		</DescriptiveMetadata>
+		<!--@(id?) (ArchivalProfile , OriginatingAgencyIdentifier , SubmissionAgencyIdentifier) -->
+		<ManagementMetadata>
+			<ArchivalProfile>PR-000001</ArchivalProfile>
+			<OriginatingAgencyIdentifier>IdProdVitamUI</OriginatingAgencyIdentifier>
+			<SubmissionAgencyIdentifier>IdProdVitamUI</SubmissionAgencyIdentifier>
+		</ManagementMetadata>
+	</DataObjectPackage>
+	<!--(Identifier) -->
+	<ArchivalAgency>
+		<Identifier>IdArcVitamUI</Identifier>
+	</ArchivalAgency>
+	<!--(Identifier) -->
+	<TransferringAgency>
+		<Identifier>IdProdVitamUI</Identifier>
+	</TransferringAgency>
+</ArchiveTransfer>

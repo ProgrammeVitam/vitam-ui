@@ -1,0 +1,5 @@
+<button class="vitamui-menu-button" (click)="openApplicationMenu()">
+  <i class="{{ activeApplication?.icon }}"></i>
+  <span *ngIf="activeApplication">{{ activeApplication.name }}</span>
+  <span *ngIf="!activeApplication" i18n="@@menuCustomer">Applications</span>
+</button>

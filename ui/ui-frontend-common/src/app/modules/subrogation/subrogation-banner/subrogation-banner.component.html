@@ -1,0 +1,27 @@
+<div *ngIf="!hidden && show" class="banner-subrogation">
+  <i class="vitamui-icon vitamui-icon-link banner-icon"></i>
+  <span i18n="subrogationBannerAdmin@@subrogationBannerAdmin">Subrogation de l'utilisateur
+    {{ authService?.user?.email }} jusqu'à {{endDate | date:'HH:mm:ss'}}</span>
+
+  <button class="btn-link" (click)="onStopSubrogation()" i18n="subrogation stop@@StopSubrogation">Arrêter la
+    subrogation</button>
+  <i class="material-icons keyboard-arrow-down-icon" (click)="hidden=!hidden">
+    keyboard_arrow_down
+  </i>
+</div>
+<div *ngIf="hidden && show" class="hidden-banner-div">
+  <i *ngIf="hidden" class="material-icons keyboard-arrow-up-icon" (click)="hidden=!hidden">
+    keyboard_arrow_up
+  </i>
+</div>
+
+<ng-template #stopConfirmDialog>
+  <vitamui-common-confirm-dialog
+    i18n="@@stopSubrogationConfirmDialogContent"
+    dialogTitle="Arrêter la subrogation ?" i18n-dialogTitle="@@stopSubrogationConfirmDialogTitle"
+    confirmLabel="Arrêter" i18n-confirmLabel="@@stopSubrogationConfirmDialogConfirmLabel"
+    cancelLabel="Annuler" i18n-cancelLabel="@@stopSubrogationConfirmDialogCancelLabel"
+  >
+    Êtes vous sûr de vouloir arrêter la subrogation de l'utilisateur {{ authService?.user?.lastname }} {{ authService?.user?.firstname }} ?
+  </vitamui-common-confirm-dialog>
+</ng-template>

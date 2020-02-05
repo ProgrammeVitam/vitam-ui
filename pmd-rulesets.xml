@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       name="pmd-rulesets"
+       xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+   <description>PMD Plugin preferences rule set</description>
+   <exclude-pattern>*.js</exclude-pattern>
+   <exclude-pattern>*.html</exclude-pattern>
+   <exclude-pattern>.*/target/.*</exclude-pattern>
+   <exclude-pattern>.*/node/.*</exclude-pattern>
+   <exclude-pattern>.*/node_modules/.*</exclude-pattern>
+   <rule ref="category/java/bestpractices.xml" />
+   <rule ref="category/java/codestyle.xml" />
+   <rule ref="category/java/design.xml" />
+   <rule ref="category/java/documentation.xml" />
+   <rule ref="category/java/errorprone.xml" />
+   <rule ref="category/java/multithreading.xml" />
+   <rule ref="category/java/performance.xml" />
+   <rule ref="category/java/security.xml" />
+    <rule ref="category/java/codestyle.xml/LongVariable">
+      <properties>
+         <property name="minimum" value="30"/>
+      </properties>
+   </rule>
+
+</ruleset>

@@ -1,0 +1,5 @@
+---
+
+consul_folder_conf: "{{ vitam_defaults.folder.root_path }}/conf/consul"
+consul_folder_log: "{{ vitam_defaults.folder.root_path }}/log/consul"
+consul_folder_data: "{{ vitam_defaults.folder.root_path }}/data/consul"

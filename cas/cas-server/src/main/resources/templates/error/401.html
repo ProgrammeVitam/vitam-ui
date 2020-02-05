@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{screen.error.page.accessdenied}">Error - 401</title>
+    <link rel="stylesheet" th:href="@{#{webjars.fontawesome.css}}" />
+    <style>
+        .prompt {
+            font-family: Verdana, sans-serif;
+        }
+    </style>
+</head>
+
+<body id="cas">
+    <div layout:fragment="content">
+        <div>
+            <h2 th:utext="#{screen.error.page.accessdenied}">Access Denied</h2>
+            <p th:utext="#{screen.error.page.permissiondenied}">You do not have permission to view this page.</p>
+            <a class="btn btn-submit" th:href="@{/login}" th:utext="#{screen.error.page.loginagain}">Login
+                Again</a>
+        </div>
+    </div>
+</body>
+</html>

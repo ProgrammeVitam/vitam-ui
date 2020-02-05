@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>integration-tests</artifactId>
+	<packaging>jar</packaging>
+	<name>Integration-Tests</name>
+	<description>Integration tests</description>
+
+	<parent>
+		<groupId>fr.gouv.vitamui</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.3.0</version>
+	</parent>
+
+	<properties>
+		<failed.tests.reruns>0</failed.tests.reruns>
+	</properties>
+
+	<dependencies>
+
+		<!--VITAMUI -->
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-external-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-utils</artifactId>
+		</dependency>
+
+		<!-- Spring-Boot -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+
+		<!-- UTILS -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<!--TEST -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.5</version>
+		</dependency>
+
+		<!--TEST -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitam</groupId>
+			<artifactId>common-public</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui.commons</groupId>
+			<artifactId>commons-test</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-commons</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- CUCUMBER SERENITY -->
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-cucumber</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-spring</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>*.p12</exclude>
+					<exclude>*.jks</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+		<plugins>
+			<!-- AVOID TEST during the unit test phase -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+
+			<!-- Run integration test -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>${test.runners}</include>
+					</includes>
+					<rerunFailingTestsCount>${failed.tests.reruns}</rerunFailingTestsCount>
+                    <systemPropertyVariables>
+						<spring.config.additional-location>application-dev.yml</spring.config.additional-location>
+                    </systemPropertyVariables>
+				</configuration>
+				<executions>
+					<execution>
+						<id>cucumber-integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- CUCUMBER SERENITY REPORTING -->
+			<plugin>
+				<groupId>net.serenity-bdd.maven.plugins</groupId>
+				<artifactId>serenity-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>net.serenity-bdd</groupId>
+						<artifactId>serenity-core</artifactId>
+						<version>${serenity.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>serenity-reports</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<skip>false</skip>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>integration</id>
+			<properties>
+				<test.runners>**/runners/*IntegrationTest.java</test.runners>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+	                    <configuration>
+	                        <systemPropertyVariables>
+	                            <spring.config.additional-location>application-integration.yml</spring.config.additional-location>
+	                        </systemPropertyVariables>
+	                    </configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>dev-it</id>
+			<properties>
+				<test.runners>**/runners/*IntegrationTest.java</test.runners>
+			</properties>
+		</profile>
+		<profile>
+			<id>iam</id>
+			<properties>
+				<test.runners>**/runners/IamIntegrationTest.java</test.runners>
+			</properties>
+		</profile>
+		<profile>
+			<id>identity</id>
+			<properties>
+				<test.runners>**/runners/IdentityIntegrationTest.java</test.runners>
+			</properties>
+		</profile>
+		<profile>
+			<id>security</id>
+			<properties>
+				<test.runners>**/runners/SecurityIntegrationTest.java</test.runners>
+			</properties>
+		</profile>
+		<profile>
+			<id>portal</id>
+			<properties>
+				<test.runners>**/runners/PortalIntegrationTest.java</test.runners>
+			</properties>
+		</profile>
+		<profile>
+			<id>front</id>
+			<properties>
+				<test.runners>**/runners/Ui*IntegrationTest.java</test.runners>
+		        <failed.tests.reruns>3</failed.tests.reruns>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

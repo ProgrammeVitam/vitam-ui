@@ -1,0 +1,25 @@
+@import '../../../../../sass/variables/colors';
+
+$input-height: 50px;
+$anim-timing: 150ms ease-out;
+
+input {
+    color: $charcoal-grey;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Roboto';
+    background: none;
+    border: none;
+    transition: margin $anim-timing;
+    outline: none;
+    width: 100%;
+}
+
+.align {
+    align-items: center;
+}
+
+.vitamui-mat-select-mini {
+    max-width: 350px;
+    margin-left: 10px;
+}

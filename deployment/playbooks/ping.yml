@@ -1,0 +1,10 @@
+- name: Execute commons tasks before running all play
+  import_playbook: commons.yml
+
+- hosts: all
+  gather_facts: false
+  serial: "100%"
+  tasks:
+
+    - name: Test remote connection
+      ping:

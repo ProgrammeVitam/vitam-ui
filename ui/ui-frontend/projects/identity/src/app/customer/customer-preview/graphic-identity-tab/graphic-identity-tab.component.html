@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-12 form-control">
+    <button class="btn secondary mb-20" (click)="openUpdateCustomerLogo()" [disabled]="readonly">
+        <div i18n="customer graphic identity tab edit@@customerGraphicIdentityTabEditButton">
+            Modifier
+        </div>
+    </button>
+  </div>
+</div>
+<div class="row"></div>
+<div class="row">
+  <div class="image-container" *ngIf="customer.hasCustomGraphicIdentity">
+    <img [src]="trustedUrlInline">
+  </div>
+  <div class="image-container" *ngIf="!customer.hasCustomGraphicIdentity">
+    <p i18n="customer graphic identity tab no logo@@customerGraphicIdentityTabNoLogoLabel">Aucun logo n'a été sélectionné</p>
+  </div>
+</div>
+

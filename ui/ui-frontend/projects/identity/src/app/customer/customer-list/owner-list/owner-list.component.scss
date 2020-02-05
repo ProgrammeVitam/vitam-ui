@@ -1,0 +1,71 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+    display: block;
+    width: 100%;
+}
+
+.sub-table-container {
+    padding-top: 12px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+
+    td {
+        border-collapse: collapse;
+        padding: 5px 20px;
+        border-top: none;
+        vertical-align: middle;
+        font-weight: 500;
+        color: $warm-grey-two;
+        height: 50px;
+
+        &:first-child {
+            padding-left: 30px;
+        }
+
+        &:last-child {
+            padding-right: 0px;
+        }
+
+        > i {
+            color: #666666;
+            margin-right: 10px;
+        }
+    }
+}
+
+.footer {
+    padding: 20px;
+
+    button:first-child {
+        margin-right: 10px;
+    }
+}
+
+.btn-add-owner {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+
+    .btn-circle {
+        margin-right: 18px;
+    }
+}
+.proof-icon {
+    font-size: 24px;
+    vertical-align: middle;
+    color: $pale-orange !important;
+}
+
+.btn-icon {
+    position: relative;
+    top: 8px;
+    left: 1px;
+}

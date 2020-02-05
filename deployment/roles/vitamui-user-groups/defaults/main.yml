@@ -1,0 +1,31 @@
+---
+# defaults file for vitamui-user-groups
+system_groups:
+  vitamui:
+    gid: 4000
+    nopasswd: "/bin/systemctl stop vitamui-*,/bin/systemctl start vitamui-*,/bin/systemctl restart vitamui-*"
+
+  vitamui-admin:
+    gid: 5000
+    # To modify
+    #nopasswd: ""
+
+  vitamuidb-admin:
+    gid: 5001
+    # To modify
+    #nopasswd: ""
+
+
+system_users:
+  vitamui:
+    uid: 4000
+    home: /vitamui
+    groups:
+      - vitamui
+      - vitamui-admin
+
+  vitamuidb:
+    uid: 5000
+    home: /vitamuidb
+    groups:
+      - vitamuidb-admin

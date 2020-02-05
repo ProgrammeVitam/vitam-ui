@@ -1,0 +1,5 @@
+
+- name: "{{ verbe }} serice {{ service_name }}"
+  service:
+    name: "{{ service_name }}"
+    state: "{{ etat }}"

@@ -1,0 +1,17 @@
+/vitamui/log/__NAME__/*.log {
+       weekly
+       rotate 10
+       copytruncate
+       delaycompress
+       compress
+       notifempty
+       missingok
+       postrotate
+          if /bin/kill -USR1 `cat /vitamui/run/__NAME__/mongod.pid 2>/dev/null` 2> /dev/null; then
+            sleep 2
+            rm -f $(ls /vitamui/log/__NAME__/*.log$(date +%Y-%m-%dT%H-)* 2>/dev/null | sort | tail -n 1) || true
+          else
+            rm -f /vitamui/log/__NAME__/*.log
+          fi
+       endscript
+}

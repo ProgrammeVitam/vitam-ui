@@ -1,0 +1,16 @@
+
+consul:
+    conf_folder: "/vitam/conf/consul"
+    package_name: "vitam-consul"
+    service_name: "vitam-consul"
+    consul_dir: consul
+    retry_interval: 10 # in seconds
+    check_internal: 10 # in seconds
+    check_timeout: 5 # in seconds
+    network: "ip_admin" # Which network to use for consul communications ? ip_admin or ip_service ?
+
+# If connect to VITAM consul, please uncomment & describe params
+#consul_remote_sites:
+#    - vitamui:
+#      name: "vitamui"
+#      wan: ["machine_vitam"]

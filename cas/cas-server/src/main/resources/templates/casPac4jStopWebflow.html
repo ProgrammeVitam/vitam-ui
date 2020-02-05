@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{screen.pac4j.unauthz.pagetitle}">Pac4j Stop Webflow View</title>
+</head>
+
+<body id="cas">
+<div layout:fragment="content">
+    <div>
+        <h2 th:utext="#{screen.pac4j.unauthz.heading}">Unauthorized Access</h2>
+        <p th:utext="#{screen.pac4j.unauthz.message}">Either the authentication request was rejected/cancelled, or
+            the authentication provider denied access due to permissions, etc. Review logs to find the root cause of
+            the issue.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<h2 *ngIf="dialogTitle" mat-dialog-title>{{ dialogTitle }}</h2>
+
+<mat-dialog-content><ng-content></ng-content></mat-dialog-content>
+
+<mat-dialog-actions align="start">
+  <button class="btn primary" [matDialogClose]="true" cdkFocusInitial>
+    <ng-container *ngIf="confirmLabel; else defaultConfirmLabel">{{ confirmLabel }}</ng-container>
+    <ng-template #defaultConfirmLabel i18n="@@confirmDialogConfirmLabel">Confimer</ng-template>
+  </button>
+  <button class="btn cancel" [matDialogClose]="false">
+    <ng-container *ngIf="cancelLabel; else defaultCancelLabel">{{ cancelLabel }}</ng-container>
+    <ng-template #defaultCancelLabel i18n="@@confirmDialogCancelLabel">Retour</ng-template>
+  </button>
+</mat-dialog-actions>

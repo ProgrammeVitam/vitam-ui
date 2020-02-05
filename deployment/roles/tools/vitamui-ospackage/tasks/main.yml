@@ -1,0 +1,42 @@
+# tasks file for vitamui-ospackage
+#- name: Setup yum package
+#  block:
+
+- set_fact:
+    latest_packages_list: []
+
+- set_fact:
+    latest_packages_list: "{{ latest_packages_list  + [ item.name ] }}"
+  when: item.version == 'latest'
+  with_items: "{{ packages }}"
+
+- set_fact:
+    version_packages_list: []
+
+- set_fact:
+    # RPM doesn't suppport _ in version name
+    version_packages_list: "{{ version_packages_list  + [ item.name + '-' +  item.version  | replace('-','_') ] }}"
+  when: item.version != 'latest'
+  with_items: "{{ packages }}"
+
+
+- name: "[{{ ospackage_banner }}] Setup yum package latest version"
+  when: latest_packages_list is defined and latest_packages_list|length > 0
+  yum:
+    name: "{{ latest_packages_list }}"
+    state: latest
+    disable_gpg_check: yes
+
+  tags:
+    - system
+    - always
+
+- name: "[{{ ospackage_banner }}] Setup yum package version"
+  when: version_packages_list is defined and version_packages_list|length > 0
+  yum:
+    name: "{{ version_packages_list }}"
+    state: present
+    disable_gpg_check: yes
+  tags:
+    - system
+    - always

@@ -1,0 +1,8 @@
+<div class="parent-label" matTooltip="{{node?.name}}"
+matTooltipClass="vitamui-tooltip"
+[matTooltipShowDelay]="300"><i class="material-icons">chevron_right</i>{{node?.name}}</div>
+<ul>
+  <li *ngFor="let node of node?.child">
+    <vitamui-common-display-node [node]="node"></vitamui-common-display-node>
+  </li>
+</ul>

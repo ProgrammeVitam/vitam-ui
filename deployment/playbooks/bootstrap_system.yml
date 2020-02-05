@@ -1,0 +1,20 @@
+#
+# Bootstrap system
+#
+
+########################################################
+# ZONE Common system
+########################################################
+- hosts: vitamui:deployer:os_repository:bastion
+  gather_facts: false
+  any_errors_fatal: true
+  serial: "100%"
+  pre_tasks:
+    - include_vars: "{{ inventory_dir }}/overrides.yml"
+      tags: always
+  roles:
+    - vitamui-system
+    # - tools/vitamui-repository
+  tags:
+    - bootstrap_system
+

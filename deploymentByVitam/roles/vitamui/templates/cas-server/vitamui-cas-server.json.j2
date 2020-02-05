@@ -1,0 +1,17 @@
+{
+{# TODO : check probe is correct / verify file installation is made in vitamui-cas-server role #}
+  "service": {
+     "name": "{{ vitamui.cas_server.vitamui_component }}",
+     "port": {{ vitamui.cas_server.port_service | int }},
+     "address": "{{ ip_service }}",
+     "enable_tag_override": false,
+     "tags": ["cas-server"],
+     "checks": [
+        {
+            "notes": "cas server port opened",
+            "tcp": "{{ ip_service }}:{{ vitamui.cas_server.port_service }}",
+            "interval": "1s"
+        }
+     ]
+  }
+}

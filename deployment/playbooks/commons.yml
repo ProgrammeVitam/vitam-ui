@@ -1,0 +1,22 @@
+#
+# Playbooks called by all for commons pre tasks
+#
+
+# Cleaning des fichiers temp
+- hosts: localhost
+  connection: local
+  become: false
+  gather_facts: false
+  tasks:
+
+    - name: Reset tmp dir
+      shell: "rm -Rf {{ tmp_dir }}/* ; mkdir -p {{ tmp_dir }}"
+      tags:
+        - always
+
+    - name: create facts cache dir
+      file:
+        path: "{{ tmp_dir }}/facts_cache"
+        state: directory
+      tags:
+        - always

@@ -1,0 +1,12 @@
+[
+	{
+		"Name":"Contrat Acces Arbre",
+		"Description":"Contrat d’accès à l’arbre du tenant",
+		"Status":"ACTIVE",
+		"OriginatingAgencies":[],
+		"DataObjectVersion": [],
+		"WritingPermission": true,
+		"EveryOriginatingAgency": true,
+		"EveryDataObjectVersion": true
+	}
+]

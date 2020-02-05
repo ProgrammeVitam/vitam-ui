@@ -1,0 +1,19 @@
+[Unit]
+Description=vitamui-__NAME__ service
+After=network.target
+After=syslog.target
+
+[Service]
+Type=forking
+PIDFile=/vitamui/run/__NAME__/nginx.pid
+ExecStartPre=/usr/sbin/nginx -t -c /vitamui/conf/__NAME__/nginx.conf
+ExecStart=/usr/sbin/nginx -c /vitamui/conf/__NAME__/nginx.conf
+ExecReload=/usr/sbin/nginx -s reload -c /vitamui/conf/__NAME__/nginx.conf
+ExecStop=/bin/kill -s QUIT `cat /vitamui/run/nginx/nginx.pid`
+PrivateTmp=true
+# Forked model must use root when launching process. Nginx childs are forked with vitamui user
+User=root
+Group=vitamui
+
+[Install]
+WantedBy=multi-user.target

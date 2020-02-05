@@ -1,0 +1,20 @@
+[
+{
+    "Name": "{{ ctx.context }}",
+    "Status": "ACTIVE",
+    "EnableControl": {{ ctx.enable_control }},
+    "Identifier": "{{ ctx.context }}",
+    "SecurityProfile": "{{ ctx.security_profile }}",
+    "Permissions": [
+        {% for tenant in ctx.tenants %}
+        {
+            "tenant": {{ tenant }},
+            "AccessContracts": [],
+            "IngestContracts": []
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ],
+    "CreationDate": "2017-11-02T12:06:34.034",
+    "LastUpdate": "2017-11-02T12:06:34.036"
+}
+]

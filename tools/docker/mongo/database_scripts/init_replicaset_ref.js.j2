@@ -1,0 +1,12 @@
+rs.initiate({
+    _id: '{{ mongod_replicaset_name }}',
+    members: [
+{% for host in groups['hosts-vitamui-mongod'] %}
+        { _id: {{ loop.index - 1 }}, host: '{{ hostvars[host].ip_service }}:{{ mongod_listen_port }}'},
+{% endfor %}
+    ]
+});
+
+
+/* wait rs status to be ok */
+sleep(15000)

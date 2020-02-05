@@ -1,0 +1,18 @@
+# commit : f1c7197e4ef4031985854c0e00592bae28bf34a2
+
+vitam_repositories:
+### Or the new webdav repositories
+- key: vitamui
+  value: "http://pic-prod-repository.vitam-env/contrib/VITAMUI_COMMIT/rpm/"
+- key: vitam-java
+  value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-core/"
+  proxy: ""
+- key: vitam-doc
+  value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-extras/"
+  proxy: ""
+- key: vitam-external
+  value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-external/"
+  proxy: ""
+- key: vitam-product
+  value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-product/"
+  proxy: ""

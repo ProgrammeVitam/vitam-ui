@@ -1,0 +1,50 @@
+@mixin mat-select-panel {
+    border-radius: 5px;
+    background-color: white;
+    border: solid 1px $greeny-blue;
+    padding: 10px 0;
+
+    .mat-select-content {
+        background: transparent;
+    }
+
+    .mat-option {
+        color: $greeny-blue;
+        font-size: 15px;
+        line-height: 2em;
+        height: 2em;
+        padding: 0px 30px;
+    }
+
+    .mat-option.mat-active,
+    .mat-option:hover:not(.mat-option-disabled),
+    .mat-option:focus:not(.mat-option-disabled) {
+        background-color: transparentize($greeny-blue, 0.85);
+    }
+
+    .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
+        background-color: transparentize($greeny-blue, 0.85);
+    }
+
+    .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
+        background: none;
+    }
+
+    .mat-option.mat-selected:not(.mat-option-multiple) {
+        font-weight: 500;
+        color: $greeny-blue;
+
+        &:before {
+            content: 'check';
+            font-family: 'Material Icons';
+            color: $greeny-blue;
+            display: block;
+            position: absolute;
+            left: 10px;
+        }
+    }
+
+    .mat-option-disabled {
+        color: $greyish-two;
+    }
+}

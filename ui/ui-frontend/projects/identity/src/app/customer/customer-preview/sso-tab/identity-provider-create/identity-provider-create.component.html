@@ -1,0 +1,69 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" value="100" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="content">
+    <h2 i18n="Create an IDP for the customer@@idpCreateTitle">Création d'un IDP pour "{{data?.customer?.name}}"</h2>
+
+    <div class="form-group">
+      <vitamui-common-slide-toggle formControlName="enabled" i18n="IDP Enabled@@idpCreateEnabledToggleLabel">IDP Actif</vitamui-common-slide-toggle>
+    </div>
+
+    <div class="form-group-flex">
+      <vitamui-common-input
+        formControlName="name"
+        maxlength="100"
+        required
+        placeholder="Nom IDP" i18n-placeholder="IDP Name@@idpCreateNamePlaceholder"
+      >
+        <ng-container *ngIf="form.get('name')?.touched">
+          <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+
+    </div>
+
+    <div>
+      <vitamui-common-input
+        class="field-keystore-password"
+        formControlName="keystorePassword"
+        type="password"
+        required
+        maxlength="50"
+        placeholder="Mot de passe du keystore" i18n-placeholder="IDP keystore password@@idpCreateKeystorePasswordPlaceholder"
+      >
+        <ng-container *ngIf="form.get('keystorePassword')?.touched">
+          <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.badPassword" i18n="Required field error hint@@idpCreateKeystoreErrorPassword">Mot de passe incorrect</vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+    </div>
+
+    <div class="form-group vitamui-input-file">
+      <label for="keystore">
+          <span class="vitamui-input-file-label" i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel">Uploader le fichier keystore de CAS</span>
+          <div class="vitamui-input-file-filename">{{keystore?.name}}</div>
+      </label>
+      <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)">
+    </div>
+
+    <div class="form-group vitamui-input-file">
+      <label for="idpMetadata">
+        <span class="vitamui-input-file-label" i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel">Uploader le fichier metadata de l'IDP</span>
+        <div class="vitamui-input-file-filename">{{idpMetadata?.name}}</div>
+      </label>
+      <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)">
+    </div>
+
+    <div class="form-group">
+      <label for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</label>
+      <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="!isFormValid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
+      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
+    </div>
+  </div>
+</form>

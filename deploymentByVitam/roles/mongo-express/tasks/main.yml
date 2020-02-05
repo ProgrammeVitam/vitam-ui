@@ -1,0 +1,26 @@
+---
+
+- name: Install mongo-express package
+  package:
+    name: vitamui-mongo-express
+    state: latest
+  tags:
+    - mongod
+
+# TODO OMA : finaliser ce truc...
+- name: Push mongo-express scripts and config
+  template:
+    src: "env.sh.j2"
+    dest:  "{{ vitamui_defaults.folder.root_path }}/conf/mongo-express/env.sh"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: 0755
+
+- name: Ensure mongo-express is started
+  systemd:
+    name:  vitamui-mongo-express
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - mongod

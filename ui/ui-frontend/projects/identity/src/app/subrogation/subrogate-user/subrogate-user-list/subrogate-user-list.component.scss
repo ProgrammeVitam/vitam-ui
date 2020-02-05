@@ -1,0 +1,46 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.criticity-column {
+    display: flex;
+    align-items: center;
+}
+
+#rectangle-criticity-high {
+    width: 20px;
+    height: 10px;
+    border-radius: 3px;
+    background: #919191;
+    margin-right: 5px;
+}
+
+#rectangle-criticity-low {
+    width: 20px;
+    height: 10px;
+    border-radius: 3px;
+    background: #dedcdc;
+    margin-right: 5px;
+}
+
+.btn-subrogation {
+    width: 120px;
+    height: 34px;
+    border-radius: 50px;
+    background-color: $greeny-blue;
+    color: $white;
+    text-align: center;
+    border: 1px solid $greeny-blue;
+    cursor: pointer;
+    &[disabled] {
+        opacity: 0.4;
+    }
+}
+
+.user-in-subrogation-label {
+    color: red;
+}
+
+
+.user-current-in-subrogation-label {
+    color: red;
+    margin-left: 20px;
+}

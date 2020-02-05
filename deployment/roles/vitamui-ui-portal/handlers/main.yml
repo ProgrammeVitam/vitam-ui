@@ -1,0 +1,6 @@
+---
+# handlers file for vitamui.ui-portal
+- name: restart ui-portal service
+  service:
+    name: vitamui-ui-portal
+    state: restarted

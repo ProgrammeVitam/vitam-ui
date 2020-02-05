@@ -1,0 +1,93 @@
+
+# Variables used for development purposes (templating...)
+mongodb_vitamuiScripts_version:
+  - "1.0.0"
+  - "1.0.1"
+
+mongod_source_template_dir:  "{{lookup('env','PWD')}}/../tools/docker/mongo/database_scripts/"
+
+# New way with templating
+# Scripts load order. Mandatory for templating. Any files that don't match the pattern won't
+# be executed in mongo provisonning
+
+# REGEX APPLIES ON RELATIVE SCRIPT PATH
+# Notes: entries are not duplicated, first regex match rule applies
+mongod_scripts_load_order:
+  - "iam/1.0.0/create_users_ref.js.j2"     # first script mandatory
+  - "iam/1.0.0/.*_ref.js"
+  - "iam/1.0.0/.*_demo.js"
+  - "iam/1.0.0/security.populate_certificates_dev.js.j2"
+  - "iam/1.0.0/.*_dev.js"
+  - "1.0.0/.*_ref.js"
+  - "1.0.0/.*_demo.js"
+  - "1.0.0/.*_dev.js"
+  - "1.0.1/.*ref.js"
+
+mongo_files_excluded:
+  - "iam/1.0.0/security.populate_certificates_ref.js.j2" # problem with templating on this one
+  - "1.0.0/security.populate_certificates_ref.js.j2" # problem with templating on this one
+  - "init_replicaset_ref.js.j2" # mandatory in first, "manually" added
+
+# Variables for users
+
+
+# DATABASES USERS
+mongod_dbuser_admin: mongod_dbuser_admin
+mongod_dbpwd_admin: mongod_dbpwd_admin
+
+mongod_dbuser_security: mongod_dbuser_security
+mongod_dbpwd_security: mongod_dbpwd_security
+
+mongod_dbuser_iam: mongod_dbuser_iam
+mongod_dbpwd_iam: mongod_dbpwd_iam
+
+mongod_dbuser_cas: mongod_dbuser_cas
+mongod_dbpwd_cas: mongod_dbpwd_cas
+
+
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Security context cert value override
+vitamui_security_contexts:
+
+  ui_identity:
+    cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-identity/ui-identity.pem') | cert_to_str() }}"
+
+  ui_portal:
+    cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-portal/ui-portal.pem') | cert_to_str() }}"
+
+  cas:
+     cert_data: "{{ lookup('file', pki_dir +'/dev/certs/cas-server/cas-server.pem') | cert_to_str() }}"
+
+# ----------------------------------------------------------------------------------------------------------------------
+# cas services cert value override
+
+cas_services_configs:
+
+  ui_portal:
+    serviceId: "^https://.*.vitamui.com:9000.*"
+    logoutUrl: "https://dev.vitamui.com:9000/logout"
+
+  ui_identity:
+    serviceId: "^https://.*.vitamui.com:9001.*"
+    logoutUrl: "https://dev.vitamui.com:9001/logout"
+
+  ui_identity_admin:
+    serviceId: "^https://.*.vitamui.com:9001.*"
+    logoutUrl: "https://dev.vitamui.com:9001/logout"
+
+  mobile:
+    serviceId: "vitamuimobile"
+    name: "VITAMUI Mobile OAuth"
+    clientId : "vitamuimobile"
+    clientSecret: "vitamuimobilesecret"
+
+vitamui_services:
+  ui_identity:
+    server_name: dev.vitamui.com:4201
+
+  ui_identity_admin:
+    server_name: dev.vitamui.com:4201
+
+

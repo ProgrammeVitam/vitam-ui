@@ -1,0 +1,9 @@
+input
+{
+    # --- syslog input etc ...
+    syslog {
+        add_field => [ "input", "syslog" ]
+        host => "{{ hostvars[inventory_hostname]['ip_admin'] }}"
+        port => {{ logstash.port }}
+    }
+}

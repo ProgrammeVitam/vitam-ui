@@ -1,0 +1,12 @@
+[
+	{
+		"Name":"Contrat Acces Logbook",
+		"Description":"Contrat d'accès pour récupérer l'historique des opérations",
+		"Status":"ACTIVE",
+		"OriginatingAgencies":[],
+		"DataObjectVersion": [],
+		"WritingPermission": false,
+		"EveryOriginatingAgency": true,
+		"EveryDataObjectVersion": true
+	}
+]

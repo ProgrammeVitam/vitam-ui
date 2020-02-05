@@ -1,0 +1,16 @@
+[Unit]
+Description=vitamui-__NAME__ service
+After=network.target
+After=syslog.target
+After=vitamui-consul.service
+
+[Service]
+Type=simple
+EnvironmentFile=/vitamui/conf/__NAME__/sysconfig/java_opts
+EnvironmentFile=/vitamui/conf/__NAME__/sysconfig/cmd_line_args
+ExecStart=/usr/bin/env java $JAVA_OPTS $CMD_LINE_ARGS
+User=__USER__
+Group=__GROUP__
+
+[Install]
+WantedBy=multi-user.target

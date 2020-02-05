@@ -1,0 +1,36 @@
+Port 6622
+
+# Syslog
+SyslogFacility AUTHPRIV
+
+# Default host key files
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Where the public key are searched per user
+#AuthorizedKeysFile      /etc/ssh/authorized_keys
+AuthorizedKeysFile      /vitamuiadmin/vitamuiadmin_rsa.pub
+
+# Disallow root login
+PermitRootLogin No
+
+# Disallow password authaentification
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+
+# use local system accounts :
+UsePAM yes
+
+# Enable public key auth
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials no
+PubkeyAuthentication yes
+
+
+X11Forwarding no
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+AcceptEnv LC_IDENTIFICATION LC_ALL LANGUAGE
+AcceptEnv XMODIFIERS
+Subsystem       sftp    /usr/libexec/openssh/sftp-server

@@ -1,0 +1,74 @@
+---
+# tasks file for rsyslog
+
+- name: ensure rsyslog package is installed
+  package:
+    name: rsyslog
+    state: latest
+  notify:
+    - restart rsyslog
+
+- name: ensure service is started on boot && restart service
+  service:
+    name: rsyslog
+    enabled: true
+  notify:
+    - restart rsyslog
+
+#### Configuration ####
+
+- name: Push rsyslog config
+  import_role:
+    name: tools/vitamui-filesystem-template
+  vars:
+    fstemplate_src_dir: "{{playbook_dir}}/templates/"
+    fstemplate_filter_pattern: "/vitamui/rsyslog"
+    fstemplate_task_banner: "rsyslog"
+    fstemplate_user_owner: root
+    fstemplate_group_owner: root
+    # Configure handlers
+    fstemplate_notify_handlers:
+      # Restart service unit
+      - name: rsyslog
+        state: restarted
+  tags:
+    - fstemplate
+    - logstash
+
+#
+#
+## TODO: integrate un tools/vitamui-filesystem-template module
+#- name: copy VITAMUI transport config file
+#  template:
+#    src: "templates/vitamui_transport.conf"
+#    dest: /etc/rsyslog.d/vitamui_transport.conf
+#    owner: root
+#    mode: 0644
+#  notify:
+#    - restart rsyslog
+#
+## TODO: integrate un tools/vitamui-filesystem-template module -- store full  conf file instead of replace
+#- name: activate UDP in rsyslog
+#  replace:
+#    dest: /etc/rsyslog.conf
+#    regexp: '^#\$ModLoad imudp.*$'
+#    replace: "$ModLoad imudp"
+#  notify:
+#    - restart rsyslog
+#
+## TODO: integrate un tools/vitamui-filesystem-template module -- store full  conf file instead of replace
+#- name: activate port 514 in rsyslog
+#  replace:
+#    dest: /etc/rsyslog.conf
+#    regexp: '^#\$UDPServerRun 514.*$'
+#    replace: "$UDPServerRun 514"
+#  notify:
+#    - restart rsyslog
+
+- name: Ensure service is started + enabled at boot
+  service:
+    name: "rsyslog"
+    state: started
+    enabled: yes
+  tags:
+    - start

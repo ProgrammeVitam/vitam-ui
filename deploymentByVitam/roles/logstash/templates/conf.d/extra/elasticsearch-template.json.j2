@@ -1,0 +1,17 @@
+{
+  "template" : "logstash-*",
+  "settings" : {
+    "index.refresh_interval" : "10s",
+    {% if groups['hosts_elasticsearch_log']|length > 1 %}
+    "number_of_replicas": {{ kibana.log.metrics.replica }},
+    {% else %}
+    "number_of_replicas": 0,
+    {% endif %}
+    "number_of_shards": {{ kibana.log.metrics.shards }}
+  },
+  "mappings" : {
+    "_default_" : {
+       "_all" : {"enabled" : true}
+    }
+  }
+}

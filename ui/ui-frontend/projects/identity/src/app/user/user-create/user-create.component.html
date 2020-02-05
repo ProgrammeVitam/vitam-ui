@@ -1,0 +1,249 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="user create title@@userCreateTitle">Création d'un utilisateur</h2>
+
+        <div class="form-group">
+          <vitamui-common-slide-toggle formControlName="enabled" i18n="user create labelEnabled@@labelEnabled">Compte <span *ngIf="!form.get('enabled').value">in</span>actif</vitamui-common-slide-toggle>
+        </div>
+
+        <div class="d-flex">
+          <vitamui-common-input class="field-firstname" formControlName="firstname"
+                          minlength="2" maxlength="50" required placeholder="Prénom"
+                          i18n-placeholder="user create firstname@@userCreateFirstname">
+            <vitamui-common-input-error *ngIf="form.get('firstname')?.touched && form.get('firstname')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          </vitamui-common-input>
+          <vitamui-common-input class="field-lastname" formControlName="lastname"
+                          minlength="2" maxlength="50" required placeholder="Nom"
+                          i18n-placeholder="user create lastname@@userCreateLastname">
+            <vitamui-common-input-error *ngIf="form.get('lastname')?.touched && form.get('lastname')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
+
+        <form [formGroup]="formEmail">
+          <div class="d-flex">
+            <vitamui-common-input class="field-email" formControlName="emailFirstPart"
+                            maxlength="50" required placeholder="Adresse e-mail"
+                            [class.ng-invalid]="form?.get('email')?.errors"
+                            i18n-placeholder="user create email@@userCreateEmail">
+              <ng-container *ngIf="formEmail.get('emailFirstPart')?.touched">
+                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('pattern')" i18n="Email pattern field error hint@@formErrorPatternEmail">Format e-mail incorrect</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('uniqueEmail')" i18n="Existing email error hint@@formErrorExistingEmail">E-mail déjà existant</vitamui-common-input-error>
+              </ng-container>
+            </vitamui-common-input>
+            <span class="layer">@</span>
+
+            <mat-form-field class="field-domain vitamui-mat-select">
+              <mat-select formControlName="domain" required panelClass="vitamui-mat-select">
+                <mat-option value="{{domainTmp}}" *ngFor="let domainTmp of customer?.emailDomains; let index = index">
+                  {{domainTmp}}
+                </mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+        </form>
+
+        <div class="form-group">
+          <label for="type" i18n="userType label@@userCreateTypeInputLabel">
+            Type
+          </label>
+          <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+            <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">Nominatif</mat-button-toggle>
+            <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <div class="form-group">
+          <vitamui-common-slide-toggle formControlName="subrogeable" i18n="user create subrogeable account@@subrogeableAccount">Compte subrogeable par le support</vitamui-common-slide-toggle>
+        </div>
+
+        <div class="row actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
+                  *ngIf="connectedUserInfo.type !== 'NONE';else noGroup" i18n="user create next step group@@userCreateNextStepGroupButton">
+            Continuer en attribuant un groupe
+          </button>
+          <ng-template #noGroup>
+              <button type="button"
+                      class="btn primary"
+                      [disabled]="firstStepInvalid()"
+                      (click)="passGroupStep()"
+                      i18n="user create next step otp@@userCreateNextStepOtpButton">
+                  Continuer en gérant l'authentification
+                </button>
+          </ng-template>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="user create cancel@@userCreateCancelButton">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="user create group attribution@@userGroupAttribution">Attribution de groupe</h2>
+
+        <div class="header-informations">
+          <div class="controls">
+            <div class="search disabled">
+                <input type="search" placeholder="Filtrer par «nom», «id» ..." disabled
+                        i18n-placeholder="user create search group@@userCreateSearchGroup">
+              <i class="material-icons">search</i>
+            </div>
+          </div>
+
+          <div class="actions" *ngIf="groupName">
+            <div>Groupe attribué : </div>&nbsp;{{ groupName }}
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th i18n="user create group header@@userCreateGroupHeader">Groupes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody vitamuiCommonCollapseContainer>
+              <ng-container *ngFor="let group of groups; let index = index">
+
+                <tr class="group-row" *ngIf="!group?.selected" [vitamuiCommonCollapseTriggerFor]="row">
+                  <td class="clickable" (click)="updateGroupe(group?.id,group?.name, row)">
+                    {{ group?.name }}
+                  </td>
+                  <td class="clickable" >
+                    <span class="btn-link" *ngIf="row.state === 'collapsed';else hideDetail" i18n="Profile group showDetails@@profileGroupShowDetails">Voir détail</span>
+                    <ng-template #hideDetail><span class="btn-link" i18n="Profile group hideDetails@@profileGroupHideDetails">Masquer détail</span></ng-template>
+                  </td>
+                </tr>
+
+                <tr class="sub-table">
+                  <td>
+                    <app-group-detail [group]="group" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [@expansion]="row.state" class="collapsable"></app-group-detail>
+                  </td>
+                  <td></td>
+                </tr>
+
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext
+                  [disabled]="!groupName" i18n="user create next step otp@@userCreateNextStepAddressButton">
+            Continuer en saisissant les coordonnées
+          </button>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="@@userCreateAddressTitle">Coordonnées</h2>
+
+        <ng-container formGroupName="address">
+
+          <div>
+            <vitamui-common-input class="field-street" [required]="!addressEmpty" formControlName="street" maxlength="250" placeholder="N° et nom de rue"
+              i18n-placeholder="@@userCreateStreetInputPlaceholder">
+              <vitamui-common-input-error *ngIf="form.get('address.street')?.touched && form.get('address.street')?.hasError('required')"
+                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            </vitamui-common-input>
+          </div>
+
+          <div class="d-flex">
+            <vitamui-common-input class="field-zip-code" [required]="!addressEmpty" formControlName="zipCode" maxlength="10" placeholder="Code postal"
+              i18n-placeholder="@@userCreateZipCodeInputPlaceholder">
+              <vitamui-common-input-error *ngIf="form.get('address.zipCode')?.touched && form.get('address.zipCode')?.hasError('required')"
+                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            </vitamui-common-input>
+            <vitamui-common-input class="field-city" [required]="!addressEmpty" formControlName="city" maxlength="100" placeholder="Ville"
+              i18n-placeholder="@@userCreateCityInputPlaceholder">
+              <vitamui-common-input-error *ngIf="form.get('address.city')?.touched && form.get('address.city')?.hasError('required')"
+                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            </vitamui-common-input>
+            <mat-form-field class="field-country vitamui-mat-select">
+              <mat-select formControlName="country" placeholder="Pays"
+                i18n-placeholder="@@userCreateCountrySelectPlaceholder"
+                panelClass="vitamui-mat-select">
+                <!-- TODO Fetch those values from a referential -->
+                <mat-option value="GB">Royaume Uni</mat-option>
+                <mat-option value="FR">France</mat-option>
+                <mat-option value="DE">Allemagne</mat-option>
+                <mat-option value="DK">Danemark</mat-option>
+                <mat-option value="ES">Espagne</mat-option>
+                <mat-option value="IT">Italie</mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="form.get('address').pending || form.get('address').invalid"
+            i18n="user create next step otp@@userCreateNextStepOtpButton">
+            Continuer en gérant l'authentification
+          </button>
+          <button type="button" class="btn cancel" (click)="onCancel()"
+            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        </div>
+
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+        </button>
+
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="user create title@@userCreateTitle">Création d'un utilisateur</h2>
+
+        <div class="form-group">
+          <vitamui-common-slide-toggle formControlName="otp" i18n="user create otp@@userCreateOtp">Validation en deux étapes</vitamui-common-slide-toggle>
+        </div>
+
+        <div class="d-flex">
+          <vitamui-common-input class="field-mobile" formControlName="mobile" placeholder="Numéro de mobile"
+                          i18n-placeholder="user create mobile@@userCreateMobile" [class.ng-invalid]="form?.hasError('missingPhoneNumber')">
+            <vitamui-common-input-error *ngIf="form?.get('mobile')?.hasError('pattern')" i18n="Mobile field format error hint@@formErrorMobileFieldFormat">
+              Format international (+336XXXXXXXX) obligatoire
+            </vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form?.get('mobile')?.touched && form?.hasError('missingPhoneNumber')"
+                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          </vitamui-common-input>
+          <vitamui-common-input class="field-phone" formControlName="phone" placeholder="Numéro de fixe"
+                          i18n-placeholder="user create phone@@userCreatePhone">
+            <vitamui-common-input-error *ngIf="form?.get('phone')?.hasError('pattern')" i18n="Phone field format error hint@@formErrorPhoneFieldFormat">Format international (+331XXXXXXXX) obligatoire</vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
+
+        <button type="submit" class="btn primary" [disabled]="formInvalid()" i18n="user create validation@@userCreateValidationButton">Valider la création</button>
+        <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>

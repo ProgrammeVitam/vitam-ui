@@ -1,0 +1,4 @@
+---
+
+service_consul: "{{ consul.service_name }}"
+service_logstash: "{{ logstash.service_name }}"

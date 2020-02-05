@@ -1,0 +1,44 @@
+{
+  "data_dir": "/vitamui/data/consul/",
+  "node_name": "{{ ansible_hostname }}",
+  "log_level": "INFO",
+  "recursors": ["{{ consul_recursors|join('", "') }}"],
+  "datacenter": "{{ consul_datacenter_name }}",
+  "enable_script_checks": true,
+
+{% if hostvars[inventory_hostname].setup_consul_server is defined and hostvars[inventory_hostname].setup_consul_server == 'yes' %}
+  "server": true,
+  "ui": true,
+  "bootstrap": true,
+  "addresses": {
+    "http": "{{ ip_admin }}"
+  },
+{% endif %}
+  "enable_syslog": true,
+  "disable_remote_exec": true,
+  "domain": "{{ consul_domain  }}",
+
+{# Test if consul_retyr_join is a list or single string, consul supports only arrays for retry join #}
+{% if consul_retry_join is iterable and consul_retry_join is not string  %}
+  "retry_join":  {{ consul_retry_join | to_json }},
+{% else %}
+  "retry_join": [ "{{ consul_retry_join }}" ],
+{% endif %}
+
+  "retry_interval": "10s",
+  {# TODO: use generated host vars like in vitam to separate business/admin streams. #}
+  "bind_addr": "{{ ip_admin }}",
+  "advertise_addr": "{{ ip_admin }}",
+  "encrypt": "{{ consul_encrypt }}",
+  "ports": {
+    "dns" : {{ consul_dns_port | int }}
+  },
+    "checks" : [
+    {
+        "name": "Check Consul DNS resolution for node",
+        "args": ["/usr/bin/getent", "ahostsv4", "{{ ansible_hostname }}.node.{{ consul_domain }}"],
+        "interval": "10s",
+        "timeout": "1s"
+      }
+    ]
+}

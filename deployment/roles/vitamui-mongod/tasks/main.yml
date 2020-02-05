@@ -1,0 +1,127 @@
+---
+# tasks file for vitamui-mongod
+- name: Install packages.
+  include_role:
+    name: tools/vitamui-ospackage
+  vars:
+    ospackage_banner: "mongo"
+    packages: "{{ mongod_packages }}"
+  tags:
+    - mongod
+
+# TODO: mongod should be repackaged to avoid dependency of officical mongod-org package
+- name: Disable official package mongod systemctl unit
+  service:
+    name: mongod
+    enabled: no
+    state:   stopped
+  tags:
+    - mongod
+
+
+- name: Push mongod config
+  import_role:
+    name: tools/vitamui-filesystem-template
+  vars:
+    fstemplate_src_dir: "{{playbook_dir}}/templates/"
+    fstemplate_filter_pattern: "/vitamui/conf/mongod/"
+    fstemplate_task_banner: "mongod"
+    fstemplate_user_owner: "{{ vitamui_db_system_user }}"
+    fstemplate_group_owner: "{{ vitamui_system_group }}"
+    fstemplate_dest_file_mode: 0600
+    # Configure handlers
+    # When redeploying, restart won't be called if mongo.conf or keyfile didn't change
+    fstemplate_notify_handlers:
+      # Restart service unit
+      - name: vitamui-mongod
+        state: restarted
+  tags:
+    - fstemplate
+    - mongod
+
+
+# Must tag task as config to be able to run mongod before provisionning scripts
+- name: Ensure mongod is started before executing provisionning scripts + enabled at boot
+  service:
+    name: vitamui-mongod
+    state: started
+    enabled: yes
+  tags:
+    - mongod
+
+
+# Must tag task as config to be able to run mongod before provisionning scripts
+- name: Ensure mongod is listening before executing provisionning scripts
+  wait_for:
+    sleep: 1
+    connect_timeout: 1
+    host: "{{ ip_service }}"
+    port: "{{ mongod_listen_port }}"
+    delay: 5
+    timeout: 120
+  tags:
+    - mongod
+
+
+- block:
+
+  - name: Create versioning script and push to mongod script directory
+    import_role:
+      name: tools/vitamui-database-scripts-templater
+    vars:
+      deployLocalhost: false
+      compute_templates: true
+      mongod_source_template_dir_current: "{{playbook_dir}}/templates/vitamui/script/mongod/"
+      mongod_output_dir_entry_point_current: "/vitamui/script/mongod/"
+      docker_data_path: ""
+    tags:
+      - mongod
+
+  - name: Push init_replica_set
+    become: true
+    template:
+      src: "{{playbook_dir}}/templates/vitamui/script/mongod/init_replicaset_ref.js.j2"
+      dest: "/vitamui/script/mongod/init_replicaset.js"
+    tags:
+      - mongod
+
+   # Primary becomes master, we execute all provisonning on the master node and it will replicate n the slaves nodes
+  - name: Execute init_replicaset scripts
+    shell: "cat  /vitamui/script/mongod/init_replicaset.js | mongo --host {{ ip_service}}:{{ mongod_listen_port}} && rm -f /vitamui/script/mongod/init_replicaset.js"
+    run_once: true
+    tags:
+      - mongod
+
+# Unecessary if filter correctly set
+#  - name: Execute create users scripts
+#    shell: "cat /vitamui/script/mongod/create_users_ref.js | mongo --host {{ mongod_replicaset_name }}/{{ ip_service}}:{{ mongod_listen_port}} && rm -f /vitamui/script/mongod/create_users_ref.js"
+#    tags:
+#      - mongod
+#
+  - name: Execute populate scripts
+    shell: "for file in /vitamui/script/mongod/last/*.js ; do cat $file | mongo --host {{ mongod_replicaset_name}}/{{ ip_service }}:{{ mongod_listen_port }}; done"
+    tags:
+      - mongod
+
+  when: hostvars[inventory_hostname].mongo_rs_bootstrap is defined and hostvars[inventory_hostname].mongo_rs_bootstrap == "yes"
+
+- name: Activate security on mongod instances
+  blockinfile:
+    dest: "/vitamui/conf/mongod/mongod.conf"
+    insertafter: "# ansible managed security conf"
+    block: |
+      security:
+        authorization: enabled
+        clusterAuthMode: keyFile
+        keyFile: "/vitamui/conf/mongod/keyfile"
+  # When redeploying, restart won't be called if keyfile content didn't change
+  notify:
+    - restart vitamui-mongod service
+  tags:
+  - mongod
+
+- name: Install mongo-express
+  include_tasks: express.yml
+  when: hostvars[inventory_hostname].mongo_express is defined and hostvars[inventory_hostname].mongo_express == "yes"
+  tags:
+    - mongod

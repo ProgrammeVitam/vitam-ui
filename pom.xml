@@ -1,0 +1,1579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.gouv.vitamui</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>VITAMUI</name>
+    <description>${project.artifactId}</description>
+
+    <organization>
+        <name>VITAMUI Team</name>
+    </organization>
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Modules -->
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <modules>
+        <module>commons</module>
+        <module>api</module>
+        <module>cas</module>
+        <module>integration-tests</module>
+        <module>deployment</module>
+        <module>cots</module>
+        <module>ui</module>
+    </modules>
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Définition des SCM, ciManagement -->
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- Définition de l'url du gestionnaire de source Ã utiliser -->
+    <scm>
+        <connection>scm:git:https://github.com/vitam-prg/vitamUI.git</connection>
+        <developerConnection>scm:git:https://github.com/vitam-prg/vitamUI.git</developerConnection>
+        <url>https://github.com/vitam-prg/vitamUI.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <repositories>
+        <!-- <id>vitam</id> to be defined in Profiles -->
+        <repository>
+            <id>shibboleth-maven</id>
+            <url>https://build.shibboleth.net/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <!-- <id>vitam</id> to be defined in Profiles -->
+    </distributionManagement>
+
+    <!-- Définition de l'url de l'intégration continue du projet -->
+    <!-- <ciManagement> <system>jenkins</system> <url>https://dev.vitamui.com/jenkins/</url>
+    </ciManagement> -->
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Définition des properties -->
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <properties>
+        <!-- Global Properties -->
+        <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <!-- Dependencies version -->
+        <apache.commons.codec.version>1.11</apache.commons.codec.version>
+        <apache.pdfbox.version>2.0.16</apache.pdfbox.version>
+        <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
+        <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
+        <bouncycastle.version>1.60</bouncycastle.version>
+        <cas.version>5.3.8</cas.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
+        <commons.collections4.version>4.2</commons.collections4.version>
+        <commons.compress.version>1.18</commons.compress.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
+        <commons.httpclient.version>3.0</commons.httpclient.version>
+        <commons.io.version>2.6</commons.io.version>
+        <commons.lang3.version>3.8.1</commons.lang3.version>
+        <commons.text.version>1.4</commons.text.version>
+        <easymock.version>3.4</easymock.version>
+        <embedded.mongo.version>2.1.2</embedded.mongo.version>
+		<fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
+        <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
+        <javax.el.version.version>3.0.0</javax.el.version.version>
+        <gson.version>2.8.2</gson.version>
+        <guava.version>25.1-jre</guava.version>
+        <hibernate.validator.version>6.0.17.Final</hibernate.validator.version>
+        <http.client.version>4.5.9</http.client.version>
+        <http.core.version>4.4.11</http.core.version>
+        <jackson.version>2.9.9</jackson.version>
+        <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
+        <javax.ws.rs.version>2.0.1</javax.ws.rs.version>
+        <jaxb.version>2.3.0</jaxb.version>
+        <jlibs.version>2.2.2</jlibs.version>
+        <junit.version>4.12</junit.version>
+        <jruby.complete.version>1.7.26</jruby.complete.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
+        <logback.version>1.2.3</logback.version>
+        <lombok.version>1.18.8</lombok.version>
+        <micrometer.version>1.1.5</micrometer.version>
+        <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
+        <pac4j.version>3.5.0</pac4j.version>
+        <poi.version>3.17</poi.version>
+        <powermock.version>2.0.2</powermock.version>
+        <!-- Temporary fix for Multipart upload issues cf
+        https://github.com/spring-projects/spring-framework/issues/23372
+        https://github.com/reactor/reactor-netty/issues/820
+         -->
+        <reactor.netty.version>0.8.6.RELEASE</reactor.netty.version>
+        <selma.version>1.0</selma.version>
+        <serenity.cucumber.version>1.9.7</serenity.cucumber.version>
+        <serenity.maven.plugin>1.9.19</serenity.maven.plugin>
+        <serenity.spring.version>1.9.7</serenity.spring.version>
+        <serenity.version>1.9.19</serenity.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
+        <spring.version>5.1.8.RELEASE</spring.version>
+        <spring.cloud.consul.version>2.1.2.RELEASE</spring.cloud.consul.version>
+        <spring.security.version>5.1.5.RELEASE</spring.security.version>
+        <swagger.version>2.8.0</swagger.version>
+        <trang.version>20181222</trang.version>
+        <vitam.version>2.6.3-1</vitam.version>
+        <xml.apis-version>1.4.01</xml.apis-version>
+        <xml.resolver.version>1.2</xml.resolver.version>
+        <xom.version>1.2.5</xom.version>
+		<xdocreport.version>2.0.1</xdocreport.version>
+		<xerces.version>2.12.0</xerces.version>
+
+        <!-- Web Pack -->
+        <node.version>v12.4.0</node.version>
+        <npm.version>6.9.0</npm.version>
+
+        <!--Plugins version -->
+        <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
+        <maven.asciidoctor.plugin.version>1.5.6</maven.asciidoctor.plugin.version>
+        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.dependencycheck.version>5.2.2</maven.dependencycheck.version>
+        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+        <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
+        <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
+        <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
+        <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
+        <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+        <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
+        <maven.jaxb2.plugin.version>2.2</maven.jaxb2.plugin.version>
+        <maven.lombok.plugin.version>1.18.0.0</maven.lombok.plugin.version>
+        <maven.pmd.plugin.version>3.10.0</maven.pmd.plugin.version>
+        <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
+        <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+        <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
+        <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
+        <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+        <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
+        <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
+        <maven.war.plugin.version>2.6</maven.war.plugin.version>
+
+        <!-- Profile properties -->
+        <angular.additional.test.informations></angular.additional.test.informations>
+        <!-- we can change the baseHref for our angular application-->
+        <angular.base.href>/</angular.base.href>
+        <!-- we can choose the build process, i.e 'npm build:dev' or 'npm build:prod'-->
+        <angular.build.profile></angular.build.profile>
+        <!-- we can choose the test process, i.e 'npm test:dev' or 'npm test:sonar'-->
+        <angular.test.profile></angular.test.profile>
+        <!-- we can specify the project name to build -->
+        <!-- <angular.build.project></angular.build.project> -->
+        <!--we can choose between 'npm install' & 'npm ci'-->
+        <npm.install.arguments>install</npm.install.arguments>
+        <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
+        <!-- Put this properties to false sub-module when you want to use profile -->
+        <rpm.skip>true</rpm.skip>
+        <rpm.publication.env>dev</rpm.publication.env>
+        <!-- Swagger doc generation -->
+        <swagger.dir>.</swagger.dir>
+        <swagger.skip>true</swagger.skip>
+        <!--we can choose to build angular project and embedded it in our jar or not-->
+        <webpack.skip>true</webpack.skip>
+        <!--we can choose to execute Karma tests or not-->
+        <webpack.test.skip>true</webpack.test.skip>
+
+        <itCoverageAgent></itCoverageAgent>
+    </properties>
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Gestion des dépendances -->
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- VitamUI -->
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+            	<groupId>fr.gouv.vitamui.commons</groupId>
+            	<artifactId>commons-logbook</artifactId>
+            	<version>${project.version}</version>
+        	</dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-mongo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-rest</artifactId>
+                <version>${project.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>fr.gouv.vitam</groupId>
+						<artifactId>logbook-common</artifactId>
+					</exclusion>
+				</exclusions>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-vitam</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-commons</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-external-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-internal-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>security-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>security-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.ui</groupId>
+                <artifactId>ui-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui.ui</groupId>
+                <artifactId>ui-commons</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>ui-identity</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>ui-portal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- spring-boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-tomcat</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-reactor-netty</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring.boot.version}</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <!--<artifactId>spring-cloud-starter-consul-all</artifactId>-->
+                <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+                <version>${spring.cloud.consul.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-json</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${http.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${http.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-oxm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- Security -->
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-saml</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-cas</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <version>${spring.security.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Web -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax.servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>${javax.ws.rs.version}</version>
+            </dependency>
+
+            <!-- Log -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+
+            <!-- Metrics -->
+			<dependency>
+				<groupId>io.micrometer</groupId>
+				<artifactId>micrometer-registry-prometheus</artifactId>
+				<version>${micrometer.version}</version>
+			</dependency>
+
+            <!-- VITAM -->
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>ingest-external-client</artifactId>
+                <version>${vitam.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>de.flapdoodle.embed</groupId>
+                        <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mongodb</groupId>
+                        <artifactId>mongo-java-driver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-to-slf4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>access-external-client</artifactId>
+                <version>${vitam.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>de.flapdoodle.embed</groupId>
+                        <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mongodb</groupId>
+                        <artifactId>mongo-java-driver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-to-slf4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mailapi</artifactId>
+                    </exclusion>
+					<exclusion>
+						<groupId>io.netty</groupId>
+						<artifactId>netty-all</artifactId>
+					</exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>common-public</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
+            <dependency>
+				<groupId>fr.gouv.vitam</groupId>
+				<artifactId>logbook-common</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
+
+            <!-- swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-annotations</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- Hibernate -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <!-- Utils -->
+			<!-- Temporary fix for Multipart upload issues cf
+	        https://github.com/spring-projects/spring-framework/issues/23372
+	        https://github.com/reactor/reactor-netty/issues/820
+	         -->
+			<dependency>
+				<groupId>io.projectreactor.netty</groupId>
+				<artifactId>reactor-netty</artifactId>
+				<version>${reactor.netty.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.synchronoss.cloud</groupId>
+			    <artifactId>nio-multipart-parser</artifactId>
+			    <version>${nio.multipart.parser.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons.collections4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons.fileupload.version}</version>
+            </dependency>
+
+            <dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>${commons.compress.version}</version>
+			</dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons.text.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>de.flapdoodle.embed</groupId>
+                <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                <version>${embedded.mongo.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.xebia.extras</groupId>
+                <artifactId>selma-processor</artifactId>
+                <version>${selma.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>fr.xebia.extras</groupId>
+                <artifactId>selma</artifactId>
+                <version>${selma.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${javax.validation.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${glassfish.javax.el.version}</version>
+            </dependency>
+
+            <dependency>
+			    <groupId>javax.el</groupId>
+			    <artifactId>javax.el-api</artifactId>
+			    <version>${javax.el.version.version}</version>
+			</dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${apache.commons.codec.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-csv</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${commons.httpclient.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xml-apis</groupId>
+                <artifactId>xml-apis</artifactId>
+                <version>${xml.apis-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xml-resolver</groupId>
+                <artifactId>xml-resolver</artifactId>
+                <version>${xml.resolver.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xom</groupId>
+                <artifactId>xom</artifactId>
+                <version>${xom.version}</version>
+            </dependency>
+	    	<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk15on</artifactId>
+				<version>${bouncycastle.version}</version>
+			</dependency>
+            <!-- convert relaxng to xsd -->
+            <dependency>
+			    <groupId>org.relaxng</groupId>
+			    <artifactId>trang</artifactId>
+			    <version>${trang.version}</version>
+			</dependency>
+			<!-- convert xsd to xml -->
+            <dependency>
+			    <groupId>in.jlibs</groupId>
+			    <artifactId>jlibs-xsd</artifactId>
+			    <version>${jlibs.version}</version>
+			</dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>fr.gouv.vitamui.commons</groupId>
+                <artifactId>commons-test</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>${easymock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-easymock</artifactId>
+                <version>${powermock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+            </dependency>
+            <dependency>
+				<groupId>org.powermock</groupId>
+				<artifactId>powermock-api-mockito2</artifactId>
+				<version>${powermock.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>org.skyscreamer</groupId>
+                <artifactId>jsonassert</artifactId>
+                <version>${jsonassert.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- CUCUMBER SERENITY -->
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-core</artifactId>
+                <version>${serenity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-cucumber</artifactId>
+                <version>${serenity.cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-spring</artifactId>
+                <version>${serenity.spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+			<dependency>
+				<groupId>com.github.stefanbirkner</groupId>
+				<artifactId>fake-sftp-server-rule</artifactId>
+				<version>${fake.sftp.server.rule.version}</version>
+	            <scope>test</scope>
+			</dependency>
+
+            <!-- XDocReport convert ODT to PDF -->
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xerces.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.odfdom.converter.core</artifactId>
+                <version>${xdocreport.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.xdocreport.converter.odt.odfdom</artifactId>
+                <version>${xdocreport.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.xdocreport.document.odt</artifactId>
+                <version>${xdocreport.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.xdocreport.template.freemarker</artifactId>
+                <version>${xdocreport.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.opensagres.xdocreport</groupId>
+                <artifactId>fr.opensagres.xdocreport.template.velocity</artifactId>
+                <version>${xdocreport.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>*.cer</exclude>
+                    <exclude>*.jks</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <!-- Security check for dependencies -->
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${maven.dependencycheck.version}</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <cveUrlModified>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.0-modified.json.gz</cveUrlModified>
+                    <cveUrlBase>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.0-%d.json.gz</cveUrlBase>
+                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                    <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+                    <failOnError>false</failOnError>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <header>LICENSE.txt</header>
+                    <properties>
+                        <owner>VITAM UI</owner>
+                        <email>contact@programmevitam.fr</email>
+                    </properties>
+                    <includes>
+                        <include>**/src/main/java/**</include>
+                        <include>**/*.ts</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/org/apereo/cas/**</exclude>
+                        <exclude>**/node_modules/**</exclude>
+                        <exclude>**/target/**</exclude>
+                        <exclude>**/dist/**</exclude>
+                        <exclude>**/cas-server/src/main/resources/**</exclude>
+                    </excludes>
+                    <mapping>
+                        <ts>SLASHSTAR_STYLE</ts>
+                    </mapping>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+                <configuration>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven.source.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.javadoc.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy.plugin.version}</version>
+                </plugin>
+                <!-- find bugs in current project -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>${maven.findbugs.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven.pmd.plugin.version}</version>
+                    <configuration>
+                        <rulesets>
+                            <ruleset>${maven.multiModuleProjectDirectory}/pmd-rulesets.xml</ruleset>
+                        </rulesets>
+                        <failOnViolation>false</failOnViolation>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven.jar.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven.project.info.reports.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${maven.frontend.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <!-- The Surefire Report Plugin parses the generated TEST-*.xml files
+                         under ${basedir}/target/surefire-reports and renders them to DOXIA which
+                        creates the web interface version of the test results. -->
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven.failsafe.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven.antrun.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <configuration>
+                        <addResources>false</addResources>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                    <version>${maven.war.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok-maven-plugin</artifactId>
+                    <version>${maven.lombok.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>delombok</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${maven.sonar.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sonar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${maven.jacoco.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>pre-integration-test</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                            <configuration>
+                                <propertyName>itCoverageAgent</propertyName>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${maven.exec.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.serenity-bdd.maven.plugins</groupId>
+                    <artifactId>serenity-maven-plugin</artifactId>
+                    <version>${serenity.maven.plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jaxb2-maven-plugin</artifactId>
+                    <version>${maven.jaxb2.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <!-- select non-aggregate reports -->
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+
+        <!-- This profile is used to build frontend project for dev purposes. -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <angular.build.profile>:dev</angular.build.profile>
+                <angular.test.profile>:conf-ci</angular.test.profile>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>target/www/</directory>
+                        <targetPath>static/</targetPath>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to build frontend project for prod purposes. -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <angular.build.profile>:prod</angular.build.profile>
+                <angular.test.profile>:conf-ci</angular.test.profile>
+        		<rpm.publication.env>stable</rpm.publication.env>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>target/www/</directory>
+                        <targetPath>static/</targetPath>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+		<!-- This profile is used to build & test & push npm packages to repo. -->
+ 		<profile>
+            <id>npm-publish</id>
+            <properties>
+                <angular.build.profile></angular.build.profile>
+                <angular.test.profile>:conf-ci</angular.test.profile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+			            <executions>
+			                <execution>
+			                    <id>npm publish</id>
+			                    <phase>install</phase>
+			                    <goals>
+			                        <goal>npm</goal>
+			                    </goals>
+			                    <configuration>
+			                        <arguments>run publish --loglevel warn</arguments>
+			                    </configuration>
+			                </execution>
+			            </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to build rpm package.-->
+        <profile>
+            <id>rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>rpm-package</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile</argument>
+                                        <argument>rpm</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <argument>USER=vitamui</argument>
+                                        <!-- If you want to changes default dependencies (only systemd),
+                                        define them as a comma separated list of packages -->
+                                        <argument>DEPENDENCIES=systemd,java-1.8.0-openjdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to build rpm package.-->
+        <profile>
+            <id>rpm-publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>rpm-publish</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>${rpm.skip}</skip>
+                                    <executable>${maven.multiModuleProjectDirectory}/tools/packaging/publish.sh</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <arguments>
+                                        <argument>https://repo.vitamui.com/upload/${rpm.publication.env}/Packages</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to define skipTests value for Karma when -DskipTests is used during maven process. -->
+        <profile>
+            <id>skipTestsRun</id>
+            <activation>
+                <property>
+                    <name>skipTests</name>
+                </property>
+            </activation>
+            <properties>
+                <webpack.test.skip>true</webpack.test.skip>
+            </properties>
+        </profile>
+
+        <!-- This profile is used to update sonar informations.-->
+        <profile>
+            <id>sonar</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>target/www/</directory>
+                        <targetPath>static/</targetPath>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-project-info-reports-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <angular.build.profile></angular.build.profile>
+                <angular.test.profile>:sonar</angular.test.profile>
+                <!-- Set project configuration file for test coverage -->
+                <angular.additional.test.informations>--karma-config=${maven.multiModuleProjectDirectory}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js</angular.additional.test.informations>
+                <maven.test.failure.ignore>true</maven.test.failure.ignore>
+                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java, **/*spec.ts, **/*.scss, **/*.css</sonar.coverage.exclusions>
+                <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
+                <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
+                <!-- TODO: This properties need to bo specify by the user who execute
+                the report (ex: Jenkins or developper) -->
+                <sonar.host.url />
+                <!-- TODO: This properties need to bo specify by the user who execute
+                the report (ex: Jenkins or developper) -->
+                <sonar.login />
+                <sonar.typescript.lcov.reportPaths>${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/archive/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/commons/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/flow/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/identity/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/portal/lcov.info</sonar.typescript.lcov.reportPaths>
+            </properties>
+        </profile>
+
+        <!-- This profile is used to build frontend project in Jenkins. -->
+        <profile>
+            <id>webpack</id>
+            <properties>
+                <angular.build.profile></angular.build.profile>
+                <angular.test.profile>:conf-ci</angular.test.profile>
+                <!--<npm.install.arguments>ci</npm.install.arguments>-->
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>target/www/</directory>
+                        <targetPath>static/</targetPath>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to generate swagger documentation. -->
+        <profile>
+            <id>swagger</id>
+            <build>
+                <plugins>
+                	<plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-surefire-plugin</artifactId>
+	                    <configuration>
+	                        <test>SwaggerJsonFileGenerationTest.java</test>
+	                    </configuration>
+	                </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile is used to generate swagger documentation. -->
+        <profile>
+            <id>swagger-docs</id>
+            <build>
+                <plugins>
+
+					<plugin>
+						<groupId>io.github.swagger2markup</groupId>
+						<artifactId>swagger2markup-maven-plugin</artifactId>
+						<version>${maven.swagger2markup.plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>io.github.swagger2markup</groupId>
+                                <artifactId>swagger2markup-import-files-ext</artifactId>
+                                <version>${maven.swagger2markup.plugin.version}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>io.github.swagger2markup</groupId>
+                                <artifactId>swagger2markup-spring-restdocs-ext</artifactId>
+                                <version>${maven.swagger2markup.plugin.version}</version>
+                            </dependency>
+                        </dependencies>
+						<configuration>
+							<swaggerInput>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json</swaggerInput>
+							<outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
+							<config>
+								<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+								<swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
+								<swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
+								<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+							</config>
+                            <skip>${swagger.skip}</skip>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>convertSwagger2markup</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctor-maven-plugin</artifactId>
+						<version>${maven.asciidoctor.plugin.version}</version>
+						<dependencies>
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-pdf</artifactId>
+                                <version>${asciidoctorj.pdf.version}</version>
+                            </dependency>
+							<dependency>
+								<groupId>org.jruby</groupId>
+								<artifactId>jruby-complete</artifactId>
+								<version>${jruby.complete.version}</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<sourceDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/config/</sourceDirectory>
+							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<backend>html5</backend>
+							<outputDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
+							<attributes>
+								<toc>left</toc>
+								<toclevels>3</toclevels>
+                                <numbered></numbered>
+                                <hardbreaks></hardbreaks>
+                                <sectlinks></sectlinks>
+                                <sectanchors></sectanchors>
+								<generated>${project.build.directory}/generated-sources/swagger/</generated>
+							</attributes>
+                            <skip>${swagger.skip}</skip>
+						</configuration>
+						<executions>
+							<execution>
+								<id>output-html</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>process-asciidoc</goal>
+								</goals>
+							</execution>
+                            <execution>
+                                <id>output-pdf</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                                <configuration>
+                                    <backend>pdf</backend>
+                                    <outputDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
+                                </configuration>
+                            </execution>
+						</executions>
+					</plugin>
+                </plugins>
+            </build>
+	       	<!-- Repositories used for swagger doc generation  -->
+            <pluginRepositories>
+		        <pluginRepository>
+					<id>jcenter-snapshots</id>
+					<name>jcenter</name>
+					<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+		        </pluginRepository>
+		        <pluginRepository>
+		            <snapshots>
+		                <enabled>false</enabled>
+		            </snapshots>
+		            <id>jcenter-releases</id>
+		            <name>jcenter</name>
+		            <url>http://jcenter.bintray.com</url>
+		        </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <!-- Profile to use for all Vitam internal developers -->
+            <id>vitam</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <!-- Dépôts Maven privés -->
+            <distributionManagement>
+                <repository>
+                    <id>releases</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-releases/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+
+
+            <repositories>
+                <repository>
+                    <id>vitam</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                </repository>
+            </repositories>
+
+            <!-- Maven plugins repositories -->
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>vitam</id>
+                    <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+
+            <properties>
+                <serverId>vitam</serverId>
+                <downloadRoot>${env.SERVICE_NEXUS_URL}/repository/node-distrib/</downloadRoot>
+            </properties>
+
+        </profile>
+
+    </profiles>
+
+</project>
+

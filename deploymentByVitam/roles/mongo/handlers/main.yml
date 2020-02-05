@@ -1,0 +1,11 @@
+---
+
+- name: reload consul configuration
+  service:
+    name: "{{ consul_service }}"
+    state: reloaded
+
+- name: restart mongod
+  service:
+    name: "{{ service_name }}"
+    state: restarted

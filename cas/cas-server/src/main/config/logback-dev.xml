@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ISO8601} [[%thread]] [%X{X-REQUEST-ID}]  %-5level %logger - %replace(%caller{1..2}){'Caller\+1	 at |\n',''} : %msg %rootException%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="WARN">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+    <logger name="org.reflections.Reflections" level="ERROR"/>
+    <logger name="org.apereo.cas.web.CasWebApplication" level="INFO"/>
+    <logger name="org.springframework.boot.autoconfigure.security" level="INFO"/>
+    <logger name="org.jasig.cas.client" level="INFO"/>
+    <logger name="org.apereo" level="INFO"/>
+    <logger name="org.springframework.cloud" level="INFO"/>
+    <logger name="org.apereo.cas.web.flow" level="INFO"/>
+    <logger name="fr.gouv.vitamui.cas" level="DEBUG"/>
+    <logger name="org.elasticsearch.metrics" level="DEBUG"/>
+    <logger name="fr.gouv.vitamui.commons" level="DEBUG"/>
+
+    <!-- to track the OTP authentication -->
+    <logger name="fr.gouv.vitamui.cas.authentication.SmsAuthenticationHandler" level="INFO"/>
+
+
+</configuration>

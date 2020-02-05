@@ -1,0 +1,21 @@
+<div class="vitamui-textarea" [class.disabled]="disabled">
+    <label>
+        {{placeholder}}
+        <span *ngIf="required" class="required-marker">*</span>
+    </label>
+    <textarea
+        [required]="required"
+        [disabled]="disabled"
+        [attr.maxlength]="maxlength"
+        [rows]="rows"
+        (blur)="onBlur()"
+        (focus)="onFocus()"
+        [(ngModel)]="value"
+        (ngModelChange)="onValueChange($event)"
+        #textarea
+    ></textarea>
+    <mat-spinner diameter="25" color="accent"></mat-spinner>
+</div>
+<div class="vitamui-input-errors">
+    <ng-content></ng-content>
+</div>

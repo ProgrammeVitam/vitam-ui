@@ -1,0 +1,46 @@
+---
+# defaults file for vitamui-filesystem-template
+# Local path for findin"g template config trees
+fstemplate_src_dir: "{{playbook_dir}}/templates"
+
+# Filter find files to match pattern (can be a regex)
+# Example: /vitamui/conf/{{server_id}}
+fstemplate_filter_pattern: "*"
+
+# Banner for logging tasks (optionnal)
+# fstemplate_task_banner: "{{ server_id }}"
+fstemplate_task_banner: ""
+
+# ------- Permissions:
+# Owner of the file pushed
+fstemplate_user_owner: "{{ vitamui_system_user }}"
+# Group of the file pushed
+fstemplate_group_owner: "{{ vitamui_system_group }}"
+fstemplate_dest_file_mode: "u=rw,g=r"
+fstemplate_dest_dir_mode: "u=rwx,g=rx"
+
+
+# ------- Push config
+# Possible Values:
+#// BROKEN SINCE 2.5//  'archive': the config is locally archive then unarchive module of ansible push and extracts conf
+#  'copy':    the config is recursively sent by copy module
+fstemplate_push_mode: 'copy'
+
+# -------- Notify config
+# List of service to turn state once pattern applied
+fstemplate_notify_handlers: []
+# Exemple:
+#fstemplate_notify_handlers:
+#  - name: service_1
+#    state: restarted
+#
+#  - name: service_2
+#    state: reloaded
+
+# Root path in which templated file tree will be pushed
+fstemplate_dest_dir_prefix: "/"
+# Base dir in which templated filetrees willlm be created
+fstemplate_workspace_dir_prefix: "{{ '' | normpath( tmp_dir,'fstemplate_workspace') }}"
+# Dir in which filetree will be backed  up to generate full deployed config
+fstemplate_dump_local_dir: "{{ '' | normpath(tmp_dir,'dump_config')}}"
+

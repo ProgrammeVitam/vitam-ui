@@ -1,0 +1,32 @@
+<div class="pattern-select display-flex" [class.pattern-mini]="vitamuiMiniMode">
+  <mat-form-field class="vitamui-mat-select" [class.vitamui-mat-select-mini]="vitamuiMiniMode">
+    <mat-select
+      [formControl]="control"
+      required
+      placeholder="Pattern"
+      i18n-placeholder="Pattern select placeholder@@patternSelectPlaceholder"
+      panelClass="vitamui-mat-select"
+      class="pattern-select"
+      #select
+    >
+      <mat-option *ngFor="let option of availableOptions" [value]="option.value" [disabled]="option.disabled">
+        {{ option.value }} <span *ngIf="option?.disabled" i18n="Already in use@@patternOptionAlreadyInUse">(déjà utilisé)</span>
+      </mat-option>
+    </mat-select>
+    <div class="select-arrow">
+      <i class="material-icons">keyboard_arrow_up</i>
+      <i class="material-icons">keyboard_arrow_down</i>
+    </div>
+  </mat-form-field>
+
+  <button type="button" class="btn secondary" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()" i18n="Pattern add button@@patternAddButton">Ajouter</button>
+</div>
+
+<div class="vitamui-chip-list">
+  <div *ngFor="let pattern of patterns" class="vitamui-chip">
+    <div class="vitamui-chip-content">{{pattern}}</div>
+    <div class="vitamui-remove-chip" (click)="remove(pattern)">
+      <i class="material-icons">clear</i>
+    </div>
+  </div>
+</div>

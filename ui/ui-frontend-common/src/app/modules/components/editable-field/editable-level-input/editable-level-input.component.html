@@ -1,0 +1,34 @@
+<ng-container *ngIf="!disabled">
+  <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
+    <div class="editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
+      <div class="editable-field-content">
+        <span class="editable-field-label">{{label}}</span>
+        <span class="editable-field-text-content">
+          {{ control.value | subLevel:prefix }}
+        </span>
+        <div class="editable-field-control">
+          <vitamui-common-level-input [formControl]="control" [prefix]="prefix" [isEditableComponent]="true"></vitamui-common-level-input>
+        </div>
+      </div>
+      <i *ngIf="!editMode" class="material-icons edit-icon">edit</i>
+    </div>
+  </div>
+
+  <div class="vitamui-input-errors"></div>
+
+  <ng-template cdkConnectedOverlay [cdkConnectedOverlayOpen]="editMode" [cdkConnectedOverlayOrigin]="origin"
+    [cdkConnectedOverlayPositions]="positions">
+    <div class="editable-field-actions">
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
+    </div>
+  </ng-template>
+</ng-container>
+
+<div *ngIf="disabled" class="read-only-field">
+  <div>
+    <label i18n="Admin profile level@@subLevel">Sous niveau</label>
+    <div> <span>{{control.value | subLevel:prefix }}</span></div>
+
+  </div>
+</div>

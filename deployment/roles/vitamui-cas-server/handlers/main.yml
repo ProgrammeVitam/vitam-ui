@@ -1,0 +1,6 @@
+---
+# handlers file for vitamui.cas-server
+- name: restart cas-server service
+  service:
+    name: vitamui-cas-server
+    state: restarted

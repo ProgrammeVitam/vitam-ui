@@ -1,0 +1,8 @@
+---
+- name: Wait for logstash service domain to be resolved
+  wait_for:
+    host: "{{ adresse_ip }}"
+    port: "{{ port_test }}"
+    connect_timeout: "{{ svc_connect_timeout }}"
+    delay: 5
+    timeout: "{{ svc_up_timeout }}"

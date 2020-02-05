@@ -1,0 +1,55 @@
+@import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
+
+$input-height: 70px;
+
+.bg-tenant {
+    z-index: -2;
+    position: fixed;
+    bottom: -40px;
+    right: -20px;
+    width: 521px;
+}
+
+.vitamui-header {
+    background: none;
+
+    h2 {
+        font-size: 48px;
+        text-align: center;
+    }
+
+    .vitamui-container {
+        padding-bottom: 0px;
+    }
+}
+
+.tenant-box {
+    @include elevation-1;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    background: $white;
+    border-radius: 10px;
+    padding-top: 22px;
+    padding-bottom: 29px;
+    padding-left: 23px;
+    margin-bottom: 24px;
+    color: #474747;
+    transition: box-shadow 240ms ease-out;
+
+    &:hover {
+        @include elevation-2;
+    }
+
+    i {
+        color: $greeny-blue;
+        font-size: 42px;
+        margin-right: 15px;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}

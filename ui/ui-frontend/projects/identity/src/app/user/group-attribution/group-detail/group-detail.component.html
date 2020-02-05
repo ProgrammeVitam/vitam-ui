@@ -1,0 +1,23 @@
+<table>
+  <thead>
+    <th i18n="profile group detail description@@groupDetailDescription">Description</th>
+    <th i18n="profile group detail description@@groupDetailLevel">Niveau</th>
+    <th i18n="profile group detail profils@@groupDetailProfiles">Profils</th>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>{{ displayedGroup?.description }}</td>
+      <td>{{ displayedGroup?.level }}</td>
+      <td>
+        <ul>
+            <li class="profile-tag" *ngFor="let profile of displayedGroup?.profiles; let index = index">
+              {{ profile.name }}
+              <i class="material-icons" matTooltip="{{ profile?.description }}" matTooltipPosition="right">info</i>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

@@ -1,0 +1,22 @@
+
+rs.initiate(
+    {
+        _id: "shard{{ mongo_shard_id }}",
+        members:
+        [
+            { _id: 0, host: "{{ ip_service }}:{{ mongodb.mongod_port }}" }
+        ],
+        settings: {
+    	    getLastErrorDefaults : { w: "majority" }
+		}
+    }
+)
+
+// Beurk FIXME: Try a while with rs.status()...
+sleep(10000)
+
+{% for host in groups['hosts_vitamui_mongod'] %}
+    {% if hostvars[host]['mongo_rs_bootstrap'] is not defined or hostvars[host]['mongo_rs_bootstrap']|lower != "true" %}
+        rs.add("{{ hostvars[host]['ip_service'] }}:{{ mongodb.mongod_port }}")
+    {% endif %}
+{% endfor %}

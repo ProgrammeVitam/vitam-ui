@@ -1,0 +1,16 @@
+- name: Execute commons tasks before running all play
+  import_playbook: commons.yml
+
+- hosts: localhost
+  tasks:
+
+    - lineinfile:
+        path: /etc/hosts
+        regexp: "{{ item.value.server_name }}$"
+        line: "{{ hostvars[groups['hosts-vitamui-reverseproxy'][0]].ansible_host | default('127.0.0.1') }} {{ item.value.server_name }}"
+      with_dict: "{{ vitamui_services }}"
+      when: item.value.server_name is defined
+      become: true
+      delegate_to: localhost
+
+

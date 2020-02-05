@@ -1,0 +1,39 @@
+.stepper-progress-bar.mat-progress-bar {
+    height: 3px;
+
+    .mat-progress-bar-buffer {
+        background-color: #f3f0f0;
+    }
+
+    .mat-progress-bar-fill::after {
+        background-color: $blood-orange;
+    }
+}
+
+.mat-progress-bar.download-progress-bar {
+
+    height: 10px;
+    border-radius: 5px;
+
+    .mat-progress-bar-fill::after {
+        background-color: white;
+    }
+
+    .mat-progress-bar-buffer {
+        background-color: #418c7f;
+    }
+
+}
+
+.mat-progress-bar.upload-progress-bar {
+    height: 20px;
+    border-radius: 10px;
+
+    .mat-progress-bar-fill::after {
+        background-color: transparentize(#5CBAA9, 0.5);
+    }
+
+    .mat-progress-bar-buffer {
+        background-color: #D4FFF7;
+    }
+}

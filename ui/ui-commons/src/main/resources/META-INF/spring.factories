@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration

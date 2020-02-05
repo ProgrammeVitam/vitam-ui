@@ -1,0 +1,18 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" value="100" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="content">
+    <h2 i18n="Edit the profiles of the group@@profilesEditTitle">Modification des profils de "{{ data?.group?.name }}"</h2>
+
+    <div class="form-group">
+      <app-profiles-form formControlName="profileIds"  [level]="data?.group?.level"></app-profiles-form>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid" i18n="Done@@profilesEditSubmitButton">Terminer</button>
+      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel@@profilesEditCancelButton">Annuler</button>
+    </div>
+  </div>
+</form>

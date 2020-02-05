@@ -1,0 +1,54 @@
+<div class="content">
+  <h2 i18n="Set group title@@setGroupTitle">Attribution de groupe</h2>
+
+
+  <div class="header-informations">
+    <div class="controls">
+      <div class="search disabled">
+        <input type="search" placeholder="Filtrer par «nom», «id» ..." disabled i18-placeholder="Filter group filter@@filterGroup">
+        <i class="material-icons">search</i>
+      </div>
+    </div>
+
+    <div class="actions" *ngIf="selectedGroupName">
+      <div>Groupe attribué : </div>&nbsp;{{ selectedGroupName }}
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+        <thead>
+          <tr>
+            <th i18n="Set group header@@setGroupHeader">Groupe</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody vitamuiCommonCollapseContainer>
+          <ng-container *ngFor="let group of activeGroups; let index = index">
+
+            <tr class="profileGroup-row" *ngIf="!group.selected" [vitamuiCommonCollapseTriggerFor]="row">
+              <td class="clickable" (click)="updateGroup(group?.id, group?.name, group?.level, row)">
+                {{ group?.name }}
+              </td>
+              <td class="clickable">
+                <span class="btn-link" *ngIf="row.state === 'collapsed';else hideDetail" i18n="Profile group showDetails@@profileGroupShowDetails">Voir détail</span>
+                <ng-template #hideDetail><span class="btn-link" i18n="Profile group hideDetails@@profileGroupHideDetails">Masquer détail</span></ng-template>
+              </td>
+            </tr>
+
+            <tr class="sub-table">
+              <td>
+                <app-group-detail [group]="group" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [@expansion]="row.state" class="collapsable"></app-group-detail>
+              </td>
+              <td></td>
+            </tr>
+          </ng-container>
+        </tbody>
+    </table>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn primary" (click)="saveUserUpdate()" [disabled]="!selectedGroupName" i18n="group attribution edit@@groupAttributionEdit">Modifier</button>
+    <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+  </div>
+</div>

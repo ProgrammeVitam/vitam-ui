@@ -1,0 +1,12 @@
+[
+	{
+		"Name":"Contrat Acces Full",
+		"Description":"Accès à toutes les archives du tenant avec droit de modification",
+		"Status":"ACTIVE",
+		"OriginatingAgencies":[],
+		"DataObjectVersion": [],
+		"WritingPermission": true,
+		"EveryOriginatingAgency": true,
+		"EveryDataObjectVersion": true
+	}
+]

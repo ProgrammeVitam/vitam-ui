@@ -1,0 +1,46 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-group-preview *ngIf="openedItem" (groupClose)="closePanel()" [group]="openedItem"></app-group-preview>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+    <img src="assets/bg-fingerprint.svg" class="bg-fingerprint"/>
+
+    <div class="vitamui-header">
+      <div class="vitamui-container">
+        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
+        <h2 i18n="Search for Group of profiles@@profileGroupSearchTitle">
+          <img src="assets/fingerprint.svg">Rechercher <strong>un Groupe de profils</strong>
+        </h2>
+        <div class="controls">
+
+          <div class="search disabled">
+            <input type="search" placeholder="Nom du groupe" i18n-placeholder="Group name@@profileGroupSearchInputPlaceholder" disabled>
+            <button type="submit" class="btn-circle primary btn-search"><i class="material-icons">search</i></button>
+          </div>
+
+          <div class="actions">
+            <button class="btn secondary" (click)="openCreateGroupDialog()">
+              <i class="vitamui-icon vitamui-icon-keys-plus"></i> <span i18n="Create a group@@profileGroupCreateButton">Créer un groupe</span>
+            </button>
+            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
+              <i class="material-icons">more_horiz</i> <span i18n="More actions button label@@userListMoreActionsButton">Autres actions</span>
+            </button>
+            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
+              <button mat-menu-item i18n="Coming soon@@userComingSoon">Bientôt</button>
+            </mat-menu>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="vitamui-body vitamui-container">
+      <app-group-list (groupClick)="openPanel($event)"></app-group-list>
+    </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

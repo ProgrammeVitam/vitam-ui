@@ -1,0 +1,4 @@
+<div class="collapse-title" (click)="toggle()">
+    <i class="material-icons" [@rotateAnimation]="collapseState">keyboard_arrow_down</i> {{collapseTitle}}
+</div>
+<div class="collapse-content" [@collapseAnimation]="collapseState"><ng-content></ng-content></div>

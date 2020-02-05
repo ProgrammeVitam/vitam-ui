@@ -1,0 +1,37 @@
+
+admin = db.getSiblingDB("admin")
+
+if (! admin.getUser("{{ mongodb.localadmin.user }}")) {
+    admin.createUser(
+        {
+            user: "{{ mongodb.localadmin.user }}",
+            pwd: "{{ mongodb.localadmin.password }}",
+            roles: [
+                { role: "clusterAdmin", db: "admin" },
+                { role: "dbAdmin", db: "logbook" },
+                { role: "dbAdmin", db: "masterdata" },
+                { role: "dbAdmin", db: "identity" },
+                { role: "dbAdmin", db: "metadata" },
+                { role: "dbAdmin", db: "report" },
+                { role: "dbAdmin", db: "admin" }
+            ]
+        }
+    )
+}
+else {
+    admin.updateUser(
+        "{{ mongodb.localadmin.user }}",
+        {
+            pwd: "{{ mongodb.localadmin.password }}",
+            roles: [
+                { role: "clusterAdmin", db: "admin" },
+                { role: "dbAdmin", db: "logbook" },
+                { role: "dbAdmin", db: "masterdata" },
+                { role: "dbAdmin", db: "identity" },
+                { role: "dbAdmin", db: "metadata" },
+                { role: "dbAdmin", db: "report" },
+                { role: "dbAdmin", db: "admin" }
+            ]
+        }
+    )
+}

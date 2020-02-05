@@ -1,0 +1,12 @@
+<img src="assets/bg-tenant-select.svg" class="bg-tenant" />
+
+<div class="vitamui-header">
+  <div class="vitamui-container">
+      <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="hideTenantMenu" [hideCustomerMenu]="hideCustomerMenu" (tenantSelect)="selectTenantInNavbar($event)"></vitamui-common-navbar>
+      <h2 i18n="Application research tenant label@@tenantSearchLabel">
+        Mes <strong> Coffres</strong>
+      </h2>
+  </div>
+</div>
+
+<vitamui-common-tenant-select-content [tenants]="tenants" [isModalMenu]="false"></vitamui-common-tenant-select-content>

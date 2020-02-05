@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="fr:gouv:culture:archivesdefrance:seda:v2.1" xmlns:seda="fr:gouv:culture:archivesdefrance:seda:v2.1">
+  <xsd:element name="ArchiveTransfer">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:Date"/>
+        <xsd:element ref="seda:MessageIdentifier"/>
+        <xsd:element minOccurs="0" ref="seda:ArchivalAgreement"/>
+        <xsd:element ref="seda:CodeListVersions"/>
+        <xsd:element ref="seda:DataObjectPackage"/>
+        <xsd:element ref="seda:ArchivalAgency"/>
+        <xsd:element ref="seda:TransferringAgency"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID"/>
+      <xsd:anyAttribute namespace="##other" processContents="skip"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Date" type="xsd:dateTime"/>
+  <xsd:element name="MessageIdentifier">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="schemeDataURI" type="xsd:anyURI"/>
+          <xsd:attribute name="schemeID" type="xsd:token"/>
+          <xsd:attribute name="schemeAgencyName" type="xsd:string"/>
+          <xsd:attribute name="schemeAgencyID" type="xsd:token"/>
+          <xsd:attribute name="schemeName" type="xsd:string"/>
+          <xsd:attribute name="schemeVersionID" type="xsd:token"/>
+          <xsd:attribute name="schemeURI" type="xsd:anyURI"/>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ArchivalAgreement">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string">
+          <xsd:attribute name="schemeDataURI" type="xsd:anyURI"/>
+          <xsd:attribute name="schemeID" type="xsd:token"/>
+          <xsd:attribute name="schemeAgencyName" type="xsd:string"/>
+          <xsd:attribute name="schemeAgencyID" type="xsd:token"/>
+          <xsd:attribute name="schemeName" type="xsd:string"/>
+          <xsd:attribute name="schemeVersionID" type="xsd:token"/>
+          <xsd:attribute name="schemeURI" type="xsd:anyURI"/>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CodeListVersions">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" ref="seda:ReplyCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:MessageDigestAlgorithmCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:MimeTypeCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:EncodingCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:FileFormatCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:CompressionAlgorithmCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:DataObjectVersionCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:StorageRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:AppraisalRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:AccessRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:DisseminationRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:ReuseRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:ClassificationRuleCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:AuthorizationReasonCodeListVersion"/>
+        <xsd:element minOccurs="0" ref="seda:RelationshipCodeListVersion"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReplyCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="ReplyCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="MessageDigestAlgorithmCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="MessageDigestAlgorithmCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="MimeTypeCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="MimeTypeCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="EncodingCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="EncodingCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FileFormatCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="FileFormatCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CompressionAlgorithmCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="CompressionAlgorithmCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DataObjectVersionCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="DataObjectVersionCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="StorageRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="StorageRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AppraisalRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="AppraisalRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AccessRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="AccessRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DisseminationRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="DisseminationRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ReuseRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="ReuseRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ClassificationRuleCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="ClassificationRuleCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="AuthorizationReasonCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="AuthorizationReasonCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="RelationshipCodeListVersion">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="RelationshipCodeListVersion0"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="listName" type="xsd:string"/>
+          <xsd:attribute name="listAgencyID" type="xsd:token"/>
+          <xsd:attribute name="listSchemeURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listID" type="xsd:token"/>
+          <xsd:attribute name="listAgencyName" type="xsd:string"/>
+          <xsd:attribute name="listURI" type="xsd:anyURI"/>
+          <xsd:attribute name="listVersionID" type="xsd:token"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DataObjectPackage">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" ref="seda:BinaryDataObject"/>
+        <xsd:element ref="seda:DescriptiveMetadata"/>
+        <xsd:element ref="seda:ManagementMetadata"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="BinaryDataObject">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:Uri"/>
+        <xsd:element ref="seda:MessageDigest"/>
+        <xsd:element ref="seda:Size"/>
+        <xsd:element ref="seda:FormatIdentification"/>
+        <xsd:element ref="seda:FileInfo"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" use="required" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Uri" type="xsd:anyURI"/>
+  <xsd:element name="MessageDigest">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:union memberTypes="xsd:base64Binary xsd:hexBinary"/>
+          </xsd:simpleType>
+          <xsd:attribute name="algorithm" use="required">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:token">
+                <xsd:enumeration value="SHA-512"/>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:attribute>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Size" type="xsd:positiveInteger"/>
+  <xsd:element name="FormatIdentification" type="xsd:string"/>
+  <xsd:element name="FileInfo">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:Filename"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Filename" type="xsd:string"/>
+  <xsd:element name="DescriptiveMetadata">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element minOccurs="0" maxOccurs="unbounded" name="ArchiveUnit">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Management">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element ref="seda:UpdateOperation"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="Content">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="DescriptionLevel">
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:token">
+                          <xsd:enumeration value="File"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="Title">
+                      <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                          <xsd:enumeration value="Elements de preuve"/>
+                        </xsd:restriction>
+                      </xsd:simpleType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element minOccurs="0" maxOccurs="unbounded" name="ArchiveUnit">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element minOccurs="0" name="Management">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element ref="seda:AppraisalRule"/>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Content">
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element name="DescriptionLevel">
+                            <xsd:simpleType>
+                              <xsd:restriction base="xsd:token">
+                                <xsd:enumeration value="Item"/>
+                              </xsd:restriction>
+                            </xsd:simpleType>
+                          </xsd:element>
+                          <xsd:element name="Title" type="xsd:string"/>
+                          <xsd:element ref="seda:OriginatingAgencyArchiveUnitIdentifier"/>
+                          <xsd:element ref="seda:Description"/>
+                          <xsd:element ref="seda:DocumentType"/>
+                          <xsd:element ref="seda:Status"/>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent" type="xsd:string"/>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="DownloadFilename"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="SERIAL_DOCUMENT"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="ArchiveType"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="PRESERVE"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="FinalActionDetail"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent" type="xsd:string"/>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="Client"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent" type="xsd:string"/>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="Tenant"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element name="Keyword">
+                            <xsd:complexType>
+                              <xsd:sequence>
+                                <xsd:element name="KeywordContent" type="xsd:string"/>
+                                <xsd:element name="KeywordReference">
+                                  <xsd:simpleType>
+                                    <xsd:restriction base="xsd:string">
+                                      <xsd:enumeration value="Date de génération"/>
+                                    </xsd:restriction>
+                                  </xsd:simpleType>
+                                </xsd:element>
+                              </xsd:sequence>
+                            </xsd:complexType>
+                          </xsd:element>
+                          <xsd:element ref="seda:OriginatingAgency"/>
+                          <xsd:element ref="seda:SubmissionAgency"/>
+                          <xsd:element ref="seda:CreatedDate"/>
+                          <xsd:element ref="seda:ReceivedDate"/>
+                          <xsd:element name="StartDate">
+                            <xsd:simpleType>
+                              <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+                            </xsd:simpleType>
+                          </xsd:element>
+                          <xsd:element ref="seda:EndDate"/>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element ref="seda:DataObjectReference"/>
+                  </xsd:sequence>
+                  <xsd:attribute name="id" use="required" type="xsd:ID"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="id" use="required" type="xsd:ID"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="UpdateOperation">
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element ref="seda:ArchiveUnitIdentifierKey"/>
+        <xsd:element ref="seda:SystemId"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ArchiveUnitIdentifierKey">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:MetadataName"/>
+        <xsd:element ref="seda:MetadataValue"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="MetadataName">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:enumeration value="OriginatingSystemId"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="MetadataValue" type="xsd:string"/>
+  <xsd:element name="SystemId" type="xsd:string"/>
+  <xsd:element name="AppraisalRule">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:sequence>
+          <xsd:element ref="seda:Rule"/>
+          <xsd:element name="StartDate" type="xsd:date"/>
+        </xsd:sequence>
+        <xsd:element ref="seda:FinalAction"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="Rule">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:token">
+              <xsd:enumeration value="F5-1"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+          <xsd:attribute name="id" type="xsd:ID"/>
+        </xsd:restriction>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="FinalAction">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:token">
+        <xsd:enumeration value="Keep"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="OriginatingAgencyArchiveUnitIdentifier" type="xsd:string"/>
+  <xsd:element name="Description" type="xsd:token"/>
+  <xsd:element name="DocumentType">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:token">
+        <xsd:enumeration value="Attestation de versement"/>
+        <xsd:enumeration value="Bordereau de sortie"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="Status" type="xsd:string"/>
+  <xsd:element name="OriginatingAgency">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Identifier" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="SubmissionAgency">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Identifier" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="CreatedDate">
+    <xsd:simpleType>
+      <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="ReceivedDate">
+    <xsd:simpleType>
+      <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="EndDate">
+    <xsd:simpleType>
+      <xsd:union memberTypes="xsd:date xsd:dateTime"/>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="DataObjectReference">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:DataObjectReferenceId"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="DataObjectReferenceId" type="xsd:NCName"/>
+  <xsd:element name="ManagementMetadata">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="seda:ArchivalProfile"/>
+        <xsd:element ref="seda:OriginatingAgencyIdentifier"/>
+        <xsd:element ref="seda:SubmissionAgencyIdentifier"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ArchivalProfile">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:enumeration value="PR-000001"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="OriginatingAgencyIdentifier">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:enumeration value="IdProdVitamUI"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="SubmissionAgencyIdentifier">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <xsd:enumeration value="IdProdVitamUI"/>
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:element>
+  <xsd:element name="ArchivalAgency">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Identifier">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="IdArcVitamUI"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="TransferringAgency">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Identifier">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="IdProdVitamUI"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:group name="OpenType">
+    <xsd:sequence>
+      <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+    </xsd:sequence>
+  </xsd:group>
+</xsd:schema>

@@ -1,0 +1,23 @@
+[Unit]
+Description=High-performance, schema-free document-oriented database
+After=network.target
+After=syslog.target
+
+[Service]
+Type=simple
+Environment="LC_ALL=C"
+EnvironmentFile=/vitamui/conf/__NAME__/env.sh
+ExecStart=/usr/bin/node  /vitamui/app/__NAME__/node_modules/mongo-express/app.js
+Restart=always
+User=__USER__
+Group=__GROUP__
+# ulimits
+LimitFSIZE=infinity
+LimitCPU=infinity
+LimitAS=infinity
+LimitNOFILE=64000
+LimitRSS=infinity
+LimitNPROC=64000
+
+[Install]
+WantedBy=multi-user.target

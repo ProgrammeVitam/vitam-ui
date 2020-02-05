@@ -1,0 +1,70 @@
+---
+
+- name: Ensure parent dir is OK ith correct permissions
+  file:
+    path: "/vitam"
+    state: directory
+    owner: root
+    group: root
+    mode: 0555
+
+# FIXME : put it in group_vars (root/root/555)
+- name: Ensure {{ vitam_defaults.folder.root_path }} sub-directories exist
+  file:
+    path: "/vitam/{{ item }}"
+    owner: root
+    group: root
+    state: directory
+    mode: 0555
+  with_items:
+    - app
+    - bin
+    - conf
+    - data
+    - lib
+    - log
+    - script
+    - tmp
+    - run
+
+
+# tasks file for vitamui-consul
+- name: Install vitamui-consul package.
+  include_role:
+    name: tools/vitamui-ospackage
+  vars:
+    ospackage_banner: "consul"
+    packages: "{{ consul_agent_packages }}"
+
+- name: Ensure consul is started
+  service:
+    name: vitam-consul
+    state: started
+    enabled: true
+
+- name: Pushing consul config (only sysconfig)
+  import_role:
+    name: tools/vitamui-filesystem-template
+  vars:
+    fstemplate_src_dir: "{{playbook_dir}}/templates"
+    fstemplate_filter_pattern: "/vitam/conf/consul/consul.json.j2"
+    fstemplate_task_banner: "vitamui-consul"
+    fstemplate_user_owner: vitamui
+    fstemplate_group_owner: vitamui
+    fstemplate_notify_handlers:
+      # Restart service unit
+      - name: vitamui-consul
+        state: reloaded
+  tags:
+  - fstemplate
+
+# Thks vitam
+# Changing the resolv.conf doesn't work into a docker container...
+- name: Add consul nameserver to resolv.conf
+  blockinfile:
+    backup: yes
+    dest: /etc/resolv.conf
+    insertbefore: BOF # necessary or this entry won't be asked
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      nameserver 127.0.0.1

@@ -1,0 +1,84 @@
+---
+# tasks file for create-repository
+- name: Gathering rpm files
+  find:
+    paths: "{{ vitamui_rpm_source_directory }}"
+    recurse: true
+    patterns: "*.rpm"
+  register: rpm_files
+  delegate_to: localhost
+  connection: local
+  run_once: true
+
+- name: List of pushed RPM files
+  set_fact:
+    rpm_files_list: "{{ rpm_files.files | map(attribute='path') | list | unique }}"
+  delegate_to: localhost
+  connection: local
+  run_once: true
+
+- name: Show repository RPM packages
+  debug: msg="{{ rpm_files_list }}"
+  delegate_to: localhost
+  connection: local
+  run_once: true
+
+- name: cleaning RPM repository files
+  command: "rm -Rf {{ rpm_repo_directory }}"
+
+- name: Ensure packages repo directory exits in target hosts
+  file:
+    path: "{{ rpm_repo_directory }}/Packages"
+    state: directory
+    recurse: yes
+
+
+- name: pushing RPM files to remote server
+  copy:
+    src: "{{item}}"
+    dest: "{{rpm_repo_directory}}/Packages"
+  with_items: "{{ rpm_files_list }}"
+
+- name: Installing centos repository binaries
+  yum:
+    name: createrepo
+    state: latest
+
+- name: Run repository creation
+  command: createrepo --update "{{ rpm_repo_directory }}"
+
+- name: Change repository owner ship to be readable by http server
+  # change file ownership, group and mode
+  file:
+    path: "{{ rpm_repo_directory }}"
+    owner: nginx
+    group: nginx
+    recurse: yes
+  when: setup_http_endpoint is defined
+
+- name: Setup nginx server
+  when: setup_http_endpoint is defined
+  yum:
+    name: nginx
+    state: latest
+
+- name: Start nginx server
+  when: setup_http_endpoint is defined
+  service:
+    name: nginx
+    state: started
+
+- name: Configure default site root to point to vitamui repository
+  when: setup_http_endpoint is defined
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - reload nginx
+#
+#- name: open firewall http port
+#  firewalld:
+#    port: 80/tcp
+#    zone: trusted
+#    permanent: true
+#    state: enabled

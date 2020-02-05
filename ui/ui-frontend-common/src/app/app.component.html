@@ -1,0 +1,23 @@
+<mat-sidenav-container>
+  <mat-sidenav
+    mode="side"
+    opened
+    fixedInViewport
+	>
+    <mat-list>
+        <mat-list-item [routerLink]="'/components-demo'">Components</mat-list-item>
+        <mat-list-item [routerLink]="'/icons-demo'">Icons</mat-list-item>
+        <mat-list-item [routerLink]="'/subrogation-demo'">Subrogation Demo</mat-list-item>
+        <mat-list-item [routerLink]="'/account'">Account Demo</mat-list-item>
+        <mat-list-item [routerLink]="'/app-guard-demo'">App Guard Demo</mat-list-item>
+    </mat-list>
+    <ul>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+
+    <vitamui-common-subrogation-banner></vitamui-common-subrogation-banner>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

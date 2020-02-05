@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta charset="UTF-8"/>
+    <title>Vitam-UI</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+    <link th:href="@{/css/cas.css}" rel="stylesheet"/>
+
+    <script type="text/javascript" th:src="@{#{webjars.zxcvbn.js}}"></script>
+    <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
+    <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
+    <script type="text/javascript" th:src="@{#{webjars.jquerycookie.js}}"></script>
+    <script src="//www.google.com/recaptcha/api.js" async defer th:if="${recaptchaSiteKey}"></script>
+    <script th:src="@{#{webjars.bootstrapmin.js}}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var trackGeoLocation = /*[[${trackGeoLocation}]]*/ === "true";
+
+        var googleAnalyticsTrackingId = /*[[${googleAnalyticsTrackingId}]]*/;
+
+        if (googleAnalyticsTrackingId != null && googleAnalyticsTrackingId != '') {
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', googleAnalyticsTrackingId, 'auto');
+            ga('send', 'pageview');
+        }
+
+        /*]]>*/
+    </script>
+</head>
+<body>
+
+    <div class="login">
+    </div>
+
+    <div class="login-box step-email">
+        <header>
+            <img class="vitam-logo" th:src="@{/images/vitam-logo.png}">
+            <h1>Bienvenue sur <img th:src="@{/images/vitamui-logo-large.png}"></h1>
+
+            <p th:if="${#strings.isEmpty(superUser)}">
+            Veuillez saisir votre <strong>adresse e-mail <span class="primary">*</span></strong><br>
+            <small>
+                Vous avez oublié votre identifiant ? Contactez votre administrateur.
+            </small>
+            </p>
+
+            <p th:if="${!#strings.isEmpty(superUser)}">
+            <strong>Subrogation</strong><br>
+            </p>
+        </header>
+        <br>
+        <form method="post" id="fm1" th:object="${credential}" action="login">
+
+        	<div class="form-control" th:if="${#strings.isEmpty(superUser)}">
+
+	            <input class="required"
+	                   id="username"
+                       autofocus
+	                   size="25"
+	                   tabindex="1"
+	                   type="text"
+                	   placeholder="Adresse e-mail *" name="email"
+	                   th:disabled="${guaEnabled}"
+	                   th:field="*{username}"
+	                   th:accesskey="#{screen.welcome.label.netid.accesskey}"
+	                   autocomplete="off"/>
+
+                <div class="error" th:if="${#fields.hasErrors('*')}">
+                    <div>
+                        <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
+                    </div>
+                    <div>
+                        <div class="error-field" th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                    </div>
+                </div>
+
+	        </div>
+	        <div class="form-control" th:if="${!#strings.isEmpty(superUser)}">
+	            <label for="surrogate" th:utext="#{screen.welcome.label.surrogate}"/> <span th:utext="${surrogate}" /><br />
+	            <label for="superUser" th:utext="#{screen.welcome.label.superuser}"/> <span th:utext="${superUser}" /><br />
+
+				<br><br>
+                <div class="error" th:if="${#fields.hasErrors('*')}">
+                    <div>
+                        <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
+                    </div>
+                    <div>
+                        <div class="error-field"  th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                    </div>
+                </div>
+
+	        </div>
+
+	        <input th:if="${param.doChangePassword != null}" type="hidden" name="doChangePassword" id="doChangePassword" value="true" />
+
+	        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+	        <input type="hidden" name="_eventId" value="submit"/>
+
+            <button type="submit" class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
+        </form>
+        <p class="helper">Appuyez sur <strong>Entrée</strong> pour valider</p>
+		<button class="back" type="button" th:onclick="|location.href = '@{/login}';|" th:if="${!#strings.isEmpty(superUser)}">
+			<i class="material-icons">arrow_back</i> Retour
+	    </button>
+    </div>
+
+    <div th:if="${logoutUrls}">
+        <div th:each="entry : ${logoutUrls}">
+            <script type="text/javascript" th:inline="javascript">
+                /*<![CDATA[*/
+                $.ajax({
+                    url: [[${entry.key.logoutUrl.toExternalForm()}]],
+                    dataType: 'jsonp',
+                    async: true,
+                    contentType: [[${entry.value.contentType}]]
+                    , data: [[${entry.value.message}]]
+                    , success: function (data) {},
+                    error: function (err, textStatus, errorThrown) {}
+                });
+                /*]]>*/
+            </script>
+        </div>
+    </div>
+
+</body>
+</html>

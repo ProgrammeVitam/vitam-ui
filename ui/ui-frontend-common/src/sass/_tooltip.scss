@@ -1,0 +1,59 @@
+.vitamui-tooltip {
+    display: flex;
+    background-color: $greeny-blue;
+    color: $white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    margin-top: 24px;
+    position: relative;
+    max-width: 500px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: -23px;
+        left: 24px;
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid $greeny-blue;
+        border-color: transparent $greeny-blue $greeny-blue transparent;
+    }
+
+    &.vitamui-tooltip-bottom {
+        margin-top: 0;
+        margin-bottom: 24px;
+
+        &:before {
+            top: 100%;
+            left: 24px;
+            border-color: $greeny-blue transparent transparent $greeny-blue;
+        }
+    }
+
+    &.vitamui-tooltip-end:before {
+        left: auto;
+        right: 24px;
+        border-color: #52AA9A transparent transparent #52AA9A;
+    }
+
+    &.vitamui-tooltip-end.vitamui-tooltip-top:before {
+        border-color: transparent #52AA9A #52AA9A transparent;
+    }
+
+    .vitamui-tooltip-content {
+        display: flex;
+        align-items: center;
+        padding: 15px 22px;
+        font-weight: 600;
+    }
+
+    .vitamui-tooltip-icon {
+        display: flex;
+        font-size: 34px;
+        background-color: #52AA9A;
+        align-items: center;
+        padding: 15px 15px;
+        border-radius: 0 10px 10px 0;
+    }
+}

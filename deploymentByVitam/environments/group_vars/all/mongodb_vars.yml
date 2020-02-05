@@ -1,0 +1,12 @@
+
+mongodb:
+    service_name: "vitamui-mongod"
+    package_name: "vitamui-mongod"
+    host: "mongo-vitamui-mongod.service.consul"
+    mongod_port: 27017
+    check_consul: 10 # in seconds
+    drop_info_log: false # Drop mongo (I)nformational log, for Verbosity Level of 0
+
+mongod_replicaset_name: "shard{{ mongo_shard_id }}"
+
+mongod_client_connect_timeout_ms: 2000

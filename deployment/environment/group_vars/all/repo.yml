@@ -1,0 +1,10 @@
+# VITAMUI repository
+vitamui_repository_url: change-it
+
+# LOGSTASH repository
+logstash_repository_url: "https://artifacts.elastic.co/packages/6.x/yum/"
+logstash_repository_key: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+
+# MONGO repository
+mongo_repository_url: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongod_version }}/x86_64/"
+mongo_repository_key: "https://www.mongodb.org/static/pgp/server-{{ mongod_version }}.asc"
