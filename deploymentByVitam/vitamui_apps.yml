@@ -13,6 +13,7 @@
     password_truststore_server: "{{ truststores.server }}"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["security_internal"]
+    consul_tags: "iam-internal, api, internal"
 
 
 - hosts: hosts_vitamui_iam_external
@@ -28,6 +29,7 @@
     password_truststore_server: "{{ truststores.server }}"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["security_internal","iam_internal"]
+    consul_tags: "iam-external, api, external"
 
 - hosts: hosts_vitamui_security_internal
   gather_facts: no
@@ -42,6 +44,7 @@
     vitamui_certificate_client_type: "iam"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: []
+    consul_tags: "security-internal, api, internal"
 
 
 - hosts: hosts_cas_server
@@ -57,6 +60,7 @@
     vitamui_certificate_client_type: "iam"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["iam_external"]
+    consul_tags: "cas-server, cas, internal"
 
 - hosts: hosts_ui_identity
   gather_facts: no
@@ -71,6 +75,7 @@
     vitamui_certificate_client_type: "iam"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["iam_external"]
+    consul_tags: "ui-identity, ui"
 
 
 - hosts: hosts_ui_portal
@@ -86,6 +91,7 @@
     vitamui_certificate_client_type: "iam"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["iam_external"]
+    consul_tags: "ui-portal, ui"
 
 # supposed portlets
 - hosts: hosts_ui_identity_admin
@@ -101,3 +107,4 @@
     vitamui_certificate_client_type: "iam"
     password_truststore: "{{ truststores.client_iam }}"
     other_stores: ["iam_external"]
+    consul_tags: "ui-identity-admin, ui"

@@ -5,6 +5,7 @@ spring:
       host: consul.service.consul
       discovery:
         preferIpAddress: true
+        tags: {{ consul_tags }}
   data:
     mongodb:
       uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
