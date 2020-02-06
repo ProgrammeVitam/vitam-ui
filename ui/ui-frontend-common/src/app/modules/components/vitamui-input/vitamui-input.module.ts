@@ -40,6 +40,7 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { VitamUIInputErrorComponent } from './vitamui-input-error.component';
+import { VitamUIInputPositiveNumberComponent } from './vitamui-input-positive-number.component';
 import { VitamUIInputComponent } from './vitamui-input.component';
 import { VitamUITextareaComponent } from './vitamui-textarea.component';
 
@@ -49,7 +50,7 @@ import { VitamUITextareaComponent } from './vitamui-textarea.component';
     FormsModule,
     MatProgressSpinnerModule,
   ],
-  declarations: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent],
-  exports: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent]
+  declarations: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent, VitamUIInputPositiveNumberComponent],
+  exports: [VitamUIInputComponent, VitamUIInputErrorComponent, VitamUITextareaComponent, VitamUIInputPositiveNumberComponent]
 })
 export class VitamUIInputModule { }
