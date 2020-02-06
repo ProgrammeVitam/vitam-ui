@@ -17,6 +17,13 @@
     </vitamui-common-input>
   </div>
 
+  <h3>Input Positive Number</h3>
+  <div class="demo-block">
+    <vitamui-common-input-positive-number placeholder="Number Input" [(ngModel)]="VitamUIInputPositiveNumberValue"
+       required (keypress)="onKeyPress($event)" #VitamUIInputPositiveNumber="ngModel" type="number" min="0">
+    </vitamui-common-input-positive-number>
+  </div>
+
   <div class="demo-block">
     <vitamui-common-slide-toggle>Slide Toggle</vitamui-common-slide-toggle>
   </div>

@@ -41,12 +41,11 @@ import { LoggerService } from './logger.service';
 import { NoLogService } from './no-log.service';
 
 export function loggerFactory(environment) {
-  // Temporary removal for debug purposes
-  // if (environment !== undefined && environment.production) {
-  //   return new NoLogService();
-  // } else {
+  if (environment && environment.production) {
+    return new NoLogService();
+  } else {
     return new LoggerService();
-  // }
+  }
 }
 
 // @dynamic

@@ -59,7 +59,7 @@
     "moment": "^2.24.0",
     "rxjs": "^6.5.2",
     "tslib": "^1.9.0",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.12.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.14.tgz",
     "underscore": "^1.9.1",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.9.1"

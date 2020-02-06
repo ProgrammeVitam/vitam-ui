@@ -55,6 +55,7 @@ export class ComponentsComponent implements OnInit {
   applications: Application[];
 
   vitamuiInputValue: string;
+  vitamUIInputPositiveNumberValue: number;
   vitamuiEmailValue = 'toto@vitamui.com';
   vitamuiTextValue = 'Some text value';
   vitamuiTextareaValue = 'Some text value';
@@ -114,4 +115,12 @@ export class ComponentsComponent implements OnInit {
     this.confirmDialogService.confirm(this.confirmDialogTemplate).subscribe(() => this.confirmResult = true);
   }
 
+  onKeyPress(event: KeyboardEvent): boolean {
+    // tslint:disable-next-line: deprecation
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 }

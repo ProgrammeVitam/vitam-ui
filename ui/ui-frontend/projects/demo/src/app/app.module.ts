@@ -73,6 +73,7 @@ import { SubrogationDemoModule } from './demo/subrogation-demo/subrogation-demo.
     ComponentDemoModule,
     IconDemoModule,
     AppGuardDemoModule,
+    LoggerModule.forRoot(),
     RouterModule.forRoot([
       { path: 'subrogation-demo', component: SubrogationDemoComponent },
       {

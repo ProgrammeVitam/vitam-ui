@@ -41,20 +41,21 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => VitamUIInputComponent),
+  useExisting: forwardRef(() => VitamUIInputPositiveNumberComponent),
   multi: true
 };
 
 @Component({
-  selector: 'vitamui-common-input',
-  templateUrl: './vitamui-input.component.html',
-  styleUrls: ['./vitamui-input.component.scss'],
+  selector: 'vitamui-common-input-positive-number',
+  templateUrl: './vitamui-input-positive-number.component.html',
+  styleUrls: ['./vitamui-input-positive-number.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
 })
-export class VitamUIInputComponent implements ControlValueAccessor {
+export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor {
 
   @Input() type = 'text';
   @Input() maxlength: number;
+  @Input() min: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;
   @Input()
@@ -68,7 +69,7 @@ export class VitamUIInputComponent implements ControlValueAccessor {
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('vitamUIInput', { static: false }) private input: ElementRef;
+  @ViewChild('vitamUIInputPositiveNumber', { static: false }) private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
@@ -77,6 +78,7 @@ export class VitamUIInputComponent implements ControlValueAccessor {
 
   onChange = (_: any) => { };
   onTouched = () => { };
+  onKeyPress = (_: any) => {};
 
   @HostListener('click')
   onClick() {
@@ -127,4 +129,5 @@ export class VitamUIInputComponent implements ControlValueAccessor {
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
+
 }

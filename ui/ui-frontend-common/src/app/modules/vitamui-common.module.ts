@@ -40,6 +40,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
+import { LoggerModule } from './logger/logger.module';
 
 import { AccountModule } from './account/account.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
@@ -118,6 +119,7 @@ export function startupServiceFactory(startupService: StartupService) {
     InfiniteScrollModule,
     LevelInputModule,
     LogbookModule,
+    LoggerModule,
     NavbarModule,
     OrderByButtonModule,
     OrderDropdownModule,
@@ -162,6 +164,7 @@ export function startupServiceFactory(startupService: StartupService) {
     InfiniteScrollModule,
     LevelInputModule,
     LogbookModule,
+    LoggerModule,
     NavbarModule,
     OrderByButtonModule,
     OrderDropdownModule,

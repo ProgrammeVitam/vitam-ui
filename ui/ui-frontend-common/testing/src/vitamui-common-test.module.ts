@@ -107,6 +107,23 @@ export class VitamUIInputStubComponent implements ControlValueAccessor {
 }
 
 @Component({
+  selector: 'vitamui-common-input-positive-number',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => VitamUIInputPositiveNumberStubComponent),
+    multi: true,
+  }]
+})
+export class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
+  @Input() placeholder: any;
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
+
+@Component({
   selector: 'vitamui-common-list-input',
   template: '',
   providers: [{
@@ -319,6 +336,7 @@ export class RowCollapseTriggerForStubDirective {
     VitamUIEditableToggleGroupStubComponent,
     VitamUIFieldErrorStubComponent,
     VitamUIInputErrorStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
     VitamUIInputStubComponent,
     VitamUIListInputStubComponent,
     VitamUISlideToggleStubComponent,
@@ -347,6 +365,7 @@ export class RowCollapseTriggerForStubDirective {
     VitamUIEditableToggleGroupStubComponent,
     VitamUIFieldErrorStubComponent,
     VitamUIInputErrorStubComponent,
+    VitamUIInputPositiveNumberStubComponent,
     VitamUIInputStubComponent,
     VitamUIListInputStubComponent,
     VitamUISlideToggleStubComponent,
