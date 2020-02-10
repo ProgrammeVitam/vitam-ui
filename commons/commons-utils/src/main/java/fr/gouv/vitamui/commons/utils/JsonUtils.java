@@ -47,6 +47,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -174,4 +175,17 @@ public class JsonUtils {
         return (ObjectNode) mapper.readTree("{}");
     }
 
+    /**
+     * @return an empty ObjectNode
+     */
+    public static final ObjectNode createObjectNode() {
+        return mapper.createObjectNode();
+    }
+
+    /**
+     * @return an empty ArrayNode
+     */
+    public static final ArrayNode createArrayNode() {
+        return mapper.createArrayNode();
+    }
 }

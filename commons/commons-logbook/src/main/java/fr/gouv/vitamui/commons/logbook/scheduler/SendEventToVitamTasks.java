@@ -36,37 +36,8 @@
  */
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -83,18 +54,41 @@ import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.common.EventStatus;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.Assert;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
- *
  * Task for send to vitam vitamui's events
  * <br>
  * Events are transform for be compatbile with vitam's logbook operation
- *
- *
  */
 @Getter
 @Setter
@@ -136,7 +130,7 @@ public class SendEventToVitamTasks {
         List<Event> events = getEventsElligibleToBeSentToVitam();
         Map<String, TreeSet<Event>> eventsToSend = new LinkedHashMap<>();
         Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate()
-                .compareTo(e2.getCreationDate());
+            .compareTo(e2.getCreationDate());
         // We stack together event by X-Request-Id
         // The first Event is the 'Master' event and the others are sub-event
         for (Event e : events) {
@@ -149,8 +143,7 @@ public class SendEventToVitamTasks {
         for (Entry<String, TreeSet<Event>> evts : eventsToSend.entrySet()) {
             try {
                 sendToVitam(evts.getValue());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOGGER.error("Failed to send events to vitam : {}", evts, e);
                 LOGGER.error(e.getMessage(), e);
 
@@ -162,7 +155,7 @@ public class SendEventToVitamTasks {
     protected List<Event> getEventsElligibleToBeSentToVitam() {
         Criteria criteriaStatusCreated = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.CREATED);
         Criteria criteriaStatusError = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.ERROR)
-                .and("synchronizedVitamDate").lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
+            .and("synchronizedVitamDate").lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
         final CriteriaDefinition criteria = new Criteria().orOperator(criteriaStatusCreated, criteriaStatusError);
         final Query query = Query.query(criteria);
         final Sort sort = Sort.by(Direction.ASC, "creationDate");
@@ -171,6 +164,7 @@ public class SendEventToVitamTasks {
 
     /**
      * Method in charged to send to vitam
+     *
      * @param events
      * @throws InvalidParseOperationException
      */
@@ -222,8 +216,7 @@ public class SendEventToVitamTasks {
                 LOGGER.error("Failed to create events {}, reponse: {}", logbookOperationParams, response);
             }
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             hasError = true;
             if (response != null && response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
                 LOGGER.warn("Event already send to vitam", e);
@@ -231,8 +224,7 @@ public class SendEventToVitamTasks {
                 LOGGER.error("Failed to send event {} to vitam", logbookOperationParams, e);
             }
 
-        }
-        finally {
+        } finally {
             final EventStatus status = hasError ? EventStatus.ERROR : EventStatus.SUCCESS;
             updateEventStatus(events, status, response != null ? response.toString() : "");
         }
@@ -240,13 +232,12 @@ public class SendEventToVitamTasks {
     }
 
     /**
-     *
      * @param events
      * @param status
      * @param vitamResponse
      */
     protected void updateEventStatus(final TreeSet<Event> events, final EventStatus status,
-            final String vitamResponse) {
+        final String vitamResponse) {
         Collection<String> ids = events.stream().map(e -> e.getId()).collect(Collectors.toList());
         final Query query = new Query(Criteria.where("id").in(ids));
         final Update update = new Update();
@@ -258,70 +249,69 @@ public class SendEventToVitamTasks {
 
     /**
      * Method for converting eventParent as Master event
-     * @param event
-     * @return
-     * @throws IllegalArgumentException
-     * @throws IOException
-     */
-    protected LogbookOperationParameters convertEventToMaster(final Event event)
-            throws IllegalArgumentException, IOException {
-        LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory
-                .newLogbookOperationParameters();
-
-        logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
-                .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
-                .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
-                .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
-                .setStatus(StatusCode.OK)
-                .putParameterValue(LogbookParameterName.outcomeDetailMessage, event.getOutMessg())
-                .putParameterValue(LogbookParameterName.agentIdentifierApplicationSession, event.getEvIdAppSession())
-                .putParameterValue(LogbookParameterName.eventIdentifierRequest, event.getEvIdReq());
-
-        return logbookOperationParameters;
-    }
-
-    /**
      *
      * @param event
      * @return
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    protected LogbookOperationParameters convertEventToLogbookOperationParams(final Event event)
-            throws IllegalArgumentException, IOException {
+    protected LogbookOperationParameters convertEventToMaster(final Event event)
+        throws IllegalArgumentException, IOException {
         LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory
-                .newLogbookOperationParameters();
+            .newLogbookOperationParameters();
 
         logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
-                .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
-                .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
-                .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
-                .setStatus(event.getOutcome())
-                .putParameterValue(LogbookParameterName.outcome, event.getOutcome().toString())
-                .putParameterValue(LogbookParameterName.outcomeDetail, event.getOutDetail())
-                .putParameterValue(LogbookParameterName.outcomeDetailMessage, event.getOutMessg())
-                .putParameterValue(LogbookParameterName.eventDetailData,
-                        addDateInformation(event.getEvDetData(), event.getEvDateTime()))
-                .putParameterValue(LogbookParameterName.eventDateTime, event.getEvDateTime())
-                .putParameterValue(LogbookParameterName.objectIdentifier, event.getObId())
-                .putParameterValue(LogbookParameterName.eventIdentifierRequest, event.getEvIdReq())
-                .putParameterValue(LogbookParameterName.objectIdentifierRequest, event.getObIdReq());
+            .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
+            .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
+            .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
+            .setStatus(StatusCode.OK)
+            .putParameterValue(LogbookParameterName.outcomeDetailMessage, event.getOutMessg())
+            .putParameterValue(LogbookParameterName.agentIdentifierApplicationSession, event.getEvIdAppSession())
+            .putParameterValue(LogbookParameterName.eventIdentifierRequest, event.getEvIdReq());
+
+        return logbookOperationParameters;
+    }
+
+    /**
+     * @param event
+     * @return
+     * @throws IllegalArgumentException
+     * @throws IOException
+     */
+    protected LogbookOperationParameters convertEventToLogbookOperationParams(final Event event)
+        throws IllegalArgumentException, IOException {
+        LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory
+            .newLogbookOperationParameters();
+
+        logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
+            .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
+            .putParameterValue(LogbookParameterName.eventIdentifierProcess, event.getEvIdProc())
+            .setTypeProcess(LogbookTypeProcess.getLogbookTypeProcess(event.getEvTypeProc().toString()))
+            .setStatus(event.getOutcome())
+            .putParameterValue(LogbookParameterName.outcome, event.getOutcome().toString())
+            .putParameterValue(LogbookParameterName.outcomeDetail, event.getOutDetail())
+            .putParameterValue(LogbookParameterName.outcomeDetailMessage, event.getOutMessg())
+            .putParameterValue(LogbookParameterName.eventDetailData,
+                addDateInformation(event.getEvDetData(), event.getEvDateTime()))
+            .putParameterValue(LogbookParameterName.eventDateTime, event.getEvDateTime())
+            .putParameterValue(LogbookParameterName.objectIdentifier, event.getObId())
+            .putParameterValue(LogbookParameterName.eventIdentifierRequest, event.getEvIdReq())
+            .putParameterValue(LogbookParameterName.objectIdentifierRequest, event.getObIdReq());
         return logbookOperationParameters;
     }
 
     protected String addDateInformation(final String evDetData, final String evDateTime) throws IOException {
         Assert.isTrue(evDetData != null, "evDetData should not be null");
         Assert.isTrue(evDateTime != null, "evDateTime should not be null");
-        JsonNode json;
         try {
-            json = JsonUtils.readTree(evDetData);
-            if (json == null) {
-                json = JsonUtils.readTree("{}");
+            JsonNode json = JsonUtils.readTree(evDetData);
+            if (json == null || json.isMissingNode()) {
+                json = JsonUtils.createObjectNode();
             }
+
             ((ObjectNode) json).put(EVENT_DATE_TIME_KEY, evDateTime);
             return ApiUtils.toJson(json);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.error("cann't convert {} to json node ", evDetData, e);
             throw e;
         }
