@@ -1,0 +1,189 @@
+
+# MONGO-EXPRESS
+
+upstream mongo_express  {
+    ip_hash;
+{% for host in groups['hosts_vitamui_mongod'] %}
+    server {{hostvars[host]['ip_admin']}}:{{ mongo_express_conf.mongo_express_port }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+    server_name  {{ vitam_site_name }}.teamdlab.com;
+
+    location /mongo-express {
+        proxy_pass http://mongo_express;
+    }
+}
+
+# CONSUL UI
+
+{# Adding consul ui proxy -----------------------------------------------  #}
+{% if consul_ui_proxy  is defined and consul_ui_proxy|bool  %}
+# upstream_portal
+upstream consul_ui {
+    ip_hash;
+{% if groups['hosts_vitamui_consul_server']|length >0 %}
+    #server {{hostvars [groups['hosts_vitamui_consul_server'][0]]['ip_admin']}}:8500;
+    #server {{hostvars [groups['hosts_vitamui_consul_server'][0]]['ip_admin']}}:8500/ui;
+{% endif %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+    server_name  {{ vitam_site_name }}.teamdlab.com;
+
+    location /ui/ {
+        proxy_pass http://consul_ui;
+    }
+
+    location /v1/ {
+        proxy_pass http://consul_ui;
+    }
+}
+
+{% endif %}
+
+
+
+# UI IDENTITY ADMIN
+
+upstream ui_identity_admin  {
+    ip_hash;
+{% for h in groups['hosts_ui_identity_admin'] %}
+    server {{ hostvars[h].ip_service }}:{{ vitamui.identity_admin.port_service }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+
+    server_name {{ vitamui.identity_admin.server_name }};
+
+    location / {
+        proxy_pass https://ui_identity_admin;
+
+        gunzip on;
+        sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
+        sub_filter /identity/ https://{{ vitamui.identity_admin.server_name }}/;
+        sub_filter_once off;
+
+        proxy_set_header Host            $host;
+    	proxy_set_header X-Forwarded-For $remote_addr;
+
+    }
+}
+
+
+# UI IDENTITY
+
+upstream ui_identity {
+    ip_hash;
+{% for h in groups['hosts_ui_identity'] %}
+    server {{ hostvars[h].ip_service }}:{{ vitamui.identity.port_service }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+
+    server_name {{ vitamui.identity.server_name }};
+
+    location / {
+        proxy_pass https://ui_identity;
+
+        gunzip on;
+        sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
+        sub_filter /identity/ https://{{ vitamui.identity.server_name }}/;
+        sub_filter_once off;
+
+        proxy_set_header Host            $host;
+    	proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Authorization $http_authorization;
+
+        proxy_hide_header X-Frame-Options;
+        proxy_set_header  X-Forwarded-Ssl on;
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto $scheme;
+
+    }
+}
+
+
+# CAS SERVER
+
+upstream cas  {
+    ip_hash;
+{% for h in groups['hosts_cas_server'] %}
+    server {{ hostvars[h].ip_service }}:{{ vitamui.cas_server.port_service }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+
+    server_name {{ vitamui.cas_server.server_name }};
+
+    # Redirect home to login page
+    location = / {
+        return 302 $scheme://$host/login;
+    }
+
+    location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0) {
+        proxy_pass https://cas;
+        proxy_set_header Host            $host;
+    	proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Authorization $http_authorization;
+
+        proxy_hide_header X-Frame-Options;
+        proxy_set_header  X-Forwarded-Ssl on;
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto $scheme;
+
+    }
+}
+
+# PORTAL
+
+upstream ui_portal {
+    ip_hash;
+{% for h in groups['hosts_ui_portal'] %}
+    server {{ hostvars[h].ip_service }}:{{ vitamui.portal.port_service }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+
+    server_name "{{ vitam_site_name }}-portal.teamdlab.com";
+
+    location / {
+        proxy_pass https://ui_portal;
+
+        proxy_set_header Host            $host;
+    	proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Authorization $http_authorization;
+
+        proxy_hide_header X-Frame-Options;
+        proxy_set_header  X-Forwarded-Ssl on;
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto $scheme;
+
+    }
+}
