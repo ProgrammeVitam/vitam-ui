@@ -86,12 +86,19 @@ cas.authn.pm.autoLogin: true
 
 spring.mail.host: {{ smtp.host }}
 spring.mail.port: {{ smtp.port }}
+spring.mail.protocol: {{ smtp.protocol|lower }}
 spring.mail.username: {{ smtp.user }}
 spring.mail.password: {{ smtp.password }}
-spring.mail.testConnection: {{ smtp.test_smtp_connection }}
-spring.mail.properties.mail.smtp.auth: {{ smtp.auth|lower }}
-spring.mail.properties.mail.smtp.starttls.enable: {{ smtp.tls_enable|lower }}
+spring.mail.testConnection: {{ smtp.test_smtp_connection|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.auth: {{ smtp.auth|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.starttls.enable: {{ smtp.tls_enable|lower }}
+spring.mail.properties.mail.transport.protocol: {{ smtp.protocol|lower }}
 
+{% if smtp.protocol|lower == 'smtps' %}
+spring.mail.properties.mail.smtps.ssl.checkserveridentity: {{ smtp.smtps.checkserveridentity|lower }}
+spring.mail.properties.mail.smtps.ssl.trust: "{{ smtp.smtps.trust|lower }}"
+spring.mail.properties.mail.smtps.timeout: {{ smtp.smtps.timeout|default('8000') }}
+{% endif %}
 
 # TODO OMA : check if working if not declared
 {% if sms.enabled|lower == "true" %}

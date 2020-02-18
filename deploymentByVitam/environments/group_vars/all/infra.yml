@@ -2,11 +2,16 @@
 smtp:
   host: host
   port: 389
+  protocol: smtp
   user: utilisateur
   password: password
   test_smtp_connection: false #none@nomail.com ???
   auth: true
   tls_enable: true
+  smtps:
+    checkserveridentity: false
+    trust: "*"
+    timeout: 8000
   cas:
     sender: "serveur-cas@noreply.com"
     expiration: 10 # in minutes
