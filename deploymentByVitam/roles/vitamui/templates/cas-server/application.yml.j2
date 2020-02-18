@@ -8,7 +8,13 @@ server:
   context-path: /cas
   host: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
+{% if vitamui.cas_server.base_url is defined %}
+  context-path: /
+  servlet.session.cookie.path: /
+{% else %}
+  context-path: /cas
   servlet.session.cookie.path: /cas
+{% endif %}
 
 
 vitamui.cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
@@ -130,7 +136,7 @@ mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
 
-vitamui.portal.url: {{ url_prefix }}
+vitamui.portal.url: {{ vitamui.portal.base_url|default('url_prefix') }}
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x
