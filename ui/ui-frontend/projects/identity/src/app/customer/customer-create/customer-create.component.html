@@ -167,7 +167,7 @@
             <div class="upload" i18n="Customer graphical identity upload label@@customerGraphicalIdentityUploadLabel"><span class="underline" (click)="addLogo()">Sélectionner</span> le logo du client</div>
             <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max 280px * 100px)</div>
           </div>
-          <div class="drag-and-drop-area " [ngClass]="{'on-over': hasDropZoneOver}"
+          <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
             vitamuiCommonDragAndDrop
             (fileToUploadEmitter)="onImageDropped($event)"
             (fileDragOverEmitter)="onImageDragOver($event)"
