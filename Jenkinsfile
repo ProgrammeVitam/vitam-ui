@@ -42,9 +42,9 @@ pipeline {
             steps {
                 script {
                     env.DO_TEST = 'true'
-                    env.DO_SECURITY = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
+                    env.DO_CHECKMARX = 'true'
                 }
             }
         }
@@ -52,7 +52,7 @@ pipeline {
 
         stage('Check vulnerabilities and tests.') {
             when {
-                environment(name: 'DO_SECURITY', value: 'true')
+                environment(name: 'DO_TEST', value: 'true')
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
@@ -163,15 +163,19 @@ pipeline {
                     branch "master"
                     tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
                 }
+                environment(name: 'DO_CHECKMARX', value: 'true')
             }
             environment {
                 JAVA_TOOL_OPTIONS = ""
             }
             steps {
+                dir('vitam-build.git') {
+                    deleteDir()
+                }
                 sh 'mkdir -p target'
                 sh 'mkdir -p logs'
                 // KWA : Visibly, backslash escape hell. \\ => \ in groovy string.
-                sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/"  -Preset "Default 2014" -LocationPathExclude cots deployment deploymentByVitam docs integration-tests tools -forcescan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
+                sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/"  -Preset "Default 2014" -LocationPathExclude "cots,deployment,deploymentByVitam,docs,integration-tests,tools,node,node_modules,dist,target" -LocationFilesExclude "*.rpm,*.pdf" -ForceScan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
             }
             post {
                 success {
