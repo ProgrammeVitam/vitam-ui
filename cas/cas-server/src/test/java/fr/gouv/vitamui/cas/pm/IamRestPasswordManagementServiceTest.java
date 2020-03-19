@@ -12,10 +12,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -25,12 +22,10 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.DefaultAuthentication;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
-import org.apereo.cas.pm.PasswordChangeBean;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
+import org.apereo.cas.pm.PasswordChangeRequest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,7 +61,7 @@ public final class IamRestPasswordManagementServiceTest {
 
     private ProvidersService providersService;
 
-    private Map<String, Object> authAttributes;
+    private Map<String, List<Object>> authAttributes;
 
     private IdentityProviderDto identityProviderDto;
 
@@ -81,7 +76,7 @@ public final class IamRestPasswordManagementServiceTest {
         identityProviderDto.setInternal(true);
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.of(identityProviderDto));
         service = new IamRestPasswordManagementService(casExternalRestClient, null, providersService, identityProviderHelper);
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         service.setUtils(utils);
         final RequestContext context = mock(RequestContext.class);
         RequestContextHolder.setRequestContext(context);
@@ -95,21 +90,22 @@ public final class IamRestPasswordManagementServiceTest {
             ZonedDateTime.now(),
             mock(Principal.class),
             authAttributes,
-            successes
+            successes,
+            new ArrayList<>()
         ));
     }
 
     @Test
     public void testChangePasswordSuccessfully() {
-        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeBean()));
+        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest()));
     }
 
     @Test
     public void testChangePasswordFailsBecauseOfASuperUser() {
-        authAttributes.put(SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL, "fakeSuperUser");
+        authAttributes.put(SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL, Collections.singletonList("fakeSuperUser"));
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeBean());
+            service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest());
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -122,7 +118,7 @@ public final class IamRestPasswordManagementServiceTest {
         identityProviderDto.setInternal(null);
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeBean());
+            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest());
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -135,7 +131,7 @@ public final class IamRestPasswordManagementServiceTest {
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.empty());
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeBean());
+            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest());
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -148,7 +144,7 @@ public final class IamRestPasswordManagementServiceTest {
         doThrow(new InvalidAuthenticationException("")).when(casExternalRestClient)
                 .changePassword(any(ExternalHttpContext.class), any(String.class), any(String.class));
 
-        assertFalse(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeBean()));
+        assertFalse(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest()));
     }
 
     @Test

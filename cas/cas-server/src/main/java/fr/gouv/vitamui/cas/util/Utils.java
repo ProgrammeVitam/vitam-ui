@@ -42,7 +42,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -50,20 +49,12 @@ import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
-import org.apereo.cas.services.UnauthorizedServiceException;
-import org.apereo.cas.ticket.Ticket;
-import org.apereo.cas.util.Pac4jUtils;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.flow.CasWebflowConstants;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.apereo.cas.web.support.WebUtils;
-import org.jasig.cas.client.util.URIBuilder;
-import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.exception.HttpAction;
-import org.pac4j.core.redirect.RedirectAction;
+import org.pac4j.core.util.CommonHelper;
+import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
@@ -89,10 +80,6 @@ public class Utils {
 
     private final CasExternalRestClient casExternalRestClient;
 
-    private final DelegatedClientWebflowManager delegatedClientWebflowManager;
-
-    private final DelegatedSessionCookieManager delegatedSessionCookieManager;
-
     private final String casToken;
 
     @Value("${vitamui.cas.tenant.identifier}")
@@ -101,11 +88,8 @@ public class Utils {
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
 
-    public Utils(final CasExternalRestClient casExternalRestClient, final DelegatedClientWebflowManager delegatedClientWebflowManager,
-            final DelegatedSessionCookieManager delegatedSessionCookieManager, final String casToken) {
+    public Utils(final CasExternalRestClient casExternalRestClient, final String casToken) {
         this.casExternalRestClient = casExternalRestClient;
-        this.delegatedClientWebflowManager = delegatedClientWebflowManager;
-        this.delegatedSessionCookieManager = delegatedSessionCookieManager;
         this.casToken = casToken;
     }
 
@@ -114,33 +98,10 @@ public class Utils {
     }
 
     public Event performClientRedirection(final Action action, final SAML2Client client, final RequestContext requestContext) throws IOException {
-        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        try {
-            final J2EContext webContext = Pac4jUtils.getPac4jJ2EContext(request, response);
-            final Ticket ticket = delegatedClientWebflowManager.store(webContext, client);
 
-            final RedirectAction redirectAction = client.getRedirectAction(webContext);
-            if (RedirectAction.RedirectType.SUCCESS.equals(redirectAction.getType())) {
-                webContext.writeResponseContent(redirectAction.getContent());
-            }
-            else {
-                final URIBuilder builder = new URIBuilder(redirectAction.getLocation());
-                final String url = builder.toString();
-                LOGGER.debug("Redirecting client [{}] to [{}] based on identifier [{}]", client.getName(), url, ticket.getId());
-                response.sendRedirect(url);
-            }
-            delegatedSessionCookieManager.store(webContext);
-        }
-        catch (final HttpAction e) {
-            if (e.getCode() == HttpStatus.UNAUTHORIZED.value()) {
-                LOGGER.debug("Authentication request was denied from the provider [{}]", client.getName(), e);
-            }
-            else {
-                LOGGER.warn(e.getMessage(), e);
-            }
-            throw new UnauthorizedServiceException(e.getMessage(), e);
-        }
+        final String url = CommonHelper.addParameter("clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
+        response.sendRedirect(url);
 
         final ExternalContext externalContext = requestContext.getExternalContext();
         externalContext.recordResponseComplete();
@@ -148,8 +109,7 @@ public class Utils {
     }
 
     public String getSuperUsername(final Authentication authentication) {
-        final Map<String, Object> authAttributes = authentication.getAttributes();
-        final String username = (String) authAttributes.get(SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
+        final String username = (String) getAttributeValue(authentication.getAttributes() ,SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
         LOGGER.debug("is it currently a superUser: {}", username);
         return username;
     }
@@ -180,15 +140,12 @@ public class Utils {
         return cookie;
     }
 
-    public Object getAttributeValue(final Principal principal, final String key) {
-        final Object attribute = principal.getAttributes().get(key);
-        if (attribute instanceof List) {
-            final List values = (List) attribute;
-            if (!values.isEmpty()) {
-                return values.get(0);
-            }
+    public Object getAttributeValue(final Map<String, List<Object>> attributes, final String key) {
+        final List<Object> attributeList = attributes.get(key);
+        if (attributeList != null && attributeList.size() > 0) {
+            return attributeList.get(0);
         }
-        return attribute;
+        return null;
     }
 
     public String sanitizePasswordResetUrl(final String url) {

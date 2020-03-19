@@ -5,11 +5,14 @@ import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 
+import org.apereo.cas.authentication.AuthenticationEventExecutionPlan;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
+import org.apereo.cas.ticket.registry.TicketRegistrySupport;
+import org.apereo.cas.web.cookie.CasCookieBuilder;
+import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,11 +44,11 @@ public final class CustomInitialFlowSetupActionTest extends BaseWebflowActionTes
         super.setUp();
 
         action = new CustomInitialFlowSetupAction(new ArrayList<>(), mock(ServicesManager.class),
-                mock(AuthenticationServiceSelectionPlan.class), mock(CookieRetrievingCookieGenerator.class),
-                mock(CookieRetrievingCookieGenerator.class), new CasConfigurationProperties());
+                mock(AuthenticationServiceSelectionPlan.class), mock(CasCookieBuilder.class),
+                mock(CasCookieBuilder.class), new CasConfigurationProperties(), mock(AuthenticationEventExecutionPlan.class),
+                mock(SingleSignOnParticipationStrategy.class), mock(TicketRegistrySupport.class));
         action.setSeparator(",");
     }
-
     @Test
     public void testUsernameNoSubrogation() {
         requestParameters.put("username", EMAIL1);

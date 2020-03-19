@@ -40,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
@@ -119,7 +118,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
     }
 
     private void convertPatterns(final IdentityProviderDto dto, final IdentityProvider provider) {
-        if (CollectionUtils.isNotEmpty(dto.getPatterns())) {
+        if (dto.getPatterns() != null && dto.getPatterns().size() > 0) {
             dto.setPatterns(dto.getPatterns().stream().map(s -> s.startsWith(".*@") ? s : ".*@" + s).collect(Collectors.toList()));
         }
         provider.setPatterns(dto.getPatterns());

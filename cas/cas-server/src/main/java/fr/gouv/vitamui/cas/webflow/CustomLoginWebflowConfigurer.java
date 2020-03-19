@@ -41,6 +41,7 @@ import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialExpiredException;
 import javax.security.auth.login.FailedLoginException;
 
+import lombok.val;
 import org.apereo.cas.authentication.PrincipalException;
 import org.apereo.cas.authentication.adaptive.UnauthorizedAuthenticationException;
 import org.apereo.cas.authentication.exceptions.AccountDisabledException;
@@ -95,12 +96,15 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
 
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {
-        final ActionState action = createActionState(flow, CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
-                CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK);
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TGT_NOT_EXISTS, CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK);
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TGT_INVALID, CasWebflowConstants.STATE_ID_TERMINATE_SESSION);
+        val action = createActionState(flow, CasWebflowConstants.STATE_ID_TICKET_GRANTING_TICKET_CHECK,
+            CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK);
+        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_NOT_EXISTS,
+            CasWebflowConstants.STATE_ID_GATEWAY_REQUEST_CHECK);
+        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_INVALID,
+            CasWebflowConstants.STATE_ID_TERMINATE_SESSION);
         // instead of STATE_ID_HAS_SERVICE_CHECK, send to STATE_ID_TRIGGER_CHANGE_PASSWORD
-        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TGT_VALID, STATE_ID_TRIGGER_CHANGE_PASSWORD);
+        createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_TICKET_GRANTING_TICKET_VALID,
+            STATE_ID_TRIGGER_CHANGE_PASSWORD);
 
         createTriggerChangePasswordAction(flow);
     }
@@ -113,8 +117,8 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
 
     @Override
     protected void createHandleAuthenticationFailureAction(final Flow flow) {
-        final ActionState handler = createActionState(flow, CasWebflowConstants.STATE_ID_HANDLE_AUTHN_FAILURE,
-                CasWebflowConstants.ACTION_ID_AUTHENTICATION_EXCEPTION_HANDLER);
+        val handler = createActionState(flow, CasWebflowConstants.STATE_ID_HANDLE_AUTHN_FAILURE,
+            CasWebflowConstants.ACTION_ID_AUTHENTICATION_EXCEPTION_HANDLER);
         createTransitionForState(handler, AccountDisabledException.class.getSimpleName(), CasWebflowConstants.VIEW_ID_ACCOUNT_DISABLED);
         createTransitionForState(handler, AccountLockedException.class.getSimpleName(), CasWebflowConstants.VIEW_ID_ACCOUNT_LOCKED);
         // JLE custo:
@@ -130,5 +134,6 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         createTransitionForState(handler, UnauthorizedAuthenticationException.class.getSimpleName(), CasWebflowConstants.VIEW_ID_AUTHENTICATION_BLOCKED);
         createTransitionForState(handler, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK, CasWebflowConstants.STATE_ID_SERVICE_UNAUTHZ_CHECK);
         createStateDefaultTransition(handler, CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
+
     }
 }

@@ -39,6 +39,10 @@ public abstract class BaseWebflowActionTest {
 
     protected HttpSession session;
 
+    protected HttpServletRequest request;
+
+    protected HttpServletResponse response;
+
     @Before
     public void setUp() {
         context = mock(RequestContext.class);
@@ -53,9 +57,10 @@ public abstract class BaseWebflowActionTest {
 
         final ServletExternalContext servletExternalContext = mock(ServletExternalContext.class);
         when(context.getExternalContext()).thenReturn(servletExternalContext);
-        final HttpServletRequest request = mock(HttpServletRequest.class);
+        request = mock(HttpServletRequest.class);
+        when(request.getMethod()).thenReturn("GET");
         when(servletExternalContext.getNativeRequest()).thenReturn(request);
-        final HttpServletResponse response = mock(HttpServletResponse.class);
+        response = mock(HttpServletResponse.class);
         when(servletExternalContext.getNativeResponse()).thenReturn(response);
 
         session = mock(HttpSession.class);

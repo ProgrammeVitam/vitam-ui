@@ -40,13 +40,16 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.apache.commons.lang.StringUtils;
+import org.apereo.cas.authentication.AuthenticationEventExecutionPlan;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
+import org.apereo.cas.ticket.registry.TicketRegistrySupport;
+import org.apereo.cas.web.cookie.CasCookieBuilder;
+import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.login.InitialFlowSetupAction;
 import org.apereo.cas.web.support.ArgumentExtractor;
-import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
@@ -82,13 +85,16 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
     private String vitamuiLargeLogoPath;
 
     public CustomInitialFlowSetupAction(final List<ArgumentExtractor> argumentExtractors,
-                                  final ServicesManager servicesManager,
-                                  final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionPlan,
-                                  final CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator,
-                                  final CookieRetrievingCookieGenerator warnCookieGenerator,
-                                  final CasConfigurationProperties casProperties) {
-        super(argumentExtractors, servicesManager, authenticationRequestServiceSelectionPlan,
-            ticketGrantingTicketCookieGenerator, warnCookieGenerator, casProperties);
+                                        final ServicesManager servicesManager,
+                                        final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
+                                        final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+                                        final CasCookieBuilder warnCookieGenerator,
+                                        final CasConfigurationProperties casProperties,
+                                        final AuthenticationEventExecutionPlan authenticationEventExecutionPlan,
+                                        final SingleSignOnParticipationStrategy renewalStrategy,
+                                        final TicketRegistrySupport ticketRegistrySupport) {
+        super(argumentExtractors, servicesManager, authenticationRequestServiceSelectionStrategies, ticketGrantingTicketCookieGenerator,
+            warnCookieGenerator, casProperties, authenticationEventExecutionPlan, renewalStrategy, ticketRegistrySupport);
     }
 
     @Override

@@ -1,8 +1,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,17 +13,11 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
-import org.apereo.cas.ticket.TransientSessionTicketImpl;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.exception.HttpAction;
-import org.pac4j.core.redirect.RedirectAction;
+import org.pac4j.core.exception.http.FoundAction;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -72,14 +65,14 @@ public final class DispatcherActionTests extends BaseWebflowActionTest {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        final DelegatedClientWebflowManager delegatedClientWebflowManager = mock(DelegatedClientWebflowManager.class);
-        when(delegatedClientWebflowManager.store(any(J2EContext.class), any(SAML2Client.class))).thenReturn(new TransientSessionTicketImpl());
         action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient);
         action.setSeparator(",");
-        final Utils utils = new Utils(casExternalRestClient, delegatedClientWebflowManager, mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         action.setUtils(utils);
 
-        provider = new SamlIdentityProviderDto(new IdentityProviderDto(), new MockSAML2Client());
+        final FoundAction foundAction = new FoundAction("http://server");
+        final SAML2Client client = new SAML2Client();
+        provider = new SamlIdentityProviderDto(new IdentityProviderDto(), client);
         provider.setInternal(true);
         when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME)))
                 .thenReturn(Optional.of(provider));
@@ -245,15 +238,5 @@ public final class DispatcherActionTests extends BaseWebflowActionTest {
         assertEquals(SURROGATE + "," + USERNAME,
             ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
         assertEquals("disabled", event.getId());
-    }
-
-    static class MockSAML2Client extends SAML2Client {
-
-        @Override
-        public RedirectAction getRedirectAction(final WebContext context) throws HttpAction {
-            final RedirectAction action = mock(RedirectAction.class);
-            when(action.getLocation()).thenReturn("http://server");
-            return action;
-        }
     }
 }

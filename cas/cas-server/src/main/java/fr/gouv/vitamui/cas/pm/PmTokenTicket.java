@@ -43,7 +43,7 @@ import org.apereo.cas.ticket.ExpirationPolicy;
 import org.apereo.cas.ticket.Ticket;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.TicketState;
-import org.apereo.cas.ticket.support.HardTimeoutExpirationPolicy;
+import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 
 /**
  * Specific ticket for the password management token.

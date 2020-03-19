@@ -36,16 +36,10 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -364,7 +358,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
     public List<String> getDomainsNotAssigned(final String customerId) {
         final List<String> filterDomains = new ArrayList<>();
         final List<IdentityProvider> idp = identityProviderRepository.findAll(Criteria.where("customerId").is(customerId));
-        if (CollectionUtils.isNotEmpty(idp)) {
+        if (idp != null && idp.size() > 0) {
             for (final IdentityProvider i : idp) {
                 filterDomains.addAll(i.getPatterns().stream().map(s -> s.replace(".*@", "")).collect(Collectors.toList()));
             }
@@ -373,7 +367,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         final Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("no customer found for " + customerId));
         List<String> availablesDomains = customer.getEmailDomains();
-        if (CollectionUtils.isNotEmpty(customer.getEmailDomains())) {
+        if (idp != null && idp.size() > 0) {
             availablesDomains = availablesDomains.stream().filter(s -> !filterDomains.contains(s)).collect(Collectors.toList());
         }
         return availablesDomains;

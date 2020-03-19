@@ -8,8 +8,6 @@ import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +43,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         service = new IamSurrogateRestAuthenticationService(casExternalRestClient, mock(ServicesManager.class));
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         service.setUtils(utils);
     }
 

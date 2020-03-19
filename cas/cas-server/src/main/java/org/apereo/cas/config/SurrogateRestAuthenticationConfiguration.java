@@ -1,8 +1,10 @@
 package org.apereo.cas.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,16 +20,14 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
  *
  *
  */
-@Configuration("surrogateRestAuthenticationConfiguration")
+@Configuration(value = "surrogateRestAuthenticationConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
+@Slf4j
 public class SurrogateRestAuthenticationConfiguration {
 
     @Autowired
     @Qualifier("servicesManager")
-    private ServicesManager servicesManager;
-
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private ObjectProvider<ServicesManager> servicesManager;
 
     // customisation JLE:
     @Autowired
@@ -37,9 +37,6 @@ public class SurrogateRestAuthenticationConfiguration {
     @Bean
     public SurrogateAuthenticationService surrogateAuthenticationService() {
         // customisation JLE:
-        /*final SurrogateAuthenticationProperties su = casProperties.getAuthn().getSurrogate();
-        LOGGER.debug("Using REST endpoint [{}] with method [{}] to locate surrogate accounts",
-            su.getRest().getUrl(), su.getRest().getMethod());*/
-        return new IamSurrogateRestAuthenticationService(casExternalRestClient, servicesManager);
+        return new IamSurrogateRestAuthenticationService(casExternalRestClient, servicesManager.getObject());
     }
 }

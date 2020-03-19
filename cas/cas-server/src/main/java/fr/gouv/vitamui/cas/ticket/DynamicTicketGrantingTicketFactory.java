@@ -38,18 +38,16 @@ package fr.gouv.vitamui.cas.ticket;
 
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import org.apereo.cas.CipherExecutor;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.ticket.ExpirationPolicy;
-import org.apereo.cas.ticket.TicketGrantingTicket;
-import org.apereo.cas.ticket.TicketGrantingTicketImpl;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
+import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.factory.DefaultTicketGrantingTicketFactory;
-import org.apereo.cas.ticket.support.HardTimeoutExpirationPolicy;
+import org.apereo.cas.util.crypto.CipherExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -64,7 +62,9 @@ public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTic
     @Autowired
     private Utils utils;
 
-    public DynamicTicketGrantingTicketFactory(final UniqueTicketIdGenerator ticketGrantingTicketUniqueTicketIdGenerator, final ExpirationPolicy ticketGrantingTicketExpirationPolicy, final CipherExecutor<Serializable, String> cipherExecutor) {
+    public DynamicTicketGrantingTicketFactory(final UniqueTicketIdGenerator ticketGrantingTicketUniqueTicketIdGenerator,
+                                              final ExpirationPolicyBuilder<TicketGrantingTicket> ticketGrantingTicketExpirationPolicy,
+                                              final CipherExecutor<Serializable, String> cipherExecutor) {
         super(ticketGrantingTicketUniqueTicketIdGenerator, ticketGrantingTicketExpirationPolicy, cipherExecutor);
     }
 
@@ -72,9 +72,9 @@ public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTic
     protected <T extends TicketGrantingTicket> T produceTicket(final Authentication authentication,
                                                                final String tgtId, final Class<T> clazz) {
         final Principal principal = authentication.getPrincipal();
-        final Map<String, Object> attributes = principal.getAttributes();
-        final String superUser = (String) attributes.get(SUPER_USER_ATTRIBUTE);
-        final UserTypeEnum type = (UserTypeEnum) utils.getAttributeValue(principal, TYPE_ATTRIBUTE);
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        final String superUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+        final UserTypeEnum type = (UserTypeEnum) utils.getAttributeValue(attributes, TYPE_ATTRIBUTE);
         if (superUser != null && type == UserTypeEnum.GENERIC) {
             return (T) new TicketGrantingTicketImpl(
                 tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));

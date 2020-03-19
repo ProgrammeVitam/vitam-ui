@@ -21,11 +21,9 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.PreventedException;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,7 +64,7 @@ public final class UserAuthenticationHandlerTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
         handler.setCasExternalRestClient(casExternalRestClient);
         credential = new UsernamePasswordCredential(USERNAME, PASSWORD);
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         handler.setUtils(utils);
     }
 

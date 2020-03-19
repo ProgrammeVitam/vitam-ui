@@ -9,8 +9,6 @@ import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,7 +57,7 @@ public final class ProvidersServiceTest {
         restClient = mock(IdentityProviderExternalRestClient.class);
         service.setIdentityProviderExternalRestClient(restClient);
         final CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         service.setUtils(utils);
 
         provider = new IdentityProviderDto();
