@@ -52,7 +52,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +103,7 @@ public class DispatcherAction extends AbstractAction {
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
 
-        final UsernamePasswordCredential credential = (UsernamePasswordCredential) WebUtils.getCredential(requestContext);
+        final UsernamePasswordCredential credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
         final String username = credential.getUsername().toLowerCase();
         String dispatchedUser = username;
         String surrogate = null;

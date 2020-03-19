@@ -15,8 +15,6 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,10 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -65,7 +60,7 @@ public final class UserPrincipalResolverTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
         resolver.setCasExternalRestClient(casExternalRestClient);
         resolver.setPrincipalFactory(new DefaultPrincipalFactory());
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        final Utils utils = new Utils(casExternalRestClient, null);
         resolver.setUtils(utils);
         final RequestContext context = mock(RequestContext.class);
         RequestContextHolder.setRequestContext(context);
@@ -78,8 +73,8 @@ public final class UserPrincipalResolverTest {
 
         final Principal principal = resolver.resolve(USERNAME, new HashMap<>());
         assertEquals(ID, principal.getId());
-        final Map<String, Object> attributes = principal.getAttributes();
-        assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE));
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
         assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
     }
 
@@ -90,7 +85,7 @@ public final class UserPrincipalResolverTest {
 
         final Principal principal = resolver.resolve(USERNAME, new HashMap<>());
 
-        AddressDto addressDto = (AddressDto) ((CasJsonWrapper) principal.getAttributes().get(CommonConstants.ADDRESS_ATTRIBUTE)).getData();
+        AddressDto addressDto = (AddressDto) ((CasJsonWrapper) principal.getAttributes().get(CommonConstants.ADDRESS_ATTRIBUTE).get(0)).getData();
 
         assertEquals(ID, principal.getId());
         assertThat(addressDto).isEqualToComparingFieldByField(authUserDto.getAddress());

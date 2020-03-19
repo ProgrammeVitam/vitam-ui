@@ -56,11 +56,14 @@ import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationAction;
+import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
+import org.apereo.cas.web.support.ArgumentExtractor;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.Clients;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.webflow.execution.Event;
@@ -70,6 +73,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -103,15 +107,16 @@ public class AutomaticDelegatedClientAuthenticationAction extends DelegatedClien
                                                         final ServicesManager servicesManager,
                                                         final AuditableExecution delegatedAuthenticationPolicyEnforcer,
                                                         final DelegatedClientWebflowManager delegatedClientWebflowManager,
-                                                        final DelegatedSessionCookieManager delegatedSessionCookieManager,
                                                         final AuthenticationSystemSupport authenticationSystemSupport,
-                                                        final String localeParamName,
-                                                        final String themeParamName,
+                                                        final CasConfigurationProperties casProperties,
                                                         final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
-                                                        final CentralAuthenticationService centralAuthenticationService) {
-        super(initialAuthenticationAttemptWebflowEventResolver, serviceTicketRequestWebflowEventResolver, adaptiveAuthenticationPolicy, clients, servicesManager,
-            delegatedAuthenticationPolicyEnforcer, delegatedClientWebflowManager, delegatedSessionCookieManager, authenticationSystemSupport,
-            localeParamName, themeParamName, authenticationRequestServiceSelectionStrategies, centralAuthenticationService);
+                                                        final CentralAuthenticationService centralAuthenticationService,
+                                                        final SingleSignOnParticipationStrategy singleSignOnParticipationStrategy,
+                                                        final SessionStore<JEEContext> sessionStore, final List<ArgumentExtractor> argumentExtractors) {
+        super(initialAuthenticationAttemptWebflowEventResolver, serviceTicketRequestWebflowEventResolver, adaptiveAuthenticationPolicy,
+            clients, servicesManager, delegatedAuthenticationPolicyEnforcer, delegatedClientWebflowManager, authenticationSystemSupport,
+            casProperties, authenticationRequestServiceSelectionStrategies, centralAuthenticationService, singleSignOnParticipationStrategy,
+            sessionStore, argumentExtractors);
     }
 
     @Override

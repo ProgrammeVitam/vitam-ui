@@ -56,16 +56,16 @@ import org.apereo.cas.authentication.principal.SimpleWebApplicationServiceImpl;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
-import org.apereo.cas.logout.LogoutRequest;
+import org.apereo.cas.logout.slo.SingleLogoutRequest;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.InvalidTicketException;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.TicketGrantingTicketImpl;
-import org.apereo.cas.ticket.support.NeverExpiresExpirationPolicy;
+import org.apereo.cas.ticket.expiration.NeverExpiresExpirationPolicy;
+import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.FrontChannelLogoutAction;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
-import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.webflow.execution.Event;
@@ -73,7 +73,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -108,8 +107,8 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
     private FrontChannelLogoutAction frontChannelLogoutAction;
 
     public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
-                                         final CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator,
-                                         final CookieRetrievingCookieGenerator warnCookieGenerator,
+                                         final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+                                         final CasCookieBuilder warnCookieGenerator,
                                          final LogoutProperties logoutProperties) {
         super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties);
     }
@@ -130,9 +129,10 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 if (ticket != null) {
 
                     final Principal principal = ticket.getAuthentication().getPrincipal();
-                    final String authToken = (String) utils.getAttributeValue(principal, AUTHTOKEN_ATTRIBUTE);
-                    final String principalEmail = (String) utils.getAttributeValue(principal, EMAIL_ATTRIBUTE);
-                    final String emailSuperUser = (String) utils.getAttributeValue(principal, SUPER_USER_ATTRIBUTE);
+                    final Map<String, List<Object>> attributes = principal.getAttributes();
+                    final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
+                    final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
+                    final String emailSuperUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
 
                     final ExternalHttpContext externalHttpContext;
                     if (StringUtils.isNotBlank(emailSuperUser)) {
@@ -158,12 +158,12 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         // fallback cases:
         // no CAS cookie -> general logout
         if (tgtId == null) {
-            final List<LogoutRequest> logoutRequests = performGeneralLogout("nocookie");
+            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout("nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
 
             // no ticket or expired -> general logout
         } else if (ticket == null || ticket.isExpired()) {
-            final List<LogoutRequest> logoutRequests = performGeneralLogout(tgtId);
+            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout(tgtId);
             WebUtils.putLogoutRequests(context, logoutRequests);
         }
 
@@ -176,7 +176,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         return event;
     }
 
-    protected List<LogoutRequest> performGeneralLogout(final String tgtId) {
+    protected List<SingleLogoutRequest> performGeneralLogout(final String tgtId) {
         try {
 
             final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
@@ -193,7 +193,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             final Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
             int i = 1;
             for (final RegisteredService registeredService : registeredServices) {
-                final URL logoutUrl = registeredService.getLogoutUrl();
+                final String logoutUrl = registeredService.getLogoutUrl();
                 if (logoutUrl != null) {
                     final String serviceId = logoutUrl.toString();
                     final String fakeSt = "ST-fake-" + i;

@@ -42,12 +42,15 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
+import org.apereo.cas.ticket.TicketFactory;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,9 +99,11 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     private final PasswordManagementService passwordManagementService;
 
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
-            final CommunicationsManager communicationsManager,
-            final PasswordManagementService passwordManagementService) {
-        super(casProperties, communicationsManager, passwordManagementService);
+                                                   final CommunicationsManager communicationsManager,
+                                                   final PasswordManagementService passwordManagementService,
+                                                   final TicketRegistry ticketRegistry,
+                                                   final TicketFactory ticketFactory) {
+        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory);
         this.casProperties = casProperties;
         this.communicationsManager = communicationsManager;
         this.passwordManagementService = passwordManagementService;
@@ -141,7 +146,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             return success();
         }
 
-        final String url = buildPasswordResetUrl(username, passwordManagementService, casProperties);
+        val service = WebUtils.getService(requestContext);
+        final String url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
 
         LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
                 utils.sanitizePasswordResetUrl(url), pm.getReset().getExpirationMinutes());

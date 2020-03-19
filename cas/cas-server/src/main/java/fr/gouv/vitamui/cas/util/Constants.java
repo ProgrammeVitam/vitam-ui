@@ -50,13 +50,6 @@ public abstract class Constants {
 
     public static final String SUPER_USER = "superUser";
 
-    // for MFA:
-    public static final String GENERATED_CODE = "generatedCode";
-
-    public static final String GENERATION_DATE = "generationDate";
-
-    public static final String MFA_SMS_EVENT_ID = "mfa-sms";
-
     // web:
     public static final String PORTAL_URL = "portalUrl";
 
