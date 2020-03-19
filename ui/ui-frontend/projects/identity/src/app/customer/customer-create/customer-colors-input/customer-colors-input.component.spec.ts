@@ -1,5 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerColorsInputComponent } from './customer-colors-input.component';
 
 describe('CustomerColorsInputComponent', () => {
@@ -8,9 +12,19 @@ describe('CustomerColorsInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomerColorsInputComponent ]
+      imports: [
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+      ],
+      declarations: [CustomerColorsInputComponent],
+      providers: [
+      ]
     })
     .compileComponents();
+
   }));
 
   beforeEach(() => {

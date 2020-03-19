@@ -133,7 +133,7 @@
     }
 
     .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
-        background-color: lighten(var(--vitamui-secondary), 10);
+        background-color: var(--vitamui-secondary-light);
     }
 
     .mat-menu-item[disabled] {
@@ -143,7 +143,7 @@
     .more-action-divider {
         height: 10px;
         width: 100%;
-        background-color: lighten(var(--vitamui-secondary), 8);
+        background-color: var(--vitamui-secondary-light-8);
 
         + .mat-menu-item {
             border-top-color: transparent;

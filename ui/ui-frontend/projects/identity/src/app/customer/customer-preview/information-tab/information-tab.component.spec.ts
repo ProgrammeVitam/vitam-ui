@@ -70,7 +70,8 @@ let expectedCustomer: Customer = {
         city: 'paris',
         country: 'france'
     },
-    owners: []
+    owners: [],
+    themeColors: new Map<string, string>()
 };
 
 @Component({
@@ -90,6 +91,22 @@ class EditableDomainInputStubComponent implements ControlValueAccessor {
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
+}
+@Component({
+  selector: 'app-customer-colors-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+    multi: true,
+  }]
+})
+class CustomerColorsInputStubComponent implements ControlValueAccessor {
+    @Input() placeholder: string;
+    @Input() spinnerDiameter = 25;
+    writeValue() {}
+    registerOnChange() {}
+    registerOnTouched() {}
 }
 
 @Component({
@@ -130,7 +147,8 @@ describe('Customer InformationTabComponent', () => {
         city: 'paris',
         country: 'france'
       },
-      owners: []
+      owners: [],
+      themeColors: new Map<string, string>()
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
@@ -148,6 +166,7 @@ describe('Customer InformationTabComponent', () => {
         InformationTabComponent,
         TestHostComponent,
         EditableDomainInputStubComponent,
+        CustomerColorsInputStubComponent,
       ],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },

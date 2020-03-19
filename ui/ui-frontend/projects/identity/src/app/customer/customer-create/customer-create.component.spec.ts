@@ -74,6 +74,23 @@ class OwnerFormStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
+@Component({
+  selector: 'app-customer-colors-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+    multi: true,
+  }]
+})
+class CustomerColorsInputStubComponent implements ControlValueAccessor {
+    @Input() placeholder: string;
+    @Input() spinnerDiameter = 25;
+    writeValue() {}
+    registerOnChange() {}
+    registerOnTouched() {}
+}
+
 const expectedCustomer = {
   enabled: true,
   code: '424242',
@@ -101,7 +118,8 @@ const expectedCustomer = {
       city: 'Paris',
       country: 'FR',
     }
-  }]
+  }],
+  themeColors: new Map<string, string>()
 };
 
 let component: CustomerCreateComponent;
@@ -143,6 +161,7 @@ describe('CustomerCreateComponent', () => {
       declarations: [
         CustomerCreateComponent,
         OwnerFormStubComponent,
+        CustomerColorsInputStubComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

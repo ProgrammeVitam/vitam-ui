@@ -82,7 +82,8 @@ let expectedCustomer: Customer = {
     },
     customerId: 'idCustomer',
     readonly: false
-  }]
+  }],
+  themeColors: new Map<string, string>()
 };
 
 @Component({
@@ -142,7 +143,8 @@ describe('GraphicIdentityTabComponent', () => {
         },
         customerId: 'idCustomer',
         readonly: false
-      }]
+      }],
+      themeColors: new Map<string, string>()
     };
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 

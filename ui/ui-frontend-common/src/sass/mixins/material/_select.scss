@@ -32,12 +32,12 @@
 
     .mat-option.mat-selected:not(.mat-option-multiple) {
         font-weight: 500;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
 
         &:before {
             content: 'check';
             font-family: 'Material Icons';
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             display: block;
             position: absolute;
             left: 10px;

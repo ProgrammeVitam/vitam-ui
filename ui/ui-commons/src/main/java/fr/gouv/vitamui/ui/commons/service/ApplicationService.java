@@ -36,12 +36,17 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;

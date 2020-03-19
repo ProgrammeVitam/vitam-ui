@@ -35,7 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { forwardRef, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ENVIRONMENT } from 'ui-frontend-common';
@@ -43,6 +45,7 @@ import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState } from 'ui-f
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../../../../../environments/environment';
 
+import { Component } from '@angular/core';
 import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update.component';
 
@@ -83,8 +86,26 @@ const expectedCustomer: Customer = {
     },
     customerId: 'idCustomer',
     readonly: false
-  }]
+  }],
+  themeColors: new Map<string, string>()
 };
+
+@Component({
+  selector: 'app-customer-colors-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+    multi: true,
+  }]
+})
+class CustomerColorsInputStubComponent implements ControlValueAccessor {
+    @Input() placeholder: string;
+    @Input() spinnerDiameter = 25;
+    writeValue() {}
+    registerOnChange() {}
+    registerOnTouched() {}
+}
 
 describe('GraphicIdentityUpdateComponent', () => {
   let component: GraphicIdentityUpdateComponent;
@@ -99,9 +120,9 @@ describe('GraphicIdentityUpdateComponent', () => {
         HttpClientTestingModule,
         VitamUICommonTestModule,
         InjectorModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
-      declarations: [GraphicIdentityUpdateComponent],
+      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
