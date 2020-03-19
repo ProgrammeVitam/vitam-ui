@@ -11,18 +11,19 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
-        <groovy.version>2.4.15</groovy.version>
-        <cas.hibernate.validator.version>5.4.1.Final</cas.hibernate.validator.version>
+        <!--groovy.version>2.4.15</groovy.version>
+
         <spring.aop.version>4.3.20.RELEASE</spring.aop.version>
         <spring.boot.version>1.5.18.RELEASE</spring.boot.version>
         <spring.cloud.consul.version>1.3.0.RELEASE</spring.cloud.consul.version>
         <spring.oxm.version>4.3.20.RELEASE</spring.oxm.version>
         <spring.security.version>4.2.8.RELEASE</spring.security.version>
-        <spring.test.version>${spring.oxm.version}</spring.test.version>
-        <spring.version>4.3.20.RELEASE</spring.version>
+        <spring.version>4.3.20.RELEASE</spring.version-->
+        <cas.hibernate.validator.version>6.1.0.Final</cas.hibernate.validator.version>
+        <spring.test.version>5.2.0.RELEASE</spring.test.version>
         <swagger.version>1.5.18</swagger.version>
-        <thymeleaf-spring4.version>3.0.9.RELEASE</thymeleaf-spring4.version>
-        <micrometer.version>1.0.1</micrometer.version>
+        <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
+        <!--micrometer.version>1.0.1</micrometer.version-->
         <assertj-core.version>3.11.1</assertj-core.version>
 
         <rpm.skip>false</rpm.skip>
@@ -309,6 +310,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-pm-core</artifactId>
+            <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- multi-factor authentication -->
         <dependency>
@@ -495,6 +507,39 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-token-core-api</artifactId>
+            <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-oauth-core-api</artifactId>
+            <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-oauth-services</artifactId>
+            <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- metrics / logs -->
         <dependency>
@@ -555,15 +600,7 @@
             </exclusions>
         </dependency>
 
-        <!-- Spring overrides -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
         <!-- UTIL -->
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -587,8 +624,8 @@
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring4</artifactId>
-            <version>${thymeleaf-spring4.version}</version>
+            <artifactId>thymeleaf-spring5</artifactId>
+            <version>${thymeleaf-spring5.version}</version>
         </dependency>
 
         <dependency>
@@ -695,6 +732,14 @@
                     <outputPath>${project.basedir}/src/main/resources/static/css</outputPath>
                     <generateSourceMap>true</generateSourceMap>
                     <outputStyle/>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>11</release>
                 </configuration>
             </plugin>
         </plugins>

@@ -39,12 +39,13 @@ package fr.gouv.vitamui.cas.webflow;
 import fr.gouv.vitamui.cas.util.Constants;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.principal.Service;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.support.ArgumentExtractor;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.WebContext;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -60,18 +61,17 @@ public class CustomDelegatedClientWebflowManager extends DelegatedClientWebflowM
 
     public CustomDelegatedClientWebflowManager(final TicketRegistry ticketRegistry,
         final TicketFactory ticketFactory,
-        final String themeParamName,
-        final String localParamName,
+        final CasConfigurationProperties casProperties,
         final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
         final ArgumentExtractor argumentExtractor) {
-        super(ticketRegistry, ticketFactory, themeParamName, localParamName, authenticationRequestServiceSelectionStrategies, argumentExtractor);
+        super(ticketRegistry, ticketFactory, casProperties, authenticationRequestServiceSelectionStrategies, argumentExtractor);
     }
 
     @Override
-    protected Map<String, Serializable> buildTicketProperties(final J2EContext webContext) {
+    protected Map<String, Serializable> buildTicketProperties(final JEEContext webContext) {
         final Map<String, Serializable> properties = super.buildTicketProperties(webContext);
 
-        properties.put(Constants.SURROGATE, (String) webContext.getRequestAttribute(Constants.SURROGATE));
+        properties.put(Constants.SURROGATE, (String) webContext.getRequestAttribute(Constants.SURROGATE).orElse(null));
 
         return properties;
     }

@@ -65,7 +65,7 @@ public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuth
                                                          final AuditableExecution registeredServiceAccessStrategyEnforcer,
                                                          final AuditableExecution surrogateEligibilityAuditableExecution) {
         super(surrogateAuthenticationService, servicesManager, applicationEventPublisher, registeredServiceAccessStrategyEnforcer,
-            surrogateEligibilityAuditableExecution, null);
+            surrogateEligibilityAuditableExecution);
     }
 
     @Override

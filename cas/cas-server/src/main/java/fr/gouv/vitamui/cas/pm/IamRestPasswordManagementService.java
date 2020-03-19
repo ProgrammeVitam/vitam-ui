@@ -42,11 +42,11 @@ import java.util.Optional;
 import org.apereo.cas.DefaultCentralAuthenticationService;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.Credential;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.BasePasswordManagementService;
 import org.apereo.cas.pm.InvalidPasswordException;
-import org.apereo.cas.pm.PasswordChangeBean;
+import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
@@ -101,9 +101,11 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
     @Autowired
     private TicketRegistry ticketRegistry;
 
-    public IamRestPasswordManagementService(final CasExternalRestClient casExternalRestClient, final PasswordManagementProperties passwordManagementProperties,
-            final ProvidersService providersService, final IdentityProviderHelper identityProviderHelper) {
-        super(passwordManagementProperties, null, null);
+    public IamRestPasswordManagementService(final CasExternalRestClient casExternalRestClient,
+                                            final PasswordManagementProperties passwordManagementProperties,
+                                            final ProvidersService providersService,
+                                            final IdentityProviderHelper identityProviderHelper) {
+        super(passwordManagementProperties, null, null, null);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -128,7 +130,7 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
     }
 
     @Override
-    public boolean changeInternal(final Credential c, final PasswordChangeBean bean) {
+    public boolean changeInternal(final Credential c, final PasswordChangeRequest bean) throws InvalidPasswordException {
         final RequestContext requestContext = blockIfSubrogation();
         final MutableAttributeMap flowScope = requestContext.getFlowScope();
         if (flowScope != null) {

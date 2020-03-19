@@ -45,7 +45,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordManagementService;
-import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
+import org.apereo.cas.pm.web.flow.PasswordManagementWebflowUtils;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,8 +143,8 @@ public class ResetPasswordController {
 
     protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties, final int expMinutes) {
         final String token = createToken(username, expMinutes);
-        return casProperties.getServer().getPrefix().concat('/' + FLOW_ID_LOGIN + '?' + SendPasswordResetInstructionsAction.PARAMETER_NAME_TOKEN + '=')
-                .concat(token);
+        return casProperties.getServer().getPrefix().concat('/' + FLOW_ID_LOGIN + '?'
+            + PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN + '=').concat(token);
     }
 
     protected String createToken(final String to, final int expMinutes) {

@@ -74,7 +74,7 @@
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
         <bouncycastle.version>1.60</bouncycastle.version>
-        <cas.version>5.3.8</cas.version>
+        <cas.version>6.1.5</cas.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
         <commons.compress.version>1.20</commons.compress.version>
@@ -106,7 +106,7 @@
         <lombok.version>1.18.8</lombok.version>
         <micrometer.version>1.1.5</micrometer.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
-        <pac4j.version>3.8.3</pac4j.version>
+        <pac4j.version>4.0.0-RC3</pac4j.version>
         <poi.version>3.17</poi.version>
         <powermock.version>2.0.2</powermock.version>
         <!-- Temporary fix for Multipart upload issues cf
