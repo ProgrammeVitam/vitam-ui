@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import java.util.Map;
+
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;

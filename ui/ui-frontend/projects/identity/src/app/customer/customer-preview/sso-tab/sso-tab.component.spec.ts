@@ -91,7 +91,8 @@ class TestHostComponent {
         city : 'Paris',
         country : 'DK'
     },
-    owners: []
+    owners: [],
+    themeColors: new Map<string, string>()
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

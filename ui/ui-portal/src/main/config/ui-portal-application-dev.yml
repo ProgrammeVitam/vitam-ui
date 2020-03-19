@@ -30,7 +30,7 @@ ui-portal:
     vitamui-primary-light: "#992fb1"
     vitamui-primary-light-20: "#ba52d1"
     vitamui-secondary: "#7FA1D4"
-  assets: /vitamui/assets/ui-portal
+  assets: src/main/config
   iam-external-client:
     server-host: localhost
     server-port: 8083

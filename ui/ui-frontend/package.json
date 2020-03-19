@@ -76,7 +76,7 @@
     "ngx-filesize": "^2.0.2",
     "rxjs": "^6.5.2",
     "tslib": "^1.9.0",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.2.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.0.13.tgz",
     "underscore": "^1.9.1",
     "uuid": "^7.0.2",
     "web-animations-js": "^2.3.2",

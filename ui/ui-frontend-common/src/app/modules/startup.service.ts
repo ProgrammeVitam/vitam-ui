@@ -40,7 +40,6 @@ import { tap } from 'rxjs/operators';
 import { Inject, Injectable } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
-import { CustomerApiService } from './api/customer-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
@@ -48,6 +47,7 @@ import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
+import { getColorFromMaps } from './utils/colors.util';
 
 const WARNING_DURATION = 2000;
 const DARK_SUFFIX = '-dark';
@@ -88,9 +88,9 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
-      .then(() => this.applicationApi.getAsset('navbar-logo.svg').toPromise())
+      .then(() => this.applicationApi.getAsset('vitamui-logo.png').toPromise())
       .then((data: any) => {
-        this.configurationData.LOGO = data['navbar-logo.svg'];
+        this.configurationData.LOGO = data['vitamui-logo.png'];
       })
       .then(() => {
 

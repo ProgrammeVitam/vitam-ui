@@ -1,11 +1,11 @@
 <!-- TODO: Add specific colors -->
 <div class="d-flex" [formGroup]="colorForm">
-  <openvitamui-common-input class="field-color-name" formControlName="colorName" maxlength="100"
+  <vitamui-common-input class="field-color-name" formControlName="colorName" maxlength="100"
                          placeholder="Identifiant de Couleur" i18n-placeholder="Customer color name input placeholder@@customerCreateColorNamePlaceholder">
-  </openvitamui-common-input>
-  <openvitamui-common-input class="field-color-value" formControlName="colorValue" maxlength="7"
+  </vitamui-common-input>
+  <vitamui-common-input class="field-color-value" formControlName="colorValue" maxlength="7"
                          placeholder="Couleur RGB" i18n-placeholder="Customer color value input placeholder@@customerCreateColorValuePlaceholder">
-  </openvitamui-common-input>
+  </vitamui-common-input>
   <button type="button" class="btn secondary" (click)="add()" [disabled]="buttonAddDisabled()" i18n="color input add button@@colorsInputAddButton">Ajouter</button>
 </div>
 <div class="vitamui-input-errors">
