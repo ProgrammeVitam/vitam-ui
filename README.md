@@ -1,6 +1,20 @@
 # VitamUI
 VitamUI project.
 
+# Prerequisites
+- Install Java at least version 8
+- Install Maven
+- Install Git
+- Install NodeJs
+- Configure default registry:  npm config set registry https://registry.npmjs.org/
+- Environment variable :
+    - Vitam developer
+        - Specify the environment variables : SERVICE_NEXUS_URL and SERVICE_REPOSITORY_URL
+        - The maven command. Params between {} are optional: mvn clean install {-Ddependency-check.skip=true} -Denv.SERVICE_NEXUS_URL=... -Denv.SERVICE_REPOSITORY_URL=... {-DskipTests} -Pvitam
+    - Non vitam developer
+        - Build vitam locally @see  https://github.com/ProgrammeVitam/vitam/#id11
+
+
 # Clone
 Execute this command to clone the project from the bitbucket repo:
 
