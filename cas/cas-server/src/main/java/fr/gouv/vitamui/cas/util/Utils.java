@@ -52,7 +52,7 @@ import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookiePro
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.util.CommonHelper;
-import org.pac4j.core.util.Pac4jConstants;
+import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.context.ExternalContext;
