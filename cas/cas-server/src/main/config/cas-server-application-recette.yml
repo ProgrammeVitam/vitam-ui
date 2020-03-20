@@ -1,3 +1,8 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+
 server:
   ssl:
     key-store: ../../../../dev-deployment/environments/keystores/server/localhost/keystore_cas-server.jks
@@ -33,8 +38,7 @@ cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
 cas.tgc.path: /cas
 cas.tgc.secure: false
 cas.tgc.crypto.enabled: false
-cas.webflow.crypto.enabled: false
-cas.authn.pac4j.cookie.crypto.enabled: true
+cas.webflow.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
 
 cas.server.prefix: https://dev.vitamui.com:8080/cas
@@ -108,16 +112,12 @@ cas:
     redirectParameter: next
 
 
-endpoints.enabled: true
-endpoints.sensitive: false
-management.security.enabled: false
-cas.monitor.endpoints.sensitive: false
-cas.monitor.endpoints.enabled: true
+management.endpoints.enabled-by-default: true
+#cas.monitor.endpoints.sensitive: false
+#cas.monitor.endpoints.enabled: true
 #management.metrics.export.prometheus.sensitive: false
 #management.metrics.export.prometheus.enabled: true
-cas.adminPagesSecurity.ip: .*
-management.context-path: /actuator
-
+cas.monitor.endpoints.endpoint.defaults.access[0]: ANONYMOUS
 
 # for SMS:
 cas.smsProvider.twilio.accountId: AC3942c2fee9478d0295b3051735860e3b

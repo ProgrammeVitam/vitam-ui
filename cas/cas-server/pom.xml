@@ -11,20 +11,15 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
-        <!--groovy.version>2.4.15</groovy.version>
-
-        <spring.aop.version>4.3.20.RELEASE</spring.aop.version>
-        <spring.boot.version>1.5.18.RELEASE</spring.boot.version>
-        <spring.cloud.consul.version>1.3.0.RELEASE</spring.cloud.consul.version>
-        <spring.oxm.version>4.3.20.RELEASE</spring.oxm.version>
-        <spring.security.version>4.2.8.RELEASE</spring.security.version>
-        <spring.version>4.3.20.RELEASE</spring.version-->
-        <cas.hibernate.validator.version>6.1.0.Final</cas.hibernate.validator.version>
+        <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
+        <spring.security.version>5.2.0.RELEASE</spring.security.version>
         <spring.test.version>5.2.0.RELEASE</spring.test.version>
         <swagger.version>1.5.18</swagger.version>
         <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
-        <!--micrometer.version>1.0.1</micrometer.version-->
         <assertj-core.version>3.11.1</assertj-core.version>
+        <lombok.version>1.18.10</lombok.version>
+        <mockito.version>1.10.19</mockito.version>
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
@@ -48,6 +43,18 @@
 			        <groupId>org.springframework.boot</groupId>
 			        <artifactId>spring-boot-starter-reactor-netty</artifactId>
             	</exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -60,24 +67,11 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-            <version>${spring.boot.version}</version>
-        </dependency>
-
         <!-- services registry -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-mongo-service-registry</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- authentication delegation -->
@@ -85,67 +79,31 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-webflow</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-core</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-core-clients</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-web</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-util</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
@@ -162,28 +120,11 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mongodb</groupId>
-                    <artifactId>mongodb-driver</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- tickets registry -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-hazelcast-ticket-registry</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- surrogation -->
@@ -191,78 +132,36 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-authentication</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-authentication-rest</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-webflow</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-configuration</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-webflow</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-services-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- password management -->
@@ -270,56 +169,26 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-rest</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-webflow</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-core</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- multi-factor authentication -->
@@ -327,23 +196,11 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-mfa</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-sms-twilio</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- throttling -->
@@ -351,12 +208,6 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-throttle</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- CustomInitialFlowSetupAction -->
@@ -364,45 +215,21 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-actions</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-cookie-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-web-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- others -->
@@ -410,56 +237,26 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-webapp-init</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-tickets</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-services-authentication</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-webflow-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-saml-core</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- OAuth support -->
@@ -467,96 +264,51 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-webflow</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-token-core-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core-api</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-services</artifactId>
             <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
-        <!-- metrics / logs -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-spring-legacy</artifactId>
-            <version>${micrometer.version}</version>
-        </dependency>
-        <dependency>
+        <!-- metrics -->
+        <!--dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.ryantenney.metrics</groupId>
-            <artifactId>metrics-spring</artifactId>
-            <version>3.1.3</version>
-        </dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-metrics</artifactId>
+            <version>${cas.version}</version>
+        </dependency-->
+
+        <!-- logs -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -567,71 +319,20 @@
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-core-audit</artifactId>
-            <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-core-validation-api</artifactId>
-            <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-metrics</artifactId>
-            <version>${cas.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <!-- UTIL -->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
             <version>${thymeleaf-spring5.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${cas.hibernate.validator.version}</version>
         </dependency>
 
         <!-- TEST -->
@@ -643,19 +344,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.test.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml</groupId>
-            <artifactId>classmate</artifactId>
-            <version>1.3.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -698,21 +393,55 @@
                             <artifactId>cas-server-webapp-tomcat</artifactId>
                             <excludes>
                                 <exclude>WEB-INF/classes/services/*.json</exclude>
-                                <exclude>WEB-INF/lib/mongo-java-driver-*.jar</exclude>
-                                <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jackson-*.jar</exclude>
-                                <exclude>WEB-INF/lib/validation-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-jul-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-core-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-jcl-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-slf4j-impl-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
+                                <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
+                                <exclude>WEB-INF/lib/slf4j-api-1.8.0-beta4.jar</exclude>
+                                <exclude>WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar</exclude>
+                                <exclude>WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-core-2.8.10.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-databind-2.8.10.jar</exclude>
+                                <exclude>WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
                     <packagingExcludes>
                         WEB-INF/lib/log4j-api-*.jar,
+                        WEB-INF/lib/log4j-jul-*.jar,
                         WEB-INF/lib/log4j-core-*.jar,
                         WEB-INF/lib/log4j-jcl-*.jar,
                         WEB-INF/lib/log4j-web-*.jar,
-                        WEB-INF/lib/log4j-slf4j-impl-*.jar
+                        WEB-INF/lib/log4j-slf4j-impl-*.jar,
+                        WEB-INF/lib/log4j-slf4j18-impl-*.jar,
+                        WEB-INF/lib/spring-boot-starter-log4j2-*.jar,
+                        WEB-INF/lib/slf4j-api-1.8.0-beta4.jar,
+                        WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar,
+                        WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar,
+                        WEB-INF/lib/jackson-core-2.8.10.jar,
+                        WEB-INF/lib/jackson-databind-2.8.10.jar,
+                        WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar
                     </packagingExcludes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
