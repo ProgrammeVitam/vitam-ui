@@ -63,11 +63,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
 import fr.gouv.vitamui.cas.authentication.SurrogatedUserPrincipalFactory;
 import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
@@ -167,15 +162,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
         return new UserAuthenticationHandler(servicesManager, principalFactory);
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        final ObjectMapper mapperDontFailOnUnknowProperties = new ObjectMapper();
-        mapperDontFailOnUnknowProperties.registerModule(new JavaTimeModule());
-        mapperDontFailOnUnknowProperties.registerModule(new Jdk8Module());
-        mapperDontFailOnUnknowProperties.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapperDontFailOnUnknowProperties;
     }
 
     @Bean
