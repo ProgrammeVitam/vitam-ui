@@ -6,6 +6,7 @@ spring:
       host: consul.service.consul
       discovery:
         preferIpAddress: true
+        tags: {{ consul_tags }}
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
