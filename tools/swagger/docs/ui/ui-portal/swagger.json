@@ -1,0 +1,22 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This API is used by the Portal UI to retrieve applications for the connected user. This API should be used by the Portal UI only.",
+        "version": "v1",
+        "title": "API for Portal UI",
+        "termsOfService": "Terms of service",
+        "contact": {
+            "name": "Direction de la diffusion et des partenariats",
+            "email": "contact@programmevitam.fr"
+        },
+        "license": {
+            "name": "License to be defined ...",
+            "url": "URL not defined."
+        }
+    },
+    "host": "localhost",
+    "basePath": "/",
+    "produces": [
+        "application/json"
+    ]
+}
