@@ -2,9 +2,8 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.user;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_USERS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
+
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -34,15 +33,15 @@ public class ApiIamUserCheckSteps extends CommonSteps {
         final QueryDto criteria = QueryDto.criteria("email", TestConstants.SYSTEM_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain,
                 CriterionOperator.EQUALS);
 
-        testContext.bResponse = getUserRestClient(true, new Integer[] { SYSTEM_TENANT_IDENTIFIER }, new String[] { ROLE_GET_USERS })
-                .checkExist(getContext(SYSTEM_TENANT_IDENTIFIER,
-                        tokenUserTest(new String[] { ROLE_GET_USERS }, SYSTEM_TENANT_IDENTIFIER, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), criteria.toJson());
+        testContext.bResponse = getUserRestClient(true, new Integer[] { proofTenantIdentifier }, new String[] { ROLE_GET_USERS })
+                .checkExist(getContext(proofTenantIdentifier,
+                        tokenUserTest(new String[] { ROLE_GET_USERS }, proofTenantIdentifier, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), criteria.toJson());
     }
 
     @Given("^deux tenants et un rôle par défaut pour la vérification de l'existence d'un utilisateur par son email$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_vérification_de_l_existence_d_un_utilisateur_par_son_email() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
     }
 

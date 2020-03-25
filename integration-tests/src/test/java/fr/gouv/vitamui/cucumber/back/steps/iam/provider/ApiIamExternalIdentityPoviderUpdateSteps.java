@@ -87,8 +87,8 @@ public class ApiIamExternalIdentityPoviderUpdateSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la mise à jour partielle d'un provider$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_mise_à_jour_partielle_d_un_provider() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

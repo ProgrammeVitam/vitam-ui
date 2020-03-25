@@ -2,10 +2,9 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.user;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_UPDATE_USERS;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.OffsetDateTime;
@@ -132,8 +131,8 @@ public class ApiIamUserUpdateSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_UPDATE_USERS_sans_le_bon_niveau_met_à_jour_un_utilisateur_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_USERS() {
         updatedUser = buildUserToUpdate();
         try {
-            getUserRestClient(true, null, new String[] { ROLE_UPDATE_USERS }).update(getContext(SYSTEM_TENANT_IDENTIFIER,
-                    tokenUserTest(new String[] { ROLE_UPDATE_USERS }, SYSTEM_TENANT_IDENTIFIER, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), updatedUser);
+            getUserRestClient(true, null, new String[] { ROLE_UPDATE_USERS }).update(getContext(proofTenantIdentifier,
+                    tokenUserTest(new String[] { ROLE_UPDATE_USERS }, proofTenantIdentifier, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), updatedUser);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -168,8 +167,8 @@ public class ApiIamUserUpdateSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la mise à jour d'un utilisateur$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_mise_à_jour_d_un_utilisateur() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }

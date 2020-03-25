@@ -28,10 +28,6 @@ public class ApiIamExternalApplicationGetSteps extends CommonSteps {
 
     private List<ApplicationDto> applicationDtos;
 
-    private ApplicationDto applicationDto;
-
-    private static final String WRONG_LEVEL = "WRONGLEVEL";
-
     @When("^un utilisateur récupère toutes les applications dans un tenant auquel il est autorisé en utilisant un certificat full access$")
     public void un_utilisateur_récupère_tous_les_applications_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access() {
         applicationDtos = getApplicationRestClient().getAll(getSystemTenantUserAdminContext());

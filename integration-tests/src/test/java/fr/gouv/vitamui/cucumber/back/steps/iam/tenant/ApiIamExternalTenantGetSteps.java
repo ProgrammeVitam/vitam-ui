@@ -52,8 +52,8 @@ public class ApiIamExternalTenantGetSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la récupération d'un tenant par son identifiant$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_récupération_d_un_tenant_par_son_identifiant() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 
@@ -70,14 +70,14 @@ public class ApiIamExternalTenantGetSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_GET_TENANTS récupère un tenant par son identifiant dans un tenant auquel il est autorisé et identique au tenant récupéré en utilisant un certificat full access avec le rôle ROLE_GET_ALL_TENANTS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_TENANTS_récupère_un_tenant_par_son_identifiant_dans_un_tenant_auquel_il_est_autorisé_et_identique_au_tenant_récupéré_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ALL_TENANTS() {
-        testContext.tenantDto = getTenantRestClient().getOne(getContext(TestConstants.SYSTEM_TENANT_IDENTIFIER, tokenUserTestTenantSystem()),
+        testContext.tenantDto = getTenantRestClient().getOne(getContext(proofTenantIdentifier, tokenUserTestTenantSystem()),
                 TestConstants.SYSTEM_TENANT_ID, Optional.empty());
     }
 
     @When("^un utilisateur avec le rôle ROLE_GET_TENANTS récupère un tenant par son identifiant dans un tenant auquel il est autorisé mais différent du tenant récupéré en utilisant un certificat full access avec le rôle ROLE_GET_ALL_TENANTS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_TENANTS_récupère_un_tenant_par_son_identifiant_dans_un_tenant_auquel_il_est_autorisé_mais_différent_du_tenant_récupéré_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_ALL_TENANTS() {
         try {
-            testContext.tenantDto = getTenantRestClient().getOne(getContext(TestConstants.SYSTEM_TENANT_IDENTIFIER, tokenUserTestTenantSystem()),
+            testContext.tenantDto = getTenantRestClient().getOne(getContext(proofTenantIdentifier, tokenUserTestTenantSystem()),
                     TestConstants.CAS_TENANT_ID, Optional.empty());
         }
         catch (final RuntimeException e) {
@@ -110,7 +110,7 @@ public class ApiIamExternalTenantGetSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_GET_TENANTS_récupère_tous_les_tenants_par_le_nom_dans_un_tenant_auquel_il_n_est_pas_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_TENANTS() {
         try {
             final QueryDto criteria = QueryDto.criteria("name", TestConstants.CAS_TENANT_NAME, CriterionOperator.EQUALS);
-            tenantDtos = getTenantRestClient().getAll(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_ADMIN),
+            tenantDtos = getTenantRestClient().getAll(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_ADMIN),
                     criteria.toOptionalJson(), Optional.empty());
         }
         catch (final RuntimeException e) {

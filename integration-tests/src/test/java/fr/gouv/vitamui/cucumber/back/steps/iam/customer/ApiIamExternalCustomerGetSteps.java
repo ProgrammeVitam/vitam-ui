@@ -38,8 +38,8 @@ public class ApiIamExternalCustomerGetSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la récupération de clients$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_récupération_de_clients() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 
@@ -75,7 +75,7 @@ public class ApiIamExternalCustomerGetSteps extends CommonSteps {
 
     @When("^un utilisateur sans le rôle ROLE_GET_CUSTOMERS récupère son client dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_CUSTOMERS$")
     public void un_utilisateur_sans_le_rôle_ROLE_GET_CUSTOMERS_récupère_son_client_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_CUSTOMERS() {
-        testContext.basicCustomerDto = getCustomerRestClient().getMyCustomer(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS));
+        testContext.basicCustomerDto = getCustomerRestClient().getMyCustomer(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS));
     }
 
     @Then("^le serveur retourne le client de l'utilisateur courant$")

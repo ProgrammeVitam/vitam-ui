@@ -2,9 +2,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.profile;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_PROFILES;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -42,10 +40,10 @@ public class ApiIamExternalProfileCheckSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_GET_PROFILES_sans_le_bon_niveau_vérifie_l_existence_d_un_profil_par_son_nom_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_PROFILES() {
         QueryDto criteria = QueryDto.criteria("name", TestConstants.SYSTEM_USER_PROFILE_NAME, CriterionOperator.EQUALS);
 
-        testContext.bResponse = getProfileRestClient(true, new Integer[] { SYSTEM_TENANT_IDENTIFIER },
+        testContext.bResponse = getProfileRestClient(true, new Integer[] { proofTenantIdentifier },
                 new String[] { ROLE_GET_PROFILES }).checkExist(
-                        getContext(SYSTEM_TENANT_IDENTIFIER, tokenUserTest(new String[] { ROLE_GET_PROFILES },
-                                SYSTEM_TENANT_IDENTIFIER, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")),
+                        getContext(proofTenantIdentifier, tokenUserTest(new String[] { ROLE_GET_PROFILES },
+                                proofTenantIdentifier, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")),
                         criteria.toJson());
     }
 
@@ -62,8 +60,8 @@ public class ApiIamExternalProfileCheckSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la vérification de l'existence d'un profil par son nom$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_vérification_de_l_existence_d_un_profil_par_son_nom() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
     }
 

@@ -2,10 +2,9 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.user;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_USERS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
@@ -70,8 +69,8 @@ public class ApiIamUserGetSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_GET_USERS récupère un utilisateur d'un autre client par son identifiant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_USERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_USERS_récupère_un_utilisateur_d_un_autre_client_par_son_identifiant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_USERS() {
         try {
-            userDto = getUserRestClient(true, new Integer[] { SYSTEM_TENANT_IDENTIFIER }, new String[] { ROLE_GET_USERS }).getOne(
-                    getContext(SYSTEM_TENANT_IDENTIFIER, tokenUserTest(new String[] { ROLE_GET_USERS }, SYSTEM_TENANT_IDENTIFIER, CLIENT1_CUSTOMER_ID, "")),
+            userDto = getUserRestClient(true, new Integer[] { proofTenantIdentifier }, new String[] { ROLE_GET_USERS }).getOne(
+                    getContext(proofTenantIdentifier, tokenUserTest(new String[] { ROLE_GET_USERS }, proofTenantIdentifier, CLIENT1_CUSTOMER_ID, "")),
                     SYSTEM_USER_ID, Optional.empty());
         }
         catch (final RuntimeException e) {
@@ -90,9 +89,9 @@ public class ApiIamUserGetSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_GET_USERS sans le bon niveau récupère un utilisateur par son identifiant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_USERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_USERS_sans_le_bon_niveau_récupère_un_utilisateur_par_son_identifiant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_USERS() {
         try {
-            userDto = getUserRestClient(true, new Integer[] { SYSTEM_TENANT_IDENTIFIER }, new String[] { ROLE_GET_USERS }).getOne(
-                    getContext(SYSTEM_TENANT_IDENTIFIER,
-                            tokenUserTest(new String[] { ROLE_GET_USERS }, SYSTEM_TENANT_IDENTIFIER, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")),
+            userDto = getUserRestClient(true, new Integer[] { proofTenantIdentifier }, new String[] { ROLE_GET_USERS }).getOne(
+                    getContext(proofTenantIdentifier,
+                            tokenUserTest(new String[] { ROLE_GET_USERS }, proofTenantIdentifier, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")),
                     SYSTEM_USER_ID, Optional.empty());
         }
         catch (final RuntimeException e) {
@@ -102,8 +101,8 @@ public class ApiIamUserGetSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la récupération d'utilisateurs$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_récupération_d_utilisateurs() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }
@@ -134,8 +133,8 @@ public class ApiIamUserGetSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_GET_USERS récupère tous les utilisateurs d'un autre client avec pagination dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_USERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_USERS_récupère_tous_les_utilisateurs_d_un_autre_client_avec_pagination_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_USERS() {
-        paginatedUsers = getUserRestClient(true, new Integer[] { SYSTEM_TENANT_IDENTIFIER }, new String[] { ROLE_GET_USERS }).getAllPaginated(
-                getContext(SYSTEM_TENANT_IDENTIFIER, tokenUserTest(new String[] { ROLE_GET_USERS }, SYSTEM_TENANT_IDENTIFIER, CLIENT1_CUSTOMER_ID, "")), 0, 10,
+        paginatedUsers = getUserRestClient(true, new Integer[] { proofTenantIdentifier }, new String[] { ROLE_GET_USERS }).getAllPaginated(
+                getContext(proofTenantIdentifier, tokenUserTest(new String[] { ROLE_GET_USERS }, proofTenantIdentifier, CLIENT1_CUSTOMER_ID, "")), 0, 10,
                 Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty()).getValues();
     }
 

@@ -40,8 +40,8 @@ public class ApiIamExternalOwnerGetSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la récupération d'un propriétaire par son identifant$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_récupération_d_un_propriétaire_par_son_identifant() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

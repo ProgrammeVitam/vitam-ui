@@ -2,10 +2,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.profile;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_PROFILES;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_TENANT_IDENTIFIER;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -83,7 +80,7 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_CREATE_PROFILES ajoute un profil mais avec un mauvais tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_PROFILES$")
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_PROFILES_ajoute_un_profil_mais_avec_un_mauvais_tenant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_PROFILES() {
         testContext.profileDto = FactoryDto.buildDto(ProfileDto.class);
-        testContext.profileDto.setTenantIdentifier(CLIENT1_TENANT_IDENTIFIER);
+        testContext.profileDto.setTenantIdentifier(client1TenantIdentifier);
         try {
             getProfileRestClient(true, null, new String[] { ROLE_CREATE_PROFILES }).create(getSystemTenantUserAdminContext(), testContext.profileDto);
         }
@@ -97,7 +94,7 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
         assertThat(testContext.exception).isNotNull();
         assertThat(testContext.exception.toString())
                 .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create profile: tenantIdentifier "
-                        + CLIENT1_TENANT_IDENTIFIER + " is not allowed");
+                        + client1TenantIdentifier + " is not allowed");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_PROFILES ajoute un profil avec un nom existant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_PROFILES$")
@@ -148,8 +145,8 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour l'ajout d'un profil$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_l_ajout_d_un_profil() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }

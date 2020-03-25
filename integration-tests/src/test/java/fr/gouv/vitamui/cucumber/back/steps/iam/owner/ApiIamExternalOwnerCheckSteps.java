@@ -34,8 +34,8 @@ public class ApiIamExternalOwnerCheckSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la vérification de l'existence d'un propriétaire par son code$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_vérification_de_l_existence_d_un_propriétaire_par_son_code() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

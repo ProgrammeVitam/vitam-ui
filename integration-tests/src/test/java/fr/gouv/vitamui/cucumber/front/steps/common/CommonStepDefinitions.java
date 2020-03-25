@@ -99,9 +99,9 @@ public class CommonStepDefinitions extends CommonSteps {
     }
 
     private UserDto getCurrentUser() {
-        final ExternalHttpContext extneralHttpContext = getContext(TestConstants.CAS_TENANT_IDENTIFIER,
+        final ExternalHttpContext extneralHttpContext = getContext(casTenantIdentifier,
                 TestConstants.TOKEN_USER_CAS);
-        final UserDto basicUserDto = getCasRestClient(false, new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER },
+        final UserDto basicUserDto = getCasRestClient(false, new Integer[] { casTenantIdentifier },
                 new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(extneralHttpContext, getCurrentUserEmail(),
                         Optional.empty());
         return basicUserDto;

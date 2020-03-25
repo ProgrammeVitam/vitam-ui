@@ -3,10 +3,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.group;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_GROUPS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
 import static fr.gouv.vitamui.utils.TestConstants.ADMIN_GROUP_NAME;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_TENANT_IDENTIFIER;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
@@ -81,8 +78,8 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
         testContext.level = "";
         try {
             groupDto = getGroupRestClient(true, null, new String[] { ROLE_CREATE_GROUPS }).create(
-                    getContext(CLIENT1_TENANT_IDENTIFIER,
-                            tokenUserTest(new String[] { ROLE_CREATE_GROUPS }, CLIENT1_TENANT_IDENTIFIER, CLIENT1_CUSTOMER_ID, testContext.level)),
+                    getContext(client1TenantIdentifier,
+                            tokenUserTest(new String[] { ROLE_CREATE_GROUPS }, client1TenantIdentifier, CLIENT1_CUSTOMER_ID, testContext.level)),
                     savedGroupDto);
         }
         catch (final RuntimeException e) {
@@ -193,8 +190,8 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour l'ajout d'un groupe$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_l_ajout_d_un_groupe() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }

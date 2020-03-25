@@ -107,8 +107,8 @@ public class ApiIamExternalCustomerUpdateSteps extends CommonSteps {
     public void les_utilisateurs_du_client_ont_leur_OTP_désactivé() {
         final String adminEmail = "admin@" + testContext.basicCustomerDto.getDefaultEmailDomain();
         final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false,
-                new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER }, new String[] { ServicesData.ROLE_CAS_USERS })
-                        .getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+                new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_USERS })
+                        .getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                                 adminEmail, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         QueryDto criteria = QueryDto.criteria("name",
@@ -134,8 +134,8 @@ public class ApiIamExternalCustomerUpdateSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la mise à jour d'un client$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_mise_à_jour_d_un_client() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

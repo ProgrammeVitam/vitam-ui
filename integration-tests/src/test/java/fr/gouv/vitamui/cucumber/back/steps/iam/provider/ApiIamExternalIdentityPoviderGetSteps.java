@@ -41,8 +41,8 @@ public class ApiIamExternalIdentityPoviderGetSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la récupération de providers$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_récupération_de_providers() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

@@ -94,8 +94,8 @@ public abstract class CommonSteps extends BaseIntegration {
         final String customerId = customer.getId();
 
         final String adminEmail = "admin@" + customer.getDefaultEmailDomain();
-        final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false, new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+        final AuthUserDto adminUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         adminEmail, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
 
         final QueryDto criteria = QueryDto.criteria("name", ownerName, CriterionOperator.CONTAINSIGNORECASE);
@@ -210,7 +210,7 @@ public abstract class CommonSteps extends BaseIntegration {
     }
 
     protected String tokenUserTestTenantSystem() {
-        return tokenUserTestSystemCustomer(ServicesData.ROLE_GET_TENANTS, TestConstants.SYSTEM_TENANT_IDENTIFIER);
+        return tokenUserTestSystemCustomer(ServicesData.ROLE_GET_TENANTS, proofTenantIdentifier);
     }
 
     protected String tokenUserNoRole(final int tenant) {

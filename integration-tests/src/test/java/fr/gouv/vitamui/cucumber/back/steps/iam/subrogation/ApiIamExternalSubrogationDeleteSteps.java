@@ -12,7 +12,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.utils.TestConstants;
 
 /**
  * Teste l'API subrogations dans IAM admin : opérations de suppression.
@@ -41,7 +40,7 @@ public class ApiIamExternalSubrogationDeleteSteps extends CommonSteps {
     @Given("^deux tenants et un rôle par défaut pour la suppression d'une subrogation$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_suppression_d_une_subrogation() {
         setMainTenant(testContext.tenantDto.getIdentifier());
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

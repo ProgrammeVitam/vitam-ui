@@ -3,11 +3,8 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.group;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_UPDATE_GROUPS;
 import static fr.gouv.vitamui.utils.TestConstants.ADMIN_GROUP_NAME;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -82,8 +79,8 @@ public class ApiIamExternalGroupPatchSteps extends CommonSteps {
         dto.put("customerId", CLIENT1_CUSTOMER_ID);
         testContext.level = "";
         try {
-            getGroupRestClient(true, null, new String[] { ROLE_UPDATE_GROUPS }).patch(getContext(CLIENT1_TENANT_IDENTIFIER,
-                    tokenUserTest(new String[] { ROLE_UPDATE_GROUPS }, CLIENT1_TENANT_IDENTIFIER, CLIENT1_CUSTOMER_ID, testContext.level)), dto);
+            getGroupRestClient(true, null, new String[] { ROLE_UPDATE_GROUPS }).patch(getContext(client1TenantIdentifier,
+                    tokenUserTest(new String[] { ROLE_UPDATE_GROUPS }, client1TenantIdentifier, CLIENT1_CUSTOMER_ID, testContext.level)), dto);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -121,8 +118,8 @@ public class ApiIamExternalGroupPatchSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_UPDATE_GROUPS_sans_le_bon_niveau_met_à_jour_partiellement_un_groupe_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_GROUPS() {
         final Map<String, Object> dto = buildGroupToPatch();
         try {
-            getGroupRestClient(true, null, new String[] { ROLE_UPDATE_GROUPS }).patch(getContext(SYSTEM_TENANT_IDENTIFIER,
-                    tokenUserTest(new String[] { ROLE_UPDATE_GROUPS }, SYSTEM_TENANT_IDENTIFIER, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), dto);
+            getGroupRestClient(true, null, new String[] { ROLE_UPDATE_GROUPS }).patch(getContext(proofTenantIdentifier,
+                    tokenUserTest(new String[] { ROLE_UPDATE_GROUPS }, proofTenantIdentifier, SYSTEM_CUSTOMER_ID, "WRONGLEVEL")), dto);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -179,8 +176,8 @@ public class ApiIamExternalGroupPatchSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la mise à jour partielle d'un groupe$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_mise_à_jour_partielle_d_un_groupe() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }

@@ -9,7 +9,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.utils.FactoryDto;
-import fr.gouv.vitamui.utils.TestConstants;
 
 /**
  * Teste l'API Identity providers dans IAM admin : opérations de création.
@@ -32,8 +31,8 @@ public class ApiIamExternalIdentityPoviderCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la création d'un provider$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_création_d_un_provider() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

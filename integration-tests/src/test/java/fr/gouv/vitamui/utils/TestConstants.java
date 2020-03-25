@@ -1,5 +1,7 @@
 package fr.gouv.vitamui.utils;
 
+import fr.gouv.vitamui.cucumber.common.BaseIntegration;
+
 /**
  * Test Constants.
  *
@@ -21,12 +23,32 @@ public class TestConstants {
 
     public static final String VITAM_UI_CUSTOMER_CODE = "123456";
 
+    /**
+     * This value is defined now in {@link BaseIntegration} and is read from config file.
+     * It will be removed with the next version.
+     */
+    @Deprecated
     public static final int SYSTEM_ARCHIVE_TENANT_IDENTIFIER = 9;
 
+    /**
+     * This value is defined now in {@link BaseIntegration} and is read from config file.
+     * It will be removed with the next version.
+     */
+    @Deprecated
     public static final int SYSTEM_TENANT_IDENTIFIER = 10;
 
+    /**
+     * This value is defined now in {@link BaseIntegration} and is read from config file.
+     * It will be removed with the next version.
+     */
+    @Deprecated
     public static final int CAS_TENANT_IDENTIFIER = 11;
 
+    /**
+     * This value is defined now in {@link BaseIntegration} and is read from config file.
+     * It will be removed with the next version.
+     */
+    @Deprecated
     public static final int CLIENT1_TENANT_IDENTIFIER = 102;
 
     public static final String TOKEN_USER_CAS = "tokcas_ie6UZsEcHIWrfv2x";
