@@ -17,7 +17,6 @@ import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.pac4j.core.exception.http.FoundAction;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -65,12 +64,9 @@ public final class DispatcherActionTests extends BaseWebflowActionTest {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient);
-        action.setSeparator(",");
         final Utils utils = new Utils(casExternalRestClient, null);
-        action.setUtils(utils);
+        action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils);
 
-        final FoundAction foundAction = new FoundAction("http://server");
         final SAML2Client client = new SAML2Client();
         provider = new SamlIdentityProviderDto(new IdentityProviderDto(), client);
         provider.setInternal(true);

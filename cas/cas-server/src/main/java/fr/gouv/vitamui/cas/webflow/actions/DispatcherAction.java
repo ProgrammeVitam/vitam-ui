@@ -48,15 +48,11 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -73,9 +69,10 @@ import java.util.Optional;
  *
  *
  */
-@Getter
-@Setter
 public class DispatcherAction extends AbstractAction {
+
+    public static final String DISABLED = "disabled";
+    public static final String BAD_CONFIGURATION = "badConfiguration";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(DispatcherAction.class);
 
@@ -85,19 +82,20 @@ public class DispatcherAction extends AbstractAction {
 
     private final CasExternalRestClient casExternalRestClient;
 
-    @Value("${cas.authn.surrogate.separator}")
-    private String separator;
+    private final String surrogationSeperator;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Autowired
     public DispatcherAction(final ProvidersService providersService,
                             final IdentityProviderHelper identityProviderHelper,
-                            final CasExternalRestClient casExternalRestClient) {
+                            final CasExternalRestClient casExternalRestClient,
+                            final String surrogationSeperator,
+                            final Utils utils) {
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.casExternalRestClient = casExternalRestClient;
+        this.surrogationSeperator = surrogationSeperator;
+        this.utils = utils;
     }
 
     @Override
@@ -107,12 +105,12 @@ public class DispatcherAction extends AbstractAction {
         final String username = credential.getUsername().toLowerCase();
         String dispatchedUser = username;
         String surrogate = null;
-        if (username.contains(separator)) {
-            dispatchedUser = StringUtils.substringAfter(username, separator);
-            if (username.startsWith(separator)) {
+        if (username.contains(surrogationSeperator)) {
+            dispatchedUser = StringUtils.substringAfter(username, surrogationSeperator);
+            if (username.startsWith(surrogationSeperator)) {
                 WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
             } else {
-                surrogate = StringUtils.substringBefore(username, separator);
+                surrogate = StringUtils.substringBefore(username, surrogationSeperator);
             }
         }
         LOGGER.debug("Dispatching user: {} / surrogate: {}", dispatchedUser, surrogate);
@@ -146,7 +144,7 @@ public class DispatcherAction extends AbstractAction {
         if (provider != null) {
             isInternal = provider.getInternal();
         } else {
-            return new Event(this, "badConfiguration");
+            return new Event(this, BAD_CONFIGURATION);
         }
         if (isInternal) {
             request.removeAttribute(Constants.SURROGATE);
@@ -169,6 +167,6 @@ public class DispatcherAction extends AbstractAction {
 
     private Event userDisabled(final String emailUser) {
         LOGGER.error("Bad status for user: {}", emailUser);
-        return new Event(this, "disabled");
+        return new Event(this, DISABLED);
     }
 }

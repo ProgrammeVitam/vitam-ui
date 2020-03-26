@@ -46,8 +46,7 @@ public final class CustomInitialFlowSetupActionTest extends BaseWebflowActionTes
         action = new CustomInitialFlowSetupAction(new ArrayList<>(), mock(ServicesManager.class),
                 mock(AuthenticationServiceSelectionPlan.class), mock(CasCookieBuilder.class),
                 mock(CasCookieBuilder.class), new CasConfigurationProperties(), mock(AuthenticationEventExecutionPlan.class),
-                mock(SingleSignOnParticipationStrategy.class), mock(TicketRegistrySupport.class));
-        action.setSeparator(",");
+                mock(SingleSignOnParticipationStrategy.class), mock(TicketRegistrySupport.class), "", ",");
     }
     @Test
     public void testUsernameNoSubrogation() {

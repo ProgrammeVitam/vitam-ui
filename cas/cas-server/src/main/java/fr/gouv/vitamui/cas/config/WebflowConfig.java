@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.cas.config;
 
+import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.webflow.*;
@@ -59,7 +60,6 @@ import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
-import org.apereo.cas.web.flow.DelegatedClientAuthenticationAction;
 import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
@@ -69,6 +69,7 @@ import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -193,10 +194,20 @@ public class WebflowConfig {
     @Qualifier("delegatedClientDistributedSessionStore")
     private ObjectProvider<SessionStore> delegatedClientDistributedSessionStore;
 
+    @Value("${vitamui.portal.url}")
+    private String vitamuiPortalUrl;
+
+    @Value("${cas.authn.surrogate.separator}")
+    private String surrogationSeperator;
+
+    @Autowired
+    private Utils utils;
+
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient);
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeperator, utils);
     }
+
     @Bean
     @RefreshScope
     public Action sendPasswordResetInstructionsAction() {
@@ -215,7 +226,9 @@ public class WebflowConfig {
             casProperties,
             authenticationEventExecutionPlan.getObject(),
             webflowSingleSignOnParticipationStrategy.getObject(),
-            ticketRegistrySupport.getObject());
+            ticketRegistrySupport.getObject(),
+            vitamuiPortalUrl,
+            surrogationSeperator);
     }
 
     @Bean
@@ -242,7 +255,7 @@ public class WebflowConfig {
     @Bean
     @Lazy
     public Action delegatedAuthenticationAction() {
-        return new DelegatedClientAuthenticationAction(
+        return new AutomaticDelegatedClientAuthenticationAction(
             initialAuthenticationAttemptWebflowEventResolver.getObject(),
             serviceTicketRequestWebflowEventResolver.getObject(),
             adaptiveAuthenticationPolicy.getObject(),
