@@ -51,7 +51,6 @@ import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.login.InitialFlowSetupAction;
 import org.apereo.cas.web.support.ArgumentExtractor;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -72,11 +71,9 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomInitialFlowSetupAction.class);
 
-    @Value("${vitamui.portal.url}")
-    private String vitamuiPortalUrl;
+    private final String vitamuiPortalUrl;
 
-    @Value("${cas.authn.surrogate.separator}")
-    private String separator;
+    private final String surrogationSeperator;
 
     @Value("${theme.vitam-logo:#{null}}")
     private String vitamLogoPath;
@@ -92,9 +89,13 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
                                         final CasConfigurationProperties casProperties,
                                         final AuthenticationEventExecutionPlan authenticationEventExecutionPlan,
                                         final SingleSignOnParticipationStrategy renewalStrategy,
-                                        final TicketRegistrySupport ticketRegistrySupport) {
+                                        final TicketRegistrySupport ticketRegistrySupport,
+                                        final String vitamuiPortalUrl,
+                                        final String surrogationSeperator) {
         super(argumentExtractors, servicesManager, authenticationRequestServiceSelectionStrategies, ticketGrantingTicketCookieGenerator,
             warnCookieGenerator, casProperties, authenticationEventExecutionPlan, renewalStrategy, ticketRegistrySupport);
+        this.vitamuiPortalUrl = vitamuiPortalUrl;
+        this.surrogationSeperator = surrogationSeperator;
     }
 
     @Override
@@ -108,14 +109,14 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
 
             username = username.toLowerCase();
             LOGGER.debug("Provided username: {}", username);
-            if (username.startsWith(separator)) {
-                username = StringUtils.substringAfter(username, separator);
+            if (username.startsWith(surrogationSeperator)) {
+                username = StringUtils.substringAfter(username, surrogationSeperator);
             }
 
             WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
 
-            if (username.contains(separator)) {
-                final String[] parts = username.split("\\" + separator);
+            if (username.contains(surrogationSeperator)) {
+                final String[] parts = username.split("\\" + surrogationSeperator);
                 flowScope.put(Constants.SURROGATE, parts[0]);
                 flowScope.put(Constants.SUPER_USER, parts[1]);
             }
@@ -141,9 +142,5 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
         }
 
         return super.doExecute(context);
-    }
-
-    public void setSeparator(final String separator) {
-        this.separator = separator;
     }
 }

@@ -159,26 +159,33 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${api.token.ttl}")
     private Integer apiTokenTtl;
 
+    @Value("${ip.header}")
+    private String ipHeaderName;
+
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
-        return new UserAuthenticationHandler(servicesManager, principalFactory);
+        return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient(), utils(), ipHeaderName);
     }
 
     @Bean
     public UserPrincipalResolver userResolver() {
-        return new UserPrincipalResolver();
+        return new UserPrincipalResolver(false, principalFactory, casRestClient(), utils());
     }
 
     @Bean
-    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(final UserAuthenticationHandler userAuthenticationHandler,
-            final UserPrincipalResolver userResolver) {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler, userResolver);
+    public UserPrincipalResolver userResolverForSurrogation() {
+        return new UserPrincipalResolver(true, principalFactory, casRestClient(), utils());
     }
 
     @Bean
-    public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer(final UserPrincipalResolver userResolver) {
+    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler() {
+        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), userResolver());
+    }
+
+    @Bean
+    public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer() {
         return plan -> {
-            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, userResolver);
+            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, userResolver());
             plan.registerAuthenticationMetadataPopulator(clientAuthenticationMetaDataPopulator);
         };
     }
@@ -211,7 +218,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public PrincipalFactory surrogatePrincipalFactory() {
-        return new SurrogatedUserPrincipalFactory();
+        return new SurrogatedUserPrincipalFactory(userResolverForSurrogation());
     }
 
     @Bean

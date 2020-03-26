@@ -39,13 +39,10 @@ package fr.gouv.vitamui.cas.authentication;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,26 +52,23 @@ import java.util.Map;
  *
  *
  */
+@RequiredArgsConstructor
 public class SurrogatedUserPrincipalFactory implements PrincipalFactory {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SurrogatedUserPrincipalFactory.class);
 
-    @Autowired
-    private UserPrincipalResolver resolver;
+    private final UserPrincipalResolver resolver;
 
     @Override
     public Principal createPrincipal(final String username) {
         throw new UnsupportedOperationException("This method cannot be used");
-
     }
 
     @Override
     public Principal createPrincipal(final String id, final Map<String, List<Object>> attributes) {
         LOGGER.debug("Creating username: {}", id);
         try {
-            Map<String, List<Object>> surrogateAttribute = new HashMap<>();
-            surrogateAttribute.put(SUPER_USER_ATTRIBUTE, Collections.emptyList());
-            final Principal principal = resolver.resolve(id, surrogateAttribute);
+            final Principal principal = resolver.resolve(id, new HashMap<>());
             LOGGER.debug("principal: {}", principal);
             return principal;
 

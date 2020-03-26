@@ -56,12 +56,9 @@ public final class UserPrincipalResolverTest {
 
     @Before
     public void setUp() {
-        resolver = new UserPrincipalResolver();
         casExternalRestClient = mock(CasExternalRestClient.class);
-        resolver.setCasExternalRestClient(casExternalRestClient);
-        resolver.setPrincipalFactory(new DefaultPrincipalFactory());
         final Utils utils = new Utils(casExternalRestClient, null);
-        resolver.setUtils(utils);
+        resolver = new UserPrincipalResolver(false, new DefaultPrincipalFactory(), casExternalRestClient, utils);
         final RequestContext context = mock(RequestContext.class);
         RequestContextHolder.setRequestContext(context);
     }
