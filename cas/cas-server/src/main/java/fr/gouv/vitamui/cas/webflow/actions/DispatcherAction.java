@@ -82,19 +82,19 @@ public class DispatcherAction extends AbstractAction {
 
     private final CasExternalRestClient casExternalRestClient;
 
-    private final String surrogationSeperator;
+    private final String surrogationSeparator;
 
     private final Utils utils;
 
     public DispatcherAction(final ProvidersService providersService,
                             final IdentityProviderHelper identityProviderHelper,
                             final CasExternalRestClient casExternalRestClient,
-                            final String surrogationSeperator,
+                            final String surrogationSeparator,
                             final Utils utils) {
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.casExternalRestClient = casExternalRestClient;
-        this.surrogationSeperator = surrogationSeperator;
+        this.surrogationSeparator = surrogationSeparator;
         this.utils = utils;
     }
 
@@ -105,12 +105,12 @@ public class DispatcherAction extends AbstractAction {
         final String username = credential.getUsername().toLowerCase();
         String dispatchedUser = username;
         String surrogate = null;
-        if (username.contains(surrogationSeperator)) {
-            dispatchedUser = StringUtils.substringAfter(username, surrogationSeperator);
-            if (username.startsWith(surrogationSeperator)) {
+        if (username.contains(surrogationSeparator)) {
+            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator);
+            if (username.startsWith(surrogationSeparator)) {
                 WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
             } else {
-                surrogate = StringUtils.substringBefore(username, surrogationSeperator);
+                surrogate = StringUtils.substringBefore(username, surrogationSeparator);
             }
         }
         LOGGER.debug("Dispatching user: {} / surrogate: {}", dispatchedUser, surrogate);
