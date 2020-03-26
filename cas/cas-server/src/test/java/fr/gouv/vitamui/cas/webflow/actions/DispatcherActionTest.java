@@ -37,7 +37,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
-public final class DispatcherActionTests extends BaseWebflowActionTest {
+public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     private static final String USERNAME = "julien@vitamui.com";
 
