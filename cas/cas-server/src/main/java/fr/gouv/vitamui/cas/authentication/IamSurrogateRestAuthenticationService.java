@@ -49,7 +49,6 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
 import org.apereo.cas.services.ServicesManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -66,13 +65,13 @@ public class IamSurrogateRestAuthenticationService extends BaseSurrogateAuthenti
 
     private final CasExternalRestClient casExternalRestClient;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
     public IamSurrogateRestAuthenticationService(final CasExternalRestClient casExternalRestClient,
-                                                 final ServicesManager servicesManager) {
+                                                 final ServicesManager servicesManager, final Utils utils) {
         super(servicesManager);
         this.casExternalRestClient = casExternalRestClient;
+        this.utils = utils;
     }
 
     @Override

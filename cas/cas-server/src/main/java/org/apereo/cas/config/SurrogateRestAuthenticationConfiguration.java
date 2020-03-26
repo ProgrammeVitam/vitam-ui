@@ -1,5 +1,6 @@
 package org.apereo.cas.config;
 
+import fr.gouv.vitamui.cas.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -29,14 +30,17 @@ public class SurrogateRestAuthenticationConfiguration {
     @Qualifier("servicesManager")
     private ObjectProvider<ServicesManager> servicesManager;
 
-    // customisation JLE:
+    // customisation:
     @Autowired
     private CasExternalRestClient casExternalRestClient;
+
+    @Autowired
+    private Utils utils;
 
     @RefreshScope
     @Bean
     public SurrogateAuthenticationService surrogateAuthenticationService() {
-        // customisation JLE:
-        return new IamSurrogateRestAuthenticationService(casExternalRestClient, servicesManager.getObject());
+        // customisation:
+        return new IamSurrogateRestAuthenticationService(casExternalRestClient, servicesManager.getObject(), utils);
     }
 }

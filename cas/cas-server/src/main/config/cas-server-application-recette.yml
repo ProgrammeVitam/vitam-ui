@@ -1,6 +1,12 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
 
 
 server:
@@ -10,6 +16,8 @@ server:
     key-password: jkspasswd
   host: dev.vitamui.com
   port: 8080
+  servlet:
+    context-path: /cas
 
 
 vitamui.cas.tenant.identifier: 4
