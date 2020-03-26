@@ -49,9 +49,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apache.commons.lang.StringUtils;
-import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
@@ -65,7 +63,8 @@ import java.util.Optional;
  * This class can dispatch the user:
  * - either to the password page
  * - or to an external IdP (authentication delegation)
- * - or to the disabled account page if the user is not linked to any identity provider.
+ * - or to the bad configuration page if the user is not linked to any identity provider
+ * - or to the disabled account page if the user is disabled.
  *
  *
  */
@@ -157,9 +156,6 @@ public class DispatcherAction extends AbstractAction {
                 LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
                 request.setAttribute(Constants.SURROGATE, surrogate);
             }
-
-            final Service service = (Service) requestContext.getFlowScope().get(CasProtocolConstants.PARAMETER_SERVICE);
-            request.setAttribute(CasProtocolConstants.PARAMETER_SERVICE, service);
 
             return utils.performClientRedirection(this, provider.getSaml2Client(), requestContext);
         }

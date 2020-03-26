@@ -42,9 +42,8 @@ public final class IamSurrogateRestAuthenticationServiceTest {
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        service = new IamSurrogateRestAuthenticationService(casExternalRestClient, mock(ServicesManager.class));
         final Utils utils = new Utils(casExternalRestClient, null);
-        service.setUtils(utils);
+        service = new IamSurrogateRestAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
     }
 
     @Test
