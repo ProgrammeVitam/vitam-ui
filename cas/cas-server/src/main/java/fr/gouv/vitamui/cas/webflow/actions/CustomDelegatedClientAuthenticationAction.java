@@ -38,6 +38,7 @@ package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -50,6 +51,7 @@ import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TicketGrantingTicket;
@@ -65,7 +67,7 @@ import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.saml.client.SAML2Client;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -77,46 +79,61 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Regular authentication delegation + automatic delegation given the provided IdP.
+ * Custom authentication delegation:
+ * - automatic delegation given the provided IdP
+ * - extraction of the username/surrogate passed as a request parameter.
  *
  *
  */
-public class AutomaticDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
+public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAuthenticationAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AutomaticDelegatedClientAuthenticationAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
 
-    @Autowired
-    private IdentityProviderHelper identityProviderHelper;
+    private final IdentityProviderHelper identityProviderHelper;
 
-    @Autowired
-    private ProvidersService providersService;
+    private final ProvidersService providersService;
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Autowired
-    private TicketRegistry ticketRegistry;
+    private final TicketRegistry ticketRegistry;
 
-    public AutomaticDelegatedClientAuthenticationAction(final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
-                                                        final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
-                                                        final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
-                                                        final Clients clients,
-                                                        final ServicesManager servicesManager,
-                                                        final AuditableExecution delegatedAuthenticationPolicyEnforcer,
-                                                        final DelegatedClientWebflowManager delegatedClientWebflowManager,
-                                                        final AuthenticationSystemSupport authenticationSystemSupport,
-                                                        final CasConfigurationProperties casProperties,
-                                                        final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
-                                                        final CentralAuthenticationService centralAuthenticationService,
-                                                        final SingleSignOnParticipationStrategy singleSignOnParticipationStrategy,
-                                                        final SessionStore<JEEContext> sessionStore, final List<ArgumentExtractor> argumentExtractors) {
+    private final String vitamuiPortalUrl;
+
+    private final String surrogationSeparator;
+
+    public CustomDelegatedClientAuthenticationAction(final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
+                                                     final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
+                                                     final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
+                                                     final Clients clients,
+                                                     final ServicesManager servicesManager,
+                                                     final AuditableExecution delegatedAuthenticationPolicyEnforcer,
+                                                     final DelegatedClientWebflowManager delegatedClientWebflowManager,
+                                                     final AuthenticationSystemSupport authenticationSystemSupport,
+                                                     final CasConfigurationProperties casProperties,
+                                                     final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
+                                                     final CentralAuthenticationService centralAuthenticationService,
+                                                     final SingleSignOnParticipationStrategy singleSignOnParticipationStrategy,
+                                                     final SessionStore<JEEContext> sessionStore,
+                                                     final List<ArgumentExtractor> argumentExtractors,
+                                                     final IdentityProviderHelper identityProviderHelper,
+                                                     final ProvidersService providersService,
+                                                     final Utils utils,
+                                                     final TicketRegistry ticketRegistry,
+                                                     final String vitamuiPortalUrl,
+                                                     final String surrogationSeparator) {
         super(initialAuthenticationAttemptWebflowEventResolver, serviceTicketRequestWebflowEventResolver, adaptiveAuthenticationPolicy,
             clients, servicesManager, delegatedAuthenticationPolicyEnforcer, delegatedClientWebflowManager, authenticationSystemSupport,
             casProperties, authenticationRequestServiceSelectionStrategies, centralAuthenticationService, singleSignOnParticipationStrategy,
             sessionStore, argumentExtractors);
+        this.identityProviderHelper = identityProviderHelper;
+        this.casProperties = casProperties;
+        this.providersService = providersService;
+        this.utils = utils;
+        this.ticketRegistry = ticketRegistry;
+        this.vitamuiPortalUrl = vitamuiPortalUrl;
+        this.surrogationSeparator = surrogationSeparator;
     }
 
     @Override
@@ -124,6 +141,28 @@ public class AutomaticDelegatedClientAuthenticationAction extends DelegatedClien
 
         final Event event = super.doExecute(context);
         if ("error".equals(event.getId())) {
+
+            final MutableAttributeMap<Object> flowScope = context.getFlowScope();
+            flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
+
+            String username = context.getRequestParameters().get(Constants.USERNAME);
+            if (username != null) {
+
+                username = username.toLowerCase();
+                LOGGER.debug("Provided username: {}", username);
+                if (username.startsWith(surrogationSeparator)) {
+                    username = org.apache.commons.lang.StringUtils.substringAfter(username, surrogationSeparator);
+                }
+
+                WebUtils.putCredential(context, new UsernamePasswordCredential(username, null));
+
+                if (username.contains(surrogationSeparator)) {
+                    final String[] parts = username.split("\\" + surrogationSeparator);
+                    flowScope.put(Constants.SURROGATE, parts[0]);
+                    flowScope.put(Constants.SUPER_USER, parts[1]);
+                }
+            }
+
 
             TicketGrantingTicket tgt = null;
             final String tgtId = WebUtils.getTicketGrantingTicketId(context);

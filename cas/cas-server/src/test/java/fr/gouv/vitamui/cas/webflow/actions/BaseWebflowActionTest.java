@@ -9,6 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.context.servlet.ServletExternalContext;
 import org.springframework.webflow.core.collection.LocalAttributeMap;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
+import org.springframework.webflow.engine.Flow;
+import org.springframework.webflow.engine.FlowVariable;
 import org.springframework.webflow.execution.FlowExecutionContext;
 import org.springframework.webflow.execution.FlowSession;
 import org.springframework.webflow.execution.RequestContext;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import lombok.val;
 
 /**
  * A base webflow action test.
@@ -52,6 +56,11 @@ public abstract class BaseWebflowActionTest {
 
         flowParameters = new LocalAttributeMap<>();
         when(context.getFlowScope()).thenReturn(flowParameters);
+
+        val flow = mock(Flow.class);
+        when(flow.getVariable("credential")).thenReturn(mock(FlowVariable.class));
+
+        when(context.getActiveFlow()).thenReturn(flow);
         when(context.getRequestScope()).thenReturn(flowParameters);
         when(context.getConversationScope()).thenReturn(flowParameters);
 
