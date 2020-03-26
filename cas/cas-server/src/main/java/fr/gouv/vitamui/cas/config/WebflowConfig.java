@@ -45,7 +45,6 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
-import org.apereo.cas.authentication.AuthenticationEventExecutionPlan;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
@@ -54,7 +53,6 @@ import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
@@ -179,16 +177,8 @@ public class WebflowConfig {
     private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
 
     @Autowired
-    @Qualifier("authenticationEventExecutionPlan")
-    private ObjectProvider<AuthenticationEventExecutionPlan> authenticationEventExecutionPlan;
-
-    @Autowired
     @Qualifier("singleSignOnParticipationStrategy")
     private ObjectProvider<SingleSignOnParticipationStrategy> webflowSingleSignOnParticipationStrategy;
-
-    @Autowired
-    @Qualifier("defaultTicketRegistrySupport")
-    private ObjectProvider<TicketRegistrySupport> ticketRegistrySupport;
 
     @Autowired
     @Qualifier("delegatedClientDistributedSessionStore")
@@ -198,14 +188,14 @@ public class WebflowConfig {
     private String vitamuiPortalUrl;
 
     @Value("${cas.authn.surrogate.separator}")
-    private String surrogationSeperator;
+    private String surrogationSeparator;
 
     @Autowired
     private Utils utils;
 
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeperator, utils);
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils);
     }
 
     @Bean
@@ -213,22 +203,6 @@ public class WebflowConfig {
     public Action sendPasswordResetInstructionsAction() {
         return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager, passwordManagementService,
             ticketRegistry, ticketFactory);
-    }
-
-    @RefreshScope
-    @Bean
-    public Action initialFlowSetupAction() {
-        return new CustomInitialFlowSetupAction(CollectionUtils.wrap(argumentExtractor.getObject()),
-            servicesManager.getObject(),
-            authenticationRequestServiceSelectionStrategies.getObject(),
-            ticketGrantingTicketCookieGenerator.getObject(),
-            warnCookieGenerator.getObject(),
-            casProperties,
-            authenticationEventExecutionPlan.getObject(),
-            webflowSingleSignOnParticipationStrategy.getObject(),
-            ticketRegistrySupport.getObject(),
-            vitamuiPortalUrl,
-            surrogationSeperator);
     }
 
     @Bean
@@ -255,7 +229,7 @@ public class WebflowConfig {
     @Bean
     @Lazy
     public Action delegatedAuthenticationAction() {
-        return new AutomaticDelegatedClientAuthenticationAction(
+        return new CustomDelegatedClientAuthenticationAction(
             initialAuthenticationAttemptWebflowEventResolver.getObject(),
             serviceTicketRequestWebflowEventResolver.getObject(),
             adaptiveAuthenticationPolicy.getObject(),
@@ -269,7 +243,13 @@ public class WebflowConfig {
             centralAuthenticationService.getObject(),
             webflowSingleSignOnParticipationStrategy.getObject(),
             delegatedClientDistributedSessionStore.getObject(),
-            CollectionUtils.wrap(argumentExtractor.getObject()));
+            CollectionUtils.wrap(argumentExtractor.getObject()),
+            identityProviderHelper,
+            providersService,
+            utils,
+            ticketRegistry,
+            vitamuiPortalUrl,
+            surrogationSeparator);
     }
 
     @RefreshScope
