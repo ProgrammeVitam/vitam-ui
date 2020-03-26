@@ -73,6 +73,7 @@ import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -83,7 +84,6 @@ import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
@@ -98,28 +98,24 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Resolver to retrieve the user.
  *
  *
  */
-@Getter
-@Setter
+@RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserPrincipalResolver.class);
 
-    @Autowired
-    private PrincipalFactory principalFactory;
+    private final boolean finalSurrogationCall;
 
-    @Autowired
-    private CasExternalRestClient casExternalRestClient;
+    private final PrincipalFactory principalFactory;
 
-    @Autowired
-    private Utils utils;
+    private final CasExternalRestClient casExternalRestClient;
+
+    private final Utils utils;
 
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> principal, final Optional<AuthenticationHandler> handler) {
@@ -148,7 +144,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
         }
 
         boolean authToken = true;
-        final boolean finalSurrogationCall = oldAttributes.containsKey(SUPER_USER_ATTRIBUTE);
         // this is not called by the surrogation principal factory, but the surrogation is in progress, it will be called again
         // spare the extra info on this call by not requesting the auth token
         if (!finalSurrogationCall && superUsername != null) {
