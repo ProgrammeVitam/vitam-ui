@@ -1,5 +1,12 @@
 import {Component, forwardRef, Input} from '@angular/core';
-import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ValidatorFn, Validators} from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {ThemeService} from 'ui-frontend-common';
 
 export const COLORS_INPUT_ACCESSOR: any = {
@@ -27,23 +34,21 @@ export class CustomerColorsInputComponent implements ControlValueAccessor {
   onChange: (colors: {[key: string]: string}) => void;
   onTouched: () => void;
 
-  validator: ValidatorFn;
+  validator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
   constructor(private formBuilder: FormBuilder, private themeService: ThemeService) {
-
-    this.validator = Validators.pattern(/#([0-9A-Fa-f]{6})/);
     this.colorForm = this.formBuilder.group({
-      primary: [themeService.themeColors['vitamui-primary'], this.validator],
-      secondary: [themeService.themeColors['vitamui-secondary'], this.validator]
+      primary: ['', this.validator],
+      secondary: ['', this.validator]
     });
 
   }
 
-  writeValue(colors: {[key: string]: string}) {
-    this.colors = {
-      primary: colors['vitamui-primary'],
-      secondary: colors['vitamui-secondary']
-    };
+  writeValue(colors: {primary: string, secondary: string}) {
+    this.colorForm.get('primary').setValue(colors.primary);
+    this.colorForm.get('secondary').setValue(colors.secondary);
+
+    this.overloadLocalTheme();
   }
 
   registerOnChange(fn: (colors: {[key: string]: string}) => void) {
