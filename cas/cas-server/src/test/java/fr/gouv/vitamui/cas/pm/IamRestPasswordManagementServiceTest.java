@@ -76,7 +76,7 @@ public final class IamRestPasswordManagementServiceTest {
         identityProviderDto.setInternal(true);
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.of(identityProviderDto));
         service = new IamRestPasswordManagementService(casExternalRestClient, null, providersService, identityProviderHelper);
-        final Utils utils = new Utils(casExternalRestClient, null);
+        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
         service.setUtils(utils);
         final RequestContext context = mock(RequestContext.class);
         RequestContextHolder.setRequestContext(context);

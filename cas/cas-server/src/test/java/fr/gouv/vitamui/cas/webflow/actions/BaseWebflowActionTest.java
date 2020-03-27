@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,6 +57,7 @@ public abstract class BaseWebflowActionTest {
 
         flowParameters = new LocalAttributeMap<>();
         when(context.getFlowScope()).thenReturn(flowParameters);
+        flowParameters.put("service", mock(WebApplicationService.class));
 
         val flow = mock(Flow.class);
         when(flow.getVariable("credential")).thenReturn(mock(FlowVariable.class));
