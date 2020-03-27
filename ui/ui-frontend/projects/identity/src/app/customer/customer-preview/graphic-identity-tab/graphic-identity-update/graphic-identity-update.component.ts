@@ -83,8 +83,11 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
 
-    this.graphicIdentityForm.get('themeColors').value.primary = this.themeService.getThemeColors(this.customer.themeColors);
-
+    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
+    this.graphicIdentityForm.get('themeColors').setValue({
+      primary: customerTheme['vitamui-primary'],
+      secondary: customerTheme['vitamui-secondary']
+    });
 
 
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
@@ -157,26 +160,17 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.handleImage(files);
   }
 
-  updateForCustomerModel(formData: any): any {
-    console.log('form data to theme colors');
-    console.log(formData);
-    const themeColors: {[key: string]: string} = {};
-
-    for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
-        themeColors[key] = formData[key];
-      }
-    }
-
-    return themeColors;
-  }
-
   updateGraphicIdentity() {
+
+    const themeFormValues = this.graphicIdentityForm.get('themeColors').value;
 
     const formData = {
       id : this.customer.id,
       hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
-      themeColors: this.graphicIdentityForm.get('themeColors').value
+      themeColors: {
+        'vitamui-primary': themeFormValues.primary,
+        'vitamui-secondary': themeFormValues.secondary
+      }
     };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(
