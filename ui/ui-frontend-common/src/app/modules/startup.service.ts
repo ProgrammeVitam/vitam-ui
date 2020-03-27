@@ -47,7 +47,7 @@ import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
-import { getColorFromMaps } from './utils/colors.util';
+import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
 const DARK_SUFFIX = '-dark';
@@ -74,6 +74,7 @@ export class StartupService {
     private applicationService: ApplicationService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
+    private themeService: ThemeService,
     @Inject(WINDOW_LOCATION) private location: any
   ) { }
 
@@ -96,19 +97,12 @@ export class StartupService {
 
         const applicationColorMap = this.configurationData.THEME_COLORS;
         const customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
-        const themeColors = {
-          '--vitamui-primary': getColorFromMaps('vitamui-primary', '#fe4f02', applicationColorMap, customerColorMap),
-          '--vitamui-primary-light': getColorFromMaps('vitamui-primary-light', '#ff8559', applicationColorMap, customerColorMap),
-          '--vitamui-primary-light-20': getColorFromMaps('vitamui-primary-light-20', '#ffa789', applicationColorMap, customerColorMap),
-          '--vitamui-secondary': getColorFromMaps('vitamui-secondary', '#5cbaa9', applicationColorMap, customerColorMap),
-          '--vitamui-secondary-light': getColorFromMaps('vitamui-secondary-light', '#81cabd', applicationColorMap, customerColorMap),
-          '--vitamui-secondary-light-8': getColorFromMaps('vitamui-secondary-light-8', '#7ac7b9', applicationColorMap, customerColorMap),
-          '--vitamui-secondary-dark-5': getColorFromMaps('vitamui-secondary-dark', '#52aa9a', applicationColorMap, customerColorMap)
-        };
 
-        for (const themeColorsKey in themeColors) {
-          if (themeColors.hasOwnProperty(themeColorsKey)) {
-            this.themeWrapper.style.setProperty(themeColorsKey, themeColors[themeColorsKey]);
+        this.themeService.init(applicationColorMap, customerColorMap);
+
+        for (const themeColorsKey in this.themeService.themeColors) {
+          if (this.themeService.themeColors.hasOwnProperty(themeColorsKey)) {
+            this.themeWrapper.style.setProperty('--' + themeColorsKey, this.themeService.themeColors[themeColorsKey]);
           }
         }
       })

@@ -179,13 +179,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   updateForCustomerModel(formValue: any): Customer {
     const { themeColors, ...customer } = formValue;
 
-    if ( themeColors.length > 0 ) {
-      customer.themeColors = {};
-      for (const color of themeColors) {
-        customer.themeColors[color.colorName] = color.colorValue;
+    customer.themeColors = {};
+    for (const key in themeColors) {
+      if (themeColors.hasOwnProperty(key)) {
+        customer.themeColors[key] = themeColors[key];
       }
     }
-
     return customer;
   }
 

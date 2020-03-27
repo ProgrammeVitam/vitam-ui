@@ -159,7 +159,7 @@
         <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher le logo du client</vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique personnalisée</vitamui-common-slide-toggle>
         </div>
 
         <div class="d-flex">
@@ -183,7 +183,9 @@
             </div>
           </div>
 
-          <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
+          <div class="theme-colors">
+            <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
+          </div>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
