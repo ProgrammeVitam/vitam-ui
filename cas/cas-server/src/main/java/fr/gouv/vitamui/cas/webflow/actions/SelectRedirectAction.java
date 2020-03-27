@@ -39,11 +39,10 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import fr.gouv.vitamui.cas.webflow.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.ticket.ServiceTicket;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -53,13 +52,12 @@ import org.springframework.webflow.execution.RequestContext;
  *
  *
  */
+@RequiredArgsConstructor
 public class SelectRedirectAction extends AbstractAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SelectRedirectAction.class);
 
-    @Autowired
-    @Qualifier("centralAuthenticationService")
-    private CentralAuthenticationService centralAuthenticationService;
+    private final CentralAuthenticationService centralAuthenticationService;
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {

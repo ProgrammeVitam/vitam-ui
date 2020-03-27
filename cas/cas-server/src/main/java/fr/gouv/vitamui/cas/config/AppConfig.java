@@ -162,6 +162,12 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${ip.header}")
     private String ipHeaderName;
 
+    @Value("${vitamui.cas.tenant.identifier}")
+    private Integer casTenantIdentifier;
+
+    @Value("${vitamui.cas.identity}")
+    private String casIdentity;
+
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
         return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient(), utils(), ipHeaderName);
@@ -234,7 +240,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(casRestClient(), tokenApiCas);
+        return new Utils(casRestClient(), tokenApiCas, casTenantIdentifier, casIdentity);
     }
 
     @Bean

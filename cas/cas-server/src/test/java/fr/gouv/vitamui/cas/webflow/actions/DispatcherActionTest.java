@@ -64,7 +64,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        final Utils utils = new Utils(casExternalRestClient, null);
+        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
         action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils);
 
         final SAML2Client client = new SAML2Client();

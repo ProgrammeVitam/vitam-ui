@@ -61,7 +61,7 @@ public final class UserAuthenticationHandlerTest {
     @Before
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
-        final Utils utils = new Utils(casExternalRestClient, null);
+        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
         handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils, null);
         credential = new UsernamePasswordCredential(USERNAME, PASSWORD);
     }

@@ -207,7 +207,7 @@ public class WebflowConfig {
 
     @Bean
     public SelectRedirectAction selectRedirectAction() {
-        return new SelectRedirectAction();
+        return new SelectRedirectAction(centralAuthenticationService.getObject());
     }
 
     @Bean
