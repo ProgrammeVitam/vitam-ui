@@ -38,7 +38,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
-import { Customer } from 'ui-frontend-common';
+import {Customer, ThemeService} from 'ui-frontend-common';
 import { CustomerService } from '../../../../core/customer.service';
 
 const IMAGE_TYPE_PREFIX = 'image';
@@ -68,7 +68,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<GraphicIdentityUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, logo: SafeUrl },
     private formBuilder: FormBuilder,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private themeService: ThemeService
   ) {
     this.customer = this.data.customer;
     this.logoUrl = this.data.logo;
@@ -82,7 +83,9 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
 
-    this.graphicIdentityForm.get('themeColors').setValue(this.getThemeColors(this.customer.themeColors));
+    this.graphicIdentityForm.get('themeColors').value.primary = this.themeService.getThemeColors(this.customer.themeColors);
+
+
 
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
@@ -154,12 +157,26 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.handleImage(files);
   }
 
+  updateForCustomerModel(formData: any): any {
+    console.log('form data to theme colors');
+    console.log(formData);
+    const themeColors: {[key: string]: string} = {};
+
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        themeColors[key] = formData[key];
+      }
+    }
+
+    return themeColors;
+  }
+
   updateGraphicIdentity() {
-    if (!this.isGraphicIdentityFormValid) { return; }
+
     const formData = {
       id : this.customer.id,
       hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
-      themeColors: this.updateForCustomerModel(this.graphicIdentityForm.get('themeColors').value)
+      themeColors: this.graphicIdentityForm.get('themeColors').value
     };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(
@@ -170,33 +187,6 @@ export class GraphicIdentityUpdateComponent implements OnInit {
           this.dialogRef.close(false);
           console.error(error);
         });
-  }
-
-  getThemeColors(themeColors: any): any[] {
-    const formData: any[] = [];
-
-    for (const color in themeColors) {
-      if (themeColors.hasOwnProperty(color)) {
-        const colorToUpdate = { colorName: color, colorValue: themeColors[color]};
-        formData.push(colorToUpdate);
-      }
-    }
-
-    return formData;
-  }
-
-  updateForCustomerModel(formData: any): any {
-    const themeColors: any = {};
-    for (const color of formData) {
-      themeColors[color.colorName] = color.colorValue;
-    }
-
-    return themeColors;
-  }
-
-  isGraphicIdentityFormValid() {
-    return this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
-      (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
   }
 
 }

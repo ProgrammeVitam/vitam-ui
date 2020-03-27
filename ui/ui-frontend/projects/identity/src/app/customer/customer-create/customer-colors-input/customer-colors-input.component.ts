@@ -1,11 +1,6 @@
-import { ENTER } from '@angular/cdk/keycodes';
-import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-
-class Color {
-  colorName: string;
-  colorValue: string;
-}
+import {Component, forwardRef, Input} from '@angular/core';
+import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ValidatorFn, Validators} from '@angular/forms';
+import {ThemeService} from 'ui-frontend-common';
 
 export const COLORS_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -20,28 +15,38 @@ export const COLORS_INPUT_ACCESSOR: any = {
   providers: [COLORS_INPUT_ACCESSOR]
 })
 export class CustomerColorsInputComponent implements ControlValueAccessor {
+
+
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
 
-  colors: Color[] = [];
   colorForm: FormGroup;
-  separatorKeysCodes = [ENTER];
 
-  onChange: (_: any) => void;
+  colors: {[key: string]: string};
+
+  onChange: (colors: {[key: string]: string}) => void;
   onTouched: () => void;
 
-  constructor(private formBuilder: FormBuilder) {
+  validator: ValidatorFn;
+
+  constructor(private formBuilder: FormBuilder, private themeService: ThemeService) {
+
+    this.validator = Validators.pattern(/#([0-9A-Fa-f]{6})/);
     this.colorForm = this.formBuilder.group({
-      colorName: [null, Validators.required],
-      colorValue: [null, Validators.required]
+      primary: [themeService.themeColors['vitamui-primary'], this.validator],
+      secondary: [themeService.themeColors['vitamui-secondary'], this.validator]
     });
+
   }
 
-  writeValue(colors: Color[]) {
-    this.colors = (colors || []).slice();
+  writeValue(colors: {[key: string]: string}) {
+    this.colors = {
+      primary: colors['vitamui-primary'],
+      secondary: colors['vitamui-secondary']
+    };
   }
 
-  registerOnChange(fn: (_: any) => void) {
+  registerOnChange(fn: (colors: {[key: string]: string}) => void) {
     this.onChange = fn;
   }
 
@@ -49,30 +54,47 @@ export class CustomerColorsInputComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  add(): void {
-    if (this.colorForm.invalid || this.colorForm.pending) { return; }
-    const color = this.colorForm.value;
-    if (this.colors.includes(color)) { return; }
-    this.colors.push(color);
+
+  handleValueChange() {
+    // Force color hex to start with '#'
+    if ( ! this.colorForm.value.primary.startsWith('#') ) {
+      const newPrimary: string = '#' + this.colorForm.value.primary;
+      const oldSecondary: string = this.colorForm.value.secondary;
+      this.colorForm.setValue({primary: newPrimary, secondary: oldSecondary});
+    }
+
+    if ( ! this.colorForm.value.secondary.startsWith('#') ) {
+      const newSecondary: string = '#' + this.colorForm.value.secondary;
+      const oldPrimary: string = this.colorForm.value.primary;
+      this.colorForm.setValue({primary: oldPrimary, secondary: newSecondary});
+    }
+
+    if (this.colorForm.invalid || this.colorForm.pending) {
+      return;
+    }
+
+    this.colors = {
+      'vitamui-primary': this.colorForm.value.primary,
+      'vitamui-secondary': this.colorForm.value.secondary
+    };
+
+    // propagate changes
     this.onChange(this.colors);
-    this.colorForm.reset();
+
+    // If form is valid, overload local theme for preview
+    this.overloadLocalTheme();
+
   }
 
-  remove(color: Color): void {
-    const index = this.colors.indexOf(color);
+  overloadLocalTheme() {
 
-    if (index >= 0) {
-      this.colors.splice(index, 1);
-      this.onChange(this.colors);
+    this.themeService.refresh(this.colorForm.value.primary, this.colorForm.value.secondary);
+
+    const selector: HTMLElement = document.querySelector('div.customer-colors-input');
+    for (const key in this.themeService.themeColors) {
+      if (this.themeService.themeColors.hasOwnProperty(key)) {
+        selector.style.setProperty('--' + key, this.themeService.themeColors[key]);
+      }
     }
   }
-
-  buttonAddDisabled(): boolean {
-    return this.colorForm.pending || this.colorForm.invalid || this.colorExists;
-  }
-
-  get colorExists(): boolean {
-    return this.colors.includes((this.colorForm.value || ''));
-  }
-
 }
