@@ -57,7 +57,7 @@ public final class ProvidersServiceTest {
         restClient = mock(IdentityProviderExternalRestClient.class);
         service.setIdentityProviderExternalRestClient(restClient);
         final CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
-        final Utils utils = new Utils(casExternalRestClient, null);
+        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
         service.setUtils(utils);
 
         provider = new IdentityProviderDto();

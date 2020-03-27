@@ -81,7 +81,8 @@ import java.util.Optional;
 /**
  * Custom authentication delegation:
  * - automatic delegation given the provided IdP
- * - extraction of the username/surrogate passed as a request parameter.
+ * - extraction of the username/surrogate passed as a request parameter
+ * - save the portalUrl in the webflow.
  *
  *
  */
@@ -139,12 +140,14 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
     @Override
     public Event doExecute(final RequestContext context) {
 
+        // save a label in the webflow
+        final MutableAttributeMap<Object> flowScope = context.getFlowScope();
+        flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
+
         final Event event = super.doExecute(context);
         if ("error".equals(event.getId())) {
 
-            final MutableAttributeMap<Object> flowScope = context.getFlowScope();
-            flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
-
+            // extract and parse the request username if provided
             String username = context.getRequestParameters().get(Constants.USERNAME);
             if (username != null) {
 
@@ -163,23 +166,25 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 }
             }
 
+            // get the idp if it exists
+            final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+            final String idp = getIdpValue(request);
+            LOGGER.debug("Provided idp: {}", idp);
+            if (StringUtils.isNotBlank(idp)) {
 
-            TicketGrantingTicket tgt = null;
-            final String tgtId = WebUtils.getTicketGrantingTicketId(context);
-            if (tgtId != null) {
-                tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
-            }
+                TicketGrantingTicket tgt = null;
+                final String tgtId = WebUtils.getTicketGrantingTicketId(context);
+                if (tgtId != null) {
+                    tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
+                }
 
-            if (tgt == null || tgt.isExpired()) {
-                final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
-                final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+                // if no authentication
+                if (tgt == null || tgt.isExpired()) {
 
-                // get the idp and redirect if it exists
-                final String idp = getIdpValue(request);
-                LOGGER.debug("Provided idp: {}", idp);
-                if (StringUtils.isNotBlank(idp)) {
+                    // if it matches an existing IdP, save it and redirect
                     final Optional<IdentityProviderDto> optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
+                        final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
                         response.addCookie(utils.buildIdpCookie(idp, casProperties.getTgc()));
                         final SAML2Client client = ((SamlIdentityProviderDto) optProvider.get()).getSaml2Client();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());

@@ -44,7 +44,9 @@ import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
+import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -54,7 +56,6 @@ import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.saml.client.SAML2Client;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
@@ -67,11 +68,14 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 
+import lombok.val;
+
 /**
  * Helper class.
  *
  *
  */
+@RequiredArgsConstructor
 public class Utils {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(Utils.class);
@@ -82,16 +86,9 @@ public class Utils {
 
     private final String casToken;
 
-    @Value("${vitamui.cas.tenant.identifier}")
-    private Integer casTenantIdentifier;
+    private final Integer casTenantIdentifier;
 
-    @Value("${vitamui.cas.identity}")
-    private String casIdentity;
-
-    public Utils(final CasExternalRestClient casExternalRestClient, final String casToken) {
-        this.casExternalRestClient = casExternalRestClient;
-        this.casToken = casToken;
-    }
+    private final String casIdentity;
 
     public ExternalHttpContext buildContext(final String username) {
         return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
@@ -99,8 +96,12 @@ public class Utils {
 
     public Event performClientRedirection(final Action action, final SAML2Client client, final RequestContext requestContext) throws IOException {
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        val service = WebUtils.getService(requestContext);
 
-        final String url = CommonHelper.addParameter("clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
+        String url = CommonHelper.addParameter("clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
+        if (service != null) {
+            url = CommonHelper.addParameter(url, CasProtocolConstants.PARAMETER_SERVICE, service.getOriginalUrl());
+        }
         response.sendRedirect(url);
 
         final ExternalContext externalContext = requestContext.getExternalContext();

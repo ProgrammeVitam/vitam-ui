@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
@@ -68,6 +69,7 @@ import java.util.Optional;
  *
  *
  */
+@RequiredArgsConstructor
 public class DispatcherAction extends AbstractAction {
 
     public static final String DISABLED = "disabled";
@@ -84,18 +86,6 @@ public class DispatcherAction extends AbstractAction {
     private final String surrogationSeparator;
 
     private final Utils utils;
-
-    public DispatcherAction(final ProvidersService providersService,
-                            final IdentityProviderHelper identityProviderHelper,
-                            final CasExternalRestClient casExternalRestClient,
-                            final String surrogationSeparator,
-                            final Utils utils) {
-        this.providersService = providersService;
-        this.identityProviderHelper = identityProviderHelper;
-        this.casExternalRestClient = casExternalRestClient;
-        this.surrogationSeparator = surrogationSeparator;
-        this.utils = utils;
-    }
 
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
