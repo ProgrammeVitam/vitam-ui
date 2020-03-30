@@ -47,7 +47,9 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -257,6 +259,33 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final UserDto userAdminComDto = internalUserService.create(userAdminCom);
         assertThat(userAdminComDto.getIdentifier()).isNotBlank();
         internalUserService.create(userAdminFr);
+    }
+
+    @Test
+    public void testCreateAGenericUser() {
+        final UserDto userAdminFr = IamServerUtilsTest.buildUserDto(null, "support@vitamui.com", GROUP_ID, CUSTOMER_ID);
+        userAdminFr.setIdentifier(null);
+        userAdminFr.setMobile(null);
+        userAdminFr.setType(UserTypeEnum.GENERIC);
+        userAdminFr.setOtp(false);
+
+        final Customer customer = new Customer();
+        final String customerId = "customerId";
+        customer.setId(customerId);
+        customer.setEnabled(true);
+        customer.setOtp(OtpEnum.MANDATORY);
+        customer.setPasswordRevocationDelay(20);
+        final GroupDto group = new GroupDto();
+        group.setEnabled(true);
+        group.setCustomerId(customerId);
+        Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+        Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
+        Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
+        Mockito.when(groupInternalService.getOneByPassSecurity(any(), any())).thenReturn(buildGroupDto());
+        Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
+
+        final UserDto userAdminFrDto = internalUserService.create(userAdminFr);
+        assertThat(userAdminFrDto.getIdentifier()).isNotBlank();
     }
 
     private UserDto createUser() {

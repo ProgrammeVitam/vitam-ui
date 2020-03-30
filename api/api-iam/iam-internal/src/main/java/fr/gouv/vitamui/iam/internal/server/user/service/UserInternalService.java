@@ -647,6 +647,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkOtp(final UserDto userDto) {
+        if (UserTypeEnum.GENERIC == userDto.getType() && !userDto.isOtp()) {
+            // do not check OTP informations for generic admin or support accounts when otp is disabled
+            return;
+        }
         checkOtp(userDto.isOtp(), userDto.getEmail(), userDto.getMobile(), userDto.getCustomerId());
     }
 
