@@ -1,0 +1,169 @@
+server:
+{% if vitamui_struct.secure|lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_manager_keystore }}
+{% endif %}
+  context-path: /cas
+  host: {{ ip_service }}
+  port: {{ vitamui_struct.port_service }}
+  servlet.session.cookie.path: /cas
+
+
+vitamui.cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
+vitamui.cas.identity: cas
+iam-client:
+  server-host: {{ vitamui.iam_external.host }}
+  server-port: {{ vitamui.iam_external.port_service }}
+{% if vitamui.iam_external.secure|lower == "true" %}
+  secure: {{ vitamui.iam_external.secure|lower }}
+  ssl-configuration:
+    keystore:
+      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+      key-password: {{ password_keystore }}
+      type: JKS
+    truststore:
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks
+      key-password: {{ password_truststore_server }}
+    hostname-verification: false
+{% endif %}
+
+
+cas.authn.accept.users:
+
+
+cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
+
+
+cas.tgc.path: /cas
+cas.tgc.secure: false
+cas.tgc.crypto.enabled: false
+cas.webflow.crypto.enabled: false
+cas.authn.pac4j.cookie.crypto.enabled: true
+cas.authn.pm.reset.crypto.enabled: true
+
+
+cas.ticket.tgt.timeout.maxTimeToLiveInSeconds: 1200
+
+cas.server.prefix: {{ url_prefix }}/cas
+login.url: ${cas.server.prefix}/login
+
+cas.serviceRegistry.mongo.clientUri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+cas.serviceRegistry.mongo.collection: services
+cas.serviceRegistry.mongo.userId: {{ mongodb.cas.user }}
+cas.serviceRegistry.mongo.password: {{ mongodb.cas.password }}
+
+
+cas.authn.surrogate.separator: ","
+## Useless because of IamSurrogateRestAuthenticationService:
+# cas.authn.surrogate.rest.url: xxx
+# cas.authn.surrogate.rest.method: GET
+cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
+
+
+cas.authn.pm.enabled: true
+
+## Useless because of IamRestPasswordManagementService:
+# cas.authn.pm.rest.endpointUrlEmail: xxx
+# cas.authn.pm.rest.endpointUrlSecurityQuestions: xxx
+# cas.authn.pm.rest.endpointUrlChange: xxx
+
+cas.authn.pm.policyPattern: {{ lookup('file', "{{ inventory_dir }}/templates/policy_pattern.regex") }}
+
+cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
+cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
+cas.authn.pm.reset.mail.from: {{ smtp.cas.sender }}
+cas.authn.pm.reset.expirationMinutes: {{ smtp.cas.expiration }}
+cas.authn.pm.reset.mail.attributeName: xxx
+cas.authn.pm.reset.securityQuestionsEnabled: false
+cas.authn.pm.autoLogin: true
+
+# Used to sign/encrypt the password-reset link
+# cas.authn.pm.reset.crypto.encryption.key:
+# cas.authn.pm.reset.crypto.signing.key:
+# cas.authn.pm.reset.crypto.enabled: true
+
+spring.mail.host: {{ smtp.host }}
+spring.mail.port: {{ smtp.port }}
+spring.mail.protocol: {{ smtp.protocol|lower }}
+spring.mail.username: {{ smtp.user }}
+spring.mail.password: {{ smtp.password }}
+spring.mail.testConnection: {{ smtp.test_smtp_connection|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.auth: {{ smtp.auth|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.starttls.enable: {{ smtp.tls_enable|lower }}
+spring.mail.properties.mail.transport.protocol: {{ smtp.protocol|lower }}
+
+{% if smtp.protocol|lower == 'smtps' %}
+spring.mail.properties.mail.smtps.ssl.checkserveridentity: {{ smtp.smtps.checkserveridentity|lower }}
+spring.mail.properties.mail.smtps.ssl.trust: "{{ smtp.smtps.trust|lower }}"
+spring.mail.properties.mail.smtps.timeout: {{ smtp.smtps.timeout|default('8000') }}
+{% endif %}
+
+# TODO OMA : check if working if not declared
+{% if sms.enabled|lower == "true" %}
+cas.authn.mfa.globalProviderId: mfa-sms
+{% endif %}
+
+
+cas.authn.throttle.failure.threshold: 2
+cas.authn.throttle.failure.rangeSeconds: 3
+
+
+cas:
+  logout:
+    followServiceRedirects: true
+    redirectParameter: next
+
+
+cas.adminPagesSecurity.ip: .*
+cas.monitor.endpoints.sensitive: false
+cas.monitor.endpoints.enabled: true
+endpoints.sensitive: false
+endpoints.enabled: true
+management.security.enabled: false
+
+
+{% if sms.enabled|lower == "true" %}
+# for SMS:
+cas.smsProvider.twilio.accountId: {{ sms.account }}
+cas.smsProvider.twilio.token: {{ sms.token }}
+mfa.sms.sender: "{{ sms.sender }}"
+{% endif %}
+
+
+vitamui.portal.url: {{ url_prefix }}
+
+
+token.api.cas: tokcas_ie6UZsEcHIWrfv2x
+
+
+ip.header: X-Real-IP
+
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    org.reflections.Reflections: ERROR
+    org.apereo.cas.web.CasWebApplication: INFO
+    org.springframework.boot.autoconfigure.security: INFO
+    org.jasig.cas.client: INFO
+    org.apereo: INFO
+    org.springframework.cloud: INFO
+    org.springframework.amqp: OFF
+    org.springframework.context.annotation: OFF
+    org.springframework.boot.devtools: OFF
+    org.apereo.cas.web.flow: INFO
+    org.apereo.inspektr.audit.support: OFF
+    fr.gouv.vitamui.cas: DEBUG
+    org.elasticsearch.metrics: DEBUG
+    fr.gouv.vitamui.commons: DEBUG
+
+# 8 hours in seconds
+api.token.ttl: 28800

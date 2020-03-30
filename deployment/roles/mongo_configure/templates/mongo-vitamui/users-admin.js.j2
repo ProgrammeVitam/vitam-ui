@@ -1,0 +1,23 @@
+// Switch to admin database
+db = db.getSiblingDB('{{ mongodb.admin.db }}')
+
+// Create admin user
+
+if (! db.getUser("{{ mongodb.admin.user }}")) {
+    db.createUser(
+        {
+            user: "{{ mongodb.admin.user }}",
+            pwd: "{{ mongodb.admin.password }}",
+            roles: {{ mongodb.admin.roles }}
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.admin.user }}",
+        {
+            pwd: "{{ mongodb.admin.password }}",
+            roles: {{ mongodb.admin.roles }}
+        }
+    )
+}

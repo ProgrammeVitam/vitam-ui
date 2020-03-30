@@ -1,8 +1,0 @@
-# Enable TCP proxy to VITAM ACCESS/INGEST EXTERNAL API
-tcp_reverse_proxy_vitam_enabled: false
-tcp_reverse_proxy_vitamui_enabled: false
-# VITAM ACCESS EXTERNAL API public port
-reverse_proxy_vitam_access_external_port: 8444
-# VITAM INGEST EXTERNAL API public port
-reverse_proxy_vitam_ingest_external_port: 8443
-

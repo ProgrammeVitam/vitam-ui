@@ -1,0 +1,112 @@
+---
+
+- hosts: hosts_ui_identity_admin
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.identity_admin.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_ui_identity
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.identity.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+
+- hosts: hosts_ui_portal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.portal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_cas_server
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.cas_server.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_iam_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.iam_external.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+
+- hosts: hosts_vitamui_iam_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.iam_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_security_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.security_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - {role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true")}
+    # - check_port
+  vars:
+    service_name: "{{ mongo_express_conf.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_mongod
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ mongodb.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_logstash
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ logstash.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui
+  gather_facts: no
+  roles:
+    - service_state
+  vars:
+    service_name: "{{ consul.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"

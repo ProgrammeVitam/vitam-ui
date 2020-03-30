@@ -1,0 +1,6 @@
+
+elasticsearch:
+  log:
+    host: "elasticsearch-log.service.{{ consul_remote_sites[0].name|default(vitam_site_name) }}.{{ consul_domain }}"
+    port_http: "9201"
+    port_tcp: "9301"

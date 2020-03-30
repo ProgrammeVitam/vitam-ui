@@ -1,0 +1,110 @@
+---
+
+- hosts: hosts_vitamui_iam_internal
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.iam_internal }}"
+    vitamui_certificate_client_type: "iam"
+    password_keystore: "{{ keystores.server.iam_internal }}"
+    password_manager_keystore: "{{ keystores.server.iam_internal }}"
+    password_truststore_server: "{{ truststores.server }}"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["security_internal"]
+    consul_tags: "iam-internal, api, internal"
+
+
+- hosts: hosts_vitamui_iam_external
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.iam_external }}"
+    vitamui_certificate_client_type: "iam"
+    password_keystore: "{{ keystores.server.iam_external }}"
+    password_manager_keystore: "{{ keystores.server.iam_external }}"
+    password_truststore_server: "{{ truststores.server }}"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["security_internal","iam_internal"]
+    consul_tags: "iam-external, api, external"
+
+- hosts: hosts_vitamui_security_internal
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.security_internal }}"
+    password_keystore: "{{ keystores.server.security_internal }}"
+    password_manager_keystore: "{{ keystores.server.security_internal }}"
+    password_truststore_server: "{{ truststores.server }}"
+    vitamui_certificate_client_type: "iam"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: []
+    consul_tags: "security-internal, api, internal"
+
+
+- hosts: hosts_cas_server
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.cas_server }}"
+    password_keystore: "{{ keystores.server.cas_server }}"
+    password_manager_keystore: "{{ keystores.server.cas_server }}"
+    password_truststore_server: "{{ truststores.server }}"
+    vitamui_certificate_client_type: "iam"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["iam_external"]
+    consul_tags: "cas-server, cas, internal"
+
+- hosts: hosts_ui_identity
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.identity }}"
+    password_keystore: "{{ keystores.server.ui_identity }}"
+    password_manager_keystore: "{{ keystores.server.ui_identity }}"
+    password_truststore_server: "{{ truststores.server }}"
+    vitamui_certificate_client_type: "iam"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["iam_external"]
+    consul_tags: "ui-identity, ui"
+
+
+- hosts: hosts_ui_portal
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.portal }}"
+    password_keystore: "{{ keystores.server.ui_portal }}"
+    password_manager_keystore: "{{ keystores.server.ui_portal }}"
+    password_truststore_server: "{{ truststores.server }}"
+    vitamui_certificate_client_type: "iam"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["iam_external"]
+    consul_tags: "ui-portal, ui"
+
+# supposed portlets
+- hosts: hosts_ui_identity_admin
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    vitamui_struct: "{{ vitamui.identity_admin }}"
+    password_keystore: "{{ keystores.server.ui_identity_admin }}"
+    password_manager_keystore: "{{ keystores.server.ui_identity_admin }}"
+    password_truststore_server: "{{ truststores.server }}"
+    vitamui_certificate_client_type: "iam"
+    password_truststore: "{{ truststores.client_iam }}"
+    other_stores: ["iam_external"]
+    consul_tags: "ui-identity-admin, ui"

@@ -1,0 +1,98 @@
+---
+
+# Install mongodb-org (needed by vitam-mongo* packages)
+# and then disable the mongod service as it may start listening on 27017 port which is needed by vitam-mongos
+- name: Install mongodb-org package
+  package:
+    name: mongodb-org
+    state: latest
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+
+- name: Disable mongodb default service
+  service:
+    name: mongod
+    state: stopped
+    enabled: no
+
+### System tuning best practices ####
+
+# next steps in order to disable Transparent HugePages
+# cf https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
+
+- name: Check if tuned is installed
+  stat:
+    path: /usr/lib/systemd/system/tuned.service
+  register: tuned_service_status
+  when: ansible_os_family == "RedHat"
+
+- name: Check if tuned is installed
+  stat:
+    path: /lib/systemd/system/tuned.service
+  register: tuned_service_status
+  when: ansible_os_family == "Debian"
+
+- set_fact: status_tuned_present="{{ tuned_service_status.stat.exists }}"
+  when: tuned_service_status.changed
+
+- block:
+
+    - name: create the tuned conf directory
+      file:
+        path: "/etc/tuned/no-thp"
+        state: directory
+        owner: root
+        mode: "{{ vitam_defaults.folder.folder_permission }}"
+
+    - name: add the tuned conf file
+      copy:
+        src: tuned.conf
+        dest: /etc/tuned/no-thp/tuned.conf
+        owner: root
+        mode: "{{ vitam_defaults.folder.conf_permission }}"
+
+    - name: enable the new tuned profile
+      command: tuned-adm profile no-thp
+
+    - name: restart tuned
+      service:
+        name: tuned
+        state: restarted
+
+  when:
+    - status_tuned_present |bool
+    - ansible_virtualization_type != "docker"
+
+- name: check /sys/kernel/mm/transparent_hugepage existence
+  stat:
+    path: /sys/kernel/mm/transparent_hugepage
+  register: transparent_hugepage_dir
+
+- block:
+
+    - name: add systemd service unit to disable THP
+      copy:
+        src: disable_transparent_hugepages.service
+        dest: /usr/lib/systemd/system/disable_transparent_hugepages.service
+        owner: root
+        mode: 0700
+      when: ansible_os_family == "RedHat"
+
+    - name: add systemd service unit to disable THP
+      copy:
+        src: disable_transparent_hugepages.service
+        dest: /lib/systemd/system/disable_transparent_hugepages.service
+        owner: root
+        mode: 0700
+      when: ansible_os_family == "Debian"
+
+    - name: enable systemd service unit to disable THP
+      service:
+        name: disable_transparent_hugepages.service
+        enabled: yes
+        state: started
+
+  when: ( ansible_virtualization_type not in ["docker","lxc"]) and ( transparent_hugepage_dir.stat.isdir is defined and transparent_hugepage_dir.stat.isdir )
+

@@ -1,0 +1,75 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+
+server:
+  host: {{ vitamui.portal.host }}
+  port: {{ vitamui.portal.port_service }}
+  scheme: {% if vitamui.portal.secure|lower =='true' %}https{% else %}http{% endif %}
+
+{% if vitamui.portal.secure|lower =='true' %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }} # TODO OMA : revoir
+    key-password: {{ password_manager_keystore }}
+{% endif %}
+  tomcat:
+    accesslog:
+        enabled: "{{ vitamui_struct.jvm_log|lower }}"
+        directory: "{{ vitamui_folder_log }}"
+
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+logging:
+    config: {{ vitamui_folder_conf }}/logback.xml
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+ui-portal:
+  iam-external-client:
+    server-host: {{ vitamui.iam_external.host }}
+    server-port: {{ vitamui.iam_external.port_service }}
+{% if vitamui.iam_external.secure|lower == "true" %}
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+        key-password: {{ password_truststore }} # TODO OMA : revoir
+      hostname-verification: false
+{% endif %}
+  base-url:
+    portal: "{{ url_prefix }}" # TODO OMA : revoir avec les redirections du RP
+    admin-identity: "{{ url_prefix }}/identity-admin" # TODO OMA : revoir avec les redirections du RP
+    identity: "{{ url_prefix }}/identity" # TODO OMA : revoir avec les redirections du RP
+
+ui:
+  url: "{{ url_prefix }}"
+  redirect-url: ${ui.url}/${ui-prefix}
+
+cas:
+  external-url: "{{ url_prefix }}/cas"
+  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}/cas
+  callback-url: ${ui.url}/portal-api/callback
+{% if vitamui.cas_server.secure|lower == "true" %}
+  ssl:
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+    trust-store-password: {{ password_truststore }}
+{% endif %}

@@ -1,0 +1,4 @@
+---
+- hosts: hosts_vitamui
+  roles:
+    - bootstrap_repo

@@ -1,0 +1,33 @@
+---
+
+- name: Check if authent is enabled
+  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
+  register: mongo_authent_enabled
+  failed_when: false
+  no_log: "{{ hide_passwords_during_deploy }}"
+  tags:
+    - update_mongodb_configuration
+
+# Set mongo_no_auth facts
+
+- name: Set default mongo facts
+  set_fact:
+    mongo_credentials: ""
+    mongo_no_auth: false
+  tags:
+    - update_mongodb_configuration
+
+- name: Set mongo_no_auth fact to true
+  set_fact:
+    mongo_no_auth: true
+  when: "mongo_authent_enabled.rc != 0"
+  tags:
+    - update_mongodb_configuration
+
+# When authentication is required, we set mongodb admin credentials
+- name: Set mongodb authentication credentials
+  set_fact:
+    mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
+  when: "mongo_authent_enabled.rc == 0"
+  no_log: "{{ hide_passwords_during_deploy }}"
+

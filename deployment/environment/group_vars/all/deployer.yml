@@ -1,8 +1,0 @@
-#
-
-deployer:
-  ansible_version: 2.7
-  deploy_conf_repo_url: overriden
-
-vitamui_rpm_source_directory: "/vitamuiroot/deploy_space"
-rpm_repo_directory: "/vitamuiroot/deploy_space"

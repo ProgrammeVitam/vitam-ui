@@ -1,0 +1,48 @@
+output
+{
+    # todo: check if drop exists (which module set it, etc...)
+    if "_grokparsefailure" not in [tags] and "drop" not in [tags]
+    {
+        if [logger] =~ "logback" or [logger] =~ "mongo" or [vitam_component] =~ "elasticsearch-data" or [logger] =~ "consul"  or [vitam_component] =~ "clamd"
+        {
+            elasticsearch
+            {
+                # KWA TODO: Prevoir un peu de tuning de perf ici
+                #flush_size => 10000
+                #idle_flush_time => 1
+                #idle_flush_time => 2
+                #workers => 20
+                template => "{{ logstash_conf_dir }}/conf.d/extra/elasticsearch-template.json"
+                index => "logstash-vitam-%{+YYYY.MM.dd}"
+                hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host]['ip_admin'] }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+
+            }
+        }
+        else
+        {
+            elasticsearch
+            {
+                template => "{{ logstash_conf_dir }}/conf.d/extra/elasticsearch-template.json"
+                index => "logstash-uncatched-%{+YYYY.MM.dd}"
+                hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host].ip_admin }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+            }
+        }
+    }
+    # _grokparsefailure cases
+    else
+    {
+        elasticsearch
+        {
+            index => "logstash-failure-%{+YYYY.MM.dd}"
+            hosts => [{% for host in groups['hosts_elasticsearch_log'] %}"{{ hostvars[host].ip_admin }}:{{ elasticsearch.log.port_http }}"{% if not loop.last %},{% endif %}{% endfor %}]
+        }
+    }
+
+    # -----------------------------------------------------
+    # Following is for debug purpose only
+    # if [logger] != "consul" and [vitam_component] not in ["mongos","mongod","mongoc"] {
+    #     stdout {
+    #       codec => rubydebug
+    #     }
+    # }
+}

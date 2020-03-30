@@ -1,0 +1,20 @@
+
+logstash:
+    package_name: "vitamui-logstash"
+    service_name: "vitamui-logstash"
+    host: "vitamui-logstash.service.{{ consul_domain }}"
+    user: "logstash"
+    port: 10514
+    rest_port: 20514
+    check_consul: 10 # in seconds
+    # logstash xms & xmx in Megabytes
+    # jvm_xms: 2048
+    # jvm_xmx: 2048
+    # workers_number: 4
+    log_appenders:
+        rolling:
+            max_log_file_size: "100MB"
+            max_total_log_size: "5GB"
+        json_rolling:
+            max_log_file_size: "100MB"
+            max_total_log_size: "5GB"

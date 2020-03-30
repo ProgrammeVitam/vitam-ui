@@ -1,0 +1,42 @@
+---
+# tasks file for rsyslog
+
+- name: ensure rsyslog package is installed
+  package:
+    name: rsyslog
+    state: latest
+  notify:
+    - restart rsyslog
+
+- name: ensure service is started on boot && restart service
+  service:
+    name: rsyslog
+    enabled: true
+  notify:
+    - restart rsyslog
+
+- name: copy VITAMUI transport config file
+  template:
+    src: "vitamui_transport.conf.j2"
+    dest: /etc/rsyslog.d/vitamui_transport.conf
+    owner: root
+    mode: 0644
+  notify:
+    - restart rsyslog
+
+- name: copy rsyslog.conf
+  template:
+    src: "rsyslog.conf.j2"
+    dest: /etc/rsyslog.conf
+    owner: root
+    mode: 0644
+  notify:
+    - restart rsyslog
+
+- name: Ensure service is started + enabled at boot
+  service:
+    name: "rsyslog"
+    state: started
+    enabled: yes
+  tags:
+    - start
