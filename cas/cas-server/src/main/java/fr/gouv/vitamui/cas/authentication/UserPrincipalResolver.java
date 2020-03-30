@@ -71,8 +71,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
@@ -84,8 +82,8 @@ import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
-import org.springframework.webflow.execution.RequestContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import fr.gouv.vitamui.cas.util.Constants;
@@ -99,6 +97,8 @@ import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 
+import lombok.val;
+
 /**
  * Resolver to retrieve the user.
  *
@@ -107,9 +107,9 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserPrincipalResolver.class);
+    public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
 
-    private final boolean finalSurrogationCall;
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserPrincipalResolver.class);
 
     private final PrincipalFactory principalFactory;
 
@@ -117,55 +117,49 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     private final Utils utils;
 
+    private final SessionStore sessionStore;
+
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> principal, final Optional<AuthenticationHandler> handler) {
-        return resolve(principal.get().getId(), principal.get().getAttributes());
-    }
 
-    public Principal resolve(final String username, final Map<String, List<Object>> oldAttributes) {
-        String superUsername = null;
-        final RequestContext requestContext = RequestContextHolder.getRequestContext();
-        if (requestContext != null) {
-            final MutableAttributeMap<Object> flow = requestContext.getFlowScope();
-            // try to find the super user from the regular surrogation flow or in an authentication delegation
-            if (flow != null) {
-                final Object credential = flow.get("credential");
-                if (credential instanceof SurrogateUsernamePasswordCredential) {
-                    superUsername = ((SurrogateUsernamePasswordCredential) credential).getUsername();
-                }
-                else if (credential instanceof ClientCredential) {
-                    final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-                    final boolean hasSurrogateInRequest = request.getAttribute(Constants.SURROGATE) != null;
-                    if (hasSurrogateInRequest) {
-                        superUsername = ((ClientCredential) credential).getUserProfile().getId();
-                    }
-                }
+        val userId = principal.get().getId();
+        val requestContext = RequestContextHolder.getRequestContext();
+
+        boolean surrogationCall;
+        String username;
+        String superUsername;
+        if (credential instanceof SurrogateUsernamePasswordCredential) {
+            val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
+            username = surrogationCredential.getSurrogateUsername();
+            superUsername = surrogationCredential.getUsername();
+            surrogationCall = true;
+        } else if (credential instanceof UsernamePasswordCredential) {
+            username = userId;
+            superUsername = null;
+            surrogationCall = false;
+        } else { // ClientCredential
+            val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+            val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+            val webContext = new JEEContext(request, response, sessionStore);
+            val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
+            if (surrogateInSession != null) {
+                username = (String) surrogateInSession;
+                superUsername = userId;
+                surrogationCall = true;
+            } else {
+                username = userId;
+                superUsername = null;
+                surrogationCall = false;
             }
         }
 
-        boolean authToken = true;
-        // this is not called by the surrogation principal factory, but the surrogation is in progress, it will be called again
-        // spare the extra info on this call by not requesting the auth token
-        if (!finalSurrogationCall && superUsername != null) {
-            LOGGER.debug("No final surrogation call but surrogation in progress -> no auth token");
-            authToken = false;
-        }
+        LOGGER.debug("Resolving username: {} | superUsername: {} | surrogationCall: {}", username, superUsername, surrogationCall);
 
-        LOGGER.debug("Resolving username: {} | superUsername: {} | authToken: {} | finalSurrogationCall: {}", username, superUsername, authToken,
-                finalSurrogationCall);
-
-        String embedded = null;
-        if (authToken) {
-            embedded = AUTH_TOKEN_PARAMETER;
-            if (finalSurrogationCall) {
-                embedded += "," + SURROGATION_PARAMETER;
-            }
-            else if (requestContext == null) {
-                embedded += "," + API_PARAMETER;
-            }
-        }
-        else if (finalSurrogationCall) {
-            embedded = SURROGATION_PARAMETER;
+        String embedded = AUTH_TOKEN_PARAMETER;
+        if (surrogationCall) {
+            embedded += "," + SURROGATION_PARAMETER;
+        } else if (requestContext == null) {
+            embedded += "," + API_PARAMETER;
         }
         LOGGER.debug("Computed embedded: {}", embedded);
         final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(username), username, Optional.ofNullable(embedded));
@@ -177,7 +171,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             LOGGER.debug("User cannot login: {} - User {}", username, user.toString());
             return null;
         }
-        final Map<String, List<Object>> attributes = new HashMap<>();
+        val attributes = new HashMap<String, List<Object>>();
         attributes.put(USER_ID_ATTRIBUTE, Collections.singletonList(user.getId()));
         attributes.put(CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(user.getCustomerId()));
         attributes.put(EMAIL_ATTRIBUTE, Collections.singletonList(username));
@@ -198,11 +192,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(PASSWORD_EXPIRATION_DATE_ATTRIBUTE, Collections.singletonList(user.getPasswordExpirationDate()));
         attributes.put(GROUP_ID_ATTRIBUTE, Collections.singletonList(user.getGroupId()));
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
-        if (finalSurrogationCall) {
+        if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
             final UserDto superUser = casExternalRestClient.getUserByEmail(utils.buildContext(superUsername), superUsername, Optional.empty());
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
-
+            attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
         if (user instanceof AuthUserDto) {
             final AuthUserDto authUser = (AuthUserDto) user;
@@ -222,7 +216,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     @Override
     public boolean supports(final Credential credential) {
-        return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential;
+        return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
+            || credential instanceof SurrogateUsernamePasswordCredential;
     }
 
     @Override
