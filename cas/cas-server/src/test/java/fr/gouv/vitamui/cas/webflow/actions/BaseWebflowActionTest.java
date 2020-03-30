@@ -15,6 +15,7 @@ import org.springframework.webflow.engine.FlowVariable;
 import org.springframework.webflow.execution.FlowExecutionContext;
 import org.springframework.webflow.execution.FlowSession;
 import org.springframework.webflow.execution.RequestContext;
+import org.springframework.webflow.execution.RequestContextHolder;
 import org.springframework.webflow.test.MockParameterMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,5 +83,7 @@ public abstract class BaseWebflowActionTest {
         final FlowSession flowSession = mock(FlowSession.class);
         when(flowContext.getActiveSession()).thenReturn(flowSession);
         when(flowSession.getScope()).thenReturn(new LocalAttributeMap<>());
+
+        RequestContextHolder.setRequestContext(context);
     }
 }

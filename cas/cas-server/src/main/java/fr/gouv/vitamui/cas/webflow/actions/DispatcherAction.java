@@ -40,7 +40,6 @@ import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -52,13 +51,16 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.web.support.WebUtils;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
+
+import lombok.val;
 
 /**
  * This class can dispatch the user:
@@ -87,11 +89,13 @@ public class DispatcherAction extends AbstractAction {
 
     private final Utils utils;
 
+    private final SessionStore sessionStore;
+
     @Override
     protected Event doExecute(final RequestContext requestContext) throws IOException {
 
-        final UsernamePasswordCredential credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
-        final String username = credential.getUsername().toLowerCase();
+        val credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
+        val username = credential.getUsername().toLowerCase();
         String dispatchedUser = username;
         String surrogate = null;
         if (username.contains(surrogationSeparator)) {
@@ -106,7 +110,7 @@ public class DispatcherAction extends AbstractAction {
 
         // if the user is disabled, send him to a specific page (ignore not found users: it will fail when checking login/password)
         try {
-            final UserDto dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
+            val dispatcherUserDto = casExternalRestClient.getUserByEmail(utils.buildContext(dispatchedUser), dispatchedUser, Optional.empty());
             if (dispatcherUserDto != null && dispatcherUserDto.getStatus() != UserStatusEnum.ENABLED) {
                 return userDisabled(dispatchedUser);
             }
@@ -116,7 +120,7 @@ public class DispatcherAction extends AbstractAction {
         }
         if (surrogate != null) {
             try {
-                final UserDto surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
+                val surrogateDto = casExternalRestClient.getUserByEmail(utils.buildContext(surrogate), surrogate, Optional.empty());
                 if (surrogateDto != null && surrogateDto.getStatus() != UserStatusEnum.ENABLED) {
                     LOGGER.error("Bad status for surrogate: {}", surrogate);
                     return userDisabled(surrogate);
@@ -127,24 +131,26 @@ public class DispatcherAction extends AbstractAction {
             }
         }
 
-        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         boolean isInternal;
-        final SamlIdentityProviderDto provider = (SamlIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
+        val provider = (SamlIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
         if (provider != null) {
             isInternal = provider.getInternal();
         } else {
             return new Event(this, BAD_CONFIGURATION);
         }
+        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+        val webContext = new JEEContext(request, response, sessionStore);
         if (isInternal) {
-            request.removeAttribute(Constants.SURROGATE);
+            sessionStore.set(webContext, Constants.SURROGATE, null);
             LOGGER.debug("Redirect the user to the password page...");
             return success();
         } else {
 
-            // save the surrogate as a request attribute if he exists for the DelegatedClientWebflowManager
+            // save the surrogate in the session to be retrieved by the UserPrincipalResolver and DelegatedSurrogateAuthenticationPostProcessor
             if (surrogate != null) {
                 LOGGER.debug("Saving surrogate for after authentication delegation: {}", surrogate);
-                request.setAttribute(Constants.SURROGATE, surrogate);
+                sessionStore.set(webContext, Constants.SURROGATE, surrogate);
             }
 
             return utils.performClientRedirection(this, provider.getSaml2Client(), requestContext);

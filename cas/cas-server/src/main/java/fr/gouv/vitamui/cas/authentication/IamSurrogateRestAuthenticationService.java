@@ -41,10 +41,7 @@ import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import lombok.Getter;
-import lombok.Setter;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
@@ -52,13 +49,13 @@ import org.apereo.cas.services.ServicesManager;
 
 import java.util.List;
 
+import lombok.val;
+
 /**
  * Specific surrogate REST based on the IAM API.
  *
  *
  */
-@Getter
-@Setter
 public class IamSurrogateRestAuthenticationService extends BaseSurrogateAuthenticationService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamSurrogateRestAuthenticationService.class);
@@ -76,10 +73,10 @@ public class IamSurrogateRestAuthenticationService extends BaseSurrogateAuthenti
 
     @Override
     public boolean canAuthenticateAsInternal(final String surrogate, final Principal principal, final Service service) {
-        final String id = principal.getId();
+        val id = (String) principal.getAttributes().get(UserPrincipalResolver.SUPER_USER_ID_ATTRIBUTE).get(0);
         boolean canAuthenticate = false;
         try {
-            final List<SubrogationDto> subrogations = casExternalRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);
+            val subrogations = casExternalRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);
             canAuthenticate = subrogations
                 .stream()
                 .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)
