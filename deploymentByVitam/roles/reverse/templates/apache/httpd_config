@@ -34,7 +34,12 @@
     # Don't check the hostname of the server
     SSLProxyCheckPeerName off
     KeepAlive Off
-    # CONSUL 
+
+    # Filter to change url inside  html and js files
+    AddOutputFilterByType SUBSTITUTE text/html
+    AddOutputFilterByType SUBSTITUTE text/javascript
+
+    # CONSUL
 
 {% if groups['hosts_vitamui_consul_server']|length >0 %}
     # Consul UI
@@ -61,13 +66,16 @@
 {% for host in groups['hosts_ui_identity_admin'] %}
     ProxyPassMatch ^/identity-admin(/.*)$ {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity$1 {{reverse_connection_params}}
     ProxyPassReverse /identity-admin {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity
+
     ProxyHTMLURLMap {{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/ /identity
+
     <Location /identity-admin/>
        ProxyPassReverse /identity/
        SetOutputFilter proxy-html
        ProxyHTMLURLMap /identity/ {{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/
        ProxyHTMLURLMap  /identity/ /identity-admin/
-       ProxyHTMLURLMap /identity-admin/ /identity-admin/
+       Substitute s|/identity/|{{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/|i
+       Substitute s|/identity/|/identity-admin/|i
        RequestHeader unset Accept-Encoding
     </Location>
 {% endfor %}
@@ -104,7 +112,5 @@
     ProxyPass / {% if vitamui.portal.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.portal.port_service }}/ {{reverse_connection_params}}
     ProxyPassReverse  / {% if vitamui.portal.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.portal.port_service }}/
 {% endfor %}
-
-
 
 </VirtualHost>
