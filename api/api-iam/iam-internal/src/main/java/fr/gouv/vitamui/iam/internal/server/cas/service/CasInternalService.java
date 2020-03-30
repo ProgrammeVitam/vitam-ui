@@ -181,7 +181,7 @@ public class CasInternalService {
         final String existingPassword = user.getPassword();
 
         user.setPassword(encodedPassword);
-        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusDays(customer.getPasswordRevocationDelay());
+        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
         user.setPasswordExpirationDate(nowPlusPasswordRevocationDelay);
 
         userRepository.save(user);
