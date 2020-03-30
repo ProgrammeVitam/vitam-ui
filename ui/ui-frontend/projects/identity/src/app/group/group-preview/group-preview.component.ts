@@ -59,7 +59,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:variable-name
   private _group: Group;
 
-  @Output() groupClose = new EventEmitter();
+  @Output() previewClose = new EventEmitter();
 
   groupUpdateSub: Subscription;
 
@@ -89,7 +89,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
   }
 
   emitClose() {
-    this.groupClose.emit();
+    this.previewClose.emit();
   }
 
   ngOnDestroy(): void {
