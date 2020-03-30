@@ -43,7 +43,6 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
@@ -66,17 +65,14 @@ import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.saml.client.SAML2Client;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
+import lombok.val;
 
 /**
  * Custom authentication delegation:
@@ -141,10 +137,10 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
     public Event doExecute(final RequestContext context) {
 
         // save a label in the webflow
-        final MutableAttributeMap<Object> flowScope = context.getFlowScope();
+        val flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
 
-        final Event event = super.doExecute(context);
+        val event = super.doExecute(context);
         if ("error".equals(event.getId())) {
 
             // extract and parse the request username if provided
@@ -167,13 +163,13 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
             }
 
             // get the idp if it exists
-            final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
-            final String idp = getIdpValue(request);
+            val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
+            val idp = getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
 
                 TicketGrantingTicket tgt = null;
-                final String tgtId = WebUtils.getTicketGrantingTicketId(context);
+                val tgtId = WebUtils.getTicketGrantingTicketId(context);
                 if (tgtId != null) {
                     tgt = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
                 }
@@ -182,11 +178,11 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                 if (tgt == null || tgt.isExpired()) {
 
                     // if it matches an existing IdP, save it and redirect
-                    final Optional<IdentityProviderDto> optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
+                    val optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
-                        final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
+                        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
                         response.addCookie(utils.buildIdpCookie(idp, casProperties.getTgc()));
-                        final SAML2Client client = ((SamlIdentityProviderDto) optProvider.get()).getSaml2Client();
+                        val client = ((SamlIdentityProviderDto) optProvider.get()).getSaml2Client();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
                         try {
                             return utils.performClientRedirection(this, client, context);
@@ -207,7 +203,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         if (StringUtils.isNotBlank(idp)) {
             return idp;
         }
-        final Cookie cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
+        val cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
         if (cookie != null) {
             return cookie.getValue();
         }

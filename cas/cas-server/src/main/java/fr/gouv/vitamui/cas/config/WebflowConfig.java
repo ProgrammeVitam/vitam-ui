@@ -193,9 +193,13 @@ public class WebflowConfig {
     @Autowired
     private Utils utils;
 
+    @Autowired
+    private DelegatedClientWebflowManager delegatedClientWebflowManager;
+
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils);
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient,
+            surrogationSeparator, utils, delegatedClientDistributedSessionStore.getObject());
     }
 
     @Bean
@@ -236,7 +240,7 @@ public class WebflowConfig {
             builtClients.getObject(),
             servicesManager.getObject(),
             registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer.getObject(),
-            delegatedClientWebflowManager(),
+            delegatedClientWebflowManager,
             authenticationSystemSupport.getObject(),
             casProperties,
             authenticationRequestServiceSelectionStrategies.getObject(),
@@ -250,17 +254,6 @@ public class WebflowConfig {
             ticketRegistry,
             vitamuiPortalUrl,
             surrogationSeparator);
-    }
-
-    @RefreshScope
-    @Bean
-    public DelegatedClientWebflowManager delegatedClientWebflowManager() {
-        return new CustomDelegatedClientWebflowManager(ticketRegistry,
-            ticketFactory,
-            casProperties,
-            authenticationRequestServiceSelectionStrategies.getObject(),
-            argumentExtractor.getObject()
-        );
     }
 
     @Bean

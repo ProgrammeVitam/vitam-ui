@@ -36,12 +36,11 @@
  */
 package fr.gouv.vitamui.cas.config;
 
+import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
 import org.apereo.cas.audit.AuditableExecution;
-import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
-import org.apereo.cas.authentication.AuthenticationHandler;
-import org.apereo.cas.authentication.AuthenticationMetaDataPopulator;
-import org.apereo.cas.authentication.AuthenticationPostProcessor;
+import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.services.ServicesManager;
@@ -50,6 +49,7 @@ import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
+import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,8 +63,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
-import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
-import fr.gouv.vitamui.cas.authentication.SurrogatedUserPrincipalFactory;
 import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
 import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
@@ -168,32 +166,38 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
 
+    @Autowired
+    @Qualifier("delegatedClientDistributedSessionStore")
+    private SessionStore delegatedClientDistributedSessionStore;
+
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
         return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient(), utils(), ipHeaderName);
     }
 
     @Bean
-    public UserPrincipalResolver userResolver() {
-        return new UserPrincipalResolver(false, principalFactory, casRestClient(), utils());
-    }
-
-    @Bean
-    public UserPrincipalResolver userResolverForSurrogation() {
-        return new UserPrincipalResolver(true, principalFactory, casRestClient(), utils());
+    @RefreshScope
+    public PrincipalResolver surrogatePrincipalResolver() {
+        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore);
     }
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler() {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), userResolver());
+        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), surrogatePrincipalResolver());
     }
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer() {
         return plan -> {
-            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, userResolver());
+            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, surrogatePrincipalResolver());
             plan.registerAuthenticationMetadataPopulator(clientAuthenticationMetaDataPopulator);
         };
+    }
+
+    @Bean
+    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
+        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
+            registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
     }
 
     @Bean
@@ -220,17 +224,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public Saml2ClientBuilder saml2ClientBuilder() {
         return new Saml2ClientBuilder();
-    }
-
-    @Bean
-    public PrincipalFactory surrogatePrincipalFactory() {
-        return new SurrogatedUserPrincipalFactory(userResolverForSurrogation());
-    }
-
-    @Bean
-    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
-        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-                registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution);
     }
 
     @Bean

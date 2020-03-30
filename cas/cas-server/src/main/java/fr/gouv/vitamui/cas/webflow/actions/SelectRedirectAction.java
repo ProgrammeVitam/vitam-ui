@@ -47,6 +47,8 @@ import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import lombok.val;
+
 /**
  * Select the appropriate redirect action: directly to the service or via the "secure connexion" page.
  *
@@ -63,9 +65,9 @@ public class SelectRedirectAction extends AbstractAction {
     protected Event doExecute(final RequestContext requestContext) {
         boolean isFromNewLogin = false;
 
-        final String stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
+        val stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
         if (stId != null) {
-            final ServiceTicket st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
+            val st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
             if (st != null) {
                 isFromNewLogin = st.isFromNewLogin();
             }
