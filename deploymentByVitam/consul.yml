@@ -1,9 +1,0 @@
----
-
-- hosts: hosts_vitamui_consul_server
-  roles:
-    - consul
-
-- hosts: hosts_vitamui
-  roles:
-    - consul

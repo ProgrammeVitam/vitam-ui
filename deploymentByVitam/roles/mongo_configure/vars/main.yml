@@ -1,4 +1,0 @@
----
-
-mongod_config_path:  '{{ vitamui_defaults.folder.root_path }}/conf/mongod'
-mongo_version: "4.0"

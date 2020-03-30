@@ -1,5 +1,0 @@
----
-
-- hosts: hosts_vitamui_reverseproxy
-  roles:
-    - reverse
