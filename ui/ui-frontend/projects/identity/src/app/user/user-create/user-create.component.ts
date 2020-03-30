@@ -52,6 +52,7 @@ import { UserCreateValidators } from './user-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 const LAST_STEP_INDEX = 2;
+// tslint:disable-next-line:max-line-length
 const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 @Component({
@@ -76,6 +77,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   stepIndex = 0;
   connectedUserInfo: AdminUserProfile;
   addressEmpty = true;
+  creating = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -191,12 +193,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) { return; }
+    this.creating = true;
     let status = '';
     this.form.get('enabled').value ? status = 'ENABLED' : status = 'DISABLED';
     this.form.get('status').setValue(status);
     this.userService.create(this.form.getRawValue()).subscribe(
       () => this.dialogRef.close(true),
       (error) => {
+        this.creating = false;
         console.error(error);
       });
   }
