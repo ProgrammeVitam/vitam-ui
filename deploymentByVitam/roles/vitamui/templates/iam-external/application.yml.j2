@@ -11,7 +11,7 @@ spring:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.iam.external.server: DEBUG
+    fr.gouv.vitamui.iam.external.server: {{ vitamui_struct.logging_level }}
 
 server:
   port: {{ vitamui_struct.port_service }}

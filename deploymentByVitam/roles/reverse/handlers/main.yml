@@ -16,3 +16,8 @@
   service:
     name: "{{apache_service}}"
     state: "reloaded"
+
+- name: reload nginx
+  service:
+    name: "{{ nginx_service }}"
+    state: "reloaded"

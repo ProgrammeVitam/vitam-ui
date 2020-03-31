@@ -8,7 +8,13 @@ server:
   context-path: /cas
   host: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
+{% if vitamui.cas_server.base_url is defined %}
+  context-path: /
+  servlet.session.cookie.path: /
+{% else %}
+  context-path: /cas
   servlet.session.cookie.path: /cas
+{% endif %}
 
 
 vitamui.cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
@@ -35,8 +41,9 @@ cas.authn.accept.users:
 
 cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
 
-
+{% if vitamui.cas_server.base_url is undefined %}
 cas.tgc.path: /cas
+{% endif %}
 cas.tgc.secure: false
 cas.tgc.crypto.enabled: false
 cas.webflow.crypto.enabled: false
@@ -46,7 +53,11 @@ cas.authn.pm.reset.crypto.enabled: true
 
 cas.ticket.tgt.timeout.maxTimeToLiveInSeconds: 1200
 
+{% if vitamui.cas_server.base_url is defined %}
+cas.server.prefix: {{ vitamui.cas_server.base_url }}
+{% else %}
 cas.server.prefix: {{ url_prefix }}/cas
+{% endif %}
 login.url: ${cas.server.prefix}/login
 
 cas.serviceRegistry.mongo.clientUri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
@@ -132,7 +143,7 @@ mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
 
-vitamui.portal.url: {{ url_prefix }}
+vitamui.portal.url: {{ vitamui.portal.base_url|default('url_prefix') }}
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x

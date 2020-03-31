@@ -92,35 +92,6 @@
     - "key"
   when: (vitam_reverse_external_protocol is defined) and (vitam_reverse_external_protocol == 'https')
 
-
-
-# - name: copy index resources
-#   copy:
-#     src: "{{ item }}"
-#     dest: "/var/www/html-{{ vitam_site_name }}/"
-#     owner: "{{ apache_user }}"
-#     group: "{{ apache_group }}"
-#     mode: 0644
-#   with_items:
-#     - css
-#     - images
-#     - js
-#     - favicon.ico
-#   notify:
-#     - reload apache
-
-# - name: copy index default page
-#   template:
-#     src: "index.html.j2"
-#     dest: "/var/www/html-{{ vitam_site_name }}/index.html"
-#     owner: "{{ apache_user }}"
-#     group: "{{ apache_group }}"
-#     mode: 0644
-#   tags:
-#     - update_package_vitam
-#   notify:
-#     - reload apache
-
 #OMA: if problem with apache2 restart due to absent pem, manually remove on reverse the above p12 file and relaunch playbook
 - name: copy certificate
   copy:
@@ -143,7 +114,7 @@
 
 - name: copy httpd configuration template
   template:
-    src: httpd_config
+    src: "apache/httpd_config"
     dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/zz_{{ vitam_reverse_external_dns }}.conf"
     owner: "root"
     mode: 0644
@@ -154,7 +125,7 @@
 
 - name: copy proxy-html conf for ui-identity-admin configuration
   copy:
-    src: proxy-html.conf
+    src: "apache/proxy-html.conf"
     dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/proxy-html.conf"
     owner: "root"
     mode: 0644
@@ -165,7 +136,7 @@
 
 - name: add js & css to mod_mime
   copy:
-    src: mime_vitam.conf
+    src: "apache/mime_vitam.conf"
     dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/mime_vitam.conf"
     owner: "root"
     mode: 0644
@@ -176,7 +147,7 @@
 
 - name: limit info in reverse headers
   copy:
-    src: security.conf
+    src: "apache/security.conf"
     dest: "/etc/{{ apache_service }}/{{ apache_conf_dir }}/security.conf"
     owner: "root"
     mode: 0644
