@@ -1,4 +1,4 @@
-<form [formGroup]="graphicIdentityForm">
+<form [formGroup]="graphicIdentityForm" id="graphicIdentityForm">
   <div class="content">
     <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
 
@@ -35,7 +35,7 @@
     </div>
 
     <div class="customer-colors-input">
-      <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
+      <app-customer-colors-input formControlName="themeColors" overloadSelector="form#graphicIdentityForm" ></app-customer-colors-input>
     </div>
 
     <div class="actions">

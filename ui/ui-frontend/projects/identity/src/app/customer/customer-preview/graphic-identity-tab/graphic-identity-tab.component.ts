@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Customer } from 'ui-frontend-common';
-import { CustomerService } from './../../../core/customer.service';
+import {Customer, ThemeService} from 'ui-frontend-common';
+import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 
 @Component({
@@ -46,7 +46,7 @@ import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphi
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss']
 })
-export class GraphicIdentityTabComponent {
+export class GraphicIdentityTabComponent implements OnInit {
 
   @Input()
   set customer(customer: Customer) {
@@ -68,14 +68,34 @@ export class GraphicIdentityTabComponent {
   logo: any;
   trustedUrlInline: SafeUrl;
 
-  constructor(private customerService: CustomerService, private sanitizer: DomSanitizer, private dialog: MatDialog) { }
+  themeColors: {[key: string]: string};
+
+  constructor(private customerService: CustomerService, private sanitizer: DomSanitizer, private dialog: MatDialog,
+              private themeService: ThemeService) {
+  }
+
+  ngOnInit() {
+    this.resetTab(this._customer);
+  }
+
 
   resetTab(customer: Customer) {
     if (customer.hasCustomGraphicIdentity) {
-      this.customerService.getCustomerLogo(customer.id).subscribe((data: any) => {
-      const logo = data;
-      this.trustedUrlInline = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(logo.body));
+        this.customerService.getCustomerLogo(customer.id).subscribe((data: any) => {
+        const logo = data;
+        this.trustedUrlInline = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(logo.body));
       });
+    }
+
+    this.themeColors = this.themeService.getThemeColors(customer.themeColors);
+    this.overloadLocalTheme();
+  }
+
+  overloadLocalTheme() {
+    const selector: HTMLElement = document.querySelector('div.vitamui-sidepanel');
+    // tslint:disable-next-line:forin
+    for (const key in this.themeColors) {
+      selector.style.setProperty('--' + key, this.themeColors[key]);
     }
   }
 

@@ -83,13 +83,6 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
 
-    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
-    this.graphicIdentityForm.get('themeColors').setValue({
-      primary: customerTheme['vitamui-primary'],
-      secondary: customerTheme['vitamui-secondary']
-    });
-
-
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
       this.message = null;
@@ -103,6 +96,13 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         this.imageUrl = null;
       }
     });
+
+    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
+    this.graphicIdentityForm.get('themeColors').setValue({
+      primary: customerTheme['vitamui-primary'],
+      secondary: customerTheme['vitamui-secondary']
+    });
+
   }
 
   onCancel() {
@@ -162,15 +162,15 @@ export class GraphicIdentityUpdateComponent implements OnInit {
 
   updateGraphicIdentity() {
 
-    const themeFormValues = this.graphicIdentityForm.get('themeColors').value;
+    const colorValues = this.graphicIdentityForm.get('themeColors').value;
 
     const formData = {
       id : this.customer.id,
       hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
-      themeColors: {
-        'vitamui-primary': themeFormValues.primary,
-        'vitamui-secondary': themeFormValues.secondary
-      }
+      themeColors: this.themeService.getThemeColors({
+        'vitamui-primary': colorValues.primary,
+        'vitamui-secondary': colorValues.secondary
+      })
     };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(

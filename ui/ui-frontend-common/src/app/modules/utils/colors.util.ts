@@ -14,24 +14,26 @@ class HSL {
 /**
  * Find, compute or return default value for the given name and maps of colors.
  * @param name the color name
- * @param defaultColor the color default value if no overriding in priority and fallback maps
+ * @param defaultMap the default color map if no overriding in priority and fallback maps
  * @param fallbackMap the fallback map. The function will search in it if no color is found in priority map. Should be application config
  * @param priorityMap the priority map. If the color is found in it, the fallbackMap is not used. Should be customer config
  * @return The hex RBG color find or computed from all sources
  */
-export function getColorFromMaps(name: string, defaultColor: string, fallbackMap: any, priorityMap: any): string {
+export function getColorFromMaps(name: string, defaultMap: any, fallbackMap: any, priorityMap: any): string {
 
   const customColor = getColorFromMap(name, priorityMap);
+
   if ( customColor ) {
     return customColor;
   }
+
 
   const applicationColor = getColorFromMap(name, fallbackMap);
   if ( applicationColor ) {
     return applicationColor;
   }
 
-  return defaultColor;
+  return getColorFromMap(name, defaultMap);
 }
 
 function getColorFromMap(colorName: string, colorMap: any) {
@@ -74,9 +76,7 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
     return color;
   }
 
-  if (!lightModificator) {
-    lightModificator = 10;
-  }
+  lightModificator *= 2;
 
   const max = 255;
   const rgbValue: RGB = hexToRgb(color);
@@ -84,7 +84,7 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
 
   // lighten
   hslValue.l = Math.min(hslValue.l + lightModificator, 100);
-  const lightRGBvalue: RGB = hslToRgb(hslValue);
+  const lightRGBvalue: RGB = hslToRgbExperimental(hslValue);
 
   return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
 }
@@ -99,12 +99,14 @@ function convertToDarkColor(color: string, lightModificator: number = 10) {
     return color;
   }
 
+  lightModificator *= 2;
+
   const rgbValue: RGB = hexToRgb(color);
   const hslValue: HSL = rgbToHsl(rgbValue);
 
   // darken
   hslValue.l = Math.max(hslValue.l - lightModificator, 0);
-  const darkRGBvalue: RGB = hslToRgb(hslValue);
+  const darkRGBvalue: RGB = hslToRgbExperimental(hslValue);
 
   return '#' + toHex(darkRGBvalue.r) + toHex(darkRGBvalue.g) + toHex(darkRGBvalue.b);
 }
@@ -124,30 +126,34 @@ function hexToRgb(hex): RGB {
     null;
 }
 
-function hslToRgb(inputHSL): RGB {
-  const hsl: HSL = new HSL( inputHSL.h, inputHSL.s / 100, inputHSL.l / 100);
-  const rgb: RGB = new RGB(hsl.l, hsl.l, hsl.l);
+function hslToRgbExperimental(inputHSL): RGB {
+  const hsl: HSL = new HSL( inputHSL.h * 360, inputHSL.s / 100, inputHSL.l / 100);
+  let rgb: RGB;
 
-  // if no saturation, all colors parts are the same and equls to lightness. Nothing to do
-  if (hsl.s !== 0) {
-    const q = hsl.l < 0.5 ? hsl.l * (1 + hsl.s) : hsl.l + hsl.s - hsl.l * hsl.s;
-    const p = 2 * hsl.l - q;
+  const c = (1 - Math.abs(2 * hsl.l - 1)) * hsl.s;
+  const x = c * (1 - Math.abs((hsl.h / 60) % 2 - 1));
+  const m = hsl.l - c / 2;
 
-    rgb.r = Math.round(hueToRGBComponent(p, q, hsl.h + 1 / 3) * 255);
-    rgb.g = Math.round(hueToRGBComponent(p, q, hsl.h) * 255);
-    rgb.b = Math.round(hueToRGBComponent(p, q, hsl.h - 1 / 3) * 255);
+  if (hsl.h < 60) {
+    rgb = new RGB(c, x, 0);
+  } else if (hsl.h < 120) {
+    rgb = new RGB(x, c, 0);
+  } else if (hsl.h < 180) {
+    rgb = new RGB(0, c, x);
+  } else if (hsl.h < 240) {
+    rgb = new RGB(0, x, c);
+  } else if (hsl.h < 300) {
+    rgb = new RGB(x, 0, c);
+  } else if (hsl.h < 360) {
+    rgb = new RGB(c, 0, x);
   }
 
-  return rgb;
-}
+  rgb.r = Math.round((rgb.r + m) * 255);
+  rgb.g = Math.round((rgb.g + m) * 255);
+  rgb.b = Math.round((rgb.b + m) * 255);
 
-function hueToRGBComponent(p, q, t): number {
-  if (t < 0) { t += 1; }
-  if (t > 1) { t -= 1; }
-  if (t < 1 / 6) { return p + (q - p) * 6 * t; }
-  if (t < 1 / 2) { return q; }
-  if (t < 2 / 3) { return p + (q - p) * (2 / 3 - t) * 6; }
-  return p;
+  return rgb;
+
 }
 
 function rgbToHsl(inputRGB: RGB): HSL {

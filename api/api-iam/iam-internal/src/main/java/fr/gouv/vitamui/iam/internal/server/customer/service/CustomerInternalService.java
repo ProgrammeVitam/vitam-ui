@@ -327,7 +327,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                 case "themeColors":
                     Object themeColorsValue = entry.getValue();
 
-                    System.out.println("UPDATE THEME COLORS : ");
+                    LOGGER.debug("Update theme colors");
                     System.out.println(themeColorsValue);
 
                     if (themeColorsValue instanceof Map) {
@@ -345,23 +345,23 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     }
 
     private void processGraphicIdentityPatch(final boolean newCustomGraphicIdentityValue, final Customer customer, final Optional<MultipartFile> logo) {
+
+        customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
+
         String base64logo = null;
         if(logo.isPresent()) {
             try {
+
                 base64logo = VitamUIUtils.getBase64(logo.get());
+
+                customer.getGraphicIdentity().setLogoDataBase64(base64logo);
+
             } catch (IOException e) {
                 throw new InvalidFormatException("Cannot store logo", e);
             }
         }
 
-        if(newCustomGraphicIdentityValue ^ logo.isPresent()) {
-            throw new IllegalArgumentException(
-                String.format("Unable to patch customer %s : Custom graphic identity toggle doesn't match logo provision (logo provided without enabling customization, or customization enabled without providing a logo).", customer.getId()));
-        }
 
-        customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
-
-        customer.getGraphicIdentity().setLogoDataBase64(base64logo);
     }
 
     @Transactional

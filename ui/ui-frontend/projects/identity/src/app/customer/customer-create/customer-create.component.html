@@ -2,7 +2,7 @@
   <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
 
     <cdk-step>
@@ -182,10 +182,10 @@
               </p>
             </div>
           </div>
+        </div>
 
-          <div class="theme-colors">
-            <app-customer-colors-input formControlName="themeColors"></app-customer-colors-input>
-          </div>
+        <div class="customer-colors-input">
+          <app-customer-colors-input formControlName="themeColors" overloadSelector="form#formCreateCustomer"></app-customer-colors-input>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
