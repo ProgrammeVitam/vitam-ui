@@ -431,42 +431,43 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_overview">1. Overview</a>
+<li><a href="#_overview">1. Vue générale</a>
 <ul class="sectlevel2">
-<li><a href="#_version_information">1.1. Version information</a></li>
-<li><a href="#_contact_information">1.2. Contact information</a></li>
-<li><a href="#_license_information">1.3. License information</a></li>
-<li><a href="#_uri_scheme">1.4. URI scheme</a></li>
+<li><a href="#_information_de_version">1.1. Information de version</a></li>
+<li><a href="#_information_de_contact">1.2. Information de contact</a></li>
+<li><a href="#_information_de_licence">1.3. Information de licence</a></li>
+<li><a href="#_schéma_d_uri">1.4. Schéma d&#8217;URI</a></li>
 <li><a href="#_tags">1.5. Tags</a></li>
+<li><a href="#_produit">1.6. Produit</a></li>
 </ul>
 </li>
-<li><a href="#_paths">2. Resources</a>
+<li><a href="#_paths">2. Ressources</a>
 <ul class="sectlevel2">
-<li><a href="#_certificates_resource">2.1. Certificates</a>
+<li><a href="#_certificats_resource">2.1. Certificats</a>
 <ul class="sectlevel3">
-<li><a href="#_createusingpost">2.1.1. create</a></li>
-<li><a href="#_getallusingget">2.1.2. getAll</a></li>
-<li><a href="#_getoneusingget">2.1.3. getOne</a></li>
-<li><a href="#_updateusingput">2.1.4. update</a></li>
-<li><a href="#_deleteusingdelete">2.1.5. delete</a></li>
-<li><a href="#_checkexistusinghead">2.1.6. checkExist</a></li>
+<li><a href="#_createusingpost">2.1.1. Création d&#8217;un certificat</a></li>
+<li><a href="#_getallusingget">2.1.2. Récupération de la liste de certificats</a></li>
+<li><a href="#_getoneusingget">2.1.3. Récupération d&#8217;un certificat</a></li>
+<li><a href="#_updateusingput">2.1.4. Mise à jour d&#8217;un certificat</a></li>
+<li><a href="#_deleteusingdelete">2.1.5. Suppression d&#8217;un certificat</a></li>
+<li><a href="#_checkexistusinghead">2.1.6. Vérification de l&#8217;existence d&#8217;un certificat</a></li>
 </ul>
 </li>
-<li><a href="#_contexts_resource">2.2. Contexts</a>
+<li><a href="#_contextes_resource">2.2. Contextes</a>
 <ul class="sectlevel3">
-<li><a href="#_createusingpost_1">2.2.1. create</a></li>
-<li><a href="#_getallusingget_1">2.2.2. getAll</a></li>
-<li><a href="#_findbycertificateusingpost">2.2.3. findByCertificate</a></li>
-<li><a href="#_getoneusingget_1">2.2.4. getOne</a></li>
-<li><a href="#_updateusingput_1">2.2.5. update</a></li>
-<li><a href="#_deleteusingdelete_1">2.2.6. delete</a></li>
-<li><a href="#_checkexistusinghead_1">2.2.7. checkExist</a></li>
-<li><a href="#_addtenantusingput">2.2.8. addTenant</a></li>
+<li><a href="#_createusingpost_1">2.2.1. Création d&#8217;un contexte</a></li>
+<li><a href="#_getallusingget_1">2.2.2. Récupération de la liste de contextes</a></li>
+<li><a href="#_findbycertificateusingpost">2.2.3. Récupération d&#8217;un contexte à partir d&#8217;un certificat</a></li>
+<li><a href="#_getoneusingget_1">2.2.4. Récupération d&#8217;un contexte à partir d&#8217;un identifiant</a></li>
+<li><a href="#_updateusingput_1">2.2.5. Mise à jour d&#8217;un contexte</a></li>
+<li><a href="#_deleteusingdelete_1">2.2.6. Suppression d&#8217;un contexte de sécurité</a></li>
+<li><a href="#_checkexistusinghead_1">2.2.7. Vérification de l&#8217;existence d&#8217;un contexte</a></li>
+<li><a href="#_addtenantusingput">2.2.8. Ajouter un tenant au context</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_definitions">3. Definitions</a>
+<li><a href="#_definitions">3. Définitions</a>
 <ul class="sectlevel2">
 <li><a href="#_certificatedto">3.1. CertificateDto</a></li>
 <li><a href="#_contextdto">3.2. ContextDto</a></li>
@@ -477,37 +478,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">1. Overview</a></h2>
+<h2 id="_overview"><a class="anchor" href="#_overview"></a><a class="link" href="#_overview">1. Vue générale</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This API is used to manage certificates for HTTPS access and their associated contexts. This API is used for internal purposes only.</p>
 </div>
 <div class="sect2">
-<h3 id="_version_information"><a class="anchor" href="#_version_information"></a><a class="link" href="#_version_information">1.1. Version information</a></h3>
+<h3 id="_information_de_version"><a class="anchor" href="#_information_de_version"></a><a class="link" href="#_information_de_version">1.1. Information de version</a></h3>
 <div class="paragraph">
 <p><em>Version</em> : v1</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_contact_information"><a class="anchor" href="#_contact_information"></a><a class="link" href="#_contact_information">1.2. Contact information</a></h3>
+<h3 id="_information_de_contact"><a class="anchor" href="#_information_de_contact"></a><a class="link" href="#_information_de_contact">1.2. Information de contact</a></h3>
 <div class="paragraph">
-<p><em>Contact</em> : Emmanuel DEVILLER<br>
-<em>Contact Email</em> : <a href="mailto:emmanuel.deviller@teamvitamui.com">emmanuel.deviller@teamvitamui.com</a></p>
+<p><em>Contact</em> : Direction de la diffusion et des partenariats<br>
+<em>Email de contact </em> : <a href="mailto:contact@programmevitam.fr">contact@programmevitam.fr</a></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_license_information"><a class="anchor" href="#_license_information"></a><a class="link" href="#_license_information">1.3. License information</a></h3>
+<h3 id="_information_de_licence"><a class="anchor" href="#_information_de_licence"></a><a class="link" href="#_information_de_licence">1.3. Information de licence</a></h3>
 <div class="paragraph">
-<p><em>License</em> : License to be defined &#8230;&#8203;<br>
-<em>License URL</em> : URL not defined.<br>
-<em>Terms of service</em> : Terms of service</p>
+<p><em>Licence</em> : License to be defined &#8230;&#8203;<br>
+<em>Licence URL</em> : URL not defined.<br>
+<em>Conditions de service</em> : Terms of service</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_uri_scheme"><a class="anchor" href="#_uri_scheme"></a><a class="link" href="#_uri_scheme">1.4. URI scheme</a></h3>
+<h3 id="_schéma_d_uri"><a class="anchor" href="#_schéma_d_uri"></a><a class="link" href="#_schéma_d_uri">1.4. Schéma d&#8217;URI</a></h3>
 <div class="paragraph">
-<p><em>Host</em> : localhost<br>
-<em>BasePath</em> : /</p>
+<p><em>Serveur</em> : localhost<br>
+<em>Chemin de base</em> : /</p>
 </div>
 </div>
 <div class="sect2">
@@ -515,10 +516,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>certificates : Certificates Management</p>
+<p>Certificats : Gestions des certificats</p>
 </li>
 <li>
-<p>contexts : Contexts Management</p>
+<p>Contextes : Gestion des contextes de sécurité</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_produit"><a class="anchor" href="#_produit"></a><a class="link" href="#_produit">1.6. Produit</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
 </li>
 </ul>
 </div>
@@ -526,22 +537,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_paths"><a class="anchor" href="#_paths"></a><a class="link" href="#_paths">2. Resources</a></h2>
+<h2 id="_paths"><a class="anchor" href="#_paths"></a><a class="link" href="#_paths">2. Ressources</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_certificates_resource"><a class="anchor" href="#_certificates_resource"></a><a class="link" href="#_certificates_resource">2.1. Certificates</a></h3>
+<h3 id="_certificats_resource"><a class="anchor" href="#_certificats_resource"></a><a class="link" href="#_certificats_resource">2.1. Certificats</a></h3>
 <div class="paragraph">
-<p>Certificates Management</p>
+<p>Gestions des certificats</p>
 </div>
 <div class="sect3">
-<h4 id="_createusingpost"><a class="anchor" href="#_createusingpost"></a><a class="link" href="#_createusingpost">2.1.1. create</a></h4>
+<h4 id="_createusingpost"><a class="anchor" href="#_createusingpost"></a><a class="link" href="#_createusingpost">2.1.1. Création d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /security/v1/certificates</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters"><a class="anchor" href="#_parameters"></a><a class="link" href="#_parameters">Parameters</a></h5>
+<h5 id="_paramètres"><a class="anchor" href="#_paramètres"></a><a class="link" href="#_paramètres">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -552,30 +563,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>dto</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">dto</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_certificatedto">CertificateDto</a></p></td>
 </tr>
@@ -583,7 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses"><a class="anchor" href="#_responses"></a><a class="link" href="#_responses">Responses</a></h5>
+<h5 id="_réponses"><a class="anchor" href="#_réponses"></a><a class="link" href="#_réponses">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -592,9 +610,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -604,30 +622,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_certificatedto">CertificateDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes"><a class="anchor" href="#_consumes"></a><a class="link" href="#_consumes">Consumes</a></h5>
+<h5 id="_consomme"><a class="anchor" href="#_consomme"></a><a class="link" href="#_consomme">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -637,25 +645,67 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces"><a class="anchor" href="#_produces"></a><a class="link" href="#_produces">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http"><a class="anchor" href="#_exemple_de_requête_http"></a><a class="link" href="#_exemple_de_requête_http">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path"><a class="anchor" href="#_requête_path"></a><a class="link" href="#_requête_path">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header"><a class="anchor" href="#_requête_header"></a><a class="link" href="#_requête_header">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body"><a class="anchor" href="#_requête_body"></a><a class="link" href="#_requête_body">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http"><a class="anchor" href="#_exemple_de_réponse_http"></a><a class="link" href="#_exemple_de_réponse_http">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200"><a class="anchor" href="#_réponse_200"></a><a class="link" href="#_réponse_200">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getallusingget"><a class="anchor" href="#_getallusingget"></a><a class="link" href="#_getallusingget">2.1.2. getAll</a></h4>
+<h4 id="_getallusingget"><a class="anchor" href="#_getallusingget"></a><a class="link" href="#_getallusingget">2.1.2. Récupération de la liste de certificats</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /security/v1/certificates</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_2"><a class="anchor" href="#_parameters_2"></a><a class="link" href="#_parameters_2">Parameters</a></h5>
+<h5 id="_paramètres_2"><a class="anchor" href="#_paramètres_2"></a><a class="link" href="#_paramètres_2">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -666,31 +716,45 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_2"><a class="anchor" href="#_responses_2"></a><a class="link" href="#_responses_2">Responses</a></h5>
+<h5 id="_réponses_2"><a class="anchor" href="#_réponses_2"></a><a class="link" href="#_réponses_2">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -699,9 +763,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -712,42 +776,79 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_2"><a class="anchor" href="#_produces_2"></a><a class="link" href="#_produces_2">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_2"><a class="anchor" href="#_exemple_de_requête_http_2"></a><a class="link" href="#_exemple_de_requête_http_2">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_2"><a class="anchor" href="#_requête_path_2"></a><a class="link" href="#_requête_path_2">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_2"><a class="anchor" href="#_requête_header_2"></a><a class="link" href="#_requête_header_2">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query"><a class="anchor" href="#_requête_query"></a><a class="link" href="#_requête_query">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_2"><a class="anchor" href="#_exemple_de_réponse_http_2"></a><a class="link" href="#_exemple_de_réponse_http_2">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_2"><a class="anchor" href="#_réponse_200_2"></a><a class="link" href="#_réponse_200_2">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+} ]</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getoneusingget"><a class="anchor" href="#_getoneusingget"></a><a class="link" href="#_getoneusingget">2.1.3. getOne</a></h4>
+<h4 id="_getoneusingget"><a class="anchor" href="#_getoneusingget"></a><a class="link" href="#_getoneusingget">2.1.3. Récupération d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /security/v1/certificates/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_3"><a class="anchor" href="#_parameters_3"></a><a class="link" href="#_parameters_3">Parameters</a></h5>
+<h5 id="_paramètres_3"><a class="anchor" href="#_paramètres_3"></a><a class="link" href="#_paramètres_3">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -758,37 +859,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -796,7 +904,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_3"><a class="anchor" href="#_responses_3"></a><a class="link" href="#_responses_3">Responses</a></h5>
+<h5 id="_réponses_3"><a class="anchor" href="#_réponses_3"></a><a class="link" href="#_réponses_3">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -805,9 +913,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -818,42 +926,79 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_3"><a class="anchor" href="#_produces_3"></a><a class="link" href="#_produces_3">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_3"><a class="anchor" href="#_exemple_de_requête_http_3"></a><a class="link" href="#_exemple_de_requête_http_3">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_3"><a class="anchor" href="#_requête_path_3"></a><a class="link" href="#_requête_path_3">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_3"><a class="anchor" href="#_requête_header_3"></a><a class="link" href="#_requête_header_3">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query_2"><a class="anchor" href="#_requête_query_2"></a><a class="link" href="#_requête_query_2">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_3"><a class="anchor" href="#_exemple_de_réponse_http_3"></a><a class="link" href="#_exemple_de_réponse_http_3">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_3"><a class="anchor" href="#_réponse_200_3"></a><a class="link" href="#_réponse_200_3">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.1.4. update</a></h4>
+<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.1.4. Mise à jour d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>PUT /security/v1/certificates/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_4"><a class="anchor" href="#_parameters_4"></a><a class="link" href="#_parameters_4">Parameters</a></h5>
+<h5 id="_paramètres_4"><a class="anchor" href="#_paramètres_4"></a><a class="link" href="#_paramètres_4">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -864,37 +1009,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>dto</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">dto</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_certificatedto">CertificateDto</a></p></td>
 </tr>
@@ -902,7 +1054,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_4"><a class="anchor" href="#_responses_4"></a><a class="link" href="#_responses_4">Responses</a></h5>
+<h5 id="_réponses_4"><a class="anchor" href="#_réponses_4"></a><a class="link" href="#_réponses_4">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -911,9 +1063,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -923,30 +1075,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_certificatedto">CertificateDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_2"><a class="anchor" href="#_consumes_2"></a><a class="link" href="#_consumes_2">Consumes</a></h5>
+<h5 id="_consomme_2"><a class="anchor" href="#_consomme_2"></a><a class="link" href="#_consomme_2">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -956,25 +1103,67 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_4"><a class="anchor" href="#_produces_4"></a><a class="link" href="#_produces_4">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_4"><a class="anchor" href="#_exemple_de_requête_http_4"></a><a class="link" href="#_exemple_de_requête_http_4">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_4"><a class="anchor" href="#_requête_path_4"></a><a class="link" href="#_requête_path_4">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_4"><a class="anchor" href="#_requête_header_4"></a><a class="link" href="#_requête_header_4">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_2"><a class="anchor" href="#_requête_body_2"></a><a class="link" href="#_requête_body_2">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_4"><a class="anchor" href="#_exemple_de_réponse_http_4"></a><a class="link" href="#_exemple_de_réponse_http_4">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_4"><a class="anchor" href="#_réponse_200_4"></a><a class="link" href="#_réponse_200_4">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "contextId" : "string",
+  "data" : "string",
+  "id" : "string",
+  "issuerDN" : "string",
+  "serialNumber" : "string",
+  "subjectDN" : "string"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_deleteusingdelete"><a class="anchor" href="#_deleteusingdelete"></a><a class="link" href="#_deleteusingdelete">2.1.5. delete</a></h4>
+<h4 id="_deleteusingdelete"><a class="anchor" href="#_deleteusingdelete"></a><a class="link" href="#_deleteusingdelete">2.1.5. Suppression d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>DELETE /security/v1/certificates/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_5"><a class="anchor" href="#_parameters_5"></a><a class="link" href="#_parameters_5">Parameters</a></h5>
+<h5 id="_paramètres_5"><a class="anchor" href="#_paramètres_5"></a><a class="link" href="#_paramètres_5">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -985,30 +1174,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1016,7 +1212,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_5"><a class="anchor" href="#_responses_5"></a><a class="link" href="#_responses_5">Responses</a></h5>
+<h5 id="_réponses_5"><a class="anchor" href="#_réponses_5"></a><a class="link" href="#_réponses_5">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1025,55 +1221,49 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>204</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_5"><a class="anchor" href="#_produces_5"></a><a class="link" href="#_produces_5">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_5"><a class="anchor" href="#_exemple_de_requête_http_5"></a><a class="link" href="#_exemple_de_requête_http_5">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_5"><a class="anchor" href="#_requête_path_5"></a><a class="link" href="#_requête_path_5">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_5"><a class="anchor" href="#_requête_header_5"></a><a class="link" href="#_requête_header_5">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_checkexistusinghead"><a class="anchor" href="#_checkexistusinghead"></a><a class="link" href="#_checkexistusinghead">2.1.6. checkExist</a></h4>
+<h4 id="_checkexistusinghead"><a class="anchor" href="#_checkexistusinghead"></a><a class="link" href="#_checkexistusinghead">2.1.6. Vérification de l&#8217;existence d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>HEAD /security/v1/certificates/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_6"><a class="anchor" href="#_parameters_6"></a><a class="link" href="#_parameters_6">Parameters</a></h5>
+<h5 id="_paramètres_6"><a class="anchor" href="#_paramètres_6"></a><a class="link" href="#_paramètres_6">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1084,30 +1274,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1115,7 +1312,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_6"><a class="anchor" href="#_responses_6"></a><a class="link" href="#_responses_6">Responses</a></h5>
+<h5 id="_réponses_6"><a class="anchor" href="#_réponses_6"></a><a class="link" href="#_réponses_6">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1124,37 +1321,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>204</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_3"><a class="anchor" href="#_consumes_3"></a><a class="link" href="#_consumes_3">Consumes</a></h5>
+<h5 id="_consomme_3"><a class="anchor" href="#_consomme_3"></a><a class="link" href="#_consomme_3">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1164,31 +1356,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_6"><a class="anchor" href="#_produces_6"></a><a class="link" href="#_produces_6">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_6"><a class="anchor" href="#_exemple_de_requête_http_6"></a><a class="link" href="#_exemple_de_requête_http_6">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_6"><a class="anchor" href="#_requête_path_6"></a><a class="link" href="#_requête_path_6">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/certificates/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_6"><a class="anchor" href="#_requête_header_6"></a><a class="link" href="#_requête_header_6">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_contexts_resource"><a class="anchor" href="#_contexts_resource"></a><a class="link" href="#_contexts_resource">2.2. Contexts</a></h3>
+<h3 id="_contextes_resource"><a class="anchor" href="#_contextes_resource"></a><a class="link" href="#_contextes_resource">2.2. Contextes</a></h3>
 <div class="paragraph">
-<p>Contexts Management</p>
+<p>Gestion des contextes de sécurité</p>
 </div>
 <div class="sect3">
-<h4 id="_createusingpost_1"><a class="anchor" href="#_createusingpost_1"></a><a class="link" href="#_createusingpost_1">2.2.1. create</a></h4>
+<h4 id="_createusingpost_1"><a class="anchor" href="#_createusingpost_1"></a><a class="link" href="#_createusingpost_1">2.2.1. Création d&#8217;un contexte</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /security/v1/contexts</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_7"><a class="anchor" href="#_parameters_7"></a><a class="link" href="#_parameters_7">Parameters</a></h5>
+<h5 id="_paramètres_7"><a class="anchor" href="#_paramètres_7"></a><a class="link" href="#_paramètres_7">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1199,30 +1400,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>dto</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">dto</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_contextdto">ContextDto</a></p></td>
 </tr>
@@ -1230,7 +1438,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_7"><a class="anchor" href="#_responses_7"></a><a class="link" href="#_responses_7">Responses</a></h5>
+<h5 id="_réponses_7"><a class="anchor" href="#_réponses_7"></a><a class="link" href="#_réponses_7">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1239,9 +1447,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -1251,30 +1459,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_contextdto">ContextDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_4"><a class="anchor" href="#_consumes_4"></a><a class="link" href="#_consumes_4">Consumes</a></h5>
+<h5 id="_consomme_4"><a class="anchor" href="#_consomme_4"></a><a class="link" href="#_consomme_4">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1284,25 +1482,65 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_7"><a class="anchor" href="#_produces_7"></a><a class="link" href="#_produces_7">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_7"><a class="anchor" href="#_exemple_de_requête_http_7"></a><a class="link" href="#_exemple_de_requête_http_7">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_7"><a class="anchor" href="#_requête_path_7"></a><a class="link" href="#_requête_path_7">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_7"><a class="anchor" href="#_requête_header_7"></a><a class="link" href="#_requête_header_7">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_3"><a class="anchor" href="#_requête_body_3"></a><a class="link" href="#_requête_body_3">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_5"><a class="anchor" href="#_exemple_de_réponse_http_5"></a><a class="link" href="#_exemple_de_réponse_http_5">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_5"><a class="anchor" href="#_réponse_200_5"></a><a class="link" href="#_réponse_200_5">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getallusingget_1"><a class="anchor" href="#_getallusingget_1"></a><a class="link" href="#_getallusingget_1">2.2.2. getAll</a></h4>
+<h4 id="_getallusingget_1"><a class="anchor" href="#_getallusingget_1"></a><a class="link" href="#_getallusingget_1">2.2.2. Récupération de la liste de contextes</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /security/v1/contexts</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_8"><a class="anchor" href="#_parameters_8"></a><a class="link" href="#_parameters_8">Parameters</a></h5>
+<h5 id="_paramètres_8"><a class="anchor" href="#_paramètres_8"></a><a class="link" href="#_paramètres_8">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1313,31 +1551,45 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_8"><a class="anchor" href="#_responses_8"></a><a class="link" href="#_responses_8">Responses</a></h5>
+<h5 id="_réponses_8"><a class="anchor" href="#_réponses_8"></a><a class="link" href="#_réponses_8">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1346,9 +1598,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -1359,42 +1611,78 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_8"><a class="anchor" href="#_produces_8"></a><a class="link" href="#_produces_8">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_8"><a class="anchor" href="#_exemple_de_requête_http_8"></a><a class="link" href="#_exemple_de_requête_http_8">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_8"><a class="anchor" href="#_requête_path_8"></a><a class="link" href="#_requête_path_8">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_8"><a class="anchor" href="#_requête_header_8"></a><a class="link" href="#_requête_header_8">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query_3"><a class="anchor" href="#_requête_query_3"></a><a class="link" href="#_requête_query_3">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_6"><a class="anchor" href="#_exemple_de_réponse_http_6"></a><a class="link" href="#_exemple_de_réponse_http_6">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_6"><a class="anchor" href="#_réponse_200_6"></a><a class="link" href="#_réponse_200_6">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+} ]</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_findbycertificateusingpost"><a class="anchor" href="#_findbycertificateusingpost"></a><a class="link" href="#_findbycertificateusingpost">2.2.3. findByCertificate</a></h4>
+<h4 id="_findbycertificateusingpost"><a class="anchor" href="#_findbycertificateusingpost"></a><a class="link" href="#_findbycertificateusingpost">2.2.3. Récupération d&#8217;un contexte à partir d&#8217;un certificat</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /security/v1/contexts/certificate</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_9"><a class="anchor" href="#_parameters_9"></a><a class="link" href="#_parameters_9">Parameters</a></h5>
+<h5 id="_paramètres_9"><a class="anchor" href="#_paramètres_9"></a><a class="link" href="#_paramètres_9">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1405,30 +1693,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>data</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">data</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1436,7 +1731,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_9"><a class="anchor" href="#_responses_9"></a><a class="link" href="#_responses_9">Responses</a></h5>
+<h5 id="_réponses_9"><a class="anchor" href="#_réponses_9"></a><a class="link" href="#_réponses_9">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1445,9 +1740,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -1457,30 +1752,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_contextdto">ContextDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_5"><a class="anchor" href="#_consumes_5"></a><a class="link" href="#_consumes_5">Consumes</a></h5>
+<h5 id="_consomme_5"><a class="anchor" href="#_consomme_5"></a><a class="link" href="#_consomme_5">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1490,25 +1775,59 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_9"><a class="anchor" href="#_produces_9"></a><a class="link" href="#_produces_9">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_9"><a class="anchor" href="#_exemple_de_requête_http_9"></a><a class="link" href="#_exemple_de_requête_http_9">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_9"><a class="anchor" href="#_requête_path_9"></a><a class="link" href="#_requête_path_9">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/certificate</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_9"><a class="anchor" href="#_requête_header_9"></a><a class="link" href="#_requête_header_9">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_4"><a class="anchor" href="#_requête_body_4"></a><a class="link" href="#_requête_body_4">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{ }</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_7"><a class="anchor" href="#_exemple_de_réponse_http_7"></a><a class="link" href="#_exemple_de_réponse_http_7">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_7"><a class="anchor" href="#_réponse_200_7"></a><a class="link" href="#_réponse_200_7">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getoneusingget_1"><a class="anchor" href="#_getoneusingget_1"></a><a class="link" href="#_getoneusingget_1">2.2.4. getOne</a></h4>
+<h4 id="_getoneusingget_1"><a class="anchor" href="#_getoneusingget_1"></a><a class="link" href="#_getoneusingget_1">2.2.4. Récupération d&#8217;un contexte à partir d&#8217;un identifiant</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /security/v1/contexts/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_10"><a class="anchor" href="#_parameters_10"></a><a class="link" href="#_parameters_10">Parameters</a></h5>
+<h5 id="_paramètres_10"><a class="anchor" href="#_paramètres_10"></a><a class="link" href="#_paramètres_10">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1519,37 +1838,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1557,7 +1883,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_10"><a class="anchor" href="#_responses_10"></a><a class="link" href="#_responses_10">Responses</a></h5>
+<h5 id="_réponses_10"><a class="anchor" href="#_réponses_10"></a><a class="link" href="#_réponses_10">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1566,9 +1892,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -1579,42 +1905,78 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_10"><a class="anchor" href="#_produces_10"></a><a class="link" href="#_produces_10">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_10"><a class="anchor" href="#_exemple_de_requête_http_10"></a><a class="link" href="#_exemple_de_requête_http_10">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_10"><a class="anchor" href="#_requête_path_10"></a><a class="link" href="#_requête_path_10">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_10"><a class="anchor" href="#_requête_header_10"></a><a class="link" href="#_requête_header_10">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query_4"><a class="anchor" href="#_requête_query_4"></a><a class="link" href="#_requête_query_4">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_8"><a class="anchor" href="#_exemple_de_réponse_http_8"></a><a class="link" href="#_exemple_de_réponse_http_8">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_8"><a class="anchor" href="#_réponse_200_8"></a><a class="link" href="#_réponse_200_8">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_updateusingput_1"><a class="anchor" href="#_updateusingput_1"></a><a class="link" href="#_updateusingput_1">2.2.5. update</a></h4>
+<h4 id="_updateusingput_1"><a class="anchor" href="#_updateusingput_1"></a><a class="link" href="#_updateusingput_1">2.2.5. Mise à jour d&#8217;un contexte</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>PUT /security/v1/contexts/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_11"><a class="anchor" href="#_parameters_11"></a><a class="link" href="#_parameters_11">Parameters</a></h5>
+<h5 id="_paramètres_11"><a class="anchor" href="#_paramètres_11"></a><a class="link" href="#_paramètres_11">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1625,37 +1987,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>dto</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">dto</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_contextdto">ContextDto</a></p></td>
 </tr>
@@ -1663,7 +2032,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_11"><a class="anchor" href="#_responses_11"></a><a class="link" href="#_responses_11">Responses</a></h5>
+<h5 id="_réponses_11"><a class="anchor" href="#_réponses_11"></a><a class="link" href="#_réponses_11">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1672,9 +2041,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -1684,30 +2053,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_contextdto">ContextDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_6"><a class="anchor" href="#_consumes_6"></a><a class="link" href="#_consumes_6">Consumes</a></h5>
+<h5 id="_consomme_6"><a class="anchor" href="#_consomme_6"></a><a class="link" href="#_consomme_6">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1717,25 +2081,65 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_11"><a class="anchor" href="#_produces_11"></a><a class="link" href="#_produces_11">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_11"><a class="anchor" href="#_exemple_de_requête_http_11"></a><a class="link" href="#_exemple_de_requête_http_11">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_11"><a class="anchor" href="#_requête_path_11"></a><a class="link" href="#_requête_path_11">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_11"><a class="anchor" href="#_requête_header_11"></a><a class="link" href="#_requête_header_11">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_5"><a class="anchor" href="#_requête_body_5"></a><a class="link" href="#_requête_body_5">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_9"><a class="anchor" href="#_exemple_de_réponse_http_9"></a><a class="link" href="#_exemple_de_réponse_http_9">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_9"><a class="anchor" href="#_réponse_200_9"></a><a class="link" href="#_réponse_200_9">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_deleteusingdelete_1"><a class="anchor" href="#_deleteusingdelete_1"></a><a class="link" href="#_deleteusingdelete_1">2.2.6. delete</a></h4>
+<h4 id="_deleteusingdelete_1"><a class="anchor" href="#_deleteusingdelete_1"></a><a class="link" href="#_deleteusingdelete_1">2.2.6. Suppression d&#8217;un contexte de sécurité</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>DELETE /security/v1/contexts/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_12"><a class="anchor" href="#_parameters_12"></a><a class="link" href="#_parameters_12">Parameters</a></h5>
+<h5 id="_paramètres_12"><a class="anchor" href="#_paramètres_12"></a><a class="link" href="#_paramètres_12">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1746,30 +2150,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1777,7 +2188,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_12"><a class="anchor" href="#_responses_12"></a><a class="link" href="#_responses_12">Responses</a></h5>
+<h5 id="_réponses_12"><a class="anchor" href="#_réponses_12"></a><a class="link" href="#_réponses_12">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1786,55 +2197,49 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>204</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_produces_12"><a class="anchor" href="#_produces_12"></a><a class="link" href="#_produces_12">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_12"><a class="anchor" href="#_exemple_de_requête_http_12"></a><a class="link" href="#_exemple_de_requête_http_12">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_12"><a class="anchor" href="#_requête_path_12"></a><a class="link" href="#_requête_path_12">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_12"><a class="anchor" href="#_requête_header_12"></a><a class="link" href="#_requête_header_12">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_checkexistusinghead_1"><a class="anchor" href="#_checkexistusinghead_1"></a><a class="link" href="#_checkexistusinghead_1">2.2.7. checkExist</a></h4>
+<h4 id="_checkexistusinghead_1"><a class="anchor" href="#_checkexistusinghead_1"></a><a class="link" href="#_checkexistusinghead_1">2.2.7. Vérification de l&#8217;existence d&#8217;un contexte</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>HEAD /security/v1/contexts/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_13"><a class="anchor" href="#_parameters_13"></a><a class="link" href="#_parameters_13">Parameters</a></h5>
+<h5 id="_paramètres_13"><a class="anchor" href="#_paramètres_13"></a><a class="link" href="#_paramètres_13">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1845,30 +2250,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -1876,7 +2288,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_13"><a class="anchor" href="#_responses_13"></a><a class="link" href="#_responses_13">Responses</a></h5>
+<h5 id="_réponses_13"><a class="anchor" href="#_réponses_13"></a><a class="link" href="#_réponses_13">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -1885,37 +2297,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>204</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_7"><a class="anchor" href="#_consumes_7"></a><a class="link" href="#_consumes_7">Consumes</a></h5>
+<h5 id="_consomme_7"><a class="anchor" href="#_consomme_7"></a><a class="link" href="#_consomme_7">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -1925,25 +2332,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_13"><a class="anchor" href="#_produces_13"></a><a class="link" href="#_produces_13">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_13"><a class="anchor" href="#_exemple_de_requête_http_13"></a><a class="link" href="#_exemple_de_requête_http_13">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_13"><a class="anchor" href="#_requête_path_13"></a><a class="link" href="#_requête_path_13">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_13"><a class="anchor" href="#_requête_header_13"></a><a class="link" href="#_requête_header_13">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_addtenantusingput"><a class="anchor" href="#_addtenantusingput"></a><a class="link" href="#_addtenantusingput">2.2.8. addTenant</a></h4>
+<h4 id="_addtenantusingput"><a class="anchor" href="#_addtenantusingput"></a><a class="link" href="#_addtenantusingput">2.2.8. Ajouter un tenant au context</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>PUT /security/v1/contexts/{id}/tenant/{tenantIdentifier}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_parameters_14"><a class="anchor" href="#_parameters_14"></a><a class="link" href="#_parameters_14">Parameters</a></h5>
+<h5 id="_paramètres_14"><a class="anchor" href="#_paramètres_14"></a><a class="link" href="#_paramètres_14">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1954,37 +2370,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Name</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>required</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Tenant&#8217;s Identifier</p></td>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-XSRF-Token</strong><br>
-<em>optional</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">XSRF Token</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>tenantIdentifier</strong><br>
-<em>required</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">tenantIdentifier</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
@@ -1992,7 +2415,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_responses_14"><a class="anchor" href="#_responses_14"></a><a class="link" href="#_responses_14">Responses</a></h5>
+<h5 id="_réponses_14"><a class="anchor" href="#_réponses_14"></a><a class="link" href="#_réponses_14">Réponses</a></h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -2001,9 +2424,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">HTTP Code</th>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
 <th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
@@ -2014,24 +2437,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Unauthorized</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Forbidden</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Not Found</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">No Content</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consumes_8"><a class="anchor" href="#_consumes_8"></a><a class="link" href="#_consumes_8">Consumes</a></h5>
+<h5 id="_consomme_8"><a class="anchor" href="#_consomme_8"></a><a class="link" href="#_consomme_8">Consomme</a></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -2041,13 +2464,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_produces_14"><a class="anchor" href="#_produces_14"></a><a class="link" href="#_produces_14">Produces</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code><strong>/</strong></code></p>
-</li>
-</ul>
+<h5 id="_exemple_de_requête_http_14"><a class="anchor" href="#_exemple_de_requête_http_14"></a><a class="link" href="#_exemple_de_requête_http_14">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_14"><a class="anchor" href="#_requête_path_14"></a><a class="link" href="#_requête_path_14">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/security/v1/contexts/string/tenant/0</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_14"><a class="anchor" href="#_requête_header_14"></a><a class="link" href="#_requête_header_14">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_10"><a class="anchor" href="#_exemple_de_réponse_http_10"></a><a class="link" href="#_exemple_de_réponse_http_10">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_201"><a class="anchor" href="#_réponse_201"></a><a class="link" href="#_réponse_201">Réponse 201</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "fullAccess" : true,
+  "id" : "string",
+  "name" : "string",
+  "roleNames" : [ "string" ],
+  "tenants" : [ 0 ]
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2055,50 +2504,58 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_definitions"><a class="anchor" href="#_definitions"></a><a class="link" href="#_definitions">3. Definitions</a></h2>
+<h2 id="_definitions"><a class="anchor" href="#_definitions"></a><a class="link" href="#_definitions">3. Définitions</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_certificatedto"><a class="anchor" href="#_certificatedto"></a><a class="link" href="#_certificatedto">3.1. CertificateDto</a></h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 42.8571%;">
-<col style="width: 57.1429%;">
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>contextId</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>data</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>issuerDN</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>serialNumber</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>subjectDN</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -2108,39 +2565,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_contextdto"><a class="anchor" href="#_contextdto"></a><a class="link" href="#_contextdto">3.2. ContextDto</a></h3>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 42.8571%;">
-<col style="width: 57.1429%;">
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-middle">Name</th>
-<th class="tableblock halign-left valign-middle">Schema</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>fullAccess</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>name</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>roleNames</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "string" ]</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; string &gt; array</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>tenants</strong><br>
-<em>optional</em></p></td>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ 0 ]</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; integer (int32) &gt; array</p></td>
 </tr>
 </tbody>
@@ -2151,7 +2615,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-06-25 11:47:53 CEST
+Last updated 2020-02-25 17:53:35 CET
 </div>
 </div>
 </body>
