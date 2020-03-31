@@ -34,7 +34,6 @@
 #        path: "/etc/yum.repos.d/{{ item }}.repo"
 #        state: absent
 #      with_items:
-#        - dlab
 #        - logstash
 #        - mongo
 

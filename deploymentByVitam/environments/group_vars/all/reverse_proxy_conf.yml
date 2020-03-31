@@ -1,6 +1,6 @@
 ---
 
-# Choice your reverse
+# Choose your reverse
 
 #reverse: nginx
 reverse: apache
