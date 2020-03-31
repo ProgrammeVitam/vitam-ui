@@ -50,8 +50,6 @@ import { AppConfiguration, AuthUser } from './models';
 import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
-const DARK_SUFFIX = '-dark';
-const LIGHT_SUFFIX = '-light';
 
 @Injectable({
   providedIn: 'root'
@@ -95,16 +93,21 @@ export class StartupService {
       })
       .then(() => {
 
-        const applicationColorMap = this.configurationData.THEME_COLORS;
-        const customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
+        let customerColorMap = null;
 
-        this.themeService.init(applicationColorMap, customerColorMap);
+        if (this.authService.user.basicCustomer.graphicIdentity.hasCustomGraphicIdentity) {
+          customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
+        }
 
-        for (const themeColorsKey in this.themeService.themeColors) {
-          if (this.themeService.themeColors.hasOwnProperty(themeColorsKey)) {
-            this.themeWrapper.style.setProperty('--' + themeColorsKey, this.themeService.themeColors[themeColorsKey]);
+        this.themeService.init(this.configurationData.THEME_COLORS);
+
+        const themeColors = this.themeService.getThemeColors(customerColorMap);
+        for (const key in themeColors) {
+          if (themeColors.hasOwnProperty(key)) {
+            this.themeWrapper.style.setProperty('--' + key, themeColors[key]);
           }
         }
+
       })
       .then(() => this.applicationService.list().toPromise());
   }

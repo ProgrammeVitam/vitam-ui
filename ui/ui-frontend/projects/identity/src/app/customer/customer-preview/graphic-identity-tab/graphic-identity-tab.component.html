@@ -17,14 +17,20 @@
   </div>
 </div>
 <div class="row">
-  <span>Couleurs de l'organisation</span>
-
-  <div class="vitamui-chip-list">
-    <div *ngFor="let color of customer.themeColors | keyvalue" class="vitamui-chip color-chip">
-      <div class="vitamui-chip-content">
-        <i class="openvitamui-icon openvitamui-icon-triangle" [style.color]="color.value"></i>
-        &nbsp;{{color.key}}</div>
-    </div>
-  </div>
+  <span i18n="Organisation color theme@@customerGraphicIdentityTabColorTheme">Couleurs de l'organisation</span>
+  <p><vitamui-common-input
+    disabled placeholder="Couleur principale"
+    [value]="themeColors['vitamui-primary']" class="vitamui-float"></vitamui-common-input>
+    <span class="field-color-preview primary"></span>
+    <span class="field-color-preview primary-light"></span>
+    <span class="field-color-preview primary-light-20"></span>
+  </p>
+  <p><vitamui-common-input
+    disabled placeholder="Couleur secondaire"
+    [value]="themeColors['vitamui-secondary']" class="vitamui-float"></vitamui-common-input>
+    <span class="field-color-preview secondary"></span>
+    <span class="field-color-preview secondary-light"></span>
+    <span class="field-color-preview secondary-light-8"></span>
+    <span class="field-color-preview secondary-dark-5"></span></p>
 </div>
 

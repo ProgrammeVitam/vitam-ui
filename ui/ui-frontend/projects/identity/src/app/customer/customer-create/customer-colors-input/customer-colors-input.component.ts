@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -21,17 +21,22 @@ export const COLORS_INPUT_ACCESSOR: any = {
   styleUrls: ['./customer-colors-input.component.scss'],
   providers: [COLORS_INPUT_ACCESSOR]
 })
-export class CustomerColorsInputComponent implements ControlValueAccessor {
+export class CustomerColorsInputComponent implements ControlValueAccessor, OnInit {
 
 
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
 
+  // css selector to overload color theme for preview (default = only color circles around inputs)
+  @Input() overloadSelector = '.field-color-preview';
+
   colorForm: FormGroup;
 
-  colors: {[key: string]: string};
+  colors: {[colorId: string]: string} = {
+    'vitamui-primary': '',
+    'vitamui-secondary': ''
+  };
 
-  onChange: (colors: {[key: string]: string}) => void;
   onTouched: () => void;
 
   validator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
@@ -41,18 +46,18 @@ export class CustomerColorsInputComponent implements ControlValueAccessor {
       primary: ['', this.validator],
       secondary: ['', this.validator]
     });
+  }
 
+  get value(): {[key: string]: string} {
+    return this.colors;
   }
 
   writeValue(colors: {primary: string, secondary: string}) {
-    this.colorForm.get('primary').setValue(colors.primary);
-    this.colorForm.get('secondary').setValue(colors.secondary);
-
-    this.overloadLocalTheme();
+    this.colorForm.setValue(colors);
   }
 
   registerOnChange(fn: (colors: {[key: string]: string}) => void) {
-    this.onChange = fn;
+    this.colorForm.valueChanges.subscribe(fn);
   }
 
   registerOnTouched(fn: () => void) {
@@ -60,46 +65,48 @@ export class CustomerColorsInputComponent implements ControlValueAccessor {
   }
 
 
-  handleValueChange() {
-    // Force color hex to start with '#'
-    if ( ! this.colorForm.value.primary.startsWith('#') ) {
-      const newPrimary: string = '#' + this.colorForm.value.primary;
-      const oldSecondary: string = this.colorForm.value.secondary;
-      this.colorForm.setValue({primary: newPrimary, secondary: oldSecondary});
-    }
+  handleValueChanges() {
+    this.colorForm.valueChanges.subscribe((colors) => {
 
-    if ( ! this.colorForm.value.secondary.startsWith('#') ) {
-      const newSecondary: string = '#' + this.colorForm.value.secondary;
-      const oldPrimary: string = this.colorForm.value.primary;
-      this.colorForm.setValue({primary: oldPrimary, secondary: newSecondary});
-    }
+      // Force color hex to start with '#'
+      if (!colors.primary.startsWith('#')) {
+        const newPrimary: string = '#' + colors.primary;
+        const oldSecondary: string = colors.secondary;
+        this.colorForm.setValue({primary: newPrimary, secondary: oldSecondary});
+      }
 
-    if (this.colorForm.invalid || this.colorForm.pending) {
-      return;
-    }
+      if (!this.colorForm.value.secondary.startsWith('#')) {
+        const newSecondary: string = '#' + colors.secondary;
+        const oldPrimary: string = colors.primary;
+        this.colorForm.setValue({primary: oldPrimary, secondary: newSecondary});
+      }
 
-    this.colors = {
-      'vitamui-primary': this.colorForm.value.primary,
-      'vitamui-secondary': this.colorForm.value.secondary
-    };
+      if (this.colorForm.invalid || this.colorForm.pending) {
+        return;
+      }
 
-    // propagate changes
-    this.onChange(this.colors);
+      this.colors = {
+        'vitamui-primary': this.colorForm.value.primary,
+        'vitamui-secondary': this.colorForm.value.secondary
+      };
 
-    // If form is valid, overload local theme for preview
-    this.overloadLocalTheme();
+      // If form is valid, overload local theme for preview
+      this.overloadLocalTheme();
+    });
 
   }
 
   overloadLocalTheme() {
-
-    this.themeService.refresh(this.colorForm.value.primary, this.colorForm.value.secondary);
-
-    const selector: HTMLElement = document.querySelector('div.customer-colors-input');
-    for (const key in this.themeService.themeColors) {
-      if (this.themeService.themeColors.hasOwnProperty(key)) {
-        selector.style.setProperty('--' + key, this.themeService.themeColors[key]);
+    const newTheme = this.themeService.getThemeColors(this.colors);
+    const selector: HTMLElement = document.querySelector(this.overloadSelector);
+    for (const key in newTheme) {
+      if (newTheme.hasOwnProperty(key)) {
+        selector.style.setProperty('--' + key, newTheme[key]);
       }
     }
+  }
+
+  ngOnInit(): void {
+    this.handleValueChanges();
   }
 }

@@ -2,19 +2,22 @@
 <div [formGroup]="colorForm">
   <p><vitamui-common-input class="field-primary-color" formControlName="primary" maxlength="7"
                             placeholder="Couleur principale"
-                            i18n-placeholder="Customer primary theme color input placeholder@@customerUpdatePrimaryColorThemeInputPlaceholder"
-                            (change)="handleValueChange()" required >
+                            i18n-placeholder="Customer primary theme color input placeholder@@customerUpdatePrimaryColorThemeInputPlaceholder">
   </vitamui-common-input>
     <span class="field-color-preview primary"></span>
+    <span class="field-color-preview primary-light"></span>
+    <span class="field-color-preview primary-light-20"></span>
   </p>
   <p>
     <vitamui-common-input class="field-secondary-color" formControlName="secondary" maxlength="7"
                            placeholder="Couleur secondaire"
-                           i18n-placeholder="Customer secondary theme color input placeholder@@customerUpdateSecondaryColorThemeInputPlaceholder"
-                           (change)="handleValueChange()" required >
+                           i18n-placeholder="Customer secondary theme color input placeholder@@customerUpdateSecondaryColorThemeInputPlaceholder">
 
     </vitamui-common-input>
     <span class="field-color-preview secondary"></span>
+    <span class="field-color-preview secondary-light"></span>
+    <span class="field-color-preview secondary-light-8"></span>
+    <span class="field-color-preview secondary-dark-5"></span>
   </p>
 </div>
 <div class="dlab-input-errors">

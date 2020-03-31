@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { merge, Subscription } from 'rxjs';
-import { ConfirmDialogService, Customer, OtpState } from 'ui-frontend-common';
+import {ConfirmDialogService, Customer, OtpState, ThemeService} from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -82,7 +82,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
+    private themeService: ThemeService
   ) {
   }
 
@@ -108,7 +109,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
-      themeColors: [null],
+      themeColors: null,
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ])
@@ -127,6 +128,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.imageToUpload = null;
         this.imageUrl = null;
       }
+    });
+
+    const colors = this.themeService.getThemeColors();
+    this.form.get('themeColors').setValue({
+      primary: colors['vitamui-primary'],
+      secondary: colors['vitamui-secondary']
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -177,14 +184,15 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   updateForCustomerModel(formValue: any): Customer {
+    console.log(formValue);
     const { themeColors, ...customer } = formValue;
+    const customerTheme =  {
+      'vitamui-primary': themeColors.primary,
+      'vitamui-secondary': themeColors.secondary
+    };
 
-    customer.themeColors = {};
-    for (const key in themeColors) {
-      if (themeColors.hasOwnProperty(key)) {
-        customer.themeColors[key] = themeColors[key];
-      }
-    }
+    customer.themeColors = this.themeService.getThemeColors(customerTheme);
+
     return customer;
   }
 
