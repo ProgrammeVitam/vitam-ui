@@ -1,4 +1,5 @@
 import {Component, forwardRef, Input, OnInit} from '@angular/core';
+
 import {
   ControlValueAccessor,
   FormBuilder,
@@ -108,5 +109,43 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
 
   ngOnInit(): void {
     this.handleValueChanges();
+  }
+
+
+  handlePicker(key: string, pickerValue: string) {
+
+    // Avoir 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
+    let inputValue: string = this.colorForm.get(key).value;
+
+    if (inputValue.startsWith('#')) {
+      inputValue = inputValue.substring(1);
+    }
+
+    if (pickerValue.startsWith('#')) {
+      pickerValue = pickerValue.substring(1);
+    }
+
+    if (inputValue.length === 3 && pickerValue.length === 6) {
+      for (let i = 0; i < 3; i++) {
+        if (inputValue.charAt(i) !== pickerValue.charAt(2 * i) || inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)) {
+          continue;
+        }
+        return;
+      }
+    }
+
+    if (key === 'primary') {
+      this.colorForm.setValue({
+        primary: pickerValue,
+        secondary: this.colorForm.value.secondary
+      });
+
+    } else if (key === 'secondary') {
+      this.colorForm.setValue({
+        primary: this.colorForm.value.primary,
+        secondary: pickerValue
+      });
+    }
+
   }
 }

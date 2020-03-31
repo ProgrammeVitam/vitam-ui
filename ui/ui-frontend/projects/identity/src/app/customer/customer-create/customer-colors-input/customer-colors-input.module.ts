@@ -7,7 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-
+import {ColorPickerModule} from 'ngx-color-picker';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {SharedModule} from '../../../shared/shared.module';
 import {OwnerFormModule} from '../../owner-form/owner-form.module';
@@ -25,7 +25,8 @@ import {CustomerColorsInputComponent} from './customer-colors-input.component';
     MatSnackBarModule,
     ReactiveFormsModule,
     OwnerFormModule,
-    VitamUICommonModule
+    VitamUICommonModule,
+    ColorPickerModule
   ],
   declarations: [
     CustomerColorsInputComponent
