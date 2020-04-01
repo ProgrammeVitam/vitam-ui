@@ -102,6 +102,7 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
+    logging_level: DEBUG
   iam_internal:
     host: "iam-internal.service.consul"
     vitamui_component: "iam-internal"
