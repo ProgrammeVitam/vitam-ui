@@ -185,7 +185,7 @@
         </div>
 
         <div class="customer-colors-input">
-          <app-customer-colors-input formControlName="themeColors" overloadSelector="form#formCreateCustomer"></app-customer-colors-input>
+          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" overloadSelector="form#formCreateCustomer"></app-customer-colors-input>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
@@ -194,7 +194,7 @@
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
               Créer le propriétaire
-              <small>des éléments de preuves</small>
+              <small> des éléments de preuves</small>
             </button>
           <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>

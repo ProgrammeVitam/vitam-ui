@@ -63,9 +63,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   lastImageUploaded: File = null;
   imageUrl: any;
   lastUploadedImageUrl: any;
+  lastColors: {[key: string]: string};
   hasError = true;
   message: string;
   creating = false;
+
+  hexPattern = /#([0-9A-Fa-f]{6})/;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -115,26 +118,33 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       ])
     });
 
+    const colors = this.themeService.getThemeColors();
+    this.form.get('themeColors').setValue({
+      primary: colors['vitamui-primary'],
+      secondary: colors['vitamui-secondary']
+    });
+
     this.onChanges();
     this.form.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.form.get('hasCustomGraphicIdentity').value;
       this.message = null;
       if (this.hasCustomGraphicIdentity) {
         this.imageUrl = this.lastUploadedImageUrl;
-        this.imageToUpload = this.lastImageUploaded;
+        if (this.lastColors) {
+          this.form.get('themeColors').setValue(this.lastColors);
+        }
       } else {
-        this.lastImageUploaded = this.imageToUpload;
+        this.lastColors = this.form.get('themeColors').value;
+        this.form.get('themeColors').setValue({
+          primary: colors['vitamui-primary'],
+          secondary: colors['vitamui-secondary']
+        });
         this.lastUploadedImageUrl = this.imageUrl;
         this.imageToUpload = null;
         this.imageUrl = null;
       }
     });
 
-    const colors = this.themeService.getThemeColors();
-    this.form.get('themeColors').setValue({
-      primary: colors['vitamui-primary'],
-      secondary: colors['vitamui-secondary']
-    });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -184,7 +194,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   updateForCustomerModel(formValue: any): Customer {
-    console.log(formValue);
     const { themeColors, ...customer } = formValue;
     const customerTheme =  {
       'vitamui-primary': themeColors.primary,
@@ -263,8 +272,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   thirdStepValid(): boolean {
-    return this.form.get('hasCustomGraphicIdentity').value === false ||
-            (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
+    return this.form.get('themeColors').value.primary.match(this.hexPattern) &&
+        this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
+        (this.form.get('hasCustomGraphicIdentity').value === false ||
+              (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
+        );
   }
 
   get stepProgress() {
