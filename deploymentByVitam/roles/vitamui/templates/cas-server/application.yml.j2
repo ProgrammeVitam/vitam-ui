@@ -5,7 +5,6 @@ server:
     key-store-password: {{ password_keystore }}
     key-password: {{ password_manager_keystore }}
 {% endif %}
-  context-path: /cas
   host: {{ ip_service }}
   port: {{ vitamui_struct.port_service }}
 {% if vitamui.cas_server.base_url is defined %}
@@ -143,7 +142,7 @@ mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
 
-vitamui.portal.url: {{ vitamui.portal.base_url|default('url_prefix') }}
+vitamui.portal.url: {{ vitamui.portal.base_url|default(url_prefix) }}
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x
