@@ -1,0 +1,83 @@
+#Extra vars for vitamui (for custom usage)
+
+###
+# cas.yml overload
+url_prefix: "changeme"
+
+###
+# consul_vars.yml overload
+vitamui_site_name: "changeme"
+
+consul_remote_sites:
+    - vitamui:
+      name: "changeme"
+      wan: ["changeme"]
+
+###
+# infra.yml
+smtp:
+  host: changeme
+  port: 587
+  user: no-reply@changeme
+  password: changeme
+  test_smtp_connection: false
+  auth: true
+  tls_enable: true
+  cas:
+    sender: no-reply@changeme
+    expiration: 10 # in minutes
+
+sms:
+  enabled: true
+  account: "changeme"
+  token: "changeme"
+  sender: 'changeme'
+
+###
+# repositories.yml
+
+repository_user: changeme
+repository_password: changeme
+repository_url: "changeme"
+
+vitam_repository_url: "changeme"
+
+vitam_repositories:
+    - key: vitamui
+      value: "{{ repository_url }}"
+      proxy: ""
+    - key: vitam-java
+      value: "{{ repository_url }}"
+      proxy: ""
+    - key: vitam-doc
+      value: "{{ repository_url }}"
+      proxy: ""
+    - key: vitam-external
+      value: "{{ repository_url }}"
+      proxy: ""
+    - key: vitam-product
+      value: "{{ vitam_repository_url }}"
+      proxy: ""
+
+###
+# reverse domain name for nginx (uncomment base_url if nginx)
+#
+vitamui:
+  ui_consul:
+    server_name: "{{ vitam_site_name }}.teamdlab.com"
+  ui_mongo_express:
+    server_name: "{{ vitam_site_name }}.teamdlab.com"
+  identity:
+    server_name: "{{ vitam_site_name }}-identity.teamdlab.com"
+   # base_url: "https://{{ vitam_site_name }}-identity.teamdlab.com"
+  identity_admin:
+    server_name:  "{{ vitam_site_name }}-identity-admin.teamdlab.com"
+   # base_url: "https://{{ vitam_site_name }}-identity-admin.teamdlab.com"
+  portal:
+    server_name: "{{ vitam_site_name }}-portal.teamdlab.com"
+   # base_url: "https://{{ vitam_site_name }}-portal.teamdlab.com"
+  cas_server:
+   server_name: "{{ vitam_site_name }}-cas.teamdlab.com"
+  # base_url:  "https://{{ vitam_site_name }}-cas.teamdlab.com"
+  vitam_host:
+    server_name: "{{ vitam_site_name }}-vitam.teamdlab.com"

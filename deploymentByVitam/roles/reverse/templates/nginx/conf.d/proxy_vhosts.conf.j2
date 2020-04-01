@@ -12,7 +12,7 @@ server {
 
     listen 443 ssl;
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
-    server_name  {{ vitam_site_name }}.teamdlab.com;
+    server_name  {{ vitamui.ui_mongo_express.server_name }};
 
     location /mongo-express {
         proxy_pass http://mongo_express;
@@ -36,7 +36,7 @@ server {
 
     listen 443 ssl;
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
-    server_name  {{ vitam_site_name }}.teamdlab.com;
+    server_name  {{ vitamui.ui_consul.server_name }};
 
     location /ui/ {
         proxy_pass http://consul_ui;
@@ -170,7 +170,7 @@ server {
     listen 443 ssl;
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
-    server_name "{{ vitam_site_name }}-portal.teamdlab.com";
+    server_name "{{ vitamui.portal.server_name }}";
 
     location / {
         proxy_pass https://ui_portal;
