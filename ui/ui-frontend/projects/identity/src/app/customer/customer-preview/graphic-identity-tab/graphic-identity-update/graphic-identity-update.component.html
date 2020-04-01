@@ -35,11 +35,11 @@
     </div>
 
     <div class="customer-colors-input">
-      <app-customer-colors-input formControlName="themeColors" overloadSelector="form#graphicIdentityForm" ></app-customer-colors-input>
+      <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" overloadSelector="form#graphicIdentityForm" ></app-customer-colors-input>
     </div>
 
     <div class="actions">
-      <button type="button" class="btn primary" i18n="Update customer graphic identity@@updateCustomerGraphicIdentityButton" (click)="updateGraphicIdentity()">Valider</button>
+      <button type="button" class="btn primary" [disabled]="!isGraphicIdentityFormValid()" i18n="Update customer graphic identity@@updateCustomerGraphicIdentityButton" (click)="updateGraphicIdentity()">Valider</button>
       <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
     </div>
 </div>

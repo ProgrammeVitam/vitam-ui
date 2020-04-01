@@ -328,7 +328,6 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     Object themeColorsValue = entry.getValue();
 
                     LOGGER.debug("Update theme colors");
-                    System.out.println(themeColorsValue);
 
                     if (themeColorsValue instanceof Map) {
                         Map<String, String> themeColors = (Map) themeColorsValue;
@@ -346,11 +345,12 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     private void processGraphicIdentityPatch(final boolean newCustomGraphicIdentityValue, final Customer customer, final Optional<MultipartFile> logo) {
 
-        customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
 
         String base64logo = null;
         if(logo.isPresent()) {
             try {
+
+                customer.getGraphicIdentity().setHasCustomGraphicIdentity(true);
 
                 base64logo = VitamUIUtils.getBase64(logo.get());
 
@@ -359,9 +359,14 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
             } catch (IOException e) {
                 throw new InvalidFormatException("Cannot store logo", e);
             }
+
+        } else {
+            if(newCustomGraphicIdentityValue && customer.getGraphicIdentity().getLogoDataBase64().isEmpty()) {
+                throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": Custom graphic identity activated without providing a logo.");
+            } else {
+                customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
+            }
         }
-
-
     }
 
     @Transactional

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
 import {Customer, ThemeService} from 'ui-frontend-common';
@@ -59,8 +59,11 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   lastImageUploaded: File = null;
   imageUrl: any;
   lastUploadedImageUrl: any;
+  lastColors: {[key: string]: string};
   hasError = true;
   message: string;
+
+  hexPattern = /#([0-9A-Fa-f]{6})/;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -80,8 +83,26 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
+
+
+    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
+    this.lastColors = {
+      primary: customerTheme['vitamui-primary'],
+      secondary: customerTheme['vitamui-secondary']
+    };
+    if (this.hasCustomGraphicIdentity) {
+      this.graphicIdentityForm.get('themeColors').setValue(this.lastColors);
+    } else {
+      const defaultTheme = this.themeService.getThemeColors();
+      this.graphicIdentityForm.get('themeColors').setValue({
+        primary: defaultTheme['vitamui-primary'],
+        secondary: defaultTheme['vitamui-secondary']
+      });
+    }
+
 
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
@@ -89,7 +110,16 @@ export class GraphicIdentityUpdateComponent implements OnInit {
       if (this.hasCustomGraphicIdentity) {
         this.imageUrl = this.lastUploadedImageUrl;
         this.imageToUpload = this.lastImageUploaded;
+        if (this.lastColors) {
+          this.graphicIdentityForm.get('themeColors').setValue(this.lastColors);
+        }
       } else {
+        this.lastColors = this.graphicIdentityForm.get('themeColors').value;
+        const defaultTheme = this.themeService.getThemeColors();
+        this.graphicIdentityForm.get('themeColors').setValue({
+          primary: defaultTheme['vitamui-primary'],
+          secondary: defaultTheme['vitamui-secondary']
+        });
         this.lastImageUploaded = this.imageToUpload;
         this.lastUploadedImageUrl = this.imageUrl;
         this.imageToUpload = null;
@@ -97,11 +127,7 @@ export class GraphicIdentityUpdateComponent implements OnInit {
       }
     });
 
-    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
-    this.graphicIdentityForm.get('themeColors').setValue({
-      primary: customerTheme['vitamui-primary'],
-      secondary: customerTheme['vitamui-secondary']
-    });
+
 
   }
 
@@ -162,6 +188,10 @@ export class GraphicIdentityUpdateComponent implements OnInit {
 
   updateGraphicIdentity() {
 
+    if ( ! this.isGraphicIdentityFormValid()) {
+      return;
+    }
+
     const colorValues = this.graphicIdentityForm.get('themeColors').value;
 
     const formData = {
@@ -181,6 +211,16 @@ export class GraphicIdentityUpdateComponent implements OnInit {
           this.dialogRef.close(false);
           console.error(error);
         });
+  }
+
+  isGraphicIdentityFormValid() {
+    return this.graphicIdentityForm.get('themeColors').value.primary.match(this.hexPattern) &&
+    this.graphicIdentityForm.get('themeColors').value.secondary.match(this.hexPattern) &&
+    (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
+        (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true &&
+          (this.data.logo || this.imageUrl)
+        )
+      );
   }
 
 }

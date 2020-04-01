@@ -31,6 +31,8 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
   // css selector to overload color theme for preview (default = only color circles around inputs)
   @Input() overloadSelector = '.field-color-preview';
 
+  @Input() disabled = false;
+
   colorForm: FormGroup;
 
   colors: {[colorId: string]: string} = {
@@ -40,12 +42,12 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
 
   onTouched: () => void;
 
-  validator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
+  hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
   constructor(private formBuilder: FormBuilder, private themeService: ThemeService) {
     this.colorForm = this.formBuilder.group({
-      primary: ['', this.validator],
-      secondary: ['', this.validator]
+      primary: ['', this.hexValidator],
+      secondary: ['', this.hexValidator]
     });
   }
 
@@ -65,36 +67,19 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
     this.onTouched = fn;
   }
 
+  handleValueChanges(colors: {primary: string, secondary: string}) {
 
-  handleValueChanges() {
-    this.colorForm.valueChanges.subscribe((colors) => {
+    if (this.colorForm.invalid || this.colorForm.pending) {
+      return;
+    }
 
-      // Force color hex to start with '#'
-      if (!colors.primary.startsWith('#')) {
-        const newPrimary: string = '#' + colors.primary;
-        const oldSecondary: string = colors.secondary;
-        this.colorForm.setValue({primary: newPrimary, secondary: oldSecondary});
-      }
+    this.colors = {
+      'vitamui-primary': colors.primary,
+      'vitamui-secondary': colors.secondary
+    };
 
-      if (!this.colorForm.value.secondary.startsWith('#')) {
-        const newSecondary: string = '#' + colors.secondary;
-        const oldPrimary: string = colors.primary;
-        this.colorForm.setValue({primary: oldPrimary, secondary: newSecondary});
-      }
-
-      if (this.colorForm.invalid || this.colorForm.pending) {
-        return;
-      }
-
-      this.colors = {
-        'vitamui-primary': this.colorForm.value.primary,
-        'vitamui-secondary': this.colorForm.value.secondary
-      };
-
-      // If form is valid, overload local theme for preview
-      this.overloadLocalTheme();
-    });
-
+    // If form is valid, overload local theme for preview
+    this.overloadLocalTheme();
   }
 
   overloadLocalTheme() {
@@ -108,7 +93,9 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
   }
 
   ngOnInit(): void {
-    this.handleValueChanges();
+    this.colorForm.valueChanges.subscribe((colors) => {
+      this.handleValueChanges(colors);
+    });
   }
 
 
@@ -116,15 +103,14 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
 
     // Avoir 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
     let inputValue: string = this.colorForm.get(key).value;
-
+    inputValue = inputValue.toUpperCase();
+    pickerValue = pickerValue.toUpperCase();
     if (inputValue.startsWith('#')) {
       inputValue = inputValue.substring(1);
     }
-
     if (pickerValue.startsWith('#')) {
       pickerValue = pickerValue.substring(1);
     }
-
     if (inputValue.length === 3 && pickerValue.length === 6) {
       for (let i = 0; i < 3; i++) {
         if (inputValue.charAt(i) !== pickerValue.charAt(2 * i) || inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)) {
@@ -136,16 +122,31 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
 
     if (key === 'primary') {
       this.colorForm.setValue({
-        primary: pickerValue,
+        primary: '#' + pickerValue,
         secondary: this.colorForm.value.secondary
       });
 
     } else if (key === 'secondary') {
       this.colorForm.setValue({
         primary: this.colorForm.value.primary,
-        secondary: pickerValue
+        secondary: '#' + pickerValue
       });
     }
 
+  }
+
+  forceHex() {
+    if (! this.colorForm.value.primary.startsWith('#')) {
+      this.colorForm.setValue({
+        primary: '#' + this.colorForm.value.primary,
+        secondary: this.colorForm.value.secondary
+      });
+
+    } else if (! this.colorForm.value.secondary.startsWith('#')) {
+      this.colorForm.setValue({
+        primary: this.colorForm.value.primary,
+        secondary: '#' + this.colorForm.value.secondary
+      });
+    }
   }
 }

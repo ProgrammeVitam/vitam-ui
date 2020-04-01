@@ -2,6 +2,7 @@
 <div [formGroup]="colorForm">
   <p>
     <vitamui-common-input [colorPicker]="colors['vitamui-primary']" (colorPickerChange)="handlePicker('primary', $event)"
+                          [disabled]="disabled" (keyup)="forceHex()"
                           cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
                           cpPosition="top" class="field-primary-color" formControlName="primary" maxlength="7"
                           placeholder="Couleur principale"
@@ -13,6 +14,7 @@
   </p>
   <p>
     <vitamui-common-input [colorPicker]="colors['vitamui-secondary']" (colorPickerChange)="handlePicker('secondary', $event)"
+                          [disabled]="disabled" (keyup)="forceHex()"
                           cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
                           cpPosition="top" class="field-secondary-color" formControlName="secondary" maxlength="7"
                           placeholder="Couleur secondaire"
