@@ -1,6 +1,0 @@
----
-# handlers file for vitamui.ui-identity
-- name: restart ui-identity service
-  service:
-    name: vitamui-ui-identity
-    state: restarted

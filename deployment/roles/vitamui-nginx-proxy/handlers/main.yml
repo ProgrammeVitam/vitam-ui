@@ -1,7 +1,0 @@
----
-# handlers file for vitamui-nginx-proxy
-- name: reload nginx
-  service: name=vitamui-nginx state=reloaded
-
-- name: restart nginx
-  service: name=vitamui-nginx state=restarted

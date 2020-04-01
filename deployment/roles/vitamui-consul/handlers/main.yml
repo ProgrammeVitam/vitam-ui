@@ -1,6 +1,0 @@
----
-# handlers file for vitamui-consul
-- name: restart consul
-  service:
-    name: vitam-consul
-    state: restarted

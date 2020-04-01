@@ -1,4 +1,0 @@
----
-- hosts: vitamui
-  roles:
-    - bootstrap_repo
