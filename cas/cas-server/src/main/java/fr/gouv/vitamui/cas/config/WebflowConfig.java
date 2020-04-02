@@ -53,6 +53,7 @@ import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
@@ -184,17 +185,20 @@ public class WebflowConfig {
     @Qualifier("delegatedClientDistributedSessionStore")
     private ObjectProvider<SessionStore> delegatedClientDistributedSessionStore;
 
-    @Value("${vitamui.portal.url}")
-    private String vitamuiPortalUrl;
-
-    @Value("${cas.authn.surrogate.separator}")
-    private String surrogationSeparator;
-
     @Autowired
     private Utils utils;
 
     @Autowired
     private DelegatedClientWebflowManager delegatedClientWebflowManager;
+
+    @Autowired
+    private TicketRegistrySupport ticketRegistrySupport;
+
+    @Value("${vitamui.portal.url}")
+    private String vitamuiPortalUrl;
+
+    @Value("${cas.authn.surrogate.separator}")
+    private String surrogationSeparator;
 
     @Bean
     public DispatcherAction dispatcherAction() {
@@ -216,7 +220,7 @@ public class WebflowConfig {
 
     @Bean
     public TriggerChangePasswordAction triggerChangePasswordAction() {
-        return new TriggerChangePasswordAction();
+        return new TriggerChangePasswordAction(ticketRegistrySupport, utils);
     }
 
     @Bean
