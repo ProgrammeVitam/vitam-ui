@@ -1,0 +1,51 @@
+.vitamui-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  .vitamui-chip {
+    display: flex;
+    align-items: stretch;
+    font-size: 13px;
+    cursor: pointer;
+    min-width: 140px;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    .vitamui-chip-content {
+      padding: 6px 10px;
+      flex-grow: 1;
+    }
+
+    .vitamui-remove-chip {
+      display: flex;
+      align-items: center;
+      border-left: 1px solid $greyish-two;
+      padding: 6px;
+
+      i {
+        font-size: 14px;
+      }
+    }
+
+    &.active {
+      color: var(--vitamui-secondary);
+      border-color: var(--vitamui-secondary);
+
+      .vitamui-remove-chip {
+        border-color: var(--vitamui-secondary);
+      }
+    }
+  }
+}
+
+.vitamui-chip {
+  background-color: white;
+  border: 1px solid $greyish-two;
+  border-radius: 2px;
+  color: $greyish-two;
+  font-weight: 500;
+}

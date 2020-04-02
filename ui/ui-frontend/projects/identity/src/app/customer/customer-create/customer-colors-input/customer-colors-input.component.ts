@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
 
 import {
   ControlValueAccessor,
@@ -8,6 +8,7 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import {ColorPickerDirective} from 'ngx-color-picker';
 import {ThemeService} from 'ui-frontend-common';
 
 export const COLORS_INPUT_ACCESSOR: any = {
@@ -32,6 +33,9 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
   @Input() overloadSelector = '.field-color-preview';
 
   @Input() disabled = false;
+
+  @ViewChildren(ColorPickerDirective)
+  colorPickers: QueryList<ColorPickerDirective>;
 
   colorForm: FormGroup;
 
@@ -149,4 +153,23 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
       });
     }
   }
+
+
+  onPickerOpen() {
+    if (this.disabled) {
+      this.colorPickers.forEach((cp) => {
+        cp.closeDialog();
+      });
+    }
+  }
+
+  openPicker(index: number) {
+    if ( ! this.disabled) {
+      const pickers = this.colorPickers.toArray();
+      if (index < pickers.length) {
+        pickers[index].openDialog();
+      }
+    }
+  }
+
 }
