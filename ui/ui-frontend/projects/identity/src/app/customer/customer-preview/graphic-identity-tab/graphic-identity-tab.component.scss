@@ -6,7 +6,18 @@
 }
 
 p {
-  height: 80px;
+  height: 50px;
+}
+
+p.color {
+  width: 120px;
+  span.label {
+    position: relative;
+    top: 0;
+    left: 0;
+    font-size: 0.8em;
+    color: gray;
+  }
 }
 
 .field-color-preview {
@@ -17,8 +28,7 @@ p {
   height: 50px;
   border-radius: 100%;
   position: relative;
-  top: 35px;
-  left: -50px;
+  top: 10px;
 
   &.primary {
     background-color: var(--vitamui-primary);

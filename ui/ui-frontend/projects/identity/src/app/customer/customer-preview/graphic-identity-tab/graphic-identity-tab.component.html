@@ -16,21 +16,22 @@
     <p i18n="customer graphic identity tab no logo@@customerGraphicIdentityTabNoLogoLabel">Aucun logo n'a été sélectionné</p>
   </div>
 </div>
+<p i18n="Organisation color theme@@customerGraphicIdentityTabColorTheme">Couleurs de l'organisation</p>
 <div class="row">
-  <span i18n="Organisation color theme@@customerGraphicIdentityTabColorTheme">Couleurs de l'organisation</span>
-  <p><vitamui-common-input
-    disabled placeholder="Couleur principale"
-    [value]="themeColors['vitamui-primary']" class="vitamui-float"></vitamui-common-input>
+  <p class="color">
+    <span class="label">Couleur principale</span>
+    {{themeColors['vitamui-primary']}}</p>
     <span class="field-color-preview primary"></span>
     <span class="field-color-preview primary-light"></span>
     <span class="field-color-preview primary-light-20"></span>
-  </p>
-  <p><vitamui-common-input
-    disabled placeholder="Couleur secondaire"
-    [value]="themeColors['vitamui-secondary']" class="vitamui-float"></vitamui-common-input>
+</div>
+<div class="row">
+  <p class="color">
+    <span class="label">Couleur secondaire</span>
+    {{themeColors['vitamui-secondary']}}</p>
     <span class="field-color-preview secondary"></span>
     <span class="field-color-preview secondary-light"></span>
     <span class="field-color-preview secondary-light-8"></span>
-    <span class="field-color-preview secondary-dark-5"></span></p>
+    <span class="field-color-preview secondary-dark-5"></span>
 </div>
 
