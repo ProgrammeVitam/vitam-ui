@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.pm.PmMessageToSend;
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -46,22 +47,17 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Send reset password emails with i18n messages.
@@ -73,48 +69,50 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     private static final VitamUILogger LOGGER = VitamUILoggerFactory
             .getInstance(I18NSendPasswordResetInstructionsAction.class);
 
-    @Autowired
-    @Qualifier("messageSource")
-    private HierarchicalMessageSource messageSource;
-
-    @Autowired
-    private ProvidersService providersService;
-
-    @Autowired
-    private IdentityProviderHelper identityProviderHelper;
-
-    @Autowired
-    private Utils utils;
-
     private final CasConfigurationProperties casProperties;
 
     private final CommunicationsManager communicationsManager;
 
     private final PasswordManagementService passwordManagementService;
 
+    private final HierarchicalMessageSource messageSource;
+
+    private final ProvidersService providersService;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final Utils utils;
+
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
                                                    final CommunicationsManager communicationsManager,
                                                    final PasswordManagementService passwordManagementService,
                                                    final TicketRegistry ticketRegistry,
-                                                   final TicketFactory ticketFactory) {
+                                                   final TicketFactory ticketFactory,
+                                                   final HierarchicalMessageSource messageSource,
+                                                   final ProvidersService providersService,
+                                                   final IdentityProviderHelper identityProviderHelper,
+                                                   final Utils utils) {
         super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory);
         this.casProperties = casProperties;
         this.communicationsManager = communicationsManager;
         this.passwordManagementService = passwordManagementService;
+        this.messageSource = messageSource;
+        this.providersService = providersService;
+        this.identityProviderHelper = identityProviderHelper;
+        this.utils = utils;
     }
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
         communicationsManager.validate();
         if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn(
-                    "CAS is unable to send password-reset emails given no settings are defined to account for email servers");
-            return error();
+            return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
         }
-        final PasswordManagementProperties pm = casProperties.getAuthn().getPm();
-        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        // JLE: changed from CAS
+
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        request.removeAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE);
         String username = request.getParameter("username");
+        // added from CAS:
         if (StringUtils.isBlank(username)) {
             // try to get the username from the credentials also (after a password expiration)
             final MutableAttributeMap flowScope = requestContext.getFlowScope();
@@ -124,32 +122,35 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                 username = usernamePasswordCredential.getUsername();
             }
         }
-
         if (StringUtils.isBlank(username)) {
-            LOGGER.warn("No username is provided");
-            return error();
+            LOGGER.warn("No username parameter is provided");
+            return getErrorEvent("username.required", "No username is provided", requestContext);
         }
 
-        // JLE: changed from CAS
-        final String to = passwordManagementService.findEmail(username);
-        if (StringUtils.isBlank(to)) {
+        // changed from CAS:
+        final String email = passwordManagementService.findEmail(username);
+        if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
-        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), to)) {
-            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", to);
+        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email)) {
+            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
             return success();
         }
 
         val service = WebUtils.getService(requestContext);
-        final String url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
-
-        LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
+        val url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
+        if (StringUtils.isNotBlank(url)) {
+            val pm = casProperties.getAuthn().getPm();
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
                 utils.sanitizePasswordResetUrl(url), pm.getReset().getExpirationMinutes());
-        if (sendPasswordResetEmailToAccount(to, url)) {
-            return success();
+            if (sendPasswordResetEmailToAccount(email, url)) {
+                return success();
+            }
+        } else {
+            LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
-        LOGGER.error("Failed to notify account [{}]", to);
-        return error();
+        LOGGER.error("Failed to notify account [{}]", email);
+        return getErrorEvent("contact.failed", "Failed to send the password reset link to the given email address or phone number", requestContext);
     }
 
     @Override

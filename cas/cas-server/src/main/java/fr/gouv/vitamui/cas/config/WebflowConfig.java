@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.cas.config;
 
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
+import fr.gouv.vitamui.cas.pm.ResetPasswordController;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
@@ -43,6 +45,7 @@ import fr.gouv.vitamui.cas.webflow.*;
 import fr.gouv.vitamui.cas.webflow.actions.*;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
@@ -51,7 +54,9 @@ import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.TicketFactory;
+import org.apereo.cas.ticket.TransientSessionTicket;
+import org.apereo.cas.ticket.factory.DefaultTicketFactory;
+import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.util.CollectionUtils;
@@ -63,25 +68,31 @@ import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
 import org.apereo.cas.web.support.ArgumentExtractor;
+import org.apereo.cas.web.view.CasProtocolView;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 /**
- * Webflow customizations.
+ * Web(flow) customizations.
  *
  *
  */
@@ -170,10 +181,6 @@ public class WebflowConfig {
     private ObjectProvider<ArgumentExtractor> argumentExtractor;
 
     @Autowired
-    @Qualifier("defaultTicketFactory")
-    private TicketFactory ticketFactory;
-
-    @Autowired
     @Qualifier("centralAuthenticationService")
     private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
 
@@ -194,6 +201,16 @@ public class WebflowConfig {
     @Autowired
     private TicketRegistrySupport ticketRegistrySupport;
 
+    @Autowired
+    @Qualifier("messageSource")
+    private HierarchicalMessageSource messageSource;
+
+    @Autowired
+    private SpringTemplateEngine springTemplateEngine;
+
+    @Autowired
+    private ThymeleafProperties thymeleafProperties;
+
     @Value("${vitamui.portal.url}")
     private String vitamuiPortalUrl;
 
@@ -207,10 +224,18 @@ public class WebflowConfig {
     }
 
     @Bean
+    public DefaultTransientSessionTicketFactory pmTicketFactory() {
+        return new DefaultTransientSessionTicketFactory(new PmTransientSessionTicketExpirationPolicyBuilder(casProperties));
+    }
+
+    @Bean
     @RefreshScope
     public Action sendPasswordResetInstructionsAction() {
+        val pmTicketFactory = new DefaultTicketFactory();
+        pmTicketFactory.addTicketFactory(TransientSessionTicket.class, pmTicketFactory());
+
         return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager, passwordManagementService,
-            ticketRegistry, ticketFactory);
+            ticketRegistry, pmTicketFactory, messageSource, providersService, identityProviderHelper, utils);
     }
 
     @Bean
@@ -267,5 +292,18 @@ public class WebflowConfig {
             ticketGrantingTicketCookieGenerator.getObject(),
             warnCookieGenerator.getObject(),
             casProperties.getLogout());
+    }
+
+    @Bean
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public CasProtocolView casGetResponseView() {
+        return new CasProtocolView("protocol/casGetResponseView",
+            applicationContext, springTemplateEngine, thymeleafProperties);
+    }
+
+    @Bean
+    public ResetPasswordController resetPasswordController() {
+        return new ResetPasswordController(casProperties, passwordManagementService, communicationsManager, ticketRegistry,
+            messageSource, utils, pmTicketFactory());
     }
 }

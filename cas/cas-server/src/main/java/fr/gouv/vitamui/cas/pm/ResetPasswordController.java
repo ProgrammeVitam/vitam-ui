@@ -36,18 +36,21 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import static org.apereo.cas.web.flow.CasWebflowConfigurer.FLOW_ID_LOGIN;
-
+import java.io.Serializable;
 import java.util.Locale;
 
+import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.PasswordManagementWebflowUtils;
+import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.CommunicationsManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +61,8 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Rest controller for CAS extra features.
  *
@@ -65,37 +70,31 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
  */
 @RestController
 @RequestMapping("/extras")
+@RequiredArgsConstructor
 public class ResetPasswordController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ResetPasswordController.class);
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    @Autowired
-    private PasswordManagementService passwordManagementService;
+    private final PasswordManagementService passwordManagementService;
 
-    @Autowired
-    private CommunicationsManager communicationsManager;
+    private final CommunicationsManager communicationsManager;
 
-    @Autowired
-    private PmTokenTicketFactory pmTokenTicketFactory;
+    private final TicketRegistry ticketRegistry;
 
-    @Autowired
-    private TicketRegistry ticketRegistry;
+    private final HierarchicalMessageSource messageSource;
 
-    @Autowired
-    @Qualifier("messageSource")
-    private HierarchicalMessageSource messageSource;
+    private final Utils utils;
 
-    @Autowired
-    private Utils utils;
+    private final DefaultTransientSessionTicketFactory pmTicketFactory;
 
     @GetMapping("/resetPassword")
     public boolean resetPassword(@RequestParam(value = "username", defaultValue = "") final String username,
-            @RequestParam(value = "firstname", defaultValue = "") final String firstname,
-            @RequestParam(value = "lastname", defaultValue = "") final String lastname, @RequestParam(value = "ttl", defaultValue = "") final String ttl,
-            @RequestParam(value = "language", defaultValue = "en") final String language) {
+                                 @RequestParam(value = "firstname", defaultValue = "") final String firstname,
+                                 @RequestParam(value = "lastname", defaultValue = "") final String lastname, @RequestParam(value = "ttl", defaultValue = "") final String ttl,
+                                 @RequestParam(value = "language", defaultValue = "en") final String language,
+                                 final HttpServletRequest request) {
 
         if (StringUtils.isBlank(username)) {
             LOGGER.warn("No username is provided");
@@ -107,9 +106,9 @@ public class ResetPasswordController {
             LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
             return false;
         }
-        final String usernameLower = username.toLowerCase();
-        final String to = passwordManagementService.findEmail(usernameLower);
-        if (StringUtils.isBlank(to)) {
+        val usernameLower = username.toLowerCase();
+        val email = passwordManagementService.findEmail(usernameLower);
+        if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
         }
@@ -117,33 +116,35 @@ public class ResetPasswordController {
         final int expMinutes;
         if (PmMessageToSend.ONE_DAY.equals(ttl)) {
             expMinutes = 24 * 60;
-        }
-        else {
+        } else {
             expMinutes = (int) casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
         }
+        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
 
-        final String url = buildPasswordResetUrl(usernameLower, casProperties, expMinutes);
+        final String url = buildPasswordResetUrl(usernameLower, casProperties);
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, ttl, url, new Locale(language));
 
-        LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url), to,
-                messageToSend.getSubject(), expMinutes);
-        if (!sendPasswordResetEmailToAccount(to, messageToSend.getSubject(), messageToSend.getText())) {
+        LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
+            email, messageToSend.getSubject(), expMinutes);
+        if (!sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText())) {
             return false;
         }
 
         return true;
     }
 
-    protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties, final int expMinutes) {
-        final String token = createToken(username, expMinutes);
-        return casProperties.getServer().getPrefix().concat('/' + FLOW_ID_LOGIN + '?'
-            + PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN + '=').concat(token);
-    }
+    protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties) {
+        val token = passwordManagementService.createToken(username);
 
-    protected String createToken(final String to, final int expMinutes) {
-        final PmTokenTicket ticket = pmTokenTicketFactory.create(to, expMinutes);
-        ticketRegistry.addTicket(ticket);
-        return ticket.getId();
+        val properties = CollectionUtils.<String, Serializable>wrap(PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN, token);
+        val ticket = pmTicketFactory.create((Service) null, properties);
+        this.ticketRegistry.addTicket(ticket);
+
+        val resetUrl = new StringBuilder(casProperties.getServer().getPrefix())
+            .append('/').append(CasWebflowConfigurer.FLOW_ID_LOGIN).append('?')
+            .append(PasswordManagementWebflowUtils.REQUEST_PARAMETER_NAME_PASSWORD_RESET_TOKEN).append('=').append(ticket.getId());
+
+        return resetUrl.toString();
     }
 
     protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {

@@ -47,7 +47,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        val utils = new Utils(casExternalRestClient, null, 0, null, null);
+        val utils = new Utils(null, 0, null, null);
         service = new IamSurrogateAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
     }
 

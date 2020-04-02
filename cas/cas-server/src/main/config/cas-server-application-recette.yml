@@ -86,6 +86,7 @@ cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
 cas.authn.pm.reset.expirationMinutes: 10
 cas.authn.pm.reset.mail.attributeName: xxx
 cas.authn.pm.reset.securityQuestionsEnabled: false
+cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
 
 # Used to sign/encrypt the password-reset link

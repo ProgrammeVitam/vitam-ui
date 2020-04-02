@@ -1,25 +1,16 @@
 package fr.gouv.vitamui.cas.pm;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.time.ZonedDateTime;
 import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
 import org.apereo.cas.authentication.DefaultAuthentication;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -38,24 +29,25 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.webflow.core.collection.LocalAttributeMap;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
-import org.springframework.webflow.execution.RequestContext;
-import org.springframework.webflow.execution.RequestContextHolder;
+
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
+
 
 /**
- * Tests {@link IamRestPasswordManagementService}.
+ * Tests {@link IamPasswordManagementService}.
  *
  *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
-public final class IamRestPasswordManagementServiceTest {
+public final class IamPasswordManagementServiceTest extends BaseWebflowActionTest {
 
     private static final String EMAIL = "jerome@test.com";
 
-    private IamRestPasswordManagementService service;
+    private IamPasswordManagementService service;
 
     private CasExternalRestClient casExternalRestClient;
 
@@ -69,20 +61,16 @@ public final class IamRestPasswordManagementServiceTest {
 
     @Before
     public void setUp() {
+        super.setUp();
+
         casExternalRestClient = mock(CasExternalRestClient.class);
         providersService = mock(ProvidersService.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.of(identityProviderDto));
-        service = new IamRestPasswordManagementService(casExternalRestClient, null, providersService, identityProviderHelper);
-        final Utils utils = new Utils(casExternalRestClient, null, 0, null, null);
-        service.setUtils(utils);
-        final RequestContext context = mock(RequestContext.class);
-        RequestContextHolder.setRequestContext(context);
-        final MutableAttributeMap<Object> flowParameters = new LocalAttributeMap<>();
-        when(context.getConversationScope()).thenReturn(flowParameters);
-        when(context.getFlowScope()).thenReturn(flowParameters);
+        val utils = new Utils(null, 0, null, null);
+        service = new IamPasswordManagementService(null, null, null, null, casExternalRestClient, providersService, identityProviderHelper, null, utils, null);
         final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
         successes.put("fake", null);
         authAttributes = new HashMap<>();
@@ -188,7 +176,7 @@ public final class IamRestPasswordManagementServiceTest {
     }
 
     private UserDto user(final UserStatusEnum status) {
-        final UserDto user = new UserDto();
+        val user = new UserDto();
         user.setStatus(status);
         user.setEmail(EMAIL);
         return user;

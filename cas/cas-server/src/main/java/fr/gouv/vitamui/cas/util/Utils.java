@@ -39,17 +39,15 @@ package fr.gouv.vitamui.cas.util;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import lombok.val;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.authentication.Authentication;
-import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -65,13 +63,9 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-
-import lombok.val;
 
 /**
  * Helper class.
@@ -84,8 +78,6 @@ public class Utils {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(Utils.class);
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
-
-    private final CasExternalRestClient casExternalRestClient;
 
     private final String casToken;
 
@@ -118,22 +110,6 @@ public class Utils {
         final String username = (String) getAttributeValue(authentication.getAttributes() ,SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
         LOGGER.debug("is it currently a superUser: {}", username);
         return username;
-    }
-
-    public UserDto getRealUser(final Authentication authentication) {
-        final String username = getSuperUsername(authentication);
-        final UserDto user;
-        // it's a surrogation, we retrieve him by his email
-        if (StringUtils.isNotBlank(username)) {
-            user = casExternalRestClient.getUserByEmail(buildContext(username), username, Optional.empty());
-        }
-        else {
-            // otherwise, we retrieve him by his identifier
-            final Principal principal = authentication.getPrincipal();
-            final String userId = principal.getId();
-            user = casExternalRestClient.getUserById(buildContext(userId), userId);
-        }
-        return user;
     }
 
     public Cookie buildIdpCookie(final String value, final TicketGrantingCookieProperties tgc) {
