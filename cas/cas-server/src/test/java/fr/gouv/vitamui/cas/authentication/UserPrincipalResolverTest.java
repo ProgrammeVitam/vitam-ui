@@ -19,7 +19,6 @@ import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.ClientCredential;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
-import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         super.setUp();
 
         casExternalRestClient = mock(CasExternalRestClient.class);
-        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
+        val utils = new Utils(casExternalRestClient, null, 0, null, null);
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
         resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore);
@@ -87,7 +86,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
                 eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
-        final Principal principal = resolver.resolve(new UsernamePasswordCredential(USERNAME, PWD),
+        val principal = resolver.resolve(new UsernamePasswordCredential(USERNAME, PWD),
             Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
@@ -103,7 +102,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.empty());
 
-        final Principal principal = resolver.resolve(new ClientCredential(),
+        val principal = resolver.resolve(new ClientCredential(),
             Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
@@ -124,7 +123,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val credential = new SurrogateUsernamePasswordCredential();
         credential.setUsername(ADMIN);
         credential.setSurrogateUsername(USERNAME);
-        final Principal principal = resolver.resolve(credential, Optional.of(principalFactory.createPrincipal(ADMIN)), Optional.empty());
+        val principal = resolver.resolve(credential, Optional.of(principalFactory.createPrincipal(ADMIN)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
         final Map<String, List<Object>> attributes = principal.getAttributes();
@@ -142,8 +141,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             eq(Optional.empty()))).thenReturn(adminProfile());
         when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.of(USERNAME));
 
-        final Principal principal = resolver.resolve(new ClientCredential(),
-            Optional.of(principalFactory.createPrincipal(ADMIN)), Optional.empty());
+        val  principal = resolver.resolve(new ClientCredential(), Optional.of(principalFactory.createPrincipal(ADMIN)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
         final Map<String, List<Object>> attributes = principal.getAttributes();
@@ -158,7 +156,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER))))
                 .thenReturn(authUserDto);
 
-        final Principal principal = resolver.resolve(new UsernamePasswordCredential(USERNAME, PWD),
+        val principal = resolver.resolve(new UsernamePasswordCredential(USERNAME, PWD),
             Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
@@ -204,7 +202,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     }
 
     private AuthUserDto profile(final UserStatusEnum status, final String id) {
-        final AuthUserDto user = new AuthUserDto();
+        val user = new AuthUserDto();
         user.setId(id);
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
@@ -214,9 +212,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         address.setCity("Paris");
         address.setCountry("France");
         user.setAddress(address);
-        final ProfileDto profile = new ProfileDto();
+        val profile = new ProfileDto();
         profile.setRoles(Arrays.asList(new Role(ROLE_NAME)));
-        final GroupDto group = new GroupDto();
+        val group = new GroupDto();
         group.setProfiles(Arrays.asList(profile));
         user.setProfileGroup(group);
         user.setCustomerId("customerId");

@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +57,8 @@ import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.saml.client.SAML2Client;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
@@ -89,6 +92,8 @@ public class Utils {
     private final Integer casTenantIdentifier;
 
     private final String casIdentity;
+
+    private final JavaMailSender mailSender;
 
     public ExternalHttpContext buildContext(final String username) {
         return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
@@ -156,5 +161,39 @@ public class Utils {
         else {
             return "\"passwordResetURL\"...";
         }
+    }
+
+    public boolean htmlEmail(final String text, final String from, final String subject, final String to, final String cc, final String bcc) {
+        try {
+            if (mailSender == null || org.apache.commons.lang3.StringUtils.isBlank(text) || org.apache.commons.lang3.StringUtils.isBlank(from)
+                || org.apache.commons.lang3.StringUtils.isBlank(subject) || org.apache.commons.lang3.StringUtils.isBlank(to)) {
+                LOGGER.warn(
+                    "Could not send email to [{}] because either no address/subject/text is found or email settings are not configured.",
+                    to);
+                return false;
+            }
+
+            final MimeMessage message = mailSender.createMimeMessage();
+            final MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setTo(to);
+            message.setContent(text, "text/html; charset=UTF-8");
+            helper.setSubject(subject);
+            helper.setFrom(from);
+            helper.setPriority(1);
+
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(cc)) {
+                helper.setCc(cc);
+            }
+
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(bcc)) {
+                helper.setBcc(bcc);
+            }
+            mailSender.send(message);
+            return true;
+        }
+        catch (final Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
+        }
+        return false;
     }
 }

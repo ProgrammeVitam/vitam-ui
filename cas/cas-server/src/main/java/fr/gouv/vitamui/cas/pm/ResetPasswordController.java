@@ -40,8 +40,6 @@ import static org.apereo.cas.web.flow.CasWebflowConfigurer.FLOW_ID_LOGIN;
 
 import java.util.Locale;
 
-import javax.mail.internet.MimeMessage;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordManagementService;
@@ -51,8 +49,6 @@ import org.apereo.cas.util.io.CommunicationsManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.HierarchicalMessageSource;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,9 +90,6 @@ public class ResetPasswordController {
 
     @Autowired
     private Utils utils;
-
-    @Autowired
-    private JavaMailSender mailSender;
 
     @GetMapping("/resetPassword")
     public boolean resetPassword(@RequestParam(value = "username", defaultValue = "") final String username,
@@ -154,37 +147,6 @@ public class ResetPasswordController {
     }
 
     protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {
-        return htmlEmail(msg, casProperties.getAuthn().getPm().getReset().getMail().getFrom(), subject, to, null, null);
-    }
-
-    private boolean htmlEmail(final String text, final String from, final String subject, final String to, final String cc, final String bcc) {
-        try {
-            if (mailSender == null || StringUtils.isBlank(text) || StringUtils.isBlank(from) || StringUtils.isBlank(subject) || StringUtils.isBlank(to)) {
-                LOGGER.warn("Could not send email to [{}] because either no address/subject/text is found or email settings are not configured.", to);
-                return false;
-            }
-
-            final MimeMessage message = mailSender.createMimeMessage();
-            final MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setTo(to);
-            message.setContent(text, "text/html; charset=UTF-8");
-            helper.setSubject(subject);
-            helper.setFrom(from);
-            helper.setPriority(1);
-
-            if (StringUtils.isNotBlank(cc)) {
-                helper.setCc(cc);
-            }
-
-            if (StringUtils.isNotBlank(bcc)) {
-                helper.setBcc(bcc);
-            }
-            mailSender.send(message);
-            return true;
-        }
-        catch (final Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return false;
+        return utils.htmlEmail(msg, casProperties.getAuthn().getPm().getReset().getMail().getFrom(), subject, to, null, null);
     }
 }
