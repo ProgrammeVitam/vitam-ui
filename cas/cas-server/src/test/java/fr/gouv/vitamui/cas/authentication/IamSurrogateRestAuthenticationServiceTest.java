@@ -47,7 +47,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        final Utils utils = new Utils(casExternalRestClient, null, 0, null);
+        val utils = new Utils(casExternalRestClient, null, 0, null, null);
         service = new IamSurrogateRestAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
     }
 
@@ -60,7 +60,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
 
     @Test
     public void testCanAuthenticateCannotSurrogate() {
-        final SubrogationDto subrogation = surrogation();
+        val subrogation = surrogation();
         subrogation.setSurrogate("anotherUser");
         when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
             .thenReturn(Arrays.asList(subrogation));
@@ -70,7 +70,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
 
     @Test
     public void testCanAuthenticateNotAccepted() {
-        final SubrogationDto subrogation = surrogation();
+        val subrogation = surrogation();
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
         when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
             .thenReturn(Arrays.asList(subrogation));
@@ -95,7 +95,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
     }
 
     private SubrogationDto surrogation() {
-        final SubrogationDto subrogation = new SubrogationDto();
+        val subrogation = new SubrogationDto();
         subrogation.setSurrogate(SURROGATE);
         subrogation.setSuperUser(SU_EMAIL);
         subrogation.setStatus(SubrogationStatusEnum.ACCEPTED);

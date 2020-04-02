@@ -78,6 +78,7 @@ import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -151,6 +152,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Qualifier("accessTokenExpirationPolicy")
     private ExpirationPolicyBuilder accessTokenExpirationPolicy;
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    @Qualifier("delegatedClientDistributedSessionStore")
+    private SessionStore delegatedClientDistributedSessionStore;
+
     @Value("${token.api.cas}")
     private String tokenApiCas;
 
@@ -165,10 +173,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
-
-    @Autowired
-    @Qualifier("delegatedClientDistributedSessionStore")
-    private SessionStore delegatedClientDistributedSessionStore;
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
@@ -233,7 +237,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(casRestClient(), tokenApiCas, casTenantIdentifier, casIdentity);
+        return new Utils(casRestClient(), tokenApiCas, casTenantIdentifier, casIdentity, mailSender);
     }
 
     @Bean
@@ -246,8 +250,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
         return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy,
-            accessTokenJwtBuilder,
-            servicesManager);
+            accessTokenJwtBuilder, servicesManager);
     }
 
     @Override
