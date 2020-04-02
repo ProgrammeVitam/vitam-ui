@@ -36,10 +36,13 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apereo.cas.DefaultCentralAuthenticationService;
+import lombok.val;
+import org.apache.commons.lang.StringUtils;
+import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -47,24 +50,22 @@ import org.apereo.cas.configuration.model.support.pm.PasswordManagementPropertie
 import org.apereo.cas.pm.BasePasswordManagementService;
 import org.apereo.cas.pm.InvalidPasswordException;
 import org.apereo.cas.pm.PasswordChangeRequest;
+import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
@@ -77,11 +78,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class IamRestPasswordManagementService extends BasePasswordManagementService {
+public class IamPasswordManagementService extends BasePasswordManagementService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamRestPasswordManagementService.class);
-
-    private static final String PM_TICKET_ID = "pmTicketId";
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamPasswordManagementService.class);
 
     private final CasExternalRestClient casExternalRestClient;
 
@@ -89,40 +88,43 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    @Autowired
-    private DefaultCentralAuthenticationService centralAuthenticationService;
+    private final CentralAuthenticationService centralAuthenticationService;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Autowired
-    private PmTokenTicketFactory pmTokenTicketFactory;
+    private final TicketRegistry ticketRegistry;
 
-    @Autowired
-    private TicketRegistry ticketRegistry;
-
-    public IamRestPasswordManagementService(final CasExternalRestClient casExternalRestClient,
-                                            final PasswordManagementProperties passwordManagementProperties,
-                                            final ProvidersService providersService,
-                                            final IdentityProviderHelper identityProviderHelper) {
-        super(passwordManagementProperties, null, null, null);
+    public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
+                                        final CipherExecutor<Serializable, String> cipherExecutor,
+                                        final String issuer,
+                                        final PasswordHistoryService passwordHistoryService,
+                                        final CasExternalRestClient casExternalRestClient,
+                                        final ProvidersService providersService,
+                                        final IdentityProviderHelper identityProviderHelper,
+                                        final CentralAuthenticationService centralAuthenticationService,
+                                        final Utils utils,
+                                        final TicketRegistry ticketRegistry) {
+        super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
+        this.centralAuthenticationService = centralAuthenticationService;
+        this.utils = utils;
+        this.ticketRegistry = ticketRegistry;
     }
 
     protected RequestContext blockIfSubrogation() {
-        final RequestContext requestContext = RequestContextHolder.getRequestContext();
+        val requestContext = RequestContextHolder.getRequestContext();
         Authentication authentication = WebUtils.getAuthentication(requestContext);
         if (authentication == null) {
-            final String tgtId = WebUtils.getTicketGrantingTicketId(requestContext);
-            if (tgtId != null) {
-                final TicketGrantingTicket tgt = centralAuthenticationService.getTicket(tgtId, TicketGrantingTicket.class);
+            val tgtId = WebUtils.getTicketGrantingTicketId(requestContext);
+            if (StringUtils.isNotBlank(tgtId)) {
+                val tgt = centralAuthenticationService.getTicket(tgtId, TicketGrantingTicket.class);
                 authentication = tgt.getAuthentication();
             }
         }
         if (authentication != null) {
-            final String superUsername = utils.getSuperUsername(authentication);
+            val superUsername = utils.getSuperUsername(authentication);
             Assert.isNull(superUsername, "cannot use password management with subrogation");
         }
 
@@ -131,32 +133,25 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
 
     @Override
     public boolean changeInternal(final Credential c, final PasswordChangeRequest bean) throws InvalidPasswordException {
-        final RequestContext requestContext = blockIfSubrogation();
-        final MutableAttributeMap flowScope = requestContext.getFlowScope();
+        val requestContext = blockIfSubrogation();
+        val flowScope = requestContext.getFlowScope();
         if (flowScope != null) {
             flowScope.put("passwordHasBeenChanged", true);
         }
 
-        final UsernamePasswordCredential upc = (UsernamePasswordCredential) c;
-        final String username = upc.getUsername();
+        val upc = (UsernamePasswordCredential) c;
+        val username = upc.getUsername();
         Assert.notNull(username, "username can not be null");
         // username to lowercase
-        final String usernameLowercase = username.toLowerCase();
+        val usernameLowercase = username.toLowerCase();
         LOGGER.debug("username: {}", usernameLowercase);
-        final Optional<IdentityProviderDto> identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
+        val identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
         Assert.isTrue(identityProvider.isPresent(), "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
         Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
                 "only an internal user [" + usernameLowercase + "] can change his password");
 
-        // we don't care about the fact that the oldPassword is the same as upc.getPassword();
         try {
             casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
-
-            final String ticket = (String) requestContext.getFlowScope().get(PM_TICKET_ID);
-            if (ticket != null) {
-                ticketRegistry.deleteTicket(ticket);
-            }
-
             return true;
         }
         catch (final ConflictException e) {
@@ -171,9 +166,9 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
     @Override
     public String findEmail(final String username) {
         String email = null;
-        final String usernameWithLowercase = username.toLowerCase();
+        val usernameWithLowercase = username.toLowerCase();
         try {
-            final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
             if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
                 email = user.getEmail();
             }
@@ -187,27 +182,6 @@ public class IamRestPasswordManagementService extends BasePasswordManagementServ
     @Override
     public Map<String, String> getSecurityQuestions(final String username) {
         throw new UnsupportedOperationException("security questions/answers are not available");
-    }
-
-    @Override
-    public String createToken(final String to) {
-        final PmTokenTicket ticket = pmTokenTicketFactory.create(to, (int) properties.getReset().getExpirationMinutes());
-        ticketRegistry.addTicket(ticket);
-        return ticket.getId();
-    }
-
-    @Override
-    public String parseToken(final String token) {
-        final PmTokenTicket ticket = ticketRegistry.getTicket(token, PmTokenTicket.class);
-        if (ticket == null || ticket.isExpired()) {
-            LOGGER.warn("PM token ticket expired: {}", token);
-            return null;
-        }
-        final RequestContext requestContext = RequestContextHolder.getRequestContext();
-        if (requestContext != null) {
-            requestContext.getFlowScope().put(PM_TICKET_ID, ticket.getId());
-        }
-        return ticket.getUser();
     }
 
     private static class PasswordAlreadyUsedException extends InvalidPasswordException {

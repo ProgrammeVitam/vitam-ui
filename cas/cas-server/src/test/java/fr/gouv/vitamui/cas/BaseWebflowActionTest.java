@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.cas.webflow.actions;
+package fr.gouv.vitamui.cas;
 
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import org.apereo.cas.authentication.principal.WebApplicationService;

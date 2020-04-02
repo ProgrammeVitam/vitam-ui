@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -65,7 +66,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         casExternalRestClient = mock(CasExternalRestClient.class);
 
-        final Utils utils = new Utils(casExternalRestClient, null, 0, null, null);
+        final Utils utils = new Utils(null, 0, null, null);
         action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils, mock(SessionStore.class));
 
         final SAML2Client client = new SAML2Client();

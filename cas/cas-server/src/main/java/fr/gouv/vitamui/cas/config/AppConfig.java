@@ -37,16 +37,23 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
+import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
+import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
+import lombok.SneakyThrows;
+import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.pm.PasswordHistoryService;
+import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.*;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.pac4j.core.context.session.SessionStore;
@@ -91,6 +98,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
+
+    @Autowired
+    private CasConfigurationProperties casProperties;
 
     @Autowired
     @Qualifier("servicesManager")
@@ -158,6 +168,21 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Autowired
     @Qualifier("delegatedClientDistributedSessionStore")
     private SessionStore delegatedClientDistributedSessionStore;
+
+    @Autowired
+    private TicketRegistry ticketRegistry;
+
+    @Autowired
+    @Qualifier("centralAuthenticationService")
+    private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
+
+    @Autowired
+    @Qualifier("passwordManagementCipherExecutor")
+    private CipherExecutor passwordManagementCipherExecutor;
+
+    @Autowired
+    @Qualifier("passwordHistoryService")
+    private PasswordHistoryService passwordHistoryService;
 
     @Value("${token.api.cas}")
     private String tokenApiCas;
@@ -237,7 +262,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(casRestClient(), tokenApiCas, casTenantIdentifier, casIdentity, mailSender);
+        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender);
     }
 
     @Bean
@@ -259,5 +284,20 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         metadata.getProperties().setStorageName("oauthAccessTokensCache");
         metadata.getProperties().setStorageTimeout(apiTokenTtl);
         registerTicketDefinition(plan, metadata);
+    }
+
+    @RefreshScope
+    @Bean
+    @SneakyThrows
+    public SurrogateAuthenticationService surrogateAuthenticationService() {
+        return new IamSurrogateAuthenticationService(casRestClient(), servicesManager, utils());
+    }
+
+    @RefreshScope
+    @Bean
+    public PasswordManagementService passwordChangeService() {
+        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor,
+            casProperties.getServer().getPrefix(), passwordHistoryService, casRestClient(), providersService(),
+            identityProviderHelper(), centralAuthenticationService.getObject(), utils(), ticketRegistry);
     }
 }

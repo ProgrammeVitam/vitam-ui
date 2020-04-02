@@ -2,7 +2,7 @@ package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.cas.webflow.actions.BaseWebflowActionTest;
+import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -75,7 +75,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         super.setUp();
 
         casExternalRestClient = mock(CasExternalRestClient.class);
-        val utils = new Utils(casExternalRestClient, null, 0, null, null);
+        val utils = new Utils(null, 0, null, null);
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
         resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore);
