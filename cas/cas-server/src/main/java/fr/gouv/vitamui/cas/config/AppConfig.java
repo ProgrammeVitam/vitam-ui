@@ -37,6 +37,8 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
+import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
+import lombok.SneakyThrows;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
@@ -259,5 +261,12 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         metadata.getProperties().setStorageName("oauthAccessTokensCache");
         metadata.getProperties().setStorageTimeout(apiTokenTtl);
         registerTicketDefinition(plan, metadata);
+    }
+
+    @RefreshScope
+    @Bean
+    @SneakyThrows
+    public SurrogateAuthenticationService surrogateAuthenticationService() {
+        return new IamSurrogateAuthenticationService(casRestClient(), servicesManager, utils());
     }
 }

@@ -52,20 +52,20 @@ import java.util.List;
 import lombok.val;
 
 /**
- * Specific surrogate REST based on the IAM API.
+ * Specific surrogate service based on the IAM API.
  *
  *
  */
-public class IamSurrogateRestAuthenticationService extends BaseSurrogateAuthenticationService {
+public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamSurrogateRestAuthenticationService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IamSurrogateAuthenticationService.class);
 
     private final CasExternalRestClient casExternalRestClient;
 
     private final Utils utils;
 
-    public IamSurrogateRestAuthenticationService(final CasExternalRestClient casExternalRestClient,
-                                                 final ServicesManager servicesManager, final Utils utils) {
+    public IamSurrogateAuthenticationService(final CasExternalRestClient casExternalRestClient,
+                                             final ServicesManager servicesManager, final Utils utils) {
         super(servicesManager);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;

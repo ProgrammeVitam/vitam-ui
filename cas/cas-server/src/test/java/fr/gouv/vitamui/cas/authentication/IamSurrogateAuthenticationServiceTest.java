@@ -26,20 +26,20 @@ import static org.junit.Assert.*;
 import lombok.val;
 
 /**
- * Tests {@link IamSurrogateRestAuthenticationService}.
+ * Tests {@link IamSurrogateAuthenticationService}.
  *
  *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
-public final class IamSurrogateRestAuthenticationServiceTest {
+public final class IamSurrogateAuthenticationServiceTest {
 
     private static final String SURROGATE = "surrogate";
     private static final String SU_ID = "id";
     private static final String SU_EMAIL = "superUser";
 
-    private IamSurrogateRestAuthenticationService service;
+    private IamSurrogateAuthenticationService service;
 
     private CasExternalRestClient casExternalRestClient;
 
@@ -48,7 +48,7 @@ public final class IamSurrogateRestAuthenticationServiceTest {
         casExternalRestClient = mock(CasExternalRestClient.class);
 
         val utils = new Utils(casExternalRestClient, null, 0, null, null);
-        service = new IamSurrogateRestAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
+        service = new IamSurrogateAuthenticationService(casExternalRestClient, mock(ServicesManager.class), utils);
     }
 
     @Test
