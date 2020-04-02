@@ -167,16 +167,6 @@
         <!-- password management -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-pm-rest</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-pm</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pm-webflow</artifactId>
             <version>${cas.version}</version>
         </dependency>
@@ -210,12 +200,7 @@
             <version>${cas.version}</version>
         </dependency>
 
-        <!-- CustomInitialFlowSetupAction -->
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-actions</artifactId>
-            <version>${cas.version}</version>
-        </dependency>
+        <!-- others -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-cookie-api</artifactId>
@@ -231,8 +216,11 @@
             <artifactId>cas-server-core-authentication-api</artifactId>
             <version>${cas.version}</version>
         </dependency>
-
-        <!-- others -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-actions</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-webapp-init</artifactId>

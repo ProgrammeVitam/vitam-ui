@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 
+import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
