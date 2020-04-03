@@ -1281,7 +1281,7 @@
                                     <executable>${maven.multiModuleProjectDirectory}/tools/packaging/publish.sh</executable>
                                     <workingDirectory>target</workingDirectory>
                                     <arguments>
-                                        <argument>https://repo.vitamui.com/upload/${rpm.publication.env}/Packages</argument>
+                                        <argument>https://repo.teamdlab.com/upload/${rpm.publication.env}/Packages</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
