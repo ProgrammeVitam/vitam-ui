@@ -18,6 +18,7 @@ consul_remote_sites:
 smtp:
   host: changeme
   port: 587
+  protocol: smtp
   user: no-reply@changeme
   password: changeme
   test_smtp_connection: false
