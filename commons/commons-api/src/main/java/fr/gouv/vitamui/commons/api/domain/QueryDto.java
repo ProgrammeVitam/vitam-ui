@@ -146,8 +146,7 @@ public class QueryDto {
 
     @JsonIgnore
     public boolean isEmpty() {
-        return CollectionUtils.isEmpty(getCriterionList())
-                && (getSubQueries() == null || !getSubQueries().stream().map(QueryDto::isEmpty).anyMatch(b -> b == false));
+        return CollectionUtils.isEmpty(getCriterionList()) && (getSubQueries() == null || getSubQueries().stream().allMatch(QueryDto::isEmpty));
     }
 
     public static QueryDto fromJson(final Optional<String> json) {
