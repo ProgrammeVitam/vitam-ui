@@ -1,5 +1,0 @@
----
-# defaults file for vitamui-system
-vitamui_system_packages: []
-#  - name: PACKAGE_NAME
-#    version: PACKAGE_VERSION or latest

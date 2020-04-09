@@ -1,5 +1,0 @@
----
-- name: Install Ansible.
-  package:
-    name: ansible
-    state: "{{ ansible_package_state }}"

@@ -1,4 +1,0 @@
----
-# defaults file for create-repository
-rpm_repo_directory: /var/vitamui-yum-repository
-tmp_repo_sync: /tmp/vitamui_repo_sync

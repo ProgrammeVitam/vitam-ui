@@ -1,3 +1,0 @@
-{% for item in vitam_repositories %}
-deb {% if item.trusted %}{{ item.trusted }}{%endif %} {{ item.value }} {{ item.subtree }}
-{% endfor %}

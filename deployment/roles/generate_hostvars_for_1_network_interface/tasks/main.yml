@@ -4,11 +4,10 @@
   local_action: file
     path={{ inventory_dir }}/host_vars
     state=directory
-    mode=0777
+    mode=0750
 
 - name: Generate host_vars file for host
   local_action: template
      src=host-vars.j2
      dest={{ inventory_dir }}/host_vars/{{ inventory_hostname }}
-     mode=0777
 
