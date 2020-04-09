@@ -48,6 +48,7 @@ vitamui:
     port_admin: 7002
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -64,6 +65,7 @@ vitamui:
     port_admin: 7401
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -80,6 +82,7 @@ vitamui:
     port_admin: 7003
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -96,6 +99,7 @@ vitamui:
     port_admin: 7101
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -112,6 +116,7 @@ vitamui:
     port_admin: 7201
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -133,6 +138,7 @@ vitamui:
     port_admin: 7001 # declared but is useless
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -150,6 +156,7 @@ vitamui:
     port_admin: 7203
     secure: true
     jvm_log: false
+    logging_level: "INFO"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
