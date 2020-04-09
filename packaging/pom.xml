@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>fr.gouv.vitamui</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>vitam-ui-package</artifactId>
+	<packaging>pom</packaging>
+	<name>VITAM-UI Package</name>
+	<description>Packaging VITAM-UI</description>
+
+	<build>
+		<plugins>
+			<!-- download dependencies for signing rpms -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies-rpm-signed</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<includeGroupIds>fr.gouv.vitam</includeGroupIds>
+							<includeTypes>rpm</includeTypes>
+							<outputDirectory>${basedir}/rpm_signed/vitam-product/</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${maven.exec.plugin.version}</version>
+				<executions>
+					<!-- <execution>
+						<id>create yum repodata for vitam-external</id>
+						<phase>test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>/usr/bin/createrepo</executable>
+							<arguments>
+            					<argument>.</argument>
+							</arguments>
+							<workingDirectory>../rpm/vitam-external/target/</workingDirectory>
+						</configuration>
+					</execution> -->
+					<!-- remove useless & dangerous configuration -->
+					<execution>
+						<id>Remove vitam certificates</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>./remove_user_certificates.sh</executable>
+						</configuration>
+					</execution>
+					
+					<!-- sign rpm -->
+					<execution>
+						<id>Create signed rpm</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>./create_rpm_signed.sh</executable>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- generate assemblies -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<configuration>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptors>
+								<descriptor>${basedir}/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- VITAM dependencies -->
+
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>cas-server</artifactId>
+			<version>${project.version}</version>
+			<type>rpm</type>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-external</artifactId>
+			<version>${project.version}</version>
+			<type>rpm</type>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>iam-internal</artifactId>
+			<version>${project.version}</version>
+			<type>rpm</type>
+		</dependency>
+
+		
+
+	</dependencies>
+</project>
