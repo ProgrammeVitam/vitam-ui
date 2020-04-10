@@ -208,7 +208,7 @@
           <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish customer creation button@@customerCreateFinishButton">Terminer</button>
+        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || creating" i18n="Finish customer creation button@@customerCreateFinishButton">Terminer</button>
         <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>

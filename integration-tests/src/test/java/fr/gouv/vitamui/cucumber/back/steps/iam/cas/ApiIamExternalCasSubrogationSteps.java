@@ -26,8 +26,8 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_SUBROGATIONS_cherche_une_subrogation_par_l_email_de_son_superuser_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_SUBROGATIONS() {
         // Get or Initialize defaultSubrogation before requesting superUser
         getOrInitializeDefaultSubrogationId();
-        subrogationDtos = getCasRestClient(false, new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
-                .getSubrogationsBySuperUserEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+        subrogationDtos = getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
+                .getSubrogationsBySuperUserEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         TestConstants.JULIEN_USER_PREFIX_EMAIL + CommonConstants.EMAIL_SEPARATOR + defaultEmailDomain);
     }
 
@@ -40,8 +40,8 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour chercher une subrogation par l'email de son superuser$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_chercher_une_subrogation_par_l_email_de_son_superuser() {
-        setMainTenant(TestConstants.CAS_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
+        setMainTenant(casTenantIdentifier);
+        setSecondTenant(proofTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 
@@ -59,12 +59,12 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_CAS_SUBROGATIONS cherche une subrogation par l'identifiant de son superuser dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_SUBROGATIONS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_SUBROGATIONS_cherche_une_subrogation_par_l_identifiant_de_son_superuser_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_SUBROGATIONS() {
-        final Integer[] tenants = new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER };
+        final Integer[] tenants = new Integer[] { casTenantIdentifier };
         final String[] roles = new String[] { ServicesData.ROLE_CAS_SUBROGATIONS };
         // Get or Initialize defaultSubrogation before requesting superUser
         getOrInitializeDefaultSubrogationId();
         subrogationDtos = getCasRestClient(false, tenants, roles)
-                .getSubrogationsBySuperUserId(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), TestConstants.JULIEN_USER_ID);
+                .getSubrogationsBySuperUserId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), TestConstants.JULIEN_USER_ID);
     }
 
     @Given("^deux tenants et un rôle par défaut pour chercher une subrogation par l'identifiant de son superuser$")
@@ -86,8 +86,8 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_CAS_SUBROGATIONS cherche une subrogation avec un mauvais identifiant de superuser dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_SUBROGATIONS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_SUBROGATIONS_cherche_une_subrogation_avec_un_mauvais_identifiant_de_superuser_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_SUBROGATIONS() {
         try {
-            getCasRestClient(false, new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
-                    .getSubrogationsBySuperUserId(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), TestConstants.BAD_LOGIN);
+            getCasRestClient(false, new Integer[] { casTenantIdentifier }, new String[] { ServicesData.ROLE_CAS_SUBROGATIONS })
+                    .getSubrogationsBySuperUserId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), TestConstants.BAD_LOGIN);
         }
         catch (final RuntimeException e) {
             testContext.exception = e;
@@ -102,9 +102,9 @@ public class ApiIamExternalCasSubrogationSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_CAS_SUBROGATIONS cherche une subrogation par l'identifiant d'un superuser désactivé dans un tenant auquel il est autorisé en utilisant un certificat sur le tenant et avec le rôle ROLE_CAS_SUBROGATIONS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CAS_SUBROGATIONS_cherche_une_subrogation_par_l_identifiant_d_un_superuser_désactivé_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_sur_le_tenant_et_avec_le_rôle_ROLE_CAS_SUBROGATIONS() {
         createSubrogationByUserStatus(true);
-        final Integer[] tenants = new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER };
+        final Integer[] tenants = new Integer[] { casTenantIdentifier };
         final String[] roles = new String[] { ServicesData.ROLE_CAS_SUBROGATIONS };
         subrogationDtos = getCasRestClient(false, tenants, roles)
-                .getSubrogationsBySuperUserId(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), superUser.getId());
+                .getSubrogationsBySuperUserId(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS), superUser.getId());
     }
 }

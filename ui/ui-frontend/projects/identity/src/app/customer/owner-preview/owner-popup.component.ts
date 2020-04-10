@@ -42,7 +42,7 @@ import { OwnerService } from '../owner.service';
 
 @Component({
   selector: 'app-owner-popup',
-  template: '<app-owner-preview (close)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>'
+  template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>'
 })
 export class OwnerPopupComponent implements OnInit {
 

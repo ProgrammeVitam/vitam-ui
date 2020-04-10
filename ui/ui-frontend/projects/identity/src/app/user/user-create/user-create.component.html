@@ -238,7 +238,7 @@
           </vitamui-common-input>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="formInvalid()" i18n="user create validation@@userCreateValidationButton">Valider la création</button>
+        <button type="submit" class="btn primary" [disabled]="formInvalid() || creating" i18n="user create validation@@userCreateValidationButton">Valider la création</button>
         <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>

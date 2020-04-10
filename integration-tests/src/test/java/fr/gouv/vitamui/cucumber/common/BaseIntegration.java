@@ -189,6 +189,18 @@ public abstract class BaseIntegration {
     @Value("${vitamui_platform_informations.default_email_domain}")
     protected String defaultEmailDomain;
 
+    @Value("${vitamui_platform_informations.system_archive_tenant_identifier}")
+    protected int systemArchiveTenantIdentifier;
+
+    @Value("${vitamui_platform_informations.proof_tenant}")
+    protected int proofTenantIdentifier;
+
+    @Value("${vitamui_platform_informations.cas_tenant}")
+    protected int casTenantIdentifier;
+
+    @Value("${vitamui_platform_informations.system_archive_tenant_identifier}")
+    protected int client1TenantIdentifier;
+
     @Autowired
     protected RestTemplateBuilder restTemplateBuilder;
 
@@ -200,14 +212,14 @@ public abstract class BaseIntegration {
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(TestConstants.SYSTEM_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId");
+        return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId");
 
     }
 
     protected ExternalHttpContext getArchiveTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(TestConstants.SYSTEM_ARCHIVE_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller",
-                "requestId", ACCESS_CONTRACT);
+        return new ExternalHttpContext(systemArchiveTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId",
+                ACCESS_CONTRACT);
     }
 
     protected ExternalHttpContext getArchiveTenantUserAdminContext(final Integer tenantIdentifier) {

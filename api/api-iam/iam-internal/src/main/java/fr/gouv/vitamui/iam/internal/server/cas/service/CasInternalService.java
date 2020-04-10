@@ -98,7 +98,9 @@ import lombok.Setter;
 @Setter
 public class CasInternalService {
 
-    private static final String _ID = "_id";
+    private static final String USER_NOT_FOUND_MESSAGE = "User not found: ";
+
+    private static final String ID = "_id";
 
     private static final String NB_FAILED_ATTEMPTS = "nbFailedAttempts";
 
@@ -167,7 +169,7 @@ public class CasInternalService {
         final Customer customer = optCustomer.orElseThrow(() -> new ApplicationServerException("Unable to update password : customer not found"));
 
         final List<String> oldPasswords = user.getOldPasswords();
-        if (oldPasswords != null && oldPasswords.size() > 0) {
+        if (oldPasswords != null && !oldPasswords.isEmpty()) {
             for (final String oldPassword : oldPasswords) {
                 if (passwordEncoder.matches(rawPassword, oldPassword)) {
                     throw new ConflictException("The given password has already been used in the past");
@@ -181,7 +183,7 @@ public class CasInternalService {
         final String existingPassword = user.getPassword();
 
         user.setPassword(encodedPassword);
-        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusDays(customer.getPasswordRevocationDelay());
+        final OffsetDateTime nowPlusPasswordRevocationDelay = OffsetDateTime.now().plusMonths(customer.getPasswordRevocationDelay());
         user.setPasswordExpirationDate(nowPlusPasswordRevocationDelay);
 
         userRepository.save(user);
@@ -197,7 +199,7 @@ public class CasInternalService {
     @Transactional
     public void updateNbFailedAttempsPlusLastConnectionAndStatus(final User user, final int nbFailedAttempts, final UserStatusEnum oldStatus) {
         final UserStatusEnum newStatus = user.getStatus();
-        final Query query = new Query(Criteria.where(_ID).is(user.getId()));
+        final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(NB_FAILED_ATTEMPTS, nbFailedAttempts).set(LAST_CONNECTION, OffsetDateTime.now()).set(STATUS, newStatus);
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
 
@@ -213,7 +215,7 @@ public class CasInternalService {
     private User checkUserInformations(final String email) {
         final User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("User not found: " + email);
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         }
         else if (UserTypeEnum.NOMINATIVE != user.getType()) {
             throw new InvalidAuthenticationException("User unavailable: " + email);
@@ -250,7 +252,7 @@ public class CasInternalService {
 
         final UserDto userDto = internalUserService.findUserByEmail(email);
         if (userDto == null) {
-            throw new NotFoundException("User not found: " + email);
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
         if (loadFullProfile) {
@@ -314,7 +316,7 @@ public class CasInternalService {
         user.setLastConnection(OffsetDateTime.now());
         user.setAuthToken(token.getId());
         // update user last connection info. This is used for example for users with external provider.
-        final Query query = new Query(Criteria.where(_ID).is(user.getId()));
+        final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(LAST_CONNECTION, user.getLastConnection());
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
     }
@@ -322,7 +324,7 @@ public class CasInternalService {
     public UserDto getUserProfileById(final String id) {
         final UserDto user = internalUserService.getOne(id, Optional.empty());
         if (user == null) {
-            throw new NotFoundException("User not found: " + id);
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + id);
         }
         checkStatus(user.getStatus(), user.getEmail());
 

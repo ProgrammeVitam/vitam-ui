@@ -69,7 +69,7 @@ public class ApiIamExternalTenantUpdateSteps extends CommonSteps {
     @When("^un utilisateur sans le rôle ROLE_UPDATE_TENANTS met à jour un tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_UPDATE_TENANTS$")
     public void un_utilisateur_sans_le_rôle_ROLE_UPDATE_TENANTS_met_à_jour_un_tenant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_TENANTS() {
         try {
-            getTenantRestClient().update(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+            getTenantRestClient().update(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                     buildTenantToUpdate());
         }
         catch (final RuntimeException e) {

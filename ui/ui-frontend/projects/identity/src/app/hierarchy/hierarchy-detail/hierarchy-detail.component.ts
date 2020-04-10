@@ -54,7 +54,7 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   @Input() profile: Profile;
   @Input() isPopup: boolean;
 
-  @Output() hierarchyClose = new EventEmitter();
+  @Output() previewClose = new EventEmitter();
 
   profileUpdateSub: Subscription;
 
@@ -82,7 +82,7 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   }
 
   emitClose() {
-    this.hierarchyClose.emit();
+    this.previewClose.emit();
   }
 
   levelNotAllowed(): boolean {

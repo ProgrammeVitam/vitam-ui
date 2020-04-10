@@ -1,7 +1,7 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
     <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-       <app-hierarchy-detail *ngIf="openedItem" (hierarchyClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
+       <app-hierarchy-detail *ngIf="openedItem" (previewClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
     </mat-sidenav>
 
     <mat-sidenav-content>

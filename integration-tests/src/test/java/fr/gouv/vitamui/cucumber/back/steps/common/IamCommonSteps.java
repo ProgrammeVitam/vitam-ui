@@ -91,7 +91,7 @@ public class IamCommonSteps extends CommonSteps {
     public void un_utilisateur_décline_la_subrogation() {
         try {
             getSubrogationRestClient()
-                    .decline(getContext(testContext.tenantDto != null ? testContext.tenantDto.getIdentifier() : TestConstants.SYSTEM_TENANT_IDENTIFIER,
+                    .decline(getContext(testContext.tenantDto != null ? testContext.tenantDto.getIdentifier() : proofTenantIdentifier,
                             testContext.authUserDto.getAuthToken()), testContext.savedSubrogationDto.getId());
         }
         catch (final RuntimeException e) {
@@ -105,8 +105,8 @@ public class IamCommonSteps extends CommonSteps {
         deleteAllSubrogations(subrogationDto);
         subrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
         testContext.savedSubrogationDto = subrogationDto;
-        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { TestConstants.CAS_TENANT_IDENTIFIER },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS),
+        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
+                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         subrogationDto.getSurrogate(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
@@ -122,7 +122,7 @@ public class IamCommonSteps extends CommonSteps {
 
     @Given("^un tenant et customer system$")
     public void un_tenant_et_customer_system() throws Exception {
-        testContext.mainTenant = TestConstants.SYSTEM_TENANT_IDENTIFIER;
+        testContext.mainTenant = proofTenantIdentifier;
         testContext.customerId = TestConstants.SYSTEM_CUSTOMER_ID;
     }
 

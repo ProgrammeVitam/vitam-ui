@@ -7,7 +7,7 @@ server:
   port: 8080
 
 
-vitamui.cas.tenant.identifier: 11
+vitamui.cas.tenant.identifier: -1
 vitamui.cas.identity: cas
 iam-client:
   server-host: localhost

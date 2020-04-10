@@ -13,10 +13,6 @@ import fr.gouv.vitamui.cucumber.common.CommonSteps;
 
 public class SecuritySteps extends CommonSteps {
 
-    private static final String PARAM_WITH = "avec";
-
-    private static final String PARAM_WITHOUT = "sans";
-
     @Before
     public void cleanTestContext() {
         testContext.reset();
@@ -231,24 +227,4 @@ public class SecuritySteps extends CommonSteps {
         testContext.fullAccess = fullAccess;
     }
 
-    /**
-     * Allow to mutualise steps depending on parameter "avec"/"sans" : return the
-     * given role (avec) or the default role (sans)
-     *
-     * @param avecOuSans
-     *            parameter "avec" or "sans" wrote in the Scenario Step
-     * @param role
-     *            the role required to operate the action to test
-     * @return
-     */
-    private String getRoleOrDefault(final String avecOuSans, final String role) {
-        switch (avecOuSans) {
-            case PARAM_WITH :
-                return role;
-            case PARAM_WITHOUT :
-                return testContext.defaultRole;
-            default :
-                throw new IllegalArgumentException("Le paramètre " + avecOuSans + " ne correspond pas à un mot accepté");
-        }
-    }
 }

@@ -65,6 +65,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   lastUploadedImageUrl: any;
   hasError = true;
   message: string;
+  creating = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -160,12 +161,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) { return; }
+    this.creating = true;
     this.customerService.create(this.form.value, this.imageToUpload).subscribe(
       () => {
         this.dialogRef.close(true);
       },
       (error) => {
-        this.dialogRef.close(false);
+        this.creating = false;
         console.error(error);
       });
   }

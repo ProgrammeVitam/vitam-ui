@@ -28,11 +28,11 @@ public class ApiIamExternalTenantCreationSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_CREATE_TENANTS ajoute un nouveau tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_TENANTS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_TENANTS_ajoute_un_nouveau_tenant_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_TENANTS() {
         testContext.level = "";
-        testContext.tenantDto = getTenantRestClient(true, new Integer[] { TestConstants.SYSTEM_TENANT_IDENTIFIER },
+        testContext.tenantDto = getTenantRestClient(true, new Integer[] { proofTenantIdentifier },
                 new String[] { ServicesData.ROLE_CREATE_TENANTS })
-                        .create(getContext(TestConstants.SYSTEM_TENANT_IDENTIFIER,
+                        .create(getContext(proofTenantIdentifier,
                                 tokenUserTest(new String[] { ServicesData.ROLE_CREATE_TENANTS },
-                                        TestConstants.SYSTEM_TENANT_IDENTIFIER, TestConstants.SYSTEM_CUSTOMER_ID,
+                                        proofTenantIdentifier, TestConstants.SYSTEM_CUSTOMER_ID,
                                         testContext.level)),
                                 createOwnerAndBuildTenant());
     }
@@ -46,11 +46,11 @@ public class ApiIamExternalTenantCreationSteps extends CommonSteps {
             final OwnerDto rownerDto = getOwnerRestClient().create(getSystemTenantUserAdminContext(), ownerDto);
             final TenantDto tenantDto = IamDtoBuilder.buildTenantDto(null, testContext.tenantDto.getName(), null,
                     rownerDto.getId(), SYSTEM_CUSTOMER_ID);
-            getTenantRestClient(true, new Integer[] { TestConstants.SYSTEM_TENANT_IDENTIFIER },
+            getTenantRestClient(true, new Integer[] { proofTenantIdentifier },
                     new String[] { ServicesData.ROLE_CREATE_TENANTS })
-                            .create(getContext(TestConstants.SYSTEM_TENANT_IDENTIFIER,
+                            .create(getContext(proofTenantIdentifier,
                                     tokenUserTest(new String[] { ServicesData.ROLE_CREATE_TENANTS },
-                                            TestConstants.SYSTEM_TENANT_IDENTIFIER, TestConstants.SYSTEM_CUSTOMER_ID,
+                                            proofTenantIdentifier, TestConstants.SYSTEM_CUSTOMER_ID,
                                             testContext.level)),
                                     tenantDto);
         }
@@ -87,8 +87,8 @@ public class ApiIamExternalTenantCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour l'ajout d'un tenant$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_l_ajout_d_un_tenant() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
         testContext.level = "";
     }

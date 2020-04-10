@@ -2,7 +2,6 @@ package fr.gouv.vitamui.utils;
 
 import static fr.gouv.vitamui.utils.TestConstants.ADMIN_LEVEL;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 
 import java.util.Arrays;
@@ -10,6 +9,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.InvalidArgumentException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -23,6 +24,13 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
 
 public class FactoryDto {
+    
+    private static Integer proofTenantIdentitfier = 10;
+    
+    @Autowired
+    public FactoryDto(Environment env) {
+        proofTenantIdentitfier = Integer.valueOf(env.getProperty("vitamui_platform_informations.proof_tenant"));
+    }
 
     public static <T> T buildDto(final Class<T> clazz) {
         T dto = null;
@@ -66,7 +74,7 @@ public class FactoryDto {
     }
 
     private static ProfileDto buildProfileDto() {
-        return IamDtoBuilder.buildProfileDto(null, randomString(), SYSTEM_CUSTOMER_ID, SYSTEM_TENANT_IDENTIFIER, "applicationName", ADMIN_LEVEL,
+        return IamDtoBuilder.buildProfileDto(null, randomString(), SYSTEM_CUSTOMER_ID, proofTenantIdentitfier, "applicationName", ADMIN_LEVEL,
                 Arrays.asList(new Role(ServicesData.ROLE_CREATE_PROFILES)));
     }
 

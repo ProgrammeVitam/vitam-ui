@@ -38,7 +38,7 @@ public class ApiIamExternalSubrogationCreationSteps extends CommonSteps {
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_création_d_une_subrogation() {
         subrogationDto = buildGoodSubrogation();
         setMainTenant(testContext.tenantDto.getIdentifier());
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

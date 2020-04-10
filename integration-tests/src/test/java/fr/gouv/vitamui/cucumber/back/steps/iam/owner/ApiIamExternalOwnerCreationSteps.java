@@ -31,8 +31,8 @@ public class ApiIamExternalOwnerCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour la création d'un propriétaire$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_la_création_d_un_propriétaire() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
     }
 

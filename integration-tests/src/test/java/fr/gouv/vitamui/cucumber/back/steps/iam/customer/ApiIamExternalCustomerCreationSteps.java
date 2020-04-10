@@ -128,8 +128,8 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour l'ajout d'un client")
     public void deux_tenants_et_un_rôle_par_défaut_pour_l_ajout_d_un_client() {
-        setMainTenant(TestConstants.SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(TestConstants.CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ServicesData.ROLE_LOGBOOKS;
         testContext.level = "";
     }

@@ -2,9 +2,8 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.user;
 
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_USERS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
-import static fr.gouv.vitamui.utils.TestConstants.CAS_TENANT_IDENTIFIER;
 import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_TENANT_IDENTIFIER;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import cucumber.api.Transform;
@@ -124,8 +123,8 @@ public class ApiIamUserCreationSteps extends CommonSteps {
 
     @Given("^deux tenants et un rôle par défaut pour l'ajout d'un utilisateur$")
     public void deux_tenants_et_un_rôle_par_défaut_pour_l_ajout_d_un_utilisateur() {
-        setMainTenant(SYSTEM_TENANT_IDENTIFIER);
-        setSecondTenant(CAS_TENANT_IDENTIFIER);
+        setMainTenant(proofTenantIdentifier);
+        setSecondTenant(casTenantIdentifier);
         testContext.defaultRole = ROLE_LOGBOOKS;
         testContext.level = "";
     }

@@ -1,7 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.cas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -55,9 +58,10 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { CustomSequenceRepository.class,
-        TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = { CustomSequenceRepository.class, TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
+
+    private static final int PASSWORD_EXPIRATION_DELAY = 42;
 
     private static final String EMAIL = "surrogate@vitamui.com";
 
@@ -125,10 +129,9 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         casService.setTimeIntervalForLoginAttempts(20);
         casService.setPasswordEncoder(passwordEncoder);
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
-        Tenant tenant = new Tenant();
+        final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
-                .thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
         tokenRepository.deleteAll();
@@ -144,13 +147,13 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         subro.setSuperUserCustomerId("superUserCustomerId");
         subro.setSurrogate(surrogate);
         subro.setSurrogateCustomerId("surrogateCustomerId");
-        Mockito.when(subrogationRepository.findBySuperUserAndSurrogate(ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString())).thenReturn(Optional.of(subro));
+        Mockito.when(subrogationRepository.findBySuperUserAndSurrogate(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenReturn(Optional.of(subro));
         Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
         casService.deleteSubrogationBySuperUserAndSurrogate(superUser, surrogate);
 
-        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq")
-                .is(MongoDbCollections.SUBROGATIONS).and("evType").is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
+        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
+                .is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -163,8 +166,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         user.setEmail(EMAIL);
         final Subrogation subro = getUsersByEmail(user);
 
-        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq")
-                .is(MongoDbCollections.SUBROGATIONS).and("evType").is(EventType.EXT_VITAMUI_START_SURROGATE_GENERIC);
+        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
+                .is(EventType.EXT_VITAMUI_START_SURROGATE_GENERIC);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -177,8 +180,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         user.setEmail(EMAIL);
         final Subrogation subro = getUsersByEmail(user);
 
-        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq")
-                .is(MongoDbCollections.SUBROGATIONS).and("evType").is(EventType.EXT_VITAMUI_START_SURROGATE_USER);
+        final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
+                .is(EventType.EXT_VITAMUI_START_SURROGATE_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -194,8 +197,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         Mockito.when(internalUserService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
         Mockito.when(subrogationRepository.findOneBySurrogate(ArgumentMatchers.anyString())).thenReturn(subro);
         Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
-        casService.getUserByEmail(email,
-                Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
+        casService.getUserByEmail(email, Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER));
         return subro;
     }
 
@@ -212,7 +214,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         Mockito.when(userRepository.findByEmail(EMAIL)).thenReturn(user);
         final Customer customer = new Customer();
         customer.setId(CUSTOMER_ID);
-        customer.setPasswordRevocationDelay(42);
+        customer.setPasswordRevocationDelay(PASSWORD_EXPIRATION_DELAY);
         Mockito.when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
 
         return user;
@@ -225,8 +227,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
         casService.updatePassword(EMAIL, PASSWORD);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq")
-                .is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_PASSWORD_INIT);
+        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
+                .is(EventType.EXT_VITAMUI_PASSWORD_INIT);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -235,13 +237,16 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     public void testPasswordUpdate() {
 
         final User user = prepareUserPwd("oldPassword");
-
+        final String oldPassword = user.getPassword();
+        final OffsetDateTime passwordExpirationDate = OffsetDateTime.now().plusMonths(PASSWORD_EXPIRATION_DELAY);
         casService.updatePassword(EMAIL, PASSWORD);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq")
-                .is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_PASSWORD_CHANGE);
+        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
+                .is(EventType.EXT_VITAMUI_PASSWORD_CHANGE);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
+        assertNotEquals("Password should not be the same", oldPassword, user.getPassword());
+        assertTrue("Password Expiration date is not correct", user.getPasswordExpirationDate().isAfter(passwordExpirationDate));
     }
 
     @Test(expected = ConflictException.class)
@@ -262,12 +267,11 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, 4, UserStatusEnum.ENABLED);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq")
-                .is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_BLOCK_USER);
+        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
+                .is(EventType.EXT_VITAMUI_BLOCK_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
-        assertThat(event.getEvDetData()).isEqualTo(
-                "{\"diff\":{\"-Statut\":\"ENABLED\"," + "\"+Statut\":\"BLOCKED\"},\"Durée du blocage\":\"PT20M\"}");
+        assertThat(event.getEvDetData()).isEqualTo("{\"diff\":{\"-Statut\":\"ENABLED\"," + "\"+Statut\":\"BLOCKED\"},\"Durée du blocage\":\"PT20M\"}");
     }
 }
