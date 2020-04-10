@@ -71,6 +71,8 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
 
 import java.util.*;
 
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
@@ -108,6 +110,7 @@ import lombok.val;
 public class UserPrincipalResolver implements PrincipalResolver {
 
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
+    public static final String COMPUTED_OTP = "computedOtp";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserPrincipalResolver.class);
 
@@ -118,6 +121,10 @@ public class UserPrincipalResolver implements PrincipalResolver {
     private final Utils utils;
 
     private final SessionStore sessionStore;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final ProvidersService providersService;
 
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> principal, final Optional<AuthenticationHandler> handler) {
@@ -178,7 +185,11 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(FIRSTNAME_ATTRIBUTE, Collections.singletonList(user.getFirstname()));
         attributes.put(LASTNAME_ATTRIBUTE, Collections.singletonList(user.getLastname()));
         attributes.put(IDENTIFIER_ATTRIBUTE, Collections.singletonList(user.getIdentifier()));
-        attributes.put(OTP_ATTRIBUTE, Collections.singletonList(user.isOtp()));
+        val otp = user.isOtp();
+        attributes.put(OTP_ATTRIBUTE, Collections.singletonList(otp));
+        val otpUsername = superUsername != null ? superUsername : username;
+        val computedOtp = otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
+        attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
         attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
         attributes.put(LANGUAGE_ATTRIBUTE, Collections.singletonList(user.getLanguage()));
         attributes.put(PHONE_ATTRIBUTE, Collections.singletonList(user.getPhone()));

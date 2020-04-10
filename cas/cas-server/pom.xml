@@ -169,6 +169,11 @@
         <!-- multi-factor authentication -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-simple-mfa</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-core-authentication-mfa</artifactId>
             <version>${cas.version}</version>
         </dependency>

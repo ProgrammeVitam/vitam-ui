@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cas.authentication;
 
+import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
@@ -14,6 +15,7 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -78,7 +80,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val utils = new Utils(null, 0, null, null);
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
-        resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore);
+        resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore,
+            mock(IdentityProviderHelper.class), mock(ProvidersService.class));
     }
 
     @Test
