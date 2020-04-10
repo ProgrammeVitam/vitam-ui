@@ -207,7 +207,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver() {
-        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore);
+        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
+            identityProviderHelper(), providersService());
     }
 
     @Bean
