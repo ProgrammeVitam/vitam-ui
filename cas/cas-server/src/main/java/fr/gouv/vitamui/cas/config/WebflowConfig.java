@@ -306,4 +306,9 @@ public class WebflowConfig {
         return new ResetPasswordController(casProperties, passwordManagementService, communicationsManager, ticketRegistry,
             messageSource, utils, pmTicketFactory());
     }
+
+    @Bean
+    public Action loadSurrogatesListAction() {
+        return new AlwaysSuccessAction();
+    }
 }

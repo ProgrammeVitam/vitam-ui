@@ -41,17 +41,15 @@ import java.util.Map;
 import java.util.Optional;
 
 import lombok.val;
-import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.BasePasswordManagementService;
 import org.apereo.cas.pm.InvalidPasswordException;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordHistoryService;
-import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
@@ -70,6 +68,8 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
 /**
  * Specific password management service based on the IAM API.
@@ -115,16 +115,13 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     protected RequestContext blockIfSubrogation() {
         val requestContext = RequestContextHolder.getRequestContext();
-        Authentication authentication = WebUtils.getAuthentication(requestContext);
-        if (authentication == null) {
-            val tgtId = WebUtils.getTicketGrantingTicketId(requestContext);
-            if (StringUtils.isNotBlank(tgtId)) {
-                val tgt = centralAuthenticationService.getTicket(tgtId, TicketGrantingTicket.class);
-                authentication = tgt.getAuthentication();
-            }
-        }
+        val authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
-            val superUsername = utils.getSuperUsername(authentication);
+            String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(), SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
+            if (superUsername == null) {
+                superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(), SUPER_USER_ATTRIBUTE);
+            }
+            LOGGER.debug("is it currently a superUser: {}", superUsername);
             Assert.isNull(superUsername, "cannot use password management with subrogation");
         }
 
