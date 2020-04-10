@@ -155,4 +155,8 @@ public final class CriteriaUtils {
         }
     }
 
+    public static boolean isNullOrEmpty(final QueryDto criteria) {
+        return criteria == null || criteria.isEmpty();
+    }
+
 }

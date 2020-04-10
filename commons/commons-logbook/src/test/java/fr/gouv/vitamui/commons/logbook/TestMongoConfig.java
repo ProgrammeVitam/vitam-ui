@@ -25,7 +25,6 @@ import de.flapdoodle.embed.process.runtime.Network;
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
-import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.repository.CommonsMongoRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.springframework.test.context.TestPropertySource;

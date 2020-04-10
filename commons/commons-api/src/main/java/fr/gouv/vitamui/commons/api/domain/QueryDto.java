@@ -43,6 +43,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -141,6 +142,11 @@ public class QueryDto {
     public QueryDto keyFilter(final Collection<String> allowedKeys) {
         CriteriaUtils.checkContainsAuthorizedKeys(this, allowedKeys);
         return this;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return CollectionUtils.isEmpty(getCriterionList()) && (getSubQueries() == null || getSubQueries().stream().allMatch(QueryDto::isEmpty));
     }
 
     public static QueryDto fromJson(final Optional<String> json) {

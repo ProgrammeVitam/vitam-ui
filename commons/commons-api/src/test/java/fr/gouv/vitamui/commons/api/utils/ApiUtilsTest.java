@@ -1,8 +1,5 @@
 package fr.gouv.vitamui.commons.api.utils;
 
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.io.IOException;
 
 import org.junit.Assert;
