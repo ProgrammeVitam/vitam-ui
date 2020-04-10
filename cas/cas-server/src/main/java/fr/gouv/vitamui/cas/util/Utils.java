@@ -47,8 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.apereo.cas.CasProtocolConstants;
-import org.apereo.cas.authentication.Authentication;
-import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
@@ -104,12 +102,6 @@ public class Utils {
         final ExternalContext externalContext = requestContext.getExternalContext();
         externalContext.recordResponseComplete();
         return new Event(action, CasWebflowConstants.TRANSITION_ID_STOP);
-    }
-
-    public String getSuperUsername(final Authentication authentication) {
-        final String username = (String) getAttributeValue(authentication.getAttributes() ,SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
-        LOGGER.debug("is it currently a superUser: {}", username);
-        return username;
     }
 
     public Cookie buildIdpCookie(final String value, final TicketGrantingCookieProperties tgc) {

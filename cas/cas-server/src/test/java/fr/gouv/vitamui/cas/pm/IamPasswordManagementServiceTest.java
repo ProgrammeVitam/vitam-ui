@@ -30,6 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -59,6 +60,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private IdentityProviderHelper identityProviderHelper;
 
+    private Principal principal;
+
     @Before
     public void setUp() {
         super.setUp();
@@ -74,9 +77,10 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
         successes.put("fake", null);
         authAttributes = new HashMap<>();
+        principal = mock(Principal.class);
         flowParameters.put("authentication", new DefaultAuthentication(
             ZonedDateTime.now(),
-            mock(Principal.class),
+            principal,
             authAttributes,
             successes,
             new ArrayList<>()
@@ -91,6 +95,21 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     @Test
     public void testChangePasswordFailsBecauseOfASuperUser() {
         authAttributes.put(SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL, Collections.singletonList("fakeSuperUser"));
+
+        try {
+            service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest());
+            fail("should fail");
+        }
+        catch (final IllegalArgumentException e) {
+            assertEquals("cannot use password management with subrogation", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testChangePasswordFailsBecauseOfASuperUser2() {
+        val attributes = new HashMap<String, List<Object>>();
+        attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList("fakeSuperUser"));
+        when(principal.getAttributes()).thenReturn(attributes);
 
         try {
             service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest());
