@@ -189,6 +189,9 @@ public class CommonConstants {
 
     public static final String THEME_COLORS = "THEME_COLORS";
 
+    public static final String APP_LOGO = "APP_LOGO";
+
+
     /**
      * Constant contains redirect URL for cas after logout
      */

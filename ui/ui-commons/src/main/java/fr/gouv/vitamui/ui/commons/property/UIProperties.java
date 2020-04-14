@@ -50,6 +50,8 @@ public interface UIProperties {
 
     public Integer getLimitPagination();
 
+    public String getThemeLogo();
+
     public Map<String, String> getThemeColors();
 
     public String getAssets();

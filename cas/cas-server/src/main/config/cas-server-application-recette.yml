@@ -28,6 +28,7 @@ cas.authn.accept.users:
 
 
 cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
+cas.messageBundle.commonNames: classpath:/common_messages.properties
 
 
 cas.tgc.path: /cas
@@ -138,6 +139,10 @@ server-identity :
   identityRole: SSO
   identityServerId: 1
 
+#theme:
+#  primary: '#123456'
+#  secondary: '#654321'
+# ...
 
 logging:
   config: src/main/config/logback-dev.xml

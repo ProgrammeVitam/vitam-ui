@@ -71,7 +71,7 @@ let expectedCustomer: Customer = {
         country: 'france'
     },
     owners: [],
-    themeColors: new Map<string, string>()
+    themeColors: {}
 };
 
 @Component({
@@ -148,7 +148,7 @@ describe('Customer InformationTabComponent', () => {
         country: 'france'
       },
       owners: [],
-      themeColors: new Map<string, string>()
+      themeColors: {}
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(

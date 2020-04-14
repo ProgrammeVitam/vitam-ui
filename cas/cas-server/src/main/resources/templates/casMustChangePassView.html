@@ -6,7 +6,7 @@
     <script type="text/javascript" th:src="@{/js/passwordMeter.js}"></script>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div th:replace="fragments/pwdupdateform"><a href="fragments/pwdupdateform.html">pwdupdateform</a></div>
 </div>

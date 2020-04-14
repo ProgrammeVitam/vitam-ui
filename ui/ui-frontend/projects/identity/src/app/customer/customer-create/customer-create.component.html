@@ -185,7 +185,7 @@
         </div>
 
         <div class="customer-colors-input">
-          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" overloadSelector="form#formCreateCustomer"></app-customer-colors-input>
+          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" themeOverloadSelector="form#formCreateCustomer"></app-customer-colors-input>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}

@@ -25,10 +25,9 @@ management:
       enabled: false
 
 ui-portal:
+  #theme-logo: /path/to/logo.png
   theme-colors:
     vitamui-primary: "#702382"
-    vitamui-primary-light: "#992fb1"
-    vitamui-primary-light-20: "#ba52d1"
     vitamui-secondary: "#7FA1D4"
   assets: src/main/config
   iam-external-client:

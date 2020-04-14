@@ -115,7 +115,7 @@ let expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly : false
   }],
-  themeColors: new Map<string, string>()
+  themeColors: {}
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -222,7 +222,7 @@ describe('UserInfoTabComponent', () => {
         customerId: 'idCustomer',
         readonly : false
       }],
-      themeColors: new Map<string, string>()
+      themeColors: {}
     };
     expectedUserInfo = {
       multifactorAllowed: true,

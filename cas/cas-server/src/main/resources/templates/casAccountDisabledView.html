@@ -5,7 +5,7 @@
     <title th:text="#{screen.accountdisabled.heading}">CAS Account Disabled View</title>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
         <h2 th:utext="#{screen.accountdisabled.heading}">This account has been disabled.</h2>

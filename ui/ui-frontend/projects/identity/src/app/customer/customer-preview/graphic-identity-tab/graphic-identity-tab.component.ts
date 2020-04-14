@@ -93,9 +93,10 @@ export class GraphicIdentityTabComponent implements OnInit {
 
   overloadLocalTheme() {
     const selector: HTMLElement = document.querySelector('div.vitamui-sidepanel');
-    // tslint:disable-next-line:forin
     for (const key in this.themeColors) {
-      selector.style.setProperty('--' + key, this.themeColors[key]);
+      if (this.themeColors.hasOwnProperty(key) && selector != null) {
+        selector.style.setProperty('--' + key, this.themeColors[key]);
+      }
     }
   }
 

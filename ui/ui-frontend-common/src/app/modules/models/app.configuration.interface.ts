@@ -42,7 +42,8 @@ export interface AppConfiguration {
     LOGOUT_REDIRECT_UI_URL: string;
     SEARCH_URL?: string;
     THEME_COLORS: any;
-    LOGO: any;
+    APP_LOGO: string;
+    LOGO: string;
     [key: string]: string;
 
 }

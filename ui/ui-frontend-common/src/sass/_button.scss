@@ -129,8 +129,7 @@
 }
 
 .btn-link {
-    // TODO Rename variable to vitamui-link
-    @include login-link;
+    @include vitamui-link;
     background: none;
     border: none;
     color: var(--vitamui-secondary);
@@ -140,7 +139,7 @@
     cursor: pointer;
 
     &:hover, &:focus, &:active {
-        color: #45ccb4;
+        color: var(--vitamui-secondary-light);
     }
 }
 

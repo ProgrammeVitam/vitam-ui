@@ -129,6 +129,20 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
 
+        String vitamLogoPath = properties.getThemeLogo();
+
+        if(vitamLogoPath != null) {
+            if( ! vitamLogoPath.startsWith( "/" ) ) {
+                vitamLogoPath = '/' + vitamLogoPath;
+            }
+            String logo = getBase64File(vitamLogoPath, "");
+            if(logo != null) {
+                configurationData.put(CommonConstants.APP_LOGO, logo);
+                return configurationData;
+            }
+        }
+
+        configurationData.put(CommonConstants.APP_LOGO, null);
         return configurationData;
     }
 
@@ -141,17 +155,20 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return client;
     }
 
-    public String getBase64Asset(String fileName) {
-        final Path assetFile = Paths.get(properties.getAssets(), fileName);
-        String base64Logo = null;
+    public String getBase64File(String fileName, String basePath) {
+        final Path assetFile = Paths.get(basePath, fileName);
+        String base64Asset = null;
         try {
-            base64Logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
+            base64Asset = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
         }
         catch (IOException e) {
-            LOGGER.warn("Error while resolve file");
-            e.printStackTrace();
+            LOGGER.error("Error while resolving logo path", e);
             return  null;
         }
-        return base64Logo;
+        return base64Asset;
+    }
+
+    public String getBase64Asset(String fileName) {
+        return getBase64File(fileName, properties.getAssets());
     }
 }

@@ -99,7 +99,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         city: 'Paris',
         country: 'France'
       },
-      themeColors: new Map<string, string>()
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -155,7 +155,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         city: 'Paris',
         country: 'France'
       },
-      themeColors: new Map<string, string>()
+      themeColors: {}
     },
   ],
   pageNum: 0,
@@ -219,7 +219,7 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         city: 'Paris',
         country: 'France'
       },
-      themeColors: new Map<string, string>()
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -275,7 +275,7 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         city: 'Paris',
         country: 'France'
       },
-      themeColors: new Map<string, string>()
+      themeColors: {}
     },
   ],
   pageNum: 0,

@@ -29,8 +29,8 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
   @Input() placeholder: string;
   @Input() spinnerDiameter = 25;
 
-  // css selector to overload color theme for preview (default = only color circles around inputs)
-  @Input() overloadSelector = '.field-color-preview';
+  // css selector to override color theme for preview (default = only colors preview)
+  @Input() themeOverloadSelector = '.field-color-preview';
 
   @Input() disabled = false;
 
@@ -83,17 +83,7 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
     };
 
     // If form is valid, overload local theme for preview
-    this.overloadLocalTheme();
-  }
-
-  overloadLocalTheme() {
-    const newTheme = this.themeService.getThemeColors(this.colors);
-    const selector: HTMLElement = document.querySelector(this.overloadSelector);
-    for (const key in newTheme) {
-      if (newTheme.hasOwnProperty(key)) {
-        selector.style.setProperty('--' + key, newTheme[key]);
-      }
-    }
+    this.themeService.overrideTheme(this.colors, this.themeOverloadSelector);
   }
 
   ngOnInit(): void {

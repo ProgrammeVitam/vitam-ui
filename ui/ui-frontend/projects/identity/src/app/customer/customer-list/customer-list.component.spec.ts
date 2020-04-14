@@ -114,7 +114,7 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: new Map<string, string>()
+        themeColors: {}
       },
       {
         id: '12',
@@ -140,7 +140,7 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: new Map<string, string>()
+        themeColors: {}
       },
       {
         id: '13',
@@ -166,7 +166,7 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: new Map<string, string>()
+        themeColors: {}
       },
       {
         id: '14',
@@ -192,7 +192,7 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: new Map<string, string>()
+        themeColors: {}
       },
       {
         id: '15',
@@ -218,7 +218,7 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: new Map<string, string>()
+        themeColors: {}
       },
     ];
 
