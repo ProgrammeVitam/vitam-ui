@@ -1,0 +1,16 @@
+#
+#
+#
+
+- hosts: localhost
+  gather_facts: false
+  vars:
+    deployLocalhost: true
+    compute_templates: true
+    mongod_source_template_dir_current: "{{ mongod_source_template_dir }}"
+    mongod_output_dir_entry_point_current: "{{ mongod_output_dir_entry_point }}"
+    docker_data_path: "/vitamui/scripts/mongo/data/last/" # script path inside Docker image (special usecase)
+  roles:
+    - vitamui-database-scripts-templater
+
+

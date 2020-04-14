@@ -1,0 +1,11 @@
+---
+# defaults file for vitamui-database-scripts-templater
+
+# Character that replaces "/" in script path
+mongod_scripts_template_path_replace_str: "--"
+mongod_source_template_files: []
+mongod_source_template_files_sorted: []
+
+# list used by jinja for hash
+mongod_addedScripts: []
+
