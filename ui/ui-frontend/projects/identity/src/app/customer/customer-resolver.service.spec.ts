@@ -68,7 +68,7 @@ const expectedCustomer: Customer = {
     country: 'france'
   },
   owners: [],
-  themeColors: new Map<string, string>()
+  themeColors: {}
 };
 
 describe('CustomerResolver', () => {

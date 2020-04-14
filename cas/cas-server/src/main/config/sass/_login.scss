@@ -47,15 +47,15 @@
         border: 1px solid transparent;
 
         &:focus {
-            border-color: #a6a6a6;
+            border-color: $greyish-two;
         }
 
         &.ng-valid.ng-touched {
-            border-color: #43ea2a;
+            border-color: $green;
         }
 
         &.ng-invalid.ng-touched {
-            border-color: #ff0000;
+            border-color: $red;
         }
 
         &[disabled] {
@@ -89,7 +89,7 @@
         &:focus:not([disabled]),
         &:hover:not([disabled]) {
             cursor: pointer;
-            background-color: #ff8b58;
+            background-color: var(--vitamui-primary-light);
             outline: none;
         }
 
@@ -125,7 +125,7 @@
             display: block;
             font-size: 18px;
             color: var(--vitamui-secondary);
-            background-color: #e7f5f2;
+            background-color: var(--vitamui-secondary-light-20);
             width: 30px;
             height: 30px;
             border-radius: 15px;
@@ -172,7 +172,7 @@
             text-align: center;
 
             i.check-icon {
-                color: #00acd5;
+                color: var(--vitamui-secondary-light);
                 font-size: 110px;
             }
         }

@@ -193,5 +193,5 @@ const expectedCustomer: Customer = {
     },
     readonly: false
   }],
-  themeColors: new Map<string, string>()
+  themeColors: {}
 };

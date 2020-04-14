@@ -92,7 +92,7 @@
             &:focus:not([disabled]),
             &:hover:not([disabled]) {
                 cursor: pointer;
-                background-color: #ff8b58;
+                background-color: var(--vitamui-primary-light);
                 outline: none;
             }
 
@@ -156,7 +156,7 @@
             &:focus:not([disabled]),
             &:hover:not([disabled]) {
                 cursor: pointer;
-                background-color: #ff8b58;
+                background-color: var(--vitamui-primary-light);
                 outline: none;
             }
 

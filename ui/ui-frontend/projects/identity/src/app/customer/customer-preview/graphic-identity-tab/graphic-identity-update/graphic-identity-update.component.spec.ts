@@ -87,7 +87,7 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: new Map<string, string>()
+  themeColors: {}
 };
 
 @Component({

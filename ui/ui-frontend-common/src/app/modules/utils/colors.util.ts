@@ -76,15 +76,13 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
     return color;
   }
 
-  lightModificator *= 2;
-
   const max = 255;
   const rgbValue: RGB = hexToRgb(color);
   const hslValue: HSL = rgbToHsl(rgbValue);
 
   // lighten
   hslValue.l = Math.min(hslValue.l + lightModificator, 100);
-  const lightRGBvalue: RGB = hslToRgbExperimental(hslValue);
+  const lightRGBvalue: RGB = hslToRgb(hslValue);
 
   return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
 }
@@ -99,14 +97,12 @@ function convertToDarkColor(color: string, lightModificator: number = 10) {
     return color;
   }
 
-  lightModificator *= 2;
-
   const rgbValue: RGB = hexToRgb(color);
   const hslValue: HSL = rgbToHsl(rgbValue);
 
   // darken
   hslValue.l = Math.max(hslValue.l - lightModificator, 0);
-  const darkRGBvalue: RGB = hslToRgbExperimental(hslValue);
+  const darkRGBvalue: RGB = hslToRgb(hslValue);
 
   return '#' + toHex(darkRGBvalue.r) + toHex(darkRGBvalue.g) + toHex(darkRGBvalue.b);
 }
@@ -126,7 +122,12 @@ function hexToRgb(hex): RGB {
     null;
 }
 
-function hslToRgbExperimental(inputHSL): RGB {
+export function hexToRgbString(hex) {
+  const rgb = hexToRgb(hex);
+  return rgb.r + ', ' + rgb.g + ', ' + rgb.b;
+}
+
+function hslToRgb(inputHSL): RGB {
   const hsl: HSL = new HSL( inputHSL.h * 360, inputHSL.s / 100, inputHSL.l / 100);
   let rgb: RGB;
 

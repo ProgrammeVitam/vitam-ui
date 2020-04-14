@@ -5,7 +5,7 @@
     cursor: pointer;
 
     &:hover, &:active {
-        background: rgba(92, 186, 169, 0.15);
+        background: rgba(var(--vitamui-secondary-rgb), 0.15);
     }
 
     &.table-filter-option-separator:not(:first-child) {

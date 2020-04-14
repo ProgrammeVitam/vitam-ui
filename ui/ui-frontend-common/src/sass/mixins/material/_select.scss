@@ -19,11 +19,11 @@
     .mat-option.mat-active,
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled) {
-        background-color: RGBA(var(--vitamui-secondary), 0.85);
+        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
-        background-color: RGBA(var(--vitamui-secondary), 0.85);
+        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {

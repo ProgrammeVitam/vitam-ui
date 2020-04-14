@@ -71,7 +71,7 @@ table.vitamui-table {
         min-height: 60px;
         height: 100%;
         width: 60px;
-        background-color: #B6E1D9;
+        background-color: var(--vitamui-secondary-light);
         border: none;
         padding: 0;
         align-items: center;
@@ -145,7 +145,8 @@ table.vitamui-table {
     }
 
     tbody > tr:not(.no-hover):hover {
-        background-color: rgba(92, 186, 169, 0.15);
+
+      background-color: rgba(var(--vitamui-secondary-rgb), 0.15);
     }
 
     tr.clickable, td.clickable {

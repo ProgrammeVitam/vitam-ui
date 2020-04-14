@@ -11,7 +11,7 @@
     </style>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div layout:fragment="content">
         <div>
             <h2 th:utext="#{screen.blocked.header}">Access Denied</h2>

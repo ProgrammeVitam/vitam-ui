@@ -64,7 +64,6 @@ export class StartupService {
 
   private CURRENT_TENANT_IDENTIFIER: string;
 
-  private themeWrapper = document.querySelector('body');
 
   constructor(
     private logger: Logger,
@@ -88,10 +87,11 @@ export class StartupService {
       })
       .then(() => this.refreshUser().toPromise())
       .then(() => this.applicationApi.getAsset('vitamui-logo.png').toPromise())
-      .then((data: any) => {
+      .then((data) => {
         this.configurationData.LOGO = data['vitamui-logo.png'];
       })
       .then(() => {
+        this.themeService.init(this.configurationData.THEME_COLORS);
 
         let customerColorMap = null;
 
@@ -99,14 +99,8 @@ export class StartupService {
           customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
         }
 
-        this.themeService.init(this.configurationData.THEME_COLORS);
+        this.themeService.overrideTheme(customerColorMap);
 
-        const themeColors = this.themeService.getThemeColors(customerColorMap);
-        for (const key in themeColors) {
-          if (themeColors.hasOwnProperty(key)) {
-            this.themeWrapper.style.setProperty('--' + key, themeColors[key]);
-          }
-        }
 
       })
       .then(() => this.applicationService.list().toPromise());
@@ -151,7 +145,11 @@ export class StartupService {
 
   getLogo(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.LOGO;
+      if (this.configurationData.APP_LOGO) {
+        return this.configurationData.APP_LOGO;
+      } else {
+        return this.configurationData.LOGO;
+      }
     }
   }
 

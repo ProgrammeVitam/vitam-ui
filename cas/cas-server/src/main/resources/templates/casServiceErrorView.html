@@ -5,7 +5,7 @@
     <title th:text="#{screen.service.error.header}"></title>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
         <h1 th:utext="#{screen.service.error.header}"/>

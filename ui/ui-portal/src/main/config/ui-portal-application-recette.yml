@@ -25,6 +25,7 @@ management:
       enabled: false
 
 ui-portal:
+  #theme-logo: /path/to/logo.png
   theme-colors:
     vitamui-primary: "#702382"
     vitamui-primary-light: "#992fb1"
@@ -61,7 +62,7 @@ cas:
     trust-store: src/main/config/truststore.jks
     trust-store-password: jkspasswd
 
-debug: false 
+debug: false
 logging:
     level:
         fr.gouv.vitamui: DEBUG

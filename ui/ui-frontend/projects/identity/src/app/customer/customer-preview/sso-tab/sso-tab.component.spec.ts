@@ -92,7 +92,7 @@ class TestHostComponent {
         country : 'DK'
     },
     owners: [],
-    themeColors: new Map<string, string>()
+    themeColors: {}
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

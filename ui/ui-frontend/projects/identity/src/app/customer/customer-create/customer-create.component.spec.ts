@@ -119,7 +119,7 @@ const expectedCustomer = {
       country: 'FR',
     }
   }],
-  themeColors: new Map<string, string>()
+  themeColors: {}
 };
 
 let component: CustomerCreateComponent;
@@ -202,16 +202,9 @@ describe('CustomerCreateComponent', () => {
       expect(page.control('passwordRevocationDelay')).toBeTruthy();
       expect(page.control('otp')).toBeTruthy();
       expect(page.control('emailDomains')).toBeTruthy();
-      // expect(page.control('hasCustomGraphicIdentity')).toBeTruthy();
     });
 
-    it('should have a submit button', () => {
-      expect(page.submit).toBeTruthy();
-      expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedCustomer);
-      fixture.detectChanges();
-      expect(page.submit.attributes.disabled).toBeFalsy();
-    });
+
   });
 
   describe('Form', () => {

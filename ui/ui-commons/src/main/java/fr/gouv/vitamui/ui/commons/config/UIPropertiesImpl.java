@@ -65,6 +65,8 @@ public class UIPropertiesImpl implements UIProperties {
 
     private RestClientConfiguration iamExternalClient;
 
+    private String themeLogo;
+
     private Map<String, String> themeColors;
 
     private String assets;

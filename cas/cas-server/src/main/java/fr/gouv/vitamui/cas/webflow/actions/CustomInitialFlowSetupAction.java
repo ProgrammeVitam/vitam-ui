@@ -53,6 +53,11 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -69,6 +74,12 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
 
     @Value("${cas.authn.surrogate.separator}")
     private String separator;
+
+    @Value("${theme.vitam-logo:#{null}}")
+    private String vitamLogoPath;
+
+    @Value("${theme.vitamui-logo-large:#{null}}")
+    private String vitamuiLargeLogoPath;
 
     public CustomInitialFlowSetupAction(final List<ArgumentExtractor> argumentExtractors,
                                   final ServicesManager servicesManager,
@@ -101,6 +112,27 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
                 final String[] parts = username.split("\\" + separator);
                 flowScope.put(Constants.SURROGATE, parts[0]);
                 flowScope.put(Constants.SUPER_USER, parts[1]);
+            }
+        }
+
+        if(vitamLogoPath != null) {
+            try {
+                Path logoFile = Paths.get(vitamLogoPath);
+                String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
+                flowScope.put(Constants.VITAM_LOGO, logo);
+            } catch (IOException e) {
+                LOGGER.warn("Can't find vitam logo");
+                e.printStackTrace();
+            }
+        }
+        if(vitamuiLargeLogoPath != null) {
+            try {
+                Path logoFile = Paths.get(vitamuiLargeLogoPath);
+                String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
+                flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
+            } catch (IOException e) {
+                LOGGER.warn("Can't find vitam ui large logo");
+                e.printStackTrace();
             }
         }
 

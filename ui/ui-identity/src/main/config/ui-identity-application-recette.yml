@@ -10,6 +10,7 @@ spring:
         register: false
 
 ui-identity:
+  #theme-logo: /path/to/logo.png
   theme-colors:
     vitamui-primary: "#702382"
     vitamui-primary-light: "#992fb1"

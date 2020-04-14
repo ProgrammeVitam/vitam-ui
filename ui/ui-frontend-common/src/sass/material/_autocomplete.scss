@@ -19,7 +19,7 @@
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled),
     .mat-option.mat-active {
-        background: RGBA(var(--vitamui-secondary), 0.85);
+        background: rgba(var(--vitamui-secondary-rgb), 0.85);
     }
 
     .mat-option-text {
