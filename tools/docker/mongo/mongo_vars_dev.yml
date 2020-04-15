@@ -4,7 +4,8 @@ mongodb_vitamuiScripts_version:
   - "1.0.0"
   - "1.0.1"
 
-mongod_source_template_dir:  "{{lookup('env','PWD')}}/../tools/docker/mongo/database_scripts/"
+mongod_source_template_dir:  "{{lookup('env','PWD')}}/database_scripts/"
+mongod_output_dir_entry_point: "{{lookup('env','PWD')}}/mongo-entrypoint"
 
 # New way with templating
 # Scripts load order. Mandatory for templating. Any files that don't match the pattern won't
@@ -30,6 +31,52 @@ mongo_files_excluded:
 
 # Variables for users
 
+vitamui_platform_informations:
+  name: "system_customer"
+  description: "System Customer"
+  company_name: "system company"
+  default_email_domain: "change-it.fr"
+  email_domains: "change-it.fr"
+  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # Change-it0!
+  address:
+    street: change-it
+    zip_code: change-it
+    city: change-it
+    country: change-it
+  proof_tenant: 3
+  cas_tenant: -1
+  first_customer_tenant: 9
+
+
+# Mongo database creation:
+mongod_databases:
+  mongo_db_admin:
+    db: admin
+    user: "{{ mongod_dbuser_admin }}"
+    pwd:  "{{ mongod_dbpwd_admin }}"
+    roles:  [{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }]
+
+  mongo_db_security:
+    db: security
+    user: "{{ mongod_dbuser_security }}"
+    # defined in vault
+    pwd:  "{{ mongod_dbpwd_security }}"
+    roles: [{ role: "readWrite", db: "security" }]
+
+  mongo_db_iam:
+    db: iam
+    # defined in vault
+    user: "{{ mongod_dbuser_iam }}"
+    # defined in vault
+    pwd: "{{ mongod_dbpwd_iam }}"
+    roles: [{ role: "readWrite", db: "iam" }]
+
+  mongo_db_cas:
+    db: cas
+    user: "{{ mongod_dbuser_cas }}"
+    # defined in vault
+    pwd: "{{ mongod_dbpwd_cas }}"
+    roles: [{ role: "readWrite", db: "cas" }]
 
 # DATABASES USERS
 mongod_dbuser_admin: mongod_dbuser_admin
@@ -66,15 +113,21 @@ vitamui_security_contexts:
 cas_services_configs:
 
   ui_portal:
+    name: "Portal Application"
     serviceId: "^https://.*.vitamui.com:9000.*"
+    logoutType : "FRONT_CHANNEL"
     logoutUrl: "https://dev.vitamui.com:9000/logout"
 
   ui_identity:
+    name: "Identity Access Management Application"
     serviceId: "^https://.*.vitamui.com:9001.*"
+    logoutType : "FRONT_CHANNEL"
     logoutUrl: "https://dev.vitamui.com:9001/logout"
 
   ui_identity_admin:
+    name: "Identity Admin Access Management Application"
     serviceId: "^https://.*.vitamui.com:9001.*"
+    logoutType : "FRONT_CHANNEL"
     logoutUrl: "https://dev.vitamui.com:9001/logout"
 
   mobile:

@@ -5,15 +5,12 @@
 # Copy mongo scripts and template them
 PWD=`pwd`
 CUR_DIR=$PWD
-DEPLOYMENT_PATH="../../../deployment/"
 
 #echo "Remove old files (mongo-entrypoint)."
 #rm mongo-entrypoint/last/*
 
-echo "Execute playbooks/tools/database_scripts_templater with custom variables."
-cd $DEPLOYMENT_PATH
-ansible-playbook -i environment/hosts playbooks/tools/database_scripts_templater.yml -e "@$CUR_DIR/mongo_vars_dev.yml"
-cd -
+echo "Execute $CUR_DIR/database_scripts_templater with custom variables."
+ansible-playbook -i $CUR_DIR/hosts $CUR_DIR//database_scripts_templater.yml -e "@$CUR_DIR/mongo_vars_dev.yml"
 
 #########################
 

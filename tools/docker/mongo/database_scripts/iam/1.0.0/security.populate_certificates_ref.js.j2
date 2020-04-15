@@ -18,9 +18,9 @@ db.certificates.insert({
 
 {%- endmacro %}
 
-{{ insertCertififcate('{{playbook_dir}}/pki/certs/ui-identity/ui-identity.pem', 'ui_identity_context') }}
-{{ insertCertififcate('{{playbook_dir}}/pki/certs/ui-portal/ui-portal.pem', 'ui_portal_context') }}
-{{ insertCertififcate('{{playbook_dir}}/pki/certs/cas-server/cas-server.pem', 'cas_context') }}
-{{ insertCertififcate('{{playbook_dir}}/pki/certs/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context') }}
+{{ insertCertififcate('{{playbook_dir}}/certs/ui-identity/ui-identity.pem', 'ui_identity_context') }}
+{{ insertCertififcate('{{playbook_dir}}/certs/ui-portal/ui-portal.pem', 'ui_portal_context') }}
+{{ insertCertififcate('{{playbook_dir}}/certs/cas-server/cas-server.pem', 'cas_context') }}
+{{ insertCertififcate('{{playbook_dir}}/certs/ui-identity-admin/ui-identity-admin.pem', 'ui_admin_identity_context') }}
 
 print("END security.populate_certificates_ref.js");
