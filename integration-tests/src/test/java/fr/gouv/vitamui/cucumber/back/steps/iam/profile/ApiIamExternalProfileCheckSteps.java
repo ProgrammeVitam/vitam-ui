@@ -4,8 +4,8 @@ import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
 import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_PROFILES;
 import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;

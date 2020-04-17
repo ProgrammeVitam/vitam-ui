@@ -15,20 +15,19 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.client.model.Filters;
 
-import cucumber.api.Transform;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.cucumber.back.transformers.LevelTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.LevelParameterType;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Groups dans IAM admin : opérations de création.
@@ -143,8 +142,8 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
     @Then("^le serveur refuse la création du groupe à cause du nom existant$")
     public void le_serveur_refuse_la_création_du_groupe_à_cause_du_nom_existant() {
         assertThat(testContext.exception).isNotNull();
-        assertThat(testContext.exception.toString()).isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create group "
-                + savedGroupDto.getName() + ": group already exists");
+        assertThat(testContext.exception.toString()).isEqualTo(
+                "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create group " + savedGroupDto.getName() + ": group already exists");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_GROUPS ajoute un nouveau groupe avec un profil inexistant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS$")
@@ -162,8 +161,8 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
     @Then("^le serveur refuse la création du groupe à cause du profil inexistant$")
     public void le_serveur_refuse_la_création_du_groupe_à_cause_du_profil_inexistant() {
         assertThat(testContext.exception).isNotNull();
-        assertThat(testContext.exception.toString()).isEqualTo(
-                "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create group " + savedGroupDto.getName() + ": no profiles");
+        assertThat(testContext.exception.toString())
+                .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create group " + savedGroupDto.getName() + ": no profiles");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_GROUPS ajoute un nouveau groupe avec un profil d'un autre client dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS$")
@@ -213,38 +212,36 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
         GroupDto group = FactoryDto.buildDto(GroupDto.class);
         group.setLevel(testContext.level);
         group.setCustomerId(testContext.customerId);
-        writeProfile(group.getName(), testContext.level, testContext.mainTenant, new String[] {}, testContext.customerId);
+        writeProfile(group.getName(), testContext.level, testContext.mainTenant, new String[]{}, testContext.customerId);
         group.setProfileIds(Collections.singletonList(group.getName()));
         group = getGroupRestClient().create(getSystemTenantUserAdminContext(), group);
         testContext.groupDto = group;
     }
 
-    @When("^cet utilisateur crée un nouveau groupe de niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void cet_utilisateur_crée_un_nouveau_groupe_de_niveau_x(@Transform(LevelTransformer.class) final String level) throws Exception {
+    @When("cet utilisateur crée un nouveau groupe de niveau {level}")
+    public void cet_utilisateur_crée_un_nouveau_groupe_de_niveau_x(final LevelParameterType level) throws Exception {
         final GroupDto group = FactoryDto.buildDto(GroupDto.class);
-        group.setLevel(level);
+        group.setLevel(level.getData());
         group.setCustomerId(testContext.customerId);
-        writeProfile(group.getName(), level, testContext.mainTenant, new String[] {}, testContext.customerId);
+        writeProfile(group.getName(), level.getData(), testContext.mainTenant, new String[]{}, testContext.customerId);
         group.setProfileIds(Arrays.asList(group.getName()));
         try {
             testContext.groupDto = getGroupRestClient().create(getContext(testContext.mainTenant, testContext.tokenUser), group);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
 
-    @Given("^un groupe de niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void un_nouveau_groupe_de_niveau_x(@Transform(LevelTransformer.class) final String level) throws Exception {
+    @Given("un groupe de niveau {level}")
+    public void un_nouveau_groupe_de_niveau_x(final LevelParameterType level) throws Exception {
         final GroupDto group = FactoryDto.buildDto(GroupDto.class);
-        group.setLevel(level);
+        group.setLevel(level.getData());
         group.setCustomerId(testContext.customerId);
-        writeProfile(group.getName(), level, testContext.mainTenant, new String[] { ServicesData.ROLE_GET_USERS }, testContext.customerId);
+        writeProfile(group.getName(), level.getData(), testContext.mainTenant, new String[]{ServicesData.ROLE_GET_USERS}, testContext.customerId);
         group.setProfileIds(Arrays.asList(group.getName()));
         try {
             testContext.groupDto = getGroupRestClient().create(getSystemTenantUserAdminContext(), group);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
             return;
         }
@@ -258,15 +255,16 @@ public class ApiIamExternalGroupCreationSteps extends CommonSteps {
         assertThat(testContext.groupDto.getId()).overridingErrorMessage("L'id du groupe créé est vide").isNotEmpty();
     }
 
-    @Then("^le niveau du nouveau groupe est bien le niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void le_niveau_du_nouveau_groupe_est_bien_le_niveau(@Transform(LevelTransformer.class) final String level) throws Exception {
+    @Then("le niveau du nouveau groupe est bien le niveau {level}")
+    public void le_niveau_du_nouveau_groupe_est_bien_le_niveau(final LevelParameterType level) throws Exception {
         assertThat(testContext.groupDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé est null").isNotNull();
-        assertThat(testContext.groupDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level + "\"")
-                .isEqualTo(level);
+        assertThat(testContext.groupDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level.getData() + "\"")
+                .isEqualTo(level.getData());
     }
 
     @Then("^une trace de création du groupe est présente dans vitam$")
     public void une_trace_de_création__du_groupe_est_présente_dans_vitam() throws InterruptedException {
         super.testTrace(groupDto.getCustomerId(), groupDto.getIdentifier(), "groups", "EXT_VITAMUI_CREATE_GROUP");
     }
+
 }

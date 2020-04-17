@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 import java.util.Optional;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 

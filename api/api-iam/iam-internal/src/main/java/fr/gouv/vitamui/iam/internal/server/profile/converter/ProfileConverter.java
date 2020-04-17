@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
-import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ProfileConverter implements Converter<ProfileDto, Profile> {
 

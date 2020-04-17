@@ -117,12 +117,6 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 		</dependency>
 
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-
 		<!--TEST -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

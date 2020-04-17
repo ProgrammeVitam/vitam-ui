@@ -33,17 +33,16 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.util.Assert;
 
-import io.micrometer.core.instrument.util.StringUtils;
-
 /**
  * When deleting cookies, use the cookiePath instead of the contextPath and avoid the trailing slash.
  * Inspired from {@link org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler}
- * 
+ *
  * @author Makhtar DIAGNE
  *
  */
