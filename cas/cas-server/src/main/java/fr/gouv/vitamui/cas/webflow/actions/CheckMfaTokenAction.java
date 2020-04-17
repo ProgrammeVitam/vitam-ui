@@ -36,48 +36,47 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
-import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.ticket.ServiceTicket;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.apereo.cas.mfa.simple.CasSimpleMultifactorAuthenticationTicketFactory;
+import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
+import org.apereo.cas.ticket.TransientSessionTicket;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import lombok.val;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
- * Select the appropriate redirect action: directly to the service or via the "secure connexion" page.
- *
- *
+ * Check the MFA token.
  */
 @RequiredArgsConstructor
-public class SelectRedirectAction extends AbstractAction {
+@Slf4j
+public class CheckMfaTokenAction extends AbstractAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SelectRedirectAction.class);
-
-    private final CentralAuthenticationService centralAuthenticationService;
+    private final TicketRegistry ticketRegistry;
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
-        boolean isFromNewLogin = false;
+        val credential = WebUtils.getCredential(requestContext);
+        val tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
+        val token = CasSimpleMultifactorAuthenticationTicketFactory.PREFIX + "-" + tokenCredential.getToken();
+        LOGGER.debug("Checking token: {}", token);
+        WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 
-        val stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
-        if (stId != null) {
-            val st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
-            if (st != null) {
-                isFromNewLogin = st.isFromNewLogin();
+        val acct = this.ticketRegistry.getTicket(token, TransientSessionTicket.class);
+        if (acct != null) {
+            val creationTime = acct.getCreationTime();
+            val now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);
+            // considered expired after 60 seconds
+            if (creationTime.isBefore(now_less_one_minute)) {
+                return error();
             }
         }
-
-        LOGGER.debug("isFromNewLogin: {}", isFromNewLogin);
-        if (isFromNewLogin) {
-            return getEventFactorySupport().event(this, CustomLoginWebflowConfigurer.INDIRECT_RESULT);
-        } else {
-            return getEventFactorySupport().event(this, CustomLoginWebflowConfigurer.DIRECT_RESULT);
-        }
+        return success();
     }
 }
