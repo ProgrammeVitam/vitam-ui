@@ -8,10 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import cucumber.api.Transform;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -19,12 +15,15 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.cucumber.back.transformers.LevelTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.LevelParameterType;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Common steps for the IAM API.
@@ -37,10 +36,10 @@ public class IamCommonSteps extends CommonSteps {
     public void le_serveur_retourne_un_utilisateur_indisponible() {
         assertThat(testContext.exception).isNotNull();
         final String message = testContext.exception.toString();
-        final boolean isInvalidAuthentication = message.equals(
-                "fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException: User unavailable: " + testContext.authUserDto.getEmail());
-        final boolean isInvalidFormat = message
-                .equals("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: User unavailable: " + testContext.authUserDto.getEmail());
+        final boolean isInvalidAuthentication =
+                message.equals("fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException: User unavailable: " + testContext.authUserDto.getEmail());
+        final boolean isInvalidFormat =
+                message.equals("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: User unavailable: " + testContext.authUserDto.getEmail());
         assertThat(isInvalidAuthentication || isInvalidFormat).isTrue();
     }
 
@@ -105,9 +104,10 @@ public class IamCommonSteps extends CommonSteps {
         deleteAllSubrogations(subrogationDto);
         subrogationDto = getSubrogationRestClient().create(getSystemTenantUserAdminContext(), subrogationDto);
         testContext.savedSubrogationDto = subrogationDto;
-        testContext.authUserDto = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
-                new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
-                        subrogationDto.getSurrogate(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
+        testContext.authUserDto =
+                (AuthUserDto) getCasRestClient(false, new Integer[]{TestConstants.CAS_TENANT_IDENTIFIER}, new String[]{ServicesData.ROLE_CAS_USERS})
+                        .getUserByEmail(getContext(TestConstants.CAS_TENANT_IDENTIFIER, TestConstants.TOKEN_USER_CAS), subrogationDto.getSurrogate(),
+                                Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
     }
 
     @Given("^on demande à ce que le subrogateur soit le user de test$")
@@ -115,9 +115,9 @@ public class IamCommonSteps extends CommonSteps {
         testContext.superUserEmail = TEST_USER_EMAIL;
     }
 
-    @Given("^un niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void un_niveau(@Transform(LevelTransformer.class) final String level) throws Exception {
-        testContext.level = level;
+    @Given("un niveau {level}")
+    public void un_niveau(final LevelParameterType level) throws Exception {
+        testContext.level = level.getData();
     }
 
     @Given("^un tenant et customer system$")

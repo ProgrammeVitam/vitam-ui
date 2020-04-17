@@ -11,15 +11,15 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
+        <assertj-core.version>3.11.1</assertj-core.version>
+        <jackson.version>2.10.0</jackson.version>
+        <lombok.version>1.18.10</lombok.version>
+        <mockito.version>1.10.19</mockito.version>
         <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
-        <spring.version>5.2.0.RELEASE</spring.version>
         <spring.security.version>5.2.0.RELEASE</spring.security.version>
         <spring.test.version>5.2.0.RELEASE</spring.test.version>
         <swagger.version>1.5.18</swagger.version>
         <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
-        <assertj-core.version>3.11.1</assertj-core.version>
-        <lombok.version>1.18.10</lombok.version>
-        <mockito.version>1.10.19</mockito.version>
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
@@ -30,32 +30,6 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-external-client</artifactId>
-            <exclusions>
-            	<exclusion>
-            		<groupId>org.opengis.cite.xerces</groupId>
-            		<artifactId>xercesImpl-xsd11</artifactId>
-            	</exclusion>
-            	<exclusion>
-			        <groupId>org.springframework.boot</groupId>
-			        <artifactId>spring-boot-starter-webflux</artifactId>
-            	</exclusion>
-            	<exclusion>
-			        <groupId>org.springframework.boot</groupId>
-			        <artifactId>spring-boot-starter-reactor-netty</artifactId>
-            	</exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-json</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- CAS server -->
@@ -127,7 +101,7 @@
             <version>${cas.version}</version>
         </dependency>
 
-        <!-- surrogation -->
+        <!-- subrogation -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-surrogate-api</artifactId>
@@ -300,7 +274,11 @@
         </dependency>
 
         <!-- metrics -->
-        <!--dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+        <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
@@ -309,7 +287,7 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-metrics</artifactId>
             <version>${cas.version}</version>
-        </dependency-->
+        </dependency> -->
 
         <!-- logs -->
         <dependency>

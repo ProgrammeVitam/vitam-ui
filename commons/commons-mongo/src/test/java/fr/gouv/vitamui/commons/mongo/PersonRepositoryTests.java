@@ -24,6 +24,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import static org.springframework.data.domain.PageRequest.of;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
@@ -59,7 +60,7 @@ public class PersonRepositoryTests {
 
     @Test
     public void readFirstPageCorrectly() {
-        final Page<Person> persons = repository.findAll(new PageRequest(0, 10));
+        final Page<Person> persons = repository.findAll(PageRequest.of(0, 10));
         assertThat(persons.isFirst(), is(true));
     }
 

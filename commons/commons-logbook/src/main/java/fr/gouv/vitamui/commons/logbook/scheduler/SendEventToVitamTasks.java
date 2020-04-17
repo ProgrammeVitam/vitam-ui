@@ -36,8 +36,37 @@
  */
 package fr.gouv.vitamui.commons.logbook.scheduler;
 
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.Assert;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -127,23 +156,22 @@ public class SendEventToVitamTasks {
     public void run() {
         LOGGER.debug("sendEventToVitamTasks is started");
         // Retrieve all events who are not already send to vitam or in error status
-        List<Event> events = getEventsElligibleToBeSentToVitam();
-        Map<String, TreeSet<Event>> eventsToSend = new LinkedHashMap<>();
-        Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate()
-            .compareTo(e2.getCreationDate());
+        final List<Event> events = getEventsElligibleToBeSentToVitam();
+        final Map<String, TreeSet<Event>> eventsToSend = new LinkedHashMap<>();
+        final Comparator<Event> byPersistedDate = (final Event e1, final Event e2) -> e1.getCreationDate().compareTo(e2.getCreationDate());
         // We stack together event by X-Request-Id
         // The first Event is the 'Master' event and the others are sub-event
-        for (Event e : events) {
-            TreeSet<Event> eventsSet = eventsToSend.getOrDefault(e.getEvIdReq(), new TreeSet<>(byPersistedDate));
+        for (final Event e : events) {
+            final TreeSet<Event> eventsSet = eventsToSend.getOrDefault(e.getEvIdReq(), new TreeSet<>(byPersistedDate));
             eventsSet.add(e);
             eventsToSend.putIfAbsent(e.getEvIdReq(), eventsSet);
         }
 
         // SEND TO VITAM
-        for (Entry<String, TreeSet<Event>> evts : eventsToSend.entrySet()) {
+        for (final Entry<String, TreeSet<Event>> evts : eventsToSend.entrySet()) {
             try {
                 sendToVitam(evts.getValue());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 LOGGER.error("Failed to send events to vitam : {}", evts, e);
                 LOGGER.error(e.getMessage(), e);
 
@@ -153,9 +181,9 @@ public class SendEventToVitamTasks {
     }
 
     protected List<Event> getEventsElligibleToBeSentToVitam() {
-        Criteria criteriaStatusCreated = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.CREATED);
-        Criteria criteriaStatusError = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.ERROR)
-            .and("synchronizedVitamDate").lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
+        final Criteria criteriaStatusCreated = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.CREATED);
+        final Criteria criteriaStatusError = Criteria.where(EVENT_KEY_STATUS).is(EventStatus.ERROR).and("synchronizedVitamDate")
+                .lte(OffsetDateTime.now().minusMinutes(retryErrorEventInMinutes));
         final CriteriaDefinition criteria = new Criteria().orOperator(criteriaStatusCreated, criteriaStatusError);
         final Query query = Query.query(criteria);
         final Sort sort = Sort.by(Direction.ASC, "creationDate");
@@ -170,11 +198,11 @@ public class SendEventToVitamTasks {
      */
     protected void sendToVitam(final TreeSet<Event> events) throws InvalidParseOperationException {
         LOGGER.trace("Events to send : {}", events);
-        Event eventParent = events.first();
-        Integer tenantIdentifier = events.first().getTenantIdentifier();
+        final Event eventParent = events.first();
+        final Integer tenantIdentifier = events.first().getTenantIdentifier();
         eventParent.setEvIdProc(eventParent.getId());
-        String evParentId = eventParent.getId();
-        VitamContext vitamContext = new VitamContext(tenantIdentifier);
+        final String evParentId = eventParent.getId();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier);
         vitamContext.setApplicationSessionId(VitamUIUtils.generateRequestId());
         final boolean hasSubEvent = CollectionUtils.isNotEmpty(events) && events.size() > 1;
         if (hasSubEvent) {
@@ -189,12 +217,12 @@ public class SendEventToVitamTasks {
         boolean hasError = false;
         LogbookOperationParameters logbookOperationParams = null;
         try {
-            logbookOperationParams = this.convertEventToMaster(eventParent);
+            logbookOperationParams = convertEventToMaster(eventParent);
 
-            Set<LogbookParameters> subEvents = new LinkedHashSet<>();
+            final Set<LogbookParameters> subEvents = new LinkedHashSet<>();
 
             if (hasSubEvent) {
-                for (Event ev : events) {
+                for (final Event ev : events) {
                     if (!ev.getId().equals(evParentId)) {
                         subEvents.add(convertEventToLogbookOperationParams(ev));
                     }
@@ -204,11 +232,11 @@ public class SendEventToVitamTasks {
 
             subEvents.add(convertEventToLogbookOperationParams(eventParent));
             logbookOperationParams.setEvents(subEvents);
-            Long start = System.currentTimeMillis();
+            final Long start = System.currentTimeMillis();
             LOGGER.trace("Send to vitam ...");
             response = adminExternalClient.createExternalOperation(vitamContext, logbookOperationParams);
             LOGGER.trace("Send to vitam in {} ms", System.currentTimeMillis() - start);
-            int httpCode = response.getStatus();
+            final int httpCode = response.getStatus();
             if (Status.CREATED.getStatusCode() == httpCode) {
                 LOGGER.trace("Event :{} send with success to vitam, httpCode :{}", logbookOperationParams, httpCode);
             } else {
@@ -216,7 +244,7 @@ public class SendEventToVitamTasks {
                 LOGGER.error("Failed to create events {}, reponse: {}", logbookOperationParams, response);
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             hasError = true;
             if (response != null && response.getStatus() == Response.Status.CONFLICT.getStatusCode()) {
                 LOGGER.warn("Event already send to vitam", e);
@@ -236,9 +264,8 @@ public class SendEventToVitamTasks {
      * @param status
      * @param vitamResponse
      */
-    protected void updateEventStatus(final TreeSet<Event> events, final EventStatus status,
-        final String vitamResponse) {
-        Collection<String> ids = events.stream().map(e -> e.getId()).collect(Collectors.toList());
+    protected void updateEventStatus(final TreeSet<Event> events, final EventStatus status, final String vitamResponse) {
+        final Collection<String> ids = events.stream().map(e -> e.getId()).collect(Collectors.toList());
         final Query query = new Query(Criteria.where("id").in(ids));
         final Update update = new Update();
         update.set(EVENT_KEY_STATUS, status);
@@ -255,10 +282,8 @@ public class SendEventToVitamTasks {
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    protected LogbookOperationParameters convertEventToMaster(final Event event)
-        throws IllegalArgumentException, IOException {
-        LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory
-            .newLogbookOperationParameters();
+    protected LogbookOperationParameters convertEventToMaster(final Event event) throws IllegalArgumentException, IOException {
+        final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
 
         logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
             .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
@@ -279,9 +304,8 @@ public class SendEventToVitamTasks {
      * @throws IOException
      */
     protected LogbookOperationParameters convertEventToLogbookOperationParams(final Event event)
-        throws IllegalArgumentException, IOException {
-        LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory
-            .newLogbookOperationParameters();
+            throws IllegalArgumentException, IOException {
+        final LogbookOperationParameters logbookOperationParameters = LogbookParametersFactory.newLogbookOperationParameters();
 
         logbookOperationParameters.putParameterValue(LogbookParameterName.eventIdentifier, event.getId())
             .putParameterValue(LogbookParameterName.eventType, event.getEvType().toString())
@@ -306,12 +330,12 @@ public class SendEventToVitamTasks {
         try {
             JsonNode json = JsonUtils.readTree(evDetData);
             if (json == null || json.isMissingNode()) {
-                json = JsonUtils.createObjectNode();
+                json = JsonUtils.readTree("{}");
             }
 
             ((ObjectNode) json).put(EVENT_DATE_TIME_KEY, evDateTime);
             return ApiUtils.toJson(json);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("cann't convert {} to json node ", evDetData, e);
             throw e;
         }

@@ -2,7 +2,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.profile;
 
 import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
 
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;

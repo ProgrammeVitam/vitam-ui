@@ -1,38 +1,28 @@
 /**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
- *
- * contact@programmevitam.fr
- *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
- *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
- *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
- *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
- *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
+ * contact@programmevitam.fr This software is a computer program whose purpose
+ * is to implement implement a digital archiving front-office system for the
+ * secure and efficient high volumetry VITAM solution. This software is governed
+ * by the CeCILL-C license under French law and abiding by the rules of
+ * distribution of free software. You can use, modify and/ or redistribute the
+ * software under the terms of the CeCILL-C license as circulated by CEA, CNRS
+ * and INRIA at the following URL "http://www.cecill.info". As a counterpart to
+ * the access to the source code and rights to copy, modify and redistribute
+ * granted by the license, users are provided only with a limited warranty and
+ * the software's author, the holder of the economic rights, and the successive
+ * licensors have only limited liability. In this respect, the user's attention
+ * is drawn to the risks associated with loading, using, modifying and/or
+ * developing or reproducing the software by the user in light of its specific
+ * status of free software, that may mean that it is complicated to manipulate,
+ * and that also therefore means that it is reserved for developers and
+ * experienced professionals having in-depth computer knowledge. Users are
+ * therefore encouraged to load and test the software's suitability as regards
+ * their requirements in conditions enabling the security of their systems
+ * and/or data to be ensured and, more generally, to use and operate it in the
+ * same conditions as regards security. The fact that you are presently reading
+ * this means that you have had knowledge of the CeCILL-C license and that you
+ * accept its terms.
  */
 package fr.gouv.vitamui.commons.mongo.config;
 
@@ -44,17 +34,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
-import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
@@ -73,39 +55,11 @@ public class MongoConfig {
     MongoDbFactory mongoDbFactory;
 
     @Bean
-    public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoDbFactory, getDefaultMongoConverter());
-    }
-
-    @Bean
-    public TransactionTemplate transactionTemplate(MongoTransactionManager mongoTransactionManager) {
-        return new TransactionTemplate(mongoTransactionManager);
-    }
-
-    @Bean
-    public MappingMongoConverter getDefaultMongoConverter() {
-        final MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory),
-                new MongoMappingContext());
-        converter.setCustomConversions(customConversions());
-        return converter;
-    }
-
-    @Bean
-    public CustomConversions customConversions() {
-        final List<Converter<?, ?>> converterList = new ArrayList<>();
-        converterList.add(new OffsetDateTimeToStringConverter());
-        converterList.add(new StringToOffsetDateTimeConverter());
-        return new MongoCustomConversions(converterList);
-    }
-
-    @Bean
-    public ValidatingMongoEventListener validatingMongoEventListener() {
-        return new ValidatingMongoEventListener(validator());
-    }
-
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
+    public MongoCustomConversions customConversions() {
+        final List<Converter<?, ?>> converters = new ArrayList<Converter<?, ?>>();
+        converters.add(new OffsetDateTimeToStringConverter());
+        converters.add(new StringToOffsetDateTimeConverter());
+        return new MongoCustomConversions(converters);
     }
 
     @Bean

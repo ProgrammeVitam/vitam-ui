@@ -1,8 +1,8 @@
-package fr.gouv.vitamui.cucumber.back.transformers;
+package fr.gouv.vitamui.cucumber.common.parametertypes;
 
-import cucumber.api.Transformer;
+import fr.gouv.vitamui.cucumber.common.context.TestContext;
 
-public class TenantTransformer extends Transformer<Integer> {
+public class TenantParameterType {
 
     private static final String PARAM_MAIN = "principal";
     private static final String PARAM_SECOND = "secondaire";
@@ -10,23 +10,30 @@ public class TenantTransformer extends Transformer<Integer> {
     private static final String PARAM_SECOND_TENANT = "le tenant secondaire";
     private static final String PARAM_OTHER_CUSTOMER = "de l'autre customer";
 
-    public static Integer mainTenant;
-    public static Integer secondTenant;
+    private String paramTenant;
 
-    @Override
-    public Integer transform(String paramTenant) {
+    public TenantParameterType(final String paramTenant) {
+        this.paramTenant = paramTenant;
+    }
+
+    public Integer getTenant(final TestContext testContext) {
+        Integer chosenTenant = null;
         switch (paramTenant) {
             case PARAM_MAIN_TENANT:
             case PARAM_MAIN:
-                return mainTenant;
+                chosenTenant = testContext.mainTenant;
+                break;
             case PARAM_SECOND_TENANT:
             case PARAM_SECOND:
             case PARAM_OTHER_CUSTOMER:
-                return secondTenant;
+                chosenTenant = testContext.otherTenant;
+                break;
             default:
                 throw new IllegalArgumentException(
                         "Le paramètre " + paramTenant + " ne correspond pas à un tenant possible");
         }
+        return chosenTenant;
     }
 
 }
+
