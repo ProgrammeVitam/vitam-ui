@@ -41,8 +41,8 @@ import fr.gouv.vitamui.cas.pm.ResetPasswordController;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.webflow.*;
 import fr.gouv.vitamui.cas.webflow.actions.*;
+import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
@@ -52,9 +52,11 @@ import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.mfa.simple.web.flow.CasSimpleMultifactorWebflowConfigurer;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TransientSessionTicket;
+import org.apereo.cas.ticket.TransientSessionTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
@@ -64,6 +66,7 @@ import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
+import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
@@ -80,12 +83,10 @@ import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.HierarchicalMessageSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.webflow.config.FlowDefinitionRegistryBuilder;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
@@ -133,15 +134,15 @@ public class WebflowConfig {
     private IdentityProviderHelper identityProviderHelper;
 
     @Autowired
-    private FlowBuilderServices builder;
+    private FlowBuilderServices flowBuilderServices;
 
     @Autowired
     @Qualifier("logoutFlowRegistry")
-    private FlowDefinitionRegistry logoutFlowRegistry;
+    private FlowDefinitionRegistry logoutFlowDefinitionRegistry;
 
     @Autowired
     @Qualifier("loginFlowRegistry")
-    private FlowDefinitionRegistry loginFlowRegistry;
+    private FlowDefinitionRegistry loginFlowDefinitionRegistry;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -211,6 +212,10 @@ public class WebflowConfig {
     @Autowired
     private ThymeleafProperties thymeleafProperties;
 
+    @Autowired
+    @Qualifier("casSimpleMultifactorAuthenticationTicketFactory")
+    private TransientSessionTicketFactory casSimpleMultifactorAuthenticationTicketFactory;
+
     @Value("${vitamui.portal.url}")
     private String vitamuiPortalUrl;
 
@@ -252,8 +257,8 @@ public class WebflowConfig {
     @Order(0)
     @RefreshScope
     public CasWebflowConfigurer defaultWebflowConfigurer() {
-        final CustomLoginWebflowConfigurer c = new CustomLoginWebflowConfigurer(builder, loginFlowRegistry, applicationContext, casProperties);
-        c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
+        final CustomLoginWebflowConfigurer c = new CustomLoginWebflowConfigurer(flowBuilderServices, loginFlowDefinitionRegistry, applicationContext, casProperties);
+        c.setLogoutFlowDefinitionRegistry(logoutFlowDefinitionRegistry);
         c.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return c;
     }
@@ -309,6 +314,41 @@ public class WebflowConfig {
 
     @Bean
     public Action loadSurrogatesListAction() {
-        return new AlwaysSuccessAction();
+        return new NoOpAction("success");
+    }
+
+    @Bean
+    @RefreshScope
+    public Action mfaSimpleMultifactorSendTokenAction() {
+        val simple = casProperties.getAuthn().getMfa().getSimple();
+        return new CustomSendTokenAction(ticketRegistry, communicationsManager,
+            casSimpleMultifactorAuthenticationTicketFactory, simple, utils);
+    }
+
+    @Bean
+    public FlowDefinitionRegistry customMfaSimpleAuthenticatorFlowRegistry() {
+        val builder = new FlowDefinitionRegistryBuilder(this.applicationContext, this.flowBuilderServices);
+        builder.setBasePath(CasWebflowConstants.BASE_CLASSPATH_WEBFLOW);
+        builder.addFlowLocationPattern("/mfa-simple/mfa-simple-custom-webflow.xml");
+        return builder.build();
+    }
+
+    @Bean
+    @DependsOn("defaultWebflowConfigurer")
+    public CasWebflowConfigurer mfaSimpleMultifactorWebflowConfigurer() {
+        return new CasSimpleMultifactorWebflowConfigurer(flowBuilderServices, loginFlowDefinitionRegistry,
+            customMfaSimpleAuthenticatorFlowRegistry(), applicationContext, casProperties);
+    }
+
+    @Bean
+    public Action checkMfaTokenAction() {
+        return new CheckMfaTokenAction(ticketRegistry);
+    }
+
+    @Bean
+    @Lazy
+    @RefreshScope
+    public Action delegatedAuthenticationClientLogoutAction() {
+        return new NoOpAction(null);
     }
 }
