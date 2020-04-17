@@ -36,48 +36,24 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.RequiredArgsConstructor;
-import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.ticket.ServiceTicket;
-import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import lombok.val;
-
 /**
- * Select the appropriate redirect action: directly to the service or via the "secure connexion" page.
- *
- *
+ * A no-op action returning a specific result.
  */
 @RequiredArgsConstructor
-public class SelectRedirectAction extends AbstractAction {
+public class NoOpAction extends AbstractAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SelectRedirectAction.class);
-
-    private final CentralAuthenticationService centralAuthenticationService;
+    private final String eventId;
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
-        boolean isFromNewLogin = false;
-
-        val stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
-        if (stId != null) {
-            val st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
-            if (st != null) {
-                isFromNewLogin = st.isFromNewLogin();
-            }
+        if (eventId != null) {
+            return getEventFactorySupport().event(this, eventId);
         }
-
-        LOGGER.debug("isFromNewLogin: {}", isFromNewLogin);
-        if (isFromNewLogin) {
-            return getEventFactorySupport().event(this, CustomLoginWebflowConfigurer.INDIRECT_RESULT);
-        } else {
-            return getEventFactorySupport().event(this, CustomLoginWebflowConfigurer.DIRECT_RESULT);
-        }
+        return null;
     }
 }

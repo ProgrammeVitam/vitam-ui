@@ -36,8 +36,7 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
-import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
+import fr.gouv.vitamui.cas.authentication.*;
 import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
 import lombok.SneakyThrows;
 import org.apereo.cas.CentralAuthenticationService;
@@ -70,8 +69,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
-import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
-import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
