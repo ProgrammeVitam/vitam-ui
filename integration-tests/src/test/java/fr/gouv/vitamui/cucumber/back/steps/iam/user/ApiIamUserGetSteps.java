@@ -13,18 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import cucumber.api.DataTable;
-import cucumber.api.Transform;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.cucumber.back.transformers.LevelTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.LevelParameterType;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Users dans IAM admin : opérations de récupération.
@@ -158,38 +156,40 @@ public class ApiIamUserGetSteps extends CommonSteps {
     }
 
     @Given("^il existe plusieurs utilisateurs de différents niveaux$")
-    public void il_existe_plusieurs_utilisateurs_de_différents_niveaux(final DataTable levels) throws Exception {
+    public void il_existe_plusieurs_utilisateurs_de_différents_niveaux(final List<List<String>> levels) throws Exception {
         existingUsers = new HashMap<>();
-        final List<String> levelsList = levels.asList(String.class);
-        for (final String level : levelsList) {
-            final String convertedLevel = new LevelTransformer().transform(level);
-            tokenUser(new String[] { ServicesData.ROLE_GET_USERS }, testContext.customerId, "level" + convertedLevel + "@test.com", convertedLevel,
-                    testContext.mainTenant, "idExistingUser" + convertedLevel);
-            existingUsers.put(convertedLevel, "idExistingUser" + convertedLevel);
+        //final List<String> levelsList = levels.asLists().get(0);
+        for (final List<String> levelsList : levels) {
+            for (final String level : levelsList) {
+                final LevelParameterType levelParameterType = new LevelParameterType(level);
+                final String convertedLevel = levelParameterType.getData();
+                tokenUser(new String[]{ServicesData.ROLE_GET_USERS}, testContext.customerId, "level" + convertedLevel + "@test.com", convertedLevel,
+                        testContext.mainTenant, "idExistingUser" + convertedLevel);
+                existingUsers.put(convertedLevel, "idExistingUser" + convertedLevel);
+            }
         }
+
     }
 
-    @When("^cet utilisateur récupère les utilisateurs de niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void cet_utilisateur_récupère_les_utilisateurs_de_niveau_TEST(@Transform(LevelTransformer.class) final String level) throws Exception {
+    @When("cet utilisateur récupère les utilisateurs de niveau {level}")
+    public void cet_utilisateur_récupère_les_utilisateurs_de_niveau_TEST(final LevelParameterType level) throws Exception {
         try {
-            paginatedUsers = getAllPaginatedCustom(Optional.of(level));
-        }
-        catch (final RuntimeException e) {
+            paginatedUsers = getAllPaginatedCustom(Optional.of(level.getData()));
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
 
-    @Then("^la liste renvoyée par le serveur ne contient pas l'utilisateur de niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void la_liste_renvoyée_par_le_serveur_ne_contient_pas_l_utilisateur_de_niveau_vide(@Transform(LevelTransformer.class) final String level)
-            throws Exception {
-        assertThat(paginatedUsers.stream().filter(user -> user.getId().equals(existingUsers.get(level))).findFirst())
-                .overridingErrorMessage("La liste des utilisateurs récupérés contient l'utilisateur de niveau " + level).isEmpty();
+    @Then("la liste renvoyée par le serveur ne contient pas l'utilisateur de niveau {level}")
+    public void la_liste_renvoyée_par_le_serveur_ne_contient_pas_l_utilisateur_de_niveau_vide(final LevelParameterType level) throws Exception {
+        assertThat(paginatedUsers.stream().filter(user -> user.getId().equals(existingUsers.get(level.getData()))).findFirst())
+                .overridingErrorMessage("La liste des utilisateurs récupérés contient l'utilisateur de niveau " + level.getData()).isEmpty();
     }
 
-    @Then("^la liste renvoyée par le serveur contient l'utilisateur de niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void la_liste_renvoyée_par_le_serveur_contient_l_utilisateur_de_niveau_TEST(@Transform(LevelTransformer.class) final String level) throws Exception {
-        assertThat(paginatedUsers.stream().filter(user -> user.getId().equals(existingUsers.get(level))).findFirst())
-                .overridingErrorMessage("La liste des utilisateurs récupérés ne contient pas l'utilisateur de niveau " + level).isNotEmpty();
+    @Then("la liste renvoyée par le serveur contient l'utilisateur de niveau {level}")
+    public void la_liste_renvoyée_par_le_serveur_contient_l_utilisateur_de_niveau_TEST(final LevelParameterType level) throws Exception {
+        assertThat(paginatedUsers.stream().filter(user -> user.getId().equals(existingUsers.get(level.getData()))).findFirst())
+                .overridingErrorMessage("La liste des utilisateurs récupérés ne contient pas l'utilisateur de niveau " + level.getData()).isNotEmpty();
     }
 
     @Then("^la liste renvoyée par le serveur contient l'utilisateur ayant effectué l'action de récupération$")

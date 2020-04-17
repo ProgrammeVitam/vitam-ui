@@ -8,17 +8,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
-import cucumber.api.Transform;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
-import fr.gouv.vitamui.cucumber.back.transformers.LevelTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.LevelParameterType;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Profiles dans IAM admin : opérations de création.
@@ -157,37 +156,32 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
         try {
             getProfileRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
                     .create(getContext(testContext.tenantIHMContext, testContext.tokenUser), dto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
 
-    @When("^cet utilisateur crée un nouveau profil avec pour attribut le niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void cet_utilisateur_crée_un_nouveau_profil_avec_pour_attribut_le_niveau_TEST_BIS(@Transform(LevelTransformer.class) final String level)
-            throws Exception {
+    @When("cet utilisateur crée un nouveau profil avec pour attribut le niveau {level}")
+    public void cet_utilisateur_crée_un_nouveau_profil_avec_pour_attribut_le_niveau_TEST_BIS(final LevelParameterType level) throws Exception {
         final ProfileDto profile = FactoryDto.buildDto(ProfileDto.class);
-        profile.setLevel(level);
+        profile.setLevel(level.getData());
         profile.setCustomerId(testContext.customerId);
         try {
             testContext.profileDto = getProfileRestClient().create(getContext(testContext.mainTenant, testContext.tokenUser), profile);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
 
-    @When("^cet utilisateur crée un nouveau profil utilisateur avec pour attribut le niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void cet_utilisateur_crée_un_nouveau_profil_utlisateur_avec_pour_attribut_le_niveau_XXX(@Transform(LevelTransformer.class) final String level)
-            throws Exception {
+    @When("cet utilisateur crée un nouveau profil utilisateur avec pour attribut le niveau {level}")
+    public void cet_utilisateur_crée_un_nouveau_profil_utlisateur_avec_pour_attribut_le_niveau_XXX(final LevelParameterType level) throws Exception {
         final ProfileDto profile = FactoryDto.buildDto(ProfileDto.class);
-        profile.setLevel(level);
+        profile.setLevel(level.getData());
         profile.setApplicationName(CommonConstants.USERS_APPLICATIONS_NAME);
         profile.setCustomerId(testContext.customerId);
         try {
             testContext.profileDto = getProfileRestClient().create(getContext(testContext.mainTenant, testContext.tokenUser), profile);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -199,15 +193,16 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
         assertThat(testContext.profileDto.getId()).overridingErrorMessage("L'id du profil créé est vide").isNotEmpty();
     }
 
-    @Then("^le niveau du nouveau profil est bien le niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void le_niveau_du_nouvel_profil_est_bien_le_niveau(@Transform(LevelTransformer.class) final String level) throws Exception {
+    @Then("le niveau du nouveau profil est bien le niveau {level}")
+    public void le_niveau_du_nouvel_profil_est_bien_le_niveau(final LevelParameterType level) throws Exception {
         assertThat(testContext.profileDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé est null").isNotNull();
-        assertThat(testContext.profileDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level + "\"")
-                .isEqualTo(level);
+        assertThat(testContext.profileDto.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level.getData() + "\"")
+                .isEqualTo(level.getData());
     }
 
     @Then("^une trace de création de profil est présente dans vitam$")
     public void une_trace_de_création_de_profil_est_présente_dans_vitam() throws InterruptedException {
         super.testTrace(testContext.profileDto.getCustomerId(), testContext.profileDto.getIdentifier(), "profiles", "EXT_VITAMUI_CREATE_PROFILE");
     }
+
 }

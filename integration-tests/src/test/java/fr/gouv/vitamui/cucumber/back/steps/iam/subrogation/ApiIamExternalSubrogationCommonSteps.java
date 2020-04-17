@@ -2,7 +2,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.subrogation;
 
 import com.mongodb.client.model.Filters;
 
-import cucumber.api.java.en.Given;
+import io.cucumber.java.en.Given;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 
 /**

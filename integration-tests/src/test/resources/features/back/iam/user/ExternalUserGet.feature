@@ -1,7 +1,7 @@
 @Api
 @ApiIam
 @ApiIamUsers
-@ApiIamUserGet
+@ApiIamUsersGet
 Feature: API Users : récupération d'utilisateurs
 
   Scenario: Tous les utilisateurs
