@@ -81,47 +81,18 @@ function addP12InJks {
 
 # Renvoie la clé du keystore pour un composant donné
 function getKeystorePassphrase {
-    local YAML_PATH="${1}"
+    local KEY="${1}"
     local RETURN_CODE=0
 
-    if [ ! -f "${VAULT_KEYSTORES}" ]; then
-        return 1
+    local EXISTS=$(hasComponentPassphrase "keystores" "${KEY}")
+    if [ "${EXISTS}" == "false" ]; then
+        # We generate a random key
+        local PASSPHRASE=$(generatePassphrase)
+        setComponentPassphrase keystores "${KEY}" "${PASSPHRASE}"
+        echo "${PASSPHRASE}"
+    else
+        echo $(getComponentPassphrase "keystores" "${KEY}")
     fi
-
-    # Decrypt vault file
-    ansible-vault decrypt ${VAULT_KEYSTORES} ${ANSIBLE_VAULT_PASSWD}
-    if [ ${?} != 0 ]; then
-        pki_logger "ERROR" "Failed to decrypt ${VAULT_KEYSTORES}"
-        pki_logger "ERROR" "Please check if the vault password is correct in vault_pass.txt file"
-        return 1
-    fi
-
-    # Try/catch/finally stuff with bash (to make sure the vault stay encrypted)
-    {
-        # Try
-        # Generate bash vars with the yml file:
-        #       $certKey_blah
-        #       $certKey_blahblah
-        #       $certKey_........
-        eval $(parse_yaml ${VAULT_KEYSTORES} "storeKey_") && \
-        # Get the value of the variable we are interested in
-        # And store it into another var: $CERT_KEY
-        eval $(echo "STORE_KEY=\$storeKey_$(echo ${YAML_PATH} |sed 's/[\.-]/_/g')") && \
-        # Print the $CERT_KEY var
-        echo "${STORE_KEY}"
-    } || {
-        # Catch
-        RETURN_CODE=1
-        pki_logger "ERROR" "Error while reading keystore passphrase for ${YAML_PATH} in keystores vault: ${VAULT_KEYSTORES}"
-    } && {
-        # Finally
-        if [ "${STORE_KEY}" == "" ]; then
-            pki_logger "ERROR" "Error while retrieving the store key: ${YAML_PATH}"
-            RETURN_CODE=1
-        fi
-        ansible-vault encrypt ${VAULT_KEYSTORES} ${ANSIBLE_VAULT_PASSWD}
-        return ${RETURN_CODE}
-    }
 }
 
 # Generate a trustore
@@ -145,7 +116,6 @@ function generateTrustStore {
         pki_logger "ERROR" "Invalid trustore type: ${TRUSTORE_TYPE}"
         return 1
     fi
-    # echo "!!!! ${TRUST_STORE_PASSWORD} !!!!"
 
     if [ -f "${JKS_TRUST_STORE}" ]; then
         rm -f "${JKS_TRUST_STORE}"
@@ -215,16 +185,30 @@ function generateHostKeystore {
 
 cd $(dirname $0)
 
+ERASE="false"
+
+if [ "$#" -gt 0 ]; then
+    if [ "${1,,}" == "true" ]; then
+        ERASE="true"
+    fi
+fi
+
+pki_logger "Paramètres d'entrée:"
+pki_logger "    -> Ecraser la configuration des keystores/PKI: ${ERASE}"
+
 TMP_P12_PASSWORD="$(generatePassphrase)"
 REPERTOIRE_KEYSTORES="${REPERTOIRE_ROOT}/environments/keystores"
 
-# Remove old keystores & servers directories
-find ${REPERTOIRE_KEYSTORES} -type f -name *.jks -exec rm -f {} \;
-find ${REPERTOIRE_KEYSTORES} -type f -name *.p12 -exec rm -f {} \;
-if [ -d ${REPERTOIRE_KEYSTORES}/server ]
-then
-    find ${REPERTOIRE_KEYSTORES}/server -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
+if [ ! -d ${REPERTOIRE_KEYSTORES} ]; then
+    pki_logger "Création du répertoire des keystores ..."
+    mkdir -p ${REPERTOIRE_KEYSTORES};
 fi
+
+# We create vault files if they don't exist.
+initVault   keystores   ${ERASE}
+
+# Remove old keystores & servers directories
+find ${REPERTOIRE_KEYSTORES} -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} \;
 
 # Generate the server keystores
 for SERVER in $(ls ${REPERTOIRE_CERTIFICAT}/server/hosts/); do
@@ -239,7 +223,6 @@ for SERVER in $(ls ${REPERTOIRE_CERTIFICAT}/server/hosts/); do
         JKS_KEYSTORE=${REPERTOIRE_KEYSTORES}/server/${SERVER}/keystore_${COMPONENT}.jks
         P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/server/hosts/${SERVER}/${COMPONENT}.p12
         CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_${COMPONENT}_key")
-        pki_logger "${CRT_KEY_PASSWORD}"
         JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_${COMPONENT}")
         pki_logger "${JKS_PASSWORD}"
 
@@ -249,36 +232,13 @@ for SERVER in $(ls ${REPERTOIRE_CERTIFICAT}/server/hosts/); do
                                 ${CRT_KEY_PASSWORD} \
                                 ${JKS_PASSWORD} \
                                 ${TMP_P12_PASSWORD}
-
     done
 
 done
 
-
-# Generate the timestamp keystores
-# awk : used to strip extension
-for USAGE in $( ls ${REPERTOIRE_CERTIFICAT}/timestamping/vitam/ 2>/dev/null | awk -F "." '{for (i=1;i<NF;i++) print $i}' | sort | uniq ); do
-
-    pki_logger "-------------------------------------------"
-    pki_logger "Creation du keystore timestamp de ${USAGE}"
-    P12_KEYSTORE=${REPERTOIRE_KEYSTORES}/timestamping/keystore_${USAGE}.p12
-    TMP_P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/timestamping/vitam/${USAGE}.p12
-    CRT_KEY_PASSWORD=$(getComponentPassphrase certs "timestamping_${USAGE}_key")
-    P12_PASSWORD=$(getKeystorePassphrase "keystores_timestamping_${USAGE}")
-
-    # KWA FIXME : simplify (we only use TMP_P12_KEYSTORE to do this dirname...)
-    crtKeyToP12 $(dirname ${TMP_P12_KEYSTORE}) \
-                ${CRT_KEY_PASSWORD} \
-                ${USAGE} \
-                ${P12_PASSWORD} \
-                ${P12_KEYSTORE}
-    # KWA TODO: generate two keystores : private (with crt + key) + public (with only the crt)
-done
-
-
 # Keystores generation foreach client type (storage, external)
 # for CLIENT_TYPE in external storage; do
-for CLIENT_TYPE in iam ; do
+for CLIENT_TYPE in external vitam; do
 
     # # Set grantedstore path and delete the store if already exists
     # JKS_GRANTED_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/grantedstore_${CLIENT_TYPE}.jks
@@ -310,30 +270,7 @@ for CLIENT_TYPE in iam ; do
                     ${COMPONENT} \
                     ${P12_PASSWORD} \
                     ${P12_KEYSTORE}
-
-
-        # # Add the public certificate to the grantedstore
-        # pki_logger "Ajout du certificat public de ${COMPONENT} dans le grantedstore ${CLIENT_TYPE}"
-        # CRT_FILE="${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients/${COMPONENT}/${COMPONENT}.crt"
-
-        # addCrtInJks ${JKS_GRANTED_STORE} \
-        #             ${GRANTED_STORE_PASSWORD} \
-        #             ${CRT_FILE} \
-        #             ${COMPONENT}
-
     done
-
-    # # Add the external certificates to the granted store
-    # pki_logger "-------------------------------------------"
-    # pki_logger "Ajout des certificat public du répertoire external dans le grantedstore ${CLIENT_TYPE}"
-    # if [ "${CLIENT_TYPE}" == "external" ]; then
-    #     for CRT_FILE in $(ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients/external/*.crt 2>/dev/null); do
-    #         addCrtInJks ${JKS_GRANTED_STORE} \
-    #                     ${GRANTED_STORE_PASSWORD} \
-    #                     ${CRT_FILE} \
-    #                     $(basename ${CRT_FILE})
-    #     done
-    # fi
 
     # Generate the CLIENT_TYPE truststore
     pki_logger "-------------------------------------------"
@@ -346,49 +283,6 @@ done
 pki_logger "-------------------------------------------"
 pki_logger "Génération du truststore server"
 generateTrustStore "server" "server"
-
-##################################################################
-############### VITAM USERS ######################################
-##################################################################
-
-pki_logger "-------------------------------------------"
-pki_logger "Génération du grantedstore vitam-users"
-
-# Generate grantedstore for vitam-users
-# TODO: Rajouter passphrase du grantedstore dans le vault
-CLIENT_TYPE="external"
-REPERTOIRE_PLUS="vitam-users"
-JKS_GRANTED_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/grantedstore_${CLIENT_TYPE}.jks
-GRANTED_STORE_PASSWORD=$(getKeystorePassphrase "grantedstores_client_${CLIENT_TYPE}")
-if [ -d ${REPERTOIRE_CERTIFICAT}/client-${REPERTOIRE_PLUS} ]; then
-    for CRT_FILE in $( ls ${REPERTOIRE_CERTIFICAT}/client-${REPERTOIRE_PLUS}/clients 2>/dev/null ); do
-        CRT_FILE="${REPERTOIRE_CERTIFICAT}/client-${REPERTOIRE_PLUS}/clients/${CRT_FILE}"
-        pki_logger "Ajout de ${CRT_FILE} dans le grantedstore ${CLIENT_TYPE}"
-        addCrtInJks ${JKS_GRANTED_STORE} \
-                    ${GRANTED_STORE_PASSWORD} \
-                    ${CRT_FILE} \
-                    $(basename ${CRT_FILE})
-    done
-else
-    pki_logger "No client-${REPERTOIRE_PLUS} directory is present. Skipping..."
-fi
-# Generate the vitam-users trustore
-pki_logger "-------------------------------------------"
-pki_logger "Génération des certif vitam-users dans client-${CLIENT_TYPE}"
-JKS_TRUST_STORE=${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}/truststore_${CLIENT_TYPE}.jks
-TRUST_STORE_PASSWORD=$(getKeystorePassphrase "truststores_client_${CLIENT_TYPE}")
-if [ -d ${REPERTOIRE_CERTIFICAT}/client-${REPERTOIRE_PLUS}/ca ]; then
-    for CRT_FILE in $(ls ${REPERTOIRE_CERTIFICAT}/client-${REPERTOIRE_PLUS}/ca/*.crt); do
-        pki_logger "Ajout de ${CRT_FILE} dans le truststore ${REPERTOIRE_PLUS}"
-        ALIAS="$(basename ${CRT_FILE})"
-        addCrtInJks ${JKS_TRUST_STORE} \
-                    ${TRUST_STORE_PASSWORD} \
-                    ${CRT_FILE} \
-                    ${ALIAS}
-    done
-else
-    pki_logger "No client-${REPERTOIRE_PLUS}/ca directory is present. Skipping..."
-fi
 
 pki_logger "-------------------------------------------"
 pki_logger "Fin de la génération des stores"

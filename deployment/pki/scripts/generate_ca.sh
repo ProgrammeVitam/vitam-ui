@@ -58,7 +58,7 @@ function generate_ca_interm {
     export OPENSSL_CN=ca_intermediate_${REPERTOIRE_SORTIE}
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
     export OPENSSL_CA_DIR=${REPERTOIRE_SORTIE}
-
+    pki_logger "OPENSSL_CA_DIR :  ${CAROOT_DIR}"
     if [ ! -d ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE} ]; then
         pki_logger "Création du sous-répertoire ${REPERTOIRE_SORTIE}"
         mkdir -p ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE};
@@ -84,11 +84,48 @@ function generate_ca_interm {
     -batch
 }
 
+# Génération de la CA intermédiaire
+function init_config_ca {
+    local CA_DIR="${1}"
+
+    # Suppression de la configuration existante.
+    rm -Rf "${REPERTOIRE_CONFIG}/${CA_DIR}"
+    mkdir -p "${REPERTOIRE_CONFIG}/${CA_DIR}"
+    touch "${REPERTOIRE_CONFIG}/${CA_DIR}/index.txt"
+    echo '01' > "${REPERTOIRE_CONFIG}/${CA_DIR}/serial"
+    touch "${REPERTOIRE_CONFIG}/${CA_DIR}/crlnumber"
+}
+
 ######################################################################
 #############################    Main    #############################
 ######################################################################
 
 cd $(dirname $0)/../..
+
+ERASE="false"
+
+if [ "$#" -gt 0 ]; then
+    if [ "${1,,}" == "true" ]; then
+        ERASE="true"
+    fi
+fi
+
+pki_logger "Paramètres d'entrée:"
+pki_logger "    -> Ecraser les CA existants: ${ERASE}"
+
+# Cleaning or creating vault file for CA
+initVault   ca    ${ERASE}
+
+if [ "${ERASE}" == "true" ]; then
+    if [ -d ${REPERTOIRE_CA} ]; then
+        # We remove all generated CA
+        find "${REPERTOIRE_CA}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+    fi
+    if [ -d ${REPERTOIRE_CONFIG} ]; then
+        # We remove all configurations linked to CA (except main config files)
+        find "${REPERTOIRE_CONFIG}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+    fi
+fi
 
 pki_logger "Lancement de la procédure de création des CA"
 pki_logger "=============================================="
@@ -101,32 +138,36 @@ if [ ! -d ${TEMP_CERTS} ]; then
     mkdir -p ${TEMP_CERTS}
 fi
 
-# Cleaning or creating vault file for CA
-initVault ca
-
-# Création des répertoires pour les différentes CA
-# Création des CA root dans pki/ca
-# Création des CA intermédiaires pki/ca
-for ITEM in server client-iam client-iam-internal # Supposed there is only one CA for all IHM contrib
+# Création des CA par zone
+for ITEM in server client-external client-vitam
 do
-    mkdir -p ${REPERTOIRE_CA}/${ITEM}
+    if [ ! -d ${REPERTOIRE_CA}/${ITEM} ]; then
+        mkdir -p ${REPERTOIRE_CA}/${ITEM}
+        init_config_ca ${ITEM}
 
-    pki_logger "Création de CA root pour ${ITEM}..."
-    # Génération du CA_ROOT_PASSWORD & stockage dans le vault-ca
-    CA_ROOT_PASSWORD=$(generatePassphrase)
-    setComponentPassphrase ca "ca_root_${ITEM}" "${CA_ROOT_PASSWORD}"
-    generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
+        pki_logger "Création de CA root pour ${ITEM}..."
+        # Génération du CA_ROOT_PASSWORD & stockage dans le vault-ca
+        CA_ROOT_PASSWORD=$(generatePassphrase)
+        setComponentPassphrase ca "ca_root_${ITEM}" "${CA_ROOT_PASSWORD}"
+        generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
 
-    pki_logger "Création de la CA intermediate pour ${ITEM}..."
-    # Génération du CA_INTERMEDIATE_PASSWORD & stockage dans le vault-ca
-    CA_INTERMEDIATE_PASSWORD=$(generatePassphrase)
-    setComponentPassphrase ca "ca_intermediate_${ITEM}" "${CA_INTERMEDIATE_PASSWORD}"
-    generate_ca_interm ${CA_INTERMEDIATE_PASSWORD} ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
+        pki_logger "Création du CA intermediate pour ${ITEM}..."
+        # Génération du CA_INTERMEDIATE_PASSWORD & stockage dans le vault-ca
+        CA_INTERMEDIATE_PASSWORD=$(generatePassphrase)
+        setComponentPassphrase ca "ca_intermediate_${ITEM}" "${CA_INTERMEDIATE_PASSWORD}"
+        generate_ca_interm ${CA_INTERMEDIATE_PASSWORD} ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
 
-    purge_directory "${REPERTOIRE_CONFIG}/${ITEM}"
-    purge_directory "${REPERTOIRE_CA}/${ITEM}"
-
+        purge_directory "${REPERTOIRE_CONFIG}/${ITEM}"
+        purge_directory "${REPERTOIRE_CA}/${ITEM}"
+    else
+        pki_logger "Le CA ${ITEM} existe déjà, il ne sera pas recrée ..."
+    fi
     pki_logger "----------------------------------------------"
 done
+if [ -d ${TEMP_CERTS} ]; then
+    pki_logger "=============================================="
+    pki_logger "Nettoyage du répertoire de travail temporaire tempcerts"
+    rm -Rf ${TEMP_CERTS}
+fi
 pki_logger "=============================================="
 pki_logger "Fin de la procédure de création des CA"

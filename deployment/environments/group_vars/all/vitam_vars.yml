@@ -42,16 +42,11 @@ vitam_contexts_config:
 
 
 vitam_certs:
-  ingest_external:
-    filename: "ingest-external.p12"
-    password: azerty4
-    truststore_filename: "truststore_external.jks"
-    password_truststore: azerty10
-  access_external:
-    filename: "access-external.p12"
-    password: azerty4
-    truststore_filename: "truststore_external.jks"
-    password_truststore: azerty10
+  vitamui:
+    filename: "keystore_vitamui.p12"
+    password: "{{ keystores_client_vitam_vitamui }}"
+    truststore_filename: "truststore_vitam.jks"
+    password_truststore: "{{ truststores_client_vitam }}"
 
 
 #  example:
