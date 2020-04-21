@@ -251,6 +251,7 @@ function setComponentPassphrase {
     local RETURN_CODE=0
     local VAULT_FILE=$(getVaultFile "$TYPE")
     local VAULT_PASS=$(getVaultPass "$TYPE")
+    local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
     if [ ! -f "${VAULT_FILE}" ]; then
         pki_logger "ERROR" "The vault file is not found. Please, initialize it before call me ! Vault file: ${VAULT_FILE}"
