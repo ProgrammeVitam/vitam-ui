@@ -58,9 +58,8 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
-    # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      assets: "/tmp/assets"
   identity_admin:
     host: "identity-admin.service.{{ consul_domain }}"
     vitamui_component: "ui-identity-admin"
@@ -97,9 +96,8 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
-    # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      assets: "/tmp/assets"
   portal:
     host: "portal.service.{{ consul_domain }}"
     vitamui_component: "ui-portal"
@@ -154,9 +152,8 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
-    # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      assets: "/tmp/assets"
   iam_external:
     host: "iam-external.service.{{ consul_domain }}"
     vitamui_component: "iam-external"
