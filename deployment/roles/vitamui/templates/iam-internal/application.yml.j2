@@ -20,10 +20,10 @@ server:
 {% if vitamui_struct.secure|lower == "true" %}
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
-    key-store-password: {{ password_keystore }} # TODO OMA : revoir
-    key-password: {{ password_manager_keystore }}
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks
-    trust-store-password: {{ password_truststore_server }}
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
     client-auth: need
 {% endif %}
   tomcat:
@@ -54,7 +54,7 @@ security:
       key-password: {{ password_keystore }}
       type: JKS
     truststore:
-      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
     hostname-verification: false
 {% endif %}
@@ -74,7 +74,7 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+      key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
     hostname-verification: false
 {% endif %}
