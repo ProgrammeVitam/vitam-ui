@@ -62,7 +62,7 @@ ui-identity:
         key-password: {{ password_truststore }} # TODO OMA : revoir
       hostname-verification: false
 {% endif %}
-  assets: "{{ vitamui_struct.ui_identity_admin.dirs.assets }}"
+  assets: "{{ vitam_defaults.folder.root_path }}/conf/assets"
   base-url:
 {% if vitamui.portal.base_url is defined %}
     portal: "{{ vitamui.portal.base_url }}"
@@ -102,7 +102,3 @@ cas:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
 {% endif %}
-
-theme:
-  main-color: {{}}
-  secondary-color: {{}}

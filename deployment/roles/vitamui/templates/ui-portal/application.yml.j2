@@ -61,7 +61,7 @@ ui-portal:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }} # TODO OMA : revoir
       hostname-verification: false
-  assets: "{{ vitamui_struct.ui_portal.dirs.assets }}"
+  assets: "{{ vitam_defaults.folder.root_path }}/conf/assets"
 {% endif %}
 {% if vitamui.portal.base_url is undefined %}
   base-url:
