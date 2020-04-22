@@ -12,6 +12,7 @@
   tags:
     - update_vitam_configuration
   notify:
+<<<<<<< HEAD
     - restart service
 
 - name: Deploy customer-init.yml
@@ -24,4 +25,6 @@
   tags:
     - update_vitam_configuration
   notify:
+=======
+>>>>>>> [DEVOPS] Update scripts for deployment
     - restart service
