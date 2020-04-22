@@ -52,13 +52,17 @@
   notify:
     - restart service
 
-- name: Ensure that the templates sub-directory exists
+- name: Create custom sub-directories
   file:
-    path: "{{ vitamui_folder_conf }}/templates"
+    path: "{{ item }}"
     state: directory
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  loop: "{{ vitamui_struct.dirs }}"
+  when: 
+    - vitamui_struct.dirs is defined
+    - vitamui_struct.dirs|length > 0
   notify:
     - restart service
 
@@ -137,32 +141,13 @@
   notify:
     - restart service
 
-- name: "Copy vitam certificates"
-  copy:
-    src: "{{ item }}"
-    dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/keystores/client-vitam/*.*"
-  when:
-    - vitam_cert is defined
-  tags:
-    - update_vitam_configuration
-  notify:
-    - restart service
+- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}" 
+  include_tasks: "{{ vitamui_struct.vitamui_component_type }}.yml"
+  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component_type }}.yml || echo nofile') == \"\" }}"
 
-- name: apply consul conf when cas-server ONLY
-  template:
-    src: "cas-server/vitamui-cas-server.json.j2"
-    dest: "{{ vitamui_conf_consul }}/vitamui-cas-server.json"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: vitamui_struct.service_name == 'vitamui-cas-server'
-  notify:
-    - restart service
+- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}" 
+  include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"
+  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component }}.yml || echo nofile') == \"\" }}"
 
 - name: flush_handlers
   meta: flush_handlers
