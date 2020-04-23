@@ -224,7 +224,6 @@ for SERVER in $(ls ${REPERTOIRE_CERTIFICAT}/server/hosts/); do
         P12_KEYSTORE=${REPERTOIRE_CERTIFICAT}/server/hosts/${SERVER}/${COMPONENT}.p12
         CRT_KEY_PASSWORD=$(getComponentPassphrase certs "server_${COMPONENT}_key")
         JKS_PASSWORD=$(getKeystorePassphrase "keystores_server_${COMPONENT}")
-        pki_logger "${JKS_PASSWORD}"
 
         generateHostKeystore    ${COMPONENT} \
                                 ${JKS_KEYSTORE} \
