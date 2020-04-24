@@ -76,7 +76,6 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
     return color;
   }
 
-  const max = 255;
   const rgbValue: RGB = hexToRgb(color);
   const hslValue: HSL = rgbToHsl(rgbValue);
 
