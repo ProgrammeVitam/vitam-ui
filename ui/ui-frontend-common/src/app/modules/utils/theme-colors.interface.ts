@@ -5,6 +5,7 @@ export interface ThemeColors {
 
   'vitamui-primary-light'?: string;
   'vitamui-primary-light-20'?: string;
+  'vitamui-primary-dark'?: string;
 
 
   'vitamui-secondary': string;

@@ -199,8 +199,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       'vitamui-primary': themeColors.primary,
       'vitamui-secondary': themeColors.secondary
     };
-
-    customer.themeColors = this.themeService.getThemeColors(customerTheme);
+    if (customer.hasCustomGraphicIdentity) {
+      customer.themeColors = customerTheme;
+    }
 
     return customer;
   }

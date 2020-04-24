@@ -12,12 +12,15 @@ export class ThemeService {
     'vitamui-primary': '#702382',
     'vitamui-primary-light': '',
     'vitamui-primary-light-20': '',
+    'vitamui-primary-dark': '',
+
     'vitamui-secondary': '#7FA1D4',
     'vitamui-secondary-light': '',
     'vitamui-secondary-light-8': '',
     'vitamui-secondary-dark-5': ''
   };
 
+  // Theme for current app configuration
   applicationColorMap;
 
   constructor() {
