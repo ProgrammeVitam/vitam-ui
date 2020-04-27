@@ -278,7 +278,10 @@ initVault   certs   ${ERASE}
 if [ "${ERASE}" == "true" ]; then
     if [ -d ${REPERTOIRE_CERTIFICAT} ]; then
         # We remove all generated certs
-        find "${REPERTOIRE_CERTIFICAT}/" -mindepth 1 -maxdepth 1 -type d -exec rm -Rf {} \;
+        find ${REPERTOIRE_CERTIFICAT} -type f -name *.crt -exec rm -f {} \;
+        find ${REPERTOIRE_CERTIFICAT} -type f -name *.key -exec rm -f {} \;
+        find ${REPERTOIRE_CERTIFICAT} -type f -name *.pem -exec rm -f {} \;
+        find ${REPERTOIRE_CERTIFICAT} -type d -empty -delete
     fi
 fi
 if [ ! -d ${REPERTOIRE_CERTIFICAT} ]; then
