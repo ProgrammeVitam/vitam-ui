@@ -86,9 +86,9 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
-      .then(() => this.applicationApi.getAsset('vitamui-logo.png').toPromise())
+      .then(() => this.applicationApi.getAsset('logo.png').toPromise())
       .then((data) => {
-        this.configurationData.LOGO = data['vitamui-logo.png'];
+        this.configurationData.LOGO = data['logo.png'];
       })
       .then(() => {
         this.themeService.init(this.configurationData.THEME_COLORS);

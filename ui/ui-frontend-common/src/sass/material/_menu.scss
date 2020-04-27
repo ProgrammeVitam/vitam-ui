@@ -129,7 +129,7 @@
     }
 
     .mat-menu-item {
-        border-top: 1px solid #51a495;
+        border-top: 1px solid var(--vitamui-secondary);
     }
 
     .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
