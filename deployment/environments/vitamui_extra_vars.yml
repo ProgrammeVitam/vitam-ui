@@ -64,20 +64,20 @@ vitam_repositories:
 #
 vitamui:
   ui_consul:
-    server_name: "{{ vitam_site_name }}.teamdlab.com"
+    server_name: "{{ vitam_site_name }}.changeme.com"
   ui_mongo_express:
-    server_name: "{{ vitam_site_name }}.teamdlab.com"
+    server_name: "{{ vitam_site_name }}.changeme.com"
   identity:
-    server_name: "{{ vitam_site_name }}-identity.teamdlab.com"
-   # base_url: "https://{{ vitam_site_name }}-identity.teamdlab.com"
+    server_name: "{{ vitam_site_name }}-changeme.com"
+   # base_url: "https://{{ vitam_site_name }}-changeme.com"
   identity_admin:
-    server_name:  "{{ vitam_site_name }}-identity-admin.teamdlab.com"
-   # base_url: "https://{{ vitam_site_name }}-identity-admin.teamdlab.com"
+    server_name:  "{{ vitam_site_name }}-changeme.com"
+   # base_url: "https://{{ vitam_site_name }}-changeme.com"
   portal:
-    server_name: "{{ vitam_site_name }}-portal.teamdlab.com"
-   # base_url: "https://{{ vitam_site_name }}-portal.teamdlab.com"
+    server_name: "{{ vitam_site_name }}-changeme.com"
+   # base_url: "https://{{ vitam_site_name }}-changeme.com"
   cas_server:
-   server_name: "{{ vitam_site_name }}-cas.teamdlab.com"
-  # base_url:  "https://{{ vitam_site_name }}-cas.teamdlab.com"
+   server_name: "{{ vitam_site_name }}-changeme.com"
+  # base_url:  "https://{{ vitam_site_name }}-changeme.com"
   vitam_host:
-    server_name: "{{ vitam_site_name }}-vitam.teamdlab.com"
+    server_name: "{{ vitam_site_name }}-changeme.com"

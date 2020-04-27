@@ -12,10 +12,6 @@
       shell: "systemctl stop vitam*"
       ignore_errors: yes
 
-    - name: Stop all dlab services
-      shell: "systemctl stop dlab*"
-      ignore_errors: yes
-
     # Uninstalling package will remove systemd unit files
     - name: Uninstall vitamui packages
       yum:

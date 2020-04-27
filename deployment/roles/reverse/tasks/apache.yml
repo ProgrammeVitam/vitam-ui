@@ -37,6 +37,15 @@
   delay: "{{ packages_install_retries_delay }}"
   when: ansible_os_family == "RedHat"
 
+- name: Install mod_substitute from newer httpd version
+  copy:
+    src: "apache/mod_substitute.so"
+    dest: "/etc/{{ apache_service }}/modules/mod_substitute.so"
+    owner: "root"
+    mode: 0644
+  notify:
+        - reload apache
+
 # TODO: We could use apache2_module of ansible but it is currently flagged as preview
 - name: Enable mod_ssl & mod_proxy (Debian)
   file:

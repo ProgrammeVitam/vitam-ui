@@ -38,6 +38,9 @@
     # Filter to change url inside  html and js files
     AddOutputFilterByType SUBSTITUTE text/html
     AddOutputFilterByType SUBSTITUTE text/javascript
+    AddOutputFilterByType SUBSTITUTE application/javascript
+    SubstituteMaxLineLength 12M
+
 
     # CONSUL
 
@@ -101,6 +104,9 @@
 
     ProxyPass /cas/css {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/css {{reverse_connection_params}}
     ProxyPassReverse  /cas/css {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/css
+
+    ProxyPass /cas/js {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/js {{reverse_connection_params}}
+    ProxyPassReverse  /cas/js {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/js
 
     ProxyPass /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout {{reverse_connection_params}}
     ProxyPassReverse  /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout
