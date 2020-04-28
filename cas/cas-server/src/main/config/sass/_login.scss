@@ -89,7 +89,7 @@
         &:focus:not([disabled]),
         &:hover:not([disabled]) {
             cursor: pointer;
-            background-color: var(--vitamui-primary-light);
+            opacity: 85%;
             outline: none;
         }
 
@@ -124,8 +124,8 @@
         i {
             display: block;
             font-size: 18px;
-            color: var(--vitamui-secondary);
-            background-color: var(--vitamui-secondary-light-20);
+            color: white;
+            background-color: var(--vitamui-secondary);
             width: 30px;
             height: 30px;
             border-radius: 15px;
@@ -172,7 +172,7 @@
             text-align: center;
 
             i.check-icon {
-                color: var(--vitamui-secondary-light);
+                color: var(--vitamui-secondary);
                 font-size: 110px;
             }
         }

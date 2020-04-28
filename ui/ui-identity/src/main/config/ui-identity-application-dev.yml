@@ -12,8 +12,8 @@ spring:
 ui-identity:
   #theme-logo: /path/to/logo.png
   theme-colors:
-    vitamui-primary: "#fe4f02"
-    vitamui-secondary: "#5cbaa9"
+    vitamui-primary: "#ff4a54"
+    vitamui-secondary: "#241f63"
   assets: src/main/config
   iam-external-client:
     server-host: localhost
