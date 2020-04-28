@@ -37,6 +37,7 @@
   delay: "{{ packages_install_retries_delay }}"
   when: ansible_os_family == "RedHat"
 
+# FIXME: remove when mod_substitute.so with SubstituteMaxLineLength will be integrated in next httpd version
 - name: Install mod_substitute from newer httpd version
   copy:
     src: "apache/mod_substitute.so"
