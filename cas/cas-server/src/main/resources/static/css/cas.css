@@ -131,7 +131,7 @@
     border: 1px solid var(--vitamui-primary); }
     .login-box button.vitamui-primary:focus:not([disabled]), .login-box button.vitamui-primary:hover:not([disabled]) {
       cursor: pointer;
-      background-color: var(--vitamui-primary-light);
+      opacity: 85%;
       outline: none; }
     .login-box button.vitamui-primary[disabled] {
       opacity: 0.4; }
@@ -158,8 +158,8 @@
     .login-box button.back i {
       display: block;
       font-size: 18px;
-      color: var(--vitamui-secondary);
-      background-color: var(--vitamui-secondary-light-20);
+      color: white;
+      background-color: var(--vitamui-secondary);
       width: 30px;
       height: 30px;
       border-radius: 15px;
@@ -195,7 +195,7 @@
       padding: 0 15%;
       text-align: center; }
       .login .success .content i.check-icon {
-        color: var(--vitamui-secondary-light);
+        color: var(--vitamui-secondary);
         font-size: 110px; }
     .login .success h1 {
       line-height: 36px; }
@@ -231,7 +231,7 @@
   .password-recovery .instructions {
     width: 80%; }
   .password-recovery i.check-icon {
-    color: var(--vitamui-secondary-light);
+    color: var(--vitamui-secondary);
     font-size: 110px; }
   .password-recovery .cancel-link {
     font-family: Roboto;
@@ -300,7 +300,7 @@
 
 .step-password i.check-icon {
   float: right;
-  color: var(--vitamui-secondary-light);
+  color: var(--vitamui-secondary);
   font-size: 110px;
   margin-left: 60px; }
 
@@ -381,7 +381,7 @@
     text-decoration: none; }
     .mfa-login .buttonbckgrnd .submittoken:focus:not([disabled]), .mfa-login .buttonbckgrnd .submittoken:hover:not([disabled]) {
       cursor: pointer;
-      background-color: var(--vitamui-primary-light);
+      opacity: 85%;
       outline: none; }
     .mfa-login .buttonbckgrnd .submittoken[disabled] {
       opacity: 0.4; }
@@ -430,7 +430,7 @@
     text-decoration: none; }
     .mfa-expired #resendCodeForm .button:focus:not([disabled]), .mfa-expired #resendCodeForm .button:hover:not([disabled]) {
       cursor: pointer;
-      background-color: var(--vitamui-primary-light);
+      opacity: 85%;
       outline: none; }
     .mfa-expired #resendCodeForm .button[disabled] {
       opacity: 0.4; }

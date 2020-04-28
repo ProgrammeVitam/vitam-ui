@@ -139,10 +139,9 @@ server-identity :
   identityRole: SSO
   identityServerId: 1
 
-#theme:
-#  primary: '#123456'
-#  secondary: '#654321'
-# ...
+theme:
+  primary: '#ff4a54'
+  secondary: '#241f63'
 
 logging:
   config: src/main/config/logback-dev.xml
