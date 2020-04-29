@@ -13,6 +13,7 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.utils.FactoryDto;
 
 @Configuration
 public class TestContextConfiguration {
@@ -35,6 +36,8 @@ public class TestContextConfiguration {
             yaml.setResources(new ClassPathResource(env.getProperty(configProperty)));
         }
         propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+        // Set configuration for our data factory.
+        FactoryDto.setConfig(yaml.getObject());
         return propertySourcesPlaceholderConfigurer;
     }
 
