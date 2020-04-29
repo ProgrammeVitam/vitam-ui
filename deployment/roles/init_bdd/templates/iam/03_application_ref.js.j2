@@ -1,6 +1,8 @@
 db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
+{% if renew_platform|lower == 'true' %}
 db.applications.remove({});
+{% endif %}
 
 db.applications.insert({
     "identifier" : "CUSTOMERS_APP",

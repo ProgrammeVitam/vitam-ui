@@ -10,3 +10,6 @@ mongodb:
 mongod_replicaset_name: "shard{{ mongo_shard_id }}"
 
 mongod_client_connect_timeout_ms: 2000
+
+
+renew_platform: true #either true or false ; if true, most already existing tables will be dropped

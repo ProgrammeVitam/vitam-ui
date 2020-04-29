@@ -2,8 +2,10 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 
 print("START 02_security_ref.js");
 
+{% if renew_platform|lower == 'true' %}
 db.contexts.remove({});
 db.createCollection('events');
+{% endif %}
 
 db.contexts.insert({
   "_id": "cas_context",

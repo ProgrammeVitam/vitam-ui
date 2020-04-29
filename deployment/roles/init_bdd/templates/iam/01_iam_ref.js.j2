@@ -2,6 +2,7 @@ db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
 print("START 01_iam_ref.js");
 
+{% if renew_platform|lower == 'true' %}
 db.users.remove({});
 db.groups.remove({});
 db.profiles.remove({});
@@ -13,6 +14,7 @@ db.sequences.remove({});
 db.tokens.remove({});
 db.createCollection('events');
 db.createCollection('operations');
+{% endif %}
 
 // ========================================= CUSTOMERS =========================================
 
