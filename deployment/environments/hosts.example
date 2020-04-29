@@ -53,3 +53,16 @@ portal
 # put list here
 
 
+[hosts:vars]
+dns_servers=["1.1.1.1","2.2.2.2"] # defines list of DNS recursors for consul
+ansible_ssh_user=centos # for ansible
+ansible_become=true
+vitam_site_name=tobedefined # defines name in consul 
+consul_domain=consul # should not be changed
+url_prefix="https://{{ vitam_site_name }}.env.programmevitam.fr" # front URL from internet
+
+# Reverse configuration
+vitam_reverse_external_dns="{{ vitam_site_name }}.env.programmevitam.fr" # ServerName in reverse proxy
+vitam_reverse_external_protocol=http # protocol
+reverse_proxy_port=80 # associated port
+http_proxy_environnement="http://vitam-factory-relay.vitam-env:3128" # if need to access internet, please provide proxy URL
