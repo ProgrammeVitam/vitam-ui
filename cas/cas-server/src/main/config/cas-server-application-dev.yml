@@ -1,6 +1,4 @@
 spring:
-  main:
-    allow-bean-definition-overriding: true
   cloud:
     consul:  #disabled for dev
       enabled: false
@@ -109,11 +107,8 @@ cas:
 
 
 management.endpoints.enabled-by-default: true
-#cas.monitor.endpoints.sensitive: false
-#cas.monitor.endpoints.enabled: true
-#management.metrics.export.prometheus.sensitive: false
-#management.metrics.export.prometheus.enabled: true
-cas.monitor.endpoints.endpoint.defaults.access[0]: ANONYMOUS
+management.endpoints.web.exposure.include: '*'
+cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
 
 
 # for SMS:
