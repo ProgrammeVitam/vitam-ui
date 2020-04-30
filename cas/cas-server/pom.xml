@@ -14,8 +14,11 @@
         <assertj-core.version>3.11.1</assertj-core.version>
         <jackson.version>2.10.0</jackson.version>
         <lombok.version>1.18.10</lombok.version>
+        <micrometer.version>1.3.0</micrometer.version>
         <mockito.version>1.10.19</mockito.version>
         <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
+        <spring.security.version>5.2.0.RELEASE</spring.security.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <spring.security.version>5.2.0.RELEASE</spring.security.version>
         <spring.test.version>5.2.0.RELEASE</spring.test.version>
         <swagger.version>1.5.18</swagger.version>
@@ -58,6 +61,12 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-webflow</artifactId>
             <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.dropwizard.metrics</groupId>
+                    <artifactId>metrics-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apereo.cas</groupId>
@@ -274,20 +283,16 @@
         </dependency>
 
         <!-- metrics -->
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-metrics</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-metrics</artifactId>
-            <version>${cas.version}</version>
-        </dependency> -->
 
         <!-- logs -->
         <dependency>
@@ -415,6 +420,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
+					<arguments>
+						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
+					</arguments>
                 </configuration>
                 <executions>
                     <execution>
