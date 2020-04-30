@@ -110,7 +110,7 @@
             <button type="submit" class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
         <p class="helper">Appuyez sur <strong>Entrée</strong> pour valider</p>
-		<button class="back" type="button" th:onclick="|location.href = '@{/login}';|" th:if="${!#strings.isEmpty(superUser)}">
+		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
 			<i class="material-icons">arrow_back</i> Retour
 	    </button>
     </div>
