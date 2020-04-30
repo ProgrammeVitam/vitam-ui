@@ -96,7 +96,7 @@
             </button>
         </form>
 
-		<button class="back" type="button" th:onclick="|location.href = '@{/login}';|">
+		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
 			<i class="material-icons">arrow_back</i> Retour
 	    </button>
     </div>

@@ -140,6 +140,12 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         val flowScope = context.getFlowScope();
         flowScope.put(Constants.PORTAL_URL, vitamuiPortalUrl);
 
+        // retrieve the service if it exists to prepare the serviceUrl parameter (for the back links)
+        val service = WebUtils.getService(context);
+        if (service != null) {
+            flowScope.put("serviceUrl", service.getOriginalUrl());
+        }
+
         val event = super.doExecute(context);
         if ("error".equals(event.getId())) {
 
