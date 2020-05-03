@@ -54,7 +54,7 @@ Paramétrage du composant ``vitamui-logstash`` :
 * ports d'écoute
 * gestion des log (rétention, tailles max, ...)
 
-Fichier ``mongo_experss_vars.yml``
+Fichier ``mongo_express_vars.yml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Paramétrage du composant ``mongo-express`` :
