@@ -88,10 +88,10 @@ cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
 cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
 
 
-spring.mail.host: smtp.gmail.com
-spring.mail.port: 587
+spring.mail.host: localhost
+spring.mail.port: 2525
 spring.mail.username: no-reply@vitamui.com
-spring.mail.password: f3CT953iDzGT7xj9
+spring.mail.password: password
 spring.mail.testConnection: false
 spring.mail.properties.mail.smtp.auth: true
 spring.mail.properties.mail.smtp.starttls.enable: true
