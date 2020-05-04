@@ -285,7 +285,7 @@
                                            If you want to changes default dependencies (only systemd), define them as a
                                             comma separated list of packages
                                         -->
-                                        <argument>DEPENDENCIES=systemd,java-1.8.0-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
