@@ -39,7 +39,6 @@ package fr.gouv.vitamui.commons.api.domain;
 import java.time.OffsetDateTime;
 
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
-import fr.gouv.vitamui.commons.api.enums.OperationType;
 
 /**
  * Interface describing a basic operation.
@@ -52,9 +51,9 @@ public interface IOperationDto {
 
     void setId(String id);
 
-    OperationType getType();
+    String getType();
 
-    void setType(OperationType type);
+    void setType(String type);
 
     Integer getTenantIdentifier();
 

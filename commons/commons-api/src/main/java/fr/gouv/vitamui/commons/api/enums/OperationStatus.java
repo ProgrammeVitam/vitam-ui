@@ -36,12 +36,30 @@
  */
 package fr.gouv.vitamui.commons.api.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum OperationStatus {
 
-    WAITING,
-    PAUSED,
-    RUNNING,
-    FAILED,
-    CANCELED,
-    COMPLETED;
+    CANCELED (10),
+    WAITING(4),
+    PAUSED(3),
+    RUNNING(2),
+    FAILED(0),
+    COMPLETED(0);
+
+
+
+    /**
+     * Value allowing to order status (can be used when an update of the.
+     */
+    private final int priority;
+
+    /**
+     * Constructor.
+     * @param priority Priority of the status
+     */
+    private OperationStatus(int priority) {
+        this.priority = priority;
+    }
 }

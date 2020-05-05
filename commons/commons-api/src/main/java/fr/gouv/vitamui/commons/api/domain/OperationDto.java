@@ -44,7 +44,6 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import fr.gouv.vitamui.commons.api.enums.OperationStatus;
-import fr.gouv.vitamui.commons.api.enums.OperationType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,7 +62,7 @@ public class OperationDto extends IdDto implements IOperationDto {
     private static final long serialVersionUID = -3962480065920989325L;
 
     @NotNull
-    private OperationType type;
+    private String type;
 
     @NotNull
     private Integer tenantIdentifier;
