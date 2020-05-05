@@ -53,7 +53,7 @@ public class OperationFactory {
     public static OperationDto createOperation(String author, Integer tenantIdentifier, OperationType type) {
         final OperationDto operation = createOperation(type);
 
-        return initOperation(operation, author, tenantIdentifier, type);
+        return initOperation(operation, author, tenantIdentifier, type.toString());
     }
 
     protected static OperationDto createOperation(OperationType type) {
@@ -66,7 +66,7 @@ public class OperationFactory {
     }
 
     protected static OperationDto initOperation(OperationDto operation, String author, Integer tenantIdentifier,
-            OperationType type) {
+            String type) {
         operation.setStatus(OperationStatus.RUNNING);
         operation.setTenantIdentifier(tenantIdentifier);
         operation.setCreationDate(OffsetDateTime.now());
