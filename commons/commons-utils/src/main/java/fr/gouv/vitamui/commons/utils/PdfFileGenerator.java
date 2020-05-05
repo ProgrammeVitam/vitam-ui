@@ -53,9 +53,10 @@ public class PdfFileGenerator {
 
     /**
      * Method allowing to fill an odt template and generate a pdf file from it.
-     * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is reponsible for closing the stream.
-     * @param pdfOutputStream the generated pdf file /!\ the owner is reponsible for closing the stream.
-     * @param dataMap the object containing the data to add to the template.
+     *
+     * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is responsible for closing the stream.
+     * @param pdfOutputStream        the generated pdf file /!\ the owner is responsible for closing the stream.
+     * @param dataMap                the object containing the data to add to the template.
      * @throws Exception
      */
     public static void createPdf(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap)
@@ -66,26 +67,39 @@ public class PdfFileGenerator {
 
     /**
      * Method allowing to fill an odt template with dynamic and static data and generate a pdf file from it.
+     *
      * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is reponsible for closing the stream.
-     * @param pdfOutputStream the generated pdf file /!\ the owner is reponsible for closing the stream.
-     * @param dataMap the object containing the data to add to the template.
-     * @param dynamicFields the dynamic fields to add to the report to enable the creation of the pdf.
+     * @param pdfOutputStream        the generated pdf file /!\ the owner is reponsible for closing the stream.
+     * @param dataMap                the object containing the data to add to the template.
+     * @param dynamicFields          the dynamic fields to add to the report to enable the creation of the pdf.
      * @throws Exception
      */
     public static void createPdfWithDynamicInfo(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap,
             final String... dynamicFields) throws Exception {
-        final IXDocReport xdocGenerator = createXDocReport(odtTemplateInputStream);
-        final FieldsMetadata dynamicFieldsMetadata = new FieldsMetadata();
-        for (final String dynamicField : dynamicFields) {
-            dynamicFieldsMetadata.addFieldAsList(dynamicField);
-        }
-        xdocGenerator.setFieldsMetadata(dynamicFieldsMetadata);
+        final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, new String[]{});
+        createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
+    }
+
+    /**
+     * Method allowing to fill an odt template with images, dynamic and static data and generate a pdf file from it.
+     *
+     * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is responsible for closing the stream.
+     * @param pdfOutputStream        the generated pdf file /!\ the owner is responsible for closing the stream.
+     * @param dataMap                the object containing the data to add to the template.
+     * @param dynamicFields          the dynamic fields to add to the report to enable the creation of the pdf.
+     * @param imageFields            the image fields to add to the report to enable the creation of the pdf.
+     * @throws Exception
+     */
+    public static void createPdfWithMetadata(final InputStream odtTemplateInputStream, final OutputStream pdfOutputStream, final Map<String, Object> dataMap,
+            final String[] dynamicFields, final String[] imageFields) throws Exception {
+        final IXDocReport xdocGenerator = generateXDocReport(odtTemplateInputStream, dynamicFields, imageFields);
         createPdfDocument(xdocGenerator, dataMap, pdfOutputStream);
     }
 
     /**
      * Method allowing to get the report to generate a pdf file.
-     * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is reponsible for closing the stream.
+     *
+     * @param odtTemplateInputStream the odt template to fill and convert to pdf /!\ the owner is responsible for closing the stream.
      * @return the XDocReport.
      * @throws Exception
      */
@@ -106,6 +120,20 @@ public class PdfFileGenerator {
         dataMap.entrySet().forEach(entry -> context.put(entry.getKey(), entry.getValue()));
         final Options options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
         xdocGenerator.convert(context, options, pdfOutputStream);
+    }
+
+    private static IXDocReport generateXDocReport(final InputStream odtTemplateInputStream, final String[] dynamicFields, final String[] imageFields)
+            throws Exception {
+        final IXDocReport xdocGenerator = createXDocReport(odtTemplateInputStream);
+        final FieldsMetadata fieldsMetadata = new FieldsMetadata();
+        for (final String dynamicField : dynamicFields) {
+            fieldsMetadata.addFieldAsList(dynamicField);
+        }
+        for (final String imageField : imageFields) {
+            fieldsMetadata.addFieldAsImage(imageField);
+        }
+        xdocGenerator.setFieldsMetadata(fieldsMetadata);
+        return xdocGenerator;
     }
 
 }
