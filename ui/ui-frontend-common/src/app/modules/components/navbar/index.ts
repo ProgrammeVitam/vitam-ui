@@ -35,3 +35,4 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './customer-menu/menu-option.interface';
+export * from './navbar.component';
