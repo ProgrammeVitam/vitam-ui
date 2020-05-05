@@ -36,7 +36,7 @@
         <!-- PAC4J -->
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-saml</artifactId>
+            <artifactId>pac4j-saml-opensamlv3</artifactId>
             <scope>provided</scope>
         </dependency>
 
