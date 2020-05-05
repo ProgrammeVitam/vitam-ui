@@ -12,19 +12,4 @@
   tags:
     - update_vitam_configuration
   notify:
-<<<<<<< HEAD
-    - restart service
-
-- name: Deploy customer-init.yml
-  copy:
-    src: "customer-init.yml"
-    dest: "{{ vitamui_folder_conf }}/customer-init.yml"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
-  tags:
-    - update_vitam_configuration
-  notify:
-=======
->>>>>>> [DEVOPS] Update scripts for deployment
     - restart service
