@@ -249,7 +249,7 @@ for CLIENT_TYPE in external vitam; do
     # fi
     mkdir -p ${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}
     # # client-${CLIENT_TYPE} keystores generation
-    for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null ); do
+    for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null | grep -v "^external$" ); do
 
         # Generate the p12 keystore
         pki_logger "-------------------------------------------"
