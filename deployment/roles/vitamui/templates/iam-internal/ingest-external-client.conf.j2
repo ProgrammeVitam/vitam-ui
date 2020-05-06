@@ -3,9 +3,9 @@ serverPort: {{ vitam_vars.ingest_external.port_service }}
 secure: true
 sslConfiguration :
  keystore :
-  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_certs.ingest_external.filename }}
-    keyPassword: {{ vitam_certs.ingest_external.password }}
+  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_cert.filename }}
+    keyPassword: {{ vitam_cert.password }}
  truststore :
-  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_certs.ingest_external.truststore_filename }}
-    keyPassword: {{ vitam_certs.ingest_external.password_truststore }}
+  - keyPath: {{ vitamui_folder_conf }}/{{ vitam_cert.truststore_filename }}
+    keyPassword: {{ vitam_cert.password_truststore }}
 hostnameVerification: true

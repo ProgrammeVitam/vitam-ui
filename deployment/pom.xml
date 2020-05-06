@@ -10,4 +10,5 @@
     <artifactId>deployment</artifactId>
     <name>VITAMUI Deployment - Stub</name>
     <packaging>pom</packaging>
+
 </project>

@@ -9,7 +9,7 @@ server-identity:
 
 certs-folder: certs/integration/
 generic-cert: ${certs-folder}/generic-it.jks
-jks-password: jkspasswd
+jks-password: changeme
 
 # Iam client configuration
 iam-client:

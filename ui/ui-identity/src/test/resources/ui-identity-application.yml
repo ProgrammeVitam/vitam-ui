@@ -50,9 +50,9 @@ server:
   port: 8081
   scheme: https
   ssl:
-    key-store: src/main/config/ui-identity.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
+    key-store: src/main/config/keystore_ui-identity.jks
+    key-store-password: changeme
+    key-password: changeme
 
 controller:
   subrogation:
@@ -69,8 +69,8 @@ cas:
   external-url: https://dev-cas.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: src/main/config/truststore.jks
-    trust-store-password: jkspasswd
+    trust-store: src/main/config/truststore_server.jks
+    trust-store-password: changeme
 
 debug: false
 logging:

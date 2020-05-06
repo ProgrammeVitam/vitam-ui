@@ -1,8 +1,8 @@
 server:
   ssl:
-    key-store: file:src/main/config/cas-server.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
+    key-store: file:src/main/config/keystore_cas-server.jks
+    key-store-password: changeme
+    key-password: changeme
   host: dev.vitamui.com
   port: 8080
 
@@ -15,12 +15,12 @@ iam-client:
   secure: true
   ssl-configuration:
     keystore:
-      key-path: src/main/config/cas-server.jks
-      key-password: jkspasswd
+      key-path: src/main/config/keystore_cas-server.jks
+      key-password: changeme
       type: JKS
     truststore:
-      key-path: src/main/config/truststore.jks
-      key-password: jkspasswd
+      key-path: src/main/config/truststore_server.jks
+      key-password: changeme
     hostname-verification: false
 
 

@@ -9,127 +9,128 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<artifactId>vitam-ui-package</artifactId>
+	<artifactId>package</artifactId>
 	<packaging>pom</packaging>
 	<name>VITAM-UI Package</name>
 	<description>Packaging VITAM-UI</description>
 
-	<build>
-		<plugins>
-			<!-- download dependencies for signing rpms -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-dependencies-rpm-signed</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<includeGroupIds>fr.gouv.vitam</includeGroupIds>
-							<includeTypes>rpm</includeTypes>
-							<outputDirectory>${basedir}/rpm_signed/vitam-product/</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${maven.exec.plugin.version}</version>
-				<executions>
-					<!-- <execution>
-						<id>create yum repodata for vitam-external</id>
-						<phase>test</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>/usr/bin/createrepo</executable>
-							<arguments>
-            					<argument>.</argument>
-							</arguments>
-							<workingDirectory>../rpm/vitam-external/target/</workingDirectory>
-						</configuration>
-					</execution> -->
-					<!-- remove useless & dangerous configuration -->
-					<execution>
-						<id>Remove vitam certificates</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>./remove_user_certificates.sh</executable>
-						</configuration>
-					</execution>
-					
-					<!-- sign rpm -->
-					<execution>
-						<id>Create signed rpm</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>./create_rpm_signed.sh</executable>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+	<profiles>
+		<profile>
+			<id>package-all</id>
+			<dependencies>
+				<!-- VITAM-UI dependencies -->
+				<dependency>
+					<groupId>fr.gouv.vitamui</groupId>
+					<artifactId>cas-server</artifactId>
+					<version>${project.version}</version>
+					<type>rpm</type>
+				</dependency>
+				<dependency>
+					<groupId>fr.gouv.vitamui</groupId>
+					<artifactId>iam-external</artifactId>
+					<version>${project.version}</version>
+					<type>rpm</type>
+				</dependency>
 
-			<!-- generate assemblies -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>assembly</id>
-						<phase>package</phase>
-						<configuration>
-							<appendAssemblyId>true</appendAssemblyId>
-							<descriptors>
-								<descriptor>${basedir}/assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+				<dependency>
+					<groupId>fr.gouv.vitamui</groupId>
+					<artifactId>iam-internal</artifactId>
+					<version>${project.version}</version>
+					<type>rpm</type>
+				</dependency>
+			</dependencies>
+			<build>
+				<plugins>
+					<!-- download dependencies for signing rpms -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-dependencies-rpm-signed</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+								<configuration>
+									<includeGroupIds>fr.gouv.vitam</includeGroupIds>
+									<includeTypes>rpm</includeTypes>
+									<outputDirectory>${basedir}/rpm_signed/vitam-product/</outputDirectory>
+									<overWriteReleases>false</overWriteReleases>
+									<overWriteSnapshots>false</overWriteSnapshots>
+									<overWriteIfNewer>true</overWriteIfNewer>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>${maven.exec.plugin.version}</version>
+						<executions>
+							<!-- sign rpm -->
+							<execution>
+								<id>Create signed rpm</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>./create_rpm_signed.sh</executable>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 
-	<dependencies>
-
-		<!-- VITAM dependencies -->
-
-		<dependency>
-			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>cas-server</artifactId>
-			<version>${project.version}</version>
-			<type>rpm</type>
-		</dependency>
-		<dependency>
-			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>iam-external</artifactId>
-			<version>${project.version}</version>
-			<type>rpm</type>
-		</dependency>
-
-		<dependency>
-			<groupId>fr.gouv.vitamui</groupId>
-			<artifactId>iam-internal</artifactId>
-			<version>${project.version}</version>
-			<type>rpm</type>
-		</dependency>
-
-		
-
-	</dependencies>
+					<!-- generate assemblies -->
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>assembly</id>
+								<phase>package</phase>
+								<configuration>
+									<appendAssemblyId>true</appendAssemblyId>
+									<descriptors>
+										<descriptor>${basedir}/assembly.xml</descriptor>
+										<descriptor>${basedir}/assembly-deployment.xml</descriptor>
+									</descriptors>
+								</configuration>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>package-deployment</id>
+			<build>
+				<plugins>
+					<!-- generate assemblies -->
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>assembly</id>
+								<phase>package</phase>
+								<configuration>
+									<appendAssemblyId>true</appendAssemblyId>
+									<descriptors>
+										<descriptor>${basedir}/assembly-deployment.xml</descriptor>
+									</descriptors>
+								</configuration>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 </project>

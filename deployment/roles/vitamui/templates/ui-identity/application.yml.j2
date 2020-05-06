@@ -20,7 +20,7 @@ server:
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
     key-store-password: {{ password_keystore }}
-    key-password: {{ password_manager_keystore }}
+    key-password: {{ password_keystore }}
 {% endif %}
   tomcat:
     accesslog:
@@ -55,7 +55,7 @@ ui-identity:
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
-        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
@@ -95,6 +95,6 @@ cas:
   callback-url: ${ui.url}/identity-api/callback
 {% if vitamui.iam_external.secure|lower == "true" %}
   ssl:
-    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
 {% endif %}

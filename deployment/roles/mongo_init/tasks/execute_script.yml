@@ -1,0 +1,65 @@
+---
+
+- fail: msg="Variable '{{ mongo_file }}' is not defined"
+  when: mongo_file is undefined
+
+- name: 
+  debug:
+    msg: ">>>> Execution of the file {{ mongo_file.finalname }} <<<<"
+
+- name: Check if the script exists
+  stat:
+    path: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+  register: stat_result
+
+- fail: msg="The file '{{ mongo_file.finalname }}' is not exist"
+  when: not stat_result.stat.exists
+
+- block:
+
+  - name: Check if the script has already been executed
+    shell: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/versioning {{ mongo_credentials }} --quiet --eval \"db.changelog.find({filename: '{{ mongo_file.finalname }}', checksum: '{{ stat_result.stat.checksum}}'});\""
+    no_log: "{{ hide_passwords_during_deploy }}"
+    register: mongo_versionning_result
+
+  - name: Debug mongo return
+    debug:
+      msg: "{{ mongo_versionning_result.stdout }}" 
+
+  - block:
+      - name: Load script in database
+        shell: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+        no_log: "{{ hide_passwords_during_deploy }}"
+        when: mock_insert_data is not defined
+      
+      - name: Update changelog
+        shell: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/versioning {{ mongo_credentials }} --eval \"db.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});\""
+        no_log: "{{ hide_passwords_during_deploy }}"
+    when: 
+      - "'_id' not in mongo_versionning_result.stdout"
+
+  when: mongodb.docker is not defined or not mongodb.docker.enable
+
+- block:
+  - name: Check if the script has already been executed (docker)
+    shell: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo {{ ip_service }}:{{ mongodb.mongod_port }}/versioning {{ mongo_credentials }} --quiet --eval \\\"db.changelog.find({filename: '{{ mongo_file.finalname }}', checksum: '{{ stat_result.stat.checksum}}'});\\\"\""
+    no_log: "{{ hide_passwords_during_deploy }}"
+    register: mongo_versionning_result
+
+  - name: Debug mongo return (Docker)
+    debug:
+      msg: "{{ mongo_versionning_result.stdout }}" 
+
+  - block:
+    - name: Load script in database (docker)
+      command: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/{{ mongo_file.finalname }}\""
+      no_log: "{{ hide_passwords_during_deploy }}"
+      when: mock_insert_data is not defined
+
+    - name: Update changelog (docker)
+      shell: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo {{ ip_service }}:{{ mongodb.mongod_port }}/versioning {{ mongo_credentials }} --quiet --eval \\\"db.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});\\\"\""
+      no_log: "{{ hide_passwords_during_deploy }}"
+
+    when: 
+      - "'_id' not in mongo_versionning_result.stdout"
+  when: mongodb.docker is defined and mongodb.docker.enable

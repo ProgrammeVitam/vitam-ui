@@ -1,0 +1,3 @@
+V	300503121520Z		01	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_root_client-vitam
+V	300503121522Z		02	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_intermediate_client-vitam
+V	230505123512Z		03	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=vitamui

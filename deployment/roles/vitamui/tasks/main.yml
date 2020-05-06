@@ -52,13 +52,17 @@
   notify:
     - restart service
 
-- name: Ensure that the templates sub-directory exists
+- name: Create custom sub-directories
   file:
-    path: "{{ vitamui_folder_conf }}/templates"
+    path: "{{ item }}"
     state: directory
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  loop: "{{ vitamui_struct.dirs }}"
+  when: 
+    - vitamui_struct.dirs is defined
+    - vitamui_struct.dirs|length > 0
   notify:
     - restart service
 
@@ -101,19 +105,6 @@
   notify:
     - restart service
 
-- name: Deploy customer-init.yml on iam-* components
-  copy:
-    src: "customer-init.yml"
-    dest: "{{ vitamui_folder_conf }}/customer-init.yml"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
-  when: vitamui_struct.vitamui_component in ["iam-external","iam-internal"]
-  tags:
-    - update_vitam_configuration
-  notify:
-    - restart service
-
 - name: "Copy {{ vitamui_struct.package_name }} jks keystore (server)"
   copy:
     src: "{{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.store_name }}.jks"
@@ -127,108 +118,43 @@
   notify:
     - restart service
 
-- name: "Copy other key stores"
+# Copy the trustore for all vitamui components in order to communicate between them.
+- name: "Copy {{ vitamui_certificate_type }} truststore"
   copy:
-    src: "{{ inventory_dir }}/keystores/server/{{ groups[('hosts_vitamui',item)|join('_')]|first }}/keystore_{{ vitamui[item].store_name }}.jks"
-    dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui[item].package_name }}.jks"
+    src: "{{ item.src }}"
+    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: "( vitamui[item].secure|lower == 'true' ) and ({{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ groups[((\"hosts_vitamui\",item)|join(\"_\"))]|first }}/keystore_{{ vitamui[item].store_name }}.jks || echo nofile') == \"\" }})"
-  with_items: "{{ other_stores }}" # Exemple : ["security_internal","iam_internal"]
+  when: 
+    - vitamui_struct.secure|lower == 'true'
+    - vitamui_certificate_type is defined 
+    - "vitamui_certificate_type|lower == '{{ item.name }}'"
+    - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
+  with_items:
+    # Copy the trustore for all vitamui components in order to communicate between them.
+    - { name: server, src: "{{ inventory_dir }}/keystores/server/truststore_server.jks" }
+    # Copy the trustore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
+    - { name: external, src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks" }
   tags:
     - update_vitamui_certificates
   notify:
     - restart service
 
-- name: "Copy server truststore"
-  copy:
-    src: "{{ inventory_dir }}/keystores/server/truststore_server.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: "( vitamui_struct.secure|lower == 'true' ) and ( {{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/truststore_server.jks || echo nofile') == \"\"}} )"
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
+- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}" 
+  include_tasks: "{{ vitamui_struct.vitamui_component_type }}.yml"
+  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component_type }}.yml || echo nofile') == \"\" }}"
 
-- name: "Copy {{ vitamui_certificate_client_type }} truststore"
-  copy:
-    src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/truststore_{{ vitamui_certificate_client_type }}.jks"
-    dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_client_type }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: "( vitamui_struct.secure|lower == 'true' ) and ( vitamui_certificate_client_type is defined ) and ( {{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/truststore_{{ vitamui_certificate_client_type }}.jks || echo nofile') == \"\"}} )"
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
-
-# - name: "Copy server grantedstore"
-#   copy:
-#     src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/grantedstore_{{ vitamui_certificate_client_type }}.jks"
-#     dest: "{{ vitamui_folder_conf }}/grantedstore_{{ vitamui_struct.package_name }}.jks"
-#     owner: "{{ vitamui_defaults.users.vitamui }}"
-#     group: "{{ vitamui_defaults.users.group }}"
-#     mode: "{{ vitamui_defaults.folder.folder_permission }}"
-#   when: "( vitamui_struct.secure|lower == 'true' ) and ( vitamui_certificate_client_type is defined ) and ( {{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == \"\"}} ) and ( {{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/grantedstore_{{ vitamui_certificate_client_type }}.jks || echo nofile') == \"\"}} )"
-#   tags:
-#     - update_vitamui_certificates
-#   notify:
-#     - restart service
-
-- name: "Copy {{ vitamui_struct.package_name }} p12 keystore (clients)"
-  copy:
-    src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/keystore_{{ vitamui_struct.package_name }}.p12"
-    dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.p12"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: "( vitamui_struct.secure|lower == 'true' ) and ( vitamui_certificate_client_type is defined ) and ( {{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/client-{{ vitamui_certificate_client_type }}/keystore_{{ vitamui_struct.package_name }}.p12 || echo nofile') == \"\" }} )"
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
-
-- name: "Copy vitam certificates when iam-internal component"
-  copy:
-    src: "{{ item }}"
-    dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/certs_vitam/*.*"
-  when: vitamui_struct.vitamui_component|lower == 'iam-internal'
-  tags:
-    - update_vitamui_certificates
-  notify:
-    - restart service
-
-- name: apply consul conf when cas-server ONLY
-  template:
-    src: "cas-server/vitamui-cas-server.json.j2"
-    dest: "{{ vitamui_conf_consul }}/vitamui-cas-server.json"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: vitamui_struct.service_name == 'vitamui-cas-server'
-  notify:
-    - restart service
+- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}" 
+  include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"
+  when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component }}.yml || echo nofile') == \"\" }}"
 
 - name: flush_handlers
   meta: flush_handlers
+  tags:
+    - always
 
 - name: "Ensure {{ service_name }} service is started"
   service:
     name: "{{ service_name }}"
     state: started
-
-# - name: "Check whether {{ vitamui_struct.package_name }} is listening on service port {{ port_test }}"
-#   wait_for:
-#     host: "{{ ip_service }}"
-#     port: "{{ port_test }}"
-#     state: started

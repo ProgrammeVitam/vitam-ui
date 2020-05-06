@@ -1,0 +1,4 @@
+V	300503091342Z		01	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_root_client-external
+V	300503091344Z		02	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_intermediate_client-external
+V	230505091435Z		03	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=customer_x
+V	230505114425Z		04	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=customer_x

@@ -3,6 +3,8 @@
 single_vm_hostnames: ['localhost']
 vitamui_env_name: "{{ vitam_site_name }}"
 
+pki_dir: "{{ inventory_dir }}/certs"
+
 vitamui_defaults:
   folder:
     root_path: "/vitamui"
@@ -41,6 +43,7 @@ vitamui:
   identity:
     host: "identity.service.consul"
     vitamui_component: "ui-identity"
+    vitamui_component_type: "ui"
     package_name: "vitamui-ui-identity"
     service_name: "vitamui-ui-identity"
     store_name: "ui-identity"
@@ -58,6 +61,7 @@ vitamui:
   identity_admin:
     host: "identity-admin.service.consul"
     vitamui_component: "ui-identity-admin"
+    vitamui_component_type: "ui"
     package_name: "vitamui-ui-identity-admin"
     service_name: "vitamui-ui-identity-admin"
     store_name: "ui-identity-admin"
@@ -75,6 +79,7 @@ vitamui:
   portal:
     host: "portal.service.consul"
     vitamui_component: "ui-portal"
+    vitamui_component_type: "ui"
     package_name: "vitamui-ui-portal"
     service_name: "vitamui-ui-portal"
     store_name: "ui-portal"
@@ -92,6 +97,7 @@ vitamui:
   iam_external:
     host: "iam-external.service.consul"
     vitamui_component: "iam-external"
+    vitamui_component_type: "external"
     package_name: "vitamui-iam-external"
     store_name: "iam-external"
     service_name: "vitamui-iam-external"
@@ -109,6 +115,7 @@ vitamui:
   iam_internal:
     host: "iam-internal.service.consul"
     vitamui_component: "iam-internal"
+    vitamui_component_type: "internal"
     package_name: "vitamui-iam-internal"
     store_name: "iam-internal"
     service_name: "vitamui-iam-internal"
@@ -131,6 +138,7 @@ vitamui:
   cas_server:
     host: "cas-server.service.consul"
     vitamui_component: "cas-server"
+    vitamui_component_type: "external"
     package_name: "vitamui-cas-server"
     store_name: "cas-server"
     service_name: "vitamui-cas-server"
@@ -149,6 +157,7 @@ vitamui:
   security_internal:
     host: "security-internal.service.consul"
     vitamui_component: "security-internal"
+    vitamui_component_type: "internal"
     package_name: "vitamui-security-internal"
     store_name: "security-internal"
     service_name: "vitamui-security-internal"
@@ -170,7 +179,7 @@ vitamui_platform_informations:
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # Change-it0!
+  default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!
   address:
     street: change-it
     zip_code: change-it
@@ -180,8 +189,9 @@ vitamui_platform_informations:
   cas_tenant: -1
   first_customer_tenant: 9
 
-mongodb_vitamuiScripts_version:
-  - "1.0.0"
-  - "1.0.1"
-
-mongod_addedScripts: []
+mongodb:
+  included_scripts:
+    - ".*"
+  excluded_scripts:
+    - ".*_dev.js"
+    - ".*_demo.js"

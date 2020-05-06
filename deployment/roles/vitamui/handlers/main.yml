@@ -3,8 +3,7 @@
   service:
     name: "{{ service_consul }}"
     state: restarted
-  listen: restart service
-  when: service_name == 'vitamui-cas-server'
+  listen: restart consul
 
 - name: restart the service
   service:
