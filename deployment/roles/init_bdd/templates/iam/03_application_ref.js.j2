@@ -1,7 +1,10 @@
 db = db.getSiblingDB('{{ mongodb.iam.db }}')
 
+{% if renew_platform|lower == 'true' %}
 db.applications.remove({});
+{% endif %}
 
+{% if renew_platform|lower == 'true' %}
 db.applications.insert({
     "identifier" : "CUSTOMERS_APP",
 {% if vitamui.identity_admin.base_url is defined %}
@@ -123,3 +126,4 @@ db.applications.insert({
     "tooltip": "Consulter mes informations, Choisir la langue de l'interface",
     "target": "_self"
 });
+{% endif %}
