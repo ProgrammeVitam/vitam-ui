@@ -254,6 +254,10 @@ function copyCAFromPki {
     done
 }
 
+function getConsulDomain {
+    echo $(read_ansible_var "consul_domain" "hosts_vitamui_iam_internal[0]")
+}
+
 function generateCerts {
     # To override
     pki_logger "Generation of certificates"
@@ -294,7 +298,7 @@ function main {
     pki_logger "    -> Ecraser les certificats existants: ${ERASE}"
 
     # Get consul_domain
-    CONSUL_DOMAIN=$(read_ansible_var "consul_domain" "hosts_vitamui_iam_internal[0]")
+    CONSUL_DOMAIN=$(getConsulDomain)
 
     # Cleaning or creating vault file for certs
     initVault   certs   ${ERASE}
