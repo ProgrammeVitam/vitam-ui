@@ -53,6 +53,8 @@ mongodb:
       password: "mongod_dbpwd_versioning"
       roles: '[{ role: "readWrite", db: "versioning" }]'
 
+mongod_replicaset_name: "rs0"
+
 url_prefix: ""
 
 # Variables for users

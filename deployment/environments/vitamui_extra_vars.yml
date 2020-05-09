@@ -6,8 +6,6 @@ url_prefix: "changeme"
 
 ###
 # consul_vars.yml overload
-vitamui_site_name: "changeme"
-
 consul_remote_sites:
     - vitamui:
       name: "changeme"

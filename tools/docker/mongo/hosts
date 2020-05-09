@@ -55,3 +55,12 @@ hosts_cas_server
 
 [hosts_cas_server]
 localhost
+
+########################################################
+# ZONE DATA
+########################################################
+[zone_vitamui_data:children]
+hosts_vitamui_mongod
+
+[hosts_vitamui_mongod]
+localhost

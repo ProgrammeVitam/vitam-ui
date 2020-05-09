@@ -1,7 +1,7 @@
 ---
 
 single_vm_hostnames: ['localhost']
-vitamui_env_name: "{{ vitam_site_name }}"
+vitamui_site_name: "{{ vitam_site_name }}"
 
 pki_dir: "{{ inventory_dir }}/certs"
 
@@ -193,5 +193,5 @@ mongodb:
   included_scripts:
     - ".*"
   excluded_scripts:
-    - ".*_dev.js"
-    - ".*_demo.js"
+    - ".*_dev.js.*"
+    - ".*_demo.js.*"
