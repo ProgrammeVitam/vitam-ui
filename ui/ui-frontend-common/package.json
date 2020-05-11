@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --aot --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key server-identity.key --ssl-cert server-identity.crt",
+    "start": "ng serve --aot --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key dev-ssl/server.key --ssl-cert dev-ssl/server.crt",
     "build": "ng build --prod --build-optimizer=false --optimization=false",
     "build:dev": "ng build --prod --sourceMap=false --build-optimizer=false --optimization=false",
     "build:prod": "export NODE_OPTIONS=--max_old_space_size=4096; ng build --prod",
