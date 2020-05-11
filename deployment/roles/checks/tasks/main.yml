@@ -1,1 +1,3 @@
 ---
+- name: check if java 11 is the version installed
+  include_tasks: check_java.yml
