@@ -1,33 +1,61 @@
+hide_passwords_during_deploy: false
 
-# Variables used for development purposes (templating...)
-mongodb_vitamuiScripts_version:
-  - "1.0.0"
-  - "1.0.1"
-
+pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 mongod_source_template_dir:  "{{lookup('env','PWD')}}/database_scripts/"
-mongod_output_dir_entry_point: "{{lookup('env','PWD')}}/mongo-entrypoint"
 
-# New way with templating
-# Scripts load order. Mandatory for templating. Any files that don't match the pattern won't
-# be executed in mongo provisonning
+# Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
 
-# REGEX APPLIES ON RELATIVE SCRIPT PATH
-# Notes: entries are not duplicated, first regex match rule applies
-mongod_scripts_load_order:
-  - "iam/1.0.0/create_users_ref.js.j2"     # first script mandatory
-  - "iam/1.0.0/.*_ref.js"
-  - "iam/1.0.0/.*_demo.js"
-  - "iam/1.0.0/security.populate_certificates_dev.js.j2"
-  - "iam/1.0.0/.*_dev.js"
-  - "1.0.0/.*_ref.js"
-  - "1.0.0/.*_demo.js"
-  - "1.0.0/.*_dev.js"
-  - "1.0.1/.*ref.js"
+vitamui_defaults:
+  folder:
+    root_path: "{{lookup('env','PWD')}}/mongo-entrypoint"
+  users:
+    vitamuidb: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
 
-mongo_files_excluded:
-  - "iam/1.0.0/security.populate_certificates_ref.js.j2" # problem with templating on this one
-  - "1.0.0/security.populate_certificates_ref.js.j2" # problem with templating on this one
-  - "init_replicaset_ref.js.j2" # mandatory in first, "manually" added
+mongodb:
+  included_scripts:
+    - ".*"
+  excluded_scripts:
+    - "nothing"
+  docker: 
+    enable: true
+    internal_dir: /scripts/mongo/data
+  mongod_port: 27018
+  passphrase: mongogo
+  admin:
+      db: admin
+      user: "mongod_dbuser_admin"
+      password: "mongod_dbpwd_admin"
+      roles:  '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
+  localadmin:
+      db: admin
+      user: "mongod_dbuser_localadmin"
+      password: "mongod_dbpwd_localadmin"
+      roles:  '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
+  security:
+      db: security
+      user: "mongod_dbuser_security"
+      password:  "mongod_dbpwd_security"
+      roles: '[{ role: "readWrite", db: "security" }]'
+  iam:
+      db: iam
+      user: "mongod_dbuser_iam"
+      password: "mongod_dbpwd_iam"
+      roles: '[{ role: "readWrite", db: "iam" }]'
+  cas:
+      db: cas
+      user: "mongod_dbuser_cas"
+      password: "mongod_dbpwd_cas"
+      roles: '[{ role: "readWrite", db: "cas" }]'
+  versioning:
+      db: versioning
+      user: "mongod_dbuser_versioning"
+      password: "mongod_dbpwd_versioning"
+      roles: '[{ role: "readWrite", db: "versioning" }]'
+
+mongod_replicaset_name: "rs0"
+
+url_prefix: ""
 
 # Variables for users
 
@@ -37,7 +65,7 @@ vitamui_platform_informations:
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # Change-it0!
+  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # password
   address:
     street: change-it
     zip_code: change-it
@@ -47,100 +75,14 @@ vitamui_platform_informations:
   cas_tenant: -1
   first_customer_tenant: 9
 
-
-# Mongo database creation:
-mongod_databases:
-  mongo_db_admin:
-    db: admin
-    user: "{{ mongod_dbuser_admin }}"
-    pwd:  "{{ mongod_dbpwd_admin }}"
-    roles:  [{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }]
-
-  mongo_db_security:
-    db: security
-    user: "{{ mongod_dbuser_security }}"
-    # defined in vault
-    pwd:  "{{ mongod_dbpwd_security }}"
-    roles: [{ role: "readWrite", db: "security" }]
-
-  mongo_db_iam:
-    db: iam
-    # defined in vault
-    user: "{{ mongod_dbuser_iam }}"
-    # defined in vault
-    pwd: "{{ mongod_dbpwd_iam }}"
-    roles: [{ role: "readWrite", db: "iam" }]
-
-  mongo_db_cas:
-    db: cas
-    user: "{{ mongod_dbuser_cas }}"
-    # defined in vault
-    pwd: "{{ mongod_dbpwd_cas }}"
-    roles: [{ role: "readWrite", db: "cas" }]
-
-# DATABASES USERS
-mongod_dbuser_admin: mongod_dbuser_admin
-mongod_dbpwd_admin: mongod_dbpwd_admin
-
-mongod_dbuser_security: mongod_dbuser_security
-mongod_dbpwd_security: mongod_dbpwd_security
-
-mongod_dbuser_iam: mongod_dbuser_iam
-mongod_dbpwd_iam: mongod_dbpwd_iam
-
-mongod_dbuser_cas: mongod_dbuser_cas
-mongod_dbpwd_cas: mongod_dbpwd_cas
-
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-# Security context cert value override
-vitamui_security_contexts:
-
-  ui_identity:
-    cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-identity/ui-identity.pem') | cert_to_str() }}"
-
-  ui_portal:
-    cert_data: "{{ lookup('file', pki_dir + '/dev/certs/ui-portal/ui-portal.pem') | cert_to_str() }}"
-
-  cas:
-     cert_data: "{{ lookup('file', pki_dir +'/dev/certs/cas-server/cas-server.pem') | cert_to_str() }}"
-
 # ----------------------------------------------------------------------------------------------------------------------
 # cas services cert value override
 
-cas_services_configs:
-
-  ui_portal:
-    name: "Portal Application"
-    serviceId: "^https://.*.vitamui.com:9000.*"
-    logoutType : "FRONT_CHANNEL"
-    logoutUrl: "https://dev.vitamui.com:9000/logout"
-
-  ui_identity:
-    name: "Identity Access Management Application"
-    serviceId: "^https://.*.vitamui.com:9001.*"
-    logoutType : "FRONT_CHANNEL"
-    logoutUrl: "https://dev.vitamui.com:9001/logout"
-
-  ui_identity_admin:
-    name: "Identity Admin Access Management Application"
-    serviceId: "^https://.*.vitamui.com:9001.*"
-    logoutType : "FRONT_CHANNEL"
-    logoutUrl: "https://dev.vitamui.com:9001/logout"
-
-  mobile:
-    serviceId: "vitamuimobile"
-    name: "VITAMUI Mobile OAuth"
-    clientId : "vitamuimobile"
-    clientSecret: "vitamuimobilesecret"
-
-vitamui_services:
-  ui_identity:
-    server_name: dev.vitamui.com:4201
-
-  ui_identity_admin:
-    server_name: dev.vitamui.com:4201
-
-
+vitam_site_name: "dev"
+vitamui:
+  identity:
+    base_url: "https://dev.vitamui.com:4201"
+  identity_admin:
+    base_url: "https://dev.vitamui.com:4201"
+  portal:
+    base_url: "https://dev.vitamui.com:4200"

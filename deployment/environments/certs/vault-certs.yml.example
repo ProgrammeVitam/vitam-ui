@@ -8,4 +8,3 @@ server_ui_identity_key: changeme
 server_ui_identity_admin_key: changeme
 server_reverse_key: changeme
 client_client_external_customer_x_key: changeme
-client_client_vitam_vitamui_key: changeme

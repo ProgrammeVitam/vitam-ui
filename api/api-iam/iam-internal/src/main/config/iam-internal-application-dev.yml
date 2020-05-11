@@ -38,8 +38,8 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: src/main/config/truststore.jks
-      key-password: jkspasswd
+      key-path: src/main/config/truststore_server.jks
+      key-password: changeme
     hostname-verification: false
 
 cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day

@@ -1,0 +1,8 @@
+V	300503121512Z		01	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_root_server
+V	300503121514Z		02	unknown	/C=fr/ST=idf/L=paris/O=vitamui/OU=authorities/CN=ca_intermediate_server
+V	230505123444Z		03	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230505123448Z		04	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230505123452Z		05	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230505123455Z		06	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230505123459Z		07	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230505123504Z		08	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com

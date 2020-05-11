@@ -1,7 +1,9 @@
 ---
 
 single_vm_hostnames: ['localhost']
-vitamui_env_name: "{{ vitam_site_name }}"
+vitamui_site_name: "{{ vitam_site_name }}"
+
+pki_dir: "{{ inventory_dir }}/certs"
 
 vitamui_defaults:
   folder:
@@ -186,7 +188,7 @@ vitamui_platform_informations:
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # Change-it0!
+  default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!
   address:
     street: change-it
     zip_code: change-it
@@ -196,8 +198,9 @@ vitamui_platform_informations:
   cas_tenant: -1
   first_customer_tenant: 9
 
-mongodb_vitamuiScripts_version:
-  - "1.0.0"
-  - "1.0.1"
-
-mongod_addedScripts: []
+mongodb:
+  included_scripts:
+    - ".*"
+  excluded_scripts:
+    - ".*_dev.js.*"
+    - ".*_demo.js.*"

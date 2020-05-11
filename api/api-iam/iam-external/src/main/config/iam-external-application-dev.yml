@@ -23,11 +23,11 @@ server:
   host:
   port: 8083
   ssl:
-    key-store: src/main/config/iam-external.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
-    trust-store: src/main/config/truststore.jks
-    trust-store-password: jkspasswd
+    key-store: src/main/config/keystore_iam-external.jks
+    key-store-password: changeme
+    key-password: changeme
+    trust-store: src/main/config/truststore_server.jks
+    trust-store-password: changeme
     client-auth: need
 management:
   server:
