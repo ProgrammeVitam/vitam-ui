@@ -12,7 +12,7 @@
         <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max 280px * 100px)</div>
       </div>
       <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
-        vitamuiDragAndDrop
+        vitamuiCommonDragAndDrop
         (fileToUploadEmitter)="onImageDropped($event)"
         (fileDragOverEmitter)="onImageDragOver($event)"
         (fileDragLeaveEmitter)="onImageDragLeave($event)">

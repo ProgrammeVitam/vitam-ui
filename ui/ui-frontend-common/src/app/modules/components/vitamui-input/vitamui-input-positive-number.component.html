@@ -1,0 +1,16 @@
+<div class="vitamui-input" [class.disabled]="disabled">
+  <label>
+    {{placeholder}}
+    <span *ngIf="required" class="required-marker">*</span>
+  </label>
+
+  <input #vitamUIInputPositiveNumber [type]="type" [required]="required" [disabled]="disabled" [autofocus]="autofocus"
+    [attr.maxlength]="maxlength" [attr.min]="min" (blur)="onBlur()" (focus)="onFocus()" [(ngModel)]="value"
+    (ngModelChange)="onValueChange($event)" (keypress)="onKeyPress($event)">
+
+
+  <mat-spinner diameter="25" color="accent"></mat-spinner>
+</div>
+<div class="vitamui-input-errors">
+  <ng-content></ng-content>
+</div>

@@ -19,27 +19,32 @@
             <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
               <vitamui-common-table-filter-option value="ENABLED">
                 <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i>
+                  <span class="badge-state">Actif</span>
                 </div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="BLOCKED">
                 <div class="table-filter-icon" i18n="@@userStatusBlocked">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-orange close"></i> Bloqué
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-orange close"></i>
+                  <span class="badge-state">Bloqué</span>
                 </div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="DISABLED">
                 <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Désactivé
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i>
+                  <span class="badge-state">Désactivé</span>
                 </div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="REMOVED">
                 <div class="table-filter-icon" i18n="@@userStatusRemoved">
-                  <i class="vitamui-icon vitamui-icon-user parent"><span class="status-badge-anonym">x</span></i> Effacé
+                  <i class="vitamui-icon vitamui-icon-user parent"><span class="status-badge-anonym">x</span></i>
+                  <span class="badge-state">Effacé</span>
                 </div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC" [separator]="true">
                 <div class="table-filter-icon" i18n="@@userTypeGeneric">
-                  <i class="vitamui-icon vitamui-icon-user parent"></i> Générique
+                  <i class="vitamui-icon vitamui-icon-user parent"></i>
+                  <span class="badge-state">Générique</span>
                 </div>
               </vitamui-common-table-filter-option>
             </vitamui-common-table-filter>
