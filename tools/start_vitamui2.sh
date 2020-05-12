@@ -73,7 +73,7 @@ function start_api() {
      sleep 15
 
      # Start Cas Server
-     launch "../cas/cas-server" "java -Xmx200M -XX:+UseG1GC -Dspring.config.location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
+     launch "../cas/cas-server" "java -Xmx200M -XX:+UseG1GC -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
 
      sleep 15
 

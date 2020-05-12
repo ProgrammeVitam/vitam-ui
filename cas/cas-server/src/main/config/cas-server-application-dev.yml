@@ -18,6 +18,14 @@ server:
     context-path: /cas
 
 
+management:
+  server:
+    port: 7080
+    ssl:
+      enabled: false
+#management.metrics.export.prometheus.enabled: true
+
+
 vitamui.cas.tenant.identifier: -1
 vitamui.cas.identity: cas
 iam-client:
@@ -142,6 +150,7 @@ theme:
   primary: '#ff4a54'
   secondary: '#241f63'
 
+debug: true
 logging:
   config: src/main/config/logback-dev.xml
   level:
