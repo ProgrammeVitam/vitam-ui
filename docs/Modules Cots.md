@@ -124,7 +124,7 @@ correspondant a la version choisie.
 
 ```xml
     ...
-    <argument>LOGSTASH_VERSION=6.4.2</argument>
+    <argument>LOGSTASH_VERSION=7.6.0</argument>
     ...
 ```
 

@@ -17,41 +17,41 @@ mongodb:
     - ".*"
   excluded_scripts:
     - "nothing"
-  docker: 
+  docker:
     enable: true
     internal_dir: /scripts/mongo/data
   mongod_port: 27018
   passphrase: mongogo
   admin:
-      db: admin
-      user: "mongod_dbuser_admin"
-      password: "mongod_dbpwd_admin"
-      roles:  '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
+    db: admin
+    user: "mongod_dbuser_admin"
+    password: "mongod_dbpwd_admin"
+    roles:  '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
   localadmin:
-      db: admin
-      user: "mongod_dbuser_localadmin"
-      password: "mongod_dbpwd_localadmin"
-      roles:  '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
+    db: admin
+    user: "mongod_dbuser_localadmin"
+    password: "mongod_dbpwd_localadmin"
+    roles:  '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
   security:
-      db: security
-      user: "mongod_dbuser_security"
-      password:  "mongod_dbpwd_security"
-      roles: '[{ role: "readWrite", db: "security" }]'
+    db: security
+    user: "mongod_dbuser_security"
+    password:  "mongod_dbpwd_security"
+    roles: '[{ role: "readWrite", db: "security" }]'
   iam:
-      db: iam
-      user: "mongod_dbuser_iam"
-      password: "mongod_dbpwd_iam"
-      roles: '[{ role: "readWrite", db: "iam" }]'
+    db: iam
+    user: "mongod_dbuser_iam"
+    password: "mongod_dbpwd_iam"
+    roles: '[{ role: "readWrite", db: "iam" }]'
   cas:
-      db: cas
-      user: "mongod_dbuser_cas"
-      password: "mongod_dbpwd_cas"
-      roles: '[{ role: "readWrite", db: "cas" }]'
+    db: cas
+    user: "mongod_dbuser_cas"
+    password: "mongod_dbpwd_cas"
+    roles: '[{ role: "readWrite", db: "cas" }]'
   versioning:
-      db: versioning
-      user: "mongod_dbuser_versioning"
-      password: "mongod_dbpwd_versioning"
-      roles: '[{ role: "readWrite", db: "versioning" }]'
+    db: versioning
+    user: "mongod_dbuser_versioning"
+    password: "mongod_dbpwd_versioning"
+    roles: '[{ role: "readWrite", db: "versioning" }]'
 
 mongod_replicaset_name: "rs0"
 

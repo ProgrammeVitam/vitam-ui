@@ -1,6 +1,6 @@
 {
   "name": "ui-frontend-common",
-  "version": "1.0.2",
+  "version": "1.0.2-SNAPSHOT",
   "main": "src/index.ts",
   "scripts": {
     "ng": "ng",

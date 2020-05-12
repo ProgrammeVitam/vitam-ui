@@ -1,6 +1,6 @@
 {
   "name": "vitamui-ui",
-  "version": "1.0.2",
+  "version": "1.0.2-SNAPSHOT",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -60,7 +60,7 @@
     "ngx-color-picker": "^9.0.0",
     "rxjs": "^6.5.2",
     "tslib": "^1.9.0",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-1.0.2.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-1.0.2-SNAPSHOT.tgz",
     "underscore": "^1.9.1",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.9.1"

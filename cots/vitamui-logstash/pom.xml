@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>cots</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -43,7 +43,7 @@
                                         <argument>rpm</argument>
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
-                                        <argument>LOGSTASH_VERSION=6.4.2</argument>
+                                        <argument>LOGSTASH_VERSION=7.6.0</argument>
                                         <argument>USER=vitamuidb</argument>
                                         <!-- Call packaging dir makefile for use preset functions and templating -->
                                         <argument>PACKAGING_MAKEFILE=${vitamui.project.root}/tools/packaging/Makefile</argument>

@@ -3,16 +3,12 @@
 
 #########################
 # Copy mongo scripts and template them
-PWD=`pwd`
-CUR_DIR=$PWD
+CUR_DIR=`pwd`
+TEMPLATER_EXTRA_VARS="--extra-vars \"@$CUR_DIR/mongo_vars_dev.yml\""
 
-#echo "Remove old files (mongo-entrypoint)."
-#rm mongo-entrypoint/last/*
-
-echo "Execute $CUR_DIR/database_scripts_templater with custom variables."
-ansible-playbook -i $CUR_DIR/hosts $CUR_DIR/database_scripts_templater.yml -e "@$CUR_DIR/mongo_vars_dev.yml"
-
-#########################
+if [ ! -z "$ADDITIONNAL_VITAMUI_CONFIG_FILE" ]; then
+    TEMPLATER_EXTRA_VARS="${TEMPLATER_EXTRA_VARS} --extra-vars \"@${ADDITIONNAL_VITAMUI_CONFIG_FILE}\""
+fi
 
 docker-compose -f ./mongo_dev.yml up -d
 

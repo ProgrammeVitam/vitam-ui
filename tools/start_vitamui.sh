@@ -50,7 +50,7 @@ function start_api() {
      launch "../api/api-iam/iam-external" "$SPRINGBOOT"
 
      # Start Cas Server
-     launch "../cas/cas-server" "java -Dspring.config.location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
+     launch "../cas/cas-server" "java -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
 }
 
 function start_ui_prod() {

@@ -5,8 +5,8 @@
 - hosts: localhost
   gather_facts: true
   roles:
-    - { 
-        role: mongo_init, 
+    - {
+        role: mongo_init,
         mongod_source_template_dir: "{{playbook_dir}}/database_scripts/"
       }
 

@@ -4,7 +4,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>cas</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>cas-server</artifactId>
     <packaging>war</packaging>
@@ -17,10 +17,10 @@
         <micrometer.version>1.3.0</micrometer.version>
         <mockito.version>1.10.19</mockito.version>
         <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
-        <spring.security.version>5.2.0.RELEASE</spring.security.version>
-        <spring.version>5.2.0.RELEASE</spring.version>
+        <spring.cloud.consul.version>2.2.2.RELEASE</spring.cloud.consul.version>
         <spring.security.version>5.2.0.RELEASE</spring.security.version>
         <spring.test.version>5.2.0.RELEASE</spring.test.version>
+        <spring.version>5.2.0.RELEASE</spring.version>
         <swagger.version>1.5.18</swagger.version>
         <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
 
@@ -34,6 +34,20 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-external-client</artifactId>
         </dependency>
+
+        <!-- Consul -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <version>${spring.cloud.consul.version}</version>
+            <scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-commons</artifactId>
+            <version>${spring.cloud.consul.version}</version>
+            <scope>runtime</scope>
+		</dependency>
 
         <!-- CAS server -->
         <dependency>
@@ -49,6 +63,12 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-mongo-service-registry</artifactId>
             <version>${cas.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.dropwizard.metrics</groupId>
+                    <artifactId>metrics-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- authentication delegation -->
@@ -229,6 +249,7 @@
             <artifactId>cas-server-support-saml-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
+
 
         <!-- OAuth support -->
         <dependency>
