@@ -60,7 +60,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   identity_admin:
     host: "identity-admin.service.{{ consul_domain }}"
     vitamui_component: "ui-identity-admin"
@@ -99,7 +99,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   portal:
     host: "portal.service.{{ consul_domain }}"
     vitamui_component: "ui-portal"
@@ -156,7 +156,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   iam_external:
     host: "iam-external.service.{{ consul_domain }}"
     vitamui_component: "iam-external"
@@ -206,7 +206,7 @@ vitamui:
     store_name: "cas-server"
     service_name: "vitamui-cas-server"
     port_service: 8001
-    port_admin: 7001 # declared but is useless
+    port_admin: 7001
     secure: true
     jvm_log: false
     logging_level: "INFO"

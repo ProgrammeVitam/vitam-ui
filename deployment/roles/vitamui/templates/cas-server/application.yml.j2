@@ -1,3 +1,14 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+spring.application.name: cas-server
+
+
 server:
 {% if vitamui_struct.secure|lower == "true" %}
   ssl:
@@ -14,6 +25,14 @@ server:
   context-path: /cas
   servlet.session.cookie.path: /cas
 {% endif %}
+  tomcat.basedir: {{ vitamui_folder_conf }}/tomcat
+
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
 
 
 vitamui.cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
@@ -40,17 +59,23 @@ cas.authn.accept.users:
 
 cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
 
+
 {% if vitamui.cas_server.base_url is undefined %}
 cas.tgc.path: /cas
 {% endif %}
 cas.tgc.secure: false
 cas.tgc.crypto.enabled: false
-cas.webflow.crypto.enabled: false
-cas.authn.pac4j.cookie.crypto.enabled: true
+cas.webflow.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
 
 
-cas.ticket.tgt.timeout.maxTimeToLiveInSeconds: 1200
+##
+# CAS Web Application Session Configuration
+#
+# 4 (hours) * 60 (minutes) * 60 (seconds)
+#server.servlet.session.timeout: PT14400S
+#cas.ticket.tgt.hardTimeout.timeToKillInSeconds: 14400
+
 
 {% if vitamui.cas_server.base_url is defined %}
 cas.server.prefix: {{ vitamui.cas_server.base_url }}
@@ -66,27 +91,19 @@ cas.serviceRegistry.mongo.password: {{ mongodb.cas.password }}
 
 
 cas.authn.surrogate.separator: ","
-## Useless because of IamSurrogateRestAuthenticationService:
-# cas.authn.surrogate.rest.url: xxx
-# cas.authn.surrogate.rest.method: GET
 cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
 
 cas.authn.pm.enabled: true
-
-## Useless because of IamRestPasswordManagementService:
-# cas.authn.pm.rest.endpointUrlEmail: xxx
-# cas.authn.pm.rest.endpointUrlSecurityQuestions: xxx
-# cas.authn.pm.rest.endpointUrlChange: xxx
-
 cas.authn.pm.policyPattern: {{ lookup('file', "{{ inventory_dir }}/templates/policy_pattern.regex") }}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: {{ smtp.cas.sender }}
 cas.authn.pm.reset.expirationMinutes: {{ smtp.cas.expiration }}
-cas.authn.pm.reset.mail.attributeName: xxx
+cas.authn.pm.reset.mail.attributeName: email
 cas.authn.pm.reset.securityQuestionsEnabled: false
+cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
 
 # Used to sign/encrypt the password-reset link
@@ -110,11 +127,6 @@ spring.mail.properties.mail.smtps.ssl.trust: "{{ smtp.smtps.trust|lower }}"
 spring.mail.properties.mail.smtps.timeout: {{ smtp.smtps.timeout|default('8000') }}
 {% endif %}
 
-# TODO OMA : check if working if not declared
-{% if sms.enabled|lower == "true" %}
-cas.authn.mfa.globalProviderId: mfa-sms
-{% endif %}
-
 
 cas.authn.throttle.failure.threshold: 2
 cas.authn.throttle.failure.rangeSeconds: 3
@@ -126,12 +138,10 @@ cas:
     redirectParameter: next
 
 
-cas.adminPagesSecurity.ip: .*
-cas.monitor.endpoints.sensitive: false
-cas.monitor.endpoints.enabled: true
-endpoints.sensitive: false
-endpoints.enabled: true
-management.security.enabled: false
+management.endpoints.enabled-by-default: true
+management.endpoints.web.exposure.include: '*'
+cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
+management.metrics.export.prometheus.enabled: true
 
 
 {% if sms.enabled|lower == "true" %}
@@ -151,11 +161,22 @@ token.api.cas: tokcas_ie6UZsEcHIWrfv2x
 ip.header: X-Real-IP
 
 
+# 8 hours in seconds
+api.token.ttl: 28800
+
+
 server-identity:
   identityName: {{ vitamui_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
+
+# Example to override theme colors and logo
+theme:
+#  vitam-logo: /absolute/path/to/logo.png
+#  vitamui-logo-large: /absolute/path/to/logo.png
+  primary: '#ff4a54'
+  secondary: '#241f63'
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
@@ -174,6 +195,3 @@ logging:
     fr.gouv.vitamui.cas: DEBUG
     org.elasticsearch.metrics: DEBUG
     fr.gouv.vitamui.commons: DEBUG
-
-# 8 hours in seconds
-api.token.ttl: 28800
