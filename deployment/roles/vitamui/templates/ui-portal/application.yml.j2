@@ -65,8 +65,8 @@ ui-portal:
 {% endif %}
   assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   theme-colors:
-    vitamui-primary: "#ff4a54"
-    vitamui-secondary: "#241f63"
+    vitamui-primary: "{{ vitamui_platform_informations.theme_colors.vitamui_primary }}"
+    vitamui-secondary: "{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}"
 {% if vitamui.portal.base_url is undefined %}
   base-url:
     portal: "{{ url_prefix }}" # TODO OMA : revoir avec les redirections du RP

@@ -173,10 +173,10 @@ server-identity:
 
 # Example to override theme colors and logo
 theme:
-#  vitam-logo: /absolute/path/to/logo.png
-#  vitamui-logo-large: /absolute/path/to/logo.png
-  primary: '#ff4a54'
-  secondary: '#241f63'
+#  vitam-logo: {{ vitamui_defaults.folder.root_path }}/conf/assets/logo.png
+#  vitamui-logo-large: {{ vitamui_defaults.folder.root_path }}/conf/assets/logo-large.png
+  primary: '{{ vitamui_platform_informations.theme_colors.vitamui_primary }}'
+  secondary: '{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}'
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
