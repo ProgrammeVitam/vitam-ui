@@ -164,7 +164,7 @@ vitamui:
       vitamui_level: "INFO"
     reset_password_url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
   security_internal:
-    host: "security-internal.service.consul"
+    host: "vitamui-security-internal.service.consul"
     vitamui_component: "security-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-security-internal"
@@ -197,6 +197,9 @@ vitamui_platform_informations:
   proof_tenant: 3
   cas_tenant: -1
   first_customer_tenant: 9
+  theme_colors:
+    vitamui_primary: "#ff4a54"
+    vitamui_secondary: "#241f63"
 
 mongodb:
   included_scripts:

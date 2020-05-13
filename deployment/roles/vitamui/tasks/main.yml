@@ -89,6 +89,8 @@
     mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_items:
     - "logback.xml"
+  tags:
+    - update_vitam_configuration
 
 - name: Deploy specific configuration files
   template:
