@@ -39,7 +39,7 @@ vitamui_defaults:
 
 vitamui:
   identity:
-    host: "identity.service.consul"
+    host: "identity.service.{{ consul_domain }}"
     vitamui_component: "ui-identity"
     package_name: "vitamui-ui-identity"
     service_name: "vitamui-ui-identity"
@@ -56,7 +56,7 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
   identity_admin:
-    host: "identity-admin.service.consul"
+    host: "identity-admin.service.{{ consul_domain }}"
     vitamui_component: "ui-identity-admin"
     package_name: "vitamui-ui-identity-admin"
     service_name: "vitamui-ui-identity-admin"
@@ -73,7 +73,7 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
   portal:
-    host: "portal.service.consul"
+    host: "portal.service.{{ consul_domain }}"
     vitamui_component: "ui-portal"
     package_name: "vitamui-ui-portal"
     service_name: "vitamui-ui-portal"
@@ -90,7 +90,7 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
   iam_external:
-    host: "iam-external.service.consul"
+    host: "iam-external.service.{{ consul_domain }}"
     vitamui_component: "iam-external"
     package_name: "vitamui-iam-external"
     store_name: "iam-external"
@@ -107,7 +107,7 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
   iam_internal:
-    host: "iam-internal.service.consul"
+    host: "iam-internal.service.{{ consul_domain }}"
     vitamui_component: "iam-internal"
     package_name: "vitamui-iam-internal"
     store_name: "iam-internal"
@@ -129,7 +129,7 @@ vitamui:
       enabled: "true"
       delay: 60000
   cas_server:
-    host: "cas-server.service.consul"
+    host: "cas-server.service.{{ consul_domain }}"
     vitamui_component: "cas-server"
     package_name: "vitamui-cas-server"
     store_name: "cas-server"
@@ -147,7 +147,7 @@ vitamui:
       vitamui_level: "INFO"
     reset_password_url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
   security_internal:
-    host: "security-internal.service.consul"
+    host: "security-internal.service.{{ consul_domain }}"
     vitamui_component: "security-internal"
     package_name: "vitamui-security-internal"
     store_name: "security-internal"
