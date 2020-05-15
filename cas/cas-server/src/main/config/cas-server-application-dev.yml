@@ -73,6 +73,10 @@ cas.authn.surrogate.separator: ","
 cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
 
+# 5 minutes cache for login delegation
+cas.ticket.tst.timeToKillInSeconds: 300
+
+
 cas.authn.pm.enabled: true
 cas.authn.pm.policyPattern: '^(?=.*[$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
