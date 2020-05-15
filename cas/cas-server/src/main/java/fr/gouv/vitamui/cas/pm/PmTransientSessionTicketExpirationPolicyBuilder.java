@@ -43,10 +43,10 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.ticket.ExpirationPolicy;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.expiration.builder.TransientSessionTicketExpirationPolicyBuilder;
-import org.apereo.cas.web.support.WebUtils;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
- * Specific expiration policy builder for password management.
+ * Specific expiration policy builder for password management (retrieves the expiration in minutes pushed by the ResetPasswordController).
  */
 public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSessionTicketExpirationPolicyBuilder {
 
@@ -60,16 +60,15 @@ public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSe
 
     @Override
     public ExpirationPolicy toTransientSessionTicketExpirationPolicy() {
-        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext();
-        if (request != null) {
-            val expInMinutesAttribute = request.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE);
-            if (expInMinutesAttribute != null) {
-                try {
-                    val expInMinutes = Integer.parseInt((String) expInMinutesAttribute);
+        val attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            try {
+                val expInMinutes = (Integer) attributes.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, 0);
+                if (expInMinutes != null) {
                     return new HardTimeoutExpirationPolicy(expInMinutes * 60);
-                } catch (final NumberFormatException e) {
-                    LOGGER.error("Cannot get expiration in minutes", e);
                 }
+            } catch (final ClassCastException e) {
+                LOGGER.error("Cannot get expiration in minutes", e);
             }
         }
         return new HardTimeoutExpirationPolicy(casProperties.getAuthn().getPm().getReset().getExpirationMinutes() * 60);

@@ -351,4 +351,10 @@ public class WebflowConfig {
     public Action delegatedAuthenticationClientLogoutAction() {
         return new NoOpAction(null);
     }
+
+    @Bean
+    @RefreshScope
+    public Action verifyPasswordResetRequestAction() {
+        return new CustomVerifyPasswordResetRequestAction(casProperties, passwordManagementService, centralAuthenticationService.getObject());
+    }
 }
