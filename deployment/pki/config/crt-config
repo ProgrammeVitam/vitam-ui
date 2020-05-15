@@ -40,7 +40,7 @@ distinguished_name      = req_distinguished_name
 C = fr
 ST = idf
 L = paris
-O = vitam
+O = vitamui
 CN = ${ENV::OPENSSL_CN}
 
 

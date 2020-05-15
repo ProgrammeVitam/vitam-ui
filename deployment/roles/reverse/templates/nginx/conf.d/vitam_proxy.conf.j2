@@ -3,7 +3,7 @@
 # upstream_portal
 upstream vitam_ihm_demo {
     ip_hash;
-{% for h in groups['hosts-ihm-demo'] %}
+{% for h in groups['hosts_ihm_demo'] %}
     server {{ hostvars[h].ip_service }}:{{ vitam_vars.ihm_demo.port_service }};
 {% endfor %}
 }

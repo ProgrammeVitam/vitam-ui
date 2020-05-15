@@ -1,0 +1,10 @@
+- name: apply consul conf when cas-server ONLY
+  template:
+    src: "cas-server/vitamui-cas-server.json.j2"
+    dest: "{{ vitamui_conf_consul }}/vitamui-cas-server.json"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  notify:
+    - restart consul
+    - restart service
