@@ -102,17 +102,6 @@
     - "key"
   when: (vitam_reverse_external_protocol is defined) and (vitam_reverse_external_protocol == 'https')
 
-#OMA: if problem with apache2 restart due to absent pem, manually remove on reverse the above p12 file and relaunch playbook
-- name: copy certificate
-  copy:
-    src: "{{ inventory_dir }}/keystores/client-iam/keystore_reverse.p12"
-    dest: "/etc/{{ apache_service }}/certs/keystore_client_{{ vitam_site_name }}.p12"
-    owner: "root"
-    mode: 0400
-  notify:
-    - extract certificate
-    - set certificate attributes
-
 - name: Copy the CA
   copy:
     src: "{{ item }}"
@@ -120,7 +109,7 @@
     owner: "root"
     mode: 0400
   with_fileglob:
-    - "{{ inventory_dir }}/certs/client-iam/ca/*.crt"
+    - "{{ inventory_dir }}/certs/server/ca/*.crt"
 
 - name: copy httpd configuration template
   template:
