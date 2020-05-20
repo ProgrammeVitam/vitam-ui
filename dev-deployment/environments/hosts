@@ -55,3 +55,9 @@ hosts_cas_server
 
 [hosts_cas_server]
 localhost
+
+########################################################
+# REVERSE
+########################################################
+[hosts_vitamui_reverseproxy]
+localhost
