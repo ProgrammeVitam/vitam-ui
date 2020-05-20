@@ -5,61 +5,46 @@
 
 - name: 
   debug:
-    msg: ">>>> Execution of the file {{ mongo_file.finalname }} <<<<"
+    msg: ">>>> Execution of the file {{ mongo_file.finalname }}<<<<"
 
 - name: Check if the script exists
   stat:
     path: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
   register: stat_result
 
-- fail: msg="The file '{{ mongo_file.finalname }}' is not exist"
-  when: not stat_result.stat.exists
-
 - block:
+    - fail: msg="The file '{{ mongo_file.finalname }}' is not exist"
+      when: not stat_result.stat.exists
 
-  - name: Check if the script has already been executed
-    shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} --quiet --eval \"db.changelog.find({filename: '{{ mongo_file.finalname }}', checksum: '{{ stat_result.stat.checksum}}'});\""
-    no_log: "{{ hide_passwords_during_deploy }}"
-    register: mongo_versionning_result
+    - name: Compute versionned script files
+      template:
+        src: "versionned_script.js.j2"
+        dest: "{{ mongod_output_dir_entry_point }}/versionned_{{ mongo_file.finalname }}"
+        owner: "{{ vitamui_defaults.users.vitamuidb }}"
+        group: "{{ vitamui_defaults.users.group }}"
+        mode: 0755
 
-  - name: Debug mongo return
-    debug:
-      msg: "{{ mongo_versionning_result.stdout }}" 
-
-  - block:
-      - name: Load script in database
-        shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
-        no_log: "{{ hide_passwords_during_deploy }}"
-        when: mock_insert_data is not defined
-      
-      - name: Update changelog
-        shell: "mongo \"mongodb://{{ mongod_uri }}/versioning\" {{ mongo_credentials }} --eval \"db.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});\""
-        no_log: "{{ hide_passwords_during_deploy }}"
-    when: 
-      - "'_id' not in mongo_versionning_result.stdout"
-
-  when: mongodb.docker is not defined or not mongodb.docker.enable
-
-- block:
-  - name: Check if the script has already been executed (docker)
-    shell: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/versioning\\\" {{ mongo_credentials }} --quiet --eval \\\"db.changelog.find({filename: '{{ mongo_file.finalname }}', checksum: '{{ stat_result.stat.checksum}}'});\\\"\""
-    no_log: "{{ hide_passwords_during_deploy }}"
-    register: mongo_versionning_result
-
-  - name: Debug mongo return (Docker)
-    debug:
-      msg: "{{ mongo_versionning_result.stdout }}" 
-
-  - block:
-    - name: Load script in database (docker)
-      command: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/admin\\\" {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/{{ mongo_file.finalname }}\""
-      no_log: "{{ hide_passwords_during_deploy }}"
+    - name: Insert original script into versionned script.
+      blockinfile:
+        path: "{{ mongod_output_dir_entry_point }}/versionned_{{ mongo_file.finalname }}"
+        insertafter: "// Insert data"
+        marker: "// {mark} of the script"
+        block: |
+          {{lookup('file', '{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}') }}
       when: mock_insert_data is not defined
 
-    - name: Update changelog (docker)
-      shell: "docker exec --tty vitamui-mongo /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/versioning\\\" {{ mongo_credentials }} --quiet --eval \\\"db.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});\\\"\""
-      no_log: "{{ hide_passwords_during_deploy }}"
+    - name: Update finalname script
+      set_fact:
+        mongo_file: "{{ mongo_file | combine( { 'finalname': 'versionned_{{ mongo_file.finalname }}' } ) }}"
 
-    when: 
-      - "'_id' not in mongo_versionning_result.stdout"
+  when: mongodb.versioning is defined and mongodb.versioning.enable
+    
+- name: Load script in database
+  shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+  no_log: "{{ hide_passwords_during_deploy }}"
+  when: mongodb.docker is not defined or not mongodb.docker.enable
+
+- name: Load script in database (docker)
+  command: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/admin\\\" {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/{{ mongo_file.finalname }}\""
+  no_log: "{{ hide_passwords_during_deploy }}"
   when: mongodb.docker is defined and mongodb.docker.enable

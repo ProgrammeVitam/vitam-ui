@@ -19,6 +19,7 @@ mongodb:
     - "nothing"
   docker:
     enable: true
+    image_name: vitamui-mongo
     internal_dir: /scripts/mongo/data
   mongod_port: 27018
   passphrase: mongogo
@@ -48,6 +49,7 @@ mongodb:
     password: "mongod_dbpwd_cas"
     roles: '[{ role: "readWrite", db: "cas" }]'
   versioning:
+    enable: true
     db: versioning
     user: "mongod_dbuser_versioning"
     password: "mongod_dbpwd_versioning"

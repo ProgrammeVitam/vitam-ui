@@ -96,7 +96,7 @@ Afin d'injecter les bonnes valeurs aux variables des templates, le fichier **mon
 Afin d'intégrer une surcharge extérieure des variables par défaut, il est possible de renseigner le chemin d'un autre fichier de variable à travers la variable d'environnements **ADDITIONNAL_VITAMUI_CONFIG_FILE**.
 Attention, toute variable définie dans ce fichier additionnel écrasera la valeur existante.
 
-## Versionning des scripts Mongo
+## Versioning des scripts Mongo
 
 Avant l'exécution d'un script, on vérifie que ce dernier a été exécuté. Pour ce faire, nous nous basons sur deux éléments:
 - le nom du fichier
