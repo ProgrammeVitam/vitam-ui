@@ -49,7 +49,7 @@ mongodb:
     password: "mongod_dbpwd_cas"
     roles: '[{ role: "readWrite", db: "cas" }]'
   versioning:
-    enable: true
+    enable: false
     db: versioning
     user: "mongod_dbuser_versioning"
     password: "mongod_dbpwd_versioning"

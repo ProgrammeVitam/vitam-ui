@@ -16,29 +16,20 @@
     - fail: msg="The file '{{ mongo_file.finalname }}' is not exist"
       when: not stat_result.stat.exists
 
+    - name: Get script content.
+      shell: "cat {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+      register: script_content
+    
     - name: Compute versionned script files
       template:
-        src: "versionned_script.js.j2"
-        dest: "{{ mongod_output_dir_entry_point }}/versionned_{{ mongo_file.finalname }}"
+        src: "versioned_script.js.j2"
+        dest: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
         owner: "{{ vitamui_defaults.users.vitamuidb }}"
         group: "{{ vitamui_defaults.users.group }}"
-        mode: 0755
-
-    - name: Insert original script into versionned script.
-      blockinfile:
-        path: "{{ mongod_output_dir_entry_point }}/versionned_{{ mongo_file.finalname }}"
-        insertafter: "// Insert data"
-        marker: "// {mark} of the script"
-        block: |
-          {{lookup('file', '{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}') }}
-      when: mock_insert_data is not defined
-
-    - name: Update finalname script
-      set_fact:
-        mongo_file: "{{ mongo_file | combine( { 'finalname': 'versionned_{{ mongo_file.finalname }}' } ) }}"
+        mode: 0755        
 
   when: mongodb.versioning is defined and mongodb.versioning.enable
-    
+     
 - name: Load script in database
   shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
   no_log: "{{ hide_passwords_during_deploy }}"
