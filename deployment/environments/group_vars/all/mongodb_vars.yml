@@ -17,7 +17,3 @@ mongodb:
 mongod_replicaset_name: "shard{{ mongo_shard_id }}"
 
 mongod_client_connect_timeout_ms: 2000
-
-
-mongodb:
-  

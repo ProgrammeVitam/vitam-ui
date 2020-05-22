@@ -65,7 +65,7 @@
 - name: Compute list of eligible files
   delegate_to: localhost
   set_fact:
-    mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
+    mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': 'vitamui_' + item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
   loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) }}"
 
 # We generate scripts and upload on remote host
