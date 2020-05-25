@@ -1,0 +1,23 @@
+# remove the dlab repository
+- name: Reload systemd
+  command: systemctl daemon-reload
+
+- name: Clean systemd
+  command: systemctl reset-failed
+
+- name: Remove yum repository
+  file:
+    path: "/etc/yum.repos.d/{{ item }}.repo"
+    state: absent
+  with_items:
+    - vitamui-repositories
+    - logstash
+    - mongo
+
+- name: Clean repository metadata
+  shell: yum clean metadata
+  ignore_errors: yes
+
+- name: Ensure yum cache is reset
+  command: yum makecache
+  ignore_errors: yes

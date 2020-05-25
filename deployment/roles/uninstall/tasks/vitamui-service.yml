@@ -1,0 +1,28 @@
+---
+# tasks file for vitamui-uninstall
+- name: Stop vitamui service
+  systemd:
+    name: "vitamui-{{ service_name }}"
+    state: stopped
+  ignore_errors: yes
+
+- name: Uninstall vitamui service
+  yum:
+    name: "vitamui-{{ service_name }}"
+    state: absent
+
+- name: Delete file system of the service
+  file:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "/vitamui/app/{{ service_name }}"
+    - "/vitamui/bin/{{ service_name }}"
+    - "/vitamui/conf/{{ service_name }}"
+    - "/vitamui/data/{{ service_name }}"
+    - "/vitamui/defaults/{{ service_name }}"
+    - "/vitamui/lib/{{ service_name }}"
+    - "/vitamui/log/{{ service_name }}"
+    - "/vitamui/run/{{ service_name }}"
+    - "/vitamui/script/{{ service_name }}"
+    - "/vitamui/tmp/{{ service_name }}"
