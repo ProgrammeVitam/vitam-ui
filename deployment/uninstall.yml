@@ -1,54 +1,180 @@
-- hosts: localhost
-  connection: local
-  become: false
+# ########################################################
+# # ZONE Common vitamui
+# ########################################################
+- hosts: hosts_vitamui
   roles:
-    - bootstrap_ansible
+    - uninstall
+  vars:
+    uninstaller_type: rsyslog
+
+
+
+########################################################
+# ZONE Infra
+########################################################
+
+## Pas de consul pour vitamui
 
 - hosts: hosts_vitamui
-  gather_facts: false
+  roles:
+    - uninstall
+  vars:
+    service_name: consul
+    uninstaller_type: consul
+  tags:
+    - consul
+    - zone-vitamui-infra
 
+- hosts: hosts_vitamui_logstash
+  roles:
+    - uninstall
+  vars:
+    service_name: logstash
+    uninstaller_type: vitamui-service
+  tags:
+    - logstash
+    - zone-vitamui-infra
+
+#######################################################
+# ZONE Data
+#######################################################
+
+- hosts: hosts_vitamui_mongod
+  roles:
+    - uninstall
+  vars:
+    service_name: mongod
+    uninstaller_type: vitamui-service
+  tags:
+    - mongod
+
+- hosts: hosts_vitamui_mongod
+  roles:
+    - uninstall
+  vars:
+    service_name: mongo-express
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-data
+    - mongo-express
+
+########################################################
+# ZONE APP
+########################################################
+
+- hosts: hosts_vitamui_security_internal
+  roles:
+    - uninstall
+  vars:
+    service_name: security-internal
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-app
+    - security-internal
+
+- hosts: hosts_vitamui_iam_internal
+  roles:
+    - uninstall
+  vars:
+    service_name: iam-internal
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-app
+    - iam-internal
+
+- hosts: hosts_vitamui_iam_external
+  roles:
+    - uninstall
+  vars:
+    service_name: iam-external
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-app
+    - iam-external
+
+########################################################
+# ZONE CAS
+########################################################
+- hosts: hosts_cas_server
+  roles:
+    - uninstall
+  vars:
+    service_name: cas-server
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-cas
+    - cas-server
+
+########################################################
+# ZONE UI
+########################################################
+- hosts: hosts_ui_identity
+  roles:
+    - uninstall
+  vars:
+    service_name: ui-identity
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-ui
+    - ui-identity
+
+- hosts: hosts_ui_portal
+  roles:
+    - uninstall
+  vars:
+    service_name: ui-portal
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-ui
+    - ui-portal
+
+
+########################################################
+# ZONE ADMIN
+########################################################
+- hosts: hosts_ui_identity_admin
+  roles:
+    - uninstall
+  vars:
+    service_name: ui-identity-admin
+    uninstaller_type: vitamui-service
+  tags:
+    - ui-identity-admin
+    - zone-vitamui-admin
+
+########################################################
+# ZONE REVERSE
+########################################################
+- hosts: hosts_vitamui_reverseproxy
+  roles:
+    - uninstall
+  vars:
+    service_name: nginx
+    uninstaller_type: vitamui-service
+  tags:
+   - reverseproxy
+   - zone-vitamui-rp
+   - nginx
+
+############################
+# Delete empty dir
+############################
+
+- hosts: hosts_vitamui
   tasks:
-    - name: Stop all vitamui services
-      shell: "systemctl stop vitam*"
-      ignore_errors: yes
+    - name: delete empty dir vitamui
+      shell: "find /vitamui -type d -empty -delete"
+    - name: delete empty dir vitam
+      shell: "find /vitam -type d -empty -delete"
 
-    - name: Stop all dlab services
-      shell: "systemctl stop dlab*"
-      ignore_errors: yes
+############################
+# Remove repository and yum cache
+############################
 
-    # Uninstalling package will remove systemd unit files
-    - name: Uninstall vitamui packages
-      yum:
-        name: "vitam*"
-        state: removed
-      ignore_errors: yes
-
-    - name: Reload systemd
-      command: systemctl daemon-reload
-
-    - name: Clean systemd
-      command: systemctl reset-failed
-
-#    - name: Remove yum repository
-#      file:
-#        path: "/etc/yum.repos.d/{{ item }}.repo"
-#        state: absent
-#      with_items:
-#        - logstash
-#        - mongo
-
-    - name: Clean repository metadata
-      shell: yum clean metadata
-      ignore_errors: yes
-
-    - name: Ensure yum cache is reset
-      command: yum makecache
-      ignore_errors: yes
-
-    - name: Remove vitamui file system
-      command: rm -Rf /vitamui
-      ignore_errors: yes
-
-    - name: Remove vitam file system
-      command: rm -Rf /vitam
-      ignore_errors: yes
+- hosts: hosts_vitamui
+  roles:
+    - uninstall
+  vars:
+    uninstaller_type: repository
+  tags:
+   - repository
