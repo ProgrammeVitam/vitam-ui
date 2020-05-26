@@ -44,7 +44,7 @@ http {
     #hide server tokens
     server_tokens off;
 
-    add_header Content-Security-Policy "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: maps.gstatic.com *.googleapis.com *.google-analytics.com cdnjs.cloudflare.com; frame-src 'self'; object-src 'self'";
+    add_header Content-Security-Policy "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: maps.gstatic.com *.googleapis.com *.google-analytics.com cdnjs.cloudflare.com; frame-src 'self' blob: ; object-src 'self' data: blob: ; upgrade-insecure-requests";
 
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
