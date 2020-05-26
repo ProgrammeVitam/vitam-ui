@@ -1,0 +1,51 @@
+{
+  "operationSummary" : {
+    "tenant" : 1,
+    "evId" : "aeeaaaaaage2jm63aaxh2alrpep3clqaaaaq",
+    "evType" : "EXPORT_PROBATIVE_VALUE",
+    "outcome" : "KO",
+    "outDetail" : "EXPORT_PROBATIVE_VALUE.KO",
+    "outMsg" : "!\u00C9chec du processus de cr\u00E9ation du relev\u00E9 de valeur probante!",
+    "rightsStatementIdentifier" : {
+      "AccessContract" : "bbbbbbbbbb"
+    }
+  },
+  "reportSummary" : {
+    "evStartDateTime" : "2020-04-14T14:37:32.543",
+    "evEndDateTime" : "2020-04-14T14:37:32.547",
+    "reportType" : "PROBATIVE_VALUE",
+    "vitamResults" : {
+      "OK" : 0,
+      "KO" : 1,
+      "WARNING" : 0,
+      "total" : 1
+    }
+  },
+  "context" : {
+    "dslQuery" : {
+      "$query" : [ {
+        "$or" : [ {
+          "$in" : {
+            "#id" : [ "aeaqaaaaaee2jm63ab3zkalqqxr3iyaaaaaq" ]
+          }
+        } ]
+      } ],
+      "$filter" : { },
+      "$projection" : { }
+    },
+    "usage" : "BinaryMaster",
+    "version" : "2"
+  },
+  "reportEntries" : [ {
+    "unitIds" : [ "aeaqaaaaaee2jm63ab3zkalqqxr3iyaaaaaq" ],
+    "objectGroupId" : "aebaaaaaaee2jm63ab3zkalqqxr3ioaaaaaq",
+    "objectId" : "NO_BINARY_ID",
+    "usageVersion" : "BinaryMaster_2",
+    "operations" : [ ],
+    "checks" : [ ],
+    "evStartDateTime" : "2020-04-14T14:37:32.543",
+    "evEndDateTime" : "2020-04-14T14:37:32.547",
+    "status" : "KO"
+  } ],
+  "ReportVersion" : 2
+}

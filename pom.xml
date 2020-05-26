@@ -699,11 +699,6 @@
                 <version>${jackson.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-xml</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
@@ -803,23 +798,6 @@
                 <artifactId>jlibs-xsd</artifactId>
                 <version>${jlibs.version}</version>
             </dependency>
-			<!-- convert to PDF -->
-            <!-- Do not reuse Apache FOP since its usage is deprecated -->
-			<dependency>
-				<groupId>org.apache.xmlgraphics</groupId>
-				<artifactId>fop</artifactId>
-				<version>2.4</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>javax.media</groupId>
-                        <artifactId>jai-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.sun.media</groupId>
-                        <artifactId>jai-codec</artifactId>
-                    </exclusion>
-                </exclusions>
-			</dependency>
 
             <!-- Test -->
             <dependency>
@@ -1830,4 +1808,3 @@
     </profiles>
 
 </project>
-

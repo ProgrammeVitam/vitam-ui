@@ -50,29 +50,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.fop.apps.FOUserAgent;
-import org.apache.fop.apps.Fop;
-import org.apache.fop.apps.FopFactory;
-import org.apache.fop.apps.MimeConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -86,10 +70,12 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ZipUtils;
+import fr.gouv.vitamui.commons.utils.PdfFileGenerator;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ItemWithLabelDto;
+import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeOperationDto;
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeReportDto;
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ReportEntryDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
@@ -100,6 +86,8 @@ import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
  */
 @Service
 public class ProbativeValueInternalService {
+
+	private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
 
 	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProbativeValueInternalService.class);
 
@@ -127,7 +115,6 @@ public class ProbativeValueInternalService {
 			final String workspaceOperationPath, final OutputStream outputStream) {
 		checkWorkspacePath(workspaceOperationPath);
 		getProbativeValueReportJson(vitamContext, operationId, workspaceOperationPath);
-		generateXml(vitamContext, operationId, workspaceOperationPath);
 		generatePDF(vitamContext, operationId, workspaceOperationPath);
 		generateZip(operationId, workspaceOperationPath, outputStream);
 
@@ -135,8 +122,7 @@ public class ProbativeValueInternalService {
 
 	private void getProbativeValueReportJson(final VitamContext vitamContext, final String operationId,
 			final String workspaceOperationPath) {
-		try (InputStream reportStream = vitamBatchReportService.downloadBatchReport(vitamContext,
-				operationId)) {
+		try (InputStream reportStream = vitamBatchReportService.downloadBatchReport(vitamContext, operationId)) {
 			File file = new File(workspaceOperationPath, operationId + ".json");
 			FileUtils.copyInputStreamToFile(reportStream, file);
 		} catch (VitamClientException e) {
@@ -149,71 +135,32 @@ public class ProbativeValueInternalService {
 
 	}
 
-	private void generateXml(final VitamContext vitamContext, final String operationId,
-			final String workspaceOperationPath) {
-		try {
-			File jsonReport = new File(workspaceOperationPath, operationId + ".json");
-			File xmlReport = new File(workspaceOperationPath, operationId + ".xml");
-			ProbativeReportDto report = JsonHandler.getFromFile(jsonReport, ProbativeReportDto.class);
-			reportEntriesConsolidation(vitamContext, report);
-
-			XmlMapper xmlMapper = new XmlMapper();
-			xmlMapper.enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION);
-			xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-			xmlMapper.writer().withRootName("report").writeValue(xmlReport, report);
-
-		} catch (VitamClientException | InvalidParseOperationException | IOException e) {
-			LOGGER.error(e.getMessage());
-			throw new InternalServerException("Unable to create XML data from JSON Probative Value Report", e);
-		}
-	}
-
 	private void generatePDF(final VitamContext vitamContext, final String operationId,
 			final String workspaceOperationPath) {
 
-		File xmlfile = new File(workspaceOperationPath, operationId + ".xml");
-
-		try (InputStream fopconfigfile = getClass().getClassLoader().getResourceAsStream("fop/fop-config.xml");
-			InputStream xsltfile = getClass().getClassLoader().getResourceAsStream("fop/probativevaluereport.xsl");){
+		try {
+			File jsonReport = new File(workspaceOperationPath, operationId + ".json");
+			ProbativeReportDto report = JsonHandler.getFromFile(jsonReport, ProbativeReportDto.class);
+			reportEntriesConsolidation(vitamContext, report);
 
 			File pdffile = new File(workspaceOperationPath, operationId + ".pdf");
 
-			// configure fopFactory as desired
-			
-			final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI(), fopconfigfile);
+			try (InputStream odtTemplate = getClass().getClassLoader()
+					.getResourceAsStream(TEMPLATE_PROBATIVEVALUEREPORT_ODT);
+					OutputStream pdfOutputStream = new java.io.FileOutputStream(pdffile);) {
 
-			FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-			// configure foUserAgent as desired
-
-			// Setup output
-			try (OutputStream out = new java.io.FileOutputStream(pdffile)) {
-
-				// Construct fop with desired output format
-				Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
-
-				// Setup XSLT
-				TransformerFactory factory = TransformerFactory.newInstance();
-				Transformer transformer = factory.newTransformer(new StreamSource(xsltfile));
-
-				// Set the value of a <param> in the stylesheet
-				transformer.setParameter("versionParam", "2.0");
-
-				// Setup input for XSLT transformation
-				Source src = new StreamSource(xmlfile);
-
-				// Resulting SAX events (the generated FO) must be piped through to FOP
-				Result res = new SAXResult(fop.getDefaultHandler());
-
-				// Start XSLT transformation and FOP processing
-				transformer.transform(src, res);
+				Map<String, Object> dataMap = new HashMap<>();
+				dataMap.put("report", report);
+				PdfFileGenerator.createPdf(odtTemplate, pdfOutputStream, dataMap);
+			} catch (Exception e) {
+				LOGGER.error(e.getMessage());
+				throw new InternalServerException("Unable to create PDF from Probative Value Report template ODT", e);
 			}
-
-		} catch (TransformerException | IOException | SAXException e) {
-			LOGGER.error(e.getMessage());
-			throw new InternalServerException("Unable to create PDF from Probative Value Report XML", e);
-		} finally {
-			FileUtils.deleteQuietly(xmlfile);
+		} catch (InvalidParseOperationException | VitamClientException exc) {
+			LOGGER.error(exc.getMessage());
+			throw new InternalServerException("Unable to create PDF from Probative Value Report Json value", exc);
 		}
+
 	}
 
 	private void generateZip(final String operationId, final String workspaceOperationPath,
@@ -225,6 +172,7 @@ public class ProbativeValueInternalService {
 			streams.put(operationId + ".json", new FileInputStream(jsonFile));
 			streams.put(operationId + ".pdf", new FileInputStream(pdfFile));
 		} catch (FileNotFoundException e) {
+			LOGGER.error(e.getMessage());
 			throw new InternalServerException(String.format("Unable to generate ZIP: %s", e.getMessage()), e);
 		}
 		ZipUtils.generate(streams, outputStream);
@@ -263,9 +211,30 @@ public class ProbativeValueInternalService {
 						ObjectGroupResponse.class);
 				Optional<QualifiersModel> qualifierObject = objectGroupResponse.getQualifiers().stream()
 						.filter(item -> usage.equals(item.getQualifier())).findFirst();
-				Optional<VersionsModel> qualifierVersionObject = qualifierObject.get().getVersions().stream()
-						.filter(item -> version.equals(String.valueOf(item.getDataVersion()))).findFirst();
-				reportEntry.setObjectLabel(qualifierVersionObject.get().getFileInfoModel().getFilename());
+				if (qualifierObject.isPresent()) {
+					Optional<VersionsModel> qualifierVersionObject = qualifierObject.get().getVersions().stream()
+							.filter(item -> version.equals(String.valueOf(item.getDataVersion()))).findFirst();
+					if (qualifierVersionObject.isPresent()) {
+						reportEntry.setObjectLabel(qualifierVersionObject.get().getFileInfoModel().getFilename());
+					}
+				}
+			}
+
+			// extract operations infos from JsonNode RightsStatementIdentifier
+			for (ProbativeOperationDto operation : reportEntry.getOperations()) {
+				if (operation.getRightsStatementIdentifier() != null) {
+					if (operation.getRightsStatementIdentifier().has("ArchivalAgreement")) {
+						operation.setArchivalAgreement(
+								operation.getRightsStatementIdentifier().get("ArchivalAgreement").asText());
+					}
+					if (operation.getRightsStatementIdentifier().has("Profil")) {
+						operation.setProfil(operation.getRightsStatementIdentifier().get("Profil").asText());
+					}
+					if (operation.getRightsStatementIdentifier().has("AccessContract")) {
+						operation.setAccessContract(
+								operation.getRightsStatementIdentifier().get("AccessContract").asText());
+					}
+				}
 			}
 
 		}
