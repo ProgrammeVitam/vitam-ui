@@ -15,9 +15,6 @@
 
     <properties>
         <sonar.sources>src/main/java</sonar.sources>
-        <!--<webpack.skip>false</webpack.skip>-->
-		<!--<webpack.test.skip>false</webpack.test.skip>-->
-        <!--<angular.build.project>commons</angular.build.project>-->
     </properties>
 
 	<dependencies>

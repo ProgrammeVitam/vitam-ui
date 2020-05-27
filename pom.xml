@@ -174,8 +174,6 @@
         <angular.test.profile></angular.test.profile>
         <!-- we can specify the project name to build -->
         <!-- <angular.build.project></angular.build.project> -->
-        <!--we can choose between 'npm install' & 'npm ci'-->
-        <npm.install.arguments>install</npm.install.arguments>
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
         <!-- Put this properties to false sub-module when you want to use profile -->
         <rpm.skip>true</rpm.skip>
@@ -184,9 +182,9 @@
         <swagger.dir>.</swagger.dir>
         <swagger.skip>true</swagger.skip>
         <!--we can choose to build angular project and embedded it in our jar or not-->
-        <webpack.skip>true</webpack.skip>
+        <skipAllFrontend>true</skipAllFrontend>
         <!--we can choose to execute Karma tests or not-->
-        <webpack.test.skip>true</webpack.test.skip>
+        <skipAllFrontendTests>true</skipAllFrontendTests>
 
         <itCoverageAgent></itCoverageAgent>
     </properties>
@@ -1138,10 +1136,63 @@
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven.project.info.reports.plugin.version}</version>
                 </plugin>
+                
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${maven.frontend.plugin.version}</version>
+                    <configuration>
+                        <workingDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</workingDirectory>
+                        <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
+                        <skip>${skipAllFrontend}</skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <nodeVersion>${node.version}</nodeVersion>
+                                <npmVersion>${npm.version}</npmVersion>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>install --loglevel warn</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm run build</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>run build${angular.build.profile} -- --project=${angular.build.project} --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${skipAllFrontendTests}</skip>
+                                <arguments>run test${angular.test.profile} -- --project=${angular.build.project} ${angular.additional.test.informations}</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1438,7 +1489,20 @@
                 </property>
             </activation>
             <properties>
-                <webpack.test.skip>true</webpack.test.skip>
+                <skipAllFrontendTests>true</skipAllFrontendTests>
+            </properties>
+        </profile>
+
+        <!-- This profile is used to define skipTests value for Karma when -DskipAllFrontend is used during maven process. -->
+        <profile>
+            <id>skipAllFrontendTestsRun</id>
+            <activation>
+                <property>
+                    <name>skipAllFrontend</name>
+                </property>
+            </activation>
+            <properties>
+                <skipAllFrontendTests>true</skipAllFrontendTests>
             </properties>
         </profile>
 
@@ -1510,33 +1574,6 @@
                     ${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/archive/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/commons/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/flow/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/identity/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/portal/lcov.info
                 </sonar.typescript.lcov.reportPaths>
             </properties>
-        </profile>
-
-        <!-- This profile is used to build frontend project in Jenkins. -->
-        <profile>
-            <id>webpack</id>
-            <properties>
-                <angular.build.profile></angular.build.profile>
-                <angular.test.profile>:conf-ci</angular.test.profile>
-                <!--<npm.install.arguments>ci</npm.install.arguments>-->
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
 
         <!-- This profile is used to generate swagger documentation. -->
