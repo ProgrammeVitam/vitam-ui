@@ -7,7 +7,7 @@ server:
   port: 8080
 
 
-vitamui.cas.tenant.identifier: 4
+vitamui.cas.tenant.identifier: -1
 vitamui.cas.identity: cas
 iam-client:
   server-host: localhost
@@ -28,7 +28,6 @@ cas.authn.accept.users:
 
 
 cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
-cas.messageBundle.commonNames: classpath:/common_messages.properties
 
 
 cas.tgc.path: /cas
@@ -38,7 +37,7 @@ cas.webflow.crypto.enabled: false
 cas.authn.pac4j.cookie.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
 
-cas.server.prefix: https://dev.vitamui.com/cas
+cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 
 cas.serviceRegistry.mongo.clientUri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
@@ -76,10 +75,15 @@ cas.authn.pm.reset.mail.attributeName: xxx
 cas.authn.pm.reset.securityQuestionsEnabled: false
 cas.authn.pm.autoLogin: true
 
-# Used to sign/encrypt the password-reset link
-# cas.authn.pm.reset.crypto.encryption.key:
-# cas.authn.pm.reset.crypto.signing.key:
-# cas.authn.pm.reset.crypto.enabled: true
+
+cas.authn.mfa.simple.sms.from: '+33644602712'
+cas.authn.mfa.simple.sms.text: 'Code : %s'
+cas.authn.mfa.simple.sms.attributeName: mobile
+cas.authn.mfa.simple.timeToKillInSeconds: 3600
+cas.authn.mfa.simple.tokenLength: 4
+cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
+cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
+cas.authn.mfa.simple.mail.text: xxx
 
 
 spring.mail.host: smtp.gmail.com
@@ -87,8 +91,8 @@ spring.mail.port: 587
 spring.mail.username: no-reply@vitamui.com
 spring.mail.password: f3CT953iDzGT7xj9
 spring.mail.testConnection: false
-spring.mail.properties.mail.smtp.auth: true
-spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.auth: false
+spring.mail.properties.mail.smtp.starttls.enable: false
 
 
 cas.authn.mfa.globalProviderId: mfa-sms
@@ -121,7 +125,7 @@ cas.smsProvider.twilio.token: 982e4b1cffaaaac491305d984d43df9f
 mfa.sms.sender: "+33644602712"
 
 
-vitamui.portal.url: https://dev.vitamui.com/
+vitamui.portal.url: https://dev.vitamui.com:9000/
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x

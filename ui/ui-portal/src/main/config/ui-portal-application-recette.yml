@@ -44,15 +44,17 @@ ui-portal:
         key-password: changeme
       hostname-verification: false
   base-url:
-    portal: "https://dev.vitamui.com"
+    portal: "https://dev.vitamui.com:9000"
+    admin-identity: "https://dev.vitamui.com:9001/identity"
+    identity: "https://dev.vitamui.com:9001/identity"
 
 ui:
-  url: "https://dev.vitamui.com"
+  url: "https://dev.vitamui.com:9000"
   redirect-url: ${ui.url}
 
 cas:
   internal-url: https://dev.vitamui.com:8080/cas
-  external-url: https://dev.vitamui.com/cas
+  external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/portal-api/callback
   ssl:
     trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
