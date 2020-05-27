@@ -36,17 +36,20 @@
  */
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatButtonModule, MatListModule, MatSidenavModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { InjectorModule } from './modules/helper/injector.module';
 
+import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { BASE_URL, ENVIRONMENT } from './modules';
 import { AppGuard, LoggerModule, WINDOW_LOCATION } from './modules';
 import { VitamUICommonModule } from './modules';
-import { BASE_URL, ENVIRONMENT } from './modules';
 import { AccountComponent } from './modules/account';
 
 @NgModule({
@@ -62,12 +65,15 @@ import { AccountComponent } from './modules/account';
     FormsModule,
     InjectorModule,
     VitamUICommonModule,
+    LoggerModule.forRoot(),
+    QuicklinkModule,
     RouterModule.forRoot([
-      { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
+    { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
       { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
       { path: '**', redirectTo: '' },
-    ]),
-    LoggerModule.forRoot()
+    ], {
+      preloadingStrategy: QuicklinkStrategy
+    }),
   ],
   providers: [
     { provide: BASE_URL, useValue: '/portal-api' },

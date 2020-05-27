@@ -22,7 +22,8 @@
     "paths": {
       "vitamui-demo": ["./projects/demo/src"],
       "vitamui-identity": ["./projects/identity/src/app/"],
-      "vitamui-portal": ["./projects/portal/src/app/"]
+      "vitamui-portal": ["./projects/portal/src/app/"],
+      "moment": [ "node_modules/moment/min/moment.min.js" ]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true

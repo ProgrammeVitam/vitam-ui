@@ -40,7 +40,7 @@ import { filter, tap } from 'rxjs/operators';
 import { hasModifierKey } from '@angular/cdk/keycodes';
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 

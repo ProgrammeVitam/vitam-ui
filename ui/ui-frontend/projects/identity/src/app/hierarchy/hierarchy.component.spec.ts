@@ -37,7 +37,9 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 // import { NO_ERRORS_SCHEMA } from '@angular/core';
-// import { MatDialog, MatMenuModule, MatSidenavModule } from '@angular/material';
+// import { MatDialog } from '@angular/material/dialog';
+// import { MatSidenavModule } from '@angular/material/sidenav';
+// import { MatMenuModule } from '@angular/material/menu';
 // import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // import { HierarchyComponent } from './hierarchy.component';
 
