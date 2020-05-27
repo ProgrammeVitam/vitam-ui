@@ -20,7 +20,7 @@
     - uninstall
   vars:
     service_name: consul
-    uninstaller_type: consul
+    uninstaller_type: vitam-service
   tags:
     - consul
     - zone-vitamui-infra
