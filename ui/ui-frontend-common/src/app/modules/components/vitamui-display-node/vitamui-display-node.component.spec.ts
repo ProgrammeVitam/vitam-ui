@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
 

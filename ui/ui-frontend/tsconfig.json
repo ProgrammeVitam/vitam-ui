@@ -37,7 +37,8 @@
       ],
       "vitamui-library/*": [
         "dist/vitamui-library/*"
-      ]
+      ],
+      "moment": [ "node_modules/moment/min/moment.min.js" ]
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true
