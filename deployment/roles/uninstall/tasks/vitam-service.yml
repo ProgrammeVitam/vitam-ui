@@ -1,0 +1,29 @@
+
+---
+# tasks file for vitam-service-uninstall
+- name: Stop vitam service
+  systemd:
+    name: "vitam-{{ service_name }}"
+    state: stopped
+  ignore_errors: yes
+
+- name: Uninstall vitam service
+  yum:
+    name: "vitam-{{ service_name }}"
+    state: absent
+
+- name: Delete file system of consul
+  file:
+    name: "{{ vitam_defaults.folder.root_path }}/{{ item }}/{{ service_name }}"
+    state: absent
+  with_items:
+    - app
+    - bin
+    - conf
+    - data
+    - defaults
+    - lib
+    - log
+    - run
+    - script
+    - tmp
