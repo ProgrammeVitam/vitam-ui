@@ -9,7 +9,7 @@ spring:
 
 server:
   ssl:
-    key-store: file:src/main/config/cas-server.jks
+    key-store: file:src/main/config/keystore_cas-server.jks
     key-store-password: changeme
     key-password: changeme
   host: dev.vitamui.com
@@ -18,7 +18,7 @@ server:
     context-path: /cas
 
 
-vitamui.cas.tenant.identifier: 11
+vitamui.cas.tenant.identifier: -1
 vitamui.cas.identity: cas
 iam-client:
   server-host: localhost
@@ -39,7 +39,6 @@ cas.authn.accept.users:
 
 
 cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
-cas.messageBundle.commonNames: classpath:/common_messages.properties
 
 
 cas.tgc.path: /cas
@@ -48,7 +47,7 @@ cas.tgc.crypto.enabled: false
 cas.webflow.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
 
-cas.server.prefix: https://dev.vitamui.com/cas
+cas.server.prefix: https://dev.vitamui.com:8080/cas
 login.url: ${cas.server.prefix}/login
 
 cas.serviceRegistry.mongo.clientUri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
@@ -80,7 +79,6 @@ cas.authn.pm.reset.mail.attributeName: email
 cas.authn.pm.reset.securityQuestionsEnabled: false
 cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
-cas.authn.mfa.simple.mail.text: xxx
 
 
 cas.authn.mfa.simple.sms.from: '+33644602712'
@@ -90,6 +88,7 @@ cas.authn.mfa.simple.timeToKillInSeconds: 3600
 cas.authn.mfa.simple.tokenLength: 4
 cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
 cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
+cas.authn.mfa.simple.mail.text: xxx
 
 
 spring.mail.host: localhost
@@ -97,8 +96,8 @@ spring.mail.port: 2525
 spring.mail.username: no-reply@vitamui.com
 spring.mail.password: password
 spring.mail.testConnection: false
-spring.mail.properties.mail.smtp.auth: true
-spring.mail.properties.mail.smtp.starttls.enable: true
+spring.mail.properties.mail.smtp.auth: false
+spring.mail.properties.mail.smtp.starttls.enable: false
 
 
 cas.authn.throttle.failure.threshold: 2
@@ -121,7 +120,7 @@ cas.smsProvider.twilio.accountId: AC3942c2fee9478d0295b3051735860e3b
 cas.smsProvider.twilio.token: 982e4b1cffaaaac491305d984d43df9f
 
 
-vitamui.portal.url: https://dev.vitamui.com/
+vitamui.portal.url: https://dev.vitamui.com:9000/
 
 
 token.api.cas: tokcas_ie6UZsEcHIWrfv2x

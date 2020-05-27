@@ -29,9 +29,9 @@ ui-identity:
         key-password: changeme
       hostname-verification: false
   base-url:
-    portal: "https://dev.vitamui.com"
-    admin-identity: "https://dev.vitamui.com/identity"
-    identity: "https://dev.vitamui.com/identity"
+    portal: "https://dev.vitamui.com:9000"
+    admin-identity: "https://dev.vitamui.com/:9001identity"
+    identity: "https://dev.vitamui.com:9001/identity"
 
 server:
   host: dev.vitamui.com
@@ -52,12 +52,12 @@ management:
       enabled: false
 
 ui:
-  url: "https://dev.vitamui.com/identity"
-  redirect-url: ${ui.url}
+  url: "https://dev.vitamui.com:9001/identity"
+  redirect-url: ${ui.url}/${ui-prefix}
 
 cas:
   internal-url: https://dev.vitamui.com:8080/cas
-  external-url: https://dev.vitamui.com/cas
+  external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/identity-api/callback
   ssl:
     trust-store: src/main/config/truststore_server.jks
