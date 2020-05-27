@@ -153,6 +153,30 @@ export class StartupService {
     }
   }
 
+  getAppLogoURL(): string {
+    let trustedAppLogoUrl = null;
+    const base64Logo = this.getLogo();
+
+    if (base64Logo) {
+      trustedAppLogoUrl = base64Logo;
+    }
+
+    return trustedAppLogoUrl;
+  }
+
+  getCustomerLogoURL(): string {
+    let trustedInlineLogoUrl = null;
+
+    if (this.authService.user) {
+      const currentUser = this.authService.user;
+      if (currentUser.basicCustomer) {
+        trustedInlineLogoUrl = currentUser.basicCustomer.graphicIdentity.logoDataBase64;
+      }
+    }
+
+    return trustedInlineLogoUrl;
+  }
+
   getPortalUrl(): string {
     if (this.configurationLoaded()) {
       return this.configurationData.PORTAL_URL;

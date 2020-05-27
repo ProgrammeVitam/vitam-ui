@@ -36,6 +36,8 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
+import { LoggerModule } from './../logger/logger.module';
+import { StartupService } from './../startup.service';
 
 import { ErrorDialogComponent } from './error-dialog.component';
 
@@ -44,10 +46,16 @@ describe('ErrorDialogComponent', () => {
   let fixture: ComponentFixture<ErrorDialogComponent>;
 
   beforeEach(async(() => {
+    const startupServiceStub = { getPortalUrl: () => { }, getLogo: () => { }, getAppLogoURL: () => { } , getCustomerLogoURL: () => { }  };
+
     TestBed.configureTestingModule({
+      imports: [
+        LoggerModule.forRoot()
+      ],
       declarations: [ ErrorDialogComponent ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
+        { provide: StartupService, useValue: startupServiceStub },
       ]
     })
     .compileComponents();
