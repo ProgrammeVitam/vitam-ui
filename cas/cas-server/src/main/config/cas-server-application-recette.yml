@@ -79,7 +79,6 @@ cas.authn.pm.reset.mail.attributeName: email
 cas.authn.pm.reset.securityQuestionsEnabled: false
 cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
-cas.authn.mfa.simple.mail.text: xxx
 
 
 cas.authn.mfa.simple.sms.from: '+33644602712'
