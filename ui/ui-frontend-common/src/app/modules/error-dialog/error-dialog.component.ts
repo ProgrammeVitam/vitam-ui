@@ -36,6 +36,9 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
+import { StartupService } from './../startup.service';
 
 @Component({
   selector: 'vitamui-common-error-dialog',
@@ -44,7 +47,15 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ErrorDialogComponent implements OnInit {
 
-  constructor(private matDialogRef: MatDialogRef<ErrorDialogComponent>) { }
+  trustedAppLogoUrl: SafeUrl;
+
+  constructor(private matDialogRef: MatDialogRef<ErrorDialogComponent>,
+              startupService: StartupService,
+              private domSanitizer: DomSanitizer) {
+
+    this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
+    this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
+  }
 
   ngOnInit() {
   }
