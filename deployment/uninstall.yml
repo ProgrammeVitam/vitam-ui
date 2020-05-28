@@ -164,8 +164,10 @@
   tasks:
     - name: delete empty dir vitamui
       shell: "find /vitamui -type d -empty -delete"
+      ignore_errors: yes
     - name: delete empty dir vitam
       shell: "find /vitam -type d -empty -delete"
+      ignore_errors: yes
 
 ############################
 # Remove repository and yum cache
