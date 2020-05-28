@@ -18,6 +18,6 @@ smtp:
 
 sms:
   enabled: true
-  account: "AC3942c2fee9478d0295b3051735860e3b"
-  token: "982e4b1cffaaaac491305d984d43df9f"
-  sender: '+33644602712'
+  account: "changeme"
+  token: "changeme"
+  sender: 'changeme'
