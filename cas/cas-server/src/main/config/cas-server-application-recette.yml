@@ -81,7 +81,7 @@ cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
 
 
-cas.authn.mfa.simple.sms.from: '+33644602712'
+cas.authn.mfa.simple.sms.from: 'changeme'
 cas.authn.mfa.simple.sms.text: 'Code : %s'
 cas.authn.mfa.simple.sms.attributeName: mobile
 cas.authn.mfa.simple.timeToKillInSeconds: 3600
@@ -116,8 +116,8 @@ cas.monitor.endpoints.endpoint.defaults.access[0]: PERMIT
 
 
 # for SMS:
-cas.smsProvider.twilio.accountId: AC3942c2fee9478d0295b3051735860e3b
-cas.smsProvider.twilio.token: 982e4b1cffaaaac491305d984d43df9f
+cas.smsProvider.twilio.accountId: changeme
+cas.smsProvider.twilio.token: changeme
 
 
 vitamui.portal.url: https://dev.vitamui.com:9000/
