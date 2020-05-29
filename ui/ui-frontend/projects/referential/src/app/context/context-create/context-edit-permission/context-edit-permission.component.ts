@@ -78,7 +78,6 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   }
 
   ngOnInit(): void {
-
     if (this.authService.user) {
       const accessTenantsInfo = this.authService.user.tenantsByApp.find(
         appTenantInfo => appTenantInfo.name === 'ACCESS_APP');
@@ -118,23 +117,29 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
 
   onDelete(index: number) {
     this.permissions.splice(index, 1);
+    this.onChange && this.onChange(this.permissions);
   }
 
   onAdd() {
     this.permissions.push({tenant: '', accessContracts: [], ingestContracts: []});
+    this.onChange && this.onChange(this.permissions);
+  }
+
+  onTenantSelect() {
+    this.onChange && this.onChange(this.permissions);
   }
 
   writeValue(value: ContextPermission[]) {
     if (value) {
       this.permissions = value;
     } else {
-      this.permissions = [{tenant: '', accessContracts: [], ingestContracts: []}];
+      this.permissions = [{tenant: null, accessContracts: [], ingestContracts: []}];
     }
+    this.onChange && this.onChange(this.permissions);
   }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
-    this.onChange(this.permissions);
   }
 
   registerOnTouched(fn: any): void {

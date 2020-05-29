@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -70,5 +71,5 @@ public class ContextDto extends IdDto implements Serializable {
 
     private String securityProfile;
 
-    private List<PermissionDto> permissions;
+    private Set<PermissionDto> permissions;
 }

@@ -196,11 +196,7 @@ public class VitamContextService {
         final List<ContextVitamDto> listOfAC = new ArrayList<>();
         for (final ContextDto contextDto : contextModels) {
             final ContextVitamDto context = new ContextVitamDto();
-            LOGGER.debug("dto: {}", contextDto);
-            LOGGER.debug("permissions: {}", contextDto.getPermissions());
             listOfAC.add(VitamUIUtils.copyProperties(contextDto, context));
-            LOGGER.debug("vitam: {}", context);
-            LOGGER.debug("permissions: {}", context.getPermissions());
         }
         return listOfAC;
     }

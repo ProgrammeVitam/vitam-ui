@@ -38,6 +38,7 @@ import {Injectable} from '@angular/core';
 import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 
 import {of, timer} from 'rxjs';
+import {ContextPermission} from "vitamui-library";
 import {map, switchMap, take} from 'rxjs/operators';
 import {ContextService} from '../context.service';
 
@@ -50,6 +51,7 @@ export class ContextCreateValidators {
   }
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
+    console.log('Triggered uniqueName');
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
   }
 
@@ -59,7 +61,6 @@ export class ContextCreateValidators {
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
-
       const properties: any = {};
       properties[field] = control.value;
       const existField: any = {};
@@ -72,4 +73,29 @@ export class ContextCreateValidators {
       );
     };
   }
+
+  public permissionInvalid() {
+    return (control: AbstractControl) => {
+      switch(this.checkTenantsValid(control.value)) {
+        case 'tenant': return of({ 'permissionsTenant': true });
+        case 'empty': return of({ 'noPermissions': true });
+        default: return of(null);
+      }
+    };
+  }
+
+  private checkTenantsValid(value: ContextPermission[]): string {
+    if (!value || value.length === 0) {
+      return 'empty';
+    }
+
+    for (let permission of value) {
+      if (!permission.tenant) {
+        return 'tenant';
+      }
+    }
+
+    return null;
+  };
+
 }
