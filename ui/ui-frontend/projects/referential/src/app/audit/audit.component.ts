@@ -37,7 +37,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Event} from 'projects/vitamui-library/src/public-api';
 import {GlobalEventService, Option, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
 
@@ -68,7 +68,8 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     globalEventService: GlobalEventService,
     private formBuilder: FormBuilder) {
     super(route, globalEventService);
@@ -141,5 +142,9 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
 
   showAudit(item: Event) {
     this.openPanel(item);
+  }
+
+  changeTenant(tenantIdentifier: number) {
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 }
