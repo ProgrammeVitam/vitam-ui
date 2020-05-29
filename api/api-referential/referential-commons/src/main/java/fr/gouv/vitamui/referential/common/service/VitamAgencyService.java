@@ -256,9 +256,14 @@ public class VitamAgencyService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), AgencyResponseDto.class);
             final List<String> accessContractsNames = accessContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            final boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
+            boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 throw new ConflictException("Can't create access contract, a contract with the same name already exist in Vitam");
+            }
+            final List<String> accessContractsIds = accessContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsIds.contains(ac.getIdentifier()));
+            if (alreadyCreated) {
+                throw new ConflictException("Can't create access contract, a contract with the same id already exist in Vitam");
             }
         }
         catch (final JsonProcessingException e) {
