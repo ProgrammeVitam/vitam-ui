@@ -92,8 +92,8 @@ public class AgencyService extends AbstractPaginateService<AgencyDto> {
         return client.check(context,accessContractDto);
     }
 
-    public void delete(ExternalHttpContext context, String id) {
-        client.delete(context, id);
+    public ResponseEntity<Boolean> deleteWithResponse(ExternalHttpContext context, String id) {
+        return client.deleteWithResponse(context, id);
     }
 
     public ResponseEntity<Resource> export(ExternalHttpContext context) {

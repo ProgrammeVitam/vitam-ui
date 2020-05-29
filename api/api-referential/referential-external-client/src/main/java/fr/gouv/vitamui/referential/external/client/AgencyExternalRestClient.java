@@ -91,4 +91,9 @@ public class AgencyExternalRestClient extends BasePaginatingAndSortingRestClient
         final HttpEntity<AgencyDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
     }
+
+    public ResponseEntity<Boolean> deleteWithResponse(ExternalHttpContext context, final String id) {
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id);
+    }
 }

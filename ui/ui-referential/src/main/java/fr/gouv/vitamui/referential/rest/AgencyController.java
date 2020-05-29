@@ -162,9 +162,9 @@ public class AgencyController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete agency")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
+    public ResponseEntity<Boolean> delete(final @PathVariable String id) {
         LOGGER.debug("delete agency with id :{}", id);
-        service.delete(buildUiHttpContext(), id);
+        return service.deleteWithResponse(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "get exported csv for agencies")

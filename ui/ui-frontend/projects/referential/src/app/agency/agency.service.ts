@@ -125,12 +125,19 @@ export class AgencyService extends SearchService<Agency> {
 
   delete(agency: Agency): Observable<any> {
     return this.agencyApiService.delete(agency.id).pipe(
-      tap(() => {
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-            data: {type: 'agencyDelete', name: agency.identifier}
-          });
+      tap((response) => {
+          if (response === false) {
+            this.snackBar.open('Erreur lors de la suppression du Service Agent ' + agency.id, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000
+            });
+          } else {
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+              data: {type: 'agencyDelete', name: agency.identifier}
+            });
+          }
         },
         (error) => {
           this.snackBar.open(error.error.message, null, {

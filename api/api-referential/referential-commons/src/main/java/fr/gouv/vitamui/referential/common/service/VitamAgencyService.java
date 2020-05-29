@@ -142,16 +142,18 @@ public class VitamAgencyService {
         return importAgencies(vitamContext, actualAgencies);
     }
 
-    public RequestResponse<?> deleteAgency(final VitamContext vitamContext, final String id)
+    public boolean deleteAgency(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
 
         RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
         final List<AgencyModelDto> actualAgencies = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
 
-        return importAgencies(vitamContext, actualAgencies.stream()
+        RequestResponse r = importAgencies(vitamContext, actualAgencies.stream()
                 .filter( agency -> !id.equals(agency.getId()) )
                 .collect(Collectors.toList()));
+        LOGGER.error("is ok ? {}", r.isOk());
+        return r.isOk();
     }
 
     public RequestResponse<?> create(final VitamContext vitamContext, AgencyModelDto newAgency)

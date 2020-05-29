@@ -146,10 +146,10 @@ public class AgencyInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
+    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        agencyInternalService.delete(vitamContext, id);
+        return new ResponseEntity<>(agencyInternalService.delete(vitamContext, id), HttpStatus.OK);
     }
 
     @GetMapping("/export")
