@@ -92,10 +92,10 @@ public class OntologyExternalController {
         return ontologyExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
-    @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
+    @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public OntologyDto getOne(final @PathVariable("identifier") String identifier) {
-        LOGGER.debug("get file format identifier={}");
+        LOGGER.debug("get ontology identifier={}");
         return ontologyExternalService.getOne(identifier);
     }
 
