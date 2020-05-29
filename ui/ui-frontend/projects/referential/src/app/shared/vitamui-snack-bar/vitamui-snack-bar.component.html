@@ -10,7 +10,7 @@
       <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été mis à
       jour.
     </ng-container>
-
+0
     <ng-container *ngSwitchCase="'ingestContractCreate'" i18n="@@notificationIngestContractCreate">
       <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'entrée {{ data?.name }} a bien été créé
     </ng-container>
@@ -30,6 +30,10 @@
 
     <ng-container *ngSwitchCase="'agencyDelete'" i18n="@@notificationAgencyDelete">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été supprimé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyExportAll'" i18n="@@notificationAgencyExport">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Export des services agent en cours...
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatCreate'" i18n="@@notificationFileFormatCreate">

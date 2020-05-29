@@ -149,6 +149,12 @@ export class AgencyService extends SearchService<Agency> {
   }
 
   export() {
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      duration: 10000,
+      data: { type: 'agencyExportAll' }
+    });
+
     this.agencyApiService.export().subscribe(
       (response) => {
         const a = document.createElement('a');
