@@ -36,18 +36,9 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
-import fr.gouv.vitamui.cas.pm.ResetPasswordController;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.webflow.actions.*;
-import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
+import org.apereo.cas.authentication.AuthenticationEventExecutionPlan;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
@@ -83,7 +74,11 @@ import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.HierarchicalMessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.webflow.config.FlowDefinitionRegistryBuilder;
@@ -91,6 +86,26 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
+import fr.gouv.vitamui.cas.pm.ResetPasswordController;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.cas.webflow.actions.CheckMfaTokenAction;
+import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedClientAuthenticationAction;
+import fr.gouv.vitamui.cas.webflow.actions.CustomInitialFlowSetupAction;
+import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
+import fr.gouv.vitamui.cas.webflow.actions.CustomVerifyPasswordResetRequestAction;
+import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
+import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
+import fr.gouv.vitamui.cas.webflow.actions.I18NSendPasswordResetInstructionsAction;
+import fr.gouv.vitamui.cas.webflow.actions.NoOpAction;
+import fr.gouv.vitamui.cas.webflow.actions.SelectRedirectAction;
+import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
+import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.val;
 
 /**
  * Web(flow) customizations.
@@ -115,6 +130,10 @@ public class WebflowConfig {
     @Autowired
     @Qualifier("authenticationServiceSelectionPlan")
     private ObjectProvider<AuthenticationServiceSelectionPlan> authenticationRequestServiceSelectionStrategies;
+
+    @Autowired
+    @Qualifier("authenticationEventExecutionPlan")
+    private ObjectProvider<AuthenticationEventExecutionPlan> AuthenticationEventExecutionStrategies;
 
     @Autowired
     @Qualifier("communicationsManager")
@@ -226,6 +245,14 @@ public class WebflowConfig {
     public DispatcherAction dispatcherAction() {
         return new DispatcherAction(providersService, identityProviderHelper, casRestClient,
             surrogationSeparator, utils, delegatedClientDistributedSessionStore.getObject());
+    }
+
+    @RefreshScope
+    @Bean
+    public Action initialFlowSetupAction() {
+        return new CustomInitialFlowSetupAction(CollectionUtils.wrap(argumentExtractor.getObject()), servicesManager.getObject(),
+                authenticationRequestServiceSelectionStrategies.getObject(), ticketGrantingTicketCookieGenerator.getObject(), warnCookieGenerator.getObject(),
+                casProperties, AuthenticationEventExecutionStrategies.getObject(), webflowSingleSignOnParticipationStrategy.getObject(), ticketRegistrySupport);
     }
 
     @Bean

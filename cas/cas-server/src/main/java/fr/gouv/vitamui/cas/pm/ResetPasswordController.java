@@ -51,6 +51,7 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.CollectionUtils;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,6 +90,9 @@ public class ResetPasswordController {
 
     private final DefaultTransientSessionTicketFactory pmTicketFactory;
 
+    @Value("${theme.vitamui-platform-name:VITAM-UI}")
+    private String vitamuiPlatformName;
+
     @GetMapping("/resetPassword")
     public boolean resetPassword(@RequestParam(value = "username", defaultValue = "") final String username,
                                  @RequestParam(value = "firstname", defaultValue = "") final String firstname,
@@ -122,7 +126,7 @@ public class ResetPasswordController {
         request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
 
         final String url = buildPasswordResetUrl(usernameLower, casProperties);
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, ttl, url, new Locale(language));
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, ttl, url, vitamuiPlatformName, new Locale(language));
 
         LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
             email, messageToSend.getSubject(), expMinutes);

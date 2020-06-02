@@ -5,8 +5,8 @@
 function requestGeoPosition() {
     // console.log('Requesting GeoLocation data from the browser...');
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showGeoPosition, logGeoLocationError,
-            {maximumAge: 600000, timeout: 5000, enableHighAccuracy: true});
+        navigator.geolocation.watchPosition(showGeoPosition, logGeoLocationError,
+            {maximumAge: 600000, timeout: 8000, enableHighAccuracy: true});
     } else {
         // console.log('Browser does not support Geo Location');
     }
@@ -30,8 +30,10 @@ function logGeoLocationError(error) {
 }
 
 function showGeoPosition(position) {
-    $('[name="geolocation"]').val(position.coords.latitude + ','
-        + position.coords.longitude + ',' + position.coords.accuracy + ',' + position.timestamp);
+    let loc = position.coords.latitude + ',' + position.coords.longitude
+        + ',' + position.coords.accuracy + ',' + position.timestamp;
+    console.log("Tracking geolocation for " + loc);
+    $('[name="geolocation"]').val(loc);
 }
 
 
@@ -39,7 +41,7 @@ function preserveAnchorTagOnForm() {
     $('#fm1').submit(function () {
         var location = self.document.location;
         var hash = decodeURIComponent(location.hash);
-
+        
         if (hash != undefined && hash != '' && hash.indexOf('#') === -1) {
             hash = '#' + hash;
         }
@@ -47,30 +49,31 @@ function preserveAnchorTagOnForm() {
         var action = $('#fm1').attr('action');
         if (action == undefined) {
             action = location.href;
-        }
-        var qidx = location.href.indexOf('?');
-        if (qidx != -1) {
-            var queryParams = location.href.substring(qidx);
-            action += queryParams;
+        } else {
+            var qidx = location.href.indexOf('?');
+            if (qidx != -1) {
+                var queryParams = location.href.substring(qidx);
+                action += queryParams;
+            }
         }
         action += hash;
         $('#fm1').attr('action', action);
-
+        
     });
 }
 
-function areCookiesEnabled() {
-    if ($.cookie == undefined) {
-        return;
-    }
-
-    $.cookie('cookiesEnabled', 'true');
-    var value = $.cookie('cookiesEnabled');
-    $.removeCookie('cookiesEnabled');
-    return value != undefined;
-
+function preventFormResubmission() {
+    $('form').submit(function () {
+        $(':submit').attr('disabled', true);
+        var altText = $(':submit').attr('data-processing-text');
+        if (altText) {
+            $(':submit').attr('value', altText);
+        }
+        return true;
+    });
 }
 
+// Customization VITAMUI =======================
 function disableEmptyInputFormSubmission() {
     var fields = $('#fm1 input[name="username"],[name="password"]');
 
@@ -103,6 +106,7 @@ function disableEmptyInputFormSubmission() {
         }, 100);
     }
 }
+// End of Customization VITAMUI =======================
 
 function resourceLoadedSuccessfully() {
     $(document).ready(function () {
@@ -115,14 +119,11 @@ function resourceLoadedSuccessfully() {
             $('input:visible:enabled:first').focus();
         }
 
-        if (areCookiesEnabled()) {
-            $('#cookiesDisabled').hide();
-        } else {
-            $('#cookiesDisabled').show();
-        }
-
+		// Customization VITAMUI =======================
         disableEmptyInputFormSubmission();
+		// End of Customization VITAMUI ======================= 
         preserveAnchorTagOnForm();
+        preventFormResubmission();
 
         $('#capslock-on').hide();
         $('#fm1 input[name="username"],[name="password"]').trigger('input');

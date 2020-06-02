@@ -147,8 +147,10 @@ server-identity :
   identityServerId: 1
 
 
-# Example to override theme colors and logo
+# Example to override theme colors, logo, favicon, platform name ...
 theme:
+#  vitamui-platform-name: VITAM-UI
+#  vitamui-favicon: /absolute/path/to/favicon.ico
 #  vitam-logo: /absolute/path/to/logo.png
 #  vitamui-logo-large: /absolute/path/to/logo.png
   primary: '#ff4a54'
