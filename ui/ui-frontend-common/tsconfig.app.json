@@ -6,9 +6,6 @@
     "types": [],
     "baseUrl": "./",
     "paths": {
-      "moment": [
-        "node_modules/moment/min/moment.min.js"
-      ],
       "lodash": [
         "node_modules/lodash/lodash.min.js"
       ]
