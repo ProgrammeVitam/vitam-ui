@@ -36,6 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
@@ -44,13 +51,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * All the services.
@@ -325,6 +325,15 @@ public class ServicesData {
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
+
+    //------------------------------------ INGESTS -----------------------------------------
+
+    public static final String SERVICE_INGEST = "INGEST";
+
+    public static final String ROLE_CREATE_INGEST = CREATE_ROLE_PREFIX + SERVICE_INGEST;
+    public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
+    public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
+
     //@formatter:off
 
     /**
@@ -403,8 +412,11 @@ public class ServicesData {
 
             ROLE_RUN_AUDITS,
             ROLE_GET_OPERATIONS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
 
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST
             );
 
     /**
@@ -506,7 +518,11 @@ public class ServicesData {
             ROLE_DELETE_ONTOLOGIES,
 
             ROLE_RUN_AUDITS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
+
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST
 
             );
     //@formatter:on

@@ -1,4 +1,3 @@
-hide_passwords_during_deploy: false
 
 pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 
@@ -89,4 +88,6 @@ vitamui:
   portal:
     base_url: "https://dev.vitamui.com:4200"
   referential:
+    base_url: "https://dev.vitamui.com:4202"
+  ingest:
     base_url: "https://dev.vitamui.com:4202"

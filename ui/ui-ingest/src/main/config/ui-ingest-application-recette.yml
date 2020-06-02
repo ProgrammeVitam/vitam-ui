@@ -1,0 +1,63 @@
+spring:
+  profiles:
+    active: dev,swagger
+
+  cloud:
+    consul:  #disable for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+server:
+  host: dev.vitamui.com
+  port: 9008
+  scheme: https
+  ssl:
+    key-store: src/main/config/ui-ingest.jks
+    key-store-password: jkspasswd
+    key-password: jkspasswd
+management:
+  server:
+    address: localhost
+    port: 9108
+    ssl:
+      enabled: false
+
+ui-ingest:
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: src/main/config/ui-ingest.jks
+        key-password: jkspasswd
+        type: JKS
+      truststore:
+        key-path: src/main/config/truststore.jks
+        key-password: jkspasswd
+      hostname-verification: false
+  base-url:
+    portal: "https://dev.vitamui.com"
+
+ui:
+  url: "https://dev.vitamui.com"
+  redirect-url: ${ui.url}
+
+cas:
+  internal-url: https://dev.vitamui.com:8080/cas
+  external-url: https://dev.vitamui.com/cas
+  callback-url: ${ui.url}/ingest-api/callback
+  ssl:
+    trust-store: src/main/config/truststore.jks
+    trust-store-password: jkspasswd
+
+debug: false
+logging:
+    level:
+        fr.gouv.vitamui: DEBUG
+        org.springframework.web: INFO
+# Uncomment if you want to use you specific logback config.
+#logging:
+#  config: src/main/config/logback.xml

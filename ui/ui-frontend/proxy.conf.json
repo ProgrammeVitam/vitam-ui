@@ -16,5 +16,11 @@
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"
+  },
+  "/ingest-api": {
+    "target": "https://dev-ingest.vitamui.com:9008/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
   }
 }

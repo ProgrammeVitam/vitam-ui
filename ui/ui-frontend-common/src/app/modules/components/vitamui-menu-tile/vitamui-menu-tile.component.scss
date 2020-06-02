@@ -77,6 +77,22 @@
 
 }
 
+.ingests-app {
+    i {
+    color: $greeny-blue;
+
+        &.chevron-icon {
+            font-size: 24px;
+            margin-left: auto;
+        }
+    }
+
+    &.highlight {
+        border: 1px solid $greeny-blue;
+
+    }
+
+}
 .chevron-icon {
     font-size: 24px;
     margin-left: auto;

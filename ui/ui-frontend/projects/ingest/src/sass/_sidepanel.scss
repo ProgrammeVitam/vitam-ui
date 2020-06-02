@@ -1,0 +1,109 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.vitamui-sidepanel {
+    min-width: 584px;
+    height: 100vh;
+    background: white;
+
+    .read-only-field {
+        display: inline-block;
+        min-height: 50px;
+        width: 100%;
+        padding: 7px 20px 7px 25px;
+        vertical-align: top;
+        margin-bottom: 20px;
+
+        label {
+            font-size: 13px;
+            color: $greyish-two;
+            font-weight: normal;
+        }
+    }
+
+    vitamui-common-slide-toggle {
+        margin-bottom: 20px;
+    }
+}
+
+.vitamui-sidepanel-header {
+    padding: 30px 40px 0px 40px;
+    height: 200px;
+    background-color: $greeny-blue;
+
+    .btn-popup {
+        font-size: 32px;
+        background: none;
+        border: none;
+        padding: 0;
+        color: $white;
+    }
+
+    .btn-close {
+        background: none;
+        border: none;
+        padding: 0;
+        float: right;
+        opacity: 0.5;
+        color: $white;
+        text-decoration: none;
+
+        i {
+            font-size: 38px;
+            line-height: 22px;
+            width: 30px;
+        }
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+
+        > i {
+            color: $white;
+            margin-right: 10px;
+        }
+
+        h2 {
+            color: $white;
+            font-size: 24px;
+            line-height: 24px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin: 0;
+            text-transform: uppercase;
+
+            small {
+                display: block;
+                font-weight: 300;
+                font-size: 18px;
+                line-height: 24px;
+            }
+        }
+
+        .btn-circle {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            margin-left: 40px;
+            border: none;
+
+            i {
+                color: $greeny-blue;
+                font-size: 28px;
+            }
+        }
+    }
+
+}
+
+.vitamui-sidepanel-body {
+    font-size: 15px;
+    color: $charcoal-grey-two;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 163px;
+}

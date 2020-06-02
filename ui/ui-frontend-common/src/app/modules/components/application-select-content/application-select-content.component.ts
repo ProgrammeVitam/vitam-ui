@@ -54,9 +54,12 @@ export class ApplicationSelectContentComponent {
     this.userApplications = sortedApps.filter((app) => app.category === 'users');
     this.adminApplications = sortedApps.filter((app) => app.category === 'administrators');
     this.settingsApplications = sortedApps.filter((app) => app.category === 'settings');
+    this.ingestApplications = sortedApps.filter((app) => app.category === 'ingests');
+
+    console.log(this.ingestApplications);
 
   }
-  get applications(): Application[] { return this._applications; }
+  get applications(): Application[] { console.log('===> ' + this.ingestApplications); return this._applications; }
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
@@ -67,6 +70,7 @@ export class ApplicationSelectContentComponent {
   userApplications: Application[];
   settingsApplications: Application[];
   adminApplications: Application[];
+  ingestApplications: Application[];
 
   constructor(private authService: AuthService) { }
 

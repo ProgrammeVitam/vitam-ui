@@ -25,3 +25,12 @@
             (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
     </div>
 </div>
+
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="ingestApplications?.length > 0" 
+    i18n="Settings category@@PortalIngestsCategory" >Suivi des Versements</div>
+<div class="settings-app-container">
+    <div class="row">
+        <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let appIngests of ingestApplications"
+            [application]="appIngests" [isModalMenu]="isModalMenu" (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
+    </div>
+</div> 
