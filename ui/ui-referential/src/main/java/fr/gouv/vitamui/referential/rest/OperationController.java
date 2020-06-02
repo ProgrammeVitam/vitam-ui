@@ -77,6 +77,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Api(tags = "operation")
@@ -157,6 +158,13 @@ public class OperationController extends AbstractUiRestController {
             throw new BadRequestException("Error while transforming timestamp", e);
         }
         return result;
+    }
+
+    @ApiOperation(value = "check traceability operation")
+    @GetMapping(value = "/check" + CommonConstants.PATH_ID)
+    public LogbookOperationsResponseDto checkTraceabilityOperation(final @PathVariable String id) {
+        LOGGER.debug("Launch check traceability operation with id = {}", id);
+        return service.checkTraceabilityOperation(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "run probative value operation")

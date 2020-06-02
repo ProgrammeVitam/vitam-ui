@@ -50,6 +50,7 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OperationExternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,14 @@ public class OperationExternalController {
         LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
     }
+
+    @Secured(ServicesData.ROLE_GET_OPERATIONS)
+    @GetMapping(value = "/check" + CommonConstants.PATH_ID)
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id) {
+        LOGGER.debug("Launch check traceability operation with id = {}", id);
+        return operationExternalService.checkTraceabilityOperation(id);
+    }
+
 
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

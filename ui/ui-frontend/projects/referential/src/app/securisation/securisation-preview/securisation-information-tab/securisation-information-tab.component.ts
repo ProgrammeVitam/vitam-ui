@@ -18,8 +18,10 @@ export class SecurisationInformationTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe(response => {
-      this.timestamp = response;
-    });
+    if (this.securisation.parsedData) {
+      this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe(response => {
+        this.timestamp = response;
+      });
+    }
   }
 }

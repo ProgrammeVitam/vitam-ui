@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,37 +34,57 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.config;
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import { SecurisationService } from "../../securisation.service";
+import {AccessContractService} from "../../../access-contract/access-contract.service";
+import {ActivatedRoute} from "@angular/router";
+import {AccessContract} from "vitamui-library";
+import {ApiEvent, Event, LogbookApiService} from "ui-frontend-common";
 
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+@Component({
+  selector: 'app-securisation-check-tab',
+  templateUrl: './securisation-check-tab.component.html',
+  styleUrls: ['./securisation-check-tab.component.scss']
+})
 
-@Configuration
-public class VitamAccessConfig extends VitamClientConfig {
+export class SecurisationCheckTabComponent implements OnChanges {
+  @Input() id: string;
 
-    @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
+  events: Event[] = [];
+  display = false;
+
+  accessContracts: AccessContract[];
+  accessContractId: string;
+
+  constructor(private securisationService: SecurisationService, private accessContractService: AccessContractService, private route: ActivatedRoute) { }
+
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params.tenantIdentifier) {
+        this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
+          this.accessContracts = value;
+        });
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.hasOwnProperty('id')) {
+      this.display = false;
+      this.events = [];
     }
+  }
 
-    @Bean
-    public ObjectService getObjectServiceVitam() {
-        return new ObjectService(accessExternalClient());
-    }
+  updateAccessContractId(event: any) {
+    this.accessContractId = event.value;
+  }
 
-    @Bean
-    public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
-    }
-
-    @Bean
-    public ExportDipService getExportDipService() {
-        return new ExportDipService(accessExternalClient());
-    }
-
+  checkTraceability() {
+    this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: {$results: ApiEvent[]}) => {
+      this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
+      this.display = true;
+    })
+  }
 }

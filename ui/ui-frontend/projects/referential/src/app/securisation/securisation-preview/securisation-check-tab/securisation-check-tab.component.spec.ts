@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,37 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.config;
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AuthService } from '../../../auth.service';
+import { LogbookService } from '../../logbook.service';
+import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipService;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.access.ObjectService;
-import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+describe('OperationHistoryTabComponent', () => {
+  let component: SecurisationCheckTabComponent;
+  let fixture: ComponentFixture<SecurisationCheckTabComponent>;
 
-@Configuration
-public class VitamAccessConfig extends VitamClientConfig {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ SecurisationCheckTabComponent ],
+      providers: [
+        { provide: AuthService, useValue: {}},
+        { provide: LogbookService, useValue: {}},
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+    .compileComponents();
+  }));
 
-    @Bean
-    public UnitService getSearchUnitVitam() {
-        return new UnitService(accessExternalClient());
-    }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SecurisationCheckTabComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    @Bean
-    public ObjectService getObjectServiceVitam() {
-        return new ObjectService(accessExternalClient());
-    }
-
-    @Bean
-    public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
-    }
-
-    @Bean
-    public ExportDipService getExportDipService() {
-        return new ExportDipService(accessExternalClient());
-    }
-
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

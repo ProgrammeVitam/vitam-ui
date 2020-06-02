@@ -26,6 +26,10 @@ export class SecurisationService extends SearchService<Event> {
     });
   }
 
+  checkTraceabilityOperation(id: string, accessContract: string) {
+    return this.operationApiService.checkTraceabilityOperation(id, accessContract);
+  }
+
   getInfoFromTimestamp(timestamp: string) {
     return this.operationApiService.getInfoFromTimestamp(timestamp);
   }

@@ -125,9 +125,16 @@ public class OperationInternalController {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for operation with id :{}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return operationInternalService.findHistoryByIdentifier(vitamContext, id);
+    }
+
+    @GetMapping(value = "/check" + CommonConstants.PATH_ID)
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+        LOGGER.debug("Launch check traceability operation with id = {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return operationInternalService.checkTraceabilityOperation(vitamContext, id);
     }
 
     @PostMapping("/probativeValue")
