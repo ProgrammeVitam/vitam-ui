@@ -55,4 +55,7 @@ public abstract class Constants {
 
     public static final String VITAM_LOGO = "vitamLogo";
 
-    public static final String VITAM_UI_LARGE_LOGO = "vitamuiLargeLogo";}
+    public static final String VITAM_UI_LARGE_LOGO = "vitamuiLargeLogo";
+
+    public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
+}

@@ -9,7 +9,7 @@
 <div layout:fragment="content">
     <div>
         <h2 th:utext="#{screen.accountbadconfiguration.heading}">This account has not properly configured.</h2>
-        <p th:utext="#{screen.accountbadconfiguration.message}">Please contact the system administrator to regain access.</p>
+        <p th:utext="#{screen.accountbadconfiguration.message(${@environment.getProperty('theme.vitamui-platform-name')})}">Please contact the system administrator to regain access.</p>
     </div>
 </div>
 </body>

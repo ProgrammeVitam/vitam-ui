@@ -74,16 +74,16 @@ public class PmMessageToSend {
     }
 
     public static PmMessageToSend buildMessage(final HierarchicalMessageSource messageSource, final String firstname,
-            final String lastname, final String ttlInMinutes, final String url, final Locale locale) {
+            final String lastname, final String ttlInMinutes, final String url, final String platformName, final Locale locale) {
         final String subject;
         final String text;
         if (ONE_DAY.equals(ttlInMinutes)) {
             subject = messageSource.getMessage(PM_ACCOUNTCREATION_SUBJECT_KEY, null, locale);
             text = messageSource.getMessage(PM_ACCOUNTCREATION_TEXT_KEY,
-                    new Object[] { firstname, lastname, "24", url }, locale);
+                    new Object[] { firstname, lastname, "24", url, platformName }, locale);
         } else {
             subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
-            text = messageSource.getMessage(PM_RESET_TEXT_KEY, new Object[] { firstname, lastname, ttlInMinutes, url },
+            text = messageSource.getMessage(PM_RESET_TEXT_KEY, new Object[] { firstname, lastname, ttlInMinutes, url, platformName},
                     locale);
         }
         return new PmMessageToSend(subject, text);

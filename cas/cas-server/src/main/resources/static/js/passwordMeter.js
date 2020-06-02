@@ -1,13 +1,7 @@
-/* global jqueryReady, policyPattern, zxcvbn */
+/* global jqueryReady, policyPattern, zxcvbn, passwordStrengthI18n */
 /*eslint-disable no-unused-vars*/
 function jqueryReady() {
-    var strength = {
-        0: 'Worst',
-        1: 'Bad',
-        2: 'Weak',
-        3: 'Good',
-        4: 'Strong'
-    };
+    var strength = passwordStrengthI18n;
 
     $.fn.zxcvbnProgressBar = function (options) {
 
@@ -77,9 +71,16 @@ function jqueryReady() {
     var password = document.getElementById('password');
     var confirmed = document.getElementById('confirmedPassword');
 
-
     password.addEventListener('input', validate);
     confirmed.addEventListener('input', validate);
+
+    var alertSettings = {
+        allAlertClasses: 'fa-times-circle fa-exclamation-circle fa-info-circle fa-check-circle',
+        alertClassDanger: 'fa-times-circle',
+        alertClassWarning: 'fa-exclamation-circle',
+        alertClassInfo: 'fa-info-circle',
+        alertClassSuccess: 'fa-check-circle'
+    };
 
     function validate() {
         var val = password.value;
@@ -101,28 +102,28 @@ function jqueryReady() {
             return;
         }
 
-        // Update the text indicator
+        // Check strength, update the text indicator
         if (val !== '') {
             $('#password-strength-text').show();
 
             var title = 'Strength: <strong>' + strength[result.score] + '</strong>';
             var text = '<p><span class=\'feedback\'>' + result.feedback.warning + ' ' + result.feedback.suggestions + '</span></p>';
-            var clz = 'danger';
+            var clz = alertSettings.alertClassDanger;
             switch (result.score) {
             case 0:
             case 1:
-                clz = 'danger';
+                clz = alertSettings.alertClassDanger;
                 break;
             case 2:
-                clz = 'warning';
+                clz = alertSettings.alertClassWarning;
                 break;
             case 3:
-                clz = 'info';
+                clz = alertSettings.alertClassInfo;
                 break;
             case 4:
             case 5:
             default:
-                clz = 'success';
+                clz = alertSettings.alertClassSuccess;
                 break;
             }
             responseText = '<div class=\'alert alert-' + clz + '\'>' + title + text + '</div>';

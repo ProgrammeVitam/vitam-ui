@@ -171,10 +171,12 @@ server-identity:
   identityServerId: 1
 
 
-# Example to override theme colors and logo
+# Example to override theme colors, logo, favicon, platform name ...
 theme:
-#  vitam-logo: {{ vitamui_defaults.folder.root_path }}/conf/assets/logo.png
-#  vitamui-logo-large: {{ vitamui_defaults.folder.root_path }}/conf/assets/logo-large.png
+  vitamui-platform-name: {{ vitamui.cas_server.theme.vitamui_platform_name }}
+  vitamui-favicon: {{ vitamui.cas_server.theme.vitamui_favicon }}
+  vitam-logo: {{ vitamui.cas_server.theme.vitam_logo }}
+  vitamui-logo-large: {{ vitamui.cas_server.theme.vitamui_logo_large }}
   primary: '{{ vitamui_platform_informations.theme_colors.vitamui_primary }}'
   secondary: '{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}'
 

@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.pm.PmMessageToSend;
-import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -53,11 +45,21 @@ import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.support.WebUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
+
+import fr.gouv.vitamui.cas.pm.PmMessageToSend;
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 
 /**
  * Send reset password emails with i18n messages.
@@ -66,8 +68,7 @@ import org.springframework.webflow.execution.RequestContext;
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory
-            .getInstance(I18NSendPasswordResetInstructionsAction.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
 
     private final CasConfigurationProperties casProperties;
 
@@ -82,6 +83,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     private final IdentityProviderHelper identityProviderHelper;
 
     private final Utils utils;
+
+    @Value("${theme.vitamui-platform-name:VITAM-UI}")
+    private String vitamuiPlatformName;
 
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
                                                    final CommunicationsManager communicationsManager,
@@ -141,8 +145,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         val url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
         if (StringUtils.isNotBlank(url)) {
             val pm = casProperties.getAuthn().getPm();
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
-                utils.sanitizePasswordResetUrl(url), pm.getReset().getExpirationMinutes());
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
+                    pm.getReset().getExpirationMinutes());
             if (sendPasswordResetEmailToAccount(email, url)) {
                 return success();
             }
@@ -155,9 +159,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     @Override
     protected boolean sendPasswordResetEmailToAccount(final String to, final String url) {
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "", "10", url,
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "", "10", url, vitamuiPlatformName,
                 LocaleContextHolder.getLocale());
-        return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
-                messageToSend.getSubject(), to, null, null);
+        return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(), messageToSend.getSubject(), to, null,
+                null);
     }
 }
