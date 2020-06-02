@@ -148,6 +148,11 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
+    theme:
+      vitamui_platform_name: VITAM-UI
+      vitamui_favicon: "{{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico"
+      vitam_logo: "{{ vitamui_defaults.folder.root_path }}/conf/assets/logo.png"
+      vitamui_logo_large: "{{ vitamui_defaults.folder.root_path }}/conf/assets/logo-large.png"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30

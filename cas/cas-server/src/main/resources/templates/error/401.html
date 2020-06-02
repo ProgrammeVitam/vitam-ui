@@ -2,8 +2,12 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
 
 <head>
-    <title th:text="#{screen.error.page.accessdenied}">Error - 401</title>
-    <link rel="stylesheet" th:href="@{#{webjars.fontawesome.css}}" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <title th:text="#{screen.error.page.title.accessdenied}">Error - 401</title>
+
     <style>
         .prompt {
             font-family: Verdana, sans-serif;

@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta charset="UTF-8"/>
-    <title>Vitam-UI</title>
+    <title>${@environment.getProperty('theme.vitamui-platform-name')}</title>
 
     <meta http-equiv="refresh" th:attr="content=${'1; url=' + url}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}"/>
     <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
     <link th:href="@{/css/cas.css}" rel="stylesheet"/>
 </head>
