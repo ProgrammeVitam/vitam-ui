@@ -164,6 +164,36 @@
   tags:
     - referential_app
 
+- hosts: hosts_vitamui_ingest_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest_internal.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_vitamui_ingest_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest_external.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_vitamui_ui_ingest
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
 # ########################################################
 # # ZONE Data
 # ########################################################

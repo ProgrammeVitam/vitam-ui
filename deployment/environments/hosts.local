@@ -70,6 +70,7 @@ hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 hosts_vitamui_ingest_internal
 hosts_vitamui_ingest_external
+
 [hosts_vitamui_iam_internal]
 localhost
 
@@ -102,7 +103,6 @@ hosts_ui_search
 hosts_ui_referential
 hosts_ui_ingest
 
-[hosts_ui_identity]
 localhost
 
 [hosts_ui_portal]

@@ -97,6 +97,13 @@
 
 {% endfor %}
 
+    # UI INGEST
+
+{% for host in groups['hosts_ui_ingest'] %}
+    ProxyPassMatch ^/ingest(/.*)$ {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest$1
+    ProxyPassReverse /ingest {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest
+{% endfor %}
+
     # CAS SERVER
 
 {% for host in groups['hosts_cas_server'] %}

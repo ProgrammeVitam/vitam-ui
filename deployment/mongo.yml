@@ -4,10 +4,12 @@
   roles:
         - mongo_common
         - mongo
-        - { 
-            role: mongo_init, 
+        - {
+            role: mongo_init,
             mongod_source_template_dir: "{{playbook_dir}}/scripts/mongod/",
             tags: mongo_init
           }
         - mongo_configure
+        - init_bdd
+        - init_ingest_app_bdd
         - { role: mongo-express, when: "mongo_express is defined and mongo_express|lower == 'true'"}

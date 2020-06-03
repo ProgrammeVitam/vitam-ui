@@ -242,6 +242,62 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
+  ingest:
+    host: "ingest.service.consul"
+    vitamui_component: "ui-ingest"
+    vitamui_component_type: "ui"
+    package_name: "vitamui-ui-ingest"
+    service_name: "vitamui-ui-ingest"
+    store_name: "ui-ingest"
+    port_service: 8008
+    port_admin: 7008
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "INFO"
+
+  ingest_external:
+    host: "ingest-external.service.consul"
+    vitamui_component: "ingest-external"
+    vitamui_component_type: "external"
+    package_name: "vitamui-ingest-external"
+    service_name: "vitamui-ingest-external"
+    store_name: "ingest-external"
+    port_service: 8108
+    port_admin: 7108
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "INFO"
+
+  ingest_internal:
+    host: "ingest-internal.service.consul"
+    vitamui_component: "ingest-internal"
+    vitamui_component_type: "internal"
+    package_name: "vitamui-ingest-internal"
+    service_name: "vitamui-ingest-internal"
+    store_name: "ingest-internal"
+    port_service: 8208
+    port_admin: 7208
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "INFO"
 
 vitamui_platform_informations:
   name: "system_customer"

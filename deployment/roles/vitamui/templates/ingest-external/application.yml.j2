@@ -1,0 +1,90 @@
+
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+server:
+  port: {{ vitamui_struct.port_service }}
+{% if vitamui_struct.secure | lower == "true" %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+    client-auth: need
+{% endif %}
+  tomcat:
+    accesslog:
+        enabled: "{{ vitamui_struct.jvm_log | lower }}"
+        directory: "{{ vitamui_folder_log }}"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+ingest-external:
+  security-client:
+    server-host: {{ vitamui.security_internal.host }}
+    server-port: {{ vitamui.security_internal.port_service }}
+{% if vitamui.security_internal.secure|lower == "true" %}
+    secure: {{ vitamui.security_internal.secure|lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password:  {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+  iam-internal-client:
+    server-host: {{ vitamui.iam_internal.host }}
+    server-port: {{ vitamui.iam_internal.port_service }}
+{% if vitamui.iam_internal.secure|lower == "true" %}
+    secure: {{ vitamui.iam_internal.secure|lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password:  {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+  ingest-internal-client:
+    server-host: {{ vitamui.ingest_internal.host }}
+    server-port: {{ vitamui.ingest_internal.port_service }}
+{% if vitamui.ingest_internal.secure | lower == "true" %}
+    secure: {{ vitamui.ingest_internal.secure | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password:  {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.ingest.external.server: {{ vitamui_struct.log.vitamui_level }}
+    org.springframework.web.filter.CommonsRequestLoggingFilter: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.iam.security: {{ vitamui_struct.log.vitamui_level }}

@@ -1,0 +1,174 @@
+print("START 01_ingest.js");
+
+// +++++++++++++++++++++++++++++++++++++++ IAM DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_ingest.js : START iam database update");
+
+db = db.getSiblingDB('{{ mongodb.iam.db }}')
+
+// ========================================= PROFILES =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.profiles.update(
+    { "_id" : "system_ingest_profile" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(22),
+              "name": "Ingest Profile",
+              "description": "Ingest Profile",
+              "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+              "applicationName": "INGEST_APP",
+              "level": "",
+              "enabled": true,
+              "readonly": false,
+              "customerId": "system_customer",
+              "roles": [
+              {"name": "ROLE_CREATE_INGEST"},
+              {"name": "ROLE_GET_INGEST"},
+              {"name": "ROLE_GET_ALL_INGEST"}
+               ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_ingest_profile"
+        }
+    },
+    { "upsert":true }
+);
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_ingest_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ingest_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "super_admin_group",
+		"profileIds": { $nin: ["system_ingest_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ingest_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+// ====================================== APPLICATIONS ======================================
+
+
+db.applications.update(
+    { "identifier" : "INGEST_APP" },
+    {
+        "$set" : {
+{% if vitamui.ingest.base_url is defined %}
+        	"url": "{{ vitamui.ingest.base_url }}/ingest",
+{% else %}
+            "url" : "{{ url_prefix }}/ingest",
+{% endif %}
+            "icon": "vitamui-icon vitamui-icon-archive-ingest",
+             "name": "Dépôt et suivi des versements",
+             "category": "ingests",
+             "position": NumberInt(1),
+             "hasCustomerList": false,
+             "hasTenantList": false,
+             "hasHighlight": false,
+             "tooltip": "Consultation des versements ou création d'un nouveau versement",
+             "target": "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "INGEST_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_ingest.js : END iam database update");
+
+// +++++++++++++++++++++++++++++++++++++++ SECURITY DATABASE ++++++++++++++++++++++++++++++++++
+
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("INFO 01_ingest.js : START security update");
+
+db.contexts.update(
+    { "_id" : "ui_ingest_context" },
+    {
+        "$set" : {
+            "name": "Contexte UI Ingest",
+             "fullAccess" : true,
+             "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+             "roleNames" : [
+                 "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST"
+                ]
+        },
+        "$setOnInsert": {
+            "_id" : "ui_ingest_context"
+        }
+    },
+    { "upsert":true }
+);
+
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_ingest"]|first }}/ui-ingest.pem', 'ui_ingest_context') }}
+
+print("INFO 01_ingest.js : END security update");
+
+// +++++++++++++++++++++++++++++++++++++++ CAS DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_ingest.js : START cas database update");
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+
+db.services.update(
+    { "_id" :  NumberInt(4) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.RegexRegisteredService",
+        	"serviceId": "^{{ vitamui.ingest.base_url | default(url_prefix) }}/.*",
+            "name": "Ingest Application",
+            "logoutType" : "FRONT_CHANNEL",
+            "logoutUrl": "{{ vitamui.ingest.base_url | default(url_prefix) }}/logout",
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+            }
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(4) 
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_ingest.js : END cas database update");
+
+
+print("END 01_ingest.js");

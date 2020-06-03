@@ -24,10 +24,12 @@ mongod
 [zone-internal:children]
 iam_internal
 referential_internal
+ingest_internal
 
 [zone-external:children]
 iam_external
 referential_external
+ingest_external
 
 [zone-admin:children]
 mongo-express
@@ -51,10 +53,16 @@ portal
 [referential_external]
 # put list here
 
+[ingest_external]
+# put list here
+
 [iam_internal]
 # put list here
 
 [referential_internal]
+# put list here
+
+[ingest_internal]
 # put list here
 
 [portal]

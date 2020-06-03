@@ -1,0 +1,117 @@
+spring:
+  cloud:
+    consul:
+      enabled: true
+      host: consul.service.consul
+      discovery:
+        preferIpAddress: true
+        tags: {{ consul_tags }}
+
+server:
+  host: {{ vitamui.ingest.host }}
+  port: {{ vitamui.ingest.port_service }}
+{% if vitamui.ingest.base_url is defined %}
+  servlet.context-path: /
+  servlet.session.cookie.path: /
+{% else %}
+  servlet.context-path: /ingest
+  servlet.session.cookie.path: /ingest
+{% endif %}
+  scheme: {% if vitamui.ingest.secure | lower =='true' %}https{% else %}http{% endif %}
+
+{% if vitamui_struct.secure | lower =='true' %}
+  ssl:
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store-password: {{ password_keystore }}
+    key-password: {{ password_keystore }}
+{% endif %}
+  tomcat:
+    accesslog:
+        enabled: "{{ vitamui_struct.jvm_log | lower }}"
+        directory: "{{ vitamui_folder_log }}"
+
+management:
+  server:
+    port: {{ vitamui_struct.port_admin }}
+    ssl:
+      enabled: false
+
+management.endpoints.web.exposure.include: "*"
+
+logging:
+    config: {{ vitamui_folder_conf }}/logback.xml
+
+server-identity:
+  identityName: {{ vitamui_env_name }}
+  identityRole: {{ vitamui_struct.vitamui_component }}
+  identityServerId: 1
+
+
+ui-ingest:
+  iam-external-client:
+    server-host: {{ vitamui.iam_external.host }}
+    server-port: {{ vitamui.iam_external.port_service }}
+{% if vitamui.iam_external.secure|lower == "true" %}
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+  ingest-external-client:
+    server-host: {{ vitamui.ingest_external.host }}
+    server-port: {{ vitamui.ingest_external.port_service }}
+{% if vitamui.ingest_external.secure | lower == "true" %}
+    secure: {{ vitamui.ingest_external.secure | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+
+  base-url:
+{% if vitamui.portal.base_url is defined %}
+    portal: "{{ vitamui.portal.base_url }}"
+{% else %}
+    portal: "{{ url_prefix }}"
+{% endif %}
+{% if vitamui.ingest.base_url is defined %}
+    ingest: "{{ vitamui.referential.base_url }}"
+{% else %}
+    ingest: "{{ url_prefix }}/ingest"
+{% endif %}
+
+ui:
+{% if vitamui_struct.base_url is defined %}
+  url: "{{ vitamui_struct.base_url }}"
+{% else %}
+  url: "{{ url_prefix }}/ingest"
+{% endif %}
+  redirect-url: ${ui.url}/${ui-prefix}
+
+cas:
+{% if vitamui.cas_server.base_url is defined %}
+  external-url: "{{ vitamui.cas_server.base_url}}"
+{% else %}
+  external-url: "{{ url_prefix }}/cas"
+{% endif %}
+  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+
+  callback-url: ${ui.url}/ingest-api/callback
+{% if vitamui.cas_server.secure|lower == "true" %}
+  ssl:
+    trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+    trust-store-password: {{ password_truststore }}
+{% endif %}
+
+

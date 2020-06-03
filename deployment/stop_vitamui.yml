@@ -85,6 +85,16 @@
   tags:
     - referential_app
 
+- hosts: hosts_ui_ingest
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
 - hosts: hosts_ui_identity_admin
   gather_facts: no
   roles:
@@ -148,6 +158,26 @@
     etat: "stopped"
   tags:
     - referential_app
+
+
+- hosts: hosts_vitamui_ingest_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest_external.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_ingest_internal
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ingest_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
 
 
 - hosts: hosts_vitamui_iam_external
