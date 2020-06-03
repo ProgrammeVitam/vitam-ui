@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * The service to interact with logbooks.
+ * The service to create vitam ingest.
  *
  *
  */

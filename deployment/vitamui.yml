@@ -22,6 +22,4 @@
 
 - import_playbook: vitamui_apps.yml
 
-- import_playbook: vitamui_ingest.yml
-
 - import_playbook: reverse_proxy.yml

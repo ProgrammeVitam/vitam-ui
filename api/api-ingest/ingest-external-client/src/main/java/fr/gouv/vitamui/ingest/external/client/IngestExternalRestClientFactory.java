@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
- * A Rest client factory to create specialized IAM Rest clients
+ * A Rest client factory to create specialized Ingest Rest clients
  *
  *
  */

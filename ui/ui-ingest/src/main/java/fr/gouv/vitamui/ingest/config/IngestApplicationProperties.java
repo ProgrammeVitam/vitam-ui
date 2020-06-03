@@ -45,7 +45,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Properties specific to Ihm-Portal Application.
+ * Properties specific to Ihm-Ingest Application.
  * <p>
  * Properties are configured in the application.yml file.
  */

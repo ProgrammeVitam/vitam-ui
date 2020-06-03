@@ -44,8 +44,7 @@ public class IngestInternalService {
     }
 
     public String ingest() {
-        LOGGER.error("==> " + internalSecurityService.toString());
-        return "Ingest Internal String with tenantIdentifier = " + internalSecurityService.getTenantIdentifier() +
+        return "Ingest Internal with tenantIdentifier = " + internalSecurityService.getTenantIdentifier() +
             " ApplicationId" + internalSecurityService.getApplicationId() + "; CustomerId " +
             internalSecurityService.getCustomerId() + "; " + " Level " + internalSecurityService.getLevel() +
             "; User " + internalSecurityService.getUser().toString();

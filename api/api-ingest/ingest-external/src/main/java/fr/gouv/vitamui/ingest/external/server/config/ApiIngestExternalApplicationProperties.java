@@ -43,7 +43,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * Properties specific to API Iam Application.
+ * Properties specific to API Ingest Application.
  * <p>
  * Properties are configured in the application.yml file.
  */

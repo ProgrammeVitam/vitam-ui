@@ -6,29 +6,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-/*export class IngestApiService {
-
-  ingestUrl: string;
-
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    this.ingestUrl = baseUrl + '/ingests';
-  }
-
-  ingest(): Observable<any> {
-    return this.http.get<any>(this.ingestUrl);
-  }
-}*/
-
 
 export class IngestApiService extends BaseHttpClient<any> {
 
 constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
   super(http, baseUrl + '/ingest');
 }
-
-/*ingest(headers ?: HttpHeaders): Observable <any> {
-  return super.ingest(headers); // this.http.get<any>(this.ingestUrl, { params, headers });
-}*/
 
 ingest(headers?: HttpHeaders): Observable<string> {
     const params = new HttpParams();

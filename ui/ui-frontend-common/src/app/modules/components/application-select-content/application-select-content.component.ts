@@ -59,7 +59,7 @@ export class ApplicationSelectContentComponent {
     console.log(this.ingestApplications);
 
   }
-  get applications(): Application[] { console.log('===> ' + this.ingestApplications); return this._applications; }
+  get applications(): Application[] { return this._applications; }
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 

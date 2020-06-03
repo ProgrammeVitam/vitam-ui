@@ -38,6 +38,6 @@
 	</root>
 
 	<logger name="org.springframework.web" level="INFO"/>
-    <logger name="fr.gouv.vitamui.portal" level="INFO"/>
+    <logger name="fr.gouv.vitamui.ingest" level="INFO"/>
 
 </configuration>

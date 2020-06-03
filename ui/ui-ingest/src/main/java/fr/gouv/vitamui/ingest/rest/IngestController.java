@@ -70,7 +70,7 @@ public class IngestController extends AbstractUiRestController {
         this.service = service;
     }
 
-    @ApiOperation(value = "Ingest an SIP", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Ingest an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public String ingest() {

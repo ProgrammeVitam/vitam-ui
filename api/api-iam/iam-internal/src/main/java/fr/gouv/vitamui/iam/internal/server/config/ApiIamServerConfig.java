@@ -306,9 +306,4 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         return new AddressService();
     }
 
-    /*
-    @Bean
-    public IngestInternalService ingestInternalService(final InternalSecurityService internalSecurityService) {
-        return new IngestInternalService(internalSecurityService);
-    }*/
 }

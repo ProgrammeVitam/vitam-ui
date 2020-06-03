@@ -187,10 +187,4 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
-/*
-    @Bean
-    public IngestInternalRestClient ingestInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
-        return iamInternalRestClientFactory.getIngestInternalRestClient();
-    }
-*/
 }
