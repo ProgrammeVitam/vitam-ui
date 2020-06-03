@@ -101,11 +101,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   accessContracts: AccessContract[];
 
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
-    {key: 'Dissemination', label: 'Diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignette', info: ''},
-    {key: 'TextContent', label: 'Contenu brut', info: ''},
-    {key: 'PhysicalMaster', label: 'Originel papier', info: ''}
+    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
+    { key: 'Dissemination', label: 'Diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu brut', info: '' },
+    { key: 'PhysicalMaster', label: 'Original papier', info: '' }
   ];
 
   ngOnInit() {

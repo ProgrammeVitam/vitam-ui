@@ -56,6 +56,15 @@ export class IngestContractObjectTabComponent implements OnInit {
     }
   }
 
+  // FIXME: Get list from common var ?
+  usages: Option[] = [
+    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
+    { key: 'Dissemination', label: 'Diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu brut', info: '' },
+    { key: 'PhysicalMaster', label: 'Original papier', info: '' }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService
