@@ -7,12 +7,10 @@
   vars:
     app_default_root_path: "/vitamui"
     vitamui_struct: "{{ vitamui.referential_internal }}"
-    vitamui_certificate_client_type: "iam"
-    password_keystore: "{{ keystores.server.referential_internal }}"
-    password_manager_keystore: "{{ keystores.server.referential_internal }}"
-    password_truststore_server: "{{ truststores.server }}"
-    password_truststore: "{{ truststores.client_iam }}"
-    other_stores: ["iam_internal"]
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_referential_internal }}"
+    password_truststore: "{{ truststores_server }}"
+    vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "referential-internal, api, internal"
 
 # Referential internal calls referential internal
@@ -24,12 +22,9 @@
   vars:
     app_default_root_path: "/vitamui"
     vitamui_struct: "{{ vitamui.referential_external }}"
-    vitamui_certificate_client_type: "iam"
-    password_keystore: "{{ keystores.server.referential_external }}"
-    password_manager_keystore: "{{ keystores.server.referential_external }}"
-    password_truststore_server: "{{ truststores.server }}"
-    password_truststore: "{{ truststores.client_iam }}"
-    other_stores: ["referential_internal", "iam_internal", "security_internal"]
+    vitamui_certificate_type: "external"
+    password_keystore: "{{ keystores_server_referential_external }}"
+    password_truststore: "{{ truststores_client_external }}"
     consul_tags: "referential-external, api, external"
 
 # UI referential calls referential external
@@ -41,10 +36,7 @@
   vars:
     app_default_root_path: "/vitamui"
     vitamui_struct: "{{ vitamui.referential }}"
-    password_keystore: "{{ keystores.server.ui_referential }}"
-    password_manager_keystore: "{{ keystores.server.ui_referential }}"
-    password_truststore_server: "{{ truststores.server }}"
-    vitamui_certificate_client_type: "iam"
-    password_truststore: "{{ truststores.client_iam }}"
-    other_stores: ["referential_external", "iam_external"]
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_ui_referential }}"
+    password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-referential, ui"

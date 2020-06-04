@@ -77,6 +77,7 @@ vitamui:
   referential:
     host: "referential.service.{{ consul_domain }}"
     vitamui_component: "ui-referential"
+    vitamui_component_type: "ui"
     package_name: "vitamui-ui-referential"
     service_name: "vitamui-ui-referential"
     store_name: "ui-referential"
@@ -112,6 +113,7 @@ vitamui:
   referential_external:
     host: "referential-external.service.{{ consul_domain }}"
     vitamui_component: "referential-external"
+    vitamui_component_type: "external"
     package_name: "vitamui-referential-external"
     store_name: "referential-external"
     service_name: "vitamui-referential-external"
@@ -129,6 +131,7 @@ vitamui:
   referential_internal:
     host: "referential-internal.service.{{ consul_domain }}"
     vitamui_component: "referential-internal"
+    vitamui_component_type: "internal"
     package_name: "vitamui-referential-internal"
     store_name: "referential-internal"
     service_name: "vitamui-referential-internal"
