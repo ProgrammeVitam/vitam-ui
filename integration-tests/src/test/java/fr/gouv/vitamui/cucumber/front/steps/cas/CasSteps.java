@@ -45,6 +45,6 @@ public class CasSteps extends CommonStepDefinitions {
 
     @Then("^Une trace d'authentification de mon utilisateur est présente dans vitam$")
     public void une_trace_d_authentification_de_mon_utilisateur_est_présente_dans_vitam() {
-        casSteps.checkTraceIsPresentForCurrentUser("EXT_VITAMUI_AUTHENTIFICATION_USER");
+        casSteps.checkTraceIsPresentForCurrentUser("EXT_VITAMUI_AUTHENTICATION_USER");
     }
 }
