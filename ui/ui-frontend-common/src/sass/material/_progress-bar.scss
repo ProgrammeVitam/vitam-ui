@@ -30,7 +30,7 @@
     border-radius: 10px;
 
     .mat-progress-bar-fill::after {
-        background-color: rgba(var(--vitamui-secondary), 0.5);
+        background-color: rgba(var(--vitamui-secondary-rgb), 0.5);
     }
 
     .mat-progress-bar-buffer {
