@@ -38,6 +38,9 @@ export class IngestContractObjectTabComponent implements OnInit {
   @Input()
   set ingestContract(ingestContract: IngestContract) {
     this._ingestContract = ingestContract;
+    if (!this._ingestContract.dataObjectVersion) {
+      this._ingestContract.dataObjectVersion = [];
+    }
     this.resetForm(this.ingestContract);
     this.updated.emit(false);
   }
@@ -70,10 +73,10 @@ export class IngestContractObjectTabComponent implements OnInit {
     private ingestContractService: IngestContractService
   ) {
     this.form = this.formBuilder.group({
+      masterMandatory: [true],
       everyDataObjectVersion: [true, Validators.required],
-      dataObjectVersion: [null, Validators.required]
+      dataObjectVersion: [[], Validators.required]
     });
-
   }
 
   unchanged(): boolean {
