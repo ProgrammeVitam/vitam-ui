@@ -79,7 +79,11 @@ cas-client:
     hostname-verification: false
 {% endif %}
 
+{% if vitamui.cas_server.base_url is defined %}
 cas.reset.password.url: {{ vitamui.cas_server.reset_password_url }}
+{% else %}
+cas.reset.password.url: /cas{{ vitamui.cas_server.reset_password_url }}
+{% endif %}
 
 login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure|default('5') }}
 login.attempts.time.interval: {{ vitamui_struct.login_interval|default('20') }}
