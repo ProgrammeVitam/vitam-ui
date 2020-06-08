@@ -1,0 +1,23 @@
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START 211_security.populate_certificates_ref.js");
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/ui-referential/ui-referential.pem', 'ui_referential_context') }}
+
+print("END 211_security.populate_certificates_ref.js");

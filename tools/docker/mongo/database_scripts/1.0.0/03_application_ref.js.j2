@@ -1,0 +1,125 @@
+db = db.getSiblingDB('{{ mongodb.iam.db }}')
+
+db.applications.remove({});
+
+db.applications.insert({
+    "identifier" : "CUSTOMERS_APP",
+{% if vitamui.identity_admin.base_url is defined %}
+	"url": "{{ vitamui.identity_admin.base_url }}/customer",
+{% else %}
+    "url": "{{ url_prefix }}/identity-admin/customer",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-bank",
+    "name": "Organisations",
+    "category": "settings",
+    "position": NumberInt(7),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": true,
+    "tooltip": "Paramétrer les organisations (clients, ...) et les coffres des organisations",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "USERS_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/user",
+{% else %}
+    "url": "{{ url_prefix }}/identity/user",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-user-keys",
+    "name": "Utilisateurs",
+    "category": "administrators",
+    "position": NumberInt(2),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Créer, Modifier et Gérer les utilisateurs...",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "GROUPS_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/group",
+{% else %}
+    "url": "{{ url_prefix }}/identity/group",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-keys",
+    "name": "Groupes de profils",
+    "category": "settings",
+    "position": NumberInt(4),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Paramétrer les groupes de profil de droits qui seront affectés aux utilisateurs",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "PROFILES_APP",
+{% if vitamui.identity.base_url is defined %}
+	"url": "{{ vitamui.identity.base_url }}/profile",
+{% else %}
+    "url": "{{ url_prefix }}/identity/profile",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-admin-key",
+    "name": "Profils APP Utilisateurs",
+    "category": "settings",
+    "position": NumberInt(5),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Paramétrer les profils de droits des administrateurs qui utilisent l'APP Utilisateurs",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "SUBROGATIONS_APP",
+{% if vitamui.identity_admin.base_url is defined %}
+	"url": "{{ vitamui.identity_admin.base_url }}/subrogation",
+{% else %}
+    "url": "{{ url_prefix }}/identity-admin/subrogation",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-link",
+    "name": "Subrogation",
+    "category": "administrators",
+    "position": NumberInt(3),
+    "hasCustomerList": true,
+    "hasTenantList": false,
+    "hasHighlight": true,
+    "tooltip": "Subroger les droits d'un utilisateur par le support pour assistance ou pour assurer les prestations de paramètrage/administration pour un client",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "HIERARCHY_PROFILE_APP",
+{% if vitamui.identity.base_url is defined %}
+    "url": "{{ vitamui.identity.base_url }}/profile-hierarchy",
+{% else %}
+    "url": "{{ url_prefix }}/identity/profile-hierarchy",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-user-key",
+    "name": "Hiérarchisation des Profils",
+    "category": "settings",
+    "position": NumberInt(6),
+    "hasCustomerList": false,
+    "hasTenantList": true,
+    "hasHighlight": false,
+    "tooltip": "Paramétrer les niveaux de privilèges des profils de droits pour une organisation. Organisation de la séparation des rôles selon la PSSI de l'organisation",
+    "target": "_self"
+});
+
+db.applications.insert({
+    "identifier" : "ACCOUNTS_APP",
+    "url": "{{ vitamui.portal.base_url|default(url_prefix) }}/account",
+    "icon": "vitamui-icon vitamui-icon-user",
+    "name": "Mon compte",
+    "category": "users",
+    "position": NumberInt(1),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Consulter mes informations, Choisir la langue de l'interface",
+    "target": "_self"
+});

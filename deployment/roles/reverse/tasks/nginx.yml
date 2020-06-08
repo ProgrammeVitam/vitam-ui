@@ -31,6 +31,8 @@
     dest: "{{ reverse_conf_dir }}/{{ item.path|regex_replace('.j2$','') }}"
   with_filetree: '{{ nginx_template_dir }}'
   when: item.state == 'file'
+  notify: 
+    - reload nginx
 
 - name: Ensure nginx is started
   service:

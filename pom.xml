@@ -25,6 +25,7 @@
         <module>cas</module>
         <module>integration-tests</module>
         <module>deployment</module>
+        <module>packaging</module>
         <module>cots</module>
         <module>ui</module>
     </modules>
