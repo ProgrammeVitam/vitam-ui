@@ -40,6 +40,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppRootComponent, Option} from 'ui-frontend-common';
 import {AccessContractService} from '../access-contract/access-contract.service';
 import {AdminDslService} from './admin-dsl.service';
+import {VitamUISnackBar} from "../shared/vitamui-snack-bar";
 
 @Component({
   selector: 'app-admin-dsl',
@@ -55,6 +56,7 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
+              private snackBar: VitamUISnackBar,
               private adminDslService: AdminDslService,
               private accessContractService: AccessContractService,
               private formBuilder: FormBuilder) {
@@ -100,20 +102,15 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     });
   }
 
-  /*
-{
-  "$query": [{"$exists": "Name"}],
-  "$projection": {}
-}
-   */
-
   checkDsl() {
     const dsl = this.form.value.dsl;
     try {
-      // TODO: Display some valid message ?
       return dsl.length > 1 && !!JSON.parse(dsl);
-    } catch (syntaxError) {
-      // TODO: display error !
+    } catch(syntaxError) {
+      this.snackBar.open("Format de la requête invalide", null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 1000
+      });
       return false;
     }
   }
