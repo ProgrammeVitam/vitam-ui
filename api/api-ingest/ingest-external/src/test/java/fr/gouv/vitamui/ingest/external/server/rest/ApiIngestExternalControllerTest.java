@@ -34,44 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.external.server.rest;
 
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
-
-    @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.ingest.external.server.security.WebSecurityConfig;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 
 
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestRestClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestRestClient;
-    }
+@Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
+@TestPropertySource(properties = { "spring.config.name=ingest-external-application" })
+public abstract class ApiIngestExternalControllerTest<T extends IdDto> extends ApiIngestControllerTest<IdDto> {
 
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
+    @MockBean
+    private ExternalApiAuthenticationProvider apiAuthenticationProvider;
 
-
-
-    @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
-    }
 }

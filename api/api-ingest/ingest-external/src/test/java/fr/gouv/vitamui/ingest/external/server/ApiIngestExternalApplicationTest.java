@@ -34,44 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.external.server;
 
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.ingest.external.server.config.ApiIngestExternalApplicationProperties;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
+@TestPropertySource(properties = { "spring.config.name=ingest-external-application" })
+public class ApiIngestExternalApplicationTest {
 
     @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
+    private Environment env;
+
+    @Autowired
+    private ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties;
 
 
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestRestClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestRestClient;
+    @Test
+    public void testContextLoads() {
+        assertThat(env).isNotNull();
+        assertThat(env.getProperty("spring.config.name") ).isEqualTo("ingest-external-application");
+
+        assertThat(apiIngestExternalApplicationProperties).isNotNull();
+        assertThat(apiIngestExternalApplicationProperties.getIngestInternalClient()).isNotNull();
+        assertThat(apiIngestExternalApplicationProperties.getIamInternalClient()).isNotNull();
+        assertThat(apiIngestExternalApplicationProperties.getSecurityClient()).isNotNull();
     }
 
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
-
-
-
-    @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
-    }
 }
+

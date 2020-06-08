@@ -34,44 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.external.server.doc;
 
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
-
-    @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
+import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
+import fr.gouv.vitamui.ingest.external.server.rest.IngestExternalController;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestRestClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestRestClient;
-    }
-
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
+@RunWith(SpringRunner.class)
+@WebMvcTest
+@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@TestPropertySource(properties = { "spring.config.name=ingest-external-application" })
+@ActiveProfiles("test, swagger")
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
 
+    @MockBean
+    private ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
 
-    @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
-    }
+    @MockBean
+    private RestExceptionHandler restExceptionHandler;
+
+    @MockBean
+    private IngestExternalController ingestExternalController;
+
 }

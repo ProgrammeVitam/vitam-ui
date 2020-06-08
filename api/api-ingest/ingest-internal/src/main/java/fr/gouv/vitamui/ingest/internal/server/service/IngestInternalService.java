@@ -44,9 +44,6 @@ public class IngestInternalService {
     }
 
     public String ingest() {
-        return "Ingest Internal with tenantIdentifier = " + internalSecurityService.getTenantIdentifier() +
-            " ApplicationId" + internalSecurityService.getApplicationId() + "; CustomerId " +
-            internalSecurityService.getCustomerId() + "; " + " Level " + internalSecurityService.getLevel() +
-            "; User " + internalSecurityService.getUser().toString();
+        return "Ingest Internal called with tenantIdentifier = " + internalSecurityService.getTenantIdentifier() ;
     }
 }

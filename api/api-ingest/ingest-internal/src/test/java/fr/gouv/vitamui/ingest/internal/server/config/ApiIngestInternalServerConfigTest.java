@@ -34,44 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.internal.server.config;
 
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
+import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@TestPropertySource(properties = {"spring.config.name=ingest-internal-application"})
+@ActiveProfiles("test")
+public class ApiIngestInternalServerConfigTest {
+
+
+    @MockBean(name = "adminExternalClient")
+    private AdminExternalClient adminExternalClient;
+
+    @MockBean(name = "accessExternalClient")
+    private AccessExternalClient accessExternalClient;
+
+    @MockBean(name = "ingestExternalClient")
+    private IngestExternalClient ingestExternalClient;
 
     @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
+    private IngestInternalService ingestInternalService;
 
 
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestRestClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestRestClient;
+    @Test
+    public void testIngestInternal() {
+        Assert.assertNotNull(ingestInternalService);
     }
 
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
-
-
-
-    @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
-    }
 }

@@ -34,44 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.external.server.rest;
 
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.test.rest.AbstractMockMvcCrudControllerTest;
+import fr.gouv.vitamui.iam.security.authentication.ExternalAuthentication;
+import org.springframework.security.core.Authentication;
 
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
+import java.util.List;
 
-    @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
-
-
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestRestClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestRestClient;
-    }
-
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
-
-
+public abstract class ApiIngestControllerTest<T extends IdDto>  extends AbstractMockMvcCrudControllerTest<T> {
 
     @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
+    protected Authentication buildUserAuthenticated() {
+        final Authentication authentication = new ExternalAuthentication(buildPrincipal(), buildCredentials(),null,buildUserRoles());
+        return authentication;
     }
+
+    protected AuthUserDto buildPrincipal() {
+        final AuthUserDto user = new AuthUserDto();
+        user.setFirstname("test");
+        return user;
+    }
+
+    protected ExternalHttpContext buildCredentials() {
+        return null;
+    }
+
+    protected List<String> buildUserRoles() {
+        return ServicesData.getServicesByName(getServices());
+    }
+
+    protected abstract String[] getServices();
+
 }
