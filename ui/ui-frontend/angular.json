@@ -417,7 +417,7 @@
             "main": "projects/ingest/src/test.ts",
             "polyfills": "projects/ingest/src/polyfills.ts",
             "tsConfig": "projects/ingest/tsconfig.spec.json",
-            "karmaConfig": "projects/ingest/karma.conf.js",
+            "karmaConfig": "projects/ingest/karma.conf.ci.js",
             "assets": [
               "projects/ingest/src/favicon.ico",
               "projects/ingest/src/assets"

@@ -35,9 +35,9 @@ swagger:
 
 logging:
   level:
-    fr.gouv.vitamui.referential: DEBUG
+    fr.gouv.vitamui.ingest: DEBUG
     fr.gouv.vitamui.iam.security: INFO
-    fr.gouv.vitam.access: DEBUG
-    fr.gouv.vitam.access.*: DEBUG
+    fr.gouv.vitam.ingest: DEBUG
+    fr.gouv.vitam.ingest.*: DEBUG
 #    org.springframework.core.env: DEBUG
 
