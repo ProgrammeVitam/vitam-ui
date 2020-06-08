@@ -177,11 +177,10 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
-      return;
+    if (this.lastStepInvalid()) { 
+      return; 
     }
     const accessContract = this.form.value as AccessContract;
-    // accessContract. = this.originatingAgencySelect.value;
     this.accessContractService.create(accessContract).subscribe(
       () => {
         this.dialogRef.close(true);
@@ -210,15 +209,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   lastStepInvalid(): boolean {
-    console.log('rootUnit ?', this.form.controls.rootUnits.value);
-    console.log('Invalid Lenght ?', this.form.controls.rootUnits.value.length === 0);
-    console.log('Invalid allNodes ?', this.allNodes.invalid || this.allNodes.pending);
-    console.log('Invalid Selection ?', this.allNodes.value === false &&
-      this.form.controls.rootUnits.invalid ||
-      this.form.controls.rootUnits.value.length === 0);
-    console.log('Invalid ?', this.allNodes.invalid || this.allNodes.pending ||
-      (this.allNodes.value === false && this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0));
-
     return this.allNodes.invalid || this.allNodes.pending ||
       (this.allNodes.value === false && (this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0));
   }
