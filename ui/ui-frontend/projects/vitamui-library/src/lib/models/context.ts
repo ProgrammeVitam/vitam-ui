@@ -5,7 +5,10 @@ export class ContextPermission {
   accessContracts: string[];
   ingestContracts: string[];
 
-  constructor() {
+  constructor(tenant: string, accessContract: string[], ingestContract: string[]) {
+    this.tenant = tenant;
+    this.accessContracts = accessContract;
+    this.ingestContracts = ingestContract;
   }
 }
 

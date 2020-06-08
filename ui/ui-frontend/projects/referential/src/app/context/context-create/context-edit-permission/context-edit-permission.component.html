@@ -30,7 +30,7 @@
       </td>
       <td *ngIf="permission.tenant" style="padding-left: 0" [ngClass]="editMode ? 'editTd' : ''">
         <mat-form-field class="vitamui-mat-select contractsSelect selectorPosition" [ngClass]="editMode? 'editMode editContract' : ''">
-          <mat-select [(value)]="permission.accessContracts" placeholder="Contrats d'accès"
+          <mat-select [(value)]="permission.accessContracts" placeholder="Contrats d'accès" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                       multiple required>
             <mat-option *ngFor='let contract of accessContracts.get(permission.tenant)' [value]="contract.key">
@@ -44,7 +44,7 @@
       </td>
       <td *ngIf="permission.tenant">
         <mat-form-field class="vitamui-mat-select contractsSelect selectorPosition" [ngClass]="editMode? 'editMode' : ''"s>
-          <mat-select [(value)]="permission.ingestContracts" placeholder="Contrats d'entrée"
+          <mat-select [(value)]="permission.ingestContracts" placeholder="Contrats d'entrée" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                       multiple required>
             <mat-option *ngFor='let contract of ingestContracts.get(permission.tenant)' [value]="contract.key">

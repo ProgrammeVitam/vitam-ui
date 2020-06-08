@@ -1,3 +1,5 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
 .side-form {
   height: 100%;
   display: flex;
@@ -6,4 +8,10 @@
   .bottom {
     margin-top: auto;
   }
+}
+
+.error-message {
+  color: $red;
+  font-size: 14px;
+  margin-bottom: 30px;
 }

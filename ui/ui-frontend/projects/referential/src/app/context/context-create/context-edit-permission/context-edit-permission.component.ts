@@ -129,6 +129,10 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     this.onChange && this.onChange(this.permissions);
   }
 
+  onContractSelect() {
+    this.onChange && this.onChange(this.permissions);
+  }
+
   writeValue(value: ContextPermission[]) {
     if (value) {
       this.permissions = value;

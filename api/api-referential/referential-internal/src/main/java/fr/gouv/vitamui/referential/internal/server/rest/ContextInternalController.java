@@ -129,10 +129,10 @@ public class ContextInternalController {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
         return contextInternalService.patch(vitamContext, partialDto);
     }
 
