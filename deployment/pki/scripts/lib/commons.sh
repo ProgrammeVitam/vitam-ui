@@ -2,27 +2,32 @@
 set -e
 
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../.." ; pwd )"
-REPERTOIRE_CERTIFICAT="${REPERTOIRE_ROOT}/environments/certs"
-REPERTOIRE_CA="${REPERTOIRE_ROOT}/pki/ca"
-CA_ROOT_TYPE="all"
-REPERTOIRE_CONFIG="${REPERTOIRE_ROOT}/pki/config"
-TEMP_CERTS="${REPERTOIRE_ROOT}/pki/tempcerts"
-PARAM_KEY_CHIFFREMENT="rsa:4096"
-ENVIRONMENT_VARIABLES="${REPERTOIRE_ROOT}/environments/group_vars/all"
 
-if [ -f "${REPERTOIRE_ROOT}/vault_pass.txt" ]; then
-    ANSIBLE_VAULT_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pass.txt"
-else
-    ANSIBLE_VAULT_PASSWD="--ask-vault-pass"
-fi
-if [ -f "${REPERTOIRE_ROOT}/vault_pki.pass" ]; then
-    ANSIBLE_VAULT_PKI_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pki.pass"
-else
-    ANSIBLE_VAULT_PKI_PASSWD="--ask-vault-pass"
-fi
+function init () {
+    
+    REPERTOIRE_CERTIFICAT="${REPERTOIRE_ROOT}/environments/certs"
+    REPERTOIRE_CA="${REPERTOIRE_ROOT}/pki/ca"
+    CA_ROOT_TYPE="all"
+    REPERTOIRE_CONFIG="${REPERTOIRE_ROOT}/pki/config"
+    TEMP_CERTS="${REPERTOIRE_ROOT}/pki/tempcerts"
+    PARAM_KEY_CHIFFREMENT="rsa:4096"
+    ENVIRONMENT_VARIABLES="${REPERTOIRE_ROOT}/environments/group_vars/all"
 
-# Check if gawk is present
-hash gawk
+    if [ -f "${REPERTOIRE_ROOT}/vault_pass.txt" ]; then
+        ANSIBLE_VAULT_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pass.txt"
+    else
+        ANSIBLE_VAULT_PASSWD="--ask-vault-pass"
+    fi
+    if [ -f "${REPERTOIRE_ROOT}/vault_pki.pass" ]; then
+        ANSIBLE_VAULT_PKI_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pki.pass"
+    else
+        ANSIBLE_VAULT_PKI_PASSWD="--ask-vault-pass"
+    fi
+
+    # Check if gawk is present
+    hash gawk
+
+}
 
 function read_ansible_var {
     local ANSIBLE_VAR="${1}"
