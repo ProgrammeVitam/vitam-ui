@@ -16,6 +16,7 @@
             "main": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
             "polyfills": "projects/identity/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
@@ -133,6 +134,7 @@
             "main": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
             "polyfills": "projects/portal/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
