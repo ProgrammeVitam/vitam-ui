@@ -252,7 +252,7 @@
       transition: opacity 100ms ease-out;
       vertical-align: middle; }
     .helper.password-helper ul li.valid {
-      color: var(--vitamui-primary); }
+      color: var(--vitamui-secondary); }
       .helper.password-helper ul li.valid i {
         opacity: 1; }
 
