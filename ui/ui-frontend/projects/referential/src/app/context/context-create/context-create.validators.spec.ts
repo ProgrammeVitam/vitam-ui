@@ -50,7 +50,8 @@ function toObservable(r: any): Observable<any> {
   return obs;
 }
 
-describe('Customer Create Validators', () => {
+// TODO replace customer tests by context tests
+xdescribe('Context Create Validators', () => {
 
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {

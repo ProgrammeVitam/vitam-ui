@@ -6,7 +6,7 @@ import {SecurityProfilePermissionsTabComponent} from "./security-profile-permiss
 import {MatDialog} from "@angular/material/dialog";
 import {SecurityProfileService} from "../security-profile.service";
 import {Observable} from "rxjs";
-import {ConfirmActionComponent} from "vitamui-library";
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 
 @Component({
   selector: 'app-security-profile-preview',

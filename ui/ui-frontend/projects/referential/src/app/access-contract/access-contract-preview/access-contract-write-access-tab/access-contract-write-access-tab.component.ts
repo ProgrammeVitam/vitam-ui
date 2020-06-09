@@ -40,7 +40,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract } from 'vitamui-library';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractService } from '../../access-contract.service';
 

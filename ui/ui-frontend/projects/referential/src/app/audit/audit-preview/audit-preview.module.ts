@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule, MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';

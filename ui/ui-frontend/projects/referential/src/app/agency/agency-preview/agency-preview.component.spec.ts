@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgencyPreviewComponent } from './agency-preview.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { AgencyService } from '../agency.service';
 
 describe('AgencyPreviewComponent', () => {
   let component: AgencyPreviewComponent;
@@ -8,7 +11,12 @@ describe('AgencyPreviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AgencyPreviewComponent ]
+      declarations: [ AgencyPreviewComponent ],
+      providers: [ 
+        { provide: MatDialog, useValue:{ } }, 
+        { provide: AgencyService, useValue: { }}
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));

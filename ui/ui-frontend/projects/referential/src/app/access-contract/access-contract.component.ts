@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
-import { AccessContract } from 'vitamui-library';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';

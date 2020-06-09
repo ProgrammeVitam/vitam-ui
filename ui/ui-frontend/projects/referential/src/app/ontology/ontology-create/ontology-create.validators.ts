@@ -52,7 +52,6 @@ export class OntologyCreateValidators {
 
   uniqueID = (): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      console.log('Test unique ID');
       return timer(this.debounceTime)
         .pipe(
           switchMap(() => this.ontologyService.exists(control.value)),

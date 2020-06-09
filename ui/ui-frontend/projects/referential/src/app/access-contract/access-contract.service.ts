@@ -40,7 +40,7 @@ import { MatSnackBar } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService } from 'ui-frontend-common';
-import { AccessContract } from 'vitamui-library';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractApiService } from '../core/api/access-contract-api.service';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';

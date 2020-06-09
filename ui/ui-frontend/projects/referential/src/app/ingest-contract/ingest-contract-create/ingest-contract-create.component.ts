@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Option } from 'ui-frontend-common';
-import {IngestContract, FilingPlanMode, FileFormat, AccessContract} from 'vitamui-library';
+import {IngestContract, FilingPlanMode, FileFormat, AccessContract} from 'projects/vitamui-library/src/public-api';
 
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';

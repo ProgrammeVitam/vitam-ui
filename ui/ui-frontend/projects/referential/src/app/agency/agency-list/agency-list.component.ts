@@ -53,7 +53,7 @@ import { Agency } from "projects/vitamui-library/src/lib/models/agency";
 import { AgencyService } from "../agency.service";
 import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
-import { ConfirmActionComponent } from "vitamui-library";
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

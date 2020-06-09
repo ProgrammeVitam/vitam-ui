@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab.component';
 import {of} from "rxjs";
-import {SecurityProfile} from "vitamui-library";
+import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
 import {FormBuilder} from "@angular/forms";
 import {SecurityProfileService} from "../../security-profile.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";

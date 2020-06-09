@@ -3,7 +3,7 @@ import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
 import { OntologyInformationTabComponent } from "./ontology-information-tab/ontology-information-tab.component";
 import { Observable } from "rxjs";
-import { ConfirmActionComponent } from "vitamui-library";
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { MatDialog } from "@angular/material/dialog";
 import { OntologyService } from "../ontology.service";
 

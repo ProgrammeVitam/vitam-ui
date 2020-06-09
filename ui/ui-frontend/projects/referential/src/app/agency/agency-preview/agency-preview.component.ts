@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Agency, ConfirmActionComponent} from 'vitamui-library';
+import {Agency, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
 import {AgencyInformationTabComponent} from "./agency-information-tab/agency-information-tab.component";
 import {AgencyService} from "../agency.service";
@@ -85,6 +85,7 @@ export class AgencyPreviewComponent implements OnInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
+      // TODO rename
       const submitAccessContractUpdate: Observable<Agency> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitAccessContractUpdate.subscribe( () => {

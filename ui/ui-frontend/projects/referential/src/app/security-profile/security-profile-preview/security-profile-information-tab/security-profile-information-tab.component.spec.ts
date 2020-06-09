@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { SecurityProfileService } from "../../security-profile.service";
 import { of } from "rxjs";
-import { SecurityProfile } from "vitamui-library";
+import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
 
 describe('SecurityProfileInformationTabComponent', () => {
   let component: SecurityProfileInformationTabComponent;

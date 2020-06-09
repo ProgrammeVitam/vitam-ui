@@ -2,14 +2,72 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import { SecurisationService } from '../../securisation.service';
+import { NgxFilesizeModule } from 'ngx-filesize';
+import { of } from 'rxjs';
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
   let fixture: ComponentFixture<SecurisationInformationTabComponent>;
 
+  const securisationValue = {
+    id: 'id',
+    idAppSession: 'idAppSession',
+    idRequest: 'idRequest',
+    parentId: 'parentId',
+    type: 'type',
+    typeProc: 'typeProc',
+    dateTime: new Date('1995-12-17'),
+    outcome: 'outcome',
+    outDetail: 'outDetail',
+    outMessage: 'outMessage',
+    data: 'data',
+    parsedData: {
+      Size: 2
+    },
+    objectId: 'objectId',
+    collectionName: 'collectionName',
+    agId: 'agId',
+    agIdApp: 'agIdApp',
+    agIdExt: 'agIdExt',
+    rightsStatementIdentifier: 'rightsStatementIdentifier',
+    events: [{
+      id: 'id2',
+      idAppSession: 'idAppSession2',
+      idRequest: 'idRequest2',
+      parentId: 'id',
+      type: 'type',
+      typeProc: 'typeProc',
+      dateTime: new Date('1995-12-17'),
+      outcome: 'outcome',
+      outDetail: 'outDetail',
+      outMessage: 'outMessage',
+      data: 'data',
+      parsedData: {
+        dataKey: 'dataValue'
+      },
+      objectId: 'objectId',
+      collectionName: 'collectionName',
+      agId: 'agId',
+      agIdApp: 'agIdApp',
+      agIdExt: 'agIdExt',
+      rightsStatementIdentifier: 'rightsStatementIdentifier'
+    }]
+  }
+
   beforeEach(async(() => {
+    const securisationServiceMock = {
+      getInfoFromTimestamp: () => of({})
+    };
+
     TestBed.configureTestingModule({
+      imports:[
+        NgxFilesizeModule
+      ],
       declarations: [ SecurisationInformationTabComponent ],
+      providers:[
+        { provide: SecurisationService, useValue: securisationServiceMock }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -18,6 +76,7 @@ describe('SecurisationInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationInformationTabComponent);
     component = fixture.componentInstance;
+    component.securisation = securisationValue;
     fixture.detectChanges();
   });
 

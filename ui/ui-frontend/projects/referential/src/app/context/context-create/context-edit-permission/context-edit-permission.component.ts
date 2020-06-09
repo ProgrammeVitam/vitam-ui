@@ -38,7 +38,7 @@
 
 import {Component, forwardRef, Input, OnInit} from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { ContextPermission } from "vitamui-library";
+import { ContextPermission } from 'projects/vitamui-library/src/public-api';
 import {AuthService, Option} from "ui-frontend-common";
 import {AccessContractService} from "../../../access-contract/access-contract.service";
 import {IngestContractService} from "../../../ingest-contract/ingest-contract.service";

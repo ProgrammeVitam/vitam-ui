@@ -45,7 +45,7 @@ import { FileFormatListComponent } from "./file-format-list/file-format-list.com
 import { FileFormatComponent } from "./file-format.component";
 import { FileFormatPreviewModule } from "./file-format-preview/file-format-preview.module";
 import { SharedModule } from "../shared/shared.module";
-import {VitamUILibraryModule} from "vitamui-library";
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 
 @NgModule({
   imports: [

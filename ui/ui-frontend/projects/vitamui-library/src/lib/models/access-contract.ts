@@ -2,7 +2,7 @@ import { AccessContract } from 'ui-frontend-common';
 
 export interface AccessContract extends AccessContract {
     creationDate: string;
-    lastUpdate: string
+    lastUpdate: string;
     activationDate: string;
     deactivationDate: string;
     dataObjectVersion: string[];

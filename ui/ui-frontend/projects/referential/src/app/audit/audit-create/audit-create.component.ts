@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, StartupService } from 'ui-frontend-common';
-import {AccessContract, AccessionRegister, FilingPlanMode} from 'vitamui-library';
+import {AccessContract, AccessionRegister, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditService } from '../audit.service';

@@ -36,7 +36,7 @@
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';

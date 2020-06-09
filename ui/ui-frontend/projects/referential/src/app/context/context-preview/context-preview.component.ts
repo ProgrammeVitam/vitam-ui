@@ -42,7 +42,7 @@ import {ContextPermissionTabComponent} from "./context-permission-tab/context-pe
 import {MatDialog} from "@angular/material/dialog";
 import {ContextService} from "../context.service";
 import {Observable} from "rxjs";
-import {ConfirmActionComponent} from "vitamui-library";
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 
 @Component({
   selector: 'app-context-preview',

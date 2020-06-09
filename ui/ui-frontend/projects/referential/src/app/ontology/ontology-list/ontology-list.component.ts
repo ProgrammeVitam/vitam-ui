@@ -5,7 +5,7 @@ import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from '
 
 import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
 import { OntologyService } from '../ontology.service';
-import {ConfirmActionComponent} from "vitamui-library";
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import {MatDialog} from "@angular/material/dialog";
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Ontology } from 'vitamui-library';
+import { Ontology } from 'projects/vitamui-library/src/public-api';
 import { diff, Option } from 'ui-frontend-common';
 import { Observable, of } from "rxjs";
 import { catchError, filter, map, switchMap } from "rxjs/operators";

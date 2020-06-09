@@ -43,7 +43,7 @@ import { ConfirmDialogService, Option } from 'ui-frontend-common';
 import { AccessContractService } from '../access-contract.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { AgencyService } from "../../agency/agency.service";
-import { AccessContract, FilingPlanMode } from "vitamui-library";
+import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 

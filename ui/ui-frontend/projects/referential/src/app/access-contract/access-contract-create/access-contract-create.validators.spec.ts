@@ -41,6 +41,7 @@ import { FormControl } from '@angular/forms';
 import { from, Observable, of } from 'rxjs';
 
 import { AccessContractCreateValidators } from './access-contract-create.validators';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
@@ -53,7 +54,7 @@ function toObservable(r: any): Observable<any> {
 
 describe('AccessContract Create Validators', () => {
 
-  describe('uniqueCode', () => {
+  describe('nameExists', () => {
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(false));
@@ -62,29 +63,18 @@ describe('AccessContract Create Validators', () => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '123456' });
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
       toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ uniqueCode: true });
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '123456' });
-    }));
-
-    it('should not call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
-      tick(400);
-      expect(customerServiceSpy.exists).not.toHaveBeenCalled();
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
     it('should call the service', fakeAsync(() => {
@@ -92,34 +82,70 @@ describe('AccessContract Create Validators', () => {
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
       toObservable(customerCreateValidators.uniqueName()(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ uniqueCode: true });
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '111111' });
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('111111');
     }));
   });
 
-  describe('uniqueDomain', () => {
+  describe('uniqueNameWhileEdit', () => {
+    let getAccessContract:() => AccessContract = () => ({
+      id: "id",
+      tenant: 0,
+      version: 1,
+      name: 'name',
+      identifier: 'ID',
+      description: 'DESC',
+      status: 'ACTIVE',
+      creationDate: '01-01-2020',
+      lastUpdate: '01-01-2020',
+      activationDate: '01-01-2020',
+      deactivationDate: '01-01-2020',
+      everyOriginatingAgency: true,
+      everyDataObjectVersion: true,
+      dataObjectVersion: [],
+      writingPermission: true,
+      writingRestrictedDesc: false,
+      accessLog: null,
+      ruleFilter: true,
+      ruleCategoryToFilter: [],
+      originatingAgencies: [],
+      rootUnits: [],
+      excludedRootUnits: []
+    });
+
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(false));
       const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('test.com'))).subscribe((result) => {
+      toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
       customerServiceSpy.exists.and.returnValue(of(true));
       const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('test.com'))).subscribe((result) => {
-        expect(result).toEqual({ uniqueDomain: true });
+      toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
+    }));
+
+    it('should call the service', fakeAsync(() => {
+      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
+      customerServiceSpy.exists.and.returnValue(of(true));
+      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('111111'))).subscribe((result) => {
+        expect(result).toEqual({ nameExists: true });
+      });
+      tick(400);
+      expect(customerServiceSpy.exists).toHaveBeenCalledWith('111111');
     }));
   });
 

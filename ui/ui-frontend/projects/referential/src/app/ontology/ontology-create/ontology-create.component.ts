@@ -122,7 +122,6 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) { return; }
-    // TODO : Create !
     this.ontologyService.create(this.form.value).subscribe(
       () => {
         this.dialogRef.close({ success: true, action: "none" });

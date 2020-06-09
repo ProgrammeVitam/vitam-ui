@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule, MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
 import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';

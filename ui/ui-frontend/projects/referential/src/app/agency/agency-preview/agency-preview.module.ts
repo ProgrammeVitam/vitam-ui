@@ -49,7 +49,7 @@ import {
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 import { AgencyPreviewComponent } from './agency-preview.component';

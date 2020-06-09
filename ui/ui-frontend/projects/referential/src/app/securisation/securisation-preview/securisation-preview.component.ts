@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {AccessContract, Event} from 'vitamui-library';
+import {AccessContract, Event} from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { SecurisationService } from '../securisation.service';

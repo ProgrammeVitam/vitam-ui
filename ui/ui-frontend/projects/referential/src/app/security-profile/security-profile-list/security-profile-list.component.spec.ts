@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService, BASE_URL } from 'ui-frontend-common';
 import { SecurityProfileListComponent } from "./security-profile-list.component";
 import { SecurityProfileService } from "../security-profile.service";
-import { SecurityProfile } from "vitamui-library";
+import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
 import { of } from "rxjs";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 

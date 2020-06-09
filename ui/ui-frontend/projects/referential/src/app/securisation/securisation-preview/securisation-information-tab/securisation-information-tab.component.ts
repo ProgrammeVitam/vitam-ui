@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Event } from 'vitamui-library';
+import { Event } from 'projects/vitamui-library/src/public-api';
 import {SecurisationService} from "../../securisation.service";
 
 

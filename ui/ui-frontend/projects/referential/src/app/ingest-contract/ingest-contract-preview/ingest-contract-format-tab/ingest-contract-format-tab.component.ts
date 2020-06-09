@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import {FileFormat, IngestContract} from 'vitamui-library';
+import {FileFormat, IngestContract} from 'projects/vitamui-library/src/public-api';
 
 import { IngestContractService } from '../../ingest-contract.service';
 import {FileFormatService} from "../../../file-format/file-format.service";

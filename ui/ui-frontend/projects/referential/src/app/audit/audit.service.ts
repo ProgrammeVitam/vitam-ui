@@ -39,7 +39,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SearchService } from 'ui-frontend-common';
-import { AccessionRegister, Event } from 'vitamui-library';
+import { AccessionRegister, Event } from 'projects/vitamui-library/src/public-api';
 
 import { AccessionRegisterApiService } from '../core/api/accession-register-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';

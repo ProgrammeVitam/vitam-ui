@@ -84,7 +84,7 @@ class Page {
 
 let page: Page;
 
-fdescribe('AccessContractCreateComponent', () => {
+describe('AccessContractCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);

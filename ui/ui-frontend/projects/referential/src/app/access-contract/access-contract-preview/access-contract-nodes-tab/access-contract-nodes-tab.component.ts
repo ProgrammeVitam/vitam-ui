@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { AccessContract, SearchUnitApiService } from 'vitamui-library';
+import { AccessContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import { MatDialog } from "@angular/material/dialog";
 import { AccessContractNodeUpdateComponent } from "./access-contract-nodes-update/access-contract-node-update.component";
 import { HttpHeaders } from "@angular/common/http";

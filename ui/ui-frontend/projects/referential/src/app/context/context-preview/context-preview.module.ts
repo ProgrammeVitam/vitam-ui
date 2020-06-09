@@ -56,7 +56,7 @@ import {
 import { ContextPreviewComponent } from './context-preview.component';
 import { ContextPermissionTabComponent } from "./context-permission-tab/context-permission-tab.component";
 import { ContextEditPermissionModule } from "../context-create/context-edit-permission/context-edit-permission.module";
-import { ConfirmActionModule, VitamUILibraryModule } from "vitamui-library";
+import { ConfirmActionModule, VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 
 @NgModule({
   imports: [

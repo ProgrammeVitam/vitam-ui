@@ -10,7 +10,7 @@ import {
   MatSnackBarModule,
 } from '@angular/material';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'vitamui-library';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 
 import { SharedModule } from '../../shared/shared.module';
 import { AuditCreateComponent } from './audit-create.component';

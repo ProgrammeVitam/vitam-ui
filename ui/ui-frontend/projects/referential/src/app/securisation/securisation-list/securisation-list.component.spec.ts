@@ -1,16 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SecurisationListComponent } from './securisation-list.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { MatDialog } from '@angular/material';
+import { SecurisationService } from '../securisation.service';
+import { of } from "rxjs";
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;
   let fixture: ComponentFixture<SecurisationListComponent>;
+  
+  const securisationServiceMock = {
+    search: () => of(null)
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ SecurisationListComponent ],
-      schemas: [NO_ERRORS_SCHEMA]
+      providers: [ 
+        { provide: MatDialog, useValue:{ } }, 
+        { provide: SecurisationService, useValue: securisationServiceMock }
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));

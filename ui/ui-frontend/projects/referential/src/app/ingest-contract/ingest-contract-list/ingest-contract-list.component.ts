@@ -38,7 +38,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-import { IngestContract } from 'vitamui-library';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
 
 import { IngestContractService } from '../ingest-contract.service';
 

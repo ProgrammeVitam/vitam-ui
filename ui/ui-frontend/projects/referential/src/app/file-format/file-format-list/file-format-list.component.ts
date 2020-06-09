@@ -50,7 +50,7 @@ import { merge, Subject, Subscription } from "rxjs";
 import { debounceTime, filter } from "rxjs/operators";
 import { FileFormat } from "projects/vitamui-library/src/lib/models/file-format";
 import { FileFormatService } from "../file-format.service";
-import { ConfirmActionComponent } from "vitamui-library";
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { MatDialog } from "@angular/material/dialog";
 import { VitamUISnackBarComponent } from "../../shared/vitamui-snack-bar";
 

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { SearchService } from 'ui-frontend-common';
-import { Event } from 'vitamui-library';
+import { Event } from 'projects/vitamui-library/src/public-api';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';

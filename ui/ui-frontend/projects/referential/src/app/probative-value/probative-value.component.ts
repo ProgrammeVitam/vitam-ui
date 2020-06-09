@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
-import { Event } from 'vitamui-library';
+import { Event } from 'projects/vitamui-library/src/public-api';
 
 import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';

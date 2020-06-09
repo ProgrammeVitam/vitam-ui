@@ -1,10 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';
-import {of} from "rxjs";
-import {FormBuilder} from "@angular/forms";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {OntologyService} from "../../ontology.service";
+import { of } from "rxjs";
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { OntologyService } from "../../ontology.service";
+import { Ontology } from 'projects/vitamui-library/src/public-api';
+import { MatSelectModule } from '@angular/material';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;
@@ -14,7 +18,15 @@ describe('OntologyInformationTabComponent', () => {
     patch: (_data: any) => of(null)
   };
 
-  const ontologyValue = {
+  const ontologyValue:Ontology = {
+    id:'id',
+    tenant:0,
+    version:1,
+    creationDate:'01-01-2020',
+    lastUpdate: '01-01-2020',
+    sedaField: 'MyText',
+    apiField: 'MyText',
+    origin: 'origin',
     shortName: 'Name',
     identifier: 'SP-000001',
     type: 'EXTERNAL',
@@ -24,6 +36,12 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports:[
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        NoopAnimationsModule,
+        MatSelectModule
+      ],
       declarations: [ OntologyInformationTabComponent ],
       providers: [
         FormBuilder,
@@ -37,7 +55,7 @@ describe('OntologyInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OntologyInformationTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue(ontologyValue);
+    component.inputOntology = ontologyValue;
     fixture.detectChanges();
   });
 

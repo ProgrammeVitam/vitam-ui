@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {AccessContract, ConfirmActionComponent} from 'vitamui-library';
+import {AccessContract, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
 import {MatDialog} from "@angular/material/dialog";
 import {AccessContractInformationTabComponent} from "./access-contract-information-tab/access-contract-information-tab.component";

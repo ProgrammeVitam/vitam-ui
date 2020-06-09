@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
-import { AccessionRegister } from 'vitamui-library';
+import { AccessionRegister } from 'projects/vitamui-library/src/public-api';
 
 @Injectable({
   providedIn: 'root'

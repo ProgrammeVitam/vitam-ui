@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {AccessContract, Event} from 'vitamui-library';
+import {AccessContract, Event} from 'projects/vitamui-library/src/public-api';
 
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditService } from '../audit.service';

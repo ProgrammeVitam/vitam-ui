@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchService } from 'ui-frontend-common';
-import { Event, download } from 'vitamui-library';
+import { Event, download } from 'projects/vitamui-library/src/public-api';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 

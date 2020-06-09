@@ -40,7 +40,7 @@ import {Observable, of} from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'vitamui-library';
+import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/public-api';
 
 import { FileFormatService } from '../../file-format.service';
 

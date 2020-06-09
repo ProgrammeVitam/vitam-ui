@@ -20,7 +20,7 @@ import {
 import { SecurityProfilePreviewComponent } from './security-profile-preview.component';
 import { SecurityProfilePermissionsTabComponent } from "./security-profile-permissions-tab/security-profile-permissions-tab.component";
 import { SecurityProfileEditPermissionModule } from '../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.module';
-import { ConfirmActionModule, VitamUILibraryModule } from "vitamui-library";
+import { ConfirmActionModule, VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 
 @NgModule({
   imports: [

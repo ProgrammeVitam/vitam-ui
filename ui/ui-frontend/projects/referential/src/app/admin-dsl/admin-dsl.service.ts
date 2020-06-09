@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { SearchUnitApiService } from 'vitamui-library';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
 import {HttpHeaders} from "@angular/common/http";
 
 

@@ -16,7 +16,7 @@ import { OntologyListComponent } from './ontology-list/ontology-list.component';
 import { OntologyPreviewModule } from './ontology-preview/ontology-preview.module';
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
-import {VitamUILibraryModule} from "vitamui-library";
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 
 @NgModule({
   imports: [

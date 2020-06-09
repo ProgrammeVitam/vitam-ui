@@ -45,7 +45,7 @@ import { AgencyListComponent } from "./agency-list/agency-list.component";
 import { AgencyComponent } from "./agency.component";
 import { AgencyPreviewModule } from "./agency-preview/agency-preview.module";
 import { SharedModule } from "../shared/shared.module";
-import {VitamUILibraryModule} from "vitamui-library";
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 
 @NgModule({
   imports: [

@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { FileFormatService } from "../../file-format.service";
 import { of } from "rxjs";
-import {FileFormat} from "vitamui-library";
+import {FileFormat} from 'projects/vitamui-library/src/public-api';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;

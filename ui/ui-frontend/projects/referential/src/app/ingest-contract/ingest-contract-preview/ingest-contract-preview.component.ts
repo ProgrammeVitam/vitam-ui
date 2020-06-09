@@ -1,5 +1,5 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ConfirmActionComponent, IngestContract} from 'vitamui-library';
+import {ConfirmActionComponent, IngestContract} from 'projects/vitamui-library/src/public-api';
 import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
 import {IngestContractInformationTabComponent} from "./ingest-contract-information-tab/ingest-contract-information-tab.component";
 import {IngestContractFormatTabComponent} from "./ingest-contract-format-tab/ingest-contract-format-tab.component";

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {AccessContract, IngestContract, SearchUnitApiService} from 'vitamui-library';
+import {AccessContract, IngestContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 
 import {MatDialog} from "@angular/material/dialog";
 import {IngestContractNodeUpdateComponent} from "./ingest-contract-nodes-update/ingest-contract-node-update.component";
