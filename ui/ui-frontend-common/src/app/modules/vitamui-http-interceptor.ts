@@ -103,6 +103,10 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     if (!applicationId) {
       applicationId = this.startupService.CURRENT_APP_ID;
     }
+    const headerTimeout = request.headers.get('X-Api-Timeout');
+    if (headerTimeout && !isNaN(Number(headerTimeout))) {
+      this.apiTimeout = Number(headerTimeout);
+    }
 
     const reqWithCredentials = request.clone({
       withCredentials: true,
