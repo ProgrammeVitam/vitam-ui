@@ -21,8 +21,8 @@ $grid-gutter-width: 20px;
 @import "text";
 
 
-@import '../../../../dist/vitamui-library/src/sass/icons/vitamui-icons.css';
-@import '../../../../dist/vitamui-library/src/sass/styles';
+@import 'projects/vitamui-library/src/sass/icons/vitamui-icons.css';
+@import 'projects/vitamui-library/src/sass/styles';
 
 vitamui-common-slide-toggle {
     padding-bottom: 15px;
