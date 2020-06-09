@@ -66,6 +66,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity_admin.server_name }};
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_identity_admin;
@@ -97,6 +101,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity.server_name }};
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_identity;
@@ -171,6 +179,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name "{{ vitamui.portal.server_name }}";
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_portal;
