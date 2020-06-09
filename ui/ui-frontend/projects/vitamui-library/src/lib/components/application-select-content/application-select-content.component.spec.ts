@@ -41,7 +41,7 @@ import { UpdatedApplicationSelectContentComponent } from './application-select-c
 import { AuthService, WINDOW_LOCATION } from "ui-frontend-common";
 
 @Component({
-  selector: 'vitamui-common-menu-tile',
+  selector: 'vitamui-common-menu-tile-updated',
   template: ''
 })
 class VitamUIMenuTileStubComponent {

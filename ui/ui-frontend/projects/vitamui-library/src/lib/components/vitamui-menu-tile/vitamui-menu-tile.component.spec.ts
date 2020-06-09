@@ -76,7 +76,7 @@ describe('UpdatedVitamUIMenuTileComponent', () => {
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
       ],
       schemas: [
-        NO_ERRORS_SCHEMA,
+        NO_ERRORS_SCHEMA
       ]
     })
       .compileComponents();

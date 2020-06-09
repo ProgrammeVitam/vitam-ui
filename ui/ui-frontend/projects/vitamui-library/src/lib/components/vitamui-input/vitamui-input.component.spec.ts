@@ -44,7 +44,7 @@ import { VitamUIInputComponent } from './vitamui-input.component';
 
 @Component({
   template: `
-    <vitamui-common-input [(ngModel)]="value"></vitamui-common-input>
+    <vitamui-library-input [(ngModel)]="value"></vitamui-library-input>
   `
 })
 class TesthostComponent {
@@ -87,7 +87,7 @@ describe('VitamUIInputComponent', () => {
   }));
 
   it('should focus the input on click', () => {
-    const elVitamUIInput = fixture.nativeElement.querySelector('vitamui-common-input');
+    const elVitamUIInput = fixture.nativeElement.querySelector('vitamui-library-input');
     const elInput = fixture.nativeElement.querySelector('input');
     elVitamUIInput.click();
     expect(document.activeElement).toBe(elInput);

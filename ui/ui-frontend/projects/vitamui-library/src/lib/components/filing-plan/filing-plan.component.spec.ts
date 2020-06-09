@@ -22,6 +22,11 @@ class NodeStubComponent {
 describe('FilingPlanComponent', () => {
   let component: FilingPlanComponent;
   let fixture: ComponentFixture<FilingPlanComponent>;
+  let fillingPlanStub = { 
+    tree$: of([]), 
+    expandChange$: EMPTY, 
+    loadTree:() => of([]) 
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,7 +36,7 @@ describe('FilingPlanComponent', () => {
       ],
       declarations: [ FilingPlanComponent, NodeStubComponent ],
       providers: [
-        { provide: FilingPlanService, useValue: { tree$: of([]), expandChange$: EMPTY  } },
+        { provide: FilingPlanService, useValue: fillingPlanStub },
         { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },
       ],
       schemas: [NO_ERRORS_SCHEMA]

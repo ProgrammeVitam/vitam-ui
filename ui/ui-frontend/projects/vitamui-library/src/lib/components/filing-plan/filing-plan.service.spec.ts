@@ -6,7 +6,7 @@ import {HttpClientTestingModule, HttpTestingController} from '@angular/common/ht
 import {Type} from '@angular/core';
 import {inject, TestBed} from '@angular/core/testing';
 import {FilingPlanService} from './filing-plan.service';
-import {FileType, Node} from "vitamui-library";
+import {FileType, Node} from 'projects/vitamui-library/src/public-api';
 import {DescriptionLevel} from "../../models/description-level.enum";
 
 describe('FilingPlanService', () => {
