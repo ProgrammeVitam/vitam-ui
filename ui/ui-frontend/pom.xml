@@ -73,6 +73,21 @@
               <arguments>install ui-frontend-common --loglevel warn</arguments>
             </configuration>
           </execution>
+          <!-- TODO check before send -->
+          <!-- copy scss from vitamui-library to other projects -->
+          <!-- 
+          <execution>
+            <id>copy scss</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <skip>${skipAllFrontend}</skip>
+              <arguments>run copy-scss:vitamui-library</arguments>
+            </configuration>
+          </execution>
+          -->
           <execution>
             <id>npm run build</id>
             <goals>
