@@ -163,7 +163,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     }
 
     public String getBase64File(String fileName, String basePath) {
-        final Path assetFile = Paths.get(basePath, fileName);
+        final Path assetFile = Paths.get(basePath, fileName).normalize();
         String base64Asset = null;
         try {
             base64Asset = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
