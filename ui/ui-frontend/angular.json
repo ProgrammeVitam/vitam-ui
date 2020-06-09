@@ -21,7 +21,7 @@
               "projects/identity/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "projects/commons/src/assets/",
+                "input": "node_modules/ui-frontend-common/assets",
                 "output": "/assets"
               }
             ],
@@ -138,7 +138,7 @@
               "projects/portal/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "projects/commons/src/assets/",
+                "input": "node_modules/ui-frontend-common/assets",
                 "output": "/assets"
               }
             ],

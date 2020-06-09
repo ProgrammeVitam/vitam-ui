@@ -45,5 +45,6 @@ export interface AppConfiguration {
     APP_LOGO: string;
     LOGO: string;
     [key: string]: string;
+    PLATFORM_NAME: string;
 
 }

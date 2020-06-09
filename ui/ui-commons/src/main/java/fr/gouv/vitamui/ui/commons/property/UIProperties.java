@@ -56,4 +56,6 @@ public interface UIProperties {
 
     public String getAssets();
 
+    public String getPlatformName();
+
 }

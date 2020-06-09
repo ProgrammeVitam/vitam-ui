@@ -97,6 +97,8 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @Value("${ui.redirect-url}")
     @NotNull
     private String uiRedirectUrl;
+    
+    private static String PLATFORM_NAME = "PLATFORM_NAME";
 
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
         this.properties = properties;
@@ -128,6 +130,11 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
+        if(properties.getPlatformName() != null) {
+            configurationData.put(PLATFORM_NAME, properties.getPlatformName());
+        } else {
+            configurationData.put(PLATFORM_NAME, "VITAM-UI");
+        }
 
         String vitamLogoPath = properties.getThemeLogo();
 
