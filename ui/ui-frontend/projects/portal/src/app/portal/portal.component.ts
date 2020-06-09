@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Application, ApplicationService, AuthService, User } from 'ui-frontend-common';
+import { Application, ApplicationService, AuthService, StartupService, User } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
@@ -51,8 +51,10 @@ export class PortalComponent implements OnInit {
 
   applications: Application[] = [];
 
-  constructor(titleService: Title, public authService: AuthService, private applicationService: ApplicationService) {
-    titleService.setTitle('Vitam-UI');
+  constructor(titleService: Title, public authService: AuthService,
+              private applicationService: ApplicationService, startupService: StartupService
+  ) {
+    titleService.setTitle(startupService.getPlatformName());
     if (this.authService.user) {
       this.currentUser = this.authService.user;
     }

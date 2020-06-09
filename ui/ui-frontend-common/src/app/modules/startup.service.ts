@@ -237,4 +237,12 @@ export class StartupService {
     setTimeout(() => this.location.href = url ? url : this.getPortalUrl(), WARNING_DURATION);
   }
 
+  getPlatformName(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.PLATFORM_NAME;
+    }
+
+    return null;
+  }
+
 }

@@ -28,6 +28,7 @@ ui-prefix : ${ui-portal.prefix}
 
 ui-portal:
   #theme-logo: /path/to/logo.png
+  platform-name: VITAM-UI
   theme-colors:
     vitamui-primary: "#ff4a54"
     vitamui-secondary: "#241f63"

@@ -205,3 +205,4 @@ vitamui_platform_informations:
   theme_colors:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
+  platform_name: VITAM-UI
