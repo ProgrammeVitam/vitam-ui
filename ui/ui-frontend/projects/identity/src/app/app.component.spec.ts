@@ -55,7 +55,7 @@ class SubrogationBannerStubComponent {}
 describe('AppComponent', () => {
 
   beforeEach(async(() => {
-    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
+    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
     TestBed.configureTestingModule({
       imports: [
         MatSidenavModule,
