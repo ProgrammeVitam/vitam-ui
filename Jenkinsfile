@@ -133,7 +133,7 @@ pipeline {
             }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
-                    sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL'
+                    sh 'vitam-build.git/push_vitamui_repo.sh contrib/vas $SERVICE_REPO_SSHURL'
                 }
             }
         }
@@ -150,7 +150,7 @@ pipeline {
             }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
-                    sh 'vitam-build.git/push_symlink_repo.sh contrib $SERVICE_REPO_SSHURL'
+                    sh 'vitam-build.git/push_symlink_repo.sh contrib/vas $SERVICE_REPO_SSHURL'
                 }
             }
         }
