@@ -4,7 +4,7 @@ import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.c
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import { IngestContractService } from '../../ingest-contract.service';
 import { FormBuilder } from '@angular/forms';
-import { IngestContract } from 'vitamui-library/public-api';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
 
 describe('IngestContractObjectTabComponent', () => {
   let component: IngestContractObjectTabComponent;
