@@ -36,15 +36,22 @@
  */
 package fr.gouv.vitamui.ingest.service;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.thread.IngestThread;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 
@@ -52,7 +59,7 @@ import java.io.InputStream;
  * Ingest Service
  */
 @Service
-public class IngestService {
+public class IngestService extends AbstractPaginateService<LogbookOperationDto> {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestService.class);
 
@@ -67,6 +74,18 @@ public class IngestService {
         this.ingestExternalRestClient = ingestExternalRestClient;
         this.ingestExternalWebClient = ingestExternalWebClient;
     }
+
+    @Override
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+            final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+        return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
+    }
+
+    @Override
+    protected Integer beforePaginate(final Integer page, final Integer size) {
+        return commonService.checkPagination(page, size);
+    }
+
 
     public String ingest(final ExternalHttpContext context) {
         return getClient().ingest(context).getBody();

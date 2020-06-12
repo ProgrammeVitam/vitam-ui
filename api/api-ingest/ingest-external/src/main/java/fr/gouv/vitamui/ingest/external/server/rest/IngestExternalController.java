@@ -38,10 +38,13 @@ package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
@@ -60,6 +63,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * UI Ingest External controller.
@@ -81,6 +85,14 @@ public class IngestExternalController {
         this.ingestExternalService = ingestExternalService;
     }
 
+    @Secured(ServicesData.ROLE_GET_ALL_INGEST)
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+    }
 
     @Secured(ServicesData.ROLE_GET_INGEST)
     @GetMapping

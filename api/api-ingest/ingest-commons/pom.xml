@@ -11,5 +11,35 @@
 
     <artifactId>ingest-commons</artifactId>
     <name>VITAMUI Ingest Commons</name>
+    <dependencies>
+        <!-- VITAMUI -->
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-vitam</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-vitam</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

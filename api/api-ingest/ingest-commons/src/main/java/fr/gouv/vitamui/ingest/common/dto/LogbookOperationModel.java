@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,31 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IngestApiService } from '../core/api/ingest-api.service';
-import { SearchService } from 'ui-frontend-common';
+package fr.gouv.vitamui.ingest.common.dto;
 
+import java.util.List;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IngestService extends SearchService<any> {
-  constructor(
-    private ingestApiService: IngestApiService,
-    http: HttpClient
-  ) {
-    super(http, ingestApiService, 'ALL');
-  }
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-  headers = new HttpHeaders();
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  ingest(): Observable<any> {
-    return this.ingestApiService.ingest(this.headers);
-  }
+@Getter
+@Setter
+@ToString
+public class LogbookOperationModel extends LogbookEventModel {
 
-  getBaseUrl() {
-    return this.ingestApiService.getBaseUrl();
-  }
+    @JsonProperty("events")
+    private List<LogbookEventModel> events;
+
+    @JsonProperty("obIdIn")
+    private String obIdIn;
 }

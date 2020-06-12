@@ -26,11 +26,18 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
+import java.util.Optional;
+
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import io.swagger.annotations.Api;
@@ -57,9 +64,21 @@ public class IngestInternalController {
 
     private IngestInternalService ingestInternalService;
 
+    private InternalSecurityService securityService;
+
     @Autowired
-    public IngestInternalController(final IngestInternalService ingestInternalService) {
+    public IngestInternalController(final IngestInternalService ingestInternalService, final InternalSecurityService securityService) {
         this.ingestInternalService = ingestInternalService;
+        this.securityService = securityService;
+    }
+
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
     @GetMapping

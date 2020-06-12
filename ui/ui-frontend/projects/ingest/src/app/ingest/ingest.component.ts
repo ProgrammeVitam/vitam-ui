@@ -34,12 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { IngestService } from './ingest.service';
-import { SidenavPage, GlobalEventService } from 'ui-frontend-common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UploadSipComponent } from './upload-sip/upload-sip.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+
+import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { IngestService } from './ingest.service';
+import { UploadSipComponent } from './upload-sip/upload-sip.component';
+import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-ingest',
@@ -48,17 +51,41 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
 
+  search: string;
   tenantIdentifier: string;
-  // tslint:disable-next-line:max-line-length
-  constructor(private ingestService: IngestService, private router: Router, private route: ActivatedRoute, globalEventService: GlobalEventService, public dialog: MatDialog) {
+
+  dateRangeFilterForm: FormGroup;
+
+  filters: any = {};
+  results: string;
+
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
+
+  constructor(private ingestService: IngestService, private router: Router, private route: ActivatedRoute,
+              globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
     super(route, globalEventService);
 
     route.params.subscribe(params => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
+    this.dateRangeFilterForm = this.formBuilder.group({
+      startDate: null,
+      endDate: null
+    });
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
+      this.filters.startDate = value;
+      this.ingestListComponent.filters = this.filters;
+    });
+    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
+      if (value) {
+        value.setDate(value.getDate() + 1);
+      }
+      this.filters.endDate = value;
+      this.ingestListComponent.filters = this.filters;
+    });
   }
-  results: string;
 
   getOperations() {
     this.ingestService.ingest().subscribe((results) => {
@@ -66,7 +93,34 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     });
   }
 
+  openCreateIngestDialog() {
+  }
+
+  onSearchSubmit(search: string) {
+    this.search = search || '';
+  }
+
+  clearDate(date: 'startDate' | 'endDate') {
+    if (date === 'startDate') {
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+    } else if (date === 'endDate') {
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+    } else {
+      console.error('clearDate() error: unknown date ' + date);
+    }
+  }
+
+  resetFilters() {
+    this.dateRangeFilterForm.reset();
+    this.searchBar.reset();
+  }
+
   ngOnInit() {
+  }
+
+  showIngest(item: Event) {
+    // TODO: Use item and call - this.openPanel(item);
+    console.log('Show: ', item);
   }
 
   openImportSipDialog() {
@@ -82,15 +136,15 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     const dialogRef = this.dialog.open(UploadSipComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refresh(); }
+      if (result) {
+        this.refresh();
+      }
     });
   }
 
-  refresh() {
-  }
-
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
+  refresh() { }
 }

@@ -35,26 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { IngestComponent } from './ingest.component';
-import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IngestService } from './ingest.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FormBuilder } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 
+@Component({ selector: 'app-ingest-list', template: '' })
+class IngestListStubComponent {
+}
 
 describe('IngestComponent', () => {
   let component: IngestComponent;
   let fixture: ComponentFixture<IngestComponent>;
+
   const ingestServiceMock = {
-    ingest: () => of('test ingest')
+    ingest: () => of('test ingest'),
+    search: () => of([])
   };
 
   beforeEach(async(() => {
@@ -62,16 +70,22 @@ describe('IngestComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
       imports: [
+        MatDatepickerModule,
+        MatNativeDateModule,
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
         RouterTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        NoopAnimationsModule,
+        SearchBarModule
       ],
       declarations: [
         IngestComponent,
+        IngestListStubComponent
       ],
       providers: [
         FormBuilder,
@@ -80,7 +94,7 @@ describe('IngestComponent', () => {
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_APP' }) } },
         { provide: environment, useValue: environment }
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
       .compileComponents();
   }));

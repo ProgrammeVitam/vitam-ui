@@ -1,3 +1,19 @@
 .vitamui-header {
     background-image: url('/assets/customer-header-bg.jpg');
 }
+
+.search-bar-filters {
+  width: 100%;
+  .reset-filters {
+    padding-right: calc(100% - 700px);
+    margin-top: 10px;
+    display: inline-block;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 13px;
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
+}

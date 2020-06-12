@@ -37,11 +37,17 @@
 package fr.gouv.vitamui.ingest.internal.client;
 
 
+import java.util.List;
+
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.MultiValueMap;
@@ -51,7 +57,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * Ingest Internal REST Client.
  */
-public class IngestInternalRestClient extends BaseRestClient<InternalHttpContext> {
+public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalRestClient.class);
 
@@ -64,6 +70,17 @@ public class IngestInternalRestClient extends BaseRestClient<InternalHttpContext
         return RestApi.V1_INGEST;
     }
 
+    @Override protected Class<LogbookOperationDto> getDtoClass() {
+        return LogbookOperationDto.class;
+    }
+
+    @Override protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
+    }
+
+    @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
+    }
 
     public String ingest(final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());

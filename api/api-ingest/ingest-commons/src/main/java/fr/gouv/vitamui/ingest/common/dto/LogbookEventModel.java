@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,31 +34,68 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IngestApiService } from '../core/api/ingest-api.service';
-import { SearchService } from 'ui-frontend-common';
+package fr.gouv.vitamui.ingest.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IngestService extends SearchService<any> {
-  constructor(
-    private ingestApiService: IngestApiService,
-    http: HttpClient
-  ) {
-    super(http, ingestApiService, 'ALL');
-  }
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  headers = new HttpHeaders();
+@Getter
+@Setter
+@ToString
+public class LogbookEventModel {
 
-  ingest(): Observable<any> {
-    return this.ingestApiService.ingest(this.headers);
-  }
+    @JsonProperty("evId")
+    private String id;
 
-  getBaseUrl() {
-    return this.ingestApiService.getBaseUrl();
-  }
+    @JsonProperty("evIdReq")
+    private String idRequest;
+
+    @JsonProperty("evParentId")
+    private String parentId;
+
+    @JsonProperty("evType")
+    private String type;
+
+    @JsonProperty("evTypeProc")
+    private String typeProc;
+
+    @JsonProperty("evDateTime")
+    private String dateTime;
+
+    @JsonProperty("outcome")
+    private String outcome;
+
+    @JsonProperty("outDetail")
+    private String outDetail;
+
+    @JsonProperty("outMessg")
+    private String outMessage;
+
+    @JsonProperty("evDetData")
+    private String data;
+
+    @JsonProperty("obId")
+    private String objectId;
+
+    @JsonProperty("obIdReq")
+    private String collectionName;
+
+    @JsonProperty("evIdAppSession")
+    private String idAppSession;
+
+    @JsonProperty("agId")
+    private String agId;
+
+    @JsonProperty("agIdApp")
+    private String agIdApp;
+
+    @JsonProperty("agIdExt")
+    private String agIdExt;
+
+    @JsonProperty("rightsStatementIdentifier")
+    private String rightsStatementIdentifier;
+
 }

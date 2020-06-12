@@ -1,0 +1,61 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <thead>
+  <tr>
+    <th><i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon"></i></th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingest identifier column header@@ingestListIdentifierHeader">ID Message</span>
+        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th>Nom du SIP</th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingest createdDate column header@@ingestListCreatedDateHeader">Début de versement</span>
+        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingest createdDate column header@@ingestListCreatedDateHeader">Fin de versement</span>
+        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th>Êtat et suivi</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let ingest of dataSource; let index = index">
+    <tr class="vitamui-table-row">
+      <td>
+        <i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon status-badge"
+           [ngClass]="{'status-badge-green': ingestStatus(ingest) == 'OK', 'status-badge-grey':ingestStatus(ingest) == 'STARTED',
+                        'status-badge-orange': ingestStatus(ingest) == 'WARNING', 'status-badge-red': ingestStatus(ingest) == 'KO' || ingestStatus(ingest) == 'FATAL' }"></i>
+      </td>
+      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.obIdIn }}</td>
+      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.name }}</td>
+      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.dateTime | date: 'dd/MM/yyyy'  }}</td>
+      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy'  }}</td>
+      <td class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
+        <span *ngSwitchCase="'OK'" class="text-green">Succès</span>
+        <span *ngSwitchCase="'STARTED'" class="text-grey">En cours</span>
+        <span *ngSwitchCase="'WARNING'" class="text-orange">Avertissement</span>
+        <span *ngSwitchCase="'KO'" class="text-red">Erreur</span>
+        <span *ngSwitchCase="'FATAL'" class="text-red">Erreur Technique</span>
+      </td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && ingestService.canLoadMore" (click)="loadMore()" class="btn"
+          i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <span *ngIf="!pending && !ingestService.canLoadMore">Fin des résultats</span>
+</div>

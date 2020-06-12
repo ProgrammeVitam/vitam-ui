@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,31 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { IngestApiService } from '../core/api/ingest-api.service';
-import { SearchService } from 'ui-frontend-common';
+package fr.gouv.vitamui.ingest.internal.server.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IngestService extends SearchService<any> {
-  constructor(
-    private ingestApiService: IngestApiService,
-    http: HttpClient
-  ) {
-    super(http, ingestApiService, 'ALL');
-  }
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.ingest.common.dto.LogbookEventDto;
+import fr.gouv.vitamui.ingest.common.dto.LogbookEventModel;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationModel;
 
-  headers = new HttpHeaders();
+public class IngestConverter {
 
-  ingest(): Observable<any> {
-    return this.ingestApiService.ingest(this.headers);
-  }
+    public static LogbookEventDto convertVitamToDto(LogbookEventModel logbookEventModel) {
+        return VitamUIUtils.copyProperties(logbookEventModel, new LogbookOperationDto());
+    }
 
-  getBaseUrl() {
-    return this.ingestApiService.getBaseUrl();
-  }
+    public static LogbookOperationDto convertVitamToDto(final LogbookOperationModel logbookOperationModel) {
+        LogbookOperationDto dto = (LogbookOperationDto) IngestConverter.convertVitamToDto((LogbookEventModel) logbookOperationModel);
+        dto.setEvents(logbookOperationModel.getEvents().stream().map(IngestConverter::convertVitamToDto).collect(Collectors.toList()));
+        return dto;
+    }
+
+    public static List<LogbookOperationDto> convertVitamsToDtos(final List<LogbookOperationModel> logbookOperationModels) {
+        return logbookOperationModels.stream().map(IngestConverter::convertVitamToDto).collect(Collectors.toList());
+    }
 }

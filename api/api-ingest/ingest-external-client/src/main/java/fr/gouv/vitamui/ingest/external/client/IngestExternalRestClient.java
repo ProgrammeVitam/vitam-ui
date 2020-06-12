@@ -36,11 +36,18 @@
  */
 package fr.gouv.vitamui.ingest.external.client;
 
+import java.util.List;
+
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
+import sun.rmi.runtime.Log;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -51,12 +58,29 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * A REST client to get logbooks for an External API.
  */
-public class IngestExternalRestClient extends BaseRestClient<ExternalHttpContext> {
+public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalRestClient.class);
 
     public IngestExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
+    }
+
+    @Override
+    public String getPathUrl() {
+        return RestApi.V1_INGEST;
+    }
+
+    @Override protected Class<LogbookOperationDto> getDtoClass() {
+        return LogbookOperationDto.class;
+    }
+
+    @Override protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
+    }
+
+    @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
     public ResponseEntity<String> ingest(ExternalHttpContext context) {
@@ -65,11 +89,5 @@ public class IngestExternalRestClient extends BaseRestClient<ExternalHttpContext
         final HttpEntity<?> request = new HttpEntity<>(headers);
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, String.class);
     }
-
-    @Override
-    public String getPathUrl() {
-        return RestApi.V1_INGEST;
-    }
-
 
 }

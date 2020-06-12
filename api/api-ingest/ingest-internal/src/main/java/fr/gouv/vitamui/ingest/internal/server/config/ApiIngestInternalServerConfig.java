@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
@@ -57,6 +58,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class, VitamIngestConfig.class,
@@ -97,7 +100,12 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     }
 
     @Bean
-    public IngestInternalService ingestInternalService(final InternalSecurityService internalSecurityService, IngestExternalClient ingestExternalClient, IngestService ingestService) {
-        return new IngestInternalService(internalSecurityService, ingestExternalClient, ingestService);
+    public IngestInternalService ingestInternalService(
+            final InternalSecurityService internalSecurityService,
+            LogbookService logbookService,
+            ObjectMapper objectMapper,
+            IngestExternalClient ingestExternalClient,
+            IngestService ingestService) {
+        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService);
     }
 }

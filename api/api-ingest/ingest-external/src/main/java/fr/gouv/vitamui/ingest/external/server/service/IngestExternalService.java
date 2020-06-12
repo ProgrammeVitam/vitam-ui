@@ -37,8 +37,12 @@
 package fr.gouv.vitamui.ingest.external.server.service;
 
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import lombok.Getter;
@@ -48,6 +52,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The service to create vitam ingest.
@@ -57,7 +63,7 @@ import java.io.InputStream;
 @Getter
 @Setter
 @Service
-public class IngestExternalService extends AbstractInternalClientService {
+public class IngestExternalService extends AbstractResourceClientService<LogbookOperationDto, LogbookOperationDto> {
 
     @Autowired
     private final IngestInternalRestClient ingestInternalRestClient;
@@ -81,7 +87,17 @@ public class IngestExternalService extends AbstractInternalClientService {
         return ingestInternalWebClient.upload(getInternalHttpContext(), in, action, contextId);
     }
 
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
 
+        ParameterChecker.checkPagination(size, page);
+        final PaginatedValuesDto<LogbookOperationDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        return new PaginatedValuesDto<>(
+                result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+                result.getPageNum(),
+                result.getPageSize(),
+                result.isHasMore());
+    }
 
     @Override
     protected IngestInternalRestClient getClient() {

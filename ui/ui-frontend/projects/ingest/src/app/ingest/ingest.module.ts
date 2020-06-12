@@ -36,14 +36,19 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { IngestRoutingModule } from './ingest-routing.module';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestComponent } from './ingest.component';
 import { UploadSipModule } from './upload-sip/upload-sip.module';
+import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
+import { IngestListModule } from './ingest-list/ingest-list.module';
+import { IngestRoutingModule } from './ingest-routing.module';
 
 @NgModule({
   imports: [
@@ -53,7 +58,12 @@ import { UploadSipModule } from './upload-sip/upload-sip.module';
     MatMenuModule,
     MatSidenavModule,
     IngestRoutingModule,
-    UploadSipModule
+    UploadSipModule,
+    SharedModule,
+    IngestListModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     IngestComponent

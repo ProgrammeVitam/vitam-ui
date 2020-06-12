@@ -10,6 +10,7 @@ $grid-gutter-width: 20px;
 
 @import '~bootstrap/scss/bootstrap-grid';
 
+@import 'date-filter';
 @import 'material-theme';
 @import 'form';
 @import 'login';
@@ -17,3 +18,4 @@ $grid-gutter-width: 20px;
 @import 'profile-tag';
 @import 'vitamui-tab-group';
 @import 'tooltip';
+@import "text";

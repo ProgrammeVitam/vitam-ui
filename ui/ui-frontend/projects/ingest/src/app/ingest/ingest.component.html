@@ -1,41 +1,71 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-<mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-</mat-sidenav>
+    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+        <!-- app-ingest-preview *ngIf="openedItem" (previewClose)="closePanel()" [ingest]="openedItem"></app-ingest-preview -->
+    </mat-sidenav>
 
     <mat-sidenav-content>
-        <img src="assets/bg-fingerprint.svg" class="bg-fingerprint" />
 
-            <div class="vitamui-header">
-                <div class="vitamui-container">
-                    <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false" [hideCustomerMenu]="true"></vitamui-common-navbar>
+        <div class="vitamui-header">
+            <div class="vitamui-container">
+                <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false" [hideCustomerMenu]="true"></vitamui-common-navbar>
+                <h2 > <img src="assets/mini-logo-vitam.png">Dépôt et suivi des versements</h2>
 
-                    <h2 >
-                        <img src="assets/mini-logo-vitam.png">Dépôt et suivi des versements
-                    </h2>
-            
-                    <div class="controls">
-            
-                        <div class="search disabled">
-                            <input type="text" placeholder="Côte, Intitulé, Service producteur..." disabled>
-                            <button type="submit" class="btn-circle primary btn-search"><i class="material-icons">search</i></button>
-                        </div>
-            
-                        <div class="actions">
-                            <button class="btn secondary" (click)="refresh()">
-                                <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
-                            </button>
-                            <button class="btn more-actions" (click)="openImportSipDialog()">
-                                <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
-                            </button>
-                        </div>
-            
+                <div class="controls">
+                    <div class="search-bar-filters">
+                        <vitamui-common-search-bar #searchBar name="ingtest-search" (search)="onSearchSubmit($event)"
+                                                   placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
+                        </vitamui-common-search-bar>
+                        <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
                     </div>
+
+                    <div class="actions">
+                        <button class="btn secondary" (click)="refresh()">
+                            <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
+                        </button>
+                        <button class="btn more-actions" (click)="openImportSipDialog()">
+                            <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
+                        </button>
+                    </div>
+
+
+                </div>
+
+                <div >
+                    <form [formGroup]="dateRangeFilterForm" class="filter-controls">
+                        <div class="date-filter-container">
+                            <div class="date-filter">
+                                <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate"
+                                      (click)="pickerStart.open()" i18n="@@apiSupervisionStartDate">Date de début</span>
+                                <ng-template #showStartDate>
+                                    <span
+                                            (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | date:'dd/MM/yyyy' }}</span>
+                                    <i class="material-icons clear-date-icon clickable"
+                                       (click)="clearDate('startDate')">clear</i>
+                                </ng-template>
+                                <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate"
+                                       [max]="dateRangeFilterForm.get('endDate').value">
+                                <mat-datepicker #pickerStart></mat-datepicker>
+                            </div>
+                            <div class="date-filter">
+                                <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate"
+                                      (click)="pickerEnd.open()" i18n="@@apiSupervisionEndDate">Date de fin</span>
+                                <ng-template #showEndDate><span
+                                        (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | date:'dd/MM/yyyy' }}
+                                    </span> <i class="material-icons clear-date-icon clickable"
+                                               (click)="clearDate('endDate')">clear</i>
+                                </ng-template>
+                                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate"
+                                       [min]="dateRangeFilterForm.get('startDate').value">
+                                <mat-datepicker #pickerEnd></mat-datepicker>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+        <div class="vitamui-body vitamui-container">
+            <app-ingest-list (ingestClick)="showIngest($event)" [search]="search" [filters]="filters"></app-ingest-list>
+        </div>
     </mat-sidenav-content>
 
 </mat-sidenav-container>
-<h1 (click)="getOperations()">Ingest entries goes here</h1>
-
-
-<div> {{ results }} </div>
