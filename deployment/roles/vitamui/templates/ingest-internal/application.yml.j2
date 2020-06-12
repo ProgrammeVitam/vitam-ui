@@ -18,9 +18,9 @@ server:
   ssl:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
     key-store-password: {{ password_keystore }}
-    key-password: {{ password_manager_keystore }}
+    key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_struct.package_name }}.jks
-    trust-store-password: {{ password_truststore_server }}
+    trust-store-password: {{ password_truststore }}
     client-auth: need
 {% endif %}
   tomcat:
