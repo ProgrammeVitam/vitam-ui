@@ -153,10 +153,10 @@ db.services.update(
     {
         "$set" : {
             "_class": "org.apereo.cas.services.RegexRegisteredService",
-        	"serviceId": "^{{ vitamui.ingest.base_url | default(url_prefix) }}/.*",
+        	"serviceId": "^{{ vitamui.ingest.base_url | default(url_prefix) }}/ingest/.*",
             "name": "Ingest Application",
             "logoutType" : "FRONT_CHANNEL",
-            "logoutUrl": "{{ vitamui.ingest.base_url | default(url_prefix) }}/logout",
+            "logoutUrl": "{{ vitamui.ingest.base_url | default(url_prefix) }}/ingest/logout",
             "attributeReleasePolicy": {
                 "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
             }
