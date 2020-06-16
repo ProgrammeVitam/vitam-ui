@@ -52,6 +52,7 @@ import org.springframework.security.cas.authentication.CasAuthenticationProvider
 import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 
 import javax.net.ssl.HostnameVerifier;
@@ -179,6 +180,7 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
         casAuthenticationFilter.setFilterProcessesUrl("/" + uiPrefix + CALLBACK_ENDPOINT);
         casAuthenticationFilter.setAuthenticationManager(authenticationManager());
         casAuthenticationFilter.setSessionAuthenticationStrategy(new SessionFixationProtectionStrategy());
+        casAuthenticationFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(casExternalUrl));
         return casAuthenticationFilter;
     }
 
