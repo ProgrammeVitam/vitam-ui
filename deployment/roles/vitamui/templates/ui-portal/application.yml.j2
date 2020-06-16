@@ -10,6 +10,10 @@ spring:
 server:
   host: {{ vitamui.portal.host }}
   port: {{ vitamui.portal.port_service }}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
   scheme: {% if vitamui.portal.secure|lower =='true' %}https{% else %}http{% endif %}
 
 {% if vitamui.portal.secure|lower =='true' %}

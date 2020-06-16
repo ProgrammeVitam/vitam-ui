@@ -10,6 +10,10 @@ spring:
 server:
   host: {{ vitamui_struct.host }}
   port: {{ vitamui_struct.port_service }}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
 {% if vitamui.identity_admin.base_url is defined %}
   servlet.context-path: /
   servlet.session.cookie.path: /
