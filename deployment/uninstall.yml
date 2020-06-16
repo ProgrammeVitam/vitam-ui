@@ -142,6 +142,17 @@
     - ui-identity-admin
     - zone-vitamui-admin
 
+############################
+# ZONE UI
+############################
+- hosts: zone_vitamui_ui
+  tasks:
+    - name: delete empty dir
+      shell: "rm -rf {{ vitamui_defaults.folder.root_path }}/conf/assets/"
+      ignore_errors: yes
+  tags:
+    - zone-vitamui-ui
+
 ########################################################
 # ZONE REVERSE
 ########################################################
