@@ -10,10 +10,11 @@ spring:
 server:
   host: {{ vitamui.identity.host }}
   port: {{ vitamui.identity.port_service }}
-{% if vitamui.identity.base_url is defined %}
-  servlet.context-path: /
-  servlet.session.cookie.path: /
-{% else %}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+{% if vitamui.identity.base_url is undefined %}
   servlet.context-path: /identity
   servlet.session.cookie.path: /identity
 {% endif %}
