@@ -76,7 +76,7 @@ db.applications.update(
 {% if vitamui.ingest.base_url is defined %}
         	"url": "{{ vitamui.ingest.base_url }}/ingest",
 {% else %}
-            "url" : "{{ url_prefix }}/ingest",
+            "url" : "{{ url_prefix }}/ingest/ingest",
 {% endif %}
             "icon": "vitamui-icon vitamui-icon-archive-ingest",
              "name": "Dépôt et suivi des versements",
