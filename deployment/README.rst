@@ -141,7 +141,9 @@ Fichier ``vitamui_vars.yml``
 "A la vitam", permet le paramétrage des différents composants de vitam-ui.
 
 La section ``vitamui_platform_informations`` permet de définir une première entité, ainsi que quelques comptes "administrateur".
-
+La propriété system_readonly_setting permet de définir si les éléments liés au compte système qui correspondent aux configurations de l'instance sont modifiables ou pas.
+Si le paramètre est à true, les entités correspondantes ne sont pas modifiables par API et sont affichées comme non modifiables sur les interfaces graphiques.
+Attention, cette propriété doit être surchargée pour définir le comportement souhaité.
 
 Surcharge
 ----------

@@ -95,7 +95,7 @@ db.owners.insert({
 	"_id": "system_owner_externe",
 	"identifier" : NumberInt(5),
 	"enabled": true,
-	"readonly": true,
+	"readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
 	"code": "000006",
 	"name": "system_owner externe",
 	"companyName": "system_company",
@@ -149,7 +149,7 @@ db.profiles.insert({
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
 	"customerId": "system_customer",
 	"_class": "profiles"
 });
