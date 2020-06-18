@@ -1,4 +1,3 @@
-
 <ng-template ngFor let-category [ngForOf]="categoryList">
   <div *ngIf="category.applications.length > 0 && category.displayTitle"
        class="row category-header" [class.modal-category]="isModalMenu">{{ category.title }}</div>
