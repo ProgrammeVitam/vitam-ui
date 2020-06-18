@@ -69,7 +69,13 @@ ui-portal:
     portal: "{{ url_prefix }}" # TODO OMA : revoir avec les redirections du RP
     admin-identity: "{{ url_prefix }}/identity-admin" # TODO OMA : revoir avec les redirections du RP
     identity: "{{ url_prefix }}/identity" # TODO OMA : revoir avec les redirections du RP
-  portal-categories: {{ vitamui_defaults.portal_categories }}
+  portal-categories:
+{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+    {{ id }}:
+      title: "{{ category.title }}"
+      displayTitle: {{ category.displayTitle }}
+      order: {{ category.order }}
+{% endfor %}
 
 ui:
   url: "{{ url_prefix }}"

@@ -1,4 +1,3 @@
-
 <ng-template ngFor let-category [ngForOf]="categoryList">
   <div *ngIf="category.applications.length > 0 && category.displayTitle"
        class="row category-header" [class.modal-category]="isModalMenu">{{ category.title }}</div>
@@ -10,42 +9,3 @@
     </div>
   </div>
 </ng-template>
-
-<!--
-<div class="user-app-container" [class.modal-container]="isModalMenu">
-    <div class="row">
-        <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let appUser of userApplications"
-            [application]="appUser" [isModalMenu]="isModalMenu" (appSelect)="selectApp($event)">
-        </vitamui-common-menu-tile>
-    </div>
-</div>
-
-<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="adminApplications?.length > 0"
-    i18n="Management category@@PortalManagementCategory">Management</div>
-<div class="admin-app-container" [class.modal-container]="isModalMenu">
-    <div class="row">
-        <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
-            *ngFor="let appAdmin of adminApplications" [application]="appAdmin" [isModalMenu]="isModalMenu"
-            (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
-    </div>
-</div>
-
-<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="settingsApplications?.length > 0"
-    i18n="Settings category@@PortalSettingsCategory">Paramétrage</div>
-<div class="settings-app-container">
-    <div class="row">
-        <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
-            *ngFor="let appSettings of settingsApplications" [application]="appSettings" [isModalMenu]="isModalMenu"
-            (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
-    </div>
-</div>
-
-<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="ingestApplications?.length > 0"
-    i18n="Settings category@@PortalIngestsCategory" >Suivi des Versements</div>
-<div class="settings-app-container">
-    <div class="row">
-        <vitamui-common-menu-tile class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let appIngests of ingestApplications"
-            [application]="appIngests" [isModalMenu]="isModalMenu" (appSelect)="selectApp($event)"></vitamui-common-menu-tile>
-    </div>
-</div>
--->
