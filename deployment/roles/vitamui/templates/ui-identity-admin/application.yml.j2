@@ -33,6 +33,7 @@ server:
     accesslog:
         enabled: "{{ vitamui_struct.jvm_log|lower }}"
         directory: "{{ vitamui_folder_log }}"
+  portal-categories: {{ vitamui_defaults.portal_categories }}
 
 
 management:

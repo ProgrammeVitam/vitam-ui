@@ -34,35 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 
-import { Application, ApplicationService, AuthService, StartupService, User, Category } from 'ui-frontend-common';
-
-@Component({
-  selector: 'app-portal',
-  templateUrl: './portal.component.html',
-  styleUrls: ['./portal.component.scss']
-})
-export class PortalComponent implements OnInit {
-
-  currentUser: User;
-  portalUrl = '/';
-
-  applications: Application[] = [];
-  categories: { [categoryId: string]: Category };
-
-  constructor(titleService: Title, public authService: AuthService,
-              private applicationService: ApplicationService, startupService: StartupService
-  ) {
-    titleService.setTitle(startupService.getPlatformName());
-    if (this.authService.user) {
-      this.currentUser = this.authService.user;
-    }
-  }
-
-  ngOnInit() {
-    this.applications = this.applicationService.applications;
-    this.categories = this.applicationService.categories;
-  }
+export interface Category {
+  title: string;
+  displayTitle: boolean;
+  order: number;
 }

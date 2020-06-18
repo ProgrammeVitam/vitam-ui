@@ -195,6 +195,16 @@ public class CommonConstants {
 
 
     /**
+     * Constant contains application list for portal/header applications display
+     */
+    public static final String APPLICATION_CONFIGURATION = "APPLICATION_CONFIGURATION";
+
+    /**
+     * Constant contains category list for portal/header applications display
+     */
+    public static final String CATEGORY_CONFIGURATION = "CATEGORY_CONFIGURATION";
+
+    /**
      * Constant contains redirect URL for cas after logout
      */
     public static final String LOGOUT_REDIRECT_UI_URL = "LOGOUT_REDIRECT_UI_URL";

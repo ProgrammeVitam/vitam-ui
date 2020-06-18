@@ -90,6 +90,7 @@ ui-ingest:
 {% else %}
     ingest: "{{ url_prefix }}/ingest"
 {% endif %}
+  portal-categories: {{ vitamui_defaults.portal_categories }}
 
 ui:
 {% if vitamui_struct.base_url is defined %}

@@ -37,6 +37,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { Application } from '../../models/application/application.interface';
+import { Category } from '../../models/application/category.interface';
 
 @Component({
   selector: 'vitamui-common-application-select-content',
@@ -46,31 +47,35 @@ import { Application } from '../../models/application/application.interface';
 export class ApplicationSelectContentComponent {
 
   @Input() isModalMenu: boolean;
+
   @Input()
   set applications(applications: Application[]) {
     this._applications = applications;
     this.checkTenantNumberByApp(this.applications);
-    const sortedApps = this._applications.sort((app1, app2) => app1.position - app2.position);
-    this.userApplications = sortedApps.filter((app) => app.category === 'users');
-    this.adminApplications = sortedApps.filter((app) => app.category === 'administrators');
-    this.settingsApplications = sortedApps.filter((app) => app.category === 'settings');
-    this.ingestApplications = sortedApps.filter((app) => app.category === 'ingests');
-
-    console.log(this.ingestApplications);
-
+    if (this._categories) {
+      this.computeAppCategories();
+    }
   }
   get applications(): Application[] { return this._applications; }
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
+  @Input()
+  set categories(categories: { [categoryId: string]: Category }) {
+    this._categories = categories;
+    if (this._applications) {
+      this.computeAppCategories();
+    }
+  }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
+  // tslint:disable-next-line:variable-name
+  private _categories: { [categoryId: string]: Category };
+
   @Output() applicationSelected = new EventEmitter<string>();
 
   get target(): string { return '_blank'; }
 
-  userApplications: Application[];
-  settingsApplications: Application[];
-  adminApplications: Application[];
-  ingestApplications: Application[];
+  categoryList: any[];
 
   constructor(private authService: AuthService) { }
 
@@ -85,6 +90,43 @@ export class ApplicationSelectContentComponent {
         }
       }
     });
+  }
+
+  computeAppCategories() {
+    const sortedApps = this._applications.sort((app1, app2) => app1.position - app2.position);
+    this.categoryList = [];
+    const ids = [];
+
+    const defaultCategory = {
+      id: 'default',
+      title: 'Autres',
+      displayTitle: true,
+      order: 99,
+      applications: []
+    };
+    this.categoryList.push(defaultCategory);
+
+    for (const id in this._categories) {
+      if (!this._categories.hasOwnProperty(id) || id === 'default') {
+        continue;
+      }
+
+      const category: any = this._categories[id];
+      category.id = id;
+      category.applications = [];
+      this.categoryList.push(category);
+      ids.push(id);
+    }
+
+    this.categoryList.forEach(category => {
+      if (category.id === 'default') {
+        category.applications = sortedApps.filter((app) => !ids.includes(app.category));
+      } else {
+        category.applications = sortedApps.filter((app) => app.category === category.id);
+      }
+    });
+
+    this.categoryList = this.categoryList.sort((c1, c2) => c1.order - c2.order);
   }
 
   selectApp(value: string) {

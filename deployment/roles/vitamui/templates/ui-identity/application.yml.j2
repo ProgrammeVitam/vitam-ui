@@ -84,6 +84,7 @@ ui-identity:
 {% else %}
     identity: "{{ url_prefix }}/identity"
 {% endif %}
+  portal-categories: {{ vitamui_defaults.portal_categories }}
 
 ui:
 {% if vitamui_struct.base_url is defined %}

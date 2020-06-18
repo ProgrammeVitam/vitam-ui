@@ -52,7 +52,23 @@ ui-portal:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-
+  portal-categories:
+    ingests:
+      title: "Suivi des Versements"
+      displayTitle: true
+      order: 4
+    administrators:
+      title: "Management"
+      displayTitle: true
+      order: 2
+    settings:
+      title: "Paramétrage"
+      displayTitle: true
+      order: 3
+    users:
+      title: ""
+      displayTitle: false
+      order: 1
 
 ui:
   url: "https://dev.vitamui.com:4200"

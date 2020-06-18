@@ -30,6 +30,7 @@
     "analyze-portal": "ng build portal --stats-json --prod --i18n-locale fr ; webpack-bundle-analyzer dist/portal/stats-es2015.json",
     "analyze-identity": "ng build identity --stats-json --prod --i18n-locale fr ; webpack-bundle-analyzer dist/identity/stats-es2015.json",
     "analyze-referential": "ng build referential --stats-json --prod --i18n-locale fr ; webpack-bundle-analyzer dist/referential/stats-es2015.json",
+    "analyze-ingest": "ng build ingest --stats-json --prod --i18n-locale fr ; webpack-bundle-analyzer dist/ingest/stats-es2015.json",
     "test": "ng test --watch=false",
     "test:demo": "ng test demo --watch=false",
     "test:portal": "ng test portal --watch=false",

@@ -64,6 +64,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 
 /**
@@ -97,7 +98,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @Value("${ui.redirect-url}")
     @NotNull
     private String uiRedirectUrl;
-    
+
     private static String PLATFORM_NAME = "PLATFORM_NAME";
 
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
@@ -112,10 +113,18 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         client = factory.getApplicationExternalRestClient();
     }
 
-    public Collection<ApplicationDto> getApplications(final ExternalHttpContext context, final boolean filterApp) {
+    public Map<String, Object> getApplications(final ExternalHttpContext context, final boolean filterApp) {
         final QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
-        return client.getAll(context, Optional.of(query.toJson()));
+
+        Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
+        Map<String, PortalCategoryConfig> categories = properties.getPortalCategories();
+
+        Map<String, Object> portalConfig = new HashMap<>();
+        portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
+        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, categories);
+
+        return portalConfig;
     }
 
     public String getBaseUrlPortal() {
