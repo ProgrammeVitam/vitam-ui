@@ -38,6 +38,24 @@ vitamui_defaults:
   # Configuration of log for reconstruction services (INFO or DEBUG for active logs). Logs will be present only on secondary site.
   reconstruction:
       log_level: INFO
+  portal_categories:
+    ingests:
+      title: "Suivi des Versements"
+      displayTitle: true
+      order: 4
+    administrators:
+      title: "Management"
+      displayTitle: true
+      order: 2
+    settings:
+      title: "Paramétrage"
+      displayTitle: true
+      order: 3
+    users:
+      title: ""
+      displayTitle: false
+      order: 1
+
 
 vitamui:
   identity:

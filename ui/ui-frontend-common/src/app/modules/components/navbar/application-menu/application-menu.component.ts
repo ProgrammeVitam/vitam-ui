@@ -63,7 +63,10 @@ export class ApplicationMenuComponent {
   openApplicationMenu() {
     this.dialog.open(CommonMenuComponent, {
       panelClass: 'vitamui-modal',
-      data: { menuType: MenuType.application, items: this.applicationService.applications }
+      data: {
+        menuType: MenuType.application,
+        applicationConfig: { applications: this.applicationService.applications, categories: this.applicationService.categories }
+      }
     });
   }
 }

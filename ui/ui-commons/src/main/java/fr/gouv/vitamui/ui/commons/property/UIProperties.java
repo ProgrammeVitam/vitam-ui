@@ -64,4 +64,5 @@ public interface UIProperties {
 
     public Map<String, String> getCustomer();
 
+    public Map<String, PortalCategoryConfig> getPortalCategories();
 }

@@ -37,8 +37,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { StartupService } from 'ui-frontend-common';
-import { Application, ApplicationService, Category } from 'ui-frontend-common';
+
+import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
@@ -63,6 +63,7 @@ export class PortalComponent implements OnInit {
 
   ngOnInit() {
     this.applications = this.applicationService.getAppsGroupByCategories();
+
     this.welcomeTitle = this.startupService.getWelcomeTitle();
     this.welcomeMessage = this.startupService.getWelcomeMessage();
 
@@ -82,4 +83,5 @@ export class PortalComponent implements OnInit {
   public openApplication(app: Application): void {
     this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
+
 }
