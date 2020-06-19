@@ -40,6 +40,21 @@
     SubstituteMaxLineLength 12M
 
 
+    <Location /dev-tools/>
+        DirectoryIndex index.html
+    </Location>
+
+    # BROWSER
+# /vitamui subdir browser
+{% for host in groups['hosts_browse'] %}
+    ProxyPass /nodes/{{host}}/browse http://{{ hostvars[host]['ip_admin'] }}/browse  {{reverse_connection_params}}
+    ProxyPassReverse  /nodes/{{host}}/browse http://{{ hostvars[host]['ip_admin'] }}/browse
+    
+    ProxyPass /browse{{loop.index}} http://{{ hostvars[host]['ip_admin'] }}/browse  {{reverse_connection_params}}
+    ProxyPassReverse  /browse{{loop.index}} http://{{ hostvars[host]['ip_admin'] }}/browse
+{% endfor %}
+
+
     # CONSUL
 
 {% if groups['hosts_vitamui_consul_server']|length >0 %}
