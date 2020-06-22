@@ -34,54 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { registerLocaleData } from '@angular/common';
-import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { NewPortalModule } from './new-portal/new-portal.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NewPortalModule } from './new-portal/new-portal.module';
-import { PortalModule } from './portal';
-
-
-registerLocaleData(localeFr, 'fr');
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FooterComponent } from './footer.component';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    FooterComponent
   ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    PortalModule,
-    NewPortalModule,
-    InjectorModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    VitamUICommonModule,
-    AppRoutingModule,
-    LoggerModule.forRoot(),
-    QuicklinkModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    MaterialModule,
+    ReactiveFormsModule
   ],
-  providers: [
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: '/portal-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    { provide: WINDOW_LOCATION, useValue: window.location }
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
-  ],
-  bootstrap: [AppComponent]
+  exports: [
+    FooterComponent
+  ]
 })
-export class AppModule {
+export class FooterModule {
 }

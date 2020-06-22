@@ -1,0 +1,33 @@
+<div class="customer-logo">
+  <div>
+    <img [src]="logoUrl" class="logo" />
+  </div>
+  <span>Powered by {{platformName}}</span>
+</div>
+
+<ul class="help">
+  <li><a href="#">Aide FAQ</a></li>
+  <li><a href="#">Support technique</a></li>
+  <li><a href="#">Contact</a></li>
+  <li><a href="#">Mentions légales</a></li>
+</ul>
+
+<div class="sign-up">
+  <span>
+    Inscription au programme de test
+  </span>
+
+  <form [formGroup]="formGroup" class="pt-2">
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Nom" formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Adresse mail" formControlName="email" />
+    </mat-form-field>
+
+    <button mat-button type="submit">
+      S'inscrire
+    </button>
+  </form>
+</div>

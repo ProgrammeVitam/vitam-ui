@@ -53,6 +53,7 @@ import { CustomerSelectContentModule } from './components/customer-select-conten
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
+import { FooterModule } from './components/footer/footer.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -131,7 +132,8 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
-    VitamUIAutocompleteModule
+    VitamUIAutocompleteModule,
+    FooterModule
   ],
   declarations: [
     BlankComponent,
@@ -178,7 +180,8 @@ export function startupServiceFactory(startupService: StartupService) {
     TooltipModule,
     TruncatePipe,
     CountryModule,
-    VitamUIAutocompleteModule
+    VitamUIAutocompleteModule,
+    FooterModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
