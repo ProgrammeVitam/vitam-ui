@@ -39,10 +39,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, AppGuard, ApplicationId, AuthGuard } from 'ui-frontend-common';
+import { NewPortalComponent } from './new-portal/new-portal.component';
 import { PortalComponent } from './portal';
 
 const routes: Routes = [
   { path: '', component: PortalComponent, canActivate: [AuthGuard] },
+  { path: 'newPortal', component: NewPortalComponent, canActivate: [AuthGuard] },
   {
     path: 'account',
     component: AccountComponent,

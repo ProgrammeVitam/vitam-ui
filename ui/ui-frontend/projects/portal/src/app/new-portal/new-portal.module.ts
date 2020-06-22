@@ -34,52 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { registerLocaleData } from '@angular/common';
-import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { NewPortalModule } from './new-portal/new-portal.module';
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { QuicklinkModule } from 'ngx-quicklink';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { PortalModule } from './portal';
-
-registerLocaleData(localeFr, 'fr');
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterModule } from '@angular/router';
+import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
+import { NewPortalComponent } from './new-portal.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    PortalModule,
-    NewPortalModule,
-    InjectorModule,
-    MatSnackBarModule,
-    MatDialogModule,
+    CommonModule,
+    HttpClientModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ApplicationSelectContentModule,
     VitamUICommonModule,
-    AppRoutingModule,
-    LoggerModule.forRoot(),
-    QuicklinkModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: '/portal-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    { provide: WINDOW_LOCATION, useValue: window.location }
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
-  ],
-  bootstrap: [AppComponent]
+  declarations: [NewPortalComponent]
 })
-export class AppModule {
+export class NewPortalModule {
 }
