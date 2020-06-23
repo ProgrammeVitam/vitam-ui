@@ -34,28 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { Application, ApplicationService, Category } from 'ui-frontend-common';
+import { Component, Input } from '@angular/core';
+import { Application, Category } from '../../models';
 
 @Component({
-  selector: 'app-new-portal',
-  templateUrl: './new-portal.component.html',
-  styleUrls: ['./new-portal.component.scss']
+  selector: 'vitamui-common-application-list',
+  templateUrl: './application-list.component.html',
+  styleUrls: ['./application-list.component.scss']
 })
-export class NewPortalComponent implements OnInit {
+export class ApplicationsListComponent {
 
-  public applications: Application[] = [];
+  @Input() applications: Application[];
 
-  public categories = [
-    { position: 0, identifier: 'users', name: 'Utilisateur' },
-    { position: 1, identifier: 'administrators', name: 'Management' },
-    { position: 2, identifier: 'settings', name: 'Paramétrage' },
-  ] as Category[];
+  @Input() set categories(categ: Category[]) {
+    categ.sort((a, b) => {
+      return a.position < b.position ? -1 : 1;
+    });
 
-  constructor(private applicationService: ApplicationService) { }
-
-  ngOnInit() {
-    this.applications = this.applicationService.applications;
+    categ.forEach((category: Category) => {
+      this.appMap.set(category, []);
+      this.applications.forEach((application: Application) => {
+        if (application.category === category.identifier) {
+          this.appMap.get(category).push(application);
+        }
+      });
+    });
   }
+
+  public appMap = new Map<Category, Application[]>();
+
+  constructor() { }
 
 }

@@ -34,28 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { Application, ApplicationService, Category } from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { ApplicationsListComponent } from './application-list.component';
 
-@Component({
-  selector: 'app-new-portal',
-  templateUrl: './new-portal.component.html',
-  styleUrls: ['./new-portal.component.scss']
+@NgModule({
+  declarations: [ApplicationsListComponent],
+  imports: [
+    CommonModule,
+    MatCardModule
+  ],
+  exports: [ApplicationsListComponent]
 })
-export class NewPortalComponent implements OnInit {
-
-  public applications: Application[] = [];
-
-  public categories = [
-    { position: 0, identifier: 'users', name: 'Utilisateur' },
-    { position: 1, identifier: 'administrators', name: 'Management' },
-    { position: 2, identifier: 'settings', name: 'Paramétrage' },
-  ] as Category[];
-
-  constructor(private applicationService: ApplicationService) { }
-
-  ngOnInit() {
-    this.applications = this.applicationService.applications;
-  }
-
-}
+export class ApplicationListModule { }

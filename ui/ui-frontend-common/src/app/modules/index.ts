@@ -68,6 +68,7 @@ export * from './theme.service';
 export * from './utils/index';
 
 export * from './components/application-select-content/index';
+export * from './components/application-list/index';
 export * from './components/blank/blank.component';
 export * from './components/collapse/collapse.module';
 export * from './components/cancelled-snack-bar/index';

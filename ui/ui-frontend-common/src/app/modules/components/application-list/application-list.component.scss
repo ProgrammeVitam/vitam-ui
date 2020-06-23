@@ -1,0 +1,37 @@
+@import '../../../../sass/variables/colors';
+
+.category {
+    margin: 8rem auto;
+}
+
+mat-card {
+    cursor: pointer;
+    box-shadow: none!important;
+    background-color: transparent;
+}
+
+mat-card > img {
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    border-radius: 5px;
+}
+
+mat-card-header {
+    background-color: transparent;
+}
+
+mat-card-title {
+    color: $charcoal-grey;
+    font-weight: 600;
+}
+
+mat-card-subtitle {
+    color: $warm-grey;
+    font-size: 14px;
+    margin-top: 1rem!important;
+}
+
+:host::ng-deep .mat-card-header-text {
+    margin: 0!important;
+}
