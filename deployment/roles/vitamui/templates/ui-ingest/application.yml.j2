@@ -39,7 +39,9 @@ management:
 management.endpoints.web.exposure.include: "*"
 
 logging:
-    config: {{ vitamui_folder_conf }}/logback.xml
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.ingest.*:  {{ vitamui_struct.log.vitamui_level }}
 
 server-identity:
   identityName: {{ vitamui_env_name }}

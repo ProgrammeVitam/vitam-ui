@@ -1,34 +1,32 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+<mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+</mat-sidenav>
 
     <mat-sidenav-content>
         <img src="assets/bg-fingerprint.svg" class="bg-fingerprint" />
 
             <div class="vitamui-header">
                 <div class="vitamui-container">
-                    <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true"></vitamui-common-navbar>
-            
-                    <h2 i18n="Search a customer, owner or tenant@@CustomerSearchHeader">
-                        <img src="assets/fingerprint.svg">Dépôt et suivi des versements
+                    <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false" [hideCustomerMenu]="true"></vitamui-common-navbar>
+
+                    <h2 >
+                        <img src="assets/mini-logo-vitam.png">Dépôt et suivi des versements
                     </h2>
             
                     <div class="controls">
             
                         <div class="search disabled">
-                            <input type="text" placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@customerSearchPlaceholder"
-                                disabled>
+                            <input type="text" placeholder="Côte, Intitulé, Service producteur..." disabled>
                             <button type="submit" class="btn-circle primary btn-search"><i class="material-icons">search</i></button>
                         </div>
             
                         <div class="actions">
                             <button class="btn secondary" (click)="refresh()">
-                                <i class="vitamui-icon vitamui-icon-refresh"></i> <span i18n="Create customer button label@@customerListCreateButton">Rafraîchir</span>
+                                <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
                             </button>
-                            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-                                <i class="material-icons">archive_ingest</i> <span i18n="More actions button label@@customerListMoreActionsButton">Nouveau versement</span>
+                            <button class="btn more-actions" (click)="openImportSipDialog()">
+                                <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
                             </button>
-                            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-                                <button mat-menu-item i18n="Coming soon@@customerComingSoon">Bientôt</button>
-                            </mat-menu>
                         </div>
             
                     </div>

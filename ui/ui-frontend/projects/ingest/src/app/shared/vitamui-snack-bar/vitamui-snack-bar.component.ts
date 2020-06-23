@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,57 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+import { Component, Inject } from '@angular/core';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+@Component({
+  selector: 'app-vitamui-snack-bar',
+  templateUrl: './vitamui-snack-bar.component.html',
+  styleUrls: ['./vitamui-snack-bar.component.scss']
+})
+export class VitamUISnackBarComponent {
 
-import java.io.InputStream;
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>) {}
 
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
+  close() {
+    this.matSnackBarRef.dismiss();
+  }
 
-    @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
-
-    @Autowired
-    private final IngestInternalWebClient ingestInternalWebClient;
-
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestInternalRestClient,
-        IngestInternalWebClient ingestInternalWebClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestInternalRestClient;
-        this.ingestInternalWebClient = ingestInternalWebClient;
-    }
-
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
-
-    public Mono<RequestResponseOK> upload(InputStream in, String action, String contextId) {
-        return ingestInternalWebClient.upload(getInternalHttpContext(), in, action, contextId);
-    }
-
-
-
-    @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
-    }
 }

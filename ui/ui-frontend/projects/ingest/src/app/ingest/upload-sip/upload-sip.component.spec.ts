@@ -36,49 +36,36 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IngestComponent } from './ingest.component';
-import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { ActivatedRoute } from '@angular/router';
+import { UploadSipComponent } from './upload-sip.component';
+import { MatProgressBarModule, MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule } from '@angular/material';
 import { of } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { IngestService } from './ingest.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FormBuilder } from '@angular/forms';
+import { UploadSipService } from './upload-sip.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormBuilder } from '@angular/forms';
+import { LoggerModule } from 'ui-frontend-common';
 
+describe('UploadSipComponent', () => {
+  let component: UploadSipComponent;
+  let fixture: ComponentFixture<UploadSipComponent>;
 
-describe('IngestComponent', () => {
-  let component: IngestComponent;
-  let fixture: ComponentFixture<IngestComponent>;
-  const ingestServiceMock = {
-    ingest: () => of('test ingest')
-  };
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+  const uploadSipServiceSpy = jasmine.createSpyObj('UploadSipService', { create: of({}) });
 
   beforeEach(async(() => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
       imports: [
-        MatMenuModule,
-        MatSidenavModule,
-        InjectorModule,
-        RouterTestingModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
+        MatProgressBarModule,
+        MatSnackBarModule,
         LoggerModule.forRoot()
       ],
-      declarations: [
-        IngestComponent,
-      ],
+      declarations: [UploadSipComponent],
       providers: [
         FormBuilder,
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_APP' }) } },
-        { provide: environment, useValue: environment }
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: UploadSipService, useValue: uploadSipServiceSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -86,7 +73,7 @@ describe('IngestComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestComponent);
+    fixture = TestBed.createComponent(UploadSipComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

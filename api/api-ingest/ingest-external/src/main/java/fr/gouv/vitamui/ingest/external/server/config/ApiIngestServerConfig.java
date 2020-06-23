@@ -46,6 +46,8 @@ import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClientFactory;
+import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
+import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClientFactory;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -107,5 +109,17 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     @Bean
     public IngestInternalRestClient ingestInternalRestClient(final IngestInternalRestClientFactory factory) {
         return factory.getIngestInternalRestClient();
+    }
+
+    @Bean
+    public IngestInternalWebClientFactory ingestInternalWebClientFactory(final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new IngestInternalWebClientFactory(apiIngestExternalApplicationProperties.getIngestInternalClient());
+    }
+
+
+    @Bean
+    public IngestInternalWebClient ingestInternalWebClient(final IngestInternalWebClientFactory factory) {
+        return factory.getIngestInternalWebClient();
     }
 }

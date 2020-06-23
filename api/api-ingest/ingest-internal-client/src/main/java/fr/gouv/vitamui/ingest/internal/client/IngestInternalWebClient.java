@@ -34,77 +34,77 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.rest;
+package fr.gouv.vitamui.ingest.internal.client;
 
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.FileOperationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
-import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.AbstractMap;
+import java.util.Optional;
 
 /**
- * UI Ingest External controller.
+ * External WebClient for Ingest operations.
  *
  *
  */
-@Api(tags = "ingest")
-@RequestMapping(RestApi.V1_INGEST)
-@RestController
-@ResponseBody
-public class IngestExternalController {
+public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalWebClient.class);
 
-    private final IngestExternalService ingestExternalService;
-
-    @Autowired
-    public IngestExternalController(final IngestExternalService ingestExternalService) {
-        this.ingestExternalService = ingestExternalService;
+    public IngestInternalWebClient(final WebClient webClient, final String baseUrl) {
+        super(webClient, baseUrl);
     }
 
+    public Mono<RequestResponseOK> upload(final InternalHttpContext context, InputStream in, final String action,
+        final String contextId) {
 
-    @Secured(ServicesData.ROLE_GET_INGEST)
-    @GetMapping
-    public String ingest() {
-        return ingestExternalService.ingest();
-    }
+        if (in == null) {
+            throw new FileOperationException("There is an error in uploaded file !");
+        }
 
-    @Secured(ServicesData.ROLE_GET_INGEST)
-    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Mono<RequestResponseOK> upload(
-        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
-        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestParam("file") final MultipartFile file) {
-        InputStream in = null;
+        final Path tmpFilePath = Paths.get(FileUtils.getTempDirectoryPath(), context.getRequestId());
+        int length = 0;
         try {
-            in = file.getInputStream();
-            LOGGER.debug("[IngestExternalController] upload file [{}], [{}] bytes.", file.getOriginalFilename(),
-                file.getInputStream().available());
+            length = in.available();
+            Files.copy(in, tmpFilePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LOGGER.debug("ERROR: InputStream error ", e);
+            LOGGER.debug("[IngestInternalWebClient] Error writing InputStream of length [{}] to temporary path {}",
+                length, tmpFilePath.toAbsolutePath());
             throw new BadRequestException("ERROR: InputStream writing error : ", e);
         }
 
-        return ingestExternalService.upload(in, action, contextId);
+        final MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add(CommonConstants.X_CONTEXT_ID, contextId);
+        headers.add(CommonConstants.X_ACTION, action);
+
+        return multipartDataFromFile(getPathUrl() + CommonConstants.INGEST_UPLOAD, HttpMethod.POST, context,
+            Optional.of(new AbstractMap.SimpleEntry<>(CommonConstants.MULTIPART_FILE_PARAM_NAME, tmpFilePath)),
+            headers)
+            .bodyToMono(RequestResponseOK.class);
+
     }
 
+    @Override
+    public String getPathUrl() {
+        return RestApi.V1_INGEST;
+    }
 }

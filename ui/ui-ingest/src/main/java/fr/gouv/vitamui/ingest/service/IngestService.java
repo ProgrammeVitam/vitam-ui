@@ -39,11 +39,14 @@ package fr.gouv.vitamui.ingest.service;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
+import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
+import fr.gouv.vitamui.ingest.thread.IngestThread;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
 
 /**
  * Ingest Service
@@ -53,19 +56,31 @@ public class IngestService {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestService.class);
 
+    private final IngestExternalWebClient ingestExternalWebClient;
     private final IngestExternalRestClient ingestExternalRestClient;
-
     private CommonService commonService;
 
     @Autowired
     public IngestService(final CommonService commonService, final IngestExternalRestClient ingestExternalRestClient,
-        final IamExternalWebClientFactory factoryWebClient) {
+        final IngestExternalWebClient ingestExternalWebClient) {
         this.commonService = commonService;
         this.ingestExternalRestClient = ingestExternalRestClient;
+        this.ingestExternalWebClient = ingestExternalWebClient;
     }
 
     public String ingest(final ExternalHttpContext context) {
         return getClient().ingest(context).getBody();
+    }
+
+    public void upload(final ExternalHttpContext context, InputStream in, final String contextId, final String action,
+        final String originalFilename) {
+
+        final IngestThread
+            ingestThread =
+            new IngestThread(ingestExternalWebClient, context, in, contextId, action, originalFilename);
+
+        ingestThread.start();
+
     }
 
     public IngestExternalRestClient getClient() {

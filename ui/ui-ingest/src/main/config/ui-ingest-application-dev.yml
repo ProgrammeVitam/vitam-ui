@@ -87,6 +87,7 @@ logging:
   level:
     fr.gouv.vitamui: DEBUG
     org.springframework.web: INFO
+    reactor.netty.*: DEBUG
 
 management.endpoints.web.exposure.include: "*"
 # Uncomment if you want to use you specific logback config.

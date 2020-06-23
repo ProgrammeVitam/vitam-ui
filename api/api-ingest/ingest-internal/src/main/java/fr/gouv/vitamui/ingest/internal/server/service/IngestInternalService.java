@@ -27,23 +27,70 @@
 package fr.gouv.vitamui.ingest.internal.server.service;
 
 
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
+/**
+ * Ingest Internal service communication with VITAM.
+ *
+ *
+ */
 public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
     private final InternalSecurityService internalSecurityService;
+    private final IngestExternalClient ingestExternalClient;
+
+    private final IngestService ingestService;
 
     @Autowired
-    public IngestInternalService(final InternalSecurityService internalSecurityService) {
+    public IngestInternalService(final InternalSecurityService internalSecurityService,
+        IngestExternalClient ingestExternalClient, final IngestService ingestService) {
         this.internalSecurityService = internalSecurityService;
+        this.ingestExternalClient = ingestExternalClient;
+        this.ingestService = ingestService;
     }
 
     public String ingest() {
-        return "Ingest Internal called with tenantIdentifier = " + internalSecurityService.getTenantIdentifier() ;
+        return "Ingest Internal called with tenantIdentifier = " + internalSecurityService.getTenantIdentifier();
     }
+
+    public RequestResponseOK upload(MultipartFile path, String contextId, String action)
+        throws IngestExternalException {
+
+        final VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        RequestResponse<Void> ingestResponse = null;
+        try {
+            ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
+            LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
+
+            if(ingestResponse.isOk()) {
+                LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
+            }
+            else {
+                LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
+            }
+        } catch (IOException | IngestExternalException e) {
+            LOGGER.debug("Error sending upload to vitam ", e);
+            throw new IngestExternalException(e);
+        }
+
+        return (RequestResponseOK) ingestResponse;
+
+    }
+
 }

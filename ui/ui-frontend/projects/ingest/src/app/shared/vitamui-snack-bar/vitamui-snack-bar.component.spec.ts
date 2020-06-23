@@ -35,58 +35,27 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
-import { IngestComponent } from './ingest.component';
-import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { IngestService } from './ingest.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { FormBuilder } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
-
-describe('IngestComponent', () => {
-  let component: IngestComponent;
-  let fixture: ComponentFixture<IngestComponent>;
-  const ingestServiceMock = {
-    ingest: () => of('test ingest')
-  };
+describe('VitamUISnackbarComponent', () => {
+  let component: VitamUISnackBarComponent;
+  let fixture: ComponentFixture<VitamUISnackBarComponent>;
 
   beforeEach(async(() => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatSidenavModule,
-        InjectorModule,
-        RouterTestingModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [
-        IngestComponent,
-      ],
+      declarations: [ VitamUISnackBarComponent ],
       providers: [
-        FormBuilder,
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_APP' }) } },
-        { provide: environment, useValue: environment }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
+      ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestComponent);
+    fixture = TestBed.createComponent(VitamUISnackBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

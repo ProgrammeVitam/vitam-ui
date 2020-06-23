@@ -1,8 +1,8 @@
 package fr.gouv.vitamui.ingest.service;
 
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
+import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +30,14 @@ public class IngestServiceTest {
     private IngestExternalRestClient ingestExternalRestClient;
 
     @Mock
-    IamExternalWebClientFactory factoryWebClient;
+    private IngestExternalWebClient ingestExternalWebClient;
 
     @Mock
     private CommonService commonService;
 
     @Before
     public void init() {
-        ingestService = new IngestService(commonService, ingestExternalRestClient, factoryWebClient);
+        ingestService = new IngestService(commonService, ingestExternalRestClient, ingestExternalWebClient);
     }
 
     /**

@@ -1,0 +1,180 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+$field-spacing: 15px;
+$dark-red: #EA0101;
+
+.header {
+    padding: 30px 60px 0 60px;
+}
+
+.content {
+    padding: 0px 60px 60px 60px;
+}
+
+h2 {
+    font-size: 26px;
+    line-height: 46px;
+    margin-top: 23px;
+    margin-bottom: 37px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+}
+
+.actions > button:not(:last-child) {
+    margin-right: 20px;
+}
+
+.form-group {
+    padding-bottom: 30px;
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.input-file {
+    display: none;
+}
+
+.inline-label {
+    padding-top: 5px;
+}
+
+button.primary {
+    margin-right: 20px;
+}
+
+button.back {
+    margin-top: 60px;
+}
+
+button > small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.hint {
+    color: #a5a5a5;
+    font-size: 15px;
+}
+
+.drag-and-drop-area {
+    margin-left: 15%;
+    width: 450px;
+    height: 160px;
+    border: 2px dashed $greeny-blue;
+    border-radius: 6px;
+    box-shadow: 0px 0px 80px rgba(255, 255, 249, 0.3);
+    background: $white;
+    margin-bottom: 60px;
+
+    p {
+        padding-top: 20px;
+    }
+}
+.on-over {
+    border: 2px solid $greeny-blue;
+
+    p {
+        color: $white;
+    }
+
+    .drop-area {
+        background: #5CBAA9;
+        opacity: 0.9;
+        color: $white;
+    }
+}
+
+.drag-container {
+    position: absolute;
+    width: 450px;
+    height: 160px;
+    vertical-align: middle;
+}
+
+.drop-area {
+    position: absolute;
+    width: 446px;
+    height: 156px;
+}
+
+.upload-text {
+    padding-top: 5%;
+    font-size: 15px;
+    line-height: 18px;
+    color: #a5a5a5;
+    text-align: center;
+    .upload {
+        color: $greeny-blue;
+    }
+
+}
+
+.sip-drop {
+    font-size: 14px;
+    line-height: 20px;
+    color: $charcoal-grey;
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    color: #5cbaa9;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 25px;
+
+    small {
+        color: #a5a5a5;
+    }
+}
+
+.error-message {
+    color: $red;
+    font-size: 16px;
+    margin-top: 80px;
+}
+
+.message-success{
+    padding-bottom: 50%;
+    padding: 34px 0px 34px 34px;
+}
+.success-icon {
+    color: $green;
+    font-size: 40px;
+}
+
+
+.error-icon {
+    color: $dark-red;
+    font-size: 40px;
+}
+
+    .file-info-container {
+        padding: 34px 0px 34px 34px;
+        display: flex;
+        flex-direction: row;
+        max-width: 50%;
+    }
+
+.file-info-class {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    color: #000000;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+
+    small {
+        color: #a5a5a5;
+    }
+}

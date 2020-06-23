@@ -11,6 +11,10 @@ spring:
         enabled: false
         register: false
 
+
+multipart:
+  enabled: true
+
 spring.servlet.multipart.max-file-size: -1
 spring.servlet.multipart.max-request-size: -1
 

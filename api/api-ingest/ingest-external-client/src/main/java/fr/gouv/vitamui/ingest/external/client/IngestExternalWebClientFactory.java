@@ -34,57 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.server.service;
+package fr.gouv.vitamui.ingest.external.client;
 
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
-import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
-import java.io.InputStream;
+public class IngestExternalWebClientFactory extends BaseWebClientFactory {
 
-/**
- * The service to create vitam ingest.
- *
- *
- */
-@Getter
-@Setter
-@Service
-public class IngestExternalService extends AbstractInternalClientService {
-
-    @Autowired
-    private final IngestInternalRestClient ingestInternalRestClient;
-
-    @Autowired
-    private final IngestInternalWebClient ingestInternalWebClient;
-
-    public IngestExternalService(@Autowired IngestInternalRestClient ingestInternalRestClient,
-        IngestInternalWebClient ingestInternalWebClient,
-            final ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.ingestInternalRestClient = ingestInternalRestClient;
-        this.ingestInternalWebClient = ingestInternalWebClient;
+    public IngestExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
     }
 
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
+    public IngestExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+        super(restClientConfig, httpPoolConfig);
     }
 
-    public Mono<RequestResponseOK> upload(InputStream in, String action, String contextId) {
-        return ingestInternalWebClient.upload(getInternalHttpContext(), in, action, contextId);
+    public IngestExternalWebClient getIngestExternalWebClient() {
+        return new IngestExternalWebClient(getWebClient(), getBaseUrl());
     }
-
-
 
     @Override
-    protected IngestInternalRestClient getClient() {
-        return ingestInternalRestClient;
+    public String getBaseUrl() {
+        return super.getBaseUrl();
     }
 }

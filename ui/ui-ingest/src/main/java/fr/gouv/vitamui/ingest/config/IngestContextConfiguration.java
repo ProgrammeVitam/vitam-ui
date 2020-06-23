@@ -42,6 +42,8 @@ import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClientFactory;
+import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
+import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -67,15 +69,30 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IngestExternalRestClientFactory ingestExternalWebClientFactory(final IngestApplicationProperties uiProperties,
+    public IngestExternalRestClientFactory ingestExternalRestClientFactory(final IngestApplicationProperties uiProperties,
         RestTemplateBuilder restTemplateBuilder) {
         return new IngestExternalRestClientFactory(uiProperties.getIngestExternalClient(), restTemplateBuilder);
     }
 
     @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public IngestExternalWebClientFactory ingestExternalWebClientFactory(final IngestApplicationProperties uiProperties,
+        RestTemplateBuilder restTemplateBuilder) {
+        return new IngestExternalWebClientFactory(uiProperties.getIngestExternalClient());
+    }
+
+
+    @Bean
     public IngestExternalRestClient ingestExternalRestClient(
         final IngestExternalRestClientFactory ingestExternalRestClientFactory) {
         return ingestExternalRestClientFactory.getIngestExternalRestClient();
+    }
+
+    @Bean
+    public IngestExternalWebClient ingestExternalWebClient(
+        final IngestExternalWebClientFactory ingestExternalWebClientFactory) {
+        return ingestExternalWebClientFactory.getIngestExternalWebClient();
     }
 
 }

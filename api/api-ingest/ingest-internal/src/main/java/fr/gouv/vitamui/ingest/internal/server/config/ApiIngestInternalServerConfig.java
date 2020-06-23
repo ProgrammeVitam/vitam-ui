@@ -36,12 +36,15 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.config;
 
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
+import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -56,7 +59,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class,
+@Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class, VitamIngestConfig.class,
     VitamAdministrationConfig.class})
 public class ApiIngestInternalServerConfig extends AbstractContextConfiguration {
 
@@ -93,9 +96,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
         return new InternalSecurityService();
     }
 
-
     @Bean
-    public IngestInternalService ingestInternalService(final InternalSecurityService internalSecurityService) {
-        return new IngestInternalService(internalSecurityService);
+    public IngestInternalService ingestInternalService(final InternalSecurityService internalSecurityService, IngestExternalClient ingestExternalClient, IngestService ingestService) {
+        return new IngestInternalService(internalSecurityService, ingestExternalClient, ingestService);
     }
 }

@@ -43,6 +43,7 @@ import { IngestRoutingModule } from './ingest-routing.module';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestComponent } from './ingest.component';
+import { UploadSipModule } from './upload-sip/upload-sip.module';
 
 @NgModule({
   imports: [
@@ -52,9 +53,10 @@ import { IngestComponent } from './ingest.component';
     MatMenuModule,
     MatSidenavModule,
     IngestRoutingModule,
+    UploadSipModule
   ],
   declarations: [
-    IngestComponent,
+    IngestComponent
   ],
   providers: [
   ]

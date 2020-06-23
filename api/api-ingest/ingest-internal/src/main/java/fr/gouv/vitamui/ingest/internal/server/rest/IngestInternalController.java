@@ -26,23 +26,31 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
+import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(RestApi.V1_INGEST)
 @Getter
 @Setter
-@Api(tags = "ingest", value = "Ingest SIP", description = "Ingest SIP")
+@Api(tags = "ingest", value = "Ingest an SIP", description = "Ingest an SIP")
 public class IngestInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
@@ -57,5 +65,15 @@ public class IngestInternalController {
     @GetMapping
     public String ingest() {
         return ingestInternalService.ingest();
+    }
+
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public RequestResponseOK upload(
+        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile path)
+        throws IngestExternalException {
+        LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
+        return ingestInternalService.upload(path, contextId, action);
     }
 }

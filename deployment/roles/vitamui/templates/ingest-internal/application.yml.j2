@@ -7,6 +7,10 @@ spring:
         preferIpAddress: true
         tags: {{ consul_tags }}
 
+# should we fix some limit here ?
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
 server-identity:
   identityName: {{ vitamui_env_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
@@ -54,5 +58,5 @@ clients:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.ingest.internal.server:  {{ vitamui_struct.log.vitamui_level }}
-
+    fr.gouv.vitamui.ingest.internal.*:  {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitam.ingest.*: {{ vitamui_struct.log.vitamui_level }}
