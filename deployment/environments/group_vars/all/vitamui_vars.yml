@@ -251,3 +251,6 @@ vitamui_platform_informations:
   proof_tenant: 3
   cas_tenant: -1
   first_customer_tenant: 9
+  theme_colors:
+    vitamui_primary: "#ff4a54"
+    vitamui_secondary: "#241f63"
