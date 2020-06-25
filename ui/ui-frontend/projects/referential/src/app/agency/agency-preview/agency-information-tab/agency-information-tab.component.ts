@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Agency } from 'projects/vitamui-library/src/public-api';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Agency} from 'projects/vitamui-library/src/public-api';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { AgencyService } from '../../agency.service';
+import {AgencyService} from '../../agency.service';
 
 @Component({
   selector: 'app-agency-information-tab',
@@ -53,12 +53,15 @@ export class AgencyInformationTabComponent {
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  submited = false;
+
+  // tslint:disable-next-line:variable-name
+  private _agency: Agency;
+
   form: FormGroup;
   previousValue = (): Agency => {
-    return this._agency
-  };
-
-  submited: boolean = false;
+    return this._agency;
+  }
 
   @Input()
   set agency(agency: Agency) {
@@ -69,17 +72,18 @@ export class AgencyInformationTabComponent {
     this.resetForm(this.agency);
     this.updated.emit(false);
   }
-  get agency(): Agency { return this._agency; }
-  // tslint:disable-next-line:variable-name
-  private _agency: Agency;
+
+  get agency(): Agency {
+    return this._agency;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
@@ -95,7 +99,7 @@ export class AgencyInformationTabComponent {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -107,13 +111,15 @@ export class AgencyInformationTabComponent {
   prepareSubmit(): Observable<Agency> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
     this.prepareSubmit().subscribe(() => {
       this.agencyService.get(this._agency.identifier).subscribe(
         response => {
@@ -126,7 +132,8 @@ export class AgencyInformationTabComponent {
     });
   }
 
+  // tslint:disable-next-line:no-shadowed-variable
   resetForm(Agency: Agency) {
-    this.form.reset(Agency, { emitEvent: false })
+    this.form.reset(Agency, {emitEvent: false});
   }
 }

@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatProgressSpinnerModule} from '@angular/material';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { SecurisationListComponent } from './securisation-list.component';
-import { VitamUICommonModule } from "ui-frontend-common";
-
+import {SecurisationListComponent} from './securisation-list.component';
 
 
 @NgModule({
@@ -18,4 +17,5 @@ import { VitamUICommonModule } from "ui-frontend-common";
     SecurisationListComponent
   ]
 })
-export class SecurisationListModule { }
+export class SecurisationListModule {
+}

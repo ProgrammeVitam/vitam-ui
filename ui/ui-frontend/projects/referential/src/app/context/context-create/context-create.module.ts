@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from "@angular/material/tooltip";
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
-import { ContextCreateComponent } from "./context-create.component";
-import { ContextCreateValidators } from "./context-create.validators";
-import {ContextEditPermissionModule} from "./context-edit-permission/context-edit-permission.module";
-import {TenantService} from "../../../../../identity/src/app/customer/tenant.service";
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {TenantService} from '../../../../../identity/src/app/customer/tenant.service';
+import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
+import {ContextCreateComponent} from './context-create.component';
+import {ContextCreateValidators} from './context-create.validators';
+import {ContextEditPermissionModule} from './context-edit-permission/context-edit-permission.module';
 
 @NgModule({
   imports: [
@@ -70,7 +70,8 @@ import {TenantService} from "../../../../../identity/src/app/customer/tenant.ser
   declarations: [
     ContextCreateComponent
   ],
-  entryComponents: [ ContextCreateComponent ],
-  providers: [ ContextCreateValidators, TenantService ]
+  entryComponents: [ContextCreateComponent],
+  providers: [ContextCreateValidators, TenantService]
 })
-export class ContextCreateModule { }
+export class ContextCreateModule {
+}

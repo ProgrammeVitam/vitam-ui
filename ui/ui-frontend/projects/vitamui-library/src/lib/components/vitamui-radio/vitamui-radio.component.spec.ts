@@ -1,19 +1,19 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { VitamUIRadioComponent  } from './vitamui-radio.component';
-import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
+import {VitamUIRadioGroupService} from '../vitamui-radio-group/vitamui-radio-group.service';
+import {VitamUIRadioComponent} from './vitamui-radio.component';
 
 describe('VitamUIRadioComponent', () => {
   let component: VitamUIRadioComponent;
   let fixture: ComponentFixture<VitamUIRadioComponent>;
-  let vitamUIRadioGroupMock = {};
+  const vitamUIRadioGroupMock = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [VitamUIRadioComponent ],
-      providers: [ { provide:VitamUIRadioGroupService, useValue: vitamUIRadioGroupMock } ]
+      declarations: [VitamUIRadioComponent],
+      providers: [{provide: VitamUIRadioGroupService, useValue: vitamUIRadioGroupMock}]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,20 +1,22 @@
 import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatSidenavModule } from '@angular/material';
-import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatDialogModule, MatSidenavModule} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { ContextComponent } from './context.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {ContextComponent} from './context.component';
 
-@Component({ selector: 'app-agency-preview', template: '' })
+@Component({selector: 'app-agency-preview', template: ''})
+// tslint:disable-next-line:component-class-suffix
 class ContextPreviewStub {
   @Input()
   accessContract: any;
 }
 
-@Component({ selector: 'app-agency-list', template: '' })
+@Component({selector: 'app-agency-list', template: ''})
+// tslint:disable-next-line:component-class-suffix
 class ContextListStub {
 }
 

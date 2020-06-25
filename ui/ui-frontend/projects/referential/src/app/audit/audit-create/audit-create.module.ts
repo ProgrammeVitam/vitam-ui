@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
 import {
   MatButtonToggleModule,
   MatFormFieldModule,
@@ -9,11 +9,11 @@ import {
   MatSelectModule,
   MatSnackBarModule,
 } from '@angular/material';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { SharedModule } from '../../shared/shared.module';
-import { AuditCreateComponent } from './audit-create.component';
+import {SharedModule} from '../../shared/shared.module';
+import {AuditCreateComponent} from './audit-create.component';
 
 @NgModule({
   declarations: [AuditCreateComponent],
@@ -32,4 +32,5 @@ import { AuditCreateComponent } from './audit-create.component';
   ],
   entryComponents: [AuditCreateComponent]
 })
-export class AuditCreateModule { }
+export class AuditCreateModule {
+}

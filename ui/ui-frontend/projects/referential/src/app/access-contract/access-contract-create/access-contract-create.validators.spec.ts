@@ -40,8 +40,8 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, Observable, of } from 'rxjs';
 
-import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
@@ -56,14 +56,14 @@ describe('AccessContract Create Validators', () => {
 
   describe('nameExists', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
+      accessContractServiceSpy.exists.and.returnValue(of(false));
+      const accessContractCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
+      toObservable(accessContractCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
+      expect(accessContractServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
@@ -90,8 +90,8 @@ describe('AccessContract Create Validators', () => {
   });
 
   describe('uniqueNameWhileEdit', () => {
-    let getAccessContract:() => AccessContract = () => ({
-      id: "id",
+    const getAccessContract: () => AccessContract = () => ({
+      id: 'id',
       tenant: 0,
       version: 1,
       name: 'name',

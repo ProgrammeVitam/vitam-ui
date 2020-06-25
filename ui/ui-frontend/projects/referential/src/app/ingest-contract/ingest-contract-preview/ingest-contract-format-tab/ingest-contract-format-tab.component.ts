@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {FileFormat, IngestContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
+import {FileFormatService} from '../../../file-format/file-format.service';
+import {IngestContractService} from '../../ingest-contract.service';
 
-import { IngestContractService } from '../../ingest-contract.service';
-import {FileFormatService} from "../../../file-format/file-format.service";
 
 @Component({
   selector: 'app-ingest-contract-format-tab',
@@ -20,9 +20,17 @@ export class IngestContractFormatTabComponent implements OnInit {
 
   form: FormGroup;
   submited = false;
+
+  @Input() tenantIdentifier: number;
+
+  formatTypeList: FileFormat[];
+
+  // tslint:disable-next-line:variable-name
+  private _ingestContract: IngestContract;
+
   previousValue = (): IngestContract => {
-    return this._ingestContract
-  };
+    return this._ingestContract;
+  }
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {
@@ -30,23 +38,20 @@ export class IngestContractFormatTabComponent implements OnInit {
     this.resetForm(this.ingestContract);
     this.updated.emit(false);
   }
-  get ingestContract(): IngestContract { return this._ingestContract; }
-  // tslint:disable-next-line:variable-name
-  private _ingestContract: IngestContract;
+
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  @Input() tenantIdentifier: number;
-
-  formatTypeList: FileFormat[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,20 +67,21 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   isInvalid(): boolean {
-    return this.form.get('everyFormatType').value == false && (this.form.get('formatType').invalid || this.form.get('formatType').pending);
+    return this.form.get('everyFormatType').value === false && (this.form.get('formatType').invalid || this.form.get('formatType').pending);
   }
 
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
@@ -93,13 +99,13 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fileFormatService.getAllForTenant(''+this.tenantIdentifier).subscribe(files => {
+    this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe(files => {
       this.formatTypeList = files;
     });
   }
 
 
   resetForm(ingestContract: IngestContract) {
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.form.reset(ingestContract, {emitEvent: false});
   }
 }

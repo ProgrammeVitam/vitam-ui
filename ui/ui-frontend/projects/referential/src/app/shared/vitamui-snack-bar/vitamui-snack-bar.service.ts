@@ -37,10 +37,10 @@
 // TODO Make our own snackbar service instead of ripping the code
 // from the angular material sources
 
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, ComponentType, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
+import {ComponentPortal, ComponentType, PortalInjector, TemplatePortal} from '@angular/cdk/portal';
 import {
   ComponentRef,
   EmbeddedViewRef,
@@ -52,8 +52,14 @@ import {
   SkipSelf,
   TemplateRef
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
-import { take, takeUntil } from 'rxjs/operators';
+import {
+  MAT_SNACK_BAR_DATA,
+  MatSnackBarConfig,
+  MatSnackBarContainer,
+  MatSnackBarRef,
+  SimpleSnackBar
+} from '@angular/material/snack-bar';
+import {take, takeUntil} from 'rxjs/operators';
 
 /** Injection token that can be used to specify default snack bar. */
 export const MAT_SNACK_BAR_DEFAULT_OPTIONS =
@@ -77,7 +83,7 @@ export class VitamUISnackBar {
    * If there is a parent snack-bar service, all operations should delegate to that parent
    * via `_openedSnackBarRef`.
    */
-  // tslint:disable-next-line:variable-name
+    // tslint:disable-next-line:variable-name
   private _snackBarRefAtThisLevel: MatSnackBarRef<any> | null = null;
 
   /** Reference to the currently opened snackbar at *any* level. */
@@ -107,7 +113,8 @@ export class VitamUISnackBar {
     // tslint:disable-next-line:variable-name
     @Optional() @SkipSelf() private _parentSnackBar: VitamUISnackBar,
     // tslint:disable-next-line:variable-name
-    @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig) { }
+    @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig) {
+  }
 
   /**
    * Creates and dispatches a snack bar with a custom component for the content, removing any
@@ -141,11 +148,11 @@ export class VitamUISnackBar {
    */
   open(message: string, action: string = '', config?: MatSnackBarConfig):
     MatSnackBarRef<SimpleSnackBar> {
-    const mergedConfig = { ...this._defaultConfig, ...config };
+    const mergedConfig = {...this._defaultConfig, ...config};
 
     // Since the user doesn't have access to the component, we can
     // override the data to pass in our own message and action.
-    mergedConfig.data = { message, action };
+    mergedConfig.data = {message, action};
     mergedConfig.announcementMessage = message;
 
     return this.openFromComponent(SimpleSnackBar, mergedConfig);
@@ -185,7 +192,7 @@ export class VitamUISnackBar {
   private _attach<T>(content: ComponentType<T> | TemplateRef<T>, userConfig?: MatSnackBarConfig):
     MatSnackBarRef<T | EmbeddedViewRef<any>> {
 
-    const config = { ...new MatSnackBarConfig(), ...this._defaultConfig, ...userConfig };
+    const config = {...new MatSnackBarConfig(), ...this._defaultConfig, ...userConfig};
     const overlayRef = this._createOverlay(config);
     const container = this._attachSnackBarContainer(overlayRef, config);
     const snackBarRef = new MatSnackBarRef<T | EmbeddedViewRef<any>>(container, overlayRef);

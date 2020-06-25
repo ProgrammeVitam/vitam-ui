@@ -1,11 +1,12 @@
-import { Id } from 'ui-frontend-common';
+import {Id} from 'ui-frontend-common';
 
 export class ContextPermission {
   tenant: string;
   accessContracts: string[];
   ingestContracts: string[];
 
-  constructor() {}
+  constructor() {
+  }
 }
 
 export interface Context extends Id {

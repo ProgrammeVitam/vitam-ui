@@ -10,7 +10,7 @@ import {FilingPlanMode, FilingPlanService} from './filing-plan.service';
 import {Node} from '../../models/node.interface';
 import {FileType} from "../../models/file-type.enum";
 
-@Component({ selector: 'vitamui-library-node', template: '' })
+@Component({selector: 'vitamui-library-node', template: ''})
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
   @Input() node: any;
@@ -22,10 +22,10 @@ class NodeStubComponent {
 describe('FilingPlanComponent', () => {
   let component: FilingPlanComponent;
   let fixture: ComponentFixture<FilingPlanComponent>;
-  let fillingPlanStub = { 
-    tree$: of([]), 
-    expandChange$: EMPTY, 
-    loadTree:() => of([]) 
+  let fillingPlanStub = {
+    tree$: of([]),
+    expandChange$: EMPTY,
+    loadTree: () => of([])
   };
 
   beforeEach(async(() => {
@@ -34,10 +34,10 @@ describe('FilingPlanComponent', () => {
         MatTreeModule,
         MatProgressSpinnerModule,
       ],
-      declarations: [ FilingPlanComponent, NodeStubComponent ],
+      declarations: [FilingPlanComponent, NodeStubComponent],
       providers: [
-        { provide: FilingPlanService, useValue: fillingPlanStub },
-        { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },
+        {provide: FilingPlanService, useValue: fillingPlanStub},
+        {provide: AuthService, useValue: {user: {profileGroup: {profiles: []}}}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

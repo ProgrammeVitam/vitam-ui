@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,8 +35,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Application, StartupService } from "ui-frontend-common";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Application, StartupService} from 'ui-frontend-common';
 
 @Component({
   selector: 'vitamui-common-menu-tile-updated',
@@ -56,9 +57,11 @@ export class UpdatedVitamUIMenuTileComponent implements OnInit {
   set application(application: Application) {
     this._application = application;
   }
+
   get application(): Application {
     return this._application;
   }
+
   // tslint:disable-next-line:variable-name
   private _application: Application;
 
@@ -69,11 +72,12 @@ export class UpdatedVitamUIMenuTileComponent implements OnInit {
     const uiUrl = this.startupService.getConfigStringValue('UI_URL');
     // to handle single domains we need to remove sameApp feature from portal
     if (((this._application.url.startsWith(uiUrl)) && this.startupService.getPortalUrl() !== uiUrl)
-    || (!this._application.url.startsWith('http://') && !this._application.url.startsWith('https://'))) {
+      || (!this._application.url.startsWith('http://') && !this._application.url.startsWith('https://'))) {
       this.sameApp = true;
       this.url = this._application.url.replace(uiUrl, '');
     }
   }
+
   appSelected() {
     this.appSelect.emit();
   }

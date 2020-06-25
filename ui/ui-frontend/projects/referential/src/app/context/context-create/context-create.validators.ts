@@ -34,27 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 
-import { of, timer} from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { ContextService } from "../context.service";
+import {of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
+import {ContextService} from '../context.service';
 
 @Injectable()
 export class ContextCreateValidators {
 
   private debounceTime = 400;
 
-  constructor(private contextService: ContextService) {}
+  constructor(private contextService: ContextService) {
+  }
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
+  }
 
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  };
+  }
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

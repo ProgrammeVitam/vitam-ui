@@ -1,17 +1,18 @@
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
-import { MetadataApiService } from '../api/metadata-api.service';
-import { Metadata } from '../models/metadata.interface';
+import {MetadataApiService} from '../api/metadata-api.service';
+import {Metadata} from '../models/metadata.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetadataService {
 
-  constructor(private metadataApi: MetadataApiService) { }
+  constructor(private metadataApi: MetadataApiService) {
+  }
 
   get(tenantIdentifier: number, unitId: string): Observable<Metadata> {
     const headers = new HttpHeaders({
@@ -47,6 +48,6 @@ export class MetadataService {
 
 }
 
-function  isArrayEmpty(arr: string[]) {
+function isArrayEmpty(arr: string[]) {
   return !arr || arr.length < 1;
 }

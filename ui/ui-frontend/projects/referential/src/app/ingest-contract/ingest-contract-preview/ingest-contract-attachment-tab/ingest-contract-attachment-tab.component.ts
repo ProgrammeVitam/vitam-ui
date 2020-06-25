@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+/* tslint:disable:object-literal-key-quotes quotemark */
+import {HttpHeaders} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {AccessContract, IngestContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 
-import {MatDialog} from "@angular/material/dialog";
-import {IngestContractNodeUpdateComponent} from "./ingest-contract-nodes-update/ingest-contract-node-update.component";
-import {AccessContractService} from "../../../access-contract/access-contract.service";
-import {HttpHeaders} from "@angular/common/http";
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {IngestContractNodeUpdateComponent} from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 
 @Component({
@@ -15,22 +16,6 @@ import {HttpHeaders} from "@angular/common/http";
 export class IngestContractAttachmentTabComponent implements OnInit {
 
   submited = false;
-  previousValue = (): IngestContract => {
-    return this._ingestContract
-  };
-
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-  }
-  get ingestContract(): IngestContract { return this._ingestContract; }
-  // tslint:disable-next-line:variable-name
-  private _ingestContract: IngestContract;
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    console.log('RO:', readOnly);
-  }
 
   @Input()
   tenantIdentifier: number;
@@ -40,6 +25,27 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   accessContracts: AccessContract[];
   titles: any = {};
 
+  // tslint:disable-next-line:variable-name
+  private _ingestContract: IngestContract;
+
+  previousValue = (): IngestContract => {
+    return this._ingestContract;
+  }
+
+  @Input()
+  set ingestContract(ingestContract: IngestContract) {
+    this._ingestContract = ingestContract;
+  }
+
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
+
+  @Input()
+  set readOnly(readOnly: boolean) {
+    console.log('RO:', readOnly);
+  }
+
   constructor(
     private dialog: MatDialog,
     private accessContractService: AccessContractService,
@@ -47,7 +53,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accessContractService.getAll().subscribe( accessContracts => this.accessContracts = accessContracts );
+    this.accessContractService.getAll().subscribe(accessContracts => this.accessContracts = accessContracts);
   }
 
   initTitles(event: any) {
@@ -64,7 +70,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
         }
 
       }
-    )
+    );
   }
 
   getDslForRootNodes(): any {
@@ -78,7 +84,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
           "$and": [
             {
               "$in": {
-                "#id": [ ...checkParentId, ...linkParentIdAsLinst ]
+                "#id": [...checkParentId, ...linkParentIdAsLinst]
               }
             }
           ]
@@ -94,7 +100,9 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   }
 
   openUpdateSelectedNodes() {
-    if (!this.accessContractId) return;
+    if (!this.accessContractId) {
+      return;
+    }
     this.dialog.open(IngestContractNodeUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,

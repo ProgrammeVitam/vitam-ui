@@ -20,7 +20,7 @@ describe('FilingPlanService', () => {
       ],
       providers: [
         FilingPlanService,
-        { provide: BASE_URL, useValue: '/fake-api' },
+        {provide: BASE_URL, useValue: '/fake-api'},
       ]
     });
 
@@ -33,7 +33,7 @@ describe('FilingPlanService', () => {
 
   it('should load a collection\'s tree', inject([FilingPlanService], (service: FilingPlanService) => {
 
-    const rootNode: Node[] =[
+    const rootNode: Node[] = [
       {
         id: 'prefix-2',
         vitamId: '2',
@@ -76,7 +76,7 @@ describe('FilingPlanService', () => {
       label: 'label2.2.1',
       type: null,
       ingestContractIdentifier: null,
-      parents: [ children[1] ],
+      parents: [children[1]],
       checked: false,
       children: []
     };
@@ -95,10 +95,23 @@ describe('FilingPlanService', () => {
     requests[0].flush({
       $hits: null,
       $results: [
-        { '#id': '2', Title: 'label2', '#allunitups': [], '#unitups': null, '#unitType': 'HOLDING_UNIT', DescriptionLevel: DescriptionLevel.FILE },
-        { '#id': '2.1', Title: 'label2.1', '#allunitups': ['2'], '#unitups': ['2'], DescriptionLevel: DescriptionLevel.FILE },
-        { '#id': '2.2', Title: 'label2.2', '#allunitups': ['2'], '#unitups': ['2'] },
-        { '#id': '2.2.1', Title: 'label2.2.1', '#allunitups': ['2', '2.2'], '#unitups': ['2.2'] },
+        {
+          '#id': '2',
+          Title: 'label2',
+          '#allunitups': [],
+          '#unitups': null,
+          '#unitType': 'HOLDING_UNIT',
+          DescriptionLevel: DescriptionLevel.FILE
+        },
+        {
+          '#id': '2.1',
+          Title: 'label2.1',
+          '#allunitups': ['2'],
+          '#unitups': ['2'],
+          DescriptionLevel: DescriptionLevel.FILE
+        },
+        {'#id': '2.2', Title: 'label2.2', '#allunitups': ['2'], '#unitups': ['2']},
+        {'#id': '2.2.1', Title: 'label2.2.1', '#allunitups': ['2', '2.2'], '#unitups': ['2.2']},
       ]
     });
 

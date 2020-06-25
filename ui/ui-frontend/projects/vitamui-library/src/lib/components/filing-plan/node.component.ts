@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+/* tslint:disable:component-selector */
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
-import { Node } from '../../models/node.interface';
+import {Node} from '../../models/node.interface';
 
 @Component({
   selector: 'vitamui-library-node',
@@ -17,7 +18,8 @@ export class NodeComponent implements OnInit {
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() labelClick = new EventEmitter<void>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

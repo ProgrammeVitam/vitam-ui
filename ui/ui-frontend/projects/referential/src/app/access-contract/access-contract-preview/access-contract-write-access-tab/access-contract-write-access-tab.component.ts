@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { AccessContractService } from '../../access-contract.service';
+import {AccessContractService} from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',
@@ -51,14 +51,6 @@ import { AccessContractService } from '../../access-contract.service';
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
 
-  form: FormGroup;
-  submited = false;
-  previousValue = (): AccessContract => {
-    return this._accessContract
-  };
-
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   @Input()
   set accessContract(accessContract: AccessContract) {
     this._accessContract = accessContract;
@@ -66,23 +58,24 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     if (!accessContract.writingPermission) {
       accessContract.writingPermission = false;
       accessContract.writingRestrictedDesc = null;
-    } else  if (!accessContract.writingRestrictedDesc) {
+    } else if (!accessContract.writingRestrictedDesc) {
       accessContract.writingRestrictedDesc = false;
     }
 
     this.resetForm(this.accessContract);
   }
-  get accessContract(): AccessContract { return this._accessContract; }
-  // tslint:disable-next-line:variable-name
-  private _accessContract: AccessContract;
+
+  get accessContract(): AccessContract {
+    return this._accessContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
@@ -93,8 +86,19 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     });
   }
 
+  form: FormGroup;
+  submited = false;
+
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+  previousValue = (): AccessContract => {
+    return this._accessContract;
+  }
+
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
 
     this.updated.emit(!unchanged);
 
@@ -104,8 +108,9 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
@@ -128,6 +133,6 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   }
 
   resetForm(accessContract: AccessContract) {
-    this.form.reset(accessContract, { emitEvent: false });
+    this.form.reset(accessContract, {emitEvent: false});
   }
 }

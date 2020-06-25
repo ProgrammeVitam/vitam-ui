@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatProgressSpinnerModule} from '@angular/material';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { ProbativeValueListComponent } from './probative-value-list.component';
-import { VitamUICommonModule } from "ui-frontend-common";
+import {ProbativeValueListComponent} from './probative-value-list.component';
 
 @NgModule({
   declarations: [ProbativeValueListComponent],
@@ -16,4 +16,5 @@ import { VitamUICommonModule } from "ui-frontend-common";
     ProbativeValueListComponent
   ]
 })
-export class ProbativeValueListModule { }
+export class ProbativeValueListModule {
+}

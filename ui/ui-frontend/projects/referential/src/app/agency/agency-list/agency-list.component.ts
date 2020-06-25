@@ -34,26 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, TemplateRef, EventEmitter } from '@angular/core';
 import {
-  InfiniteScrollTable,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
+import {Agency} from 'projects/vitamui-library/src/lib/models/agency';
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import {merge, Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
+import {
   AccessContract,
-  Direction,
-  ApplicationId,
-  Role,
-  PageRequest,
   AdminUserProfile,
+  ApplicationId,
   AuthService,
   DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  Role,
   User
 } from 'ui-frontend-common';
-import {merge, Subject, Subscription} from "rxjs";
-import {debounceTime, distinctUntilChanged, filter, map, tap} from "rxjs/operators";
-import { Agency } from "projects/vitamui-library/src/lib/models/agency";
-import { AgencyService } from "../agency.service";
-import { ActivatedRoute } from "@angular/router";
-import { MatDialog } from "@angular/material/dialog";
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import {AgencyService} from '../agency.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -69,13 +79,14 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() agencyClick = new EventEmitter<Agency>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<AgencyListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<AgencyListComponent>;
+  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
@@ -90,10 +101,14 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   private readonly orderChange = new Subject<string>();
 
   @Input()
-  get connectedUserInfo(): AdminUserProfile { return this._connectedUserInfo; }
+  get connectedUserInfo(): AdminUserProfile {
+    return this._connectedUserInfo;
+  }
+
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
+
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
@@ -167,9 +182,9 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   }
 
   deleteAgencyDialog(agency: Agency) {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
 
-    dialog.componentInstance.objectType = "service agent";
+    dialog.componentInstance.objectType = 'service agent';
     dialog.componentInstance.objectName = agency.identifier;
 
     dialog.afterClosed().pipe(

@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Option} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { IngestContractService } from '../../ingest-contract.service';
+import {IngestContractService} from '../../ingest-contract.service';
 
 @Component({
   selector: 'app-ingest-contract-object-tab',
@@ -18,9 +18,22 @@ export class IngestContractObjectTabComponent implements OnInit {
 
   form: FormGroup;
   submited = false;
+  // tslint:disable-next-line:variable-name
+  private _ingestContract: IngestContract;
+
+
+  // FIXME: Get list from common var ?
+  usages: Option[] = [
+    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
+    {key: 'Dissemination', label: 'Diffusion', info: ''},
+    {key: 'Thumbnail', label: 'Vignette', info: ''},
+    {key: 'TextContent', label: 'Contenu brut', info: ''},
+    {key: 'PhysicalMaster', label: 'Originel papier', info: ''}
+  ];
+
   previousValue = (): IngestContract => {
-    return this._ingestContract
-  };
+    return this._ingestContract;
+  }
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {
@@ -28,28 +41,20 @@ export class IngestContractObjectTabComponent implements OnInit {
     this.resetForm(this.ingestContract);
     this.updated.emit(false);
   }
-  get ingestContract(): IngestContract { return this._ingestContract; }
-  // tslint:disable-next-line:variable-name
-  private _ingestContract: IngestContract;
+
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  // FIXME: Get list from common var ?
-  usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
-    { key: 'Dissemination', label: 'Diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignette', info: '' },
-    { key: 'TextContent', label: 'Contenu brut', info: '' },
-    { key: 'PhysicalMaster', label: 'Originel papier', info: '' }
-  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,7 +68,7 @@ export class IngestContractObjectTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -71,8 +76,9 @@ export class IngestContractObjectTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
@@ -94,11 +100,12 @@ export class IngestContractObjectTabComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    return (this.form.get('everyDataObjectVersion').value === false && (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending))
+    return (this.form.get('everyDataObjectVersion').value === false &&
+      (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending));
   }
 
 
   resetForm(ingestContract: IngestContract) {
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.form.reset(ingestContract, {emitEvent: false});
   }
 }

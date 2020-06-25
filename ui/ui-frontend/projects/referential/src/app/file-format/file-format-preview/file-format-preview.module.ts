@@ -34,27 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
   MatMenuModule,
+  MatOptionModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatSelectModule,
-  MatOptionModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import {
-  FileFormatInformationTabComponent,
-} from './file-format-information-tab/file-format-information-tab.component';
-import { FileFormatPreviewComponent } from './file-format-preview.component';
+import {FileFormatInformationTabComponent} from './file-format-information-tab/file-format-information-tab.component';
+import {FileFormatPreviewComponent} from './file-format-preview.component';
 
 @NgModule({
   imports: [
@@ -82,4 +80,5 @@ import { FileFormatPreviewComponent } from './file-format-preview.component';
   ]
 
 })
-export class FileFormatPreviewModule { }
+export class FileFormatPreviewModule {
+}

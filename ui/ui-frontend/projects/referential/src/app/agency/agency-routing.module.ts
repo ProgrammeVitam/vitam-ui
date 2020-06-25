@@ -34,15 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Route, RouterModule } from '@angular/router';
-import {
-  VitamUITenantSelectComponent,
-  TenantSelectionGuard,
-  ActiveTenantGuard
-} from 'ui-frontend-common';
-import { AgencyComponent } from "./agency.component";
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {Route, RouterModule} from '@angular/router';
+import {ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent} from 'ui-frontend-common';
+import {AgencyComponent} from './agency.component';
 
 
 const routes: Route[] = [
@@ -52,12 +48,12 @@ const routes: Route[] = [
   }, {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
-    canActivate: [ TenantSelectionGuard ]
+    canActivate: [TenantSelectionGuard]
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: AgencyComponent,
-    canActivate: [ ActiveTenantGuard ]
+    canActivate: [ActiveTenantGuard]
   }
 ];
 
@@ -67,4 +63,5 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
   ]
 })
-export class AgencyRoutingModule { }
+export class AgencyRoutingModule {
+}

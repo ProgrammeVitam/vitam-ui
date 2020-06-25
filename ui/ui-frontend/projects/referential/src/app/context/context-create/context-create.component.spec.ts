@@ -34,25 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 /* tslint:disable: max-classes-per-file directive-selector */
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { ContextCreateComponent } from './context-create.component';
-import { ContextCreateValidators } from './context-create.validators';
-import {ContextService} from "../context.service";
+import {Component, forwardRef, Input, NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {EMPTY, of} from 'rxjs';
+import {ConfirmDialogService, OtpState} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {ContextService} from '../context.service';
+import {ContextCreateComponent} from './context-create.component';
+import {ContextCreateValidators} from './context-create.validators';
 
 @Component({
   selector: 'app-owner-form',
@@ -65,9 +63,15 @@ import {ContextService} from "../context.service";
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() contextInfo: any;
-  writeValue() {}
-  registerOnChange() {}
-  registerOnTouched() {}
+
+  writeValue() {
+  }
+
+  registerOnChange() {
+  }
+
+  registerOnTouched() {
+  }
 }
 
 const expectedContext = {
@@ -105,8 +109,13 @@ let fixture: ComponentFixture<ContextCreateComponent>;
 
 class Page {
 
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 
 }
 
@@ -117,10 +126,10 @@ xdescribe('ContextCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const contextServiceSpy = jasmine.createSpyObj('ContextService', { create: of({}) });
+    const contextServiceSpy = jasmine.createSpyObj('ContextService', {create: of({})});
     const contextCreateValidatorsSpy = jasmine.createSpyObj(
       'ContextCreateValidators',
-      { uniqueCode: () => of(null), uniqueDomain: of(null) }
+      {uniqueCode: () => of(null), uniqueDomain: of(null)}
     );
     TestBed.configureTestingModule({
       imports: [
@@ -138,15 +147,15 @@ xdescribe('ContextCreateComponent', () => {
         OwnerFormStubComponent,
       ],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: ContextService, useValue: contextServiceSpy },
-        { provide: ContextCreateValidators, useValue: contextCreateValidatorsSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: ContextService, useValue: contextServiceSpy},
+        {provide: ContextCreateValidators, useValue: contextCreateValidatorsSpy},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -252,20 +261,20 @@ xdescribe('ContextCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close.calls.count()).toBe(1);
     });
 
     it('should not call create()', () => {
-      const contextService =  TestBed.get(ContextService);
+      const contextService = TestBed.get(ContextService);
       component.onSubmit();
       expect(contextService.create.calls.count()).toBe(0);
     });
 
     it('should call create()', () => {
-      const contextService =  TestBed.get(ContextService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const contextService = TestBed.get(ContextService);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.form.setValue(expectedContext);
       component.onSubmit();
       expect(contextService.create.calls.count()).toBe(1);

@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { VitamUIInputComponent } from './vitamui-input.component';
-import { FormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material';
+
+import {VitamUIInputComponent} from './vitamui-input.component';
 
 @NgModule({
   imports: [
@@ -49,4 +50,5 @@ import { MatProgressSpinnerModule } from '@angular/material';
   declarations: [VitamUIInputComponent],
   exports: [VitamUIInputComponent],
 })
-export class VitamUIInputModule { }
+export class VitamUIInputModule {
+}

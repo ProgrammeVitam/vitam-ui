@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
   MatMenuModule,
@@ -47,12 +47,12 @@ import {
   MatSnackBarModule,
   MatTabsModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
-import { AgencyPreviewComponent } from './agency-preview.component';
+import {AgencyInformationTabComponent} from './agency-information-tab/agency-information-tab.component';
+import {AgencyPreviewComponent} from './agency-preview.component';
 
 @NgModule({
   imports: [
@@ -80,4 +80,5 @@ import { AgencyPreviewComponent } from './agency-preview.component';
   ]
 
 })
-export class AgencyPreviewModule { }
+export class AgencyPreviewModule {
+}

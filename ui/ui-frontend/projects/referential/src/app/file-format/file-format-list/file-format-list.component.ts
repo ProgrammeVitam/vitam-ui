@@ -34,25 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, TemplateRef, EventEmitter } from '@angular/core';
 import {
-  InfiniteScrollTable,
-  Direction,
-  ApplicationId,
-  Role,
-  PageRequest,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import {merge, Subject, Subscription} from 'rxjs';
+import {debounceTime, filter} from 'rxjs/operators';
+import {
   AdminUserProfile,
+  ApplicationId,
   AuthService,
   DEFAULT_PAGE_SIZE,
-  User, VitamUISnackBar
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  Role,
+  User,
+  VitamUISnackBar
 } from 'ui-frontend-common';
-import { merge, Subject, Subscription } from "rxjs";
-import { debounceTime, filter } from "rxjs/operators";
-import { FileFormat } from "projects/vitamui-library/src/lib/models/file-format";
-import { FileFormatService } from "../file-format.service";
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { MatDialog } from "@angular/material/dialog";
-import { VitamUISnackBarComponent } from "../../shared/vitamui-snack-bar";
+import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
+import {FileFormatService} from '../file-format.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -68,13 +79,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() fileFormatClick = new EventEmitter<FileFormat>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<FileFormatListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<FileFormatListComponent>;
+  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
@@ -88,10 +100,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   private readonly orderChange = new Subject<string>();
 
   @Input()
-  get connectedUserInfo(): AdminUserProfile { return this._connectedUserInfo; }
+  get connectedUserInfo(): AdminUserProfile {
+    return this._connectedUserInfo;
+  }
+
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
+
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
@@ -155,9 +171,9 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   }
 
   deleteFileFormatDialog(fileFormat: FileFormat) {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
 
-    dialog.componentInstance.objectType = "format de fichier";
+    dialog.componentInstance.objectType = 'format de fichier';
     dialog.componentInstance.objectName = fileFormat.puid;
 
     dialog.afterClosed().pipe(
@@ -166,7 +182,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
       this.snackBar.openFromComponent(VitamUISnackBarComponent, {
         panelClass: 'vitamui-snack-bar',
         duration: 5000,
-        data: { type: 'fileFormatDeleteStart', name: fileFormat.puid }
+        data: {type: 'fileFormatDeleteStart', name: fileFormat.puid}
       });
       this.fileFormatService.delete(fileFormat).subscribe(() => {
         this.searchFileFormatOrdered();

@@ -34,26 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 /* tslint:disable: max-classes-per-file directive-selector */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {EMPTY, of} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { AccessContractCreateComponent } from './access-contract-create.component';
-import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { AccessContractService } from "../access-contract.service";
-import {AgencyService} from "../../agency/agency.service";
+import {AgencyService} from '../../agency/agency.service';
+import {AccessContractService} from '../access-contract.service';
+import {AccessContractCreateComponent} from './access-contract-create.component';
+import {AccessContractCreateValidators} from './access-contract-create.validators';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -77,8 +76,13 @@ let fixture: ComponentFixture<AccessContractCreateComponent>;
 
 class Page {
 
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 
 }
 
@@ -88,11 +92,11 @@ describe('AccessContractCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getAll: of([]) });
-    const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', { create: of({}), getAll: of([]) });
+    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', {getAll: of([])});
+    const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', {create: of({}), getAll: of([])});
     const accessContractCreateValidatorsSpy = jasmine.createSpyObj(
       'AccessContractCreateValidators',
-      { uniqueName: () => of(null), uniqueNameWhileEdit: of(null) }
+      {uniqueName: () => of(null), uniqueNameWhileEdit: of(null)}
     );
     TestBed.configureTestingModule({
       imports: [
@@ -109,16 +113,16 @@ describe('AccessContractCreateComponent', () => {
         AccessContractCreateComponent
       ],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: AgencyService, useValue: agencyServiceSpy },
-        { provide: AccessContractService, useValue: accessContractServiceSpy },
-        { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: AgencyService, useValue: agencyServiceSpy},
+        {provide: AccessContractService, useValue: accessContractServiceSpy},
+        {provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -196,20 +200,20 @@ describe('AccessContractCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close.calls.count()).toBe(1);
     });
 
     it('should not call create()', () => {
-      const accessContractService =  TestBed.get(AccessContractService);
+      const accessContractService = TestBed.get(AccessContractService);
       component.onSubmit();
       expect(accessContractService.create.calls.count()).toBe(0);
     });
 
     it('should call create()', () => {
-      const accessContractService =  TestBed.get(AccessContractService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const accessContractService = TestBed.get(AccessContractService);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.form.setValue(expectedAccessContract);
       component.onSubmit();
       expect(accessContractService.create.calls.count()).toBe(1);

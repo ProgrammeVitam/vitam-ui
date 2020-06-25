@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatDialog} from '@angular/material';
+import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
 
-import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { MatDialog } from '@angular/material';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {IngestContractAttachmentTabComponent} from './ingest-contract-attachment-tab.component';
 
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
@@ -14,7 +14,7 @@ describe('IngestContractAttachmentTabComponent', () => {
   const ingestContractValue = {
     tenant: 0,
     version: 1,
-    description: 'desc', 
+    description: 'desc',
     status: 'ACTIVE',
     id: 'vitam_id',
     name: 'Name',
@@ -25,33 +25,33 @@ describe('IngestContractAttachmentTabComponent', () => {
     lastUpdate: '01-01-20',
     activationDate: '01-01-20',
     deactivationDate: '01-01-20',
-    checkParentLink: '', 
-    linkParentId: '', 
+    checkParentLink: '',
+    linkParentId: '',
     checkParentId: [''],
-    masterMandatory : true,
-    formatUnidentifiedAuthorized : true, 
-    everyFormatType: true, 
-    formatType: [''], 
-    archiveProfiles : [''], 
+    masterMandatory: true,
+    formatUnidentifiedAuthorized: true,
+    everyFormatType: true,
+    formatType: [''],
+    archiveProfiles: [''],
     managementContractId: 'MC-000001'
-  }
+  };
 
   beforeEach(async(() => {
 
     const accessContractServiceMock = {
-      getAll: ()=> of([])
+      getAll: () => of([])
     };
 
     TestBed.configureTestingModule({
-      declarations: [ IngestContractAttachmentTabComponent ],
-      providers:[
-        { provide: MatDialog, useValue: { } },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: SearchUnitApiService, useValue: { } }
+      declarations: [IngestContractAttachmentTabComponent],
+      providers: [
+        {provide: MatDialog, useValue: {}},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: SearchUnitApiService, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

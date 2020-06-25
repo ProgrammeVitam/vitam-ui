@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import {merge, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
-import { ProbativeValueService } from '../probative-value.service';
+import {ProbativeValueService} from '../probative-value.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -40,7 +40,13 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
   }
 
   ngOnInit() {
-    this.probativeValueService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildProbativeVlaueCriteriaFromSearch())))
+    this.probativeValueService.search(
+      new PageRequest(
+        0,
+        DEFAULT_PAGE_SIZE,
+        this.orderBy,
+        Direction.ASCENDANT,
+        JSON.stringify(this.buildProbativeVlaueCriteriaFromSearch())))
       .subscribe((data: any[]) => {
         this.dataSource = data;
       });
@@ -60,7 +66,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
     const criteria: any = {};
     criteria.evTypeProc = 'AUDIT';
     criteria.evType = 'EXPORT_PROBATIVE_VALUE';
-    if (this._searchText != undefined && this._searchText.length > 0) {
+    if (this._searchText !== undefined && this._searchText.length > 0) {
       criteria['#id'] = this._searchText;
     }
     return criteria;
@@ -79,10 +85,14 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
   }
 
   probativeVlaueStatus(probativeVlaue: any): string {
-    return (probativeVlaue.events != undefined && probativeVlaue.events.length != 0) ? probativeVlaue.events[probativeVlaue.events.length - 1].outcome : probativeVlaue.outcome;
+    return (probativeVlaue.events !== undefined && probativeVlaue.events.length !== 0) ?
+      probativeVlaue.events[probativeVlaue.events.length - 1].outcome :
+      probativeVlaue.outcome;
   }
 
   probativeVlaueMessage(probativeVlaue: any): string {
-    return (probativeVlaue.events != undefined && probativeVlaue.events.length != 0) ? probativeVlaue.events[probativeVlaue.events.length - 1].outMessage : probativeVlaue.outMessage;
+    return (probativeVlaue.events !== undefined && probativeVlaue.events.length !== 0) ?
+      probativeVlaue.events[probativeVlaue.events.length - 1].outMessage :
+      probativeVlaue.outMessage;
   }
 }

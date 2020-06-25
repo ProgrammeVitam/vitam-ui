@@ -1,18 +1,28 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, TemplateRef, EventEmitter } from '@angular/core';
 import {
-  InfiniteScrollTable,
-  Direction,
-  ApplicationId,
-  Role,
-  PageRequest,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
+import {merge, Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {
   AdminUserProfile,
+  ApplicationId,
   AuthService,
-  DEFAULT_PAGE_SIZE
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  Role
 } from 'ui-frontend-common';
-import { merge, Subject, Subscription } from "rxjs";
-import { debounceTime } from "rxjs/operators";
-import { SecurityProfile } from "projects/vitamui-library/src/lib/models/security-profile";
-import { SecurityProfileService } from "../security-profile.service";
+import {SecurityProfileService} from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -28,13 +38,14 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<SecurityProfile>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<SecurityProfileListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<SecurityProfileListComponent>;
+  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
@@ -56,10 +67,14 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   private readonly orderChange = new Subject<string>();
 
   @Input()
-  get connectedUserInfo(): AdminUserProfile { return this._connectedUserInfo; }
+  get connectedUserInfo(): AdminUserProfile {
+    return this._connectedUserInfo;
+  }
+
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
+
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 

@@ -35,15 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {diff, Option} from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
-
-import { AccessContractService } from '../../access-contract.service';
-import {AgencyService} from "../../../agency/agency.service";
+import {extend, isEmpty} from 'underscore';
+import {AgencyService} from '../../../agency/agency.service';
+import {AccessContractService} from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-usage-and-services-tab',
@@ -51,28 +50,6 @@ import {AgencyService} from "../../../agency/agency.service";
   styleUrls: ['./access-contract-usage-and-services-tab.component.scss']
 })
 export class AccessContractUsageAndServicesTabComponent implements OnInit {
-
-  form: FormGroup;
-  submited = false;
-  previousValue = (): AccessContract => {
-    return this._accessContract
-  };
-
-  originatingAgencySelect = new FormControl();
-  usageSelect = new FormControl();
-
-  originatingAgencies: Option[];
-
-  // FIXME: Get list from common var ?
-  usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
-    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignettes', info: '' },
-    { key: 'TextContent', label: 'Contenu textuel', info: '' },
-    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' }
-  ];
-
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input()
   set accessContract(accessContract: AccessContract) {
@@ -90,21 +67,25 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
     this.usageSelect.setValue(accessContract.dataObjectVersion);
     this.resetForm(this.accessContract);
   }
-  get accessContract(): AccessContract { return this._accessContract; }
-  // tslint:disable-next-line:variable-name
-  private _accessContract: AccessContract;
+
+  get accessContract(): AccessContract {
+    return this._accessContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private accessContractService: AccessContractService, private agencyService: AgencyService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private accessContractService: AccessContractService,
+    private agencyService: AgencyService) {
     this.form = this.formBuilder.group({
       everyOriginatingAgency: [true, Validators.required],
       originatingAgencies: [[]],
@@ -113,7 +94,7 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
     });
 
     this.agencyService.getAll().subscribe(agencies =>
-      this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
+      this.originatingAgencies = agencies.map(x => ({label: x.name, key: x.identifier}))
     );
 
     this.originatingAgencySelect.valueChanges.subscribe(
@@ -129,8 +110,34 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
     );
   }
 
+  form: FormGroup;
+  submited = false;
+
+  originatingAgencySelect = new FormControl();
+  usageSelect = new FormControl();
+
+  originatingAgencies: Option[];
+
+  // FIXME: Get list from common var ?
+  usages: Option[] = [
+    {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
+    {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
+    {key: 'Thumbnail', label: 'Vignettes', info: ''},
+    {key: 'TextContent', label: 'Contenu textuel', info: ''},
+    {key: 'PhysicalMaster', label: 'Archives physiques', info: ''}
+  ];
+
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+
+  previousValue = (): AccessContract => {
+    return this._accessContract;
+  }
+
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
 
     this.updated.emit(!unchanged);
 
@@ -140,8 +147,9 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
@@ -164,6 +172,6 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   }
 
   resetForm(accessContract: AccessContract) {
-    this.form.reset(accessContract, { emitEvent: false });
+    this.form.reset(accessContract, {emitEvent: false});
   }
 }

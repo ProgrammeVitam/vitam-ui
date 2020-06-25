@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatProgressSpinnerModule, MatSnackBar } from '@angular/material';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatProgressSpinnerModule, MatSnackBar} from '@angular/material';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { AccessContractListComponent } from './access-contract-list.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL, TableFilterModule } from 'ui-frontend-common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {BASE_URL, TableFilterModule} from 'ui-frontend-common';
+import {AccessContractListComponent} from './access-contract-list.component';
 
 describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
@@ -21,10 +21,10 @@ describe('AccessContractListComponent', () => {
         TableFilterModule
       ],
       providers: [
-        { provide: BASE_URL, useValue: "" },
-        { provide: MatSnackBar, useValue: {} }
+        {provide: BASE_URL, useValue: ''},
+        {provide: MatSnackBar, useValue: {}}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
 

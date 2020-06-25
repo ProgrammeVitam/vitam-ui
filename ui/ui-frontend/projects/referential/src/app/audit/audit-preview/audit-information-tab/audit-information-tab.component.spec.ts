@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AuditInformationTabComponent } from './audit-information-tab.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {AuditInformationTabComponent} from './audit-information-tab.component';
 
 describe('AuditInformationTabComponent', () => {
   let component: AuditInformationTabComponent;
@@ -53,7 +53,7 @@ describe('AuditInformationTabComponent', () => {
       rightsStatementIdentifier: 'rightsStatementIdentifier'
     }]
 
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

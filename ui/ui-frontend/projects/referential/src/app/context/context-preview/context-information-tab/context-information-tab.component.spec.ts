@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ContextInformationTabComponent } from './context-information-tab.component';
-import { SecurityProfileService } from '../../../security-profile/security-profile.service';
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ContextService } from '../../context.service';
-import { of } from 'rxjs';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { MatSelectModule } from '@angular/material';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material';
+import {of} from 'rxjs';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {SecurityProfileService} from '../../../security-profile/security-profile.service';
+import {ContextService} from '../../context.service';
+import {ContextInformationTabComponent} from './context-information-tab.component';
 
 // TODO fix tests
 xdescribe('ContextInformationTabComponent', () => {
@@ -21,20 +21,20 @@ xdescribe('ContextInformationTabComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule,
         MatSelectModule
       ],
-      declarations: [ ContextInformationTabComponent ],
+      declarations: [ContextInformationTabComponent],
       providers: [
         FormBuilder,
-        { provide: SecurityProfileService, useValue: securityProfileServiceMock },
-        { provide: ContextService, useValue: {} }
+        {provide: SecurityProfileService, useValue: securityProfileServiceMock},
+        {provide: ContextService, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -34,26 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 /* tslint:disable: max-classes-per-file directive-selector */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {EMPTY, of} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { DomainsInputModule } from '../../../../../identity/src/app/shared/domains-input';
-import { AgencyCreateComponent } from './agency-create.component';
-import { AgencyCreateValidators } from './agency-create.validators';
-import { AgencyService } from "../agency.service";
+import {DomainsInputModule} from '../../../../../identity/src/app/shared/domains-input';
+import {AgencyService} from '../agency.service';
+import {AgencyCreateComponent} from './agency-create.component';
+import {AgencyCreateValidators} from './agency-create.validators';
 
 const expectedAgency = {
   name: 'Random Agency',
@@ -66,8 +65,13 @@ let fixture: ComponentFixture<AgencyCreateComponent>;
 
 class Page {
 
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 
 }
 
@@ -78,10 +82,10 @@ describe('AgencyCreateComponent', () => {
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { create: of({}) });
+    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', {create: of({})});
     const agencyValidatorSpy = jasmine.createSpyObj(
       'AgencyCreateValidators',
-      { uniqueIdentifier: () => of(null), uniqueName: () => of(null) }
+      {uniqueIdentifier: () => of(null), uniqueName: () => of(null)}
     );
     TestBed.configureTestingModule({
       imports: [
@@ -99,15 +103,15 @@ describe('AgencyCreateComponent', () => {
         AgencyCreateComponent
       ],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: AgencyService, useValue: agencyServiceSpy },
-        { provide: AgencyCreateValidators, useValue: agencyValidatorSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: AgencyService, useValue: agencyServiceSpy},
+        {provide: AgencyCreateValidators, useValue: agencyValidatorSpy},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -170,20 +174,20 @@ describe('AgencyCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close.calls.count()).toBe(1);
     });
 
     it('should not call create()', () => {
-      const agencyService =  TestBed.get(AgencyService);
+      const agencyService = TestBed.get(AgencyService);
       component.onSubmit();
       expect(agencyService.create.calls.count()).toBe(0);
     });
 
     it('should call create()', () => {
-      const agencyService =  TestBed.get(AgencyService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const agencyService = TestBed.get(AgencyService);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.form.setValue(expectedAgency);
       component.onSubmit();
       expect(agencyService.create.calls.count()).toBe(1);

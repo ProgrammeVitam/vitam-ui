@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Context } from 'projects/vitamui-library/src/public-api';
-
-import { ContextService } from '../../context.service';
-import { map, filter, catchError, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Context} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import {SecurityProfileService} from "../../../security-profile/security-profile.service";
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Option} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
+
+import {ContextService} from '../../context.service';
+
+import {SecurityProfileService} from '../../../security-profile/security-profile.service';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -56,45 +56,52 @@ export class ContextInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  previousValue = (): Context => {
-    return this._context
-  };
 
-  submited: boolean = false;
+  submited = false;
 
   statusControl = new FormControl();
 
   securityProfiles: Option[] = [];
 
+  // tslint:disable-next-line:variable-name
+  private _context: Context;
+
+
+  // FIXME: Get list from common var ?
+  rules: Option[] = [
+    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
+    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
+    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
+    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
+    {key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: ''},
+    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
+  ];
+
+  previousValue = (): Context => {
+    return this._context;
+  }
+
   @Input()
+  // tslint:disable-next-line:no-shadowed-variable
   set context(Context: Context) {
     this._context = Context;
     this.resetForm(this.context);
     this.updated.emit(false);
   }
-  get context(): Context { return this._context; }
-  // tslint:disable-next-line:variable-name
-  private _context: Context;
+
+  get context(): Context {
+    return this._context;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
-  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -110,16 +117,16 @@ export class ContextInformationTabComponent {
 
     this.securityProfileService.getAll().subscribe(
       securityProfiles => {
-        this.securityProfiles = securityProfiles.map(x => ({ label: x.name, key: x.identifier }))
+        this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
       });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -131,13 +138,15 @@ export class ContextInformationTabComponent {
   prepareSubmit(): Observable<Context> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
@@ -145,12 +154,12 @@ export class ContextInformationTabComponent {
           this.context = response;
         }
       );
-    },() => {
+    }, () => {
       this.submited = false;
     });
   }
 
   resetForm(context: Context) {
-    this.form.reset(context, { emitEvent: false });
+    this.form.reset(context, {emitEvent: false});
   }
 }

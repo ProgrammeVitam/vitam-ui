@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
 
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SecurityProfileService} from "../security-profile.service";
-import {SecurityProfileCreateValidators} from "./security-profile-create.validators";
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfileCreateValidators} from './security-profile-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -54,7 +54,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
+  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -66,7 +66,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   private stepCount = 2;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<SecurityProfileCreateComponent>,
@@ -106,14 +106,16 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     // TODO : Create !
     this.securityProfileService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "none" });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "none" });
+        this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
   }

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {merge, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
-import { SecurisationService } from '../securisation.service';
+import {SecurisationService} from '../securisation.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -25,6 +25,7 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
@@ -34,6 +35,8 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
     this._filters = filters;
     this.filterChange.next(filters);
   }
+
+  // tslint:disable-next-line:variable-name
   private _filters: TraceabilityFilter;
 
   @Output() securisationClick = new EventEmitter<any>();
@@ -55,7 +58,8 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
 
   ngOnInit() {
 
-    this.securisationService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())))
+    this.securisationService.search(
+      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())))
       .subscribe((data: any[]) => {
         this.dataSource = data;
       });
@@ -74,7 +78,7 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   buildSecurisationCriteriaFromSearch() {
     const criteria: any = {};
     criteria.evTypeProc = 'TRACEABILITY';
-    if (this._searchText != undefined && this._searchText.length > 0) {
+    if (this._searchText !== undefined && this._searchText.length > 0) {
       criteria['#id'] = this._searchText;
     }
 
@@ -107,10 +111,14 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   }
 
   securisationStatus(securisation: any): string {
-    return (securisation.events != undefined && securisation.events.length != 0) ? securisation.events[securisation.events.length - 1].outcome : securisation.outcome;
+    return (securisation.events !== undefined && securisation.events.length !== 0) ?
+      securisation.events[securisation.events.length - 1].outcome :
+      securisation.outcome;
   }
 
   securisationMessage(securisation: any): string {
-    return (securisation.events != undefined && securisation.events.length != 0) ? securisation.events[securisation.events.length - 1].outMessage : securisation.outMessage;
+    return (securisation.events !== undefined && securisation.events.length !== 0) ?
+      securisation.events[securisation.events.length - 1].outMessage :
+      securisation.outMessage;
   }
 }

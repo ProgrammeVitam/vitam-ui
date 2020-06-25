@@ -34,17 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatMenuModule } from '@angular/material';
-import { RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {
+  MatDialogModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatSnackBarModule
+} from '@angular/material';
+import {RouterModule} from '@angular/router';
 import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-import { ContextCreateModule } from "./context-create";
-import { ContextRoutingModule } from "./context-routing.module";
-import { ContextListComponent } from "./context-list/context-list.component";
-import { ContextComponent } from "./context.component";
-import { ContextPreviewModule } from "./context-preview/context-preview.module";
-import {SharedModule} from "../shared/shared.module";
+
+import {SharedModule} from '../shared/shared.module';
+import {ContextCreateModule} from './context-create';
+import {ContextListComponent} from './context-list/context-list.component';
+import {ContextPreviewModule} from './context-preview/context-preview.module';
+import {ContextRoutingModule} from './context-routing.module';
+import {ContextComponent} from './context.component';
 
 @NgModule({
   imports: [
@@ -68,4 +75,5 @@ import {SharedModule} from "../shared/shared.module";
   ]
 
 })
-export class ContextModule { }
+export class ContextModule {
+}

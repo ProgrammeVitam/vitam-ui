@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { AccessContractService } from '../../access-contract.service';
-import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { of } from 'rxjs';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {AccessContractService} from '../../access-contract.service';
+import {AccessContractNodesTabComponent} from './access-contract-nodes-tab.component';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -14,7 +14,7 @@ describe('AccessContractNodesTabComponent', () => {
   const accessContractValue = {
     tenant: 0,
     version: 1,
-    description: 'desc', 
+    description: 'desc',
     status: 'ACTIVE',
     id: 'vitam_id',
     name: 'Name',
@@ -39,19 +39,19 @@ describe('AccessContractNodesTabComponent', () => {
   beforeEach(async(() => {
 
     const accessContractServiceMock = {
-      getAll: ()=> of([])
+      getAll: () => of([])
     };
 
     TestBed.configureTestingModule({
-      declarations: [ AccessContractNodesTabComponent ],
+      declarations: [AccessContractNodesTabComponent],
       providers: [
-        { provide: MatDialog, useValue: { } },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: SearchUnitApiService, useValue: { } }
+        {provide: MatDialog, useValue: {}},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: SearchUnitApiService, useValue: {}}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

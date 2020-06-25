@@ -1,16 +1,17 @@
-import { of, Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
 
-import { HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import {HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 
-import { SearchUnitApiService } from "../../api/search-unit-api.service";
-import { Unit } from "../../models/unit.interface";
-import { DescriptionLevel } from "../../models/description-level.enum";
+import {SearchUnitApiService} from '../../api/search-unit-api.service';
 
-import { getKeywordValue } from '../../utils/keyword.util';
-import { FileType } from '../../models/file-type.enum';
-import { Node } from '../../models/node.interface';
+import {DescriptionLevel} from '../../models/description-level.enum';
+import {FileType} from '../../models/file-type.enum';
+import {Node} from '../../models/node.interface';
+import {Unit} from '../../models/unit.interface';
+
+import {getKeywordValue} from '../../utils/keyword.util';
 
 export enum ExpandLevel {
   NONE,
@@ -35,7 +36,8 @@ export class FilingPlanService {
   constructor(
     private searchUnitApi: SearchUnitApiService,
     @Inject(LOCALE_ID) private locale: string
-  ) { }
+  ) {
+  }
 
   get pending(): boolean {
     return this._pending > 0;
@@ -43,11 +45,14 @@ export class FilingPlanService {
 
   public loadTree(tenantIdentifier: number, accessContractId: string, idPrefix: string): Observable<Node[]> {
     this._pending++;
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContractId });
+    const headers = new HttpHeaders({
+      'X-Tenant-Id': tenantIdentifier.toString(),
+      'X-Access-Contract-Id': accessContractId
+    });
 
     return this.searchUnitApi.getFilingPlan(headers).pipe(
       catchError(() => {
-        return of({ $hits: null, $results: [] })
+        return of({$hits: null, $results: []});
       }),
       map((response) => response.$results),
       tap(() => {
@@ -82,21 +87,21 @@ export class FilingPlanService {
         (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
-          const outNode: Node = {
-            id: idPrefix + '-' + unit['#id'],
-            label: unit.Title,
-            type: this.getFileTypeFromUnit(unit),
-            children: [],
-            ingestContractIdentifier: getKeywordValue(unit, 'ingest_contract'),
-            vitamId: unit['#id'],
-            parents: parentNode? [parentNode]: [],
-            checked: false
-            // OriginatingAgencyArchiveUnitIdentifier: [unit.OriginatingAgencyArchiveUnitIdentifier]
-          };
+        const outNode: Node = {
+          id: idPrefix + '-' + unit['#id'],
+          label: unit.Title,
+          type: this.getFileTypeFromUnit(unit),
+          children: [],
+          ingestContractIdentifier: getKeywordValue(unit, 'ingest_contract'),
+          vitamId: unit['#id'],
+          parents: parentNode ? [parentNode] : [],
+          checked: false
+          // OriginatingAgencyArchiveUnitIdentifier: [unit.OriginatingAgencyArchiveUnitIdentifier]
+        };
 
-          outNode.children = this.getNestedChildren(arr, idPrefix, outNode).sort(byTitle(this.locale));
+        outNode.children = this.getNestedChildren(arr, idPrefix, outNode).sort(byTitle(this.locale));
 
-          out.push(outNode);
+        out.push(outNode);
       }
     });
 

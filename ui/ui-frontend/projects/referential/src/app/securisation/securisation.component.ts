@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material';
+import {ActivatedRoute} from '@angular/router';
+import {Event} from 'projects/vitamui-library/src/public-api';
 import {GlobalEventService, Option, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
-import { Event } from 'projects/vitamui-library/src/public-api';
 
-import { SecurisationListComponent } from './securisation-list/securisation-list.component';
+import {SecurisationListComponent} from './securisation-list/securisation-list.component';
 
 @Component({
   selector: 'app-securisation',
@@ -25,10 +25,13 @@ export class SecurisationComponent extends SidenavPage<Event> implements OnInit 
     {key: 'STP_STORAGE_SECURISATION', label: 'Journal des écritures'}
   ];
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(SecurisationListComponent, { static: true }) securisationListComponent: SecurisationListComponent;
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(SecurisationListComponent, {static: true}) securisationListComponent: SecurisationListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService,
+  constructor(
+    public dialog: MatDialog,
+    route: ActivatedRoute,
+    globalEventService: GlobalEventService,
     private formBuilder: FormBuilder) {
     super(route, globalEventService);
 
@@ -39,18 +42,18 @@ export class SecurisationComponent extends SidenavPage<Event> implements OnInit 
     });
 
     this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
-      this.filters['startDate'] = value;
+      this.filters.startDate = value;
       this.securisationListComponent.filters = this.filters;
     });
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe(value => {
       if (value) {
         value.setDate(value.getDate() + 1);
       }
-      this.filters['endDate'] = value;
+      this.filters.endDate = value;
       this.securisationListComponent.filters = this.filters;
     });
     this.dateRangeFilterForm.controls.types.valueChanges.subscribe(value => {
-      this.filters['types'] = value;
+      this.filters.types = value;
       this.securisationListComponent.filters = this.filters;
     });
   }
@@ -61,9 +64,9 @@ export class SecurisationComponent extends SidenavPage<Event> implements OnInit 
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
@@ -74,9 +77,10 @@ export class SecurisationComponent extends SidenavPage<Event> implements OnInit 
     this.searchBar.reset();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showSecurisation(item: Event) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 }

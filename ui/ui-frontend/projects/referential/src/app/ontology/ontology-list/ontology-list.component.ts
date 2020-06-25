@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-
-import { Ontology } from '../../../../../vitamui-library/src/lib/models/ontology';
-import { OntologyService } from '../ontology.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {MatDialog} from "@angular/material/dialog";
+import {merge, Subject} from 'rxjs';
+import {debounceTime, filter} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+
+import {Ontology} from '../../../../../vitamui-library/src/lib/models/ontology';
+import {OntologyService} from '../ontology.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -22,6 +22,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
@@ -44,9 +45,10 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     this.pending = true;
     this.ontologyService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: Ontology[]) => {
-        this.dataSource = data;
-      },
-        () => { },
+          this.dataSource = data;
+        },
+        () => {
+        },
         () => this.pending = false);
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange)
@@ -81,9 +83,9 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   deleteOntologyDialog(ontology: Ontology) {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
 
-    dialog.componentInstance.objectType = "ontologie";
+    dialog.componentInstance.objectType = 'ontologie';
     dialog.componentInstance.objectName = ontology.identifier;
 
     dialog.afterClosed().pipe(
@@ -95,7 +97,6 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
         }
       );
     });
-
 
 
   }

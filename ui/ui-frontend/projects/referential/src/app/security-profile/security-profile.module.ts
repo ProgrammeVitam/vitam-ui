@@ -1,14 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatMenuModule } from '@angular/material';
-import { RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {
+  MatDialogModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatSnackBarModule
+} from '@angular/material';
+import {RouterModule} from '@angular/router';
 import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-import { SecurityProfileCreateModule } from "./security-profile-create";
-import { SecurityProfileRoutingModule } from "./security-profile-routing.module";
-import { SecurityProfileListComponent } from "./security-profile-list/security-profile-list.component";
-import { SecurityProfileComponent } from "./security-profile.component";
-import { SecurityProfilePreviewModule } from "./security-profile-preview/security-profile-preview.module";
-import { SharedModule } from "../shared/shared.module";
+import {SharedModule} from '../shared/shared.module';
+import {SecurityProfileCreateModule} from './security-profile-create';
+import {SecurityProfileListComponent} from './security-profile-list/security-profile-list.component';
+import {SecurityProfilePreviewModule} from './security-profile-preview/security-profile-preview.module';
+import {SecurityProfileRoutingModule} from './security-profile-routing.module';
+import {SecurityProfileComponent} from './security-profile.component';
 
 @NgModule({
   imports: [
@@ -32,4 +38,5 @@ import { SharedModule } from "../shared/shared.module";
   ]
 
 })
-export class SecurityProfileModule { }
+export class SecurityProfileModule {
+}

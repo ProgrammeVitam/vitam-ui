@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+/* tslint:disable:no-use-before-declare component-selector */
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,18 +57,31 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input() maxlength: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;
+
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get required(): boolean {
+    return this._required;
+  }
+
+  set required(value: boolean) {
+    this._required = coerceBooleanProperty(value);
+  }
+
   // tslint:disable-next-line:variable-name
   private _required = false;
 
   @Input()
-  get disabled(): boolean { return this._disabled; }
-  set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+  }
+
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('input', { static: false }) private input: ElementRef<HTMLInputElement>;
+  @ViewChild('input', {static: false}) private input: ElementRef<HTMLInputElement>;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
@@ -76,11 +89,15 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input()
   value: string | number;
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange = (_: any) => {
+  }
+  onTouched = () => {
+  }
 
   ngOnInit(): void {
-    if (this.value != null) this.writeValue(this.value);
+    if (this.value != null) {
+      this.writeValue(this.value);
+    }
   }
 
   @HostListener('click')
@@ -113,10 +130,11 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   }
 
   onChangeValue(value: number | string) {
-    if (this.type === "number")
+    if (this.type === 'number') {
       this.onNumberChange(value as number);
-    else
+    } else {
       this.onTextChange(value as string);
+    }
   }
 
   onFocus() {

@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
-import { Context } from "../../../../vitamui-library/src/lib/models/context";
-import { ContextApiService } from "../core/api/context-api.service";
-import { tap } from "rxjs/operators";
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {Context} from '../../../../vitamui-library/src/lib/models/context';
+import {ContextApiService} from '../core/api/context-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +82,7 @@ export class ContextService extends SearchService<Context> {
           (response: Context) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'contextCreate', name: response.identifier },
+              data: {type: 'contextCreate', name: response.identifier},
               duration: 10000
             });
           },
@@ -105,7 +105,7 @@ export class ContextService extends SearchService<Context> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'contextUpdate', name: response.identifier }
+              data: {type: 'contextUpdate', name: response.identifier}
             });
           },
           (error) => {

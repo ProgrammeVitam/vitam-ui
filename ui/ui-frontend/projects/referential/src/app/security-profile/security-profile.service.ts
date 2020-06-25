@@ -1,12 +1,12 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
-import { SecurityProfile } from "projects/vitamui-library/src/lib/models/security-profile";
-import { SecurityProfileApiService } from "../core/api/security-profile-api.service";
-import { tap } from "rxjs/operators";
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
+import {SecurityProfileApiService} from '../core/api/security-profile-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
   }
 
   getAll(): Observable<SecurityProfile[]> {
-    let params = new HttpParams().set('embedded', 'ALL');
+    const params = new HttpParams().set('embedded', 'ALL');
     return this.securityProfileApiService.getAllByParams(params);
   }
 
@@ -51,7 +51,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
           (response: SecurityProfile) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'securityProfileCreate', name: response.identifier },
+              data: {type: 'securityProfileCreate', name: response.identifier},
               duration: 10000
             });
           },
@@ -74,7 +74,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'securityProfileUpdate', name: response.identifier }
+              data: {type: 'securityProfileUpdate', name: response.identifier}
             });
           },
           (error) => {
@@ -93,7 +93,7 @@ export class SecurityProfileService extends SearchService<SecurityProfile> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-            data: { type: 'securityProfileDelete', name: profile.identifier }
+            data: {type: 'securityProfileDelete', name: profile.identifier}
           });
         },
         (error) => {

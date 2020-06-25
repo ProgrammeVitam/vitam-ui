@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {AccessContract, Event} from 'projects/vitamui-library/src/public-api';
 
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { AuditService } from '../audit.service';
-import {ActivatedRoute} from "@angular/router";
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {AuditService} from '../audit.service';
 
 @Component({
   selector: 'app-audit-preview',
@@ -54,7 +54,8 @@ export class AuditPreviewComponent implements OnInit {
   accessContracts: AccessContract[];
   accessContractId: string;
 
-  constructor(private auditService: AuditService, private accessContractService: AccessContractService, private route: ActivatedRoute) { }
+  constructor(private auditService: AuditService, private accessContractService: AccessContractService, private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

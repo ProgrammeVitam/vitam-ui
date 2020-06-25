@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AuditPreviewComponent } from './audit-preview.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { AuditService } from '../audit.service';
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { ActivatedRoute } from "@angular/router";
-import { of } from 'rxjs';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {AuditService} from '../audit.service';
+import {AuditPreviewComponent} from './audit-preview.component';
 
 describe('AuditPreviewComponent', () => {
   let component: AuditPreviewComponent;
@@ -13,22 +13,22 @@ describe('AuditPreviewComponent', () => {
 
   beforeEach(async(() => {
     const accessContractServiceMock = {
-      getAllForTenant: ()=> of([])
+      getAllForTenant: () => of([])
     };
     const activatedRouteMock = {
-      params: of( { tenantIdentifier: 1 } )
+      params: of({tenantIdentifier: 1})
     };
 
     TestBed.configureTestingModule({
-      declarations: [ AuditPreviewComponent ],
+      declarations: [AuditPreviewComponent],
       providers: [
-        { provide: AuditService, useValue: { } },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
+        {provide: AuditService, useValue: {}},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: ActivatedRoute, useValue: activatedRouteMock}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
-import { BASE_URL } from 'ui-frontend-common';
-import { SearchResponse } from '../models/search-response.interface';
+import {BASE_URL} from 'ui-frontend-common';
+import {SearchResponse} from '../models/search-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +16,16 @@ export class SearchUnitApiService {
     this.apiUrl = this.baseUrl + '/search';
   }
 
-/*  get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
-  } */
+  /*  get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
+      return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
+    } */
 
   getByDsl(dsl: any, headers?: HttpHeaders): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/units/dsl', dsl, { headers });
+    return this.http.post<any>(this.apiUrl + '/units/dsl', dsl, {headers});
   }
 
   getFilingPlan(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingplan', { headers });
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingplan', {headers});
   }
 
 }

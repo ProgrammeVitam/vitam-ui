@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Route, RouterModule } from '@angular/router';
-import { AuthGuard, AppGuard } from 'ui-frontend-common';
-import { FileFormatComponent } from "./file-format.component";
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {Route, RouterModule} from '@angular/router';
+import {AppGuard, AuthGuard} from 'ui-frontend-common';
+import {FileFormatComponent} from './file-format.component';
 
 const routes: Route[] = [
   {
     path: '',
     component: FileFormatComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'FILE_FORMATS_APP' }
+    data: {appId: 'FILE_FORMATS_APP'}
   }
 ];
 
@@ -56,4 +56,5 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
   ]
 })
-export class FileFormatRoutingModule { }
+export class FileFormatRoutingModule {
+}

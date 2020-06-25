@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {AccessContract, Event} from 'projects/vitamui-library/src/public-api';
 
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { SecurisationService } from '../securisation.service';
-import {ActivatedRoute} from "@angular/router";
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {SecurisationService} from '../securisation.service';
 
 @Component({
   selector: 'app-securisation-preview',
@@ -18,7 +18,11 @@ export class SecurisationPreviewComponent implements OnInit {
   accessContracts: AccessContract[];
   accessContractId: string;
 
-  constructor(private securisationService: SecurisationService, private accessContractService: AccessContractService, private route: ActivatedRoute) { }
+  constructor(
+    private securisationService: SecurisationService,
+    private accessContractService: AccessContractService,
+    private route: ActivatedRoute) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

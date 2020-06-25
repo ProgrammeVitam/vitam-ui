@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { diff, Option } from 'ui-frontend-common';
-import { Observable, of } from "rxjs";
-import { catchError, filter, map, switchMap } from "rxjs/operators";
-import { extend, isEmpty } from "underscore";
-import { OntologyService } from "../../ontology.service";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Ontology} from 'projects/vitamui-library/src/public-api';
+import {Observable, of} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Option} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
+import {OntologyService} from '../../ontology.service';
 
 @Component({
   selector: 'app-ontology-information-tab',
@@ -16,13 +16,33 @@ export class OntologyInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
 
-  isInternal: boolean = true;
+  isInternal = true;
+
+  submited = false;
+
+  // FIXME: Get list from common var ?
+  types: Option[] = [
+    {key: 'DATE', label: 'Date', info: ''},
+    {key: 'TEXT', label: 'Texte', info: ''},
+    {key: 'KEYWORD', label: 'Mot clé', info: ''},
+    {key: 'BOOLEAN', label: 'Boolean', info: ''},
+    {key: 'LONG', label: 'Long', info: ''},
+    {key: 'DOUBLE', label: 'Double', info: ''},
+    {key: 'ENUM', label: 'Énumérer', info: ''},
+    {key: 'GEO_POINT', label: 'Point Géographique', info: ''}
+  ];
+
+  // FIXME: Get list from common var ?
+  collections: Option[] = [
+    {key: 'Unit', label: 'Unité Archivistique', info: ''},
+    {key: 'ObjectGroup', label: 'Groupe d\'objet', info: ''}
+  ];
 
   @Input()
   set inputOntology(ontology: Ontology) {
     this._inputOntology = ontology;
 
-    this.isInternal = ontology.origin === "INTERNAL";
+    this.isInternal = ontology.origin === 'INTERNAL';
 
     if (!ontology.description) {
       this._inputOntology.description = '';
@@ -31,43 +51,27 @@ export class OntologyInformationTabComponent implements OnInit {
     this.resetForm(this.inputOntology);
     this.updated.emit(false);
   }
-  get inputOntology(): Ontology { return this._inputOntology; }
+
+  get inputOntology(): Ontology {
+    return this._inputOntology;
+  }
+
   // tslint:disable-next-line:variable-name
   private _inputOntology: Ontology;
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
-  submited: boolean = false;
-
   previousValue = (): Ontology => {
     return this._inputOntology;
-  };
-
-  // FIXME: Get list from common var ?
-  types: Option[] = [
-    { key: 'DATE', label: 'Date', info: '' },
-    { key: 'TEXT', label: 'Texte', info: '' },
-    { key: 'KEYWORD', label: 'Mot clé', info: '' },
-    { key: 'BOOLEAN', label: 'Boolean', info: '' },
-    { key: 'LONG', label: 'Long', info: '' },
-    { key: 'DOUBLE', label: 'Double', info: '' },
-    { key: 'ENUM', label: 'Énumérer', info: '' },
-    { key: 'GEO_POINT', label: 'Point Géographique', info: '' }
-  ];
-
-  // FIXME: Get list from common var ?
-  collections: Option[] = [
-    { key: 'Unit', label: 'Unité Archivistique', info: ''},
-    { key: 'ObjectGroup', label: 'Groupe d\'objet', info: ''}
-  ];
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -80,12 +84,12 @@ export class OntologyInformationTabComponent implements OnInit {
       collections: [null, Validators.required],
       description: [null, Validators.required]
     });
-    this.form.disable({ emitEvent: false });
+    this.form.disable({emitEvent: false});
   }
 
   ngOnInit(): void {
     if (this._inputOntology.origin === 'EXTERNAL') {
-      this.form.enable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
     }
   }
 
@@ -99,7 +103,7 @@ export class OntologyInformationTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -107,7 +111,7 @@ export class OntologyInformationTabComponent implements OnInit {
   prepareSubmit(): Observable<Ontology> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.ontologyService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
@@ -126,6 +130,6 @@ export class OntologyInformationTabComponent implements OnInit {
   }
 
   resetForm(ontology: Ontology) {
-    this.form.reset(ontology, { emitEvent: false })
+    this.form.reset(ontology, {emitEvent: false});
   }
 }

@@ -1,25 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+  MatDatepickerModule,
   MatDialogModule,
   MatMenuModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
-  MatDatepickerModule,
-  MatSelectModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {RouterModule} from '@angular/router';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
-import { ProbativeValueRoutingModule } from './probative-value-routing.module';
-import { ProbativeValueComponent } from './probative-value.component';
-import { ProbativeValueListModule } from './probative-value-list/probative-value-list.module';
-import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProbativeValuePreviewModule } from "./probative-value-preview/probative-value-preview.module";
-
+import {SharedModule} from '../shared/shared.module';
+import {ProbativeValueCreateModule} from './probative-value-create/probative-value-create.module';
+import {ProbativeValueListModule} from './probative-value-list/probative-value-list.module';
+import {ProbativeValuePreviewModule} from './probative-value-preview/probative-value-preview.module';
+import {ProbativeValueRoutingModule} from './probative-value-routing.module';
+import {ProbativeValueComponent} from './probative-value.component';
 
 
 @NgModule({
@@ -46,4 +45,5 @@ import { ProbativeValuePreviewModule } from "./probative-value-preview/probative
     ProbativeValueComponent
   ]
 })
-export class ProbativeValueModule { }
+export class ProbativeValueModule {
+}

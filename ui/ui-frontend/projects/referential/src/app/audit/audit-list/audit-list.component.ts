@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {merge, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
-import { AuditService } from '../audit.service';
+import {AuditService} from '../audit.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -61,6 +61,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
@@ -70,6 +71,8 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     this._filters = filters;
     this.filterChange.next(filters);
   }
+
+  // tslint:disable-next-line:variable-name
   private _filters: AuditFilters;
 
   @Output() auditClick = new EventEmitter<any>();
@@ -90,7 +93,8 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   ngOnInit() {
-    this.auditService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildAuditCriteriaFromSearch())))
+    this.auditService.search(
+      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(this.buildAuditCriteriaFromSearch())))
       .subscribe((data: any[]) => {
         this.dataSource = data;
       });
@@ -108,7 +112,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   buildAuditCriteriaFromSearch() {
     const criteria: any = {};
     criteria.evTypeProc = 'AUDIT';
-    if (this._searchText != undefined && this._searchText.length > 0) {
+    if (this._searchText !== undefined && this._searchText.length > 0) {
       criteria['#id'] = this._searchText;
     }
 
@@ -142,10 +146,10 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   auditStatus(audit: any): string {
-    return (audit.events != undefined && audit.events.length != 0) ? audit.events[audit.events.length - 1].outcome : audit.outcome;
+    return (audit.events !== undefined && audit.events.length !== 0) ? audit.events[audit.events.length - 1].outcome : audit.outcome;
   }
 
   auditMessage(audit: any): string {
-    return (audit.events != undefined && audit.events.length != 0) ? audit.events[audit.events.length - 1].outMessage : audit.outMessage;
+    return (audit.events !== undefined && audit.events.length !== 0) ? audit.events[audit.events.length - 1].outMessage : audit.outMessage;
   }
 }

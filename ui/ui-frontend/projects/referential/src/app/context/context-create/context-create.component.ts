@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ContextService} from "../context.service";
-import {ContextCreateValidators} from "./context-create.validators";
-import {SecurityProfileService} from "../../security-profile/security-profile.service";
+import {SecurityProfileService} from '../../security-profile/security-profile.service';
+import {ContextService} from '../context.service';
+import {ContextCreateValidators} from './context-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -55,7 +55,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
+  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -67,7 +67,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   private stepCount = 1;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   securityProfiles: Option[] = [];
 
@@ -94,12 +94,12 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       permissions: [null]
     });
 
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      this.form.controls['identifier'].setValue(value);
+    this.form.controls.name.valueChanges.subscribe((value) => {
+      this.form.controls.identifier.setValue(value);
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.form.controls.enableControl.valueChanges.subscribe((value: boolean) => {
@@ -108,7 +108,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
     this.securityProfileService.getAll().subscribe(
       securityProfiles => {
-        this.securityProfiles = securityProfiles.map(x => ({ label: x.name, key: x.identifier }))
+        this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
       });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -127,14 +127,16 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
 
     this.contextService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "none" });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "none" });
+        this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
   }

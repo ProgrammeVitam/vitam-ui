@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AgencyInformationTabComponent } from './agency-information-tab.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { AgencyService } from '../../agency.service';
-import { FormBuilder } from '@angular/forms';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {AgencyService} from '../../agency.service';
+import {AgencyInformationTabComponent} from './agency-information-tab.component';
 
 describe('AgencyInformationTabComponent', () => {
   let component: AgencyInformationTabComponent;
@@ -11,14 +11,14 @@ describe('AgencyInformationTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AgencyInformationTabComponent ],
+      declarations: [AgencyInformationTabComponent],
       providers: [
         FormBuilder,
-        { provide : AgencyService, useValue: { }}
+        {provide: AgencyService, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

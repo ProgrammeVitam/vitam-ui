@@ -1,12 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatInputModule } from '@angular/material';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatInputModule} from '@angular/material';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { CardGroupModule } from '../card-group/card-group.module';
-import { VitamUIInputModule } from '../vitamui-input/vitamui-input.module';
-import { CardSelectComponent } from './card-select.component';
-
+import {CardGroupModule} from '../card-group/card-group.module';
+import {VitamUIInputModule} from '../vitamui-input/vitamui-input.module';
+import {CardSelectComponent} from './card-select.component';
 
 
 @NgModule({
@@ -24,4 +23,5 @@ import { CardSelectComponent } from './card-select.component';
     CardSelectComponent
   ]
 })
-export class CardSelectModule { }
+export class CardSelectModule {
+}

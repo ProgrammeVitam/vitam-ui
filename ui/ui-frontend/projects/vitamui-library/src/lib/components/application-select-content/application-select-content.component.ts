@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,8 +35,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Application, AuthService } from "ui-frontend-common";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Application, AuthService} from 'ui-frontend-common';
 
 @Component({
   selector: 'vitamui-common-application-select-content-updated',
@@ -45,6 +46,7 @@ import { Application, AuthService } from "ui-frontend-common";
 export class UpdatedApplicationSelectContentComponent {
 
   @Input() isModalMenu: boolean;
+
   @Input()
   set applications(applications: Application[]) {
     this._applications = applications;
@@ -55,15 +57,21 @@ export class UpdatedApplicationSelectContentComponent {
     this.settingsApplications = sortedApps.filter((app) => app.category === 'settings');
     this.referentialApplications = sortedApps.filter((app) => app.category === 'referential');
     this.opauditApplications = sortedApps.filter((app) => app.category === 'opaudit');
-    this.techAdminApplications = sortedApps.filter((app) => app.category === 'techadmin')
+    this.techAdminApplications = sortedApps.filter((app) => app.category === 'techadmin');
   }
-  get applications(): Application[] { return this._applications; }
+
+  get applications(): Application[] {
+    return this._applications;
+  }
+
   // tslint:disable-next-line:variable-name
   private _applications: Application[];
 
   @Output() applicationSelected = new EventEmitter<string>();
 
-  get target(): string { return '_blank'; }
+  get target(): string {
+    return '_blank';
+  }
 
   userApplications: Application[];
   settingsApplications: Application[];
@@ -72,7 +80,8 @@ export class UpdatedApplicationSelectContentComponent {
   opauditApplications: Application[];
   techAdminApplications: Application[];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   checkTenantNumberByApp(apps: Application[]) {
     apps.forEach((application) => {

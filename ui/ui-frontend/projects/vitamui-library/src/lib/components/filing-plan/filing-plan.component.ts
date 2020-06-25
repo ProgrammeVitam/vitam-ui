@@ -1,11 +1,12 @@
+/* tslint:disable:no-use-before-declare component-selector */
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
 
-import {FilingPlanMode, FilingPlanService} from './filing-plan.service';
 import {Node} from '../../models/node.interface';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {FilingPlanMode, FilingPlanService} from './filing-plan.service';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -17,7 +18,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   selector: 'vitamui-library-filing-plan',
   templateUrl: './filing-plan.component.html',
   styleUrls: ['./filing-plan.component.scss'],
-  providers: [ NODE_SELECT_VALUE_ACCESSOR ]
+  providers: [NODE_SELECT_VALUE_ACCESSOR]
 })
 export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChanges {
 
@@ -31,12 +32,17 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     excluded: []
   };
 
-  onChange = (_x: { included: string[], excluded: string[] }) => { };
-  onTouched= () => {};
   disabled: boolean;
 
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
+
+  // tslint:disable-next-line:variable-name
+  onChange = (_x: { included: string[], excluded: string[] }) => {
+  }
+
+  onTouched = () => {
+  }
 
   constructor(public filingPlanService: FilingPlanService) {
     console.log('Construct component: ', this.mode, this.accessContract);
@@ -54,11 +60,11 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
       });
   }
 
-	ngOnInit() {
+  ngOnInit() {
     this.initFiningTree();
-	}
+  }
 
-	ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
       this.initFiningTree();
     }
@@ -103,7 +109,10 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
 
       if (!nodeChecked || childDisabled) {
         parentNode.disabledChild = true;
-      } else if (nodeChecked && !childDisabled && parentNode.disabledChild && !parentNode.children.find(child => !child.checked || childDisabled)) {
+      } else if (nodeChecked
+        && !childDisabled
+        && parentNode.disabledChild
+        && !parentNode.children.find(child => !child.checked || childDisabled)) {
         parentNode.disabledChild = false;
       }
 
@@ -174,11 +183,11 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     this.onChange(this.selectedNodes);
   }
 
-  initCheckedNodes(obj: {included: string[], excluded: string[]}, nodes: Node[], parentChecked: boolean = false) {
+  initCheckedNodes(obj: { included: string[], excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
     console.log('init Component: ', obj);
     console.log('nodes: ', nodes);
     console.log('mode: ', this.mode);
-    if (!obj || !nodes) return;
+    if (!obj || !nodes) { return; }
 
     let shouldStop = false;
 
@@ -221,7 +230,7 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit, OnChan
     return shouldStop;
   }
 
-  writeValue(obj: {included: string[], excluded: string[]}): void {
+  writeValue(obj: { included: string[], excluded: string[] }): void {
     this.initCheckedNodes(obj, this.nestedDataSource.data);
     this.selectedNodes = obj;
   }

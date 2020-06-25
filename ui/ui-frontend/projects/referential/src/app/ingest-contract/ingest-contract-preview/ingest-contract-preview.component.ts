@@ -1,12 +1,12 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ConfirmActionComponent, IngestContract} from 'projects/vitamui-library/src/public-api';
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {IngestContractInformationTabComponent} from "./ingest-contract-information-tab/ingest-contract-information-tab.component";
-import {IngestContractFormatTabComponent} from "./ingest-contract-format-tab/ingest-contract-format-tab.component";
-import {IngestContractObjectTabComponent} from "./ingest-contract-object-tab/ingest-contract-object-tab.component";
-import {MatDialog} from "@angular/material/dialog";
-import {IngestContractService} from "../ingest-contract.service";
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
+import {IngestContractService} from '../ingest-contract.service';
+import {IngestContractFormatTabComponent} from './ingest-contract-format-tab/ingest-contract-format-tab.component';
+import {IngestContractInformationTabComponent} from './ingest-contract-information-tab/ingest-contract-information-tab.component';
+import {IngestContractObjectTabComponent} from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 
 @Component({
   selector: 'app-ingest-contract-preview',
@@ -38,12 +38,13 @@ export class IngestContractPreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) { }
+  constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) {
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.formatsTab;
@@ -58,7 +59,7 @@ export class IngestContractPreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<IngestContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.ingestContractService.get(this.ingestContract.identifier).subscribe(
           response => {
             this.ingestContract = response;
@@ -80,10 +81,10 @@ export class IngestContractPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   filterEvents(event: any): boolean {
     return event.outDetail && (
@@ -91,6 +92,7 @@ export class IngestContractPreviewComponent implements OnInit {
       event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST_CONTRACT')
     );
   }
+
   async emitClose() {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();

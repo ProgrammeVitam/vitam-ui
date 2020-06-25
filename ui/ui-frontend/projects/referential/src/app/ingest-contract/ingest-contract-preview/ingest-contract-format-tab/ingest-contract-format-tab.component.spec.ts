@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {of} from 'rxjs';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { IngestContractFormatTabComponent } from './ingest-contract-format-tab.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import {FileFormatService} from '../../../file-format/file-format.service';
+import {IngestContractService} from '../../ingest-contract.service';
+import {IngestContractFormatTabComponent} from './ingest-contract-format-tab.component';
 
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { IngestContractService } from '../../ingest-contract.service';
-import { FileFormatService } from '../../../file-format/file-format.service';
-import { of } from 'rxjs';
 
 describe('IngestContractFormatTabComponent', () => {
   let component: IngestContractFormatTabComponent;
@@ -16,7 +16,7 @@ describe('IngestContractFormatTabComponent', () => {
   const ingestContractValue = {
     tenant: 0,
     version: 1,
-    description: 'desc', 
+    description: 'desc',
     status: 'ACTIVE',
     id: 'vitam_id',
     name: 'Name',
@@ -27,20 +27,20 @@ describe('IngestContractFormatTabComponent', () => {
     lastUpdate: '01-01-20',
     activationDate: '01-01-20',
     deactivationDate: '01-01-20',
-    checkParentLink: '', 
-    linkParentId: '', 
+    checkParentLink: '',
+    linkParentId: '',
     checkParentId: [''],
-    masterMandatory : true,
-    formatUnidentifiedAuthorized : true, 
-    everyFormatType: true, 
-    formatType: [''], 
-    archiveProfiles : [''], 
+    masterMandatory: true,
+    formatUnidentifiedAuthorized: true,
+    everyFormatType: true,
+    formatType: [''],
+    archiveProfiles: [''],
     managementContractId: 'MC-000001'
-  }
+  };
 
   beforeEach(async(() => {
     const fileFormatServiceMock = {
-      getAllForTenant: ()=> of([])
+      getAllForTenant: () => of([])
     };
     TestBed.configureTestingModule({
       imports:
@@ -48,14 +48,14 @@ describe('IngestContractFormatTabComponent', () => {
           ReactiveFormsModule,
           VitamUICommonTestModule
         ],
-      declarations: [ IngestContractFormatTabComponent ],
-      providers:[
-        { provide:IngestContractService, useValue:{} },
-        { provide:FileFormatService, useValue:fileFormatServiceMock }
+      declarations: [IngestContractFormatTabComponent],
+      providers: [
+        {provide: IngestContractService, useValue: {}},
+        {provide: FileFormatService, useValue: fileFormatServiceMock}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

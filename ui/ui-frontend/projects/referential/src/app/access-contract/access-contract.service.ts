@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from '@angular/material';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService} from 'ui-frontend-common';
 
-import { AccessContractApiService } from '../core/api/access-contract-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {AccessContractApiService} from '../core/api/access-contract-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -53,8 +53,8 @@ export class AccessContractService extends SearchService<AccessContract> {
   updated = new Subject<AccessContract>();
 
   constructor(private accessContractApi: AccessContractApiService,
-    private snackBar: MatSnackBar,
-    http: HttpClient) {
+              private snackBar: MatSnackBar,
+              http: HttpClient) {
     super(http, accessContractApi, 'ALL');
   }
 
@@ -63,19 +63,19 @@ export class AccessContractService extends SearchService<AccessContract> {
   }
 
   getAll(): Observable<AccessContract[]> {
-    let params = new HttpParams().set('embedded', 'ALL');
+    const params = new HttpParams().set('embedded', 'ALL');
     return this.accessContractApi.getAllByParams(params);
   }
 
   getAllForTenant(tenantId: string): Observable<AccessContract[]> {
     // TODO: Cgeck add of tenantId
-    let params = new HttpParams().set('embedded', 'ALL');
-    let headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
     return this.accessContractApi.getAllByParams(params, headers);
   }
 
   exists(name: string): Observable<boolean> {
-    let accessContract = { name: name, identifier: name } as AccessContract;
+    const accessContract = {name, identifier: name} as AccessContract;
     return this.accessContractApi.check(accessContract, this.headers);
   }
 
@@ -88,7 +88,7 @@ export class AccessContractService extends SearchService<AccessContract> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'accessContractUpdate', name: response.name }
+              data: {type: 'accessContractUpdate', name: response.name}
             });
           },
           (error) => {
@@ -108,7 +108,7 @@ export class AccessContractService extends SearchService<AccessContract> {
           (response: AccessContract) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'accessContractCreate', name: response.name },
+              data: {type: 'accessContractCreate', name: response.name},
               duration: 10000
             });
           },
@@ -123,6 +123,6 @@ export class AccessContractService extends SearchService<AccessContract> {
   }
 
   setTenantId(tenantIdentifier: number) {
-    this.headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString()});
+    this.headers = new HttpHeaders({'X-Tenant-Id': tenantIdentifier.toString()});
   }
 }

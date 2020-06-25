@@ -1,11 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatProgressSpinnerModule } from '@angular/material';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BASE_URL } from 'ui-frontend-common';
-import { ContextListComponent } from "./context-list.component";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatProgressSpinnerModule} from '@angular/material';
+import {BASE_URL} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {ContextListComponent} from './context-list.component';
 
 // TODO fix Tests
 xdescribe('ContextListComponent', () => {
@@ -21,7 +20,7 @@ xdescribe('ContextListComponent', () => {
         HttpClientTestingModule
       ],
       providers: [
-        {provide: BASE_URL, useValue: ""}
+        {provide: BASE_URL, useValue: ''}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDatepickerModule,
   MatDialogModule,
@@ -10,14 +10,14 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {RouterModule} from '@angular/router';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
-import { SecurisationListModule } from './securisation-list/securisation-list.module';
-import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
-import { SecurisationRoutingModule } from './securisation-routing.module';
-import { SecurisationComponent } from './securisation.component';
+import {SharedModule} from '../shared/shared.module';
+import {SecurisationListModule} from './securisation-list/securisation-list.module';
+import {SecurisationPreviewModule} from './securisation-preview/securisation-preview.module';
+import {SecurisationRoutingModule} from './securisation-routing.module';
+import {SecurisationComponent} from './securisation.component';
 
 @NgModule({
   imports: [
@@ -42,4 +42,5 @@ import { SecurisationComponent } from './securisation.component';
     SecurisationComponent
   ]
 })
-export class SecurisationModule { }
+export class SecurisationModule {
+}

@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
 
-import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
+import {VitamUISnackBarComponent} from './vitamui-snack-bar.component';
 
 describe('VitamUISnackbarComponent', () => {
   let component: VitamUISnackBarComponent;
@@ -45,13 +45,18 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VitamUISnackBarComponent ],
+      declarations: [VitamUISnackBarComponent],
       providers: [
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
+        {provide: MAT_SNACK_BAR_DATA, useValue: {}},
+        {
+          provide: MatSnackBarRef, useValue: {
+            dismiss: () => {
+            }
+          }
+        },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

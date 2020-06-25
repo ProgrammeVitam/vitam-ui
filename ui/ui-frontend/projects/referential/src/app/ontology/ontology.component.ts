@@ -1,14 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
 
-import {
-  GlobalEventService,
-  SidenavPage
-} from 'ui-frontend-common';
-import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute } from "@angular/router";
-import { Ontology } from "projects/vitamui-library/src/lib/models/ontology";
-import { OntologyCreateComponent } from "./ontology-create/ontology-create.component";
-import { OntologyListComponent } from "./ontology-list/ontology-list.component";
+import {Ontology} from 'projects/vitamui-library/src/lib/models/ontology';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {OntologyCreateComponent} from './ontology-create/ontology-create.component';
+import {OntologyListComponent} from './ontology-list/ontology-list.component';
 
 @Component({
   selector: 'app-ontology',
@@ -17,24 +14,30 @@ import { OntologyListComponent } from "./ontology-list/ontology-list.component";
 })
 export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
 
-  search: string = '';
+  search = '';
 
-  @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
+  @ViewChild(OntologyListComponent, {static: true}) ontologyListComponent: OntologyListComponent;
 
   constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
 
   openCreateOntologyDialog() {
-    const dialogRef = this.dialog.open(OntologyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(OntologyCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) { this.refreshList(); }
-      if (result.action === "restart") { this.openCreateOntologyDialog(); }
+      if (result.success) {
+        this.refreshList();
+      }
+      if (result.action === 'restart') {
+        this.openCreateOntologyDialog();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.ontologyListComponent) { return; }
+    if (!this.ontologyListComponent) {
+      return;
+    }
     this.ontologyListComponent.searchOntologyOrdered();
   }
 
@@ -42,10 +45,11 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showOntology(item: Ontology) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 
 }

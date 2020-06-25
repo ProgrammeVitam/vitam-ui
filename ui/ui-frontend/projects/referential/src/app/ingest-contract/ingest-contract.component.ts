@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IngestContract } from 'projects/vitamui-library/src/lib/models/ingest-contract';
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IngestContract} from 'projects/vitamui-library/src/lib/models/ingest-contract';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 
-import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
-import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
+import {IngestContractCreateComponent} from './ingest-contract-create/ingest-contract-create.component';
+import {IngestContractListComponent} from './ingest-contract-list/ingest-contract-list.component';
 
 @Component({
   selector: 'app-ingest-contract',
@@ -15,9 +15,9 @@ import { IngestContractListComponent } from './ingest-contract-list/ingest-contr
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
 
 
-  @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;
+  @ViewChild(IngestContractListComponent, {static: true}) ingestContractListComponent: IngestContractListComponent;
 
-  search: string = '';
+  search = '';
   tenantId: number;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService) {
@@ -31,20 +31,26 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       if (params.tenantIdentifier) {
         this.tenantId = +params.tenantIdentifier;
       }
-    })
+    });
   }
 
   openCreateIngestcontractDialog() {
-    const dialogRef = this.dialog.open(IngestContractCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(IngestContractCreateComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true
+    });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined)
+      if (result !== undefined) {
         this.refreshList();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.ingestContractListComponent) { return; }
+    if (!this.ingestContractListComponent) {
+      return;
+    }
     this.ingestContractListComponent.searchIngestContractOrdered();
   }
 
@@ -53,13 +59,14 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showIngestContract(item: IngestContract) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 
 }

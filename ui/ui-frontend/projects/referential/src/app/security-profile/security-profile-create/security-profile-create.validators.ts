@@ -34,23 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 
-import { of, timer} from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { SecurityProfileService } from "../security-profile.service";
+import {of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
+import {SecurityProfileService} from '../security-profile.service';
 
 @Injectable()
 export class SecurityProfileCreateValidators {
 
   private debounceTime = 400;
 
-  constructor(private contextService: SecurityProfileService) {}
+  constructor(private contextService: SecurityProfileService) {
+  }
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
+  }
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {

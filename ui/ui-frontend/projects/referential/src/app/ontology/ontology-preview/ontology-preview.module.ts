@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
   MatMenuModule,
@@ -11,12 +11,12 @@ import {
   MatSnackBarModule,
   MatTabsModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
-import { OntologyPreviewComponent } from './ontology-preview.component';
+import {OntologyInformationTabComponent} from './ontology-information-tab/ontology-information-tab.component';
+import {OntologyPreviewComponent} from './ontology-preview.component';
 
 @NgModule({
   imports: [
@@ -44,4 +44,5 @@ import { OntologyPreviewComponent } from './ontology-preview.component';
   ]
 
 })
-export class OntologyPreviewModule { }
+export class OntologyPreviewModule {
+}

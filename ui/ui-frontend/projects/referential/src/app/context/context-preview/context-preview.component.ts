@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, Output, EventEmitter, Input, ViewChild, HostListener} from '@angular/core';
-import { Context } from 'projects/vitamui-library/src/public-api';
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {ContextInformationTabComponent} from "./context-information-tab/context-information-tab.component";
-import {ContextPermissionTabComponent} from "./context-permission-tab/context-permission-tab.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ContextService} from "../context.service";
-import {Observable} from "rxjs";
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
+import {ConfirmActionComponent, Context} from 'projects/vitamui-library/src/public-api';
+import {Observable} from 'rxjs';
+
+import {ContextService} from '../context.service';
+import {ContextInformationTabComponent} from './context-information-tab/context-information-tab.component';
+import {ContextPermissionTabComponent} from './context-permission-tab/context-permission-tab.component';
 
 @Component({
   selector: 'app-context-preview',
@@ -70,12 +70,13 @@ export class ContextPreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private contextService: ContextService) { }
+  constructor(private matDialog: MatDialog, private contextService: ContextService) {
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.permsTab;
@@ -89,7 +90,7 @@ export class ContextPreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<Context> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.contextService.get(this.context.identifier).subscribe(
           response => {
             this.context = response;
@@ -111,10 +112,10 @@ export class ContextPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   filterEvents(event: any): boolean {
     return event.outDetail && (

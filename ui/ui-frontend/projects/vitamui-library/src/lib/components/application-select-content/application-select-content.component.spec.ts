@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {Component, Input} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UpdatedApplicationSelectContentComponent } from './application-select-content.component';
-import { AuthService, WINDOW_LOCATION } from "ui-frontend-common";
+import {UpdatedApplicationSelectContentComponent} from './application-select-content.component';
+import {AuthService, WINDOW_LOCATION} from "ui-frontend-common";
 
 @Component({
   selector: 'vitamui-common-menu-tile-updated',
@@ -60,11 +60,11 @@ describe('ApplicationSelectContentComponent', () => {
         VitamUIMenuTileStubComponent,
       ],
       providers: [
-        { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: AuthService, useValue: {} },
+        {provide: WINDOW_LOCATION, useValue: {}},
+        {provide: AuthService, useValue: {}},
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

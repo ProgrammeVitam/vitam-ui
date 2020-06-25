@@ -1,12 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
-import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { OntologyApiService } from "../core/api/ontology-api.service";
-import { tap } from "rxjs/operators";
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {Ontology} from 'projects/vitamui-library/src/public-api';
+import {OntologyApiService} from '../core/api/ontology-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class OntologyService extends SearchService<Ontology> {
           (response: Ontology) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'ontologyCreate', name: response.identifier },
+              data: {type: 'ontologyCreate', name: response.identifier},
               duration: 10000
             });
           },
@@ -69,7 +69,7 @@ export class OntologyService extends SearchService<Ontology> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'ontologyUpdate', name: response.identifier }
+              data: {type: 'ontologyUpdate', name: response.identifier}
             });
           },
           (error) => {
@@ -88,7 +88,7 @@ export class OntologyService extends SearchService<Ontology> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
-            data: { type: 'ontologyDelete', name: ontology.identifier }
+            data: {type: 'ontologyDelete', name: ontology.identifier}
           });
         },
         (error) => {
@@ -103,14 +103,14 @@ export class OntologyService extends SearchService<Ontology> {
   export() {
     this.ontologyApiService.export().subscribe(
       (response) => {
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         document.body.appendChild(a);
-        a.style.display = "none";
+        a.style.display = 'none';
 
-        const blob = new Blob([response], {type: "octet/stream"}),
-          url = window.URL.createObjectURL(blob);
+        const blob = new Blob([response], {type: 'octet/stream'});
+        const url = window.URL.createObjectURL(blob);
         a.href = url;
-        a.download = "agencies.csv";
+        a.download = 'agencies.csv';
         a.click();
         window.URL.revokeObjectURL(url);
       }, (error) => {
@@ -123,7 +123,7 @@ export class OntologyService extends SearchService<Ontology> {
   }
 
   exists(id: string): Observable<boolean> {
-    let ontology = { identifier: id } as Ontology;
+    const ontology = {identifier: id} as Ontology;
     return this.ontologyApiService.check(ontology, this.headers);
   }
 }

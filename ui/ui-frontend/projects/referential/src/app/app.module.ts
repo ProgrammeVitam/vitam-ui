@@ -1,16 +1,16 @@
-import { registerLocaleData } from '@angular/common';
+import {registerLocaleData} from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import { MatNativeDateModule } from '@angular/material';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {MatNativeDateModule} from '@angular/material';
+import {BrowserModule, Title} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgxFilesizeModule} from 'ngx-filesize';
+import {VitamUICommonModule, WINDOW_LOCATION} from 'ui-frontend-common';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {CoreModule} from './core/core.module';
+import {SharedModule} from './shared/shared.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -30,9 +30,10 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: WINDOW_LOCATION, useValue: window.location }
+    {provide: LOCALE_ID, useValue: 'fr'},
+    {provide: WINDOW_LOCATION, useValue: window.location}
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}

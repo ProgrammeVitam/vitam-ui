@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
 
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AgencyService} from "../agency.service";
-import {AgencyCreateValidators} from "./agency-create.validators";
+import {AgencyService} from '../agency.service';
+import {AgencyCreateValidators} from './agency-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -65,7 +65,7 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
   private stepCount = 1;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AgencyCreateComponent>,
@@ -100,14 +100,16 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     // TODO : Create !
     this.agencyService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "none" });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "none" });
+        this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
   }
@@ -115,10 +117,10 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
   onSubmitAndCreate() {
     this.agencyService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "restart" });
+        this.dialogRef.close({success: true, action: 'restart'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "restart" });
+        this.dialogRef.close({success: false, action: 'restart'});
         console.error(error);
       });
   }

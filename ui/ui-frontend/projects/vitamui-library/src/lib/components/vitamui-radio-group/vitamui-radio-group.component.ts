@@ -1,8 +1,9 @@
-import { AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+/* tslint:disable:no-use-before-declare component-selector */
+import {AfterContentInit, Component, ContentChildren, forwardRef, Input, OnInit, QueryList, Self} from '@angular/core';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
-import { VitamUIRadioGroupService } from './vitamui-radio-group.service';
+import {VitamUIRadioComponent} from '../vitamui-radio/vitamui-radio.component';
+import {VitamUIRadioGroupService} from './vitamui-radio-group.service';
 
 export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -21,6 +22,9 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
 })
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
 
+  constructor(@Self() private radioGroupService: VitamUIRadioGroupService) {
+  }
+
   @ContentChildren(VitamUIRadioComponent) private radios: QueryList<VitamUIRadioComponent>;
 
   @Input()
@@ -29,18 +33,18 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   @Input()
   required: boolean;
 
-  constructor(@Self() private radioGroupService: VitamUIRadioGroupService) { }
-
   value: any;
-
-  onChange = (_: any) => { };
-  onTouched = () => { };
 
   ngOnDestroy: () => void;
 
+  onChange = (_: any) => {
+  }
+  onTouched = () => {
+  }
+
   ngOnInit(): void {
-    this.required = (this.required == undefined) ? false : true;
-    let subscription = this.radioGroupService.resetAll.subscribe((elem: VitamUIRadioComponent) => {
+    this.required = (this.required === undefined) ? false : true;
+    const subscription = this.radioGroupService.resetAll.subscribe((elem: VitamUIRadioComponent) => {
       this.radios.forEach((radioButton: VitamUIRadioComponent) => {
         radioButton.checked = false;
       });
@@ -51,7 +55,7 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
 
     this.ngOnDestroy = () => {
       subscription.unsubscribe();
-    }
+    };
   }
 
   ngAfterContentInit(): void {
@@ -60,7 +64,7 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
       this.onChange(this.value);
     });
 
-    this.radios.filter(radio => radio.value == this.value).forEach(radio => radio.checked = true);
+    this.radios.filter(radio => radio.value === this.value).forEach(radio => radio.checked = true);
   }
 
   writeValue(value: any) {

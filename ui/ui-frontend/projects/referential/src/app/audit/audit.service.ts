@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
-import { AccessionRegister, Event } from 'projects/vitamui-library/src/public-api';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {AccessionRegister, Event} from 'projects/vitamui-library/src/public-api';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService} from 'ui-frontend-common';
 
-import { AccessionRegisterApiService } from '../core/api/accession-register-api.service';
-import { OperationApiService } from '../core/api/operation-api.service';
-import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {AccessionRegisterApiService} from '../core/api/accession-register-api.service';
+import {OperationApiService} from '../core/api/operation-api.service';
+import {VitamUISnackBar, VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -60,8 +60,11 @@ export class AuditService extends SearchService<Event> {
 
 
   create(audit: any, headers: HttpHeaders) {
-    for (let header in this.headers)
-      headers.set(header, this.headers.get(header));
+    for (const header in this.headers) {
+      if (this.headers.hasOwnProperty(header)) {
+        headers.set(header, this.headers.get(header));
+      }
+    }
     return this.operationApiService.runAudit(audit, headers)
       .pipe(
         tap(
@@ -69,13 +72,15 @@ export class AuditService extends SearchService<Event> {
             console.log('Audit: ', audit);
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'auditRun', id: audit.identifier },
+              data: {type: 'auditRun', id: audit.identifier},
               duration: 10000
             });
           },
           (error: any) => {
             console.log('error: ', error);
-            if (!error || !error.error) return;
+            if (!error || !error.error) {
+              return;
+            }
             this.snackBar.open(error.error.message, null, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000
@@ -86,7 +91,8 @@ export class AuditService extends SearchService<Event> {
   }
 
   download(id: string, accessContractId: string) {
-    this.operationApiService.downloadOperation(id, 'AUDIT', new HttpHeaders({ 'X-Access-Contract-Id': accessContractId })).subscribe((blob) => {
+    this.operationApiService.downloadOperation(
+      id, 'AUDIT', new HttpHeaders({'X-Access-Contract-Id': accessContractId})).subscribe((blob) => {
       const element = document.createElement('a');
       element.href = window.URL.createObjectURL(blob);
       element.download = id + '.json';
@@ -96,12 +102,9 @@ export class AuditService extends SearchService<Event> {
       document.body.removeChild(element);
     });
 
-
-
-
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegister[]> {
-    return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }));
+    return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({'X-Access-Contract-Id': accessContractId}));
   }
 }

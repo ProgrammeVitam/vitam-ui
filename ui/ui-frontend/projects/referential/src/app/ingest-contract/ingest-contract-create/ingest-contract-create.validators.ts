@@ -34,47 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
 
-import { IngestContractService } from '../ingest-contract.service';
+import {IngestContractService} from '../ingest-contract.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class IngestContractCreateValidators {
 
-    private debounceTime = 400;
+  private debounceTime = 400;
 
-    constructor(private ingestContractService: IngestContractService) { }
+  constructor(private ingestContractService: IngestContractService) {
+  }
 
-    uniqueName = (): AsyncValidatorFn => {
-        return (control: AbstractControl): Observable<ValidationErrors | null> => {
-            return timer(this.debounceTime)
-                .pipe(
-                    switchMap(() => this.ingestContractService.exists(control.value)),
-                    take(1),
-                    map((exists: boolean) => exists ? { nameExists: true } : null)
-                );
-        };
-    }
+  uniqueName = (): AsyncValidatorFn => {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      return timer(this.debounceTime)
+        .pipe(
+          switchMap(() => this.ingestContractService.exists(control.value)),
+          take(1),
+          map((exists: boolean) => exists ? {nameExists: true} : null)
+        );
+    };
+  }
 
-    uniqueNameWhileEdit = (ingestContract: () => IngestContract): AsyncValidatorFn => {
-        return (control: AbstractControl): Observable<ValidationErrors | null> => {
-            if (ingestContract() == undefined || control.value == ingestContract().name) {
-                return of(null);
-            } else {
-                return timer(400)
-                    .pipe(
-                        switchMap(() => this.ingestContractService.exists(control.value)),
-                        take(1),
-                        map((exists: boolean) => exists ? { nameExists: true } : null)
-                    );;
-            }
-        };
-    }
+  uniqueNameWhileEdit = (ingestContract: () => IngestContract): AsyncValidatorFn => {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (ingestContract() === undefined || control.value === ingestContract().name) {
+        return of(null);
+      } else {
+        return timer(400)
+          .pipe(
+            switchMap(() => this.ingestContractService.exists(control.value)),
+            take(1),
+            map((exists: boolean) => exists ? {nameExists: true} : null)
+          );
+
+      }
+    };
+  }
 
 }

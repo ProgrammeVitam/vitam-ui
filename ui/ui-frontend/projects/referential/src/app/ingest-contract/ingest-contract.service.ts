@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {Injectable} from '@angular/core';
+import {MatSnackBar} from '@angular/material';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService} from 'ui-frontend-common';
 
-import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {IngestContractApiService} from '../core/api/ingest-contract-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -63,19 +63,19 @@ export class IngestContractService extends SearchService<IngestContract> {
   }
 
   getAll(): Observable<IngestContract[]> {
-    let params = new HttpParams().set('embedded', 'ALL');
+    const params = new HttpParams().set('embedded', 'ALL');
     return this.ingestContractApi.getAllByParams(params);
   }
 
   getAllForTenant(tenantId: string): Observable<IngestContract[]> {
     // TODO: Check add of tenantId
-    let params = new HttpParams().set('embedded', 'ALL');
-    let headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
     return this.ingestContractApi.getAllByParams(params, headers);
   }
 
   exists(name: string): Observable<boolean> {
-    let ingestContract = { name: name, identifier: name } as IngestContract;
+    const ingestContract = {name, identifier: name} as IngestContract;
     return this.ingestContractApi.check(ingestContract, this.headers);
   }
 
@@ -88,7 +88,7 @@ export class IngestContractService extends SearchService<IngestContract> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'ingestContractUpdate', name: response.name }
+              data: {type: 'ingestContractUpdate', name: response.name}
             });
           },
           (error) => {
@@ -108,7 +108,7 @@ export class IngestContractService extends SearchService<IngestContract> {
           (response: IngestContract) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'ingestContractCreate', name: response.name },
+              data: {type: 'ingestContractCreate', name: response.name},
               duration: 10000
             });
           },

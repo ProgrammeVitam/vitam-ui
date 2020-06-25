@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+/* tslint:disable: no-use-before-declare */
 
-
-import {Component, forwardRef, Input} from "@angular/core";
-import {PermissionStructure, PermissionUtils} from "../permission.utils";
-import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, forwardRef, Input} from '@angular/core';
+import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {PermissionStructure, PermissionUtils} from '../permission.utils';
 
 export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +50,7 @@ export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   selector: 'app-security-profile-edit-permission',
   templateUrl: './security-profile-edit-permission.component.html',
   styleUrls: ['./security-profile-edit-permission.component.scss'],
-  providers: [ PERMISSION_SELECT_VALUE_ACCESSOR ]
+  providers: [PERMISSION_SELECT_VALUE_ACCESSOR]
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
   permissions: PermissionStructure;
@@ -60,11 +60,15 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
   getPermissionString = this.permissionUtils.getPermissionString;
 
   disabled: boolean;
-  onChange = (_x: any) => { };
-  onTouched= () => {};
 
   @Input() small: boolean;
   @Input() forceDisabled: boolean;
+
+  // tslint:disable-next-line:variable-name
+  onChange = (_x: any) => {
+  }
+  onTouched = () => {
+  }
 
   constructor(private permissionUtils: PermissionUtils, private formBuilder: FormBuilder) {
 
@@ -76,9 +80,9 @@ export class SecurityProfileEditPermissionComponent implements ControlValueAcces
 
   getAllowedPermissions() {
     const allowedPermissions: string[] = [];
-    for (let permission in this.form.value) {
-      if (this.form.value.hasOwnProperty(permission) && this.form.value[permission] == true) {
-        allowedPermissions.push(permission)
+    for (const permission in this.form.value) {
+      if (this.form.value.hasOwnProperty(permission) && this.form.value[permission] === true) {
+        allowedPermissions.push(permission);
       }
     }
     return allowedPermissions;

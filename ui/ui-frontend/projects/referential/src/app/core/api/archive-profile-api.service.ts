@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {BASE_URL, BaseHttpClient} from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'

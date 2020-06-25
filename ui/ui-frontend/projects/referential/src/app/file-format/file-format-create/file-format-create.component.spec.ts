@@ -34,25 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 /* tslint:disable: max-classes-per-file directive-selector */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {EMPTY, of} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { FileFormatCreateComponent } from './file-format-create.component';
-import { FileFormatCreateValidators } from './file-format-create.validators';
-import { FileFormatService } from "../file-format.service";
+import {FileFormatService} from '../file-format.service';
+import {FileFormatCreateComponent} from './file-format-create.component';
+import {FileFormatCreateValidators} from './file-format-create.validators';
 
 const expectedFileFormat = {
   puid: '424242',
@@ -67,8 +66,13 @@ let fixture: ComponentFixture<FileFormatCreateComponent>;
 
 class Page {
 
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 
 }
 
@@ -78,10 +82,10 @@ describe('FileFormatCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', { create: of({}) });
+    const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', {create: of({})});
     const fileFormatCreateValidatorsSpy = jasmine.createSpyObj(
       'FileFormatCreateValidators',
-      { uniquePuid: () => of(null), uniqueName: () => of(null) }
+      {uniquePuid: () => of(null), uniqueName: () => of(null)}
     );
     TestBed.configureTestingModule({
       imports: [
@@ -98,15 +102,15 @@ describe('FileFormatCreateComponent', () => {
         FileFormatCreateComponent
       ],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: FileFormatService, useValue: fileFormatServiceSpy },
-        { provide: FileFormatCreateValidators, useValue: fileFormatCreateValidatorsSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: FileFormatService, useValue: fileFormatServiceSpy},
+        {provide: FileFormatCreateValidators, useValue: fileFormatCreateValidatorsSpy},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -176,20 +180,20 @@ describe('FileFormatCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close.calls.count()).toBe(1);
     });
 
     it('should not call create()', () => {
-      const fileFormatService =  TestBed.get(FileFormatService);
+      const fileFormatService = TestBed.get(FileFormatService);
       component.onSubmit();
       expect(fileFormatService.create.calls.count()).toBe(0);
     });
 
     it('should call create()', () => {
-      const fileFormatService =  TestBed.get(FileFormatService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const fileFormatService = TestBed.get(FileFormatService);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.form.setValue(expectedFileFormat);
       component.onSubmit();
       expect(fileFormatService.create.calls.count()).toBe(1);

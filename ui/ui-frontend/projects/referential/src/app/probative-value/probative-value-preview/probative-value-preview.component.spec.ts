@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
-import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { ProbativeValueService } from '../probative-value.service';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {ProbativeValueService} from '../probative-value.service';
+import {ProbativeValuePreviewComponent} from './probative-value-preview.component';
 
 describe('ProbativeValuePreviewComponent', () => {
   let component: ProbativeValuePreviewComponent;
@@ -14,23 +14,23 @@ describe('ProbativeValuePreviewComponent', () => {
   beforeEach(async(() => {
 
     const accessContractServiceMock = {
-      getAllForTenant: ()=> of([])
+      getAllForTenant: () => of([])
     };
 
     const activatedRouteMock = {
-      params: of( { tenantIdentifier: 1 } )
+      params: of({tenantIdentifier: 1})
     };
 
     TestBed.configureTestingModule({
-      declarations: [ ProbativeValuePreviewComponent ],
-      providers:[
-        { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: ProbativeValueService, useValue: {} },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
+      declarations: [ProbativeValuePreviewComponent],
+      providers: [
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: ProbativeValueService, useValue: {}},
+        {provide: ActivatedRoute, useValue: activatedRouteMock}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,17 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FileFormatInformationTabComponent } from './file-format-information-tab.component';
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { FileFormatService } from "../../file-format.service";
-import { of } from "rxjs";
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
 import {FileFormat} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {FileFormatService} from '../../file-format.service';
+import {FileFormatInformationTabComponent} from './file-format-information-tab.component';
 
 describe('FileFormatInformationTabComponent', () => {
   let component: FileFormatInformationTabComponent;
   let fixture: ComponentFixture<FileFormatInformationTabComponent>;
 
   const fileFormatServiceMock = {
+    // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null)
   };
 
@@ -43,14 +44,14 @@ describe('FileFormatInformationTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileFormatInformationTabComponent ],
+      declarations: [FileFormatInformationTabComponent],
       providers: [
         FormBuilder,
-        { provide: FileFormatService, useValue: fileFormatServiceMock }
+        {provide: FileFormatService, useValue: fileFormatServiceMock}
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

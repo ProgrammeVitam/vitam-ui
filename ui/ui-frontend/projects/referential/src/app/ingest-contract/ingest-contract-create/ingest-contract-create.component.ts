@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'ui-frontend-common';
-import {IngestContract, FilingPlanMode, FileFormat, AccessContract} from 'projects/vitamui-library/src/public-api';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {AccessContract, FileFormat, FilingPlanMode, IngestContract} from 'projects/vitamui-library/src/public-api';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
-import { IngestContractService } from '../ingest-contract.service';
-import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import { FileFormatService } from "../../file-format/file-format.service";
-import { HttpHeaders, HttpParams } from "@angular/common/http";
-import { ManagementContractApiService } from "../../core/api/management-contract-api.service";
-import { ArchiveProfileApiService } from "../../core/api/archive-profile-api.service";
-import {AccessContractService} from "../../access-contract/access-contract.service";
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
+import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
+import {FileFormatService} from '../../file-format/file-format.service';
+import {IngestContractService} from '../ingest-contract.service';
+import {IngestContractCreateValidators} from './ingest-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -74,7 +74,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   private stepCount = 4;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractCreateComponent>,
@@ -87,7 +87,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
     private accessContractService: AccessContractService
-  ) { }
+  ) {
+  }
 
   statusControl = new FormControl(false);
   linkParentIdControl = new FormControl();
@@ -100,11 +101,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   accessContracts: AccessContract[];
 
   usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
-    { key: 'Dissemination', label: 'Diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignette', info: '' },
-    { key: 'TextContent', label: 'Contenu brut', info: '' },
-    { key: 'PhysicalMaster', label: 'Originel papier', info: '' }
+    {key: 'BinaryMaster', label: 'Original numérique', info: ''},
+    {key: 'Dissemination', label: 'Diffusion', info: ''},
+    {key: 'Thumbnail', label: 'Vignette', info: ''},
+    {key: 'TextContent', label: 'Contenu brut', info: ''},
+    {key: 'PhysicalMaster', label: 'Originel papier', info: ''}
   ];
 
   ngOnInit() {
@@ -127,7 +128,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       dataObjectVersion: [new Array<string>(), Validators.required],
 
       /* <- step 5 -> */
-      checkParentLink: ["AUTHORIZED", Validators.required],
+      checkParentLink: ['AUTHORIZED', Validators.required],
       linkParentId: [null, Validators.required],
       checkParentId: [new Array<string>(), Validators.required],
 
@@ -136,7 +137,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       computedInheritedRulesAtIngest: [false, Validators.required]
     });
 
-    this.fileFormatService.getAllForTenant(''+this.tenantIdentifier).subscribe(files => {
+    this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe(files => {
       this.formatTypeList = files;
     });
 
@@ -144,8 +145,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       this.accessContracts = value;
     });
 
-    let params = new HttpParams().set('embedded', 'ALL');
-    let headers = new HttpHeaders().append('X-Tenant-Id', ''+this.tenantIdentifier);
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', '' + this.tenantIdentifier);
 
     this.managementContractService.getAllByParams(params, headers).subscribe(managmentContracts => {
       this.managementContracts = managmentContracts;
@@ -156,28 +157,31 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      this.form.controls['identifier'].setValue(value);
+    this.form.controls.name.valueChanges.subscribe((value) => {
+      this.form.controls.identifier.setValue(value);
     });
 
-    this.linkParentIdControl.valueChanges.subscribe((value: {included: string[], excluded: string[]}) => {
-      if (value.included.length === 1) this.form.controls['linkParentId'].setValue(value.included[0]);
-      else this.form.controls['linkParentId'].setValue(null);
-    });
-
-    this.checkParentIdControl.valueChanges.subscribe((value: {included: string[], excluded: string[]}) => {
-      if (value.included.length > 0) {
-        this.form.controls['checkParentId'].setValue(value.included);
+    this.linkParentIdControl.valueChanges.subscribe((value: { included: string[], excluded: string[] }) => {
+      if (value.included.length === 1) {
+        this.form.controls.linkParentId.setValue(value.included[0]);
       } else {
-        this.form.controls['checkParentId'].setValue([]);
+        this.form.controls.linkParentId.setValue(null);
       }
     });
 
-    this.linkParentIdControl.setValue({ included: [], excluded: [] });
-    this.checkParentIdControl.setValue({ included: [], excluded: [] });
+    this.checkParentIdControl.valueChanges.subscribe((value: { included: string[], excluded: string[] }) => {
+      if (value.included.length > 0) {
+        this.form.controls.checkParentId.setValue(value.included);
+      } else {
+        this.form.controls.checkParentId.setValue([]);
+      }
+    });
+
+    this.linkParentIdControl.setValue({included: [], excluded: []});
+    this.checkParentIdControl.setValue({included: [], excluded: []});
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -219,8 +223,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   fourthStepInvalid(): boolean {
-    return this.form.get('everyDataObjectVersion').invalid || this.form.get('everyDataObjectVersion').pending ||
-      (this.form.get('everyDataObjectVersion').value === false && (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending));
+    return this.form.get('everyDataObjectVersion').invalid ||
+      this.form.get('everyDataObjectVersion').pending ||
+      (this.form.get('everyDataObjectVersion').value === false &&
+        (this.form.get('dataObjectVersion').invalid ||
+          this.form.get('dataObjectVersion').pending));
   }
 
   seventhStepInvalid(): boolean {

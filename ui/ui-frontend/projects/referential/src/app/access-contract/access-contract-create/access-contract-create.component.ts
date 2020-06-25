@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'ui-frontend-common';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
-import { AccessContractService } from '../access-contract.service';
-import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { AgencyService } from "../../agency/agency.service";
-import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import {AccessContract, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
+import {AgencyService} from '../../agency/agency.service';
+import {AccessContractService} from '../access-contract.service';
+import {AccessContractCreateValidators} from './access-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -71,7 +71,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   private stepCount = 4;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractCreateComponent>,
@@ -96,28 +96,28 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: 'Durée d\'utilité administrative', info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
+    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
+    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
+    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
+    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
+    {key: 'AccessRule', label: 'Durée d\'utilité administrative', info: ''},
+    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
   ];
 
   // FIXME: Get list from common var ?
   usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
-    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignettes', info: '' },
-    { key: 'TextContent', label: 'Contenu textuel', info: '' },
-    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' }
+    {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
+    {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
+    {key: 'Thumbnail', label: 'Vignettes', info: ''},
+    {key: 'TextContent', label: 'Contenu textuel', info: ''},
+    {key: 'PhysicalMaster', label: 'Archives physiques', info: ''}
   ];
 
   ngOnInit() {
     console.log('tenantIdentifier', this.tenantIdentifier);
 
     this.agencyService.getAll().subscribe(agencies =>
-      this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
+      this.originatingAgencies = agencies.map(x => ({label: x.name, key: x.identifier}))
     );
 
     this.accessContractService.getAll().subscribe((value) => {
@@ -145,20 +145,20 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls['accessLog'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.accessLog.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
-    this.selectNodesControl.valueChanges.subscribe((value: {included: string[], excluded: string[]}) => {
-      this.form.controls['rootUnits'].setValue(value.included);
-      this.form.controls['excludedRootUnits'].setValue(value.excluded);
+    this.selectNodesControl.valueChanges.subscribe((value: { included: string[], excluded: string[] }) => {
+      this.form.controls.rootUnits.setValue(value.included);
+      this.form.controls.excludedRootUnits.setValue(value.excluded);
     });
 
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      this.form.controls['identifier'].setValue(value);
+    this.form.controls.name.valueChanges.subscribe((value) => {
+      this.form.controls.identifier.setValue(value);
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -177,7 +177,9 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     const accessContract = this.form.value as AccessContract;
     // accessContract. = this.originatingAgencySelect.value;
     this.accessContractService.create(accessContract).subscribe(
@@ -195,24 +197,30 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       this.form.get('description').invalid || this.form.get('description').pending ||
       this.form.get('status').invalid || this.form.get('status').pending ||
       this.form.get('accessLog').invalid || this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === true && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
+      (this.ruleFilter.value === true && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending));
   }
 
   secondStepInvalid(): boolean {
-    return (this.form.get('everyOriginatingAgency').value === false && (this.form.get('originatingAgencies').invalid || this.form.get('originatingAgencies').pending)) ||
-      (this.form.get('everyDataObjectVersion').value === false && (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending));
+    return (this.form.get('everyOriginatingAgency').value === false &&
+      (this.form.get('originatingAgencies').invalid ||
+        this.form.get('originatingAgencies').pending)) ||
+      (this.form.get('everyDataObjectVersion').value === false &&
+        (this.form.get('dataObjectVersion').invalid ||
+          this.form.get('dataObjectVersion').pending));
   }
 
   lastStepInvalid(): boolean {
-    console.log('rootUnit ?', this.form.controls['rootUnits'].value);
-    console.log('Invalid Lenght ?', this.form.controls['rootUnits'].value.length === 0);
+    console.log('rootUnit ?', this.form.controls.rootUnits.value);
+    console.log('Invalid Lenght ?', this.form.controls.rootUnits.value.length === 0);
     console.log('Invalid allNodes ?', this.allNodes.invalid || this.allNodes.pending);
-    console.log('Invalid Selection ?', this.allNodes.value === false && this.form.controls['rootUnits'].invalid || this.form.controls['rootUnits'].value.length === 0);
+    console.log('Invalid Selection ?', this.allNodes.value === false &&
+      this.form.controls.rootUnits.invalid ||
+      this.form.controls.rootUnits.value.length === 0);
     console.log('Invalid ?', this.allNodes.invalid || this.allNodes.pending ||
-      (this.allNodes.value === false && this.form.controls['rootUnits'].invalid || this.form.controls['rootUnits'].value.length === 0));
+      (this.allNodes.value === false && this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0));
 
     return this.allNodes.invalid || this.allNodes.pending ||
-      (this.allNodes.value === false && (this.form.controls['rootUnits'].invalid || this.form.controls['rootUnits'].value.length === 0));
+      (this.allNodes.value === false && (this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0));
   }
 
   get stepProgress() {

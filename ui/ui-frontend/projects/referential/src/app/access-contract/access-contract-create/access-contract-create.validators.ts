@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {Observable, of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
 
-import { AccessContractService } from '../access-contract.service';
+import {AccessContractService} from '../access-contract.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,8 @@ export class AccessContractCreateValidators {
 
   private debounceTime = 400;
 
-  constructor(private accessContractService: AccessContractService) { }
+  constructor(private accessContractService: AccessContractService) {
+  }
 
   uniqueName = (): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -57,24 +58,24 @@ export class AccessContractCreateValidators {
         .pipe(
           switchMap(() => this.accessContractService.exists(control.value)),
           take(1),
-          map((exists: boolean) => exists ? { nameExists: true } : null)
+          map((exists: boolean) => exists ? {nameExists: true} : null)
         );
     };
-  };
+  }
 
   uniqueNameWhileEdit = (accessContract: () => AccessContract): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (accessContract() == undefined || control.value == accessContract().name) {
+      if (accessContract() === undefined || control.value === accessContract().name) {
         return of(null);
       } else {
         return timer(400)
           .pipe(
             switchMap(() => this.accessContractService.exists(control.value)),
             take(1),
-            map((exists: boolean) => exists ? { nameExists: true } : null)
+            map((exists: boolean) => exists ? {nameExists: true} : null)
           );
       }
     };
-  };
+  }
 
 }

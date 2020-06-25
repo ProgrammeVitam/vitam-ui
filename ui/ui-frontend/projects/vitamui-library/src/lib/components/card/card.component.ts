@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+/* tslint:disable:component-selector */
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'vitamui-card',
@@ -11,12 +12,13 @@ export class CardComponent implements OnInit {
   value: string;
 
   @Input()
-  showAction: boolean = true;
+  showAction = true;
 
   @Output()
   buttonClick = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

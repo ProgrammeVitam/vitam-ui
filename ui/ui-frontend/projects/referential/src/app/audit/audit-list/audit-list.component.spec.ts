@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AuditListComponent } from './audit-list.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { AuditService } from '../audit.service';
-import { of } from 'rxjs';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {of} from 'rxjs';
+import {AuditService} from '../audit.service';
+import {AuditListComponent} from './audit-list.component';
 
 describe('AuditListComponent', () => {
   let component: AuditListComponent;
@@ -16,13 +16,13 @@ describe('AuditListComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [ AuditListComponent ],
-      providers:[
-        {provide:AuditService, useValue:auditServiceMock}
+      declarations: [AuditListComponent],
+      providers: [
+        {provide: AuditService, useValue: auditServiceMock}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

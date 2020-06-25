@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { SearchService } from 'ui-frontend-common';
-import { Event, download } from 'projects/vitamui-library/src/public-api';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {download, Event} from 'projects/vitamui-library/src/public-api';
+import {SearchService} from 'ui-frontend-common';
 
-import { OperationApiService } from '../core/api/operation-api.service';
+import {OperationApiService} from '../core/api/operation-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,12 @@ export class SecurisationService extends SearchService<Event> {
   }
 
   download(id: string, accessContractId: string) {
-    this.operationApiService.downloadOperation(id, 'TRACEABILITY', new HttpHeaders({ 'X-Access-Contract-Id': accessContractId })).subscribe((blob) => {
-      download(blob, 'report.zip')
+    this.operationApiService.downloadOperation(
+      id,
+      'TRACEABILITY',
+      new HttpHeaders({'X-Access-Contract-Id': accessContractId})
+    ).subscribe((blob) => {
+      download(blob, 'report.zip');
     });
   }
 

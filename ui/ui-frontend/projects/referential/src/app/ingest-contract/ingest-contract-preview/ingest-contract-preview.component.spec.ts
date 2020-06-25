@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { IngestContractService } from '../ingest-contract.service';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {MatDialog} from '@angular/material';
+import {IngestContractService} from '../ingest-contract.service';
+import {IngestContractPreviewComponent} from './ingest-contract-preview.component';
 
 describe('IngestContractPreviewComponent', () => {
   let component: IngestContractPreviewComponent;
@@ -11,14 +11,14 @@ describe('IngestContractPreviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IngestContractPreviewComponent ],
+      declarations: [IngestContractPreviewComponent],
       providers: [
-        { provide: MatDialog, useValue: { } },
-        { provide: IngestContractService, useValue: { } }
+        {provide: MatDialog, useValue: {}},
+        {provide: IngestContractService, useValue: {}}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

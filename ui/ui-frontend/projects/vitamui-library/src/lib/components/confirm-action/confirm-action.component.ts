@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -43,13 +44,14 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ConfirmActionComponent implements OnInit {
   // delete or changeTab
-  @Input() dialogType: string = 'delete';
+  @Input() dialogType = 'delete';
 
   // delete message values
   @Input() objectName: string;
   @Input() objectType: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

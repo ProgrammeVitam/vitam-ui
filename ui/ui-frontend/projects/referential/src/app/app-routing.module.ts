@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard } from 'ui-frontend-common';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard} from 'ui-frontend-common';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 
 
 const routes: Routes = [
@@ -12,13 +12,13 @@ const routes: Routes = [
     path: '',
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PORTAL_APP' }
+    data: {appId: 'PORTAL_APP'}
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCOUNTS_APP' }
+    data: {appId: 'ACCOUNTS_APP'}
   },
   // =====================================================
   //                      ACCESS CONTRACT
@@ -27,16 +27,16 @@ const routes: Routes = [
     path: 'access-contract',
     loadChildren: () => import('./access-contract/access-contract.module').then(m => m.AccessContractModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCESS_APP' }
+    data: {appId: 'ACCESS_APP'}
   },
   // =====================================================
   //                      INGEST CONTRACT
   // =====================================================
   {
     path: 'ingest-contract',
-    loadChildren: () => import("./ingest-contract/ingest-contract.module").then(m => m.IngestContractModule),
+    loadChildren: () => import('./ingest-contract/ingest-contract.module').then(m => m.IngestContractModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_APP' }
+    data: {appId: 'INGEST_APP'}
   },
   // =====================================================
   //                      AGENCY
@@ -45,7 +45,7 @@ const routes: Routes = [
     path: 'agency',
     loadChildren: () => import('./agency/agency.module').then(m => m.AgencyModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'AGENCIES_APP' }
+    data: {appId: 'AGENCIES_APP'}
   },
   // =====================================================
   //                    FILE FORMAT
@@ -54,7 +54,7 @@ const routes: Routes = [
     path: 'file-format',
     loadChildren: () => import('./file-format/file-format.module').then(m => m.FileFormatModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'FILE_FORMATS_APP' }
+    data: {appId: 'FILE_FORMATS_APP'}
   },
   // =====================================================
   //                     CONTEXTS
@@ -63,7 +63,7 @@ const routes: Routes = [
     path: 'context',
     loadChildren: () => import('./context/context.module').then(m => m.ContextModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'CONTEXTS_APP' }
+    data: {appId: 'CONTEXTS_APP'}
   },
   // =====================================================
   //                SECURITY PROFILES
@@ -72,7 +72,7 @@ const routes: Routes = [
     path: 'security-profile',
     loadChildren: () => import('./security-profile/security-profile.module').then(m => m.SecurityProfileModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'SECURITY_PROFILES_APP' }
+    data: {appId: 'SECURITY_PROFILES_APP'}
   },
   // =====================================================
   //                    ONTOLOGY
@@ -81,16 +81,16 @@ const routes: Routes = [
     path: 'ontology',
     loadChildren: () => import('./ontology/ontology.module').then(m => m.OntologyModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ONTOLOGY_APP' }
+    data: {appId: 'ONTOLOGY_APP'}
   },
   // =====================================================
   //                    AUDITS
   // =====================================================
   {
     path: 'audit',
-    loadChildren: () => import("./audit/audit.module").then(m => m.AuditModule),
+    loadChildren: () => import('./audit/audit.module').then(m => m.AuditModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'AUDIT_APP' }
+    data: {appId: 'AUDIT_APP'}
   },
   // =====================================================
   //                    SECURISATION
@@ -99,7 +99,7 @@ const routes: Routes = [
     path: 'securisation',
     loadChildren: () => import('./securisation/securisation.module').then(m => m.SecurisationModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'SECURE_APP' }
+    data: {appId: 'SECURE_APP'}
   },
   // =====================================================
   //                   PROBATIVE VALUE
@@ -108,7 +108,7 @@ const routes: Routes = [
     path: 'probative-value',
     loadChildren: () => import('./probative-value/probative-value.module').then(m => m.ProbativeValueModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PROBATIVE_VALUE_APP' }
+    data: {appId: 'PROBATIVE_VALUE_APP'}
   },
   // =====================================================
   //                       DSL
@@ -117,12 +117,12 @@ const routes: Routes = [
     path: 'dsl',
     loadChildren: () => import('./admin-dsl/admin-dsl.module').then(m => m.AdminDslModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'DSL_APP' }
+    data: {appId: 'DSL_APP'}
   },
   // =====================================================
   //                      unknown path
   // =====================================================
-  { path: '**', redirectTo: '' }
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
@@ -133,4 +133,5 @@ const routes: Routes = [
     AuthGuard
   ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

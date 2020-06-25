@@ -1,4 +1,4 @@
-import { DateQuery } from './date-query.interface';
+import {DateQuery} from './date-query.interface';
 
 export interface PreciseDateQuery extends DateQuery {
 

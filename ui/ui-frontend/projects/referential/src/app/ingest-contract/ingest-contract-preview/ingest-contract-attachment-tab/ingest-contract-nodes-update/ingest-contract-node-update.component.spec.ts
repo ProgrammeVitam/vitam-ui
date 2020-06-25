@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ENVIRONMENT } from 'ui-frontend-common';
-import { BASE_URL, /*Customer,*/ InjectorModule, LoggerModule/*, OtpState*/ } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { environment } from './../../../../../environments/environment';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatSnackBarModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilingPlanModule} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.module';
+import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {environment} from './../../../../../environments/environment';
 
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
-import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material';
-import { FilingPlanModule } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.module';
+import {VitamUISnackBar} from '../../../../shared/vitamui-snack-bar';
+import {IngestContractNodeUpdateComponent} from './ingest-contract-node-update.component';
 
 // TODO fix tests
 xdescribe('IngestContractNodeUpdateComponent', () => {
@@ -69,13 +68,16 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
       ],
       declarations: [IngestContractNodeUpdateComponent],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { data : {ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1} } },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: ENVIRONMENT, useValue: environment }
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {
+          provide: MAT_DIALOG_DATA, useValue:
+            {data: {ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1}}
+        },
+        {provide: BASE_URL, useValue: '/fake-api'},
+        {provide: VitamUISnackBar, useValue: snackBarSpy},
+        {provide: ENVIRONMENT, useValue: environment}
       ],
-      schemas:[CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));

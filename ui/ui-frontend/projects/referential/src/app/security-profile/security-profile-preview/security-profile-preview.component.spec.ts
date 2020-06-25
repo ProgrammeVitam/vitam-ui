@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
 
-import { SecurityProfilePreviewComponent } from './security-profile-preview.component';
-import { MatDialog } from "@angular/material/dialog";
-import { SecurityProfileService } from '../security-profile.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfilePreviewComponent} from './security-profile-preview.component';
 
 describe('SecurityProfilePreviewComponent', () => {
   let component: SecurityProfilePreviewComponent;
@@ -11,14 +11,14 @@ describe('SecurityProfilePreviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecurityProfilePreviewComponent ],
-      providers: [ 
-        { provide: MatDialog, useValue:{ } }, 
-        { provide: SecurityProfileService, useValue: { }}
+      declarations: [SecurityProfilePreviewComponent],
+      providers: [
+        {provide: MatDialog, useValue: {}},
+        {provide: SecurityProfileService, useValue: {}}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

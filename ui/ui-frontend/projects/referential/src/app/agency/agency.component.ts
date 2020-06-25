@@ -36,16 +36,13 @@
  */
 import {Component, OnInit, ViewChild} from '@angular/core';
 
-import {
-  GlobalEventService,
-  SidenavPage
-} from 'ui-frontend-common';
-import { MatDialog } from "@angular/material/dialog";
-import {ActivatedRoute, Router} from "@angular/router";
-import { Agency } from "../../../../vitamui-library/src/lib/models/agency";
-import {AgencyCreateComponent} from "./agency-create/agency-create.component";
-import {AgencyListComponent} from "./agency-list/agency-list.component";
-import {AgencyService} from "./agency.service";
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
+import {AgencyCreateComponent} from './agency-create/agency-create.component';
+import {AgencyListComponent} from './agency-list/agency-list.component';
+import {AgencyService} from './agency.service';
 
 @Component({
   selector: 'app-agency',
@@ -54,24 +51,35 @@ import {AgencyService} from "./agency.service";
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
-  search: string = '';
+  search = '';
 
-  @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
+  @ViewChild(AgencyListComponent, {static: true}) agencyListComponent: AgencyListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService, private agencyService: AgencyService) {
+  constructor(
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    globalEventService: GlobalEventService,
+    private agencyService: AgencyService) {
     super(route, globalEventService);
   }
 
   openCreateAgencyDialog() {
-    const dialogRef = this.dialog.open(AgencyCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AgencyCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) { this.refreshList(); }
-      if (result.action === "restart") { this.openCreateAgencyDialog(); }
+      if (result.success) {
+        this.refreshList();
+      }
+      if (result.action === 'restart') {
+        this.openCreateAgencyDialog();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.agencyListComponent) { return; }
+    if (!this.agencyListComponent) {
+      return;
+    }
     this.agencyListComponent.searchAgencyOrdered();
   }
 
@@ -79,10 +87,11 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showAgency(item: Agency) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 
   exportAgencies() {
@@ -90,7 +99,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
 }

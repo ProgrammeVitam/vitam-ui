@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option } from 'ui-frontend-common';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
-import { OntologyService } from '../ontology.service';
-import {OntologyCreateValidators} from "./ontology-create.validators";
+import {OntologyService} from '../ontology.service';
+import {OntologyCreateValidators} from './ontology-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -54,7 +54,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
+  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -68,22 +68,22 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   // FIXME: Get list from common var ?
   types: Option[] = [
-    { key: 'DATE', label: 'Date', info: '' },
-    { key: 'TEXT', label: 'Texte', info: '' },
-    { key: 'KEYWORD', label: 'Mot clé', info: '' },
-    { key: 'BOOLEAN', label: 'Boolean', info: '' },
-    { key: 'LONG', label: 'Long', info: '' },
-    { key: 'DOUBLE', label: 'Double', info: '' },
-    { key: 'ENUM', label: 'Énumérer', info: '' },
-    { key: 'GEO_POINT', label: 'Point Géographique', info: '' }
+    {key: 'DATE', label: 'Date', info: ''},
+    {key: 'TEXT', label: 'Texte', info: ''},
+    {key: 'KEYWORD', label: 'Mot clé', info: ''},
+    {key: 'BOOLEAN', label: 'Boolean', info: ''},
+    {key: 'LONG', label: 'Long', info: ''},
+    {key: 'DOUBLE', label: 'Double', info: ''},
+    {key: 'ENUM', label: 'Énumérer', info: ''},
+    {key: 'GEO_POINT', label: 'Point Géographique', info: ''}
   ];
 
   collections: Option[] = [
-    { key: 'Unit', label: 'Unité Archivistique', info: ''},
-    { key: 'ObjectGroup', label: 'Groupe d\'objet', info: ''}
+    {key: 'Unit', label: 'Unité Archivistique', info: ''},
+    {key: 'ObjectGroup', label: 'Groupe d\'objet', info: ''}
   ];
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<OntologyCreateComponent>,
@@ -97,12 +97,12 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      shortName: [ null ],
-      identifier: [ null, [Validators.required, this.ontologyCreateValidator.patternID()], this.ontologyCreateValidator.uniqueID() ],
-      type: [ null, Validators.required ],
-      collections: [ null ],
-      description: [ null ],
-      origin: [ 'INTERNAL' ]
+      shortName: [null],
+      identifier: [null, [Validators.required, this.ontologyCreateValidator.patternID()], this.ontologyCreateValidator.uniqueID()],
+      type: [null, Validators.required],
+      collections: [null],
+      description: [null],
+      origin: ['INTERNAL']
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -121,13 +121,15 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     this.ontologyService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "none" });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "none" });
+        this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
   }

@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 
-import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
-import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
+import {AccessContractCreateComponent} from './access-contract-create/access-contract-create.component';
+import {AccessContractListComponent} from './access-contract-list/access-contract-list.component';
 
 
 @Component({
@@ -51,10 +51,10 @@ import { AccessContractListComponent } from './access-contract-list/access-contr
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit {
 
-  search: string = '';
+  search = '';
   tenantId: number;
 
-  @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
+  @ViewChild(AccessContractListComponent, {static: true}) accessContractListComponent: AccessContractListComponent;
 
   constructor(
     public dialog: MatDialog,
@@ -71,36 +71,43 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       if (params.tenantIdentifier) {
         this.tenantId = params.tenantIdentifier;
       }
-    })
+    });
   }
 
   openCreateAccesscontractDialog() {
-    const dialogRef = this.dialog.open(AccessContractCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(AccessContractCreateComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true
+    });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined)
+      if (result !== undefined) {
         this.refreshList();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.accessContractListComponent) { return; }
+    if (!this.accessContractListComponent) {
+      return;
+    }
     this.accessContractListComponent.searchAccessContractOrdered();
   }
 
   changeTenant(tenantIdentifier: number) {
     this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showAccessContract(item: AccessContract) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 
 }

@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {Context, ContextPermission} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { ContextPermissionTabComponent } from './context-permission-tab.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { ContextService } from '../../context.service';
-import { Context, ContextPermission } from 'projects/vitamui-library/src/public-api';
+import {ContextService} from '../../context.service';
+import {ContextPermissionTabComponent} from './context-permission-tab.component';
 
 
 // TODO fix permissions access problem
@@ -13,16 +13,16 @@ xdescribe('ContextPermissionTabComponent', () => {
   let component: ContextPermissionTabComponent;
   let fixture: ComponentFixture<ContextPermissionTabComponent>;
 
-  const contextPermission:ContextPermission = {
-      tenant: '1',
-      accessContracts: ['AC-000001'],
-      ingestContracts: ['IC-000001','IC-000002']
-  }
+  const contextPermission: ContextPermission = {
+    tenant: '1',
+    accessContracts: ['AC-000001'],
+    ingestContracts: ['IC-000001', 'IC-000002']
+  };
   const contextValue = {
-    permissions:contextPermission
-  }
+    permissions: contextPermission
+  };
 
-  const previousValue:Context = {
+  const previousValue: Context = {
     id: 'id',
     name: 'name',
     identifier: 'identifier',
@@ -33,24 +33,24 @@ xdescribe('ContextPermissionTabComponent', () => {
     deactivationDate: '01-01-2020',
     enableControl: 'true',
     securityProfile: 'SP-00001',
-    permissions:[contextPermission]
-  }
+    permissions: [contextPermission]
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: 
-      [ 
-        ReactiveFormsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ ContextPermissionTabComponent ],
-      providers:[
+      imports:
+        [
+          ReactiveFormsModule,
+          VitamUICommonTestModule
+        ],
+      declarations: [ContextPermissionTabComponent],
+      providers: [
         FormBuilder,
         {provide: ContextService, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

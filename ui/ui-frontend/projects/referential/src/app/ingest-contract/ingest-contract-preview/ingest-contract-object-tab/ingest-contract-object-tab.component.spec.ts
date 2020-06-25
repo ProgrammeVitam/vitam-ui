@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { IngestContractObjectTabComponent } from './ingest-contract-object-tab.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { IngestContractService } from '../../ingest-contract.service';
-import { FormBuilder } from '@angular/forms';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {IngestContractService} from '../../ingest-contract.service';
+import {IngestContractObjectTabComponent} from './ingest-contract-object-tab.component';
 
 describe('IngestContractObjectTabComponent', () => {
   let component: IngestContractObjectTabComponent;
@@ -15,10 +15,10 @@ describe('IngestContractObjectTabComponent', () => {
     dataObjectVersion: ['']
   };
 
-  const previousValue:IngestContract = {
+  const previousValue: IngestContract = {
     tenant: 0,
     version: 1,
-    description: 'desc', 
+    description: 'desc',
     status: 'ACTIVE',
     id: 'vitam_id',
     name: 'Name',
@@ -29,27 +29,27 @@ describe('IngestContractObjectTabComponent', () => {
     lastUpdate: '01-01-20',
     activationDate: '01-01-20',
     deactivationDate: '01-01-20',
-    checkParentLink: '', 
-    linkParentId: '', 
+    checkParentLink: '',
+    linkParentId: '',
     checkParentId: [''],
-    masterMandatory : true,
-    formatUnidentifiedAuthorized : true, 
-    everyFormatType: true, 
-    formatType: [''], 
-    archiveProfiles : [], 
+    masterMandatory: true,
+    formatUnidentifiedAuthorized: true,
+    everyFormatType: true,
+    formatType: [''],
+    archiveProfiles: [],
     managementContractId: 'MC-000001'
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IngestContractObjectTabComponent ],
-      providers:[
+      declarations: [IngestContractObjectTabComponent],
+      providers: [
         FormBuilder,
-        { provide: IngestContractService, useValue: {}}
+        {provide: IngestContractService, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

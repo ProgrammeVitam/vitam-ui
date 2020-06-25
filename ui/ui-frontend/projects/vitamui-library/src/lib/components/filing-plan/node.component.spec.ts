@@ -1,8 +1,8 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NodeComponent } from './node.component';
-import { FileType } from '../../models/file-type.enum';
+import {NodeComponent} from './node.component';
+import {FileType} from '../../models/file-type.enum';
 
 describe('NodeComponent', () => {
   let component: NodeComponent;
@@ -10,11 +10,11 @@ describe('NodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NodeComponent ],
-      providers: [ ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      declarations: [NodeComponent],
+      providers: [],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

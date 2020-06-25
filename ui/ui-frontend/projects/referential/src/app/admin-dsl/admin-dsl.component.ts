@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Router} from "@angular/router";
-import { ActivatedRoute } from '@angular/router';
-import {AppRootComponent, Option} from "ui-frontend-common";
-import {AccessContractService} from "../access-contract/access-contract.service";
-import {AdminDslService} from "./admin-dsl.service";
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AppRootComponent, Option} from 'ui-frontend-common';
+import {AccessContractService} from '../access-contract/access-contract.service';
+import {AdminDslService} from './admin-dsl.service';
 
 @Component({
   selector: 'app-admin-dsl',
@@ -67,10 +66,13 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
         this.tenantId = params.tenantIdentifier;
 
         console.log('Get Access Contracts for: ', this.tenantId);
-        this.accessContractService.getAllForTenant(''+this.tenantId).subscribe(
+        this.accessContractService.getAllForTenant('' + this.tenantId).subscribe(
           accessContracts => {
             console.log('Access Contracts: ', accessContracts);
-            this.accessContracts = accessContracts.map(accessContract => ({ key: accessContract.identifier, label: accessContract.name}));
+            this.accessContracts = accessContracts.map(accessContract => ({
+              key: accessContract.identifier,
+              label: accessContract.name
+            }));
           }
         );
       }
@@ -110,7 +112,7 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     try {
       // TODO: Display some valid message ?
       return dsl.length > 1 && !!JSON.parse(dsl);
-    } catch(syntaxError) {
+    } catch (syntaxError) {
       // TODO: display error !
       return false;
     }
@@ -126,11 +128,12 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     this.form.controls.response.reset();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   changeTenant(tenantIdentifier: number) {
     this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
 }

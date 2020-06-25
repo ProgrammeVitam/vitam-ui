@@ -35,16 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
 
-import {
-  GlobalEventService,
-  SidenavPage
-} from 'ui-frontend-common';
-import { MatDialog } from "@angular/material/dialog";
-import { ActivatedRoute } from "@angular/router";
-import { Context } from "../../../../vitamui-library/src/lib/models/context";
-import {ContextCreateComponent} from "./context-create/context-create.component";
-import {ContextListComponent} from "./context-list/context-list.component";
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {Context} from '../../../../vitamui-library/src/lib/models/context';
+import {ContextCreateComponent} from './context-create/context-create.component';
+import {ContextListComponent} from './context-list/context-list.component';
 
 @Component({
   selector: 'app-context',
@@ -53,24 +50,30 @@ import {ContextListComponent} from "./context-list/context-list.component";
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
 
-  search: string = '';
+  search = '';
 
-  @ViewChild(ContextListComponent, { static: true }) contextListComponent: ContextListComponent;
+  @ViewChild(ContextListComponent, {static: true}) contextListComponent: ContextListComponent;
 
   constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
 
   openCreateContextDialog() {
-    const dialogRef = this.dialog.open(ContextCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(ContextCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.success) { this.refreshList(); }
-      if (result.action === "restart") { this.openCreateContextDialog(); }
+      if (result.success) {
+        this.refreshList();
+      }
+      if (result.action === 'restart') {
+        this.openCreateContextDialog();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.contextListComponent) { return; }
+    if (!this.contextListComponent) {
+      return;
+    }
     this.contextListComponent.searchContextOrdered();
   }
 
@@ -78,10 +81,11 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showContext(item: Context) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 
 }

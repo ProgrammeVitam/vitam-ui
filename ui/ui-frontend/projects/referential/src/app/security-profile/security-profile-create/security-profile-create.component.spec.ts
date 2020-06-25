@@ -1,3 +1,4 @@
+/* tslint:disable: max-classes-per-file directive-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,26 +35,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
-/* tslint:disable: max-classes-per-file directive-selector */
 import {Component, forwardRef, NO_ERRORS_SCHEMA} from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {EMPTY, of} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
-import { DomainsInputModule } from '../../../../../identity/src/app/shared/domains-input';
-import { SecurityProfileCreateComponent } from './security-profile-create.component';
-import { SecurityProfileCreateValidators } from './security-profile-create.validators';
-import { SecurityProfileService } from "../security-profile.service";
+import {DomainsInputModule} from '../../../../../identity/src/app/shared/domains-input';
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfileCreateComponent} from './security-profile-create.component';
+import {SecurityProfileCreateValidators} from './security-profile-create.validators';
 
 @Component({
   selector: 'app-security-profile-edit-permission',
@@ -65,9 +64,14 @@ import { SecurityProfileService } from "../security-profile.service";
   }]
 })
 class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor {
-  writeValue() {}
-  registerOnChange() {}
-  registerOnTouched() {}
+  writeValue() {
+  }
+
+  registerOnChange() {
+  }
+
+  registerOnTouched() {
+  }
 }
 
 const expectedSecurityProfile = {
@@ -81,8 +85,13 @@ let fixture: ComponentFixture<SecurityProfileCreateComponent>;
 
 class Page {
 
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 
 }
 
@@ -92,10 +101,10 @@ describe('CustomerCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', { create: of({}) });
+    const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', {create: of({})});
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
       'SecurityProfileCreateValidators',
-      { uniqueName: () => of(null) }
+      {uniqueName: () => of(null)}
     );
     TestBed.configureTestingModule({
       imports: [
@@ -114,15 +123,15 @@ describe('CustomerCreateComponent', () => {
         SecurityProfileEditPermissionStubComponent
       ],
       providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: SecurityProfileService, useValue: customerServiceSpy },
-        { provide: SecurityProfileCreateValidators, useValue: customerCreateValidatorsSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: SecurityProfileService, useValue: customerServiceSpy},
+        {provide: SecurityProfileCreateValidators, useValue: customerCreateValidatorsSpy},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -183,20 +192,20 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close.calls.count()).toBe(1);
     });
 
     it('should not call create()', () => {
-      const securityProfileService =  TestBed.get(SecurityProfileService);
+      const securityProfileService = TestBed.get(SecurityProfileService);
       component.onSubmit();
       expect(securityProfileService.create.calls.count()).toBe(0);
     });
 
     it('should call create()', () => {
-      const securityProfileService =  TestBed.get(SecurityProfileService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const securityProfileService = TestBed.get(SecurityProfileService);
+      const matDialogRef = TestBed.get(MatDialogRef);
       component.form.setValue(expectedSecurityProfile);
       component.onSubmit();
       expect(securityProfileService.create.calls.count()).toBe(1);

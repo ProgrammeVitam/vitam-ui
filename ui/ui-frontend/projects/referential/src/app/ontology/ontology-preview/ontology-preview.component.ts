@@ -1,11 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild, HostListener } from '@angular/core';
-import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
-import { OntologyInformationTabComponent } from "./ontology-information-tab/ontology-information-tab.component";
-import { Observable } from "rxjs";
-import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
-import { MatDialog } from "@angular/material/dialog";
-import { OntologyService } from "../ontology.service";
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
+import {ConfirmActionComponent, Ontology} from 'projects/vitamui-library/src/public-api';
+import {Observable} from 'rxjs';
+import {OntologyService} from '../ontology.service';
+import {OntologyInformationTabComponent} from './ontology-information-tab/ontology-information-tab.component';
 
 @Component({
   selector: 'app-ontology-preview',
@@ -19,12 +18,6 @@ export class OntologyPreviewComponent implements OnInit {
 
   isPopup: boolean;
 
-  filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('STP_UPDATE_ONTOLOGY') ||
-      event.outDetail.includes('STP_IMPORT_ONTOLOGY'));
-  }
-
   @Input()
   inputOntology: Ontology;
   // tab indexes: info = 0; history = 2;
@@ -33,6 +26,12 @@ export class OntologyPreviewComponent implements OnInit {
 
   tabLinks: Array<OntologyInformationTabComponent> = [];
   @ViewChild('infoTab', {static: false}) infoTab: OntologyInformationTabComponent;
+
+  filterEvents(event: any): boolean {
+    return event.outDetail && (
+      event.outDetail.includes('STP_UPDATE_ONTOLOGY') ||
+      event.outDetail.includes('STP_IMPORT_ONTOLOGY'));
+  }
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
@@ -43,11 +42,13 @@ export class OntologyPreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private ontologyService: OntologyService) { }
+  constructor(private matDialog: MatDialog, private ontologyService: OntologyService) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
@@ -60,7 +61,7 @@ export class OntologyPreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitOntologyUpdate: Observable<Ontology> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitOntologyUpdate.subscribe( () => {
+      submitOntologyUpdate.subscribe(() => {
         this.ontologyService.get(this.inputOntology.identifier).subscribe(
           response => {
             this.inputOntology = response;
@@ -82,10 +83,10 @@ export class OntologyPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   emitClose() {
     this.previewClose.emit();

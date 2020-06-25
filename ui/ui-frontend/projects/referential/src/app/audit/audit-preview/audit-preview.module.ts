@@ -34,16 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuditPreviewComponent } from './audit-preview.component';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule, MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
-import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
-
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  MatDialogModule,
+  MatMenuModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatTabsModule
+} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {AuditInformationTabComponent} from './audit-information-tab/audit-information-tab.component';
+import {AuditPreviewComponent} from './audit-preview.component';
 
 
 @NgModule({
@@ -68,4 +76,5 @@ import { AuditInformationTabComponent } from './audit-information-tab/audit-info
     AuditPreviewComponent
   ]
 })
-export class AuditPreviewModule { }
+export class AuditPreviewModule {
+}

@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {Agency, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {AgencyInformationTabComponent} from "./agency-information-tab/agency-information-tab.component";
-import {AgencyService} from "../agency.service";
-import {MatDialog} from "@angular/material/dialog";
-import {Observable} from "rxjs";
+import {Observable} from 'rxjs';
+import {AgencyService} from '../agency.service';
+import {AgencyInformationTabComponent} from './agency-information-tab/agency-information-tab.component';
 
 @Component({
   selector: 'app-agency-preview',
@@ -69,12 +69,13 @@ export class AgencyPreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private agencyService: AgencyService) { }
+  constructor(private matDialog: MatDialog, private agencyService: AgencyService) {
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
@@ -88,7 +89,7 @@ export class AgencyPreviewComponent implements OnInit {
       // TODO rename
       const submitAccessContractUpdate: Observable<Agency> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.agencyService.get(this.agency.identifier).subscribe(
           response => {
             this.agency = response;
@@ -110,10 +111,10 @@ export class AgencyPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   filterEvents(event: any): boolean {
     return event.outDetail && (

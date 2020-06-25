@@ -1,13 +1,13 @@
-import { HttpHeaders } from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService, StartupService } from 'ui-frontend-common';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AccessContract, AccessionRegister, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService, StartupService} from 'ui-frontend-common';
 
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { AuditService } from '../audit.service';
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {AuditService} from '../audit.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -52,7 +52,7 @@ export class AuditCreateComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accessContractService.getAllForTenant(""+this.tenantIdentifier).subscribe((value) => {
+    this.accessContractService.getAllForTenant('' + this.tenantIdentifier).subscribe((value) => {
       this.accessContracts = value;
     });
 
@@ -65,7 +65,8 @@ export class AuditCreateComponent implements OnInit {
 
     this.accessContractSelect.valueChanges.subscribe(accessContractId => {
       console.log('AC ID: ', accessContractId);
-      if (this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' || this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY') {
+      if (this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' ||
+        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY') {
         console.log('Integrité / Existance');
         this.auditService.getAllAccessionRegister(accessContractId).subscribe(accessionRegisters => {
           console.log('Services Producteurs: ', accessionRegisters);
@@ -81,24 +82,24 @@ export class AuditCreateComponent implements OnInit {
 
     this.form.controls.auditActions.valueChanges.subscribe(action => {
       if (action === 'AUDIT_FILE_EXISTING' || action === 'AUDIT_FILE_INTEGRITY') {
-        this.form.controls['auditType'].setValue(this.allServices.value ? 'tenant' : 'originatingagency');
+        this.form.controls.auditType.setValue(this.allServices.value ? 'tenant' : 'originatingagency');
       } else {
-        this.form.controls['auditType'].setValue('dsl');
+        this.form.controls.auditType.setValue('dsl');
       }
     });
 
     this.allServices.valueChanges.subscribe((value) => {
-      this.form.controls['auditType'].setValue((value) ? 'tenant' : 'originatingagency');
+      this.form.controls.auditType.setValue((value) ? 'tenant' : 'originatingagency');
       this.form.controls.objectId.setValue((value) ? this.startupService.getTenantIdentifier() : null);
     });
 
     this.selectedNodes.valueChanges.subscribe(value => {
       if (value && value.included && value.included.length > 0) {
-        this.form.controls['query'].setValue(this.getRootQuery(value.included));
+        this.form.controls.query.setValue(this.getRootQuery(value.included));
       } else {
-        this.form.controls['query'].setValue(this.getRootQuery(null));
+        this.form.controls.query.setValue(this.getRootQuery(null));
       }
-      console.log('query: ', this.form.controls['query'].value);
+      console.log('query: ', this.form.controls.query.value);
     });
 
     this.allNodes.valueChanges.subscribe((value) => this.stepCount = (value) ? 1 : 2);
@@ -107,14 +108,15 @@ export class AuditCreateComponent implements OnInit {
   isStepValid(): boolean {
     const isEvidenceAuditValid = this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' &&
       !this.accessContractSelect.invalid && !this.accessContractSelect.pending;
-    const isOtherAuditValid = (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' || this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
+    const isOtherAuditValid = (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' ||
+      this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
       !this.accessContractSelect.invalid && !this.accessContractSelect.pending &&
       !this.form.get('auditType').invalid && !this.form.get('auditType').pending &&
       !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
     return isEvidenceAuditValid || isOtherAuditValid;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy = () => {
     this.keyPressSubscription.unsubscribe();
   }
 
@@ -128,14 +130,16 @@ export class AuditCreateComponent implements OnInit {
 
   onSubmit() {
     console.log('Form valid ? ', this.form.invalid);
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
     console.log('data: ', this.form.value);
-    this.auditService.create(this.form.value, new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractSelect.value })).subscribe(
+    this.auditService.create(this.form.value, new HttpHeaders({'X-Access-Contract-Id': this.accessContractSelect.value})).subscribe(
       () => {
-        this.dialogRef.close({ success: true, action: "none" });
+        this.dialogRef.close({success: true, action: 'none'});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false, action: "none" });
+        this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
   }
@@ -147,20 +151,20 @@ export class AuditCreateComponent implements OnInit {
   getRootQuery(includedRoots: string[]) {
     if (includedRoots === null) {
       return {
-        "$query": [{
-          "$or":[{ "$exists": "#id" }]
+        $query: [{
+          $or: [{$exists: '#id'}]
         }],
-        "$filter":{},
-        "$projection":{}
+        $filter: {},
+        $projection: {}
       };
     }
 
     return {
-      "$query": [{
-        "$or":[{ "$in":{ "#allunitups":includedRoots } }]
+      $query: [{
+        $or: [{$in: {'#allunitups': includedRoots}}]
       }],
-      "$filter":{},
-      "$projection":{}
+      $filter: {},
+      $projection: {}
     };
   }
 

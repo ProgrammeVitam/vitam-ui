@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
-import { FilingPlanMode } from "projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service";
-import {IngestContractService} from "../../../ingest-contract.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilingPlanMode} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {IngestContractService} from '../../../ingest-contract.service';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
@@ -76,28 +76,34 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     this.ingestContract = this.data.ingestContract;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.selectNodesForm = this.formBuilder.group({
-      linkParentId: [{ value: null, disabled: true }, Validators.required],
-      checkParentLink: ["AUTHORIZED", Validators.required],
-      checkParentId: [{ value: null, disabled: true }, Validators.required]
+      linkParentId: [{value: null, disabled: true}, Validators.required],
+      checkParentLink: ['AUTHORIZED', Validators.required],
+      checkParentId: [{value: null, disabled: true}, Validators.required]
     });
   }
 
   ngOnInit() {
     this.linkParentIdControl.valueChanges.subscribe((value) => {
-      if (value.included.length > 0) this.selectNodesForm.controls['linkParentId'].setValue(value.included[0]);
-      else this.selectNodesForm.controls['linkParentId'].setValue(null);
+      if (value.included.length > 0) {
+        this.selectNodesForm.controls.linkParentId.setValue(value.included[0]);
+      } else {
+        this.selectNodesForm.controls.linkParentId.setValue(null);
+      }
     });
 
     this.checkParentIdControl.valueChanges.subscribe((value) => {
       console.log('included: ', value.included);
-      this.selectNodesForm.controls['checkParentId'].setValue(value.included);
+      this.selectNodesForm.controls.checkParentId.setValue(value.included);
     });
 
     this.linkParentIdControl.setValue(
-      this.ingestContract.linkParentId ? { included: [this.ingestContract.linkParentId], excluded: [] } : { included: [], excluded: [] }
+      this.ingestContract.linkParentId ? {included: [this.ingestContract.linkParentId], excluded: []} : {
+        included: [],
+        excluded: []
+      }
     );
     this.checkParentIdControl.setValue({
-      included: this.ingestContract.checkParentId ? this.ingestContract.checkParentId: [],
+      included: this.ingestContract.checkParentId ? this.ingestContract.checkParentId : [],
       excluded: []
     });
   }
@@ -109,7 +115,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   updateIngestContractNodes() {
     console.log('CPI:', this.selectNodesForm.get('checkParentId').value);
     const formData = {
-      id : this.ingestContract.id,
+      id: this.ingestContract.id,
       identifier: this.ingestContract.identifier,
       checkParentId: this.selectNodesForm.get('checkParentId').value,
       linkParentId: this.selectNodesForm.get('linkParentId').value,

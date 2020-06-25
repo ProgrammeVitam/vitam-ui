@@ -1,17 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SecurityProfileInformationTabComponent } from './security-profile-information-tab.component';
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { SecurityProfileService } from "../../security-profile.service";
-import { of } from "rxjs";
-import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
+import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {SecurityProfileService} from '../../security-profile.service';
+import {SecurityProfileInformationTabComponent} from './security-profile-information-tab.component';
 
 describe('SecurityProfileInformationTabComponent', () => {
   let component: SecurityProfileInformationTabComponent;
   let fixture: ComponentFixture<SecurityProfileInformationTabComponent>;
 
   const securityProfileServiceMock = {
+    // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null)
   };
 
@@ -31,14 +32,14 @@ describe('SecurityProfileInformationTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecurityProfileInformationTabComponent ],
+      declarations: [SecurityProfileInformationTabComponent],
       providers: [
         FormBuilder,
-        { provide: SecurityProfileService, useValue: securityProfileServiceMock }
+        {provide: SecurityProfileService, useValue: securityProfileServiceMock}
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

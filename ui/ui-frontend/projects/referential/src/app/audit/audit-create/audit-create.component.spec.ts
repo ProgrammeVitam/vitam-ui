@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AuditCreateComponent } from './audit-create.component';
+import {AuditCreateComponent} from './audit-create.component';
 
 // TODO make it work
 xdescribe('AuditCreateComponent', () => {
@@ -9,9 +9,9 @@ xdescribe('AuditCreateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuditCreateComponent ]
+      declarations: [AuditCreateComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ xdescribe('AuditCreateComponent', () => {
     fixture.detectChanges();
   });
 
-it('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

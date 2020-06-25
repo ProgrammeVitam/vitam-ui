@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
-import { AccessContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-import { MatDialog } from "@angular/material/dialog";
-import { AccessContractNodeUpdateComponent } from "./access-contract-nodes-update/access-contract-node-update.component";
-import { HttpHeaders } from "@angular/common/http";
-import { AccessContractService } from "../../access-contract.service";
+import {HttpHeaders} from '@angular/common/http';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {AccessContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {AccessContractService} from '../../access-contract.service';
+import {AccessContractNodeUpdateComponent} from './access-contract-nodes-update/access-contract-node-update.component';
 
 @Component({
   selector: 'app-access-contract-nodes-tab',
@@ -60,7 +60,7 @@ export class AccessContractNodesTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accessContractService.getAll().subscribe( accessContracts => this.accessContracts = accessContracts );
+    this.accessContractService.getAll().subscribe(accessContracts => this.accessContracts = accessContracts);
   }
 
   initTitles(event: any) {
@@ -76,7 +76,7 @@ export class AccessContractNodesTabComponent implements OnInit {
           });
         }
       }
-    )
+    );
   }
 
   getDslForRootNodes(): any {
@@ -84,29 +84,29 @@ export class AccessContractNodesTabComponent implements OnInit {
     const rootUnits: string[] = this.accessContract.rootUnits ? this.accessContract.rootUnits : [];
 
     return {
-      "$roots": [],
-      "$query": [
+      $roots: [],
+      $query: [
         {
-          "$and": [
+          $and: [
             {
-              "$in": {
-                "#id": [ ...rootUnits, ...excludedRoots ]
+              $in: {
+                '#id': [...rootUnits, ...excludedRoots]
               }
             }
           ]
         }
       ],
-      "$projection": {
-        "$fields": {
-          "#id": 1,
-          "Title": 1
+      $projection: {
+        $fields: {
+          '#id': 1,
+          Title: 1
         }
       }
     };
   }
 
   openUpdateSelectedNodes() {
-    if (!this.searchAccessContractId) return;
+    if (!this.searchAccessContractId) { return; }
     this.dialog.open(AccessContractNodeUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,

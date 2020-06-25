@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Context } from 'projects/vitamui-library/src/public-api';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Context} from 'projects/vitamui-library/src/public-api';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Option} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { ContextService } from '../../context.service';
-import { map, filter, catchError, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
+import {ContextService} from '../../context.service';
 
 import {Observable, of} from 'rxjs';
 
@@ -55,11 +55,25 @@ export class ContextPermissionTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  previousValue = (): Context => {
-    return this._context
-  };
 
-  submited: boolean = false;
+  submited = false;
+
+  // tslint:disable-next-line:variable-name
+  private _context: Context;
+
+  // FIXME: Get list from common var ?
+  rules: Option[] = [
+    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
+    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
+    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
+    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
+    {key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: ''},
+    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
+  ];
+
+  previousValue = (): Context => {
+    return this._context;
+  }
 
   @Input()
   set context(context: Context) {
@@ -67,29 +81,20 @@ export class ContextPermissionTabComponent {
     this.resetForm(this.context);
     this.updated.emit(false);
   }
-  get context(): Context { return this._context; }
-  // tslint:disable-next-line:variable-name
-  private _context: Context;
+
+  get context(): Context {
+    return this._context;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AdministrationRule', label: 'Durée d\'utilité administrative', info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
-  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -102,7 +107,7 @@ export class ContextPermissionTabComponent {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -120,7 +125,9 @@ export class ContextPermissionTabComponent {
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
@@ -128,12 +135,12 @@ export class ContextPermissionTabComponent {
           this.context = response;
         }
       );
-    },() => {
+    }, () => {
       this.submited = false;
     });
   }
 
   resetForm(context: Context) {
-    this.form.reset(context, { emitEvent: false });
+    this.form.reset(context, {emitEvent: false});
   }
 }

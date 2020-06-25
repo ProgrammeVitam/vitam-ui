@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
-import { Event } from 'projects/vitamui-library/src/public-api';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialog} from '@angular/material';
+import {ActivatedRoute} from '@angular/router';
+import {Event} from 'projects/vitamui-library/src/public-api';
+import {GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
 
-import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
-import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
+import {ProbativeValueCreateComponent} from './probative-value-create/probative-value-create.component';
+import {ProbativeValueListComponent} from './probative-value-list/probative-value-list.component';
 
 @Component({
   selector: 'app-probative-value',
@@ -19,10 +19,13 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   dateRangeFilterForm: FormGroup;
   filters: any = {};
 
-  @ViewChild(SearchBarComponent, {static : true}) searchBar: SearchBarComponent;
-  @ViewChild(ProbativeValueListComponent, { static: true }) probativeVlaueListComponent: ProbativeValueListComponent;
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(ProbativeValueListComponent, {static: true}) probativeVlaueListComponent: ProbativeValueListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService,
+  constructor(
+    public dialog: MatDialog,
+    route: ActivatedRoute,
+    globalEventService: GlobalEventService,
     private formBuilder: FormBuilder) {
     super(route, globalEventService);
 
@@ -32,19 +35,26 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     });
 
     this.dateRangeFilterForm.valueChanges.subscribe((value) => {
-      this.filters['dateRange'] = value;
+      this.filters.dateRange = value;
     });
   }
 
   openCreateProbativeVlaueDialog() {
-    const dialogRef = this.dialog.open(ProbativeValueCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true
+    });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined && result.success) { this.refreshList(); }
+      if (result !== undefined && result.success) {
+        this.refreshList();
+      }
     });
   }
 
   private refreshList() {
-    if (!this.probativeVlaueListComponent) { return; }
+    if (!this.probativeVlaueListComponent) {
+      return;
+    }
     this.probativeVlaueListComponent.searchProbativeVlaueOrdered();
   }
 
@@ -54,9 +64,9 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
@@ -67,9 +77,10 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     this.searchBar.reset();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   showProbativeValue(item: Event) {
-    this.openPanel(item)
+    this.openPanel(item);
   }
 }

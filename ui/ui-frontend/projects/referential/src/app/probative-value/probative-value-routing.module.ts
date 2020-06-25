@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {Route, RouterModule} from '@angular/router';
+import {ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent} from 'ui-frontend-common';
 
-import { ProbativeValueComponent } from './probative-value.component';
+import {ProbativeValueComponent} from './probative-value.component';
 
 const routes: Route[] = [
   {
@@ -29,4 +29,5 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
   ]
 })
-export class ProbativeValueRoutingModule { }
+export class ProbativeValueRoutingModule {
+}

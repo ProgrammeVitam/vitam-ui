@@ -1,6 +1,6 @@
-import { PositionType } from 'ui-frontend-common';
-import { MetadataPermission } from '../models/metadata.interface';
-import { Unit } from '../models/unit.interface';
+import {PositionType} from 'ui-frontend-common';
+import {MetadataPermission} from '../models/metadata.interface';
+import {Unit} from '../models/unit.interface';
 
 export function getBooleanValue(unit: Unit, key: string): boolean {
   const value = getKeywordValue(unit, key);

@@ -34,28 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
+  MatDatepickerModule,
   MatDialogModule,
   MatMenuModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
-  MatDatepickerModule,
-  MatSelectModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
+import {RouterModule} from '@angular/router';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
-import { SharedModule } from '../shared/shared.module';
-import { AuditRoutingModule } from './audit-routing.module';
-import { AuditComponent } from './audit.component';
-import { AuditPreviewModule } from './audit-preview/audit-preview.module';
-import { AuditListModule } from './audit-list/audit-list.module';
-import { AuditCreateModule } from './audit-create/audit-create.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import {SharedModule} from '../shared/shared.module';
+import {AuditCreateModule} from './audit-create/audit-create.module';
+import {AuditListModule} from './audit-list/audit-list.module';
+import {AuditPreviewModule} from './audit-preview/audit-preview.module';
+import {AuditRoutingModule} from './audit-routing.module';
+import {AuditComponent} from './audit.component';
 
 
 @NgModule({
@@ -82,4 +81,5 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AuditComponent
   ]
 })
-export class AuditModule { }
+export class AuditModule {
+}

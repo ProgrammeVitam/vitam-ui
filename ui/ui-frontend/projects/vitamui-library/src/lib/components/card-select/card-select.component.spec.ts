@@ -1,7 +1,7 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CardSelectComponent } from './card-select.component';
+import {CardSelectComponent} from './card-select.component';
 
 describe('CardSelectComponent', () => {
   let component: CardSelectComponent;
@@ -9,10 +9,10 @@ describe('CardSelectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardSelectComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      declarations: [CardSelectComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

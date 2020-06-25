@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { Context } from "../../../../../vitamui-library/src/lib/models/context";
-import {map} from "rxjs/operators";
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {Context} from '../../../../../vitamui-library/src/lib/models/context';
 
 const HTTP_STATUS_OK = 200;
 
@@ -69,11 +69,11 @@ export class ContextApiService extends BaseHttpClient<Context> {
   }
 
   create(context: Context, headers?: HttpHeaders): Observable<Context> {
-    return super.getHttp().post<any>(super.getApiUrl(), context, { headers });
+    return super.getHttp().post<any>(super.getApiUrl(), context, {headers});
   }
 
   check(context: Context, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', context, { observe: 'response', headers })
+    return super.getHttp().post<any>(super.getApiUrl() + '/check', context, {observe: 'response', headers})
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 

@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {NgxFilesizeModule} from 'ngx-filesize';
+import {of} from 'rxjs';
 
-import { SecurisationInformationTabComponent } from './securisation-information-tab.component';
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import { SecurisationService } from '../../securisation.service';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { of } from 'rxjs';
+import {SecurisationService} from '../../securisation.service';
+import {SecurisationInformationTabComponent} from './securisation-information-tab.component';
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
@@ -53,7 +53,7 @@ describe('SecurisationInformationTabComponent', () => {
       agIdExt: 'agIdExt',
       rightsStatementIdentifier: 'rightsStatementIdentifier'
     }]
-  }
+  };
 
   beforeEach(async(() => {
     const securisationServiceMock = {
@@ -61,16 +61,16 @@ describe('SecurisationInformationTabComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         NgxFilesizeModule
       ],
-      declarations: [ SecurisationInformationTabComponent ],
-      providers:[
-        { provide: SecurisationService, useValue: securisationServiceMock }
+      declarations: [SecurisationInformationTabComponent],
+      providers: [
+        {provide: SecurisationService, useValue: securisationServiceMock}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

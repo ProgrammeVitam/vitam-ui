@@ -1,29 +1,29 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatDialog} from '@angular/material';
+import {of} from 'rxjs';
 
-import { SecurisationListComponent } from './securisation-list.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { MatDialog } from '@angular/material';
-import { SecurisationService } from '../securisation.service';
-import { of } from "rxjs";
+import {SecurisationService} from '../securisation.service';
+import {SecurisationListComponent} from './securisation-list.component';
 
 describe('SecurisationListComponent', () => {
   let component: SecurisationListComponent;
   let fixture: ComponentFixture<SecurisationListComponent>;
-  
+
   const securisationServiceMock = {
     search: () => of(null)
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecurisationListComponent ],
-      providers: [ 
-        { provide: MatDialog, useValue:{ } }, 
-        { provide: SecurisationService, useValue: securisationServiceMock }
+      declarations: [SecurisationListComponent],
+      providers: [
+        {provide: MatDialog, useValue: {}},
+        {provide: SecurisationService, useValue: securisationServiceMock}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

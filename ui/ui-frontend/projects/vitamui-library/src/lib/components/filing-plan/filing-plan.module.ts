@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatTreeModule } from '@angular/material/tree';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTreeModule} from '@angular/material/tree';
 
-import { FilingPlanComponent } from './filing-plan.component';
-import { NodeComponent } from './node.component';
-import { MatCheckboxModule } from "@angular/material/checkbox";
-import {FormsModule} from "@angular/forms";
+import {FilingPlanComponent} from './filing-plan.component';
+import {NodeComponent} from './node.component';
 
 @NgModule({
   imports: [
@@ -23,4 +23,5 @@ import {FormsModule} from "@angular/forms";
   declarations: [FilingPlanComponent, NodeComponent],
   exports: [FilingPlanComponent]
 })
-export class FilingPlanModule { }
+export class FilingPlanModule {
+}

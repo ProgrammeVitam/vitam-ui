@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/public-api';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
+import {Subscription} from 'rxjs';
+import {ConfirmDialogService} from 'ui-frontend-common';
 
-import { FileFormatService } from '../file-format.service';
-import { FileFormatCreateValidators } from './file-format-create.validators';
+import {FileFormatService} from '../file-format.service';
+import {FileFormatCreateValidators} from './file-format-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -55,7 +55,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
+  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -67,7 +67,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   private stepCount = 1;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<FileFormatCreateComponent>,
@@ -104,7 +104,9 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.form.invalid) {
+      return;
+    }
 
     const format: FileFormat = this.form.value;
     format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
@@ -112,10 +114,10 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
     this.agencyService.create(format).subscribe(
       () => {
-        this.dialogRef.close({ success: true });
+        this.dialogRef.close({success: true});
       },
       (error: any) => {
-        this.dialogRef.close({ success: false });
+        this.dialogRef.close({success: false});
         console.error(error);
       });
   }

@@ -34,15 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+/* tslint:disable:no-use-before-declare */
 
-
-import {Component, forwardRef, Input, OnInit} from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { ContextPermission } from 'projects/vitamui-library/src/public-api';
-import {AuthService, Option} from "ui-frontend-common";
-import {AccessContractService} from "../../../access-contract/access-contract.service";
-import {IngestContractService} from "../../../ingest-contract/ingest-contract.service";
-import {Tenant} from "ui-frontend-common/app/modules/models/customer";
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ContextPermission} from 'projects/vitamui-library/src/public-api';
+import {AuthService, Option} from 'ui-frontend-common';
+import {Tenant} from 'ui-frontend-common/app/modules/models/customer';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {IngestContractService} from '../../../ingest-contract/ingest-contract.service';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,24 +54,27 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   selector: 'app-context-edit-permission',
   templateUrl: './context-edit-permission.component.html',
   styleUrls: ['./context-edit-permission.component.scss'],
-  providers: [ CONTEXT_PERMISSION_VALUE_ACCESSOR ]
+  providers: [CONTEXT_PERMISSION_VALUE_ACCESSOR]
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
-  permissions: ContextPermission[];
-
-  @Input() editMode: boolean = false;
-
-  disabled: boolean;
-  onChange = (_x: any) => { };
-  onTouched= () => {};
-
-  tenants: Option[] = [];
-  accessContracts: Map<string, Option[]> = new Map();
-  ingestContracts: Map<string, Option[]> = new Map();
 
   constructor(private accessService: AccessContractService,
               private ingestService: IngestContractService,
               private authService: AuthService) {
+  }
+  permissions: ContextPermission[];
+
+  @Input() editMode = false;
+
+  disabled: boolean;
+
+  tenants: Option[] = [];
+  accessContracts: Map<string, Option[]> = new Map();
+  ingestContracts: Map<string, Option[]> = new Map();
+  // tslint:disable-next-line:variable-name
+  onChange = (_x: any) => {
+  }
+  onTouched = () => {
   }
 
   ngOnInit(): void {
@@ -81,12 +84,15 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
         appTenantInfo => appTenantInfo.name === 'ACCESS_APP');
       const accessTenants: Tenant[] = accessTenantsInfo ? accessTenantsInfo.tenants : [];
       accessTenants.forEach((tenant) => {
-        if (!this.tenants.find(appTenant => appTenant.key === ''+tenant.identifier)) {
-          this.tenants.push({key: ''+tenant.identifier, label: tenant.name})
+        if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
+          this.tenants.push({key: '' + tenant.identifier, label: tenant.name});
         }
-        this.accessService.getAllForTenant(''+tenant.identifier).subscribe(
+        this.accessService.getAllForTenant('' + tenant.identifier).subscribe(
           accessContracts => {
-            this.accessContracts.set(''+tenant.identifier, accessContracts.map(x => ({ label: x.name, key: x.identifier })))
+            this.accessContracts.set('' + tenant.identifier, accessContracts.map(x => ({
+              label: x.name,
+              key: x.identifier
+            })));
           });
       });
 
@@ -94,12 +100,15 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
         appTenantInfo => appTenantInfo.name === 'INGEST_APP');
       const ingestTenants: Tenant[] = ingestTenantsInfo ? ingestTenantsInfo.tenants : [];
       ingestTenants.forEach((tenant) => {
-        if (!this.tenants.find(appTenant => appTenant.key === ''+tenant.identifier)) {
-          this.tenants.push({key: ''+tenant.identifier, label: tenant.name})
+        if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
+          this.tenants.push({key: '' + tenant.identifier, label: tenant.name});
         }
-        this.ingestService.getAllForTenant(''+tenant.identifier).subscribe(
+        this.ingestService.getAllForTenant('' + tenant.identifier).subscribe(
           ingestContracts => {
-            this.ingestContracts.set(''+tenant.identifier, ingestContracts.map(x => ({ label: x.name, key: x.identifier })))
+            this.ingestContracts.set('' + tenant.identifier, ingestContracts.map(x => ({
+              label: x.name,
+              key: x.identifier
+            })));
           });
       });
 

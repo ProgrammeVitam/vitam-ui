@@ -1,11 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {Route, RouterModule} from '@angular/router';
+import {ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent} from 'ui-frontend-common';
 
-import { SecurisationComponent } from './securisation.component';
-
-
+import {SecurisationComponent} from './securisation.component';
 
 
 const routes: Route[] = [
@@ -32,4 +30,5 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
   ]
 })
-export class SecurisationRoutingModule { }
+export class SecurisationRoutingModule {
+}

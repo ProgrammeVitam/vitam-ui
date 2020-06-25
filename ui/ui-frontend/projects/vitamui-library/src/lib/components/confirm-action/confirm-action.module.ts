@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatDialogModule} from '@angular/material/dialog';
+import {ConfirmDialogModule} from 'ui-frontend-common';
 
-import { ConfirmActionComponent } from "./confirm-action.component";
-import {ConfirmDialogModule} from "ui-frontend-common";
+import {ConfirmActionComponent} from './confirm-action.component';
 
 @NgModule({
-  declarations: [ ConfirmActionComponent ],
+  declarations: [ConfirmActionComponent],
   imports: [
     CommonModule,
     MatDialogModule,
     ConfirmDialogModule
   ],
-  exports: [ ConfirmActionComponent ],
-  entryComponents: [ ConfirmActionComponent ]
+  exports: [ConfirmActionComponent],
+  entryComponents: [ConfirmActionComponent]
 })
-export class ConfirmActionModule { }
+export class ConfirmActionModule {
+}

@@ -1,12 +1,12 @@
-import {Component, OnInit, Output, EventEmitter, Input, ViewChild, HostListener} from '@angular/core';
-import { SecurityProfile } from 'projects/vitamui-library/src/public-api';
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {SecurityProfileInformationTabComponent} from "./security-profile-information-tab/security-profile-information-tab.component";
-import {SecurityProfilePermissionsTabComponent} from "./security-profile-permissions-tab/security-profile-permissions-tab.component";
-import {MatDialog} from "@angular/material/dialog";
-import {SecurityProfileService} from "../security-profile.service";
-import {Observable} from "rxjs";
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
+import {ConfirmActionComponent, SecurityProfile} from 'projects/vitamui-library/src/public-api';
+import {Observable} from 'rxjs';
+
+import {SecurityProfileService} from '../security-profile.service';
+import {SecurityProfileInformationTabComponent} from './security-profile-information-tab/security-profile-information-tab.component';
+import {SecurityProfilePermissionsTabComponent} from './security-profile-permissions-tab/security-profile-permissions-tab.component';
 
 @Component({
   selector: 'app-security-profile-preview',
@@ -34,12 +34,14 @@ export class SecurityProfilePreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private securityProfileService: SecurityProfileService) { }
+  constructor(private matDialog: MatDialog, private securityProfileService: SecurityProfileService) {
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+
+  ngAfterViewInit = (): void => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.permsTab;
@@ -53,7 +55,7 @@ export class SecurityProfilePreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<SecurityProfile> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.securityProfileService.get(this.securityProfile.identifier).subscribe(
           response => {
             this.securityProfile = response;
@@ -76,10 +78,10 @@ export class SecurityProfilePreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   updateFullAccess(newValue: boolean) {
     this.securityProfile.fullAccess = newValue;

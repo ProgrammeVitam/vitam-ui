@@ -34,23 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, TemplateRef, EventEmitter } from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {
-  InfiniteScrollTable,
-  Direction,
-  ApplicationId,
-  Role,
-  PageRequest,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {Context} from 'projects/vitamui-library/src/lib/models/context';
+import {merge, Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {
   AdminUserProfile,
+  ApplicationId,
   AuthService,
   DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  Role,
   User
 } from 'ui-frontend-common';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import {merge, Subject, Subscription} from "rxjs";
-import { debounceTime } from "rxjs/operators";
-import { Context } from "projects/vitamui-library/src/lib/models/context";
-import { ContextService } from "../context.service";
+import {ContextService} from '../context.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,14 +70,14 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./context-list.component.scss'],
   animations: [
     trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
+      state('collapsed', style({height: '0px', visibility: 'hidden'})),
+      state('expanded', style({height: '*', visibility: 'visible'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
 
     trigger('arrow', [
-      state('collapsed', style({ transform: 'rotate(180deg)' })),
-      state('expanded', style({ transform: 'none' })),
+      state('collapsed', style({transform: 'rotate(180deg)'})),
+      state('expanded', style({transform: 'none'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
   ]
@@ -80,13 +90,14 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() contextClick = new EventEmitter<Context>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<ContextListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<ContextListComponent>;
+  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
@@ -106,17 +117,21 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   private readonly orderChange = new Subject<string>();
 
   @Input()
-  get connectedUserInfo(): AdminUserProfile { return this._connectedUserInfo; }
+  get connectedUserInfo(): AdminUserProfile {
+    return this._connectedUserInfo;
+  }
+
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
+
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
     public contextService: ContextService,
- /*   private groupApiService: GroupApiService,
-    @Inject(LOCALE_ID) private locale: string,*/
+    /*   private groupApiService: GroupApiService,
+       @Inject(LOCALE_ID) private locale: string,*/
     private authService: AuthService
   ) {
     super(contextService);
@@ -182,7 +197,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
   }
-
 
 
 }

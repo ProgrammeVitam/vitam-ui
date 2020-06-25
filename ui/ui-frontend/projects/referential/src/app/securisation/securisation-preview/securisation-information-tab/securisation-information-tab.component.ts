@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Event } from 'projects/vitamui-library/src/public-api';
-import {SecurisationService} from "../../securisation.service";
+import {Component, Input, OnInit} from '@angular/core';
+import {Event} from 'projects/vitamui-library/src/public-api';
+import {SecurisationService} from '../../securisation.service';
 
 
 @Component({
@@ -14,10 +14,11 @@ export class SecurisationInformationTabComponent implements OnInit {
   securisation: Event;
   timestamp: { signerCertIssuer: string, genTime: Date };
 
-  constructor(private securisationService: SecurisationService) { }
+  constructor(private securisationService: SecurisationService) {
+  }
 
   ngOnInit() {
-    this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe( response => {
+    this.securisationService.getInfoFromTimestamp(this.securisation.parsedData.TimeStampToken).subscribe(response => {
       this.timestamp = response;
     });
   }

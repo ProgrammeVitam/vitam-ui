@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab.component';
-import { AccessContractService } from '../../access-contract.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {AccessContractService} from '../../access-contract.service';
+import {AccessContractWriteAccessTabComponent} from './access-contract-write-access-tab.component';
 
 // TODO fix test
 xdescribe('AccessContractWriteAccessTabComponent', () => {
@@ -12,17 +12,17 @@ xdescribe('AccessContractWriteAccessTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule
       ],
-      declarations: [ AccessContractWriteAccessTabComponent ],
+      declarations: [AccessContractWriteAccessTabComponent],
       providers: [
         FormBuilder,
         {provide: AccessContractService, useValue: {}}
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
-import { BASE_URL } from 'ui-frontend-common';
-import { Metadata } from '../models/metadata.interface';
+import {BASE_URL} from 'ui-frontend-common';
+import {Metadata} from '../models/metadata.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,6 @@ export class MetadataApiService {
   }
 
   searchMetadata(unitId: string, headers?: HttpHeaders): Observable<Metadata> {
-    return this.http.get<Metadata>(this.apiUrl + '/' + unitId, { headers });
+    return this.http.get<Metadata>(this.apiUrl + '/' + unitId, {headers});
   }
 }

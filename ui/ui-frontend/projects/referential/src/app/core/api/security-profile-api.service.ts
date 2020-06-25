@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { SecurityProfile } from "../../../../../vitamui-library/src/lib/models/security-profile";
-import {map} from "rxjs/operators";
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {SecurityProfile} from '../../../../../vitamui-library/src/lib/models/security-profile';
 
 const HTTP_STATUS_OK = 200;
 
@@ -69,16 +69,16 @@ export class SecurityProfileApiService extends BaseHttpClient<SecurityProfile> {
   }
 
   create(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<SecurityProfile> {
-    return super.getHttp().post<any>(super.getApiUrl(), securityProfile, { headers });
+    return super.getHttp().post<any>(super.getApiUrl(), securityProfile, {headers});
   }
 
   check(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', securityProfile, { observe: 'response', headers })
+    return super.getHttp().post<any>(super.getApiUrl() + '/check', securityProfile, {observe: 'response', headers})
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, { headers });
+    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
   }
 
 }

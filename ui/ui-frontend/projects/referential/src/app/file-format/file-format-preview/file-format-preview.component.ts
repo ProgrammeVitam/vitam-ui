@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, Output, EventEmitter, Input, ViewChild, HostListener} from '@angular/core';
-import { FileFormat } from "projects/vitamui-library/src/lib/models/file-format";
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {FileFormatInformationTabComponent} from "./file-format-information-tab/file-format-information-tab.component";
-import {FileFormatService} from "../file-format.service";
-import {MatDialog} from "@angular/material/dialog";
-import {Observable} from "rxjs";
+import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
+import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
+import {Observable} from 'rxjs';
+import {FileFormatService} from '../file-format.service';
+import {FileFormatInformationTabComponent} from './file-format-information-tab/file-format-information-tab.component';
 
 @Component({
   selector: 'app-file-format-preview',
@@ -68,12 +68,13 @@ export class FileFormatPreviewComponent implements OnInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private fileFormatService: FileFormatService) { }
+  constructor(private matDialog: MatDialog, private fileFormatService: FileFormatService) {
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
@@ -86,7 +87,7 @@ export class FileFormatPreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<FileFormat> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.fileFormatService.get(this.fileFormat.puid).subscribe(
           response => {
             this.fileFormat = response;
@@ -108,10 +109,10 @@ export class FileFormatPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   filterEvents(event: any): boolean {
     return event.outDetail && (

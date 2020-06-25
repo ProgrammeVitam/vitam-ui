@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { IngestContractApiService } from './ingest-contract-api.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { InjectorModule, LoggerModule, BASE_URL, ENVIRONMENT } from 'ui-frontend-common';
-import { environment } from './../../../environments/environment';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {environment} from './../../../environments/environment';
+import {IngestContractApiService} from './ingest-contract-api.service';
 
 describe('IngestContractApiService', () => {
   beforeEach(() => TestBed.configureTestingModule({
@@ -13,8 +13,8 @@ describe('IngestContractApiService', () => {
       LoggerModule.forRoot()
     ],
     providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-      { provide: ENVIRONMENT, useValue: environment }
+      {provide: BASE_URL, useValue: '/fake-api'},
+      {provide: ENVIRONMENT, useValue: environment}
     ]
   }));
 

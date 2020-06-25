@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCardModule } from '@angular/material';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {MatButtonModule, MatCardModule} from '@angular/material';
 
-import { CardComponent } from './card.component';
-
+import {CardComponent} from './card.component';
 
 
 @NgModule({
@@ -19,4 +18,5 @@ import { CardComponent } from './card.component';
     CardComponent
   ]
 })
-export class CardModule { }
+export class CardModule {
+}

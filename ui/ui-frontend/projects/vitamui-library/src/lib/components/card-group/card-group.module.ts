@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
 
-import { CardGroupComponent } from './card-group.component';
-import { CardModule } from '../card/card.module';
-
+import {CardModule} from '../card/card.module';
+import {CardGroupComponent} from './card-group.component';
 
 
 @NgModule({
@@ -12,10 +11,11 @@ import { CardModule } from '../card/card.module';
   ],
   imports: [
     CommonModule,
-    CardModule    
+    CardModule
   ],
   exports: [
     CardGroupComponent
   ]
 })
-export class CardGroupModule { }
+export class CardGroupModule {
+}

@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {AccessContract, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import { MatTab, MatTabGroup, MatTabHeader } from "@angular/material/tabs";
-import {MatDialog} from "@angular/material/dialog";
-import {AccessContractInformationTabComponent} from "./access-contract-information-tab/access-contract-information-tab.component";
-import {AccessContractUsageAndServicesTabComponent} from "./access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component";
-import {AccessContractService} from "../access-contract.service";
-import {Observable} from "rxjs";
-import {AccessContractWriteAccessTabComponent} from "./access-contract-write-access-tab/access-contract-write-access-tab.component";
+import {Observable} from 'rxjs';
+import {AccessContractService} from '../access-contract.service';
+import {AccessContractInformationTabComponent} from './access-contract-information-tab/access-contract-information-tab.component';
+import {
+  AccessContractUsageAndServicesTabComponent
+} from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import {AccessContractWriteAccessTabComponent} from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -60,7 +62,9 @@ export class AccessContractPreviewComponent implements OnInit {
   tabUpdated: boolean[] = [false, false, false, false, false];
   @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
 
-  tabLinks: Array<AccessContractInformationTabComponent | AccessContractUsageAndServicesTabComponent | AccessContractWriteAccessTabComponent> = [];
+  tabLinks: Array<AccessContractInformationTabComponent |
+    AccessContractUsageAndServicesTabComponent |
+    AccessContractWriteAccessTabComponent> = [];
   @ViewChild('infoTab', {static: false}) infoTab: AccessContractInformationTabComponent;
   @ViewChild('usageTab', {static: false}) usageTab: AccessContractUsageAndServicesTabComponent;
   @ViewChild('writeTab', {static: false}) writeTab: AccessContractWriteAccessTabComponent;
@@ -74,16 +78,18 @@ export class AccessContractPreviewComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit = () => {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.usageTab;
     this.tabLinks[2] = this.writeTab;
   }
 
-  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) { }
+  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   filterEvents(event: any): boolean {
     return event.outDetail && (
@@ -101,7 +107,7 @@ export class AccessContractPreviewComponent implements OnInit {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<AccessContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
-      submitAccessContractUpdate.subscribe( () => {
+      submitAccessContractUpdate.subscribe(() => {
         this.accessContractService.get(this.accessContract.identifier).subscribe(
           response => {
             this.accessContract = response;
@@ -123,10 +129,10 @@ export class AccessContractPreviewComponent implements OnInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    let dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
+    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
-  };
+  }
 
   async emitClose() {
     if (this.tabUpdated[this.tabs.selectedIndex]) {

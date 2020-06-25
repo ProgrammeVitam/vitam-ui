@@ -1,10 +1,12 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {async, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
 
-@Component({ selector: 'vitamui-common-subrogation-banner', template: '' })
-class SubrogationBannerStubComponent { }
+// tslint:disable-next-line:component-selector
+@Component({selector: 'vitamui-common-subrogation-banner', template: ''})
+class SubrogationBannerStubComponent {
+}
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

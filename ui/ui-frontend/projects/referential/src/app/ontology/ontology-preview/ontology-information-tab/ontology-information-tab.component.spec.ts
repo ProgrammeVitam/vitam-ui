@@ -1,28 +1,29 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OntologyInformationTabComponent } from './ontology-information-tab.component';
-import { of } from "rxjs";
-import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { OntologyService } from "../../ontology.service";
-import { Ontology } from 'projects/vitamui-library/src/public-api';
-import { MatSelectModule } from '@angular/material';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {Ontology} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {OntologyService} from '../../ontology.service';
+import {OntologyInformationTabComponent} from './ontology-information-tab.component';
 
 describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;
   let fixture: ComponentFixture<OntologyInformationTabComponent>;
 
   const ontologyServiceMock = {
+    // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null)
   };
 
-  const ontologyValue:Ontology = {
-    id:'id',
-    tenant:0,
-    version:1,
-    creationDate:'01-01-2020',
+  const ontologyValue: Ontology = {
+    id: 'id',
+    tenant: 0,
+    version: 1,
+    creationDate: '01-01-2020',
     lastUpdate: '01-01-2020',
     sedaField: 'MyText',
     apiField: 'MyText',
@@ -36,20 +37,20 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[
+      imports: [
         ReactiveFormsModule,
         VitamUICommonTestModule,
         NoopAnimationsModule,
         MatSelectModule
       ],
-      declarations: [ OntologyInformationTabComponent ],
+      declarations: [OntologyInformationTabComponent],
       providers: [
         FormBuilder,
-        { provide: OntologyService, useValue: ontologyServiceMock }
+        {provide: OntologyService, useValue: ontologyServiceMock}
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

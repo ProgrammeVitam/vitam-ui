@@ -1,14 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SecurisationPreviewComponent } from './securisation-preview.component';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { RouterModule } from '@angular/router';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule, MatSnackBarModule, MatDialogModule, MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
-import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
-import { NgxFilesizeModule } from 'ngx-filesize';
-
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  MatDialogModule,
+  MatMenuModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatTabsModule
+} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {NgxFilesizeModule} from 'ngx-filesize';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {SecurisationInformationTabComponent} from './securisation-information-tab/securisation-information-tab.component';
+import {SecurisationPreviewComponent} from './securisation-preview.component';
 
 
 @NgModule({
@@ -34,4 +42,5 @@ import { NgxFilesizeModule } from 'ngx-filesize';
     SecurisationPreviewComponent
   ]
 })
-export class SecurisationPreviewModule { }
+export class SecurisationPreviewModule {
+}

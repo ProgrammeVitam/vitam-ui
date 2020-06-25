@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
   MatMenuModule,
@@ -47,18 +47,20 @@ import {
   MatSnackBarModule,
   MatTabsModule,
 } from '@angular/material';
-import { RouterModule } from '@angular/router';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import {RouterModule} from '@angular/router';
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {VitamUICommonModule} from 'ui-frontend-common';
 
+import {AccessContractInformationTabComponent} from './access-contract-information-tab/access-contract-information-tab.component';
+import {AccessContractNodesTabComponent} from './access-contract-nodes-tab/access-contract-nodes-tab.component';
 import {
-  AccessContractInformationTabComponent,
-} from './access-contract-information-tab/access-contract-information-tab.component';
-import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
-import { AccessContractPreviewComponent } from './access-contract-preview.component';
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
-import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
-import { AccessContractNodeUpdateComponent } from "./access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component";
+  AccessContractNodeUpdateComponent
+} from './access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component';
+import {AccessContractPreviewComponent} from './access-contract-preview.component';
+import {
+  AccessContractUsageAndServicesTabComponent
+} from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import {AccessContractWriteAccessTabComponent} from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 
 @NgModule({
   imports: [
@@ -85,10 +87,11 @@ import { AccessContractNodeUpdateComponent } from "./access-contract-nodes-tab/a
     AccessContractNodesTabComponent,
     AccessContractNodeUpdateComponent
   ],
-  entryComponents: [ AccessContractNodeUpdateComponent ],
+  entryComponents: [AccessContractNodeUpdateComponent],
   exports: [
     AccessContractPreviewComponent
   ]
 
 })
-export class AccessContractPreviewModule { }
+export class AccessContractPreviewModule {
+}

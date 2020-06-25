@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
-import { AccessContractService } from "../../../access-contract.service";
-import { FilingPlanMode } from "projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service";
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilingPlanMode} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {AccessContractService} from '../../../access-contract.service';
 
 
 @Component({
@@ -60,7 +60,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
 
   FILLING_PLAN_MODE_BOTH = FilingPlanMode.BOTH;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractNodeUpdateComponent>,
@@ -95,7 +95,7 @@ export class AccessContractNodeUpdateComponent implements OnInit {
 
   updateAccessContractNodes() {
     const formData = {
-      id : this.accessContract.id,
+      id: this.accessContract.id,
       identifier: this.accessContract.identifier,
       rootUnits: this.selectNodesForm.get('rootUnits').value,
       excludedRootUnits: this.selectNodesForm.get('excludedRootUnits').value

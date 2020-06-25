@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import { VitamUIRadioGroupComponent } from './vitamui-radio-group.component';
-
+import {VitamUIRadioGroupComponent} from './vitamui-radio-group.component';
 
 
 @NgModule({
@@ -15,4 +14,5 @@ import { VitamUIRadioGroupComponent } from './vitamui-radio-group.component';
   ],
   exports: [VitamUIRadioGroupComponent]
 })
-export class VitamUIRadioGroupModule { }
+export class VitamUIRadioGroupModule {
+}

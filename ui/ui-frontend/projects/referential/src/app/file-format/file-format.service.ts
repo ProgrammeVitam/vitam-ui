@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/lib/models/file-format';
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import {Injectable} from '@angular/core';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {Observable, Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
 
-import { FileFormatApiService } from '../core/api/file-format-api.service';
-import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import {FileFormatApiService} from '../core/api/file-format-api.service';
+import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -64,8 +64,8 @@ export class FileFormatService extends SearchService<FileFormat> {
 
   getAllForTenant(tenantId: string): Observable<FileFormat[]> {
     // TODO: Check add of tenantId
-    let params = new HttpParams().set('embedded', 'ALL');
-    let headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
     return this.fileFormatApiService.getAllByParams(params, headers);
   }
 
@@ -89,7 +89,7 @@ export class FileFormatService extends SearchService<FileFormat> {
           (response: FileFormat) => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: { type: 'fileFormatCreate', name: response.puid },
+              data: {type: 'fileFormatCreate', name: response.puid},
               duration: 10000
             });
           },
@@ -112,7 +112,7 @@ export class FileFormatService extends SearchService<FileFormat> {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: { type: 'fileFormatUpdate', name: response.puid }
+              data: {type: 'fileFormatUpdate', name: response.puid}
             });
           },
           (error) => {
@@ -128,12 +128,12 @@ export class FileFormatService extends SearchService<FileFormat> {
   delete(fileFormat: FileFormat): Observable<any> {
     return this.fileFormatApiService.delete(fileFormat.puid).pipe(
       tap(() => {
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-          data: { type: 'fileFormatDelete', name: fileFormat.puid }
-        });
-      },
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: {type: 'fileFormatDelete', name: fileFormat.puid}
+          });
+        },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',

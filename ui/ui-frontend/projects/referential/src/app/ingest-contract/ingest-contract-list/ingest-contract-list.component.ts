@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {merge, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
-import { IngestContractService } from '../ingest-contract.service';
+import {IngestContractService} from '../ingest-contract.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -57,6 +57,7 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
@@ -87,9 +88,10 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
 
     this.ingestContractService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: IngestContract[]) => {
-        this.dataSource = data;
-      },
-        () => { },
+          this.dataSource = data;
+        },
+        () => {
+        },
         () => this.pending = false);
 
 

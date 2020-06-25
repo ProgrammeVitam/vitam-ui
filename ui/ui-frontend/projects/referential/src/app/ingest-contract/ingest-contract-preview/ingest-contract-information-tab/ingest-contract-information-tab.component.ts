@@ -1,16 +1,16 @@
+import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { IngestContractCreateValidators } from '../../ingest-contract-create/ingest-contract-create.validators';
-import { IngestContractService } from '../../ingest-contract.service';
-import {ManagementContractApiService} from "../../../core/api/management-contract-api.service";
-import {HttpHeaders, HttpParams} from "@angular/common/http";
-import {ArchiveProfileApiService} from "../../../core/api/archive-profile-api.service";
+import {ArchiveProfileApiService} from '../../../core/api/archive-profile-api.service';
+import {ManagementContractApiService} from '../../../core/api/management-contract-api.service';
+import {IngestContractCreateValidators} from '../../ingest-contract-create/ingest-contract-create.validators';
+import {IngestContractService} from '../../ingest-contract.service';
 
 @Component({
   selector: 'app-ingest-contract-information-tab',
@@ -22,17 +22,21 @@ export class IngestContractInformationTabComponent implements OnInit {
   @Input() tenantIdentifier: number;
 
   form: FormGroup;
-  previousValue = (): IngestContract => {
-    return this._ingestContract
-  };
 
-  submited: boolean = false;
+  submited = false;
 
   ruleFilter = new FormControl();
   statusControl = new FormControl();
 
   managementContracts: any[];
   archiveProfiles: any[];
+
+  // tslint:disable-next-line:variable-name
+  private _ingestContract: IngestContract;
+
+  previousValue = (): IngestContract => {
+    return this._ingestContract;
+  }
 
   @Input()
   set ingestContract(ingestContract: IngestContract) {
@@ -43,17 +47,18 @@ export class IngestContractInformationTabComponent implements OnInit {
     this.resetForm(this.ingestContract);
     this.updated.emit(false);
   }
-  get ingestContract(): IngestContract { return this._ingestContract; }
-  // tslint:disable-next-line:variable-name
-  private _ingestContract: IngestContract;
+
+  get ingestContract(): IngestContract {
+    return this._ingestContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
@@ -74,19 +79,19 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
+        this.form.controls.ruleCategoryToFilter.setValue(new Array<string>());
       }
     });
   }
 
   ngOnInit(): void {
-    let params = new HttpParams().set('embedded', 'ALL');
-    let headers = new HttpHeaders().append('X-Tenant-Id', ''+this.tenantIdentifier);
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', '' + this.tenantIdentifier);
 
     this.managementContractService.getAllByParams(params, headers).subscribe(managmentContracts => {
       this.managementContracts = managmentContracts;
@@ -98,7 +103,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -114,13 +119,16 @@ export class IngestContractInformationTabComponent implements OnInit {
     console.log(diff(this.form.getRawValue(), this.previousValue()));
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.ingestContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
     this.prepareSubmit().subscribe(() => {
       this.ingestContractService.get(this._ingestContract.identifier).subscribe(
         response => {
@@ -134,7 +142,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   }
 
   resetForm(ingestContract: IngestContract) {
-    this.statusControl.setValue(ingestContract.status == 'ACTIVE');
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.statusControl.setValue(ingestContract.status === 'ACTIVE');
+    this.form.reset(ingestContract, {emitEvent: false});
   }
 }

@@ -1,14 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab.component';
-import { FormBuilder } from '@angular/forms';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AccessContractService } from '../../access-contract.service';
-import { AgencyService } from '../../../agency/agency.service';
-import { of } from 'rxjs';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {AgencyService} from '../../../agency/agency.service';
+import {AccessContractService} from '../../access-contract.service';
+import {AccessContractUsageAndServicesTabComponent} from './access-contract-usage-and-services-tab.component';
 
 
 describe('AccessContractUsageAndServicesTabComponent', () => {
@@ -23,10 +22,10 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     dataObjectVersion: ['test']
   };
 
-  const previousValue:AccessContract = {
+  const previousValue: AccessContract = {
     tenant: 0,
     version: 1,
-    description: 'desc', 
+    description: 'desc',
     status: 'ACTIVE',
     id: 'vitam_id',
     name: 'Name',
@@ -52,25 +51,26 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
     getAll: () => of([])
   };
   const accessContractServiceMock = {
+    // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null)
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: 
-      [ 
-        ReactiveFormsModule,
-        VitamUICommonTestModule
-      ],
-      declarations: [ AccessContractUsageAndServicesTabComponent ],
+      imports:
+        [
+          ReactiveFormsModule,
+          VitamUICommonTestModule
+        ],
+      declarations: [AccessContractUsageAndServicesTabComponent],
       providers: [
         FormBuilder,
-        { provide: AccessContractService, useValue: accessContractServiceMock },
-        { provide: AgencyService, useValue: agencyServiceMock }
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: AgencyService, useValue: agencyServiceMock}
       ],
-      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

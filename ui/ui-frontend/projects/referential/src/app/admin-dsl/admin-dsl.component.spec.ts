@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AdminDslComponent } from './admin-dsl.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { AdminDslService } from './admin-dsl.service';
-import { AccessContractService } from '../access-contract/access-contract.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { of } from 'rxjs';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { MatSelectModule } from '@angular/material';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of} from 'rxjs';
+import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {AccessContractService} from '../access-contract/access-contract.service';
+import {AdminDslComponent} from './admin-dsl.component';
+import {AdminDslService} from './admin-dsl.service';
 
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
@@ -21,7 +21,7 @@ describe('AdminDslComponent', () => {
     accessContract: 'AC-000001',
     dsl: {},
     response: {}
-  }
+  };
 
   beforeEach(async(() => {
 
@@ -32,31 +32,31 @@ describe('AdminDslComponent', () => {
       getAllForTenant: () => of([])
     };
     const activatedRouteMock = {
-      params: of( { tenantIdentifier: 1 } ),
-      data: of({ appId: 'DSL_APP'})
+      params: of({tenantIdentifier: 1}),
+      data: of({appId: 'DSL_APP'})
     };
-    
+
     TestBed.configureTestingModule({
-      imports: 
-      [ 
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatSelectModule,
-        NoopAnimationsModule
-      ],
-      declarations: [ AdminDslComponent ],
-      providers:[
+      imports:
+        [
+          ReactiveFormsModule,
+          VitamUICommonTestModule,
+          InjectorModule,
+          LoggerModule.forRoot(),
+          MatSelectModule,
+          NoopAnimationsModule
+        ],
+      declarations: [AdminDslComponent],
+      providers: [
         FormBuilder,
-        { provide: Router, useValue: { } },
-        { provide: ActivatedRoute, useValue: activatedRouteMock },
-        { provide: AdminDslService, useValue: adminDslServiceMock },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
+        {provide: Router, useValue: {}},
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        {provide: AdminDslService, useValue: adminDslServiceMock},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

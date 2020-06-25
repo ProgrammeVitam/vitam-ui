@@ -34,19 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { UpdatedVitamUIMenuTileComponent } from './vitamui-menu-tile.component';
-import { TooltipModule } from "ui-frontend-common";
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {TooltipModule} from 'ui-frontend-common';
+import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    TooltipModule,
-    RouterModule
+    RouterModule,
+    TooltipModule
   ],
-  declarations: [ UpdatedVitamUIMenuTileComponent ],
-  exports: [ UpdatedVitamUIMenuTileComponent ],
+  declarations: [UpdatedVitamUIMenuTileComponent],
+  exports: [UpdatedVitamUIMenuTileComponent],
 })
-export class UpdatedVitamUIMenuTileModule { }
+export class UpdatedVitamUIMenuTileModule {
+}

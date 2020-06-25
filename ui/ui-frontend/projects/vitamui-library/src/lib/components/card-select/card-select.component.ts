@@ -1,5 +1,6 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+/* tslint:disable:no-use-before-declare component-selector */
+import {Component, forwardRef, Input} from '@angular/core';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
 export const CARD_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -19,10 +20,10 @@ export class CardSelectComponent {
   placeholder: any;
 
   @Input()
-  label: string = "Add";
+  label = 'Add';
 
   @Input()
-  disabled: boolean = false;
+  disabled = false;
 
   @Input()
   size: number;
@@ -30,7 +31,9 @@ export class CardSelectComponent {
   values = new Set<string>();
 
   addElement(input: any) {
-    if (this.size != undefined && this.values.size >= this.size) return;
+    if (this.size !== undefined && this.values.size >= this.size) {
+      return;
+    }
     if (input.value != null && input.value !== '') {
       this.values.add((input.value as string).trim());
       input.writeValue(null);
@@ -43,8 +46,10 @@ export class CardSelectComponent {
     this.onChange(Array.from(this.values));
   }
 
-  onChange = (_: any) => { };
-  onTouched = () => { };
+  onChange = (_: any) => {
+  }
+  onTouched = () => {
+  }
 
   writeValue(value: Array<string>) {
     this.values = new Set((value == null) ? new Array<string>() : value);

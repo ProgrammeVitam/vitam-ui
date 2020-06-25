@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Host } from '@angular/core';
+/* tslint:disable:component-selector */
+import {Component, Host, Input, OnInit} from '@angular/core';
 
-import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
+import {VitamUIRadioGroupService} from '../vitamui-radio-group/vitamui-radio-group.service';
 
 @Component({
   selector: 'vitamui-radio',
@@ -18,10 +19,11 @@ export class VitamUIRadioComponent implements OnInit {
   @Input()
   checked: boolean;
 
-  constructor(@Host() private radioGroupService: VitamUIRadioGroupService) { }
+  constructor(@Host() private radioGroupService: VitamUIRadioGroupService) {
+  }
 
   ngOnInit() {
-    this.checked = (this.checked == undefined) ? false : true;
+    this.checked = (this.checked === undefined) ? false : true;
   }
 
   changed() {

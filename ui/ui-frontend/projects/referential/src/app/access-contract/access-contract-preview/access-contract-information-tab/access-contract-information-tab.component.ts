@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Option} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
-import { AccessContractService } from '../../access-contract.service';
+import {AccessContractCreateValidators} from '../../access-contract-create/access-contract-create.validators';
+import {AccessContractService} from '../../access-contract.service';
 
 @Component({
   selector: 'app-access-contract-information-tab',
@@ -51,19 +51,6 @@ import { AccessContractService } from '../../access-contract.service';
   styleUrls: ['./access-contract-information-tab.component.scss']
 })
 export class AccessContractInformationTabComponent {
-
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  form: FormGroup;
-  previousValue = (): AccessContract => {
-    return this._accessContract
-  };
-
-  submited: boolean = false;
-
-  ruleFilter = new FormControl(false);
-  statusControl = new FormControl();
-  accessLogControl = new FormControl();
 
   @Input()
   set accessContract(accessContract: AccessContract) {
@@ -82,29 +69,20 @@ export class AccessContractInformationTabComponent {
     this.resetForm(this.accessContract);
     this.updated.emit(false);
   }
-  get accessContract(): AccessContract { return this._accessContract; }
-  // tslint:disable-next-line:variable-name
-  private _accessContract: AccessContract;
+
+  get accessContract(): AccessContract {
+    return this._accessContract;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  // FIXME: Get list from common var ?
-  rules: Option[] = [
-    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
-    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
-    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
-    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: 'Durée d\'utilité administrative', info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
-  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -122,26 +100,52 @@ export class AccessContractInformationTabComponent {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls['accessLog'].setValue(value = (value == false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.accessLog.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(this._accessContract.ruleCategoryToFilter);
+        this.form.controls.ruleCategoryToFilter.setValue(this._accessContract.ruleCategoryToFilter);
       } else {
-        this.form.controls['ruleCategoryToFilter'].setValue([]);
+        this.form.controls.ruleCategoryToFilter.setValue([]);
       }
     });
   }
 
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  form: FormGroup;
+
+  submited = false;
+
+  ruleFilter = new FormControl(false);
+  statusControl = new FormControl();
+  accessLogControl = new FormControl();
+
+  // tslint:disable-next-line:variable-name
+  private _accessContract: AccessContract;
+
+  // FIXME: Get list from common var ?
+  rules: Option[] = [
+    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
+    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
+    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
+    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
+    {key: 'AccessRule', label: 'Durée d\'utilité administrative', info: ''},
+    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
+  ];
+  previousValue = (): AccessContract => {
+    return this._accessContract;
+  }
+
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}" &&
-      (this.statusControl.value? 'ACTIVE': 'INACTIVE') === this.previousValue().status &&
-      (this.accessLogControl.value? 'ACTIVE': 'INACTIVE') === this.previousValue().accessLog;
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}' &&
+      (this.statusControl.value ? 'ACTIVE' : 'INACTIVE') === this.previousValue().status &&
+      (this.accessLogControl.value ? 'ACTIVE' : 'INACTIVE') === this.previousValue().accessLog;
 
     this.updated.emit(!unchanged);
 
@@ -153,19 +157,22 @@ export class AccessContractInformationTabComponent {
       this.form.get('description').invalid || this.form.get('description').pending ||
       this.form.get('status').invalid || this.form.get('status').pending ||
       this.form.get('accessLog').invalid || this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === false && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
+      (this.ruleFilter.value === false && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending));
   }
 
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      switchMap(
+        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
     this.prepareSubmit().subscribe(() => {
       this.accessContractService.get(this._accessContract.identifier).subscribe(
         response => {
@@ -179,8 +186,8 @@ export class AccessContractInformationTabComponent {
   }
 
   resetForm(accessContract: AccessContract) {
-    this.statusControl.setValue(accessContract.status == 'ACTIVE');
-    this.accessLogControl.setValue(accessContract.accessLog == 'ACTIVE');
-    this.form.reset(accessContract, { emitEvent: false })
+    this.statusControl.setValue(accessContract.status === 'ACTIVE');
+    this.accessLogControl.setValue(accessContract.accessLog === 'ACTIVE');
+    this.form.reset(accessContract, {emitEvent: false});
   }
 }

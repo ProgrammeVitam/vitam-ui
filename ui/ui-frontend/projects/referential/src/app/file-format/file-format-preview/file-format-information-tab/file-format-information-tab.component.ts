@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
 import {Observable, of} from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat } from 'projects/vitamui-library/src/public-api';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
 
-import { FileFormatService } from '../../file-format.service';
+import {FileFormatService} from '../../file-format.service';
 
 
 @Component({
@@ -55,13 +55,17 @@ export class FileFormatInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  previousValue = (): FileFormat => {
-    return this._fileFormat
-  };
 
-  submited: boolean = false;
+  submited = false;
 
   ruleFilter = new FormControl();
+
+  // tslint:disable-next-line:variable-name
+  private _fileFormat: FileFormat;
+
+  previousValue = (): FileFormat => {
+    return this._fileFormat;
+  }
 
   @Input()
   set fileFormat(fileFormat: FileFormat) {
@@ -69,17 +73,18 @@ export class FileFormatInformationTabComponent {
     this.resetForm(this.fileFormat);
     this.updated.emit(false);
   }
-  get fileFormat(): FileFormat { return this._fileFormat; }
-  // tslint:disable-next-line:variable-name
-  private _fileFormat: FileFormat;
+
+  get fileFormat(): FileFormat {
+    return this._fileFormat;
+  }
 
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
+      this.form.disable({emitEvent: false});
     } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
     }
   }
 
@@ -98,7 +103,7 @@ export class FileFormatInformationTabComponent {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === "{}";
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -117,13 +122,15 @@ export class FileFormatInformationTabComponent {
   prepareSubmit(): Observable<FileFormat> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.previousValue().id, puid: this.previousValue().puid }, formData)),
+      map((formData) => extend({id: this.previousValue().id, puid: this.previousValue().puid}, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
+    if (this.isInvalid()) {
+      return;
+    }
 
     this.prepareSubmit().subscribe(() => {
       this.fileFormatService.get(this._fileFormat.puid).subscribe(
@@ -138,6 +145,6 @@ export class FileFormatInformationTabComponent {
   }
 
   resetForm(fileFormat: FileFormat) {
-    this.form.reset(fileFormat, { emitEvent: false })
+    this.form.reset(fileFormat, {emitEvent: false});
   }
 }

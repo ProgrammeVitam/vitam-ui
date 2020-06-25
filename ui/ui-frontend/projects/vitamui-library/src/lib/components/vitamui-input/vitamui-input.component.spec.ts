@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgModel } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {Component, ViewChild} from '@angular/core';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormsModule, NgModel} from '@angular/forms';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
-import { VitamUIInputComponent } from './vitamui-input.component';
+import {VitamUIInputComponent} from './vitamui-input.component';
 
 @Component({
   template: `
@@ -48,8 +48,8 @@ import { VitamUIInputComponent } from './vitamui-input.component';
   `
 })
 class TesthostComponent {
-  @ViewChild(VitamUIInputComponent, { static: false }) vitamuiInputComponent: VitamUIInputComponent;
-  @ViewChild('input', { static: false }) ngModel: NgModel;
+  @ViewChild(VitamUIInputComponent, {static: false}) vitamuiInputComponent: VitamUIInputComponent;
+  @ViewChild('input', {static: false}) ngModel: NgModel;
 
   value = 'initial value';
 }
