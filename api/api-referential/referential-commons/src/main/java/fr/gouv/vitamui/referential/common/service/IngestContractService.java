@@ -78,7 +78,7 @@ public class IngestContractService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse patchAccessContract(VitamContext vitamContext, String id, ObjectNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
+    public RequestResponse patchIngestContract(VitamContext vitamContext, String id, ObjectNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         return adminExternalClient.updateIngestContract(vitamContext, id, jsonNode);
     }

@@ -105,7 +105,7 @@ public class AgencyInternalService {
                     .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
             if(accessContractResponseDto.getResults().size() == 0){
                 return null;
-            }else {
+            } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
@@ -185,7 +185,7 @@ public class AgencyInternalService {
                     .treeToValue(requestResponse.toJsonNode(), AgencyModelDto.class);
             return converter.convertVitamToDto(accessContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e) {
-            throw new InternalServerException("Unable to create agency");
+            throw new InternalServerException("Unable to create agency", e);
         }
     }
 
@@ -233,7 +233,7 @@ public class AgencyInternalService {
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-            throw new InternalServerException("Unable to find history by id = {}", id);
+        	throw new InternalServerException("Unable to fetch history", e);
         }
     }
 

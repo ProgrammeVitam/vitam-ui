@@ -58,10 +58,6 @@ public class ReferentialInternalRestClientFactory extends BaseRestClientFactory 
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
-    public IamStatusInternalRestClient getIamStatusInternalRestClient() {
-        return new IamStatusInternalRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public AccessContractInternalRestClient getAccessContractInternalRestClient() {
         return new AccessContractInternalRestClient(getRestTemplate(), getBaseUrl());
     }

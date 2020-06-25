@@ -108,9 +108,8 @@ public class ContextInternalService {
                 return converter.convertVitamToDto(contextResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Context", e);
         }
-        return null;
     }
 
     public List<ContextDto> getAll(VitamContext vitamContext) {
@@ -123,9 +122,8 @@ public class ContextInternalService {
 
             return converter.convertVitamsToDtos(contextResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Contexts", e);
         }
-        return new ArrayList<>();
     }
 
     public PaginatedValuesDto<ContextDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -143,7 +141,7 @@ public class ContextInternalService {
 
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
-            throw new InternalServerException("", ioe);
+            throw new InternalServerException("Can't create dsl query to get paginated contexts", ioe);
         } catch ( IOException e ) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
@@ -173,7 +171,7 @@ public class ContextInternalService {
             return objectMapper.treeToValue(requestResponse.toJsonNode(), ContextResponseDto.class);
 
         } catch (VitamClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't find contexts", e);
         }
     }
 
@@ -197,7 +195,7 @@ public class ContextInternalService {
             vitamContextService.createContext(vitamContext, contextDto);
             return contextDto;
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't create context", e);
         }
     }
 
@@ -272,7 +270,7 @@ public class ContextInternalService {
                     .treeToValue(requestResponse.toJsonNode(), ContextModel.class);
             return converter.convertVitamToDto(contextVitamDto);
         } catch (InvalidParseOperationException | InvalidCreateOperationException | AccessExternalClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't patch the context", e);
         }
     }
 

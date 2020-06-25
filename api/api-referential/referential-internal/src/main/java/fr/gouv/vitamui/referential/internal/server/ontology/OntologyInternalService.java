@@ -54,8 +54,6 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
@@ -77,8 +75,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class OntologyInternalService {
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
 
     private OntologyService ontologyService;
 
@@ -103,9 +99,9 @@ public class OntologyInternalService {
             RequestResponse<OntologyModel> requestResponse = ontologyService.findOntologyById(vitamContext, identifier);
             final OntologyResponseDto accessContractResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
-            if(accessContractResponseDto.getResults().size() == 0){
+            if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
-            }else {
+            } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
@@ -185,7 +181,7 @@ public class OntologyInternalService {
             List<OntologyDto> ontologyDtos = converter.convertVitamsToDtos(ontologyResponseDto.getResults());
             return (ontologyDtos == null || ontologyDtos.isEmpty())? ontologyDto : ontologyDtos.get(0);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException  e) {
-            throw new InternalServerException("Unable to create ontology");
+            throw new InternalServerException("Unable to create ontology", e);
         }
     }
 
@@ -199,7 +195,7 @@ public class OntologyInternalService {
                     ).collect(Collectors.toList()))
             );
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException  e) {
-            throw new InternalServerException("Unable to delete ontology");
+            throw new InternalServerException("Unable to delete ontology", e);
         }
     }
 
@@ -213,7 +209,7 @@ public class OntologyInternalService {
                 try {
                     BeanUtilsBean.getInstance().copyProperty(ontologyDto, key, value);
                 } catch (InvocationTargetException | IllegalAccessException e) {
-                    throw new InternalServerException("Unable to copy properties to DTO");
+                    throw new InternalServerException("Unable to copy properties to DTO", e);
                 }
             }
 
@@ -261,7 +257,7 @@ public class OntologyInternalService {
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-            throw new InternalServerException("Unable to find history by id = {}", id);
+        	throw new InternalServerException("Unable to fetch history", e);
         }
     }
 

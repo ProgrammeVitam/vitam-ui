@@ -195,7 +195,7 @@ public class FileFormatInternalService {
                     .treeToValue(requestResponse.toJsonNode(), FileFormatModel.class);
             return converter.convertVitamToDto(fileFormatVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException | JAXBException e) {
-            throw new InternalServerException("Unable to create fileFormat");
+            throw new InternalServerException("Unable to create fileFormat", e);
         }
     }
 

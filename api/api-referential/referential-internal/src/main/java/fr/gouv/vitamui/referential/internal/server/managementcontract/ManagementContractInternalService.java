@@ -79,7 +79,7 @@ public class ManagementContractInternalService {
 
             return converter.convertVitamsToDtos(managementContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-            throw new InternalServerException("Unable to find fileFormats", e);
+            throw new InternalServerException("Unable to find Management Contracts", e);
         }
     }
 

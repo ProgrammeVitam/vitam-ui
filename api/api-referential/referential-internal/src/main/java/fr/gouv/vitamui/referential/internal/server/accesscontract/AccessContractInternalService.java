@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.accesscontract;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -107,15 +106,14 @@ public class AccessContractInternalService {
             RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
             final AccessContractResponseDto accessContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
-            if(accessContractResponseDto.getResults().size() == 0){
+            if (accessContractResponseDto.getResults().size() == 0) {
                 return null;
-            }else {
+            } else {
                 return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Access Contrat", e);
         }
-        return null;
     }
 
     public List<AccessContractDto> getAll(VitamContext vitamContext) {
@@ -128,9 +126,8 @@ public class AccessContractInternalService {
 
             return converter.convertVitamsToDtos(accessContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Access Contrats", e);
         }
-        return new ArrayList<>();
     }
 
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -148,7 +145,7 @@ public class AccessContractInternalService {
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
             LOGGER.debug("jsonQuery: {}", query);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
-            throw new InternalServerException("", ioe);
+            throw new InternalServerException("Can't create dsl query to get paginated access contracts", ioe);
         } catch ( IOException e ) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
@@ -168,7 +165,7 @@ public class AccessContractInternalService {
             return objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
 
         } catch (VitamClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't find access contracts", e);
         }
     }
 
@@ -188,7 +185,7 @@ public class AccessContractInternalService {
                     .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
             return converter.convertVitamToDto(accessContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't create access contract", e);
         }
     }
 
@@ -302,7 +299,7 @@ public class AccessContractInternalService {
                     .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
             return converter.convertVitamToDto(accessContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't patch access contract", e);
         }
     }
 
@@ -311,7 +308,7 @@ public class AccessContractInternalService {
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-            throw new InternalServerException("Unable to find history by id = {}", id);
+        	throw new InternalServerException("Unable to fetch history", e);
         }
     }
 }

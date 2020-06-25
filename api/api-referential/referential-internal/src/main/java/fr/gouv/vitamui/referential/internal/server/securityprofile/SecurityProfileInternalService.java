@@ -109,9 +109,8 @@ public class SecurityProfileInternalService {
                 return converter.convertVitamToDto(securityProfileResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Security Profile", e);
         }
-        return null;
     }
 
     public List<SecurityProfileDto> getAll(VitamContext vitamSecurityProfile) {
@@ -124,9 +123,8 @@ public class SecurityProfileInternalService {
 
             return converter.convertVitamsToDtos(securityProfileResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Security Profiles", e);
         }
-        return new ArrayList<>();
     }
 
     public PaginatedValuesDto<SecurityProfileDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -144,7 +142,7 @@ public class SecurityProfileInternalService {
 
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
-            throw new InternalServerException("", ioe);
+            throw new InternalServerException("Can't create dsl query to get paginated security profiles", ioe);
         } catch ( IOException e ) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
@@ -164,7 +162,7 @@ public class SecurityProfileInternalService {
             return objectMapper.treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class);
 
         } catch (VitamClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't find security profiles", e);
         }
     }
 
@@ -190,7 +188,7 @@ public class SecurityProfileInternalService {
                     .treeToValue(requestResponse.toJsonNode(), SecurityProfileModel.class);
             return converter.convertVitamToDto(securityProfileVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't create security profile", e);
         }
     }
 
@@ -240,7 +238,7 @@ public class SecurityProfileInternalService {
                     .treeToValue(requestResponse.toJsonNode(), SecurityProfileModel.class);
             return converter.convertVitamToDto(securityProfileVitamDto);
         } catch (JsonProcessingException | VitamClientException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't patch security profile", e);
         }
     }
 

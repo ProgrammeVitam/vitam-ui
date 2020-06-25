@@ -71,7 +71,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
-// FIXME SMILE : remove prinstacktrace
 @Service
 public class IngestContractInternalService {
 
@@ -105,9 +104,8 @@ public class IngestContractInternalService {
                 return converter.convertVitamToDto(ingestContractResponseDto.getResults().get(0));
             }
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Ingest Contrat", e);
         }
-        return null;
     }
 
     public List<IngestContractDto> getAll(VitamContext vitamContext) {
@@ -120,9 +118,8 @@ public class IngestContractInternalService {
 
             return converter.convertVitamsToDtos(ingestContractResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to get Ingest Contrats", e);
         }
-        return new ArrayList<>();
     }
 
     public PaginatedValuesDto<IngestContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -139,7 +136,7 @@ public class IngestContractInternalService {
 
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
-            throw new InternalServerException("", ioe);
+            throw new InternalServerException("Can't create dsl query to get paginated ingest contracts", ioe);
         } catch (IOException e) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
@@ -163,9 +160,8 @@ public class IngestContractInternalService {
 
             return ingestContractResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
-        	LOGGER.warn(e.getMessage());
+        	throw new InternalServerException("Unable to find Ingest Contrats", e);
         }
-        return null;
     }
 
     public Boolean check(VitamContext vitamContext, IngestContractDto ingestContractDto) {
@@ -184,7 +180,7 @@ public class IngestContractInternalService {
                 .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
             return converter.convertVitamToDto(ingestContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't create ingest contract", e);
         }
     }
 
@@ -278,14 +274,14 @@ public class IngestContractInternalService {
             ObjectNode query = JsonHandler.createObjectNode();
             query.set("$action", actions);
 
-            LOGGER.debug("Send AccessContract update request: {}", query);
+            LOGGER.debug("Send IngestContract update request: {}", query);
 
-            RequestResponse requestResponse = ingestContractService.patchAccessContract(vitamContext, id, query);
+            RequestResponse requestResponse = ingestContractService.patchIngestContract(vitamContext, id, query);
             final IngestContractModel ingestContractVitamDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
             return converter.convertVitamToDto(ingestContractVitamDto);
         } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
-            throw new InternalServerException("", e);
+            throw new InternalServerException("Can't patch ingest contract", e);
         }
     }
 
@@ -293,7 +289,7 @@ public class IngestContractInternalService {
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
-            throw new InternalServerException("Unable to find history by id = {}", id);
+        	throw new InternalServerException("Unable to fetch history", e);
         }
     }
 }
