@@ -57,6 +57,7 @@ import { FooterModule } from './components/footer/footer.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
+import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
@@ -133,6 +134,7 @@ export function startupServiceFactory(startupService: StartupService) {
     TooltipModule,
     CountryModule,
     VitamUIAutocompleteModule,
+    ScrollTopModule,
     FooterModule
   ],
   declarations: [
@@ -181,6 +183,7 @@ export function startupServiceFactory(startupService: StartupService) {
     TruncatePipe,
     CountryModule,
     VitamUIAutocompleteModule,
+    ScrollTopModule,
     FooterModule
   ],
   providers: [

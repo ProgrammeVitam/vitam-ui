@@ -35,25 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { RouterModule } from '@angular/router';
-import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
-import { NewPortalComponent } from './new-portal.component';
+import { MatButtonModule, MatIconModule } from '@angular/material';
+import { ScrollTopComponent } from './scroll-top.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ApplicationSelectContentModule,
-    VitamUICommonModule
-  ],
-  declarations: [NewPortalComponent]
+  declarations: [ScrollTopComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule],
+  exports: [ScrollTopComponent],
 })
-export class NewPortalModule {
-}
+export class ScrollTopModule {}
