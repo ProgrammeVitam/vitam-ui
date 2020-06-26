@@ -77,4 +77,14 @@ public class RestClientConfiguration {
      * Write timeout in seconds.
      */
     private int writeTimeOut = 10;
+
+    /**
+     * total pool size for httpClient
+     */
+    private int poolMaxTotal = 10;
+
+    /**
+     * pool size per route(host)
+     */
+    private int poolMaxPerRoute = 10;
 }
