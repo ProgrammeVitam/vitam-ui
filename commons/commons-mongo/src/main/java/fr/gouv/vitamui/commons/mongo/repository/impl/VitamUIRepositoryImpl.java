@@ -39,6 +39,9 @@ package fr.gouv.vitamui.commons.mongo.repository.impl;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -50,7 +53,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.commons.mongo.domain.DistinctValue;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -390,4 +395,39 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     public UpdateResult upsert(final Query query, final Update update) {
         return mongoOperations.upsert(query, update, entityInformation.getJavaType());
     }
+
+    /**
+     *
+     * Gets paginated distinct values of a field
+     *
+     * creates multiple operations (match using criteria, group by field, project to field, skip and limit for pagination)
+     * and then aggregates them, aggregation result is used create a PaginatedValuesDto containing distinct values of the specified field
+     *
+     * @param field Field name in database.
+     * @param criteria List of criteria.
+     * @param page Page number.
+     * @param size Page size.
+     * @return Paginated distinct field values
+     */
+    @Override
+    public PaginatedValuesDto<Object> findDistinct(String field, List<CriteriaDefinition> criteria, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Query query = new Query();
+        List<AggregationOperation> aggregationOperations = new ArrayList<>();
+        for (final CriteriaDefinition c : criteria) {
+            aggregationOperations.add(match(c));
+            query.addCriteria(c);
+        }
+        aggregationOperations.add(match(new Criteria(field).ne(null)));
+        aggregationOperations.add(group(field));
+        aggregationOperations.add(project(field).and("_id").as("value"));
+        aggregationOperations.add(skip((long) pageable.getPageSize() * pageable.getPageNumber()));
+        aggregationOperations.add(limit(pageable.getPageSize()));
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+        AggregationResults<DistinctValue> output = mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), DistinctValue.class);
+        int count = mongoOperations.findDistinct(query, field, entityInformation.getCollectionName(), Object.class).size();
+        Page<Object> paginate = new PageImpl<>(output.getMappedResults().stream().map(DistinctValue::getValue).collect(Collectors.toList()), pageable, count);
+        return new PaginatedValuesDto<>(paginate.getContent(), page, size, paginate.hasNext());
+    }
+
 }

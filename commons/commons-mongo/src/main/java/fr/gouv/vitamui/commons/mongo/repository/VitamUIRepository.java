@@ -142,4 +142,15 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
 
     UpdateResult upsert(Query query, Update update);
 
+    /**
+     *
+     * Gets paginated distinct values of a field
+     *
+     * @param field Field name in database.
+     * @param criteria List of criteria.
+     * @param page Page number.
+     * @param size Page size.
+     * @return Paginated distinct field values
+     */
+    PaginatedValuesDto<Object> findDistinct(String field, final List<CriteriaDefinition> criteria, final Integer page, final Integer size);
 }
