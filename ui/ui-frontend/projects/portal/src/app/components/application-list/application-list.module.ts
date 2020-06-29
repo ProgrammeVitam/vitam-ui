@@ -36,6 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatTabsModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { ApplicationsListComponent } from './application-list.component';
 
@@ -43,7 +44,8 @@ import { ApplicationsListComponent } from './application-list.component';
   declarations: [ApplicationsListComponent],
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule
   ],
   exports: [ApplicationsListComponent]
 })

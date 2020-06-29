@@ -1,14 +1,7 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 .category {
-    margin: 6rem auto;
-}
-
-.category h1 {
-    margin-bottom: 3rem;
-    font-weight: 400;
-    letter-spacing: 5px;
-    color: var(--vitamui-secondary);
+    margin: 0.5rem auto;
 }
 
 mat-card {
@@ -39,6 +32,21 @@ mat-card-subtitle {
     margin-top: 1rem!important;
 }
 
-:host::ng-deep .mat-card-header-text {
-    margin: 0!important;
+:host::ng-deep {
+    .mat-tab-header{
+        margin: 3rem 0;
+    }
+
+    .mat-card-header-text {
+        margin: 0!important;
+    }
+
+    .mat-tab-label.mat-tab-label-active {
+        color: var(--vitamui-secondary);
+        opacity: 1;
+    }
+
+    .mat-tab-labels {
+        justify-content: center;
+    }
 }
