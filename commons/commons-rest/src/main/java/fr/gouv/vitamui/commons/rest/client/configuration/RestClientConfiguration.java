@@ -81,10 +81,10 @@ public class RestClientConfiguration {
     /**
      * total pool size for httpClient
      */
-    private int poolMaxTotal = 10;
+    private int poolMaxTotal = 20;
 
     /**
      * pool size per route(host)
      */
-    private int poolMaxPerRoute = 10;
+    private int poolMaxPerRoute = 20;
 }

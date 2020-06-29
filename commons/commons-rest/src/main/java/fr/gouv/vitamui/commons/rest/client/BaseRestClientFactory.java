@@ -193,7 +193,6 @@ public class BaseRestClientFactory implements RestClientFactory {
             ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
             : new PoolingHttpClientConnectionManager();
 
-        LOGGER.debug("Pool configuration {}", poolConfig);
         if (poolConfig != null) {
             connectionManager.setMaxTotal(poolConfig.getMaxTotal());
             // Default max per route is used in case it's not set for a specific route
