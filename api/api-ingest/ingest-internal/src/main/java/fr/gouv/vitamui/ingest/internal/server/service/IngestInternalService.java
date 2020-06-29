@@ -30,6 +30,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.external.client.IngestCollection;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -58,6 +59,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -97,10 +101,10 @@ public class IngestInternalService {
     }
 
     public RequestResponseOK upload(MultipartFile path, String contextId, String action)
-        throws IngestExternalException {
+            throws IngestExternalException {
 
         final VitamContext vitamContext =
-            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
 
         RequestResponse<Void> ingestResponse = null;
         try {
@@ -162,6 +166,22 @@ public class IngestInternalService {
             return logbookOperationsResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find LogbookOperations", e);
+        }
+    }
+
+    public Response exportManifest(VitamContext context, String id) {
+        try {
+            return ingestExternalClient.downloadObjectAsync(context, id, IngestCollection.MANIFESTS);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Unable to find Manifest", e);
+        }
+    }
+
+    public Response exportATR(VitamContext context, String id) {
+        try {
+            return ingestExternalClient.downloadObjectAsync(context, id, IngestCollection.ARCHIVETRANSFERREPLY);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Unable to find ATR", e);
         }
     }
 }

@@ -119,8 +119,8 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   }
 
   showIngest(item: Event) {
-    // TODO: Use item and call - this.openPanel(item);
-    console.log('Show: ', item);
+    console.log('show: ', item);
+    this.openPanel(item);
   }
 
   openImportSipDialog() {

@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.ingest.service;
 
+import java.io.InputStream;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -46,14 +49,12 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.thread.IngestThread;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-
-import java.io.InputStream;
 
 /**
  * Ingest Service
@@ -99,7 +100,14 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
             new IngestThread(ingestExternalWebClient, context, in, contextId, action, originalFilename);
 
         ingestThread.start();
+    }
 
+    public ResponseEntity<Resource> downloadManifest(ExternalHttpContext context, String id) {
+        return ingestExternalRestClient.downloadManifest(context, id);
+    }
+
+    public ResponseEntity<Resource> downloadATR(ExternalHttpContext context, String id) {
+        return ingestExternalRestClient.downloadATR(context, id);
     }
 
     public IngestExternalRestClient getClient() {

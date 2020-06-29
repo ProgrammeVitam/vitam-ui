@@ -92,13 +92,17 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT,
         JSON.stringify(this.buildIngestCriteriaFromSearch()))
     ).subscribe((data: any[]) => {
-      console.log('data: ', data);
       data.map((element: any) => {
         if (element.data && element.data.length >= 2) {
           element.data = JSON.parse(element.data);
         }
+        if (element.agIdExt && element.agIdExt.length >= 2) {
+          element.agIdExt = JSON.parse(element.agIdExt);
+        }
+        if (element.rightsStatementIdentifier && element.rightsStatementIdentifier.length >= 2) {
+          element.rightsStatementIdentifier = JSON.parse(element.rightsStatementIdentifier);
+        }
       });
-      console.log('data: ', data);
       this.dataSource = data;
     });
 

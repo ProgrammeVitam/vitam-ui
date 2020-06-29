@@ -48,6 +48,8 @@ import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -97,6 +99,14 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
                 result.getPageNum(),
                 result.getPageSize(),
                 result.isHasMore());
+    }
+
+    public ResponseEntity<Resource> downloadManifest(String id) {
+        return ingestInternalRestClient.downloadManifest(getInternalHttpContext(), id);
+    }
+
+    public ResponseEntity<Resource> downloadATR(String id) {
+        return ingestInternalRestClient.downloadATR(getInternalHttpContext(), id);
     }
 
     @Override

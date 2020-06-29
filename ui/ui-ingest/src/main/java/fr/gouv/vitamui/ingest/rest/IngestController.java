@@ -50,12 +50,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,6 +108,25 @@ public class IngestController extends AbstractUiRestController {
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
+    @ApiOperation(value = "download manifest for ingest operation")
+    @GetMapping(value = "/manifest" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadManifest(final @PathVariable("id") String id) {
+        LOGGER.debug("download manifest for ingest with id :{}", id);
+        Resource body = service.downloadManifest(buildUiHttpContext(), id).getBody();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
+                .body(body);
+    }
+
+    @ApiOperation(value = "download Archive Transfer Report for ingest operation")
+    @GetMapping(value = "/atr" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadATR(final @PathVariable("id") String id) {
+        LOGGER.debug("download ATR for ingest with id :{}", id);
+        Resource body = service.downloadATR(buildUiHttpContext(), id).getBody();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
+                .body(body);
+    }
 
     @ApiOperation(value = "Ingest an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @GetMapping

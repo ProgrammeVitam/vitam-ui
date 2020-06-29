@@ -26,7 +26,10 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
+import java.io.InputStream;
 import java.util.Optional;
+
+import javax.ws.rs.core.Response;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -44,8 +47,13 @@ import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,4 +103,35 @@ public class IngestInternalController {
         LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }
+
+    @GetMapping("/manifest" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> exportManifest(
+            final @PathVariable("id") String id /*,
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+        LOGGER.debug("export manifest for operation with id :{}", id);
+        Response response = ingestInternalService.exportManifest(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    @GetMapping("/atr" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> exportATR(
+            final @PathVariable("id") String id /*,
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+        LOGGER.debug("export atr for operation with id :{}", id);
+        Response response = ingestInternalService.exportATR(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        }
+        return null;
+    }
+
 }

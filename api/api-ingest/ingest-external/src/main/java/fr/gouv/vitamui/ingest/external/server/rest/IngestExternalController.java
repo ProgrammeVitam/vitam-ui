@@ -49,9 +49,12 @@ import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -117,6 +120,18 @@ public class IngestExternalController {
         }
 
         return ingestExternalService.upload(in, action, contextId);
+    }
+
+    @GetMapping("/manifest" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadManifest(final @PathVariable("id") String id) {
+        LOGGER.debug("export manifest for ingest with id :{}", id);
+        return ingestExternalService.downloadManifest(id);
+    }
+
+    @GetMapping("/atr" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadATR(final @PathVariable("id") String id) {
+        LOGGER.debug("export atr for ingest with id :{}", id);
+        return ingestExternalService.downloadATR(id);
     }
 
 }

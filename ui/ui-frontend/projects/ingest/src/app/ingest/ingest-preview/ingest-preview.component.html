@@ -1,0 +1,25 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{ ingest?.data?.EvDetailReq ? ingest?.data?.EvDetailReq : ingest?.id }}</h2>
+        </div>
+      <ng-container *ngIf="ingestStatus(ingest) !== 'FATAL'">
+        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
+        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
+          <button mat-menu-item i18n="Ingest Download Mnifest@@ingestPreviewDownloadManifest"
+                  (click)="downloadManifest()" *ngIf="ingestStatus(ingest) !== 'KO'">Télécharger le manifest</button>
+          <button mat-menu-item i18n="Ingest Download ATR@@ingestPreviewDownloadATR" (click)="downloadATR()">Télécharger l'ATR'</button>
+        </mat-menu>
+      </ng-container>
+
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group">
+            <mat-tab label="Informations">
+                <app-ingest-information-tab [ingest]="ingest"></app-ingest-information-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
