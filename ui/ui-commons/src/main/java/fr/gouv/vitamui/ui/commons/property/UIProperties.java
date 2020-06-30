@@ -58,4 +58,8 @@ public interface UIProperties {
 
     public String getPlatformName();
 
+    public String getWelcomeTitle();
+
+    public String getWelcomeDescription();
+
 }

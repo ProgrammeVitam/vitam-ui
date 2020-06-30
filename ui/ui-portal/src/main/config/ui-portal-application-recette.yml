@@ -31,6 +31,8 @@ management:
 ui-portal:
   #theme-logo: /path/to/logo.png
   platform-name: VITAM-UI
+  welcome-title: Portail des applications de l'archivage
+  welcome-description: Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics.
   theme-colors:
     vitamui-primary: "#ff4a54"
     vitamui-secondary: "#241f63"

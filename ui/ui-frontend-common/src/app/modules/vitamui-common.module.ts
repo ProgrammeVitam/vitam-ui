@@ -43,7 +43,6 @@ import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vita
 import { LoggerModule } from './logger/logger.module';
 
 import { AccountModule } from './account/account.module';
-import { ApplicationListModule } from './components/application-list';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
@@ -103,7 +102,6 @@ export function startupServiceFactory(startupService: StartupService) {
     MatSnackBarModule,
     AccountModule,
     ApplicationSelectContentModule,
-    ApplicationListModule,
     CancelledSnackBarModule,
     CollapseDirectiveModule,
     ConfirmDialogModule,
@@ -152,7 +150,6 @@ export function startupServiceFactory(startupService: StartupService) {
   exports: [
     AccountModule,
     ApplicationSelectContentModule,
-    ApplicationListModule,
     BlankComponent,
     BytesPipe,
     ConfirmDialogModule,

@@ -208,3 +208,7 @@ vitamui_platform_informations:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
   platform_name: VITAM-UI
+
+portal_informations:
+  welcome_title: Portail des applications de l'archivage
+  welcome_description: Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics.

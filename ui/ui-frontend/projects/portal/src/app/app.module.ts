@@ -40,8 +40,6 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { NewPortalModule } from './new-portal/new-portal.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { QuicklinkModule } from 'ngx-quicklink';

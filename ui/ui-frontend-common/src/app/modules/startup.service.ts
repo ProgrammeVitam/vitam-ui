@@ -229,6 +229,22 @@ export class StartupService {
     return +this.getConfigStringValue(key);
   }
 
+  getWelcomeTitle(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.WELCOME_TITLE;
+    }
+
+    return null;
+  }
+
+  getWelcomeMessage(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.WELCOME_DESCRIPTION;
+    }
+
+    return null;
+  }
+
   /**
    * Navigate to given url or to the portal otherwise.
    * @param url URL to be redirected to.

@@ -130,6 +130,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
+        configurationData.put(CommonConstants.WELCOME_TITLE, properties.getWelcomeTitle());
+        configurationData.put(CommonConstants.WELCOME_DESCRIPTION, properties.getWelcomeDescription());
+
         if(properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
         } else {

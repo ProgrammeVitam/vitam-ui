@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
-import { Application, Category } from '../../models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Application, Category } from 'ui-frontend-common';
 
 @Component({
-  selector: 'vitamui-common-application-list',
+  selector: 'app-application-list',
   templateUrl: './application-list.component.html',
   styleUrls: ['./application-list.component.scss']
 })
@@ -60,6 +60,8 @@ export class ApplicationsListComponent {
       });
     });
   }
+
+  @Output() applicationClick = new EventEmitter<Application>();
 
   public appMap = new Map<Category, Application[]>();
 

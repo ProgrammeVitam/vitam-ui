@@ -34,30 +34,3 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { RouterModule } from '@angular/router';
-import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
-import { ApplicationListModule } from '../components/application-list/application-list.module';
-import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
-import { NewPortalComponent } from './new-portal.component';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ApplicationSelectContentModule,
-    VitamUICommonModule,
-    WelcomeMessageModule,
-    ApplicationListModule
-  ],
-  declarations: [NewPortalComponent]
-})
-export class NewPortalModule {
-}

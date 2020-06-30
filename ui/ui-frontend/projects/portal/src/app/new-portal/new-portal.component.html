@@ -3,7 +3,8 @@
    </div>
    
    <div class="body">
-      <vitamui-common-application-list [applications]="applications" [categories]="categories"></vitamui-common-application-list>
+      <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
+      <app-application-list [applications]="applications" [categories]="categories" (applicationClick)="openApplication($event)"></app-application-list>
    </div>
    
    <div class="footer">

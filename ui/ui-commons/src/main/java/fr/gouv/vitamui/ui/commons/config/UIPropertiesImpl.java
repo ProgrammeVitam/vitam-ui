@@ -72,4 +72,9 @@ public class UIPropertiesImpl implements UIProperties {
     private String assets;
 
     private String platformName;
+
+    private  String welcomeTitle;
+
+    private String welcomeDescription;
+
 }

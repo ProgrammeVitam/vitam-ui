@@ -191,6 +191,9 @@ public class CommonConstants {
 
     public static final String APP_LOGO = "APP_LOGO";
 
+    public static final String WELCOME_TITLE = "WELCOME_TITLE";
+
+    public static final String WELCOME_DESCRIPTION = "WELCOME_DESCRIPTION";
 
     /**
      * Constant contains redirect URL for cas after logout

@@ -46,5 +46,7 @@ export interface AppConfiguration {
     LOGO: string;
     [key: string]: string;
     PLATFORM_NAME: string;
+    WELCOME_TITLE: string;
+    WELCOME_DESCRIPTION: string;
 
 }

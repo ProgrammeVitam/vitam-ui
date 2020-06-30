@@ -1,7 +1,14 @@
-@import '../../../../sass/variables/colors';
+@import '~ui-frontend-common/sass/variables/colors';
 
 .category {
-    margin: 8rem auto;
+    margin: 6rem auto;
+}
+
+.category h1 {
+    margin-bottom: 3rem;
+    font-weight: 400;
+    letter-spacing: 5px;
+    color: var(--vitamui-secondary);
 }
 
 mat-card {
