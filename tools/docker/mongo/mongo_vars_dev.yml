@@ -128,7 +128,7 @@ cas_services_configs:
     name: "Referential Management Application"
     serviceId: "^https://.*.vitamui.com:9002.*"
     logoutType : "FRONT_CHANNEL"
-    logoutUrl: "https://ddev.vitamui.com:9002/logout"
+    logoutUrl: "https://dev.vitamui.com:9002/logout"
 
   mobile:
     serviceId: "vitamuimobile"
@@ -138,13 +138,13 @@ cas_services_configs:
 
 vitamui_services:
   ui_portal:
-    server_name: dev-portal.vitamui.com:4201
+    server_name: dev.vitamui.com:4201
 
   ui_identity:
-    server_name: dev-identity.vitamui.com:4201
+    server_name: dev.vitamui.com:4201
 
   ui_identity_admin:
-    server_name: dev-identity.vitamui.com:4201
+    server_name: dev.vitamui.com:4201
 
   ui_referential:
-    server_name: dev-referential.vitamui.com:4202
+    server_name: dev.vitamui.com:4202
