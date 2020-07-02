@@ -36,6 +36,22 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,23 +77,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import javax.xml.bind.DatatypeConverter;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.springframework.beans.BeanUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.stream.Collectors;
 
 public final class VitamUIUtils {
 
@@ -287,4 +287,25 @@ public final class VitamUIUtils {
         return DatatypeConverter.printHexBinary(mdbytes);
     }
 
+    public static String secureFormatHeadersLogging(HttpHeaders headers) {
+        return headers.entrySet().stream()
+            .map(entry -> {
+                List<String> values = entry.getValue();
+                if (values.size() == 1) {
+
+                    return (entry.getKey().equalsIgnoreCase(HttpHeaders.AUTHORIZATION) ||
+                        entry.getKey().equalsIgnoreCase( HttpHeaders.PROXY_AUTHORIZATION) ||
+                        entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHENTICATE)) ?
+                        (entry.getKey() + ":" + "\"" +
+                            (values.get(0).split(" ")[0] + " **********" + "\"")) :
+                        entry.getKey() + ":" + "\"" +
+                            values.get(0) + "\"";
+
+                } else {
+                    return entry.getKey() + ":" +
+                        (values.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")));
+                }
+            })
+            .collect(Collectors.joining(", ", "[", "]"));
+    }
 }

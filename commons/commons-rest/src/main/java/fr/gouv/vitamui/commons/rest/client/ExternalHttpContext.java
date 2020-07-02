@@ -36,13 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.server.ServletServerHttpRequest;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -51,6 +44,11 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.server.ServletServerHttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 /**
  * The context of an external REST call (to any API except security).
@@ -108,7 +106,7 @@ public class ExternalHttpContext extends AbstractHttpContext {
      */
     private static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final String userToken, final Integer tenantIdentifier,
             final String accessContract) {
-        LOGGER.debug("Request Headers : {}", new ServletServerHttpRequest(request).getHeaders());
+        LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
         String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
@@ -136,7 +134,7 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter in the PreAuthentification Phase.
      */
     public static ExternalHttpContext buildFromExternalRequest(final HttpServletRequest request) {
-        LOGGER.debug("Request Headers : {}", new ServletServerHttpRequest(request).getHeaders());
+        LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
         final Integer tenantIdentifier = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), request.getRequestURI());
 
         final String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
