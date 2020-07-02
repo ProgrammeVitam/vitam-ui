@@ -3,7 +3,7 @@
 customer-init:
   # Default profiles for each customer created
   profiles:
-    - name: Profile pour la gestion des profiles de sécurité
+    - name: Profil pour la gestion des profiles de sécurité
       description: Gestion des profiles de sécurité dans Vitam
       app-name: SECURITY_PROFILES_APP
       level:
@@ -13,7 +13,7 @@ customer-init:
        - ROLE_UPDATE_SECURITY_PROFILES
        - ROLE_DELETE_SECURITY_PROFILES
 
-    - name: Profile pour la gestion des formats de fichiers
+    - name: Profil pour la gestion des formats de fichiers
       description: Gestion des formats de fichiers dans Vitam
       app-name: FILE_FORMATS_APP
       level:
@@ -23,7 +23,7 @@ customer-init:
        - ROLE_UPDATE_FILE_FORMATS
        - ROLE_DELETE_FILE_FORMATS
 
-    - name: Profile pour la gestion des ontologies
+    - name: Profil pour la gestion des ontologies
       description: Gestion des ontologies dans Vitam
       app-name: ONTOLOGY_APP
       level:
@@ -32,7 +32,7 @@ customer-init:
        - ROLE_CREATE_ONTOLOGIES
        - ROLE_DELETE_ONTOLOGIES
 
-    - name: Profile pour la gestion des contrats des contextes
+    - name: Profil pour la gestion des contrats des contextes
       description: Gestion des contrats des contextes dans Vitam
       app-name: CONTEXTS_APP
       level:
@@ -67,8 +67,8 @@ customer-init:
   #   email-prefix: a@mail.com
 
   # Default profiles for each tenant created
-  tenant-profiles: 
-    - name: Profile pour la gestion des contrats d'accès
+  tenant-profiles:
+    - name: Profil pour la gestion des contrats d'accès
       description: Gestion des contrats d'accès dans Vitam
       app-name: ACCESS_APP
       level:
@@ -77,7 +77,7 @@ customer-init:
        - ROLE_CREATE_ACCESS_CONTRACTS
        - ROLE_UPDATE_ACCESS_CONTRACTS
 
-    - name: Profile pour la gestion des contrats d'entrée
+    - name: Profil pour la gestion des contrats d'entrée
       description: Gestion des contrats d'entrée dans Vitam
       app-name: INGEST_APP
       level:
@@ -86,7 +86,7 @@ customer-init:
        - ROLE_CREATE_INGEST_CONTRACTS
        - ROLE_UPDATE_INGEST_CONTRACTS
 
-    - name: Profile pour les services agents
+    - name: Profil pour les services agents
       description: Gestion des services agents dans Vitam
       app-name: AGENCIES_APP
       level:
@@ -97,10 +97,10 @@ customer-init:
        - ROLE_DELETE_AGENCIES
        - ROLE_EXPORT_AGENCIES
 
-    - name: Profile pour la gestion des Audits
+    - name: Profil pour la gestion des Audits
       description: Gestion des audits dans Vitam
       app-name: AUDIT_APP
-      level: 
+      level:
       roles:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
