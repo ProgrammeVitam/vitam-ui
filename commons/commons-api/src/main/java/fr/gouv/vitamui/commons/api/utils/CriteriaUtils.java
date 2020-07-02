@@ -131,6 +131,7 @@ public final class CriteriaUtils {
                 throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
             }
         });
+        criteriaDto.getSubQueries().forEach(queryDto -> checkContainsAuthorizedKeys(queryDto, allowedKeys));
     }
 
     public static QueryDto fromJson(final String criteriaJson) {
