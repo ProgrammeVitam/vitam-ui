@@ -208,6 +208,9 @@ vitamui_platform_informations:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
   platform_name: VITAM-UI
+  customer:
+    technical_referent-email: jean-claude@xelians.fr
+    website_url: https://www.xelians.fr
 
 portal_informations:
   welcome_title: Portail des applications de l'archivage

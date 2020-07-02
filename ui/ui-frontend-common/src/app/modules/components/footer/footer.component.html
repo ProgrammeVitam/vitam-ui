@@ -1,33 +1,27 @@
-<div class="customer-logo">
-  <div>
-    <img [src]="logoUrl" class="logo" />
-  </div>
-  <span>Powered by {{platformName}}</span>
+<div>
+  <img src="/assets/footer-logo.svg" class="logo" alt="Xelians" />
 </div>
 
-<ul class="help">
-  <li><a href="#">Aide FAQ</a></li>
-  <li><a href="#">Support technique</a></li>
-  <li><a href="#">Contact</a></li>
-  <li><a href="#">Mentions légales</a></li>
-</ul>
+<div>
+  <a href="https://www.xelians.fr" target="_blank" i18n="Site footer|footer help@@help" class="plain">Aide</a>
+</div>
 
-<div class="sign-up">
-  <span>
-    Inscription au programme de test
-  </span>
+<div class="separator"></div>
 
-  <form [formGroup]="formGroup" class="pt-2">
-    <mat-form-field appearance="outline">
-      <input matInput placeholder="Nom" formControlName="name" />
-    </mat-form-field>
+<div i18n="Site footer|footer technical referent@@technicalReferent">
+  Référent technique :
+  <a [href]="'mailto:' + customerTechnicalReferentEmail">{{customerTechnicalReferentEmail}}</a>
+</div>
 
-    <mat-form-field appearance="outline">
-      <input matInput placeholder="Adresse mail" formControlName="email" />
-    </mat-form-field>
+<div class="separator"></div>
 
-    <button mat-button type="submit">
-      S'inscrire
-    </button>
-  </form>
+<div>
+  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank">{{customerWebsiteUrlTitle}}</a>
+</div>
+
+<div class="separator"></div>
+
+<div>
+  <a href="https://www.xelians.fr" target="_blank" i18n="Site footer|footer legal notice@@legalNotice"
+    class="plain">Mentions légales</a>
 </div>

@@ -35,17 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer.component';
-import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
     FooterComponent
-  ],
-  imports: [
-    MaterialModule,
-    ReactiveFormsModule
   ],
   exports: [
     FooterComponent

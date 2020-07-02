@@ -153,6 +153,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         }
 
         configurationData.put(CommonConstants.APP_LOGO, null);
+        configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
         return configurationData;
     }
 

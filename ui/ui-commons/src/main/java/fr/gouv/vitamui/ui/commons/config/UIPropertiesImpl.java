@@ -77,4 +77,5 @@ public class UIPropertiesImpl implements UIProperties {
 
     private String welcomeDescription;
 
+    private Map<String, String> customer;
 }

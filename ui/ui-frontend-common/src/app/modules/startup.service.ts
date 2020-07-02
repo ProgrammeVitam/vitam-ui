@@ -47,9 +47,11 @@ import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
-import {ThemeService} from './theme.service';
+import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
+const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
+const CUSTOMER_WEBSITE_URL_KEY = 'website-url';
 
 @Injectable({
   providedIn: 'root'
@@ -259,6 +261,26 @@ export class StartupService {
     }
 
     return null;
+  }
+
+  public getCustomer(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.CUSTOMER;
+    }
+  }
+
+  public getCustomerTechnicalReferentEmail(): string {
+    const customer = this.getCustomer();
+    if (customer) {
+      return customer[CUSTOMER_TECHNICAL_REFERENT_KEY];
+    }
+  }
+
+  public getCustomerWebsiteUrl(): string {
+    const customer = this.getCustomer();
+    if (customer) {
+      return customer[CUSTOMER_WEBSITE_URL_KEY];
+    }
   }
 
 }

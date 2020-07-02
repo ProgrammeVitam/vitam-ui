@@ -48,5 +48,5 @@ export interface AppConfiguration {
     PLATFORM_NAME: string;
     WELCOME_TITLE: string;
     WELCOME_DESCRIPTION: string;
-
+    CUSTOMER: string;
 }

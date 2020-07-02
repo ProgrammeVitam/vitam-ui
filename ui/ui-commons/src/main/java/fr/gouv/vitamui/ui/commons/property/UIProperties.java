@@ -62,4 +62,6 @@ public interface UIProperties {
 
     public String getWelcomeDescription();
 
+    public Map<String, String> getCustomer();
+
 }

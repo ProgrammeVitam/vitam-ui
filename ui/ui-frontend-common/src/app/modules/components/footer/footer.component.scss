@@ -1,73 +1,32 @@
 @import '../../../../sass/variables/colors';
 
-$background-color: $warm-grey;
 $text-color: $white;
 
 :host {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  padding: 1.5em 0em 1.5em;
-  background-color: $background-color;
+  height: 100px;
+  background-color: var(--vitamui-secondary);
+  align-items: center;
+  justify-content: center;
   color: $text-color;
-  justify-content: space-around;
 }
 
-@media (max-width: 30em) {
-  :host {
-    flex-direction: column;
-  }
-}
-
-.customer-logo {
-  width: 20%;
-  text-align: center;
+a {
+  color: $text-color;
 }
 
 .logo {
-    max-height: 100px;
-    max-width: 280px;
+  padding-right: 4em;
 }
 
-.help {
-  width: 30%;
-}
-
-.sign-up {
-  width: 50%;
-}
-
-ul li {
-  list-style-type: none;
-  line-height: 2em;
-}
-
-li a {
-  text-decoration: none;
+.separator::before {
+  content: "|";
+  margin: 0 1.5em;
   color: $text-color;
 }
 
-.mat-form-field {
-  margin-right: 10px;
-}
-
-::placeholder {
-  color: $text-color !important;
-}
-
-::ng-deep .mat-form-field-outline {
-  opacity: .2!important;
-
-  * {
-    background-color: $text-color;
-  }
-}
-
-::ng-deep .mat-form-field-flex > .mat-form-field-infix {
-  padding: 0.4em 0em 0.7em!important;
-}
-
-::ng-deep .mat-form-field-label-wrapper {
-  top: -1.5em;
+.plain {
+  text-decoration: none;
 }
