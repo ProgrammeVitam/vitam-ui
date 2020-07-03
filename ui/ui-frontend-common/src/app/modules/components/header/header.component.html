@@ -1,0 +1,44 @@
+<mat-toolbar color="primary" class="header">
+  <div class="header-logo">
+    <a href="{{portalUrl}}" >
+      <img src="../../assets/logo.svg">
+    </a>
+  </div>
+
+  <div class="spacer"></div>
+
+  <vitamui-common-select-tenant></vitamui-common-select-tenant>
+
+  <div class="separator"></div>
+
+  <div class="account row" [matMenuTriggerFor]="accountMenu">
+    <div class="col-3 person-icon">
+      <mat-icon>person</mat-icon>
+    </div>
+
+    <div class="col-6">
+      <div class="account-info">
+        <span class="d-block username">{{currentUser?.firstname}}</span>
+        <span class="d-block username">{{currentUser?.lastname}}</span>
+      </div>
+
+      <div class="account-menu">
+        <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
+          <ng-container>
+            <button mat-menu-item [routerLink]="['/account']" i18n="@@myAccountButtonLabel" *ngIf="hasAccountProfile">Mon compte</button>
+            <button mat-menu-item (click)="enabledSubrogation()" i18n="@@activateSubrogationButtonLabel" *ngIf="!!!currentUser?.superUser">Activer le mode subrogation</button>
+            <button mat-menu-item (click)="logout()" i18n="@@logoutButtonLabel">Déconnexion</button>
+          </ng-container>
+        </mat-menu>
+      </div>
+    </div>
+
+    <div class="col-3 arrow-icon">
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </div>
+  </div>
+
+  <button mat-mini-fab class="apps-button">
+    <mat-icon>apps</mat-icon>
+  </button>
+</mat-toolbar>

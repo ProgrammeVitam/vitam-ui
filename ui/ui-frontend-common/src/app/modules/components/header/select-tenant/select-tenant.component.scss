@@ -1,0 +1,47 @@
+@import '../../../../../sass/variables/colors';
+
+.tenant-selector {
+  font-size: 14px;
+  border-radius: 50px;
+  padding: 0 25px;
+  height: 45px;
+  background-color: $white;
+  color: $charcoal-grey;
+}
+
+.selected-tenant-label, .unselected-tenant-label {
+  color: $warm-grey;
+  font-size: 16px;
+}
+
+.selected-tenant-label {
+  margin-top: 10px;
+}
+
+:host::ng-deep {
+  .mat-form-field-underline {
+    display: none;
+  }
+  
+  .mat-form-field-wrapper {
+    padding-bottom: 0.5em;
+  }
+  
+  .mat-form-field-flex {
+    padding-top: 0.5em;
+  }
+  
+  .mat-select-value-text {
+    font-weight: 600;
+  }
+  
+  .mat-select-arrow-wrapper {
+    position: relative;
+    top: -5px;
+    right: -10px;
+  }
+
+  .mat-select-arrow {
+    color: var(--vitamui-primary);
+  }
+}

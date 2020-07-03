@@ -39,6 +39,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
@@ -54,6 +55,7 @@ import { DownloadSnackBarModule } from './components/download-snack-bar/download
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
+import {HeaderModule} from "./components/header/header.module";
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -123,6 +125,8 @@ export function startupServiceFactory(startupService: StartupService) {
     LogbookModule,
     LoggerModule,
     NavbarModule,
+    HeaderModule,
+    SelectTenantModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -170,6 +174,8 @@ export function startupServiceFactory(startupService: StartupService) {
     LogbookModule,
     LoggerModule,
     NavbarModule,
+    HeaderModule,
+    SelectTenantModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
