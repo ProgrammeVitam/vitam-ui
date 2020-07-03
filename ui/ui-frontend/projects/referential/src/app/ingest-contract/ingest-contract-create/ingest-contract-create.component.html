@@ -1,0 +1,304 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2>Informations</h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <vitamui-common-slide-toggle [formControl]="statusControl">Contrat d'entrée actif
+              </vitamui-common-slide-toggle>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8 form-control">
+              <!-- Must we validate Min / max length ? -->
+              <vitamui-common-input formControlName="name" minlength="2" maxlength="100" required
+                                    placeholder="Nom">
+                <ng-container *ngIf="form.get('name')?.touched">
+                  <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">Champ
+                    requis
+                  </vitamui-common-input-error>
+                  <!-- FIXME: Must we validate existance ? -->
+                  <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">Nom déjà
+                    utilisé
+                  </vitamui-common-input-error>
+                </ng-container>
+              </vitamui-common-input>
+            </div>
+
+            <div class="col-12 form-control">
+              <!-- Must we validate Min / max length ? -->
+              <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4" required="required">
+                <ng-container *ngIf="form.get('description')?.touched">
+                  <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+                    Champ requis
+                  </vitamui-common-input-error>
+                </ng-container>
+              </vitamui-common-textarea>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext
+                  [disabled]="firstStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+      </div>
+
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2>Informations</h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-6 form-control">
+              <mat-form-field class="vitamui-mat-select">
+                <mat-select formControlName="archiveProfiles" placeholder="Profile d'archivage"
+                            panelclass="vitamui-mat-select" multiple>
+                  <mat-option *ngFor='let profiles of archiveProfiles' [value]="profiles.identifier">{{profiles.name}}</mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                  <i class="material-icons">keyboard_arrow_up</i>
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 form-control">
+              <mat-form-field class="vitamui-mat-select">
+                <mat-select formControlName="managementContractId" placeholder="Contrat de gestion" panelclass="vitamui-mat-select">
+                  <mat-option *ngFor='let managementContract of managementContracts' [value]="managementContract.identifier">{{managementContract.name}}</mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                  <i class="material-icons">keyboard_arrow_up</i>
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2>Format des fichiers</h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-8 form-control">
+              <vitamui-common-slide-toggle formControlName="everyFormatType">Tous les formats de fichiers</vitamui-common-slide-toggle>
+              <i class="material-icons field-tooltip" matTooltip="Autoriser tout les formats d'objets binaires existant dans le référentiel des formats" matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="form?.controls.everyFormatType?.value === false">
+            <div class="form-control col-8">
+              <mat-form-field class="vitamui-mat-select">
+                <mat-select formControlName="formatType" placeholder="Sélectionnez les formats de fichiers"
+                            panelclass="vitamui-mat-select" required multiple>
+                  <mat-option *ngFor='let fileFormat of formatTypeList' [value]="fileFormat.puid">{{fileFormat.name}}</mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+              </mat-form-field>
+            </div>
+            <i class="material-icons field-tooltip select-tooltip" matTooltip="Choisir les formats binaires que vous souhaitez autoriser" matTooltipClass="vitamui-tooltip">info</i>
+          </div>
+
+          <div class="row ">
+            <div class="col-12 form-control">
+              <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
+                Autoriser les formats non identifiés
+              </vitamui-common-slide-toggle><i class="material-icons field-tooltip" matTooltip="Autoriser les formats d'objets binaires non référencés dans le référentiel des formats" matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2>Objets</h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-6 form-control">
+              <vitamui-common-slide-toggle formControlName="binaryObjectMandatory">Originel binaire obligatoire</vitamui-common-slide-toggle>
+              <i class="material-icons field-tooltip" matTooltip="option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »" matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 form-)control">
+              <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous usages autorisés
+              </vitamui-common-slide-toggle>
+              <div class="form-control" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select formControlName="dataObjectVersion" required="required"
+                              placeholder="Sélectionnez les usages"
+                              panelclass="vitamui-mat-select" multiple>
+                    <mat-option *ngFor='let usage of usages' [value]="usage.key">
+                      {{usage.label}}</mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-3">
+              <i style="margin-top: 5px" class="material-icons field-tooltip" matTooltip="usage(s) autorisé(s) dans le cas de l’ajout d’un objet binaire à un groupe d’objets techniques existant" matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="fourthStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2> Noeud de rattachement (SIP)<i class="material-icons field-tooltip" matTooltip="Ajouter si nécessaire le noeud de rattachement auquel on souhaite rattacher le SIP" matTooltipClass="vitamui-tooltip">info</i></h2>
+
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
+                      panelclass="vitamui-mat-select" required>
+            <mat-option *ngFor='let accessContract of accessContracts'
+                        [value]="accessContract.identifier">{{accessContract.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+
+        <div class="form-group">
+          <vitamui-library-filing-plan [formControl]="linkParentIdControl"
+                                       [tenantIdentifier]="tenantIdentifier"
+                                       [accessContract]="accessContractSelect.value"
+                                       [mode]="FILLING_PLAN_MODE.SOLO"
+          ></vitamui-library-filing-plan>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2> Noeud de rattachement (UA) </h2>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <vitamui-radio-group formControlName="checkParentLink">
+                <vitamui-radio label="Autorisé" value="AUTHORIZED" [checked]="true"></vitamui-radio>
+                <vitamui-radio label="Obligatoire" value="REQUIRED"></vitamui-radio>
+                <vitamui-radio label="Interdit" value="UNAUTHORIZED"></vitamui-radio>
+              </vitamui-radio-group>
+            </div>
+            <div class="col">
+              <i class="material-icons field-tooltip radio-tooltip" style="top: 20px;"
+                 matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
+                 matTooltipClass="vitamui-tooltip">info</i>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <h3>Création d'un contrat d'entrée</h3>
+        <h2> Noeud de rattachement (UA)<i class="material-icons field-tooltip" matTooltip="Sélection des noeuds de l'arbre" matTooltipClass="vitamui-tooltip">info</i></h2>
+
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
+                      panelclass="vitamui-mat-select" required>
+            <mat-option *ngFor='let accessContract of accessContracts'
+                        [value]="accessContract.identifier">{{accessContract.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+
+        <div class="form-group">
+          <vitamui-library-filing-plan [formControl]="checkParentIdControl"
+                                       [tenantIdentifier]="tenantIdentifier"
+                                       [accessContract]="accessContractSelect.value"
+                                       [mode]="FILLING_PLAN_MODE.INCLUDE_ONLY"
+                                       [required]="checkParentIdControl.value === 'REQUIRED'"></vitamui-library-filing-plan>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+  </vitamui-common-stepper>
+</form>

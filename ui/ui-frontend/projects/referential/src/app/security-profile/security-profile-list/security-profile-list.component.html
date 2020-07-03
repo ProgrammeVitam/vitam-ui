@@ -1,0 +1,55 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <thead>
+  <tr>
+    <th><i class="vitamui-icon vitamui-icon-securite vitamui-row-icon"></i></th>
+    <!-- TODO: Change labels for i18n -->
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="SecurityProfile name column header@@contextListSecurityProfileNameHeader">Nom</span>
+        <vitamui-common-order-by-button orderByKey="Name" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="SecurityProfile id column header@@contextListIdHeader">ID</span>
+        <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+
+    <!--th></th-->
+  </tr>
+  </thead>
+  <!--tbody vitamuiCommonCollapseContainer-->
+  <tbody>
+  <ng-container *ngFor="let profile of dataSource; let index = index">
+
+    <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
+
+    <tr class="vitamui-table-row">
+
+      <td><i class="vitamui-icon vitamui-icon-securite vitamui-row-icon status-badge status-badge-green"></i></td>
+      <td class="clickable" (click)="contextClick.emit(profile)">{{ profile?.name }}</td>
+      <td class="clickable" (click)="contextClick.emit(profile)">{{ profile?.identifier }}</td>
+   <!--   <td>
+        <div class="actions">
+          <button class="btn-circle primary" (click)="deleteSecurityProfileDialog(profile)">
+            <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
+          </button>
+        </div>
+      </td> -->
+    </tr>
+
+
+  </ng-container>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && securityProfileService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <span *ngIf="!pending && !securityProfileService.canLoadMore">Fin des résultats</span>
+</div>

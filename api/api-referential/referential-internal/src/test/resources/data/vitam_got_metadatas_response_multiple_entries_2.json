@@ -1,0 +1,76 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 0,
+    "size": 1
+  },
+  "$results": [
+    {
+      "FileInfo": {
+        "Filename": "ListeArmements.pdf"
+      },
+      "#id": "aebaaaaaaahc23qyabnlmalrcf6o2pqaaaaq",
+      "#nbobjects": 1,
+      "#qualifiers": [
+        {
+          "qualifier": "BinaryMaster",
+          "#nbc": 1,
+          "versions": [
+            {
+              "DataObjectGroupId": "aebaaaaaaahc23qyabnlmalrcf6o2pqaaaaq",
+              "DataObjectVersion": "BinaryMaster_1",
+              "FormatIdentification": {
+                "FormatLitteral": "Acrobat PDF 1.4 - Portable Document Format",
+                "MimeType": "application/pdf",
+                "FormatId": "fmt/18"
+              },
+              "FileInfo": {
+                "Filename": "ListeArmements.pdf"
+              },
+              "Size": 29403,
+              "Uri": "Content/eGNLkNvdmK0Iqq0zv3GVHgR7Ag7nlV.pdf",
+              "MessageDigest": "942bb63cc16bf5ca3ba7fabf40ce9be19c3185a36cd87ad17c63d6fad1aa29d4312d73f2d6a1ba1266c3a71fc4119dd476d2d776cf2ad2acd7a9a3dfa1f80dc7",
+              "Algorithm": "SHA-512",
+              "#id": "aeaaaaaaaahc23qyabnlmalrcf6o2piaaaba",
+              "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+              "#storage": {
+                "strategyId": "default"
+              }
+            }
+          ]
+        }
+      ],
+      "#type": "",
+      "#tenant": 0,
+      "#unitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2tyaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahc23qyabnlmalrcf6o2tyaaaba",
+        "aeaqaaaaaahc23qyabnlmalrcf6o2uaaaabq"
+      ],
+      "#operations": [
+        "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq"
+      ],
+      "#opi": "aeeaaaaaachf2vysaau5malrcf6ohuqaaaaq",
+      "#originating_agency": "FRAN_NP_009913",
+      "#originating_agencies": [
+        "FRAN_NP_009913"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 1
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [],
+    "$filter": {},
+    "$projection": {},
+    "$facets": []
+  }
+}

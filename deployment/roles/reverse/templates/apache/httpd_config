@@ -89,6 +89,14 @@
 
 {% endfor %}
 
+    # UI REFERENTIAL
+
+{% for host in groups['hosts_ui_referential'] %}
+    ProxyPassMatch ^/referential(/.*)$ {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential$1
+    ProxyPassReverse /referential {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential
+
+{% endfor %}
+
     # CAS SERVER
 
 {% for host in groups['hosts_cas_server'] %}

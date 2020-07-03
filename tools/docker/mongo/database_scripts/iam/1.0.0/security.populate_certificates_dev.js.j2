@@ -18,6 +18,7 @@ db.certificates.insert({
 
 {%- endmacro %}
 
+{{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/ui-referential/ui-referential.pem', 'ui_referential_context') }}
 {{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/ui-identity/ui-identity.pem', 'ui_admin_identity_context') }}
 {{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/ui-portal/ui-portal.pem', 'ui_portal_context') }}
 {{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/cas-server/cas-server.pem', 'cas_context') }}

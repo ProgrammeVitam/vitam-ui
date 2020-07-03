@@ -1,0 +1,28 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <!--ng-container *ngIf="!isPopup">
+            <button class="btn-popup" role="button" (click)="openPopup()"><i
+                    class="vitamui-icon vitamui-icon-pin"></i></button>
+        </ng-container-->
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{inputOntology?.shortName}} <small>({{inputOntology?.identifier}})</small></h2>
+        </div>
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group">
+
+            <mat-tab label="Informations" i18n-label="Information tab@@ontologyPreviewTabInformation">
+                <app-ontology-information-tab [inputOntology]="inputOntology" #infoTab
+                                              [readOnly]="isPopup" (updated)="updatedChange($event, 0)"></app-ontology-information-tab>
+            </mat-tab>
+
+            <mat-tab label="Historique" i18n-label="History tab@@ontologyPreviewTabHistory">
+                <vitamui-common-operation-history-tab [id]="inputOntology?.identifier"
+                                                      [identifier]="inputOntology?.identifier" collectionName="ontology" [filter]="filterEvents">
+                </vitamui-common-operation-history-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

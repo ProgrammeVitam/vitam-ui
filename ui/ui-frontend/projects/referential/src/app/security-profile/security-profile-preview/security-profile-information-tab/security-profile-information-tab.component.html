@@ -1,0 +1,19 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+        <div class="col-10 form-control">
+            <vitamui-common-input formControlName="name" placeholder="Nom" disabled="disabled" i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+            </vitamui-common-input>
+        </div>
+    </div>
+
+  <div class="form-group">
+    <vitamui-common-slide-toggle formControlName="fullAccess">
+      <span *ngIf="!form.controls.fullAccess.value">Gérer</span><span *ngIf="form.controls.fullAccess.value">Tous</span> les accès
+    </vitamui-common-slide-toggle>
+  </div>
+
+    <div class="form-group bottom">
+        <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+    </div>
+</form>

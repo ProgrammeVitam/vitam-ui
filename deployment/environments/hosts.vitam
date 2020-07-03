@@ -67,6 +67,8 @@ vitam-env-reverse.vitam-env
 [zone_vitamui_app:children]
 hosts_vitamui_iam_internal
 hosts_vitamui_iam_external
+hosts_vitamui_referential_internal
+hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 
 [hosts_vitamui_iam_internal]
@@ -74,6 +76,14 @@ hosts_vitamui_security_internal
 vitam-env-vitamuifo-app-02.vitam-env
 
 [hosts_vitamui_iam_external]
+# EDIT
+vitam-env-vitamuifo-app-01.vitam-env
+
+[hosts_vitamui_referential_internal]
+# EDIT
+vitam-env-vitamuifo-app-02.vitam-env
+
+[hosts_vitamui_referential_external]
 # EDIT
 vitam-env-vitamuifo-app-01.vitam-env
 
@@ -87,6 +97,7 @@ vitam-env-vitamuifo-app-02.vitam-env
 hosts_ui_identity
 hosts_ui_portal
 hosts_ui_search
+hosts_ui_referential
 
 [hosts_ui_identity]
 # EDIT
@@ -97,6 +108,10 @@ vitam-env-vitamuifo-app-02.vitam-env
 vitam-env-vitamuifo-app-01.vitam-env
 
 [hosts_ui_search]
+# EDIT
+vitam-env-vitamuifo-app-01.vitam-env
+
+[hosts_ui_referential]
 # EDIT
 vitam-env-vitamuifo-app-01.vitam-env
 

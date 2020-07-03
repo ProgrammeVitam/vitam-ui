@@ -46,4 +46,8 @@ export interface AccessContract extends Id {
     writingPermission: boolean;
     everyOriginatingAgency: boolean;
     everyDataObjectVersion: boolean;
+    creationDate: string;
+    lastUpdate: string;
+    activationDate: string;
+    rootUnits: string[];
 }

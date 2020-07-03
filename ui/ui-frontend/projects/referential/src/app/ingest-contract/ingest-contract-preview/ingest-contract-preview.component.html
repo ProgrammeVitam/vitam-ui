@@ -1,0 +1,45 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <ng-container *ngIf="!isPopup">
+            <button class="btn-popup" role="button" (click)="openPopup()"><i
+                    class="vitamui-icon vitamui-icon-pin"></i></button>
+        </ng-container>
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{ingestContract?.name}} <small>({{ingestContract?.identifier}})</small></h2>
+        </div>
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group" #tabs>
+
+            <mat-tab label="Informations" i18n-label="Information tab@@ingestContractPreviewTabInformation">
+                <app-ingest-contract-information-tab [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier"
+                                                     (updated)="updatedChange($event, 0)" #infoTab>
+                </app-ingest-contract-information-tab>
+            </mat-tab>
+
+            <mat-tab label="Formats" i18n-label="Formats tab@@ingestContractPreviewTabFormats" class="no-padding">
+                <app-ingest-contract-format-tab [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier"
+                                                (updated)="updatedChange($event, 1)" #formatsTab>
+                </app-ingest-contract-format-tab>
+            </mat-tab>
+
+            <mat-tab label="Objets" i18n-label="Objets tab@@ingestContractPreviewTabObjects" class="no-padding">
+                <app-ingest-contract-object-tab [ingestContract]="ingestContract" (updated)="updatedChange($event, 2)" #objectsTab>
+                </app-ingest-contract-object-tab>
+            </mat-tab>
+
+            <mat-tab label="Rattachement" i18n-label="Rattachement tab@@ingestContractPreviewTabLink" class="no-padding">
+                <app-ingest-contract-attachment-tab [ingestContract]="ingestContract" [tenantIdentifier]="tenantIdentifier">
+                </app-ingest-contract-attachment-tab>
+            </mat-tab>
+
+            <mat-tab label="Historique" i18n-label="History tab@@ingestContractPreviewTabHistory">
+                <vitamui-common-operation-history-tab [id]="ingestContract?.id"
+                    [identifier]="ingestContract?.identifier" collectionName="ingestcontract" [filter]="filterEvents">
+                </vitamui-common-operation-history-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

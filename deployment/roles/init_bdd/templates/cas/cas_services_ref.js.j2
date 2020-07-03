@@ -2,11 +2,12 @@ db = db.getSiblingDB('{{ mongodb.cas.db }}')
 
 print("START cas_services_ref.js");
 
+// Added a Z in the Name to ensure the regex is used last because CAS order them by 'Name' field
 db.services.insert({
 	"_id": NumberInt(1),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 	"serviceId": "^{{ vitamui.portal.base_url|default(url_prefix) }}/.*",
-	"name": "Portal Application",
+	"name": "Z Portal Application",
 	"logoutType" : "FRONT_CHANNEL",
 	"logoutUrl": "{{ vitamui.portal.base_url|default(url_prefix) }}/logout",
 	"attributeReleasePolicy": {

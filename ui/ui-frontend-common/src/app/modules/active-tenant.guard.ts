@@ -57,6 +57,7 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
     private appService: ApplicationService,
     private startupService: StartupService,
     private globalEventService: GlobalEventService,
+    private router: Router,
     @Inject(WINDOW_LOCATION) private location: any,
   ) { }
 
@@ -84,7 +85,7 @@ export class ActiveTenantGuard implements CanActivate, CanActivateChild {
     }
     // redirect user to the tenant selection page
     const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-    this.location.href = application.url + '/tenant';
+    this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat(['tenant']));
 
     return false;
   }

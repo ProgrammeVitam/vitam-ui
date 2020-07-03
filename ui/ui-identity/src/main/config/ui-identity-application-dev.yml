@@ -25,8 +25,6 @@ ui-identity:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-    admin-identity: "https://dev.vitamui.com:4201/"
-    identity: "https://dev.vitamui.com:4201/"
 
 server:
   host: dev.vitamui.com

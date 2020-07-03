@@ -1,0 +1,100 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <thead>
+  <tr>
+
+    <th>
+      <div class="vitamui-table-header">
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="statusFilterTemplate"
+          [class.active]="filterMap['status'] && filterMap['status'].length > 0"
+        >
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+
+        <ng-template #statusFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+            <vitamui-common-table-filter-option value="ACTIVE">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">
+                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="INACTIVE">
+              <div class="table-filter-icon" i18n="@@userStatusDisabled">
+                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i> Désactivé
+              </div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
+
+        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
+        <vitamui-common-order-by-button orderByKey="Status" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <!-- TODO: Change labels for i18n -->
+
+
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingestContract name column header@@ingestContractListNameHeader">Nom</span>
+        <vitamui-common-order-by-button orderByKey="Name" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingestContract id column header@@ingestContractListIdHeader">ID</span>
+        <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingestContract creation date column header@@ingestContractListCreationDateHeader">Date de création</span>
+        <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="ingestContract column header@@ingestContractListArchiveProfileHeader">Nombre de profils d'archivage</span>
+      </div>
+    </th>
+    <th></th>
+  </tr>
+  </thead>
+  <!--tbody vitamuiCommonCollapseContainer-->
+  <tbody>
+  <ng-container *ngFor="let ingestContract of dataSource; let index = index">
+    <tr class="vitamui-table-row">
+      <td>
+        <i class="vitamui-icon vitamui-icon-contrat vitamui-row-icon status-badge"
+           [ngClass]="{'status-badge-green': ingestContract?.status == 'ACTIVE', 'status-badge-grey':ingestContract?.status == 'INACTIVE' }"></i>
+      </td>
+      <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">{{ ingestContract?.name }}
+      </td>
+      <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
+        {{ ingestContract?.identifier }}</td>
+      <!-- TODO: Add date pipe -->
+      <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
+        {{ ingestContract?.creationdate | date: 'dd/MM/yyyy'}}</td>
+      <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
+        {{ ingestContract?.archiveProfiles?.length }}</td>
+    </tr>
+
+  </ng-container>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && ingestContractService.canLoadMore" (click)="loadMore()"
+          class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <span *ngIf="!pending && !ingestContractService.canLoadMore">Fin des résultats</span>
+</div>

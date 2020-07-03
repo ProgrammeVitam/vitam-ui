@@ -41,8 +41,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
-import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { PortalComponent } from './portal.component';
+import { UpdatedApplicationSelectContentModule } from "projects/vitamui-library/src/lib/components/application-select-content/application-select-content.module";
 
 @NgModule({
   imports: [
@@ -51,7 +52,7 @@ import { PortalComponent } from './portal.component';
     MatMenuModule,
     ReactiveFormsModule,
     RouterModule,
-    ApplicationSelectContentModule,
+    UpdatedApplicationSelectContentModule,
     VitamUICommonModule,
   ],
   declarations: [PortalComponent]

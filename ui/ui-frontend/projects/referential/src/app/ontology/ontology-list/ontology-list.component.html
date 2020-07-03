@@ -1,0 +1,61 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <thead>
+  <tr>
+    <th><i class="vitamui-icon vitamui-icon-ontologie vitamui-row-icon"></i></th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="Ontology name column header@@ontologyListOntologyNameHeader">Nom</span>
+        <vitamui-common-order-by-button orderByKey="ShortName" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="Ontology id column header@@ontologyListIdHeader">ID</span>
+        <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th i18n="Ontology desc column header@@ontologyListOntologyDescriptionHeader">Description</th>
+    <th>
+      <div class="vitamui-table-header">
+        <span i18n="Ontology creation date column header@@ontologyListCompanyCreationDateHeader">Date de création</span>
+        <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction"
+                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+    </th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let ontology of dataSource; let index = index">
+    <tr class="vitamui-table-row">
+      <td>
+        <i class="vitamui-icon vitamui-icon-ontologie vitamui-row-icon vitamui-row-icon"></i>
+      </td>
+      <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.shortName }}</td>
+      <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.identifier }}</td>
+      <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.description }}</td>
+      <td class="clickable" (click)="ontologyClick.emit(ontology)">
+        {{ ontology?.creationDate | date: 'dd/MM/yyyy'}}</td>
+      <td>
+        <div class="actions" *ngIf="ontology.origin=='EXTERNAL'">
+          <button class="btn-circle primary" (click)="deleteOntologyDialog(ontology)">
+            <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+
+
+  </ng-container>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && ontologyService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+  <span *ngIf="!pending && !ontologyService.canLoadMore">Fin des résultats</span>
+</div>

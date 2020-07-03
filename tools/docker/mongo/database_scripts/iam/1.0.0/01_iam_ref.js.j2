@@ -158,6 +158,21 @@ db.tenants.insert({
 });
 
 db.tenants.insert({
+  "_id": "auto_tenant",
+  "name": "Tenant Auto Referentiel",
+  "proof": true,
+  "enabled": true,
+  "readonly": false,
+  "identifier": NumberInt(2),
+  "ownerId": "system_owner",
+  "customerId": "system_customer",
+  "ingestContractHoldingIdentifier" : "IC-000001",
+  "itemIngestContractIdentifier" : "IC-000001",
+  "accessContractHoldingIdentifier" : "AC-000001",
+  "accessContractLogbookIdentifier" : "AC-000002"
+});
+
+db.tenants.insert({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,
@@ -328,7 +343,22 @@ db.profiles.insert({
     "name": "ROLE_UPDATE_PROVIDERS"
   },
   {
+    "name": "ROLE_GET_ACCESS_CONTRACTS"
+  },
+  {
     "name": "ROLE_CREATE_ACCESS_CONTRACTS"
+  },
+  {
+    "name": "ROLE_UPDATE_ACCESS_CONTRACTS"
+  },
+  {
+    "name": "ROLE_GET_INGEST_CONTRACTS"
+  },
+  {
+    "name": "ROLE_CREATE_INGEST_CONTRACTS"
+  },
+  {
+    "name": "ROLE_UPDATE_INGEST_CONTRACTS"
   }
   ]
 });
@@ -411,6 +441,379 @@ db.profiles.insert({
   ]
 });
 
+db.profiles.insert({
+	"_id" : "system_access_contract",
+	"identifier" : NumberInt(99),
+	"name" : "Access Profile",
+	"description" : "Access Profile",
+	"tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "ACCESS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_ACCESS_CONTRACTS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_ingest_contract",
+	"identifier" : NumberInt(97),
+	"name" : "Ingest Profile",
+	"description" : "Ingest Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "INGEST_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_GET_MANAGEMENT_CONTRACTS"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_PROFILES"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_ontology",
+	"identifier" : NumberInt(95),
+	"name" : "Ontology Profile",
+	"description" : "Ontology Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "ONTOLOGY_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_ONTOLOGIES"
+        },
+        {
+            "name": "ROLE_CREATE_ONTOLOGIES"
+        },
+        {
+            "name": "ROLE_DELETE_ONTOLOGIES"
+         }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_agencies",
+	"identifier" : NumberInt(100),
+	"name" : "Agencies Profile",
+	"description" : "Agencies Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "AGENCIES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_AGENCIES"
+        },
+        {
+            "name": "ROLE_CREATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_UPDATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_DELETE_AGENCIES"
+        },
+        {
+            "name": "ROLE_EXPORT_AGENCIES"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_file_format",
+	"identifier" : NumberInt(101),
+	"name" : "File Formats Profile",
+	"description" : "File Formats Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "FILE_FORMATS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_CREATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_UPDATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_DELETE_FILE_FORMATS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_context",
+	"identifier" : NumberInt(102),
+	"name" : "Context Profile",
+	"description" : "Contexts Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "CONTEXTS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_CONTEXTS"
+        },
+        {
+            "name": "ROLE_CREATE_CONTEXTS"
+        },
+        {
+            "name": "ROLE_UPDATE_CONTEXTS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_security_profile",
+	"identifier" : NumberInt(103),
+	"name" : "Security Profiles Profile",
+	"description" : "Security Profiles Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "SECURITY_PROFILES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_SECURITY_PROFILES"
+        },
+        {
+            "name": "ROLE_CREATE_SECURITY_PROFILES"
+        },
+        {
+            "name": "ROLE_UPDATE_SECURITY_PROFILES"
+        },
+        {
+            "name": "ROLE_DELETE_SECURITY_PROFILES"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_audit",
+	"identifier" : NumberInt(104),
+	"name" : "Audit Profile",
+	"description" : "Audit Profile",
+	"tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "AUDIT_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+	    {
+            "name": "ROLE_GET_OPERATIONS"
+        },
+        {
+            "name": "ROLE_RUN_AUDITS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "system_secure",
+	"identifier" : NumberInt(105),
+	"name" : "Secure Profile",
+	"description" : "Secure Profile",
+	"tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "SECURE_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+	    {
+            "name": "ROLE_GET_OPERATIONS"
+        }
+	]
+});
+
+db.profiles.insert({
+	"_id" : "system_dsl",
+	"identifier" : NumberInt(106),
+	"name" : "Requêtes DSL",
+	"description" : "Lancement de recherches par DSL",
+	"tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "DSL_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : []
+});
+
+db.profiles.insert({
+	"_id" : "system_probative_value",
+	"identifier" : NumberInt(107),
+	"name" : "Probative Value Profile",
+	"description" : "Probative Value Profile",
+	"tenantIdentifier" : NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "PROBATIVE_VALUE_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+	    {
+            "name": "ROLE_GET_OPERATIONS"
+        },
+        {
+            "name": "ROLE_RUN_PROBATIVE_VALUE"
+        }
+	 ]
+});
+
+// ------------------------------------------- REFERENTIAL TENANT 2 --------------------------------
+
+db.profiles.insert({
+	"_id" : "auto_access_contract",
+	"identifier" : NumberInt(98),
+	"name" : "Access Profile tenant 2",
+	"description" : "Access Profile tenant 2",
+	"tenantIdentifier": NumberInt(2),
+	"applicationName" : "ACCESS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_ACCESS_CONTRACTS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_ingest_contract",
+	"identifier" : NumberInt(96),
+	"name" : "Ingest Profile tenant 2",
+	"description" : "Ingest Profile tenant 2",
+	"tenantIdentifier": NumberInt(2),
+	"applicationName" : "INGEST_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_PROFILES"
+        },
+        {
+            "name": "ROLE_GET_MANAGEMENT_CONTRACTS"
+        }
+
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_agencies",
+	"identifier" : NumberInt(94),
+	"name" : "Agencies Profile Tenant 2",
+	"description" : "Agencies Profile Tenant 2",
+    "tenantIdentifier": NumberInt(2),
+	"applicationName" : "AGENCIES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_AGENCIES"
+        },
+        {
+            "name": "ROLE_CREATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_UPDATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_DELETE_AGENCIES"
+        },
+        {
+            "name": "ROLE_EXPORT_AGENCIES"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_file_format",
+	"identifier" : NumberInt(93),
+	"name" : "Auto File Formats Profile",
+	"description" : "Auto File Formats Profile",
+    "tenantIdentifier": NumberInt(2),
+	"applicationName" : "FILE_FORMATS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_CREATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_UPDATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_DELETE_FILE_FORMATS"
+        }
+	 ]
+});
 
 // ----------------------------------------- LEVEL "CAS" -----------------------------------------
 
@@ -544,7 +947,20 @@ db.groups.insert({
     "system_group_profile",
     "system_profile_profile",
     "system_account_profile",
-    "system_hierarchy_profile"
+    "system_hierarchy_profile",
+    "system_access_contract",
+    "auto_access_contract",
+    "system_ingest_contract",
+    "auto_ingest_contract",
+    "system_agencies",
+    "auto_agencies",
+    "system_context",
+    "system_security_profile",
+    "system_ontology",
+    "system_audit",
+    "system_secure",
+    "system_dsl",
+    "system_probative_value"
   ],
   "customerId": "system_customer"
 });

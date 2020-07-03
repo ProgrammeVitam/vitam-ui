@@ -72,7 +72,15 @@ public class AccessContractDto implements Serializable {
 
     private Boolean everyDataObjectVersion;
 
+    private String accessLog;
+
+    private Set<String> ruleCategoryToFilter;
+
+    private Set<String> originatingAgencies;
+
     private Set<String> rootUnits;
+
+    private Set<String> excludedRootUnits;
 
     @JsonProperty("tenant")
     public void setTenant(Integer tenant) {
@@ -134,9 +142,29 @@ public class AccessContractDto implements Serializable {
         this.everyDataObjectVersion = everyDataObjectVersion;
     }
 
+    @JsonProperty("accessLog ")
+    public void setAccessLog(String accessLog) {
+        this.accessLog = accessLog;
+    }
+
+    @JsonProperty("ruleCategoryToFilter")
+    public void setRuleCategoryToFilter(Set<String> ruleCategoryToFilter) {
+        this.ruleCategoryToFilter = ruleCategoryToFilter;
+    }
+
+    @JsonProperty("originatingAgencies")
+    public void setOriginatingAgencies(Set<String> originatingAgencies) {
+        this.originatingAgencies = originatingAgencies;
+    }
+
     @JsonProperty("rootUnits")
     public void setRootUnits(Set<String> rootUnits) {
         this.rootUnits = rootUnits;
+    }
+
+    @JsonProperty("excludedRootUnits")
+    public void setExcludedRootUnits(Set<String> excludedRootUnits) {
+        this.excludedRootUnits = excludedRootUnits;
     }
 
     @JsonProperty("#tenant")
@@ -199,9 +227,29 @@ public class AccessContractDto implements Serializable {
         return everyDataObjectVersion;
     }
 
+    @JsonProperty("AccessLog")
+    public String getAccessLog() {
+        return accessLog;
+    }
+
+    @JsonProperty("RuleCategoryToFilter")
+    public Set<String> getRuleCategoryToFilter() {
+        return ruleCategoryToFilter;
+    }
+
+    @JsonProperty("OriginatingAgencies")
+    public Set<String> getOriginatingAgencies() {
+        return originatingAgencies;
+    }
+
     @JsonProperty("RootUnits")
     public Set<String> getRootUnits() {
         return rootUnits;
+    }
+
+    @JsonProperty("ExcludedRootUnits")
+    public Set<String> getExcludedRootUnits() {
+        return excludedRootUnits;
     }
 
 }

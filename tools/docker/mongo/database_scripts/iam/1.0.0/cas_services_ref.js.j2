@@ -38,4 +38,16 @@ db.services.insert({
 	}
 });
 
+db.services.insert({
+	"_id" : NumberInt(4),
+	"_class": "org.apereo.cas.services.RegexRegisteredService",
+	"serviceId": "{{ cas_services_configs.ui_referential.serviceId }}",
+	"name": "{{ cas_services_configs.ui_identity_admin.name }}",
+	"logoutType" : "{{ cas_services_configs.ui_identity_admin.logoutType }}",
+	"logoutUrl": "{{ cas_services_configs.ui_referential.logoutUrl }}",
+	"attributeReleasePolicy": {
+  		"_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+	}
+});
+
 print("END cas_services_ref.js");

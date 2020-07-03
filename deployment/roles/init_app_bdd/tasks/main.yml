@@ -1,0 +1,4 @@
+---
+- import_tasks: check_auth.yml
+
+- import_tasks: referential.yml
