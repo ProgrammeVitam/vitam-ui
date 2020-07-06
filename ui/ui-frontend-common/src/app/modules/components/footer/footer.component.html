@@ -1,9 +1,9 @@
 <div>
-  <img src="/assets/footer-logo.svg" class="logo" alt="Xelians" />
+  <img src="/assets/footer-logo.svg" class="logo"/>
 </div>
 
 <div>
-  <a href="https://www.xelians.fr" target="_blank" i18n="Site footer|footer help@@help" class="plain">Aide</a>
+  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank" i18n="Site footer|footer help@@help" class="plain">Aide</a>
 </div>
 
 <div class="separator"></div>
@@ -22,6 +22,6 @@
 <div class="separator"></div>
 
 <div>
-  <a href="https://www.xelians.fr" target="_blank" i18n="Site footer|footer legal notice@@legalNotice"
+  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank" i18n="Site footer|footer legal notice@@legalNotice"
     class="plain">Mentions légales</a>
 </div>

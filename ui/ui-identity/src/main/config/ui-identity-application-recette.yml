@@ -33,6 +33,9 @@ ui-identity:
     portal: "https://dev.vitamui.com:9000"
     admin-identity: "https://dev.vitamui.com/:9001identity"
     identity: "https://dev.vitamui.com:9001/identity"
+  customer:
+    technical-referent-email: contact@programmevitam.fr
+    website-url: http://www.programmevitam.fr
 
 server:
   host: dev.vitamui.com

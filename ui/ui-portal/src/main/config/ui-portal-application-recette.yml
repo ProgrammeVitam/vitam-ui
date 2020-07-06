@@ -55,8 +55,8 @@ ui-portal:
     admin-identity: "https://dev.vitamui.com:9001/identity"
     identity: "https://dev.vitamui.com:9001/identity"
   customer:
-    technical-referent-email: jean-claude@xelians.fr
-    website-url: https://www.xelians.fr
+    technical-referent-email: contact@programmevitam.fr
+    website-url: http://www.programmevitam.fr
 
 ui:
   url: "https://dev.vitamui.com:9000"

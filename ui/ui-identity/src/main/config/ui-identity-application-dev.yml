@@ -33,6 +33,9 @@ ui-identity:
     portal: "https://dev.vitamui.com:4200"
     admin-identity: "https://dev.vitamui.com:4201/"
     identity: "https://dev.vitamui.com:4201/"
+  customer:
+    technical-referent-email: contact@programmevitam.fr
+    website-url: http://www.programmevitam.fr
 
 server:
   host: dev.vitamui.com

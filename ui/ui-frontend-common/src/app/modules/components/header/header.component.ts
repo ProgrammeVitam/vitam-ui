@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import { AuthService,  AuthUser,  StartupService,} from '../..';
+import { StartupService } from '../../startup.service';
+import { AuthService } from '../../auth.service';
+import { AuthUser } from '../../models';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
 

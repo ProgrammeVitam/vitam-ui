@@ -1,12 +1,4 @@
 <div class="content">
-   <div class="header">
-   </div>
-   
-   <div class="body">
-      <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
-      <app-application-list [applications]="applications" [categories]="categories" (applicationClick)="openApplication($event)"></app-application-list>
-   </div>
-   
-   <div class="footer">
-   </div>
+    <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
+    <app-application-list [applications]="applications" [categories]="categories" (applicationClick)="openApplication($event)"></app-application-list>
 </div>

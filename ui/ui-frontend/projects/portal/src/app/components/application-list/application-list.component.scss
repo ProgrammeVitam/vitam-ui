@@ -42,11 +42,15 @@ mat-card-subtitle {
     }
 
     .mat-tab-label.mat-tab-label-active {
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
         opacity: 1;
     }
 
     .mat-tab-labels {
         justify-content: center;
+    }
+
+    .mat-ink-bar {
+        background-color: var(--vitamui-primary)!important;
     }
 }

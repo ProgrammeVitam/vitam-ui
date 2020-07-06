@@ -4,6 +4,7 @@ mat-toolbar {
   -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
   box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+  z-index: 10;
 }
 
 .header {
@@ -56,4 +57,8 @@ mat-toolbar {
 
 .apps-button mat-icon {
   color: $charcoal-grey;
+}
+
+.vitamui-icon-apps-colored {
+  font-size: 24px;
 }

@@ -17,7 +17,9 @@ export class SelectTenantComponent implements OnInit {
   constructor(private tenantService: TenantMenuService, private authService: AuthService) { }
 
   ngOnInit() {
-    this.tenants = this.authService.user.tenantsByApp.find(tenant => tenant.name === 'ARCHIVE_APP').tenants;
+    if (this.authService.user) {
+      this.tenants = this.authService.user.tenantsByApp.find(tenant => tenant.name === 'ARCHIVE_APP').tenants;
+    }
     this.selectedTenant = this.tenantService.activeTenant;
   }
 

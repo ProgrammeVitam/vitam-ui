@@ -209,8 +209,8 @@ vitamui_platform_informations:
     vitamui_secondary: "#241f63"
   platform_name: VITAM-UI
   customer:
-    technical_referent-email: jean-claude@xelians.fr
-    website_url: https://www.xelians.fr
+    technical_referent_email: contact@programmevitam.fr
+    website_url: http://www.programmevitam.fr
 
 portal_informations:
   welcome_title: Portail des applications de l'archivage

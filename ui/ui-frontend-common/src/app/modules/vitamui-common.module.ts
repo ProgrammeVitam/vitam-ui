@@ -55,7 +55,7 @@ import { DownloadSnackBarModule } from './components/download-snack-bar/download
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
-import {HeaderModule} from "./components/header/header.module";
+import { HeaderModule } from './components/header/header.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';

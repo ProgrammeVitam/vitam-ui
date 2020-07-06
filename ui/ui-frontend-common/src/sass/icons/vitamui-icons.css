@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?mrr2mm');
-  src:  url('fonts/vitamui-icon.eot?mrr2mm#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?mrr2mm') format('truetype'),
-    url('fonts/vitamui-icon.woff?mrr2mm') format('woff'),
-    url('fonts/vitamui-icon.svg?mrr2mm#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?mjucg2');
+  src:  url('fonts/vitamui-icon.eot?mjucg2#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?mjucg2') format('truetype'),
+    url('fonts/vitamui-icon.woff?mjucg2') format('woff'),
+    url('fonts/vitamui-icon.svg?mjucg2#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -13,7 +13,7 @@
 i.vitamui-icon {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'vitamui-icon' !important;
-  speak: none;
+  speak: never;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -25,6 +25,50 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-apps-colored .path1:before {
+  content: "\e955";
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-apps-colored .path2:before {
+  content: "\e956";
+  margin-left: -1em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-apps-colored .path3:before {
+  content: "\e957";
+  margin-left: -1em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-apps-colored .path4:before {
+  content: "\e958";
+  margin-left: -1em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-apps-colored .path5:before {
+  content: "\e959";
+  margin-left: -1em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-apps-colored .path6:before {
+  content: "\e95a";
+  margin-left: -1em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-apps-colored .path7:before {
+  content: "\e95b";
+  margin-left: -1em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-apps-colored .path8:before {
+  content: "\e95c";
+  margin-left: -1em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-apps-colored .path9:before {
+  content: "\e95d";
+  margin-left: -1em;
+  color: var(--vitamui-primary-light-20);
+}
 .vitamui-icon-barcode:before {
   content: "\e954";
 }

@@ -132,6 +132,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
         configurationData.put(CommonConstants.WELCOME_TITLE, properties.getWelcomeTitle());
         configurationData.put(CommonConstants.WELCOME_DESCRIPTION, properties.getWelcomeDescription());
+        configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
 
         if(properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
@@ -153,7 +154,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         }
 
         configurationData.put(CommonConstants.APP_LOGO, null);
-        configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
         return configurationData;
     }
 

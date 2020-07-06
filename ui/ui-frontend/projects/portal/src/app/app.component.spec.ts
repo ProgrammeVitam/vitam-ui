@@ -41,38 +41,48 @@ import { async, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import { BASE_URL, VitamUICommonModule } from 'ui-frontend-common';
 import { environment } from './../environments/environment.prod';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent { }
 
-@Component({ selector: 'vitamui-common-subrogation-banner', template: '' })
-class SubrogationBannerStubComponent { }
-
 describe('AppComponent', () => {
 
   beforeEach(async(() => {
-    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => { }, getPlatformName: () => '' };
+    const startupServiceStub = {
+      configurationLoaded: () => true,
+      printConfiguration: () => { },
+      getPlatformName: () => '',
+      load: () => { },
+      getPortalUrl: () => '',
+      getCustomerTechnicalReferentEmail: () => '',
+      getCustomerWebsiteUrl: () => ''
+    };
+
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
         RouterOutletStubComponent,
-        SubrogationBannerStubComponent,
       ],
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
         InjectorModule,
+        VitamUICommonModule,
+        BrowserAnimationsModule,
         LoggerModule.forRoot()
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => { } } },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: BASE_URL, useValue: '/fake-api' },
       ]
     }).compileComponents();
   }));
@@ -87,9 +97,9 @@ describe('AppComponent', () => {
 
   it(`should have as title 'Portal App'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    console.log('Title App: ', app);
-    expect(app.title).toEqual('Portal App');
+    const title = fixture.componentInstance.title;
+    console.log('Title App: ', title);
+    expect(title).toEqual('Portal App');
   });
 
 });
