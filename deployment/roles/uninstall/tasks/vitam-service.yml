@@ -1,4 +1,3 @@
-
 ---
 # tasks file for vitam-service-uninstall
 - name: Stop vitam service
@@ -20,10 +19,17 @@
     - app
     - bin
     - conf
-    - data
     - defaults
     - lib
     - log
     - run
     - script
     - tmp
+
+- name: Delete data of the service
+  file:
+    name: "{{ vitam_defaults.folder.root_path }}/{{ item }}/{{ service_name }}"
+    state: absent
+  when: delete_data_dir
+  with_items:
+    - data
