@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
-import { StartupService } from '../../startup.service';
 import { AuthService } from '../../auth.service';
 import { AuthUser } from '../../models';
+import { StartupService } from '../../startup.service';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
+import { MenuOverlayService } from './menu/menu-overlay.service';
 
 @Component({
   selector: 'vitamui-common-header',
@@ -22,7 +23,9 @@ export class HeaderComponent implements OnInit {
 
   public trustedInlineLogoUrl: SafeUrl;
 
-  constructor(private subrogationService: SubrogationService, private startupService: StartupService,
+  constructor(private subrogationService: SubrogationService,
+              private startupService: StartupService,
+              private menuOverlayService: MenuOverlayService,
               private authService: AuthService) { }
 
   ngOnInit() {
@@ -42,5 +45,9 @@ export class HeaderComponent implements OnInit {
 
   public logout(): void {
     this.authService.logout();
+  }
+
+  public openMenu(): void {
+    this.menuOverlayService.open();
   }
 }

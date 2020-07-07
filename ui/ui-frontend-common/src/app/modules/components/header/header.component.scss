@@ -18,6 +18,10 @@ mat-toolbar {
   flex: 1 1 auto;
 }
 
+.header-logo {
+  line-height: 0;
+}
+
 .separator::before {
   content: "|";
   margin: 0 1rem;
@@ -30,7 +34,6 @@ mat-toolbar {
 }
 
 .account {
-  padding: 0 15px;
   cursor: pointer;
 }
 
@@ -38,10 +41,6 @@ mat-toolbar {
   font-size: 45px;
   width: 100%;
   height: 100%;
-}
-
-.arrow-icon {
-  padding-left: 0;
 }
 
 .arrow-icon mat-icon {

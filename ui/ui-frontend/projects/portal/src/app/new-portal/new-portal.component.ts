@@ -61,8 +61,13 @@ export class NewPortalComponent implements OnInit {
 
   public customerLogoUrl: string;
 
-  constructor(private applicationService: ApplicationService, private startupService: StartupService,
-              private domSanitizer: DomSanitizer, private router: Router) { }
+  constructor(
+    private applicationService: ApplicationService,
+    private startupService: StartupService,
+    private domSanitizer: DomSanitizer,
+    private router: Router
+    ) { }
+
 
   ngOnInit() {
     this.applications = this.applicationService.applications;

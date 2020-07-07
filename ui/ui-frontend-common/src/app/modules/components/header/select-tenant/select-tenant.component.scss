@@ -15,7 +15,8 @@
 }
 
 .selected-tenant-label {
-  margin-top: 10px;
+  display: block;
+  padding-top: 0.3rem;
 }
 
 :host::ng-deep {
@@ -23,24 +24,10 @@
     display: none;
   }
   
-  .mat-form-field-wrapper {
-    padding-bottom: 0.5em;
-  }
-  
-  .mat-form-field-flex {
-    padding-top: 0.5em;
-  }
-  
   .mat-select-value-text {
-    font-weight: 600;
+    font-weight: bold;
   }
   
-  .mat-select-arrow-wrapper {
-    position: relative;
-    top: -5px;
-    right: -10px;
-  }
-
   .mat-select-arrow {
     color: var(--vitamui-primary);
   }

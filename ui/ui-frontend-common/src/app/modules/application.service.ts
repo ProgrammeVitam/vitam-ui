@@ -69,6 +69,5 @@ export class ApplicationService {
         return apps;
       })
     );
-
   }
 }

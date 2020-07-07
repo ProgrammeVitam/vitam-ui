@@ -80,9 +80,7 @@ import { TooltipModule } from './directives/tooltip/tooltip.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
-import { BytesPipe } from './pipes/bytes.pipe';
-import { StrongifyPipe } from './pipes/strongify.pipe';
-import { TruncatePipe } from './pipes/truncate.pipe';
+import { PipesModule } from './pipes/pipes.module';
 import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
@@ -97,6 +95,10 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
+  declarations: [
+    BlankComponent,
+    ErrorDialogComponent,
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -108,6 +110,7 @@ export function startupServiceFactory(startupService: StartupService) {
     CollapseDirectiveModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
+    PipesModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
     VitamUIDurationInputModule,
@@ -141,13 +144,6 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule
   ],
-  declarations: [
-    BlankComponent,
-    BytesPipe,
-    ErrorDialogComponent,
-    StrongifyPipe,
-    TruncatePipe
-  ],
   entryComponents: [
     ErrorDialogComponent
   ],
@@ -155,7 +151,6 @@ export function startupServiceFactory(startupService: StartupService) {
     AccountModule,
     ApplicationSelectContentModule,
     BlankComponent,
-    BytesPipe,
     ConfirmDialogModule,
     CollapseModule,
     CollapseDirectiveModule,
@@ -183,14 +178,13 @@ export function startupServiceFactory(startupService: StartupService) {
     SecurityModule,
     SlideToggleModule,
     StepperModule,
-    StrongifyPipe,
     SubrogationModule,
     TooltipModule,
-    TruncatePipe,
     CountryModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
-    FooterModule
+    FooterModule,
+    PipesModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

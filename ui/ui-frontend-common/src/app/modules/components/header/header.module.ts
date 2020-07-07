@@ -7,6 +7,7 @@ import { HeaderComponent } from './header.component';
 import { SelectTenantModule } from './select-tenant/select-tenant.module';
 
 import { MatIconModule, MatToolbarModule } from '@angular/material';
+import { MenuModule } from './menu/menu.module';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -17,7 +18,8 @@ import { MatIconModule, MatToolbarModule } from '@angular/material';
     MatIconModule,
     MatToolbarModule,
     MatButtonModule,
-    SelectTenantModule
+    SelectTenantModule,
+    MenuModule.forRoot()
   ],
   exports : [HeaderComponent]
 })
