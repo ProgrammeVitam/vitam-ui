@@ -40,6 +40,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
+import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
@@ -142,7 +143,8 @@ export function startupServiceFactory(startupService: StartupService) {
     CountryModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
-    FooterModule
+    FooterModule,
+    VitamuiBodyModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -184,6 +186,7 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
+    VitamuiBodyModule,
     PipesModule
   ],
   providers: [
