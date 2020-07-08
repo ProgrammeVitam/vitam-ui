@@ -246,7 +246,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
                         setTenantsByApp((List<TenantInformationDto>) parseJson(value, new TypeReference<List<TenantInformationDto>>() {
                         }));
                         break;
-                    case "siteCode" :
+                    case SITE_CODE :
                         setSiteCode((String) value);
                         break;
                 }
