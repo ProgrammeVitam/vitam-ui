@@ -38,8 +38,8 @@ import {Injectable} from '@angular/core';
 import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 
 import {of, timer} from 'rxjs';
-import {ContextPermission} from "vitamui-library";
 import {map, switchMap, take} from 'rxjs/operators';
+import {ContextPermission} from 'vitamui-library';
 import {ContextService} from '../context.service';
 
 @Injectable()
@@ -76,9 +76,9 @@ export class ContextCreateValidators {
 
   public permissionInvalid() {
     return (control: AbstractControl) => {
-      switch(this.checkTenantsValid(control.value)) {
-        case 'tenant': return of({ 'permissionsTenant': true });
-        case 'empty': return of({ 'noPermissions': true });
+      switch (this.checkTenantsValid(control.value)) {
+        case 'tenant': return of({ permissionsTenant: true });
+        case 'empty': return of({ noPermissions: true });
         default: return of(null);
       }
     };
@@ -89,13 +89,13 @@ export class ContextCreateValidators {
       return 'empty';
     }
 
-    for (let permission of value) {
+    for (const permission of value) {
       if (!permission.tenant) {
         return 'tenant';
       }
     }
 
     return null;
-  };
+  }
 
 }

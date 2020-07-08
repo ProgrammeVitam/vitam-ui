@@ -12,6 +12,7 @@ describe('IngestContractObjectTabComponent', () => {
 
   const ingestContractValue = {
     everyDataObjectVersion: true,
+    masterMandatory: true,
     dataObjectVersion: ['']
   };
 

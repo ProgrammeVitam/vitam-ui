@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-
-import { SecurisationService } from "../../securisation.service";
-import {AccessContractService} from "../../../access-contract/access-contract.service";
-import {ActivatedRoute} from "@angular/router";
-import {AccessContract} from "vitamui-library";
-import {ApiEvent, Event, LogbookApiService} from "ui-frontend-common";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {ApiEvent, Event, LogbookApiService} from 'ui-frontend-common';
+import {AccessContract} from 'vitamui-library';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {SecurisationService} from '../../securisation.service';
 
 @Component({
   selector: 'app-securisation-check-tab',
@@ -48,7 +47,7 @@ import {ApiEvent, Event, LogbookApiService} from "ui-frontend-common";
   styleUrls: ['./securisation-check-tab.component.scss']
 })
 
-export class SecurisationCheckTabComponent implements OnChanges {
+export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;
 
   events: Event[] = [];
@@ -57,7 +56,10 @@ export class SecurisationCheckTabComponent implements OnChanges {
   accessContracts: AccessContract[];
   accessContractId: string;
 
-  constructor(private securisationService: SecurisationService, private accessContractService: AccessContractService, private route: ActivatedRoute) { }
+  constructor(
+    private securisationService: SecurisationService,
+    private accessContractService: AccessContractService,
+    private route: ActivatedRoute) { }
 
 
   ngOnInit() {
@@ -85,6 +87,6 @@ export class SecurisationCheckTabComponent implements OnChanges {
     this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: {$results: ApiEvent[]}) => {
       this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
       this.display = true;
-    })
+    });
   }
 }

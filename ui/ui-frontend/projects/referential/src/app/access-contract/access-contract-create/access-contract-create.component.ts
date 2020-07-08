@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option} from 'ui-frontend-common';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Option } from 'ui-frontend-common';
 
-import {AccessContract, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
-import {AgencyService} from '../../agency/agency.service';
-import {AccessContractService} from '../access-contract.service';
-import {AccessContractCreateValidators} from './access-contract-create.validators';
+import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { AgencyService } from '../../agency/agency.service';
+import { AccessContractService } from '../access-contract.service';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -71,7 +71,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   private stepCount = 4;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AccessContractCreateComponent>,
@@ -88,7 +88,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   accessLogControl = new FormControl(true);
   allNodes = new FormControl(false);
   ruleFilter = new FormControl(false);
-  selectNodesControl = new FormControl({included: [], excluded: []});
+  selectNodesControl = new FormControl({ included: [], excluded: [] });
   accessContractSelect = new FormControl(null, Validators.required);
 
   originatingAgencies: Option[] = [];
@@ -96,28 +96,28 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    {key: 'StorageRule', label: 'Durée d\'utilité courante', info: ''},
-    {key: 'ReuseRule', label: 'Durée de réutilisation', info: ''},
-    {key: 'ClassificationRule', label: 'Durée de classification', info: ''},
-    {key: 'DisseminationRule', label: 'Délai de diffusion', info: ''},
-    {key: 'AccessRule', label: 'Durée d\'utilité administrative', info: ''},
-    {key: 'AppraisalRule', label: 'Délai de communicabilité', info: ''}
+    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
+    { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
+    { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
+    { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
+    { key: 'AccessRule', label: 'Durée d\'utilité administrative', info: '' },
+    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
   ];
 
   // FIXME: Get list from common var ?
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
-    {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignettes', info: ''},
-    {key: 'TextContent', label: 'Contenu textuel', info: ''},
-    {key: 'PhysicalMaster', label: 'Archives physiques', info: ''}
+    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
+    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignettes', info: '' },
+    { key: 'TextContent', label: 'Contenu textuel', info: '' },
+    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' }
   ];
 
   ngOnInit() {
     console.log('tenantIdentifier', this.tenantIdentifier);
 
     this.agencyService.getAll().subscribe(agencies =>
-      this.originatingAgencies = agencies.map(x => ({label: x.name, key: x.identifier}))
+      this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
     );
 
     this.accessContractService.getAll().subscribe((value) => {
@@ -177,8 +177,8 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.lastStepInvalid()) { 
-      return; 
+    if (this.lastStepInvalid()) {
+      return;
     }
     const accessContract = this.form.value as AccessContract;
     this.accessContractService.create(accessContract).subscribe(

@@ -4,7 +4,7 @@ import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {MatDialog, MatDialogRef, MatSelectModule, MatSidenavModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -22,6 +22,7 @@ describe('AuditComponent', () => {
       params: of({tenantIdentifier: 1}),
       data: of({appId: 'AUDIT_APP'})
     };
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports:
@@ -40,7 +41,8 @@ describe('AuditComponent', () => {
         GlobalEventService,
         {provide: MatDialogRef, useValue: matDialogRefSpy},
         {provide: MatDialog, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        {provide: Router, useValue: routerSpy}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

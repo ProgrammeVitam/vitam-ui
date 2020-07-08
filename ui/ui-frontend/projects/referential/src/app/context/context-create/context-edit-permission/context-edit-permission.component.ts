@@ -36,13 +36,13 @@
  */
 /* tslint:disable:no-use-before-declare */
 
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {ContextPermission} from 'projects/vitamui-library/src/public-api';
-import {AuthService, Option} from 'ui-frontend-common';
-import {Tenant} from 'ui-frontend-common/app/modules/models/customer';
-import {AccessContractService} from '../../../access-contract/access-contract.service';
-import {IngestContractService} from '../../../ingest-contract/ingest-contract.service';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ContextPermission } from 'projects/vitamui-library/src/public-api';
+import { AuthService, Option } from 'ui-frontend-common';
+import { Tenant } from 'ui-frontend-common/app/modules/models/customer';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -58,9 +58,10 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
 
-  constructor(private accessService: AccessContractService,
-              private ingestService: IngestContractService,
-              private authService: AuthService) {
+  constructor(
+    private accessService: AccessContractService,
+    private ingestService: IngestContractService,
+    private authService: AuthService) {
   }
   permissions: ContextPermission[];
 
@@ -84,7 +85,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
       const accessTenants: Tenant[] = accessTenantsInfo ? accessTenantsInfo.tenants : [];
       accessTenants.forEach((tenant) => {
         if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
-          this.tenants.push({key: '' + tenant.identifier, label: tenant.name});
+          this.tenants.push({ key: '' + tenant.identifier, label: tenant.name });
         }
         this.accessService.getAllForTenant('' + tenant.identifier).subscribe(
           accessContracts => {
@@ -100,7 +101,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
       const ingestTenants: Tenant[] = ingestTenantsInfo ? ingestTenantsInfo.tenants : [];
       ingestTenants.forEach((tenant) => {
         if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
-          this.tenants.push({key: '' + tenant.identifier, label: tenant.name});
+          this.tenants.push({ key: '' + tenant.identifier, label: tenant.name });
         }
         this.ingestService.getAllForTenant('' + tenant.identifier).subscribe(
           ingestContracts => {
@@ -117,29 +118,39 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
 
   onDelete(index: number) {
     this.permissions.splice(index, 1);
-    this.onChange && this.onChange(this.permissions);
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
   }
 
   onAdd() {
-    this.permissions.push({tenant: '', accessContracts: [], ingestContracts: []});
-    this.onChange && this.onChange(this.permissions);
+    this.permissions.push({ tenant: '', accessContracts: [], ingestContracts: [] });
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
   }
 
   onTenantSelect() {
-    this.onChange && this.onChange(this.permissions);
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
   }
 
   onContractSelect() {
-    this.onChange && this.onChange(this.permissions);
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
   }
 
   writeValue(value: ContextPermission[]) {
     if (value) {
       this.permissions = value;
     } else {
-      this.permissions = [{tenant: null, accessContracts: [], ingestContracts: []}];
+      this.permissions = [{ tenant: null, accessContracts: [], ingestContracts: [] }];
     }
-    this.onChange && this.onChange(this.permissions);
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
   }
 
   registerOnChange(fn: any): void {

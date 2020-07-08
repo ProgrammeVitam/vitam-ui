@@ -28,7 +28,7 @@ export class IngestContractObjectTabComponent implements OnInit {
     {key: 'Dissemination', label: 'Diffusion', info: ''},
     {key: 'Thumbnail', label: 'Vignette', info: ''},
     {key: 'TextContent', label: 'Contenu brut', info: ''},
-    {key: 'PhysicalMaster', label: 'Originel papier', info: ''}
+    {key: 'PhysicalMaster', label: 'Original papier', info: ''}
   ];
 
   previousValue = (): IngestContract => {
@@ -58,15 +58,6 @@ export class IngestContractObjectTabComponent implements OnInit {
       this.form.get('identifier').disable({emitEvent: false});
     }
   }
-
-  // FIXME: Get list from common var ?
-  usages: Option[] = [
-    { key: 'BinaryMaster', label: 'Original numérique', info: '' },
-    { key: 'Dissemination', label: 'Diffusion', info: '' },
-    { key: 'Thumbnail', label: 'Vignette', info: '' },
-    { key: 'TextContent', label: 'Contenu brut', info: '' },
-    { key: 'PhysicalMaster', label: 'Original papier', info: '' }
-  ];
 
   constructor(
     private formBuilder: FormBuilder,

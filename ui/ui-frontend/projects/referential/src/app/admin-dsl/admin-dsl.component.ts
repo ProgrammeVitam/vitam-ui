@@ -39,8 +39,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppRootComponent, Option} from 'ui-frontend-common';
 import {AccessContractService} from '../access-contract/access-contract.service';
+import {VitamUISnackBar} from '../shared/vitamui-snack-bar';
 import {AdminDslService} from './admin-dsl.service';
-import {VitamUISnackBar} from "../shared/vitamui-snack-bar";
 
 @Component({
   selector: 'app-admin-dsl',
@@ -106,8 +106,8 @@ export class AdminDslComponent extends AppRootComponent implements OnInit {
     const dsl = this.form.value.dsl;
     try {
       return dsl.length > 1 && !!JSON.parse(dsl);
-    } catch(syntaxError) {
-      this.snackBar.open("Format de la requête invalide", null, {
+    } catch (syntaxError) {
+      this.snackBar.open('Format de la requête invalide', null, {
         panelClass: 'vitamui-snack-bar',
         duration: 1000
       });

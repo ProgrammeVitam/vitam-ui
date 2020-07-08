@@ -35,22 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { AuthService } from '../../../auth.service';
-import { LogbookService } from '../../logbook.service';
+import {of} from 'rxjs';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {SecurisationService} from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
-describe('OperationHistoryTabComponent', () => {
+fdescribe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
   let fixture: ComponentFixture<SecurisationCheckTabComponent>;
 
   beforeEach(async(() => {
+    const activatedRouteMock = {
+      params: of({tenantIdentifier: 1}),
+      data: of({appId: 'TRACEABILITY_APP'})
+    };
+
+    const accessContractServiceMock = {
+      getAllForTenant: () => of([])
+    };
+
     TestBed.configureTestingModule({
       declarations: [ SecurisationCheckTabComponent ],
       providers: [
-        { provide: AuthService, useValue: {}},
-        { provide: LogbookService, useValue: {}},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: SecurisationService, useValue: {}},
+        {provide: ActivatedRoute, useValue: activatedRouteMock}
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
