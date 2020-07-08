@@ -27,6 +27,7 @@
         <module>deployment</module>
         <module>cots</module>
         <module>ui</module>
+        <module>packaging</module>
     </modules>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

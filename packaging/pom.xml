@@ -11,7 +11,7 @@
 	</parent>
 	<artifactId>package</artifactId>
 	<packaging>pom</packaging>
-	<name>VITAM-UI Package</name>
+	<name>VITAMUI Package</name>
 	<description>Packaging VITAM-UI</description>
 
 	<profiles>
