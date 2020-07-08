@@ -10,8 +10,10 @@ import static org.junit.Assert.assertTrue;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -457,6 +459,38 @@ public class PersonRepositoryTests {
         final List<Person> persons = repository.findAll(query);
         assertEquals("Incorrect values size.", 1, persons.size());
 
+    }
+
+    @Test
+    public void testDistinct(){
+        repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
+        repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
+        repository.save(new Person("Julien", "Cornille", 19, new ArrayList<>(), OffsetDateTime.now()));
+        String[] fields = {"firstName"};
+        final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
+        final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
+        final Map<String, Object> result = repository.aggregate( fields, Collections.singletonList(criteria), "DISTINCT");
+        assertNotNull(result);
+        assertEquals(result.size(), 1);
+        assertTrue(result.keySet().containsAll(Arrays.asList(fields)));
+        assertTrue(((List) result.get("firstName")).contains("Moctar"));
+        assertTrue(((List) result.get("firstName")).contains("Julien"));
+    }
+
+    @Test
+    public void testCount(){
+        repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
+        repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
+        repository.save(new Person("Julien", "Cornille", 19, new ArrayList<>(), OffsetDateTime.now()));
+        String[] fields = {"age", "firstName"};
+        final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
+        final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
+        final Map<String, Object> result = repository.aggregate( fields, Collections.singletonList(criteria), "COUNT");
+        assertNotNull(result);
+        assertEquals(result.size(), 2);
+        assertTrue(result.keySet().containsAll(Arrays.asList(fields)));
+        assertEquals(1, result.get("age"));
+        assertEquals(2, result.get("firstName"));
     }
 
     protected List<Person> convertIterableToList(final Iterable<Person> it) {
