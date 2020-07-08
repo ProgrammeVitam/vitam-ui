@@ -217,6 +217,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
             attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
+            attributes.put("siteCode", Collections.singletonList(user.getSiteCode()));
             final Set<String> roles = new HashSet<>();
             final List<ProfileDto> profiles = authUser.getProfileGroup().getProfiles();
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
