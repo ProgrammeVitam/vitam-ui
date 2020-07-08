@@ -116,7 +116,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setNbFailedAttempts(user.getNbFailedAttempts());
         setPasswordExpirationDate(user.getPasswordExpirationDate());
         setGroupId(user.getGroupId());
-        System.out.println("------------------------UserDto--------------------" + user);
         setSiteCode(user.getSiteCode());
     }
 
