@@ -53,10 +53,17 @@ export class ApplicationsListComponent {
 
     categ.forEach((category: Category) => {
       this.appMap.set(category, []);
+
+      // Fill categories
       this.applications.forEach((application: Application) => {
         if (application.category === category.identifier) {
           this.appMap.get(category).push(application);
         }
+      });
+
+      // Sort apps inside categories
+      this.appMap.get(category).sort((a, b) => {
+        return a.position < b.position ? -1 : 1;
       });
     });
   }
