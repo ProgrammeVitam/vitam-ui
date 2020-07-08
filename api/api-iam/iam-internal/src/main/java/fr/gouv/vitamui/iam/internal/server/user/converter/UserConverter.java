@@ -89,6 +89,8 @@ public class UserConverter implements Converter<UserDto, User> {
      */
     public static final String BLOCKED_DURATION = "Durée du blocage";
 
+    public static final String SITE_CODE = "siteCode";
+
     private final GroupRepository groupRepository;
 
     private final AddressConverter addressConverter;
@@ -111,6 +113,7 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(STATUS_KEY, LogbookUtils.getValue(user.getStatus().toString()));
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
+        userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
         AddressDto address = user.getAddress() != null ? user.getAddress() : new AddressDto();
         addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());

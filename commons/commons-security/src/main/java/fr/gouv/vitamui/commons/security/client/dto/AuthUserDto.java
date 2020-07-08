@@ -116,6 +116,8 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setNbFailedAttempts(user.getNbFailedAttempts());
         setPasswordExpirationDate(user.getPasswordExpirationDate());
         setGroupId(user.getGroupId());
+        System.out.println("------------------------UserDto--------------------" + user);
+        setSiteCode(user.getSiteCode());
     }
 
     public AuthUserDto(final String username, final Map<String, Object> attributes) {
@@ -244,6 +246,9 @@ public class AuthUserDto extends UserDto implements UserDetails {
                         setTenantsByApp((List<TenantInformationDto>) parseJson(value, new TypeReference<List<TenantInformationDto>>() {
                         }));
                         break;
+                    case "siteCode" :
+                        setSiteCode((String) value);
+                        break;
                 }
             }
         }
@@ -296,6 +301,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setNbFailedAttempts(getNbFailedAttempts());
         user.setPasswordExpirationDate(getPasswordExpirationDate());
         user.setGroupId(getGroupId());
+        user.setSiteCode(getSiteCode());
         return user;
     }
 }

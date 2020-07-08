@@ -129,4 +129,6 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
     private OffsetDateTime passwordExpirationDate;
 
     private Address address = new Address();
+
+    private String siteCode;
 }
