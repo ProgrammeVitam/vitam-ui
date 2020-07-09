@@ -56,7 +56,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import fr.gouv.vitamui.commons.mongo.domain.AggregationTypes;
-import fr.gouv.vitamui.commons.mongo.domain.DistinctValue;
+import fr.gouv.vitamui.commons.mongo.domain.AggregationResultValue;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -440,19 +440,19 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
                 throw new UnsupportedOperationException("Unsupported aggregation : " + operationType);
         }
         Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
-        return formatAggregationResult(mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), DistinctValue.class));
+        return formatAggregationResult(mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), AggregationResultValue.class));
     }
 
     /**
      *
-     * Formats AggregationResults<DistinctValue> depending on the result's size.
+     * Formats AggregationResults<AggregationResultValue> depending on the result's size.
      *
      * @param aggregationResults Execution result of an aggregation operation.
      * @return list of values, or a single result, or null depending on the size of aggregationResults.
      */
-    private Object formatAggregationResult(AggregationResults<DistinctValue> aggregationResults){
+    private Object formatAggregationResult(AggregationResults<AggregationResultValue> aggregationResults){
         if (aggregationResults.getMappedResults().size() > 1) {
-            return aggregationResults.getMappedResults().stream().map(DistinctValue::getValue).collect(Collectors.toList());
+            return aggregationResults.getMappedResults().stream().map(AggregationResultValue::getValue).collect(Collectors.toList());
         } else {
             return aggregationResults.getUniqueMappedResult() != null ? aggregationResults.getUniqueMappedResult().getValue() : null;
         }

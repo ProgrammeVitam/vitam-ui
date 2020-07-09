@@ -44,7 +44,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class DistinctValue {
+public class AggregationResultValue {
 
     private Object value;
 
