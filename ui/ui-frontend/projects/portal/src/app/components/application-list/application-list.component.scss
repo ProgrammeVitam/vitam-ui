@@ -37,6 +37,7 @@ mat-card-subtitle {
 }
 
 :host::ng-deep {
+
     .mat-tab-header{
         margin: 3rem 0;
     }
@@ -48,6 +49,7 @@ mat-card-subtitle {
     .mat-tab-label.mat-tab-label-active {
         color: var(--vitamui-primary);
         opacity: 1;
+        font-weight: bold;
     }
 
     .mat-tab-labels {

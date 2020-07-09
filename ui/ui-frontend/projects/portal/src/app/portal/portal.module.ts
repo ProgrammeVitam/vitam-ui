@@ -42,6 +42,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
 import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
+import { ApplicationListModule } from '../components/application-list/application-list.module';
+import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
 
 @NgModule({
@@ -53,6 +55,8 @@ import { PortalComponent } from './portal.component';
     RouterModule,
     ApplicationSelectContentModule,
     VitamUICommonModule,
+    WelcomeMessageModule,
+    ApplicationListModule
   ],
   declarations: [PortalComponent]
 })

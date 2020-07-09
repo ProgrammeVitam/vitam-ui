@@ -47,7 +47,6 @@ import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModul
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NewPortalModule } from './new-portal/new-portal.module';
 import { PortalModule } from './portal';
 
 
@@ -61,7 +60,6 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     BrowserAnimationsModule,
     PortalModule,
-    NewPortalModule,
     InjectorModule,
     MatSnackBarModule,
     MatDialogModule,

@@ -9,4 +9,4 @@ export class MenuOverlayRef {
     public close(): void {
         this.overlayRef.dispose();
     }
-  }
+}

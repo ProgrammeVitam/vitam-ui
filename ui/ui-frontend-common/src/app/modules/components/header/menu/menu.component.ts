@@ -4,6 +4,7 @@ import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ApplicationService } from '../../../application.service';
+import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
 import { StartupService } from '../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
@@ -54,16 +55,20 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public state = '';
 
   private applications: Application[];
+
   public filteredApplications: Application[] = null;
+
   public applicationsGroupBy: _.Dictionary<Application[]>;
+
   public criteria: string;
+
   public tabSelectedIndex = 0;
 
-  public readonly CATEGORY = {
-    users: 'Utilisateurs',
-    settings: 'Paramétrage',
-    administrators: 'Management'
-  };
+  public readonly CATEGORY = [
+    { position: 0, identifier: 'users', name: 'Utilisateur' },
+    { position: 1, identifier: 'administrators', name: 'Management' },
+    { position: 2, identifier: 'settings', name: 'Paramétrage' },
+  ] as Category[];
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
@@ -118,8 +123,10 @@ export class MenuComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.dialogRef.close(), 500);
   }
 
-  public getCategoryName(): any {
-    return Object.keys(this.applicationsGroupBy);
+  public getCategory(): Category[] {
+   return this.CATEGORY.sort((a, b) => {
+      return a.position < b.position ? -1 : 1;
+    });
   }
 
   public changeTabFocus(value?: MatTabChangeEvent): void {

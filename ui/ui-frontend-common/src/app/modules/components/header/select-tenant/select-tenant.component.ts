@@ -18,7 +18,10 @@ export class SelectTenantComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.user) {
-      this.tenants = this.authService.user.tenantsByApp.find(tenant => tenant.name === 'ARCHIVE_APP').tenants;
+      const tenantOfApp = this.authService.user.tenantsByApp.find(tenant => tenant.name === 'ARCHIVE_APP');
+      if (tenantOfApp) {
+        this.tenants = tenantOfApp.tenants;
+      }
     }
     this.selectedTenant = this.tenantService.activeTenant;
   }

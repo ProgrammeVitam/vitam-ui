@@ -8,11 +8,12 @@ import { MenuComponent } from './menu.component';
 export class MenuOverlayService {
 
   private overlayRef: OverlayRef;
+
   private dialogRef: MenuOverlayRef;
+
   private portalInjector: PortalInjector;
 
-  constructor(private overlay: Overlay, private injector: Injector) {
-  }
+  constructor(private overlay: Overlay, private injector: Injector) { }
 
   public open(): void {
     const positionStrategy = this.overlay
@@ -20,11 +21,12 @@ export class MenuOverlayService {
     .global()
     .top('0')
     .right('0');
+
     const config = new OverlayConfig({
-    hasBackdrop: true,
-    positionStrategy,
-    scrollStrategy: this.overlay.scrollStrategies.block()
-  });
+      hasBackdrop: true,
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.block()
+    });
 
     this.overlayRef = this.overlay.create(config);
     const injectionTokens = new WeakMap();

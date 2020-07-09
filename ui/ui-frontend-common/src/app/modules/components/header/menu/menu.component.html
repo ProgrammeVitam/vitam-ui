@@ -30,11 +30,11 @@
         </ng-container>
         <ng-template #displayMats>
                 <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
-                    <mat-tab *ngFor="let cat of getCategoryName()" [label]="CATEGORY[cat]">
+                    <mat-tab *ngFor="let cat of getCategory()" [label]="cat.name">
                         <mat-selection-list
                             class="py-3"
                             (selectionChange)="openApplication($event.option.value)">
-                            <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of applicationsGroupBy[cat]">
+                            <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of applicationsGroupBy[cat.identifier]">
                                 <vitamui-common-menu-application-tile [application]="app"></vitamui-common-menu-application-tile>
                             </mat-list-option>
                         </mat-selection-list>
