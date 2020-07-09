@@ -152,5 +152,5 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param operationType type of the aggregation operation to apply.
      * @return Map<String, Object> aggregation results.
      */
-    Map<String, Object> aggregate(String[] fields, final List<CriteriaDefinition> criteria, String operationType);
+    Map<String, Object> aggregation(String[] fields, final List<CriteriaDefinition> criteria, String operationType);
 }

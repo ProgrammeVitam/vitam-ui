@@ -222,14 +222,14 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     /**
      * Applies an aggregation operation (provided in operationType) on a list of fields.
      *
-     * @param context InternalHttpContext
+     * @param context HttpContext
      * @param operationType type of the aggregation operation to apply.
      * @param fields Array of field names.
      * @param criteria Criteria as json string
      * @return Map<String, Object> aggregation results.
      */
-    public Map<String, Object> aggregate(final InternalHttpContext context, final String operationType, final String[] fields, final Optional<String> criteria) {
-        final URIBuilder builder = getUriBuilder(String.format("%s/aggregate", getUrl()));
+    public Map<String, Object> aggregation(final C context, final String operationType, final String[] fields, final Optional<String> criteria) {
+        final URIBuilder builder = getUriBuilder(String.format("%s/aggregation", getUrl()));
         for(String field: fields){
             builder.addParameter("fields", field);
         }

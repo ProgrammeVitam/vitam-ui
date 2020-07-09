@@ -462,14 +462,14 @@ public class PersonRepositoryTests {
     }
 
     @Test
-    public void testDistinctOneField(){
+    public void testOneDistinctField(){
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Julien", "Cornille", 19, new ArrayList<>(), OffsetDateTime.now()));
         String[] fields = {"firstName"};
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregate( fields, Collections.singletonList(criteria), "DISTINCT");
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), "DISTINCT");
         assertNotNull(result);
         assertEquals(result.size(), 1);
         assertTrue(result.keySet().containsAll(Arrays.asList(fields)));
@@ -478,7 +478,7 @@ public class PersonRepositoryTests {
     }
 
     @Test
-    public void testDistinctMultipleFields(){
+    public void testMultipleDistinctFields(){
         repository.save(new Person("M", "D", 22, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
@@ -486,7 +486,7 @@ public class PersonRepositoryTests {
         String[] fields = {"firstName", "lastName", "age"};
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregate( fields, Collections.singletonList(criteria), "DISTINCT");
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), "DISTINCT");
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(Arrays.asList(fields)));
@@ -504,7 +504,7 @@ public class PersonRepositoryTests {
         String[] fields = {"firstName", "lastName", "age"};
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregate( fields, Collections.singletonList(criteria), "COUNT");
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), "COUNT");
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(Arrays.asList(fields)));

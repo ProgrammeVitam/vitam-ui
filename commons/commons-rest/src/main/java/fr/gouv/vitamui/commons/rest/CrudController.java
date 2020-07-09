@@ -119,7 +119,7 @@ public interface CrudController<D extends IdDto> {
      * @param criteria Criteria as json string
      * @return Map<String, Object> aggregation results.
      */
-    default Map<String, Object> aggregate(final String operationType, final String[] fields, final Optional<String> criteria){
+    default Map<String, Object> aggregation(final String operationType, final String[] fields, final Optional<String> criteria){
         throw new UnsupportedOperationException("patch not implemented");
     }
 }

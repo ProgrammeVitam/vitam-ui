@@ -40,8 +40,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.skip;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.limit;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -49,12 +47,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.commons.mongo.domain.AggregationTypes;
 import fr.gouv.vitamui.commons.mongo.domain.DistinctValue;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -397,37 +398,63 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     }
 
     /**
+     * Applies an aggregation operation (provided in operationType) on a list of fields.
      *
-     * Gets paginated distinct values of a field
      *
-     * creates multiple operations (match using criteria, group by field, project to field, skip and limit for pagination)
-     * and then aggregates them, aggregation result is used create a PaginatedValuesDto containing distinct values of the specified field
-     *
-     * @param field Field name in database.
+     * @param fields List of field names.
      * @param criteria List of criteria.
-     * @param page Page number.
-     * @param size Page size.
-     * @return Paginated distinct field values
+     * @param operationType type of the aggregation operation to apply.
+     * @return Map<String, Object> aggregation results.
      */
     @Override
-    public PaginatedValuesDto<Object> findDistinct(String field, List<CriteriaDefinition> criteria, Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Query query = new Query();
-        List<AggregationOperation> aggregationOperations = new ArrayList<>();
-        for (final CriteriaDefinition c : criteria) {
-            aggregationOperations.add(match(c));
-            query.addCriteria(c);
-        }
-        aggregationOperations.add(match(new Criteria(field).ne(null)));
-        aggregationOperations.add(group(field));
-        aggregationOperations.add(project(field).and("_id").as("value"));
-        aggregationOperations.add(skip((long) pageable.getPageSize() * pageable.getPageNumber()));
-        aggregationOperations.add(limit(pageable.getPageSize()));
-        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
-        AggregationResults<DistinctValue> output = mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), DistinctValue.class);
-        int count = mongoOperations.findDistinct(query, field, entityInformation.getCollectionName(), Object.class).size();
-        Page<Object> paginate = new PageImpl<>(output.getMappedResults().stream().map(DistinctValue::getValue).collect(Collectors.toList()), pageable, count);
-        return new PaginatedValuesDto<>(paginate.getContent(), page, size, paginate.hasNext());
+    public Map<String, Object> aggregation(String[] fields, List<CriteriaDefinition> criteria, String operationType) {
+        Map<String, Object> result = new HashMap<>();
+        List<AggregationOperation> matchOperations = new ArrayList<>();
+        criteria.forEach(criteriaDefinition -> matchOperations.add(match(criteriaDefinition)));
+        Arrays.stream(fields).forEach(field -> result.put(field, aggregateByField(field, matchOperations, operationType)));
+        return result;
     }
 
+    /**
+     * Applies an aggregation operation (provided in operationType) on a single field.
+     *
+     * @param field field name
+     * @param matchOperations a list of Aggregation.match built using criteria
+     * @param operationType type of the aggregation operation to apply.
+     * @throws UnsupportedOperationException if operationType is not supported
+     * @return list of values, or a single result, or null depending on the aggregation result.
+     */
+    private Object aggregateByField(String field, List<AggregationOperation> matchOperations, String operationType){
+        List<AggregationOperation> aggregationOperations = new ArrayList<>(matchOperations);
+        aggregationOperations.add(match(new Criteria(field).ne(null)));
+        switch (operationType) {
+            case AggregationTypes.DISTINCT:
+                aggregationOperations.add(group(field));
+                aggregationOperations.add(project(field).and("_id").as("value"));
+                break;
+            case AggregationTypes.COUNT:
+                aggregationOperations.add(group(field));
+                aggregationOperations.add(Aggregation.count().as("value"));
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported aggregation : " + operationType);
+        }
+        Aggregation aggregation = Aggregation.newAggregation(aggregationOperations);
+        return formatAggregationResult(mongoOperations.aggregate(aggregation, entityInformation.getCollectionName(), DistinctValue.class));
+    }
+
+    /**
+     *
+     * Formats AggregationResults<DistinctValue> depending on the result's size.
+     *
+     * @param aggregationResults Execution result of an aggregation operation.
+     * @return list of values, or a single result, or null depending on the size of aggregationResults.
+     */
+    private Object formatAggregationResult(AggregationResults<DistinctValue> aggregationResults){
+        if (aggregationResults.getMappedResults().size() > 1) {
+            return aggregationResults.getMappedResults().stream().map(DistinctValue::getValue).collect(Collectors.toList());
+        } else {
+            return aggregationResults.getUniqueMappedResult() != null ? aggregationResults.getUniqueMappedResult().getValue() : null;
+        }
+    }
 }
