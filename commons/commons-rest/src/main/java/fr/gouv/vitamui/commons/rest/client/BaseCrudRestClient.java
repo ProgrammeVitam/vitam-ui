@@ -219,6 +219,30 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         return response.getBody();
     }
 
+    /**
+     * Applies an aggregation operation (provided in operationType) on a list of fields.
+     *
+     * @param context InternalHttpContext
+     * @param operationType type of the aggregation operation to apply.
+     * @param fields Array of field names.
+     * @param criteria Criteria as json string
+     * @return Map<String, Object> aggregation results.
+     */
+    public Map<String, Object> aggregate(final InternalHttpContext context, final String operationType, final String[] fields, final Optional<String> criteria) {
+        final URIBuilder builder = getUriBuilder(String.format("%s/aggregate", getUrl()));
+        for(String field: fields){
+            builder.addParameter("fields", field);
+        }
+        criteria.ifPresent(o -> builder.addParameter("criteria", o));
+        builder.addParameter("operationType", operationType);
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final URI uri = buildUriBuilder(builder);
+        LOGGER.debug("uri = {}", uri.toString());
+        final ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uri, HttpMethod.GET, request, new ParameterizedTypeReference<>() {});
+        checkResponse(response, 200);
+        return response.getBody();
+    }
+
     protected abstract Class<D> getDtoClass();
 
     protected abstract ParameterizedTypeReference<List<D>> getDtoListClass();

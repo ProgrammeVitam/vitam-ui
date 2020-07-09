@@ -110,4 +110,16 @@ public interface CrudController<D extends IdDto> {
     default D patch(final String id, final Map<String, Object> updates) {
         throw new UnsupportedOperationException("patch not implemented");
     }
+
+    /**
+     * Applies an aggregation operation (provided in operationType) on a list of fields.
+     *
+     * @param operationType type of the aggregation operation to apply.
+     * @param fields Array of field names.
+     * @param criteria Criteria as json string
+     * @return Map<String, Object> aggregation results.
+     */
+    default Map<String, Object> aggregate(final String operationType, final String[] fields, final Optional<String> criteria){
+        throw new UnsupportedOperationException("patch not implemented");
+    }
 }

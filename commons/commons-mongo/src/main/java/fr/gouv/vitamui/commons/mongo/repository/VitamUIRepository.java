@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -144,13 +145,12 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
 
     /**
      *
-     * Gets paginated distinct values of a field
+     * Applies an aggregation operation (provided in operationType) on a list of fields.
      *
-     * @param field Field name in database.
+     * @param fields Array of field names.
      * @param criteria List of criteria.
-     * @param page Page number.
-     * @param size Page size.
-     * @return Paginated distinct field values
+     * @param operationType type of the aggregation operation to apply.
+     * @return Map<String, Object> aggregation results.
      */
-    PaginatedValuesDto<Object> findDistinct(String field, final List<CriteriaDefinition> criteria, final Integer page, final Integer size);
+    Map<String, Object> aggregate(String[] fields, final List<CriteriaDefinition> criteria, String operationType);
 }
