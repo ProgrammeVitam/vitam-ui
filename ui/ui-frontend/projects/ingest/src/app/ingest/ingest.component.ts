@@ -146,5 +146,7 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
-  refresh() { }
+  refresh() {
+    this.ingestListComponent.emitOrderChange();
+  }
 }
