@@ -83,7 +83,6 @@ export class UploadSipComponent implements OnInit {
     });
 
     this.tenantIdentifier = data.tenantIdentifier;
-    console.log('tenantIdentifier' + this.tenantIdentifier);
   }
 
   ngOnInit() {
@@ -148,7 +147,6 @@ export class UploadSipComponent implements OnInit {
           console.error(error);
           this.message = error.message;
         });
-    console.log('The upload has executed in UploadSipComponent');
   }
 
   displaySnackBar(uploadComplete: boolean) {

@@ -44,7 +44,6 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,12 +83,8 @@ public class IngestInternalControllerTest  {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
-
     @Test
     public void testBasicIngest() {
-        Assert.assertEquals(ingestInternalService.ingest(), "Ingest Internal called with tenantIdentifier = 0");
     }
-
-
 
 }

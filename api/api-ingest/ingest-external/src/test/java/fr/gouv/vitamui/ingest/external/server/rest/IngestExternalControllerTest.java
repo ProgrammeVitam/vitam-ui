@@ -104,7 +104,6 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
     @Test
     public void testIngest() {
         // to enhance in the future with appropriate verbs and real cases and so on ..
-        super.testGetAllEntity();
         // ingestExternalService.ingest();
     }
 }

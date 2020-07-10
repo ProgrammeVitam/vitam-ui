@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.ingest.external.client;
 
-import java.util.List;
-
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -47,16 +45,15 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import sun.rmi.runtime.Log;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 /**
  * A REST client to get logbooks for an External API.
@@ -84,13 +81,6 @@ public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient
 
     @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
-    }
-
-    public ResponseEntity<String> ingest(ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-        final HttpEntity<?> request = new HttpEntity<>(headers);
-        return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, String.class);
     }
 
     public ResponseEntity<Resource> downloadManifest(ExternalHttpContext context, String id) {

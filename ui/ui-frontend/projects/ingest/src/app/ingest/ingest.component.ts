@@ -40,7 +40,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { IngestService } from './ingest.service';
 import { UploadSipComponent } from './upload-sip/upload-sip.component';
 import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
 
@@ -57,13 +56,12 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   dateRangeFilterForm: FormGroup;
 
   filters: any = {};
-  results: string;
 
   @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
   @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
 
-  constructor(private ingestService: IngestService, private router: Router, private route: ActivatedRoute,
-              globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
+  constructor( private router: Router, private route: ActivatedRoute,
+               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
     super(route, globalEventService);
 
     route.params.subscribe(params => {
@@ -84,12 +82,6 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
       }
       this.filters.endDate = value;
       this.ingestListComponent.filters = this.filters;
-    });
-  }
-
-  getOperations() {
-    this.ingestService.ingest().subscribe((results) => {
-      this.results = results;
     });
   }
 

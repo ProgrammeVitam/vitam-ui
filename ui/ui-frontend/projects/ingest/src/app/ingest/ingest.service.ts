@@ -36,7 +36,6 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
 
@@ -53,10 +52,6 @@ export class IngestService extends SearchService<any> {
   }
 
   headers = new HttpHeaders();
-
-  ingest(): Observable<any> {
-    return this.ingestApiService.ingest(this.headers);
-  }
 
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();

@@ -81,10 +81,6 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
         this.ingestInternalWebClient = ingestInternalWebClient;
     }
 
-    public String ingest() {
-        return getClient().ingest(getInternalHttpContext());
-    }
-
     public Mono<RequestResponseOK> upload(InputStream in, String action, String contextId) {
         return ingestInternalWebClient.upload(getInternalHttpContext(), in, action, contextId);
     }

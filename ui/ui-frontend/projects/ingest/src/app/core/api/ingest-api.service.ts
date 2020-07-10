@@ -17,13 +17,6 @@ export class IngestApiService extends BaseHttpClient<any> {
     this.baseUrl = baseUrl;
   }
 
-  ingest(headers?: HttpHeaders): Observable<string> {
-    const params = new HttpParams();
-    // , responseType: 'text'
-    return this.http.get<string>(this.getApiUrl(), { params, headers });
-
-  }
-
   upload(req: HttpRequest<any>): Observable<any> {
     return this.http.request(req);
   }

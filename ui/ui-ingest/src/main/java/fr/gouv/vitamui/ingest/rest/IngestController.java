@@ -128,13 +128,6 @@ public class IngestController extends AbstractUiRestController {
                 .body(body);
     }
 
-    @ApiOperation(value = "Ingest an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public String ingest() {
-        return service.ingest(buildUiHttpContext());
-    }
-
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Produces(MediaType.APPLICATION_JSON_UTF8_VALUE)

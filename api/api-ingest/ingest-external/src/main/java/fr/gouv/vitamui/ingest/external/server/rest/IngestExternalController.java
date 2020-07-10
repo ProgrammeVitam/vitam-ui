@@ -98,12 +98,6 @@ public class IngestExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST)
-    @GetMapping
-    public String ingest() {
-        return ingestExternalService.ingest();
-    }
-
-    @Secured(ServicesData.ROLE_GET_INGEST)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<RequestResponseOK> upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,

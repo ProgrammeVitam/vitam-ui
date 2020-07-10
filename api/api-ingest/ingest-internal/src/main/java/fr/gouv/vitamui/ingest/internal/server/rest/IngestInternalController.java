@@ -26,11 +26,6 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
-import java.io.InputStream;
-import java.util.Optional;
-
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
@@ -61,6 +56,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.util.Optional;
+
 @RestController
 @RequestMapping(RestApi.V1_INGEST)
 @Getter
@@ -87,11 +86,6 @@ public class IngestInternalController {
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
-    }
-
-    @GetMapping
-    public String ingest() {
-        return ingestInternalService.ingest();
     }
 
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

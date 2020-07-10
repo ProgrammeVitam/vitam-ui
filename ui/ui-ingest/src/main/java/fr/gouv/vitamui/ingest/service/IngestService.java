@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.ingest.service;
 
-import java.io.InputStream;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -55,6 +47,13 @@ import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.thread.IngestThread;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * Ingest Service
@@ -85,11 +84,6 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
     @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);
-    }
-
-
-    public String ingest(final ExternalHttpContext context) {
-        return getClient().ingest(context).getBody();
     }
 
     public void upload(final ExternalHttpContext context, InputStream in, final String contextId, final String action,
