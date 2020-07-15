@@ -151,7 +151,7 @@
         <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
-        <maven.jaxb2.plugin.version>2.2</maven.jaxb2.plugin.version>
+        <maven.jaxb2.plugin.version>2.5.0</maven.jaxb2.plugin.version>
         <maven.lombok.plugin.version>1.18.0.0</maven.lombok.plugin.version>
         <maven.pmd.plugin.version>3.10.0</maven.pmd.plugin.version>
         <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
