@@ -1,6 +1,6 @@
 {
   "name": "vitamui-ui",
-  "version": "1.0.2-SNAPSHOT",
+  "version": "1.0.0-SNAPSHOT",
   "license": "MIT",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
