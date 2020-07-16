@@ -36,7 +36,7 @@
  */
 /* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import {Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
