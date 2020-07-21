@@ -66,7 +66,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "identity:build",
-            "host": "dev-identity.vitamui.com",
+            "host": "dev.vitamui.com",
             "port": 4201
           },
           "configurations": {
@@ -183,7 +183,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "portal:build",
-            "host": "dev-portal.vitamui.com",
+            "host": "dev.vitamui.com",
             "port": 4200
           },
           "configurations": {
@@ -394,7 +394,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "referential:build",
-            "host": "dev-referential.vitamui.com",
+            "host": "dev.vitamui.com",
             "port": 4202
           },
           "configurations": {

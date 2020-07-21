@@ -1,18 +1,18 @@
 {
   "/referential-api": {
-    "target": "https://dev-referential.vitamui.com:9002/",
+    "target": "https://dev.vitamui.com:9002/",
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"
   },
   "/identity-api": {
-    "target": "https://dev-identity.vitamui.com:9001/",
+    "target": "https://dev.vitamui.com:9001/",
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"
   },
   "/portal-api": {
-    "target": "https://dev-portal.vitamui.com:9000/",
+    "target": "https://dev.vitamui.com:9000/",
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"
