@@ -16,7 +16,7 @@ Into each version's folder, scripts are indexed according the following format: 
         - 1_init-security-context.js.j2
         - 100_init-security-context_dev.js.j2
 
-The role creates an ordered list of scripts will be executed on database.
+The role creates an ordered list of scripts which will be executed on database.
 For the sort , we use an option of the Unix command `sort`. The option `-V` allows to sort versions numbers.
 
 Once the list of eligibles scripts is set, we must version them (if the feature is enabled) before their execution.

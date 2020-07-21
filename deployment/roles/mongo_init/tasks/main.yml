@@ -51,7 +51,7 @@
     mongod_files: "{{ (mongod_files| default([])) + item.stdout_lines }}"
   loop: "{{ output.results }}"
 
-# We apply regex for included and excludes files in order to compute the eligible scripts.
+# We apply regex for included and excluded files in order to compute the eligible scripts.
 - name: Compute list of excluded files
   delegate_to: localhost
   set_fact:

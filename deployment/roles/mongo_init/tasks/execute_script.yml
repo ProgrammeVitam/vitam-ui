@@ -13,7 +13,7 @@
   register: stat_result
 
 - block:
-    - fail: msg="The file '{{ mongo_file.finalname }}' is not exist"
+    - fail: msg="The file '{{ mongo_file.finalname }}' does not exist"
       when: not stat_result.stat.exists
 
     - name: Get script content.
