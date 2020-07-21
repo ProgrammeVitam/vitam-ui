@@ -38,7 +38,7 @@ label {
     display: block;
 
     .required-marker {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
     }
 
     small {
@@ -106,7 +106,7 @@ button > small {
     margin-left: 10%;
     width: 300px;
     height: 120px;
-    border: 2px dashed $greeny-blue;
+    border: 2px dashed var(--vitamui-secondary);
     border-radius: 6px;
     box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
     background: $white;
@@ -118,7 +118,7 @@ button > small {
 }
 
 .on-over {
-    border: 2px solid $greeny-blue;
+    border: 2px solid var(--vitamui-secondary);
 
     p {
         color: $white;
@@ -164,7 +164,7 @@ button > small {
     color: #a5a5a5;
 
     .upload {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 
 }
