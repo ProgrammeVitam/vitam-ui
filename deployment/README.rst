@@ -141,8 +141,8 @@ Fichier ``vitamui_vars.yml``
 "A la vitam", permet le paramétrage des différents composants de vitam-ui.
 
 La section ``vitamui_platform_informations`` permet de définir une première entité, ainsi que quelques comptes "administrateur".
-platform_name est utilisé pour définir / surcharger le nom de l'application qui sera récupérer sur les applications frontend et affiché par exemple dans le titre de la page.
-Pou définir les couleurs de base du système visibles par défaut sur l'ensemble des interfaces utilisateurs, il faut surcharger cette structure  : 
+platform_name est utilisé pour définir / surcharger le nom de l'application qui sera récupéré sur les applications frontend et affiché par exemple dans le titre de la page.
+Pour définir les couleurs de base du système visibles par défaut sur l'ensemble des interfaces utilisateurs, il faut surcharger cette structure  : 
 ``
   theme_colors:
     vitamui_primary: "#ff4a54"
