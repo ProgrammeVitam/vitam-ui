@@ -38,7 +38,7 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: src/main/config/truststore_server.jks
+      key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
       key-password: changeme
     hostname-verification: false
 

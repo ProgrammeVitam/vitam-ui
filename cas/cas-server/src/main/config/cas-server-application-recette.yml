@@ -1,6 +1,6 @@
 server:
   ssl:
-    key-store: file:src/main/config/cas-server.jks
+    key-store: ../../../../dev-deployment/environments/keystores/server/localhost/keystore_cas-server.jks
     key-store-password: changeme
     key-password: changeme
   host: dev.vitamui.com
@@ -15,11 +15,11 @@ iam-client:
   secure: true
   ssl-configuration:
     keystore:
-      key-path: src/main/config/keystore_cas-server.jks
+      key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_cas-server.jks
       key-password: changeme
       type: JKS
     truststore:
-      key-path: src/main/config/truststore_server.jks
+      key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
       key-password: changeme
     hostname-verification: false
 

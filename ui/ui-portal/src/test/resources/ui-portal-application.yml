@@ -25,11 +25,11 @@ ui-portal:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/config/keystore_ui-portal.jks
+        key-path: ../../../../dev-deployment/environments/keystores/server/localhost/keystore_ui-portal.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/config/truststore_server.jks
+        key-path: ../../../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
 
@@ -48,7 +48,7 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  host: dev-identity.vitamui.com
+  host: dev.vitamui.com
   port: 8080
   scheme: http
 
@@ -57,11 +57,11 @@ ui:
   redirect-url: ${ui.url}
 
 cas:
-  internal-url: https://dev-cas.vitamui.com:8080
-  external-url: https://dev-cas.vitamui.com:8080
+  internal-url: https://dev.vitamui.com:8080
+  external-url: https://dev.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: src/main/config/truststore_server.jks
+    trust-store: ../../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
 logging:
