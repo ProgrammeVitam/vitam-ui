@@ -121,8 +121,7 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
                 String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
                 flowScope.put(Constants.VITAM_LOGO, logo);
             } catch (IOException e) {
-                LOGGER.warn("Can't find vitam logo");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam logo", e);
             }
         }
         if(vitamuiLargeLogoPath != null) {
@@ -131,8 +130,7 @@ public class CustomInitialFlowSetupAction extends InitialFlowSetupAction {
                 String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
                 flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
             } catch (IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam ui large logo", e);
             }
         }
 
