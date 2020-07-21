@@ -2,7 +2,7 @@ db = db.getSiblingDB('{{ mongodb.security.db }}')
 
 print("START 211_security.populate_certificates_ref.js");
 
-{% macro insertCertififcate(pemFile, contextId) -%}
+{% macro insertCertificate(pemFile, contextId) -%}
 db.certificates.remove(
     {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
     { justOne: true }
@@ -18,6 +18,12 @@ db.certificates.insert({
 
 {%- endmacro %}
 
-{{ insertCertififcate('{{playbook_dir}}/pki/dev/certs/ui-referential/ui-referential.pem', 'ui_referential_context') }}
+{% macro process(keyPath, contextId, groupName) -%}
+    {% for host in groups[groupName] %}
+        {{ insertCertificate(keyPath | replace('%host%', host), contextId) }}
+    {% endfor %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-referential.pem', 'ui_referential_context', 'hosts_ui_referential') }}
 
 print("END 211_security.populate_certificates_ref.js");

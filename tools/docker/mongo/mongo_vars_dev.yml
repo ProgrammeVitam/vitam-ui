@@ -88,6 +88,5 @@ vitamui:
     base_url: "https://dev.vitamui.com:4201"
   portal:
     base_url: "https://dev.vitamui.com:4200"
-
-  ui_referential:
-    server_name: dev.vitamui.com:4202
+  referential:
+    base_url: "https://dev.vitamui.com:4202"

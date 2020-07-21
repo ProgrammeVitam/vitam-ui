@@ -70,6 +70,8 @@ vitamui:
    # base_url: "https://{{ vitam_site_name }}-changeme.com"
   identity_admin:
     server_name:  "{{ vitam_site_name }}-changeme.com"
+  referential:
+    server_name:  "{{ vitam_site_name }}-changeme.com"
    # base_url: "https://{{ vitam_site_name }}-changeme.com"
   portal:
     server_name: "{{ vitam_site_name }}-changeme.com"
