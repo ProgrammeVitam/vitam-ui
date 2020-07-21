@@ -140,7 +140,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           zipCode: [null],
           city: [null],
           country: ['FR']
-        })
+        }),
+        siteCode: [null],
       },
       { validator: UserValidators.missingPhoneNumber }
     );

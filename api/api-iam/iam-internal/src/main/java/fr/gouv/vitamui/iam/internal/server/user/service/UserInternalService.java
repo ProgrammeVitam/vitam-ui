@@ -559,6 +559,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     }
                     addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks);
                     break;
+                case "siteCode" :
+                    logbooks.add(new EventDiffDto(UserConverter.SITE_CODE, user.getSiteCode(), entry.getValue()));
+                    user.setSiteCode(CastUtils.toString(entry.getValue()));
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch group " + user.getId() + ": key " + entry.getKey() + " is not allowed");
             }
