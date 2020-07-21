@@ -307,6 +307,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
+        user.setSiteCode("001");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -338,6 +339,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
                 + "\"OTP\":\"true\","
+                + "\"Code du site\":\"001\","
                 + "\"Nom de la rue\":\"rue faubourg poissoniére\","
                 + "\"Code postal\":\"75009\","
                 + "\"Ville\":\"paris\","
@@ -400,9 +402,13 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("otp");
 
+        partialDto.put("siteCode", "001");
+        internalUserService.patch(partialDto);
+        partialDto.remove("siteCode");
+
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
-        assertThat(events).hasSize(11);
+        assertThat(events).hasSize(12);
 
     }
 

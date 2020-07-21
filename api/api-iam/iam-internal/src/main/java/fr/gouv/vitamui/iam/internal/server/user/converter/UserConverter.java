@@ -89,7 +89,7 @@ public class UserConverter implements Converter<UserDto, User> {
      */
     public static final String BLOCKED_DURATION = "Durée du blocage";
 
-    public static final String SITE_CODE = "siteCode";
+    public static final String SITE_CODE = "Code du site";
 
     private final GroupRepository groupRepository;
 
