@@ -50,7 +50,7 @@ server:
   port: 8081
   scheme: https
   ssl:
-    key-store: ../../../../dev-deployment/environments/keystores/server/localhost/keystore_ui-identity.jks
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-identity.jks
     key-store-password: changeme
     key-password: changeme
 
@@ -69,7 +69,7 @@ cas:
   external-url: https://dev.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: ../../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
 debug: false
