@@ -85,7 +85,6 @@
     "tslib": "^1.13.0",
     "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-0.1.0.tgz",
     "underscore": "^1.10.2",
-    "uuid": "^7.0.2",
     "utf-8-validate": "^5.0.2",
     "uuid": "^7.0.2",
     "web-animations-js": "^2.3.2",
