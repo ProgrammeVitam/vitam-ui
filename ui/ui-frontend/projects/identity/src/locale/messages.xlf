@@ -3601,7 +3601,7 @@
         <note priority="1" from="description">Name</note>
       </trans-unit>
       <trans-unit id="CantModifyGroupLevel" datatype="html">
-        <source>Ce groupe possède des profiles</source>
+        <source>Ce groupe possède des profils</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/group/group-preview/information-tab/information-tab.component.html</context>
           <context context-type="linenumber">42</context>
