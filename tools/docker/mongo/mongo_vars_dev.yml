@@ -1,7 +1,6 @@
 hide_passwords_during_deploy: false
 
 pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
-mongod_source_template_dir:  "{{lookup('env','PWD')}}/database_scripts/"
 
 # Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
 

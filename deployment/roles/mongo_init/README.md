@@ -4,17 +4,16 @@ Init of mongo
 Script allowing to apply scripts on database.
 Scripts are mutualized between dev's docker and deployment.
 
-All scripts are stored into the directory `{PROJECT_ROOT}/tools/docker/mongo/database_scripts/`.
+All scripts are stored into the directory `{PROJECT_ROOT}/deployment/scripts/mongod/`.
 Each version of the application, embedding Mongo scripts, is represented by a folder.
 Into each version's folder, scripts are indexed according the following format: {index}_{name_of_the_script}.js(.j2).
 
-- **database_scripts**
-    - 0.0.0
-        - 1_init-database.js.j2
-        - 2_create-users.js.j2
-    - 1.0.0
-        - 1_init-security-context.js.j2
-        - 100_init-security-context_dev.js.j2
+- 0.0.0
+    - 1_init-database.js.j2
+    - 2_create-users.js.j2
+- 1.0.0
+    - 1_init-security-context.js.j2
+    - 100_init-security-context_dev.js.j2
 
 The role creates an ordered list of scripts which will be executed on database.
 For the sort , we use an option of the Unix command `sort`. The option `-V` allows to sort versions numbers.

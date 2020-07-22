@@ -7,7 +7,7 @@
   roles:
     - { 
         role: mongo_init, 
-        mongod_source_template_dir: "{{playbook_dir}}/database_scripts/"
+        mongod_source_template_dir: "{{lookup('env','PWD')}}/../../../deployment/scripts/mongod/"
       }
 
 

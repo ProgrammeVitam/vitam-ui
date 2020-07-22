@@ -55,16 +55,16 @@ connecting to: admin
 
 Afin de mutualiser le code et les scripts Mongo exploités en developpement ou lors du déploiement sur un environnement, l'intelligence a été répartie de la manière suivante:
 
-- Les scripts Mongo figurent à l'emplacement suivant: **~/tools/docker/mongo/database_scripts**
+- Les scripts Mongo figurent à l'emplacement suivant: **~/deployment/scripts/mongod**
 - Le role Ansible d'initialisation figure à l'emplacement suivant: **~/deployment/roles/mongo_init**
 
 Le role d'initialisation de la base de données a plusieurs fonctionnalités: ordonnancement des scripts, templatage et versioning.
 
 ## Templatage des scripts de DB
 
-La structure du dossier **database_scripts** est simple:
+La structure du dossier **mongod** est simple:
 ```txt
-> database_scripts
+> mongod
   > 0.0.0
      > 01_script.js
      > 02_script.js
