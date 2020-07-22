@@ -1130,7 +1130,7 @@
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven.project.info.reports.plugin.version}</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
@@ -1217,6 +1217,7 @@
                     <version>${spring.boot.version}</version>
                     <configuration>
                         <addResources>false</addResources>
+                        <jvmArguments>-Xmx512m</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>

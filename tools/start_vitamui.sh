@@ -19,6 +19,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SPRINGBOOT="mvn spring-boot:run -Dspring-boot.run.noverify"
+#SPRINGBOOT='mvn -Pvitam --batch-mode spring-boot:run -Dspring-boot.run.noverify -Dspring-boot.run.jvmArguments='\''-XX:+UseG1GC' '-Xmx512m'\'
 NPMSTART="sh -c 'npm install; npm run start'"
 
 function launch() {
@@ -50,7 +51,7 @@ function start_api() {
      launch "../api/api-iam/iam-external" "$SPRINGBOOT"
 
      # Start Cas Server
-     launch "../cas/cas-server" "java -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
+     launch "../cas/cas-server" "java -Xmx512m -Dspring.config.additional-location=src/main/config/cas-server-application-dev.yml -jar target/cas-server.war"
 }
 
 function start_ui_prod() {
@@ -107,15 +108,19 @@ echo
               ;;
          "back")
               start_api
+              sleep 15
               start_ui_back_dev
-             ;;
+              ;;
 	     "front")
              start_api
+             sleep 15
              start_ui_back_dev
+             sleep 15
              start_ui_front_dev
              ;;
          *)
              start_api
+             sleep 15
              start_ui_prod
              ;;
 	 esac
