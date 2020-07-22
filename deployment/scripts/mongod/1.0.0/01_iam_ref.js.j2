@@ -24,7 +24,7 @@ db.customers.insert({
   "description": "{{ vitamui_platform_informations.description }}",
   "companyName": "{{ vitamui_platform_informations.company_name }}",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "subrogeable": false,
   "language": "FRENCH",
   "passwordRevocationDelay": NumberInt(1),
@@ -45,7 +45,7 @@ db.owners.insert({
   "_id": "system_owner",
   "identifier" : NumberInt(1),
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "code": "000001",
   "name": "system_owner",
   "companyName": "system_company",
@@ -62,7 +62,7 @@ db.owners.insert({
   "_id": "system_owner_cas",
   "identifier" : NumberInt(2),
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "code": "000002",
   "name": "system_owner_cas",
   "companyName": "system_owner_cas",
@@ -84,7 +84,7 @@ db.providers.insert({
   "name": "system_idp",
   "internal": true,
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "patterns": [
     "admin.*@{{ vitamui_platform_informations.default_email_domain }}", "support.*@{{ vitamui_platform_informations.default_email_domain }}", "superadmin.*@{{ vitamui_platform_informations.default_email_domain }}"
   ],
@@ -147,23 +147,8 @@ db.tenants.insert({
   "name": "Tenant système",
   "proof": true,
   "enabled": true,
-  "readonly": false,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "ownerId": "system_owner",
-  "customerId": "system_customer",
-  "ingestContractHoldingIdentifier" : "IC-000001",
-  "itemIngestContractIdentifier" : "IC-000001",
-  "accessContractHoldingIdentifier" : "AC-000001",
-  "accessContractLogbookIdentifier" : "AC-000002"
-});
-
-db.tenants.insert({
-  "_id": "auto_tenant",
-  "name": "Tenant Auto Referentiel",
-  "proof": true,
-  "enabled": true,
-  "readonly": false,
-  "identifier": NumberInt(2),
   "ownerId": "system_owner",
   "customerId": "system_customer",
   "ingestContractHoldingIdentifier" : "IC-000001",
@@ -176,7 +161,7 @@ db.tenants.insert({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,
-  "readonly": false,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": NumberInt({{ vitamui_platform_informations.cas_tenant }}),
   "ownerId": "system_owner_cas",
   "customerId": "system_customer"
@@ -195,7 +180,7 @@ db.profiles.insert({
   "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
   "applicationName": "USERS_APP",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "level": "",
   "customerId": "system_customer",
   "roles": [{
@@ -234,7 +219,7 @@ db.profiles.insert({
   "applicationName": "GROUPS_APP",
   "enabled": true,
   "level": "",
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_GROUPS"
@@ -266,7 +251,7 @@ db.profiles.insert({
   "applicationName": "PROFILES_APP",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_PROFILES"
@@ -295,7 +280,7 @@ db.profiles.insert({
   "applicationName": "CUSTOMERS_APP",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_CUSTOMERS"
@@ -372,7 +357,7 @@ db.profiles.insert({
   "applicationName": "SUBROGATIONS_APP",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_SUBROGATIONS"
@@ -405,7 +390,7 @@ db.profiles.insert({
   "applicationName": "ACCOUNTS_APP",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [
     {
@@ -423,7 +408,7 @@ db.profiles.insert({
   "applicationName": "HIERARCHY_PROFILE_APP",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [
     {
@@ -826,7 +811,7 @@ db.profiles.insert({
   "applicationName": "",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_USERS"
@@ -870,7 +855,7 @@ db.profiles.insert({
   "applicationName": "",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": []
 });
@@ -888,7 +873,7 @@ db.profiles.insert({
   "applicationName": "ACCOUNTS_APP",
   "level": "SUPPORT",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [
     {
@@ -907,7 +892,7 @@ db.profiles.insert({
   "applicationName": "SUBROGATIONS_APP",
   "level": "SUPPORT",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "customerId": "system_customer",
   "roles": [{
     "name": "ROLE_GET_SUBROGATIONS"
@@ -940,7 +925,7 @@ db.groups.insert({
   "name": "Groupe de l'administrateur VitamUI",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "description": "Groupe de l'administrateur VitamUI",
   "profileIds": [
     "system_user_profile",
@@ -971,7 +956,7 @@ db.groups.insert({
   "name": "Groupe de l'adminstrateur de l'instance",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "description": "Groupe de l'adminstrateur de l'instance",
   "profileIds": [
     "system_customer_profile",
@@ -989,7 +974,7 @@ db.groups.insert({
   "name": "Groupe de l'utilisateur support",
   "level": "SUPPORT",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "description": "Acces à la subrogation",
   "profileIds": [
     "system_surrogate_profile_support",
@@ -1006,7 +991,7 @@ db.groups.insert({
   "name": "Groupe d'accès à IAM",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "description": "Groupe d'accès à IAM",
   "profileIds": [
     "cas_profile",
@@ -1023,7 +1008,7 @@ db.users.insert({
   "_id": "admin_user",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": "1",
   "password": "{{ vitamui_platform_informations.default_password }}",
   "email": "admin@{{ vitamui_platform_informations.default_email_domain }}",
@@ -1048,7 +1033,7 @@ db.users.insert({
   "_id": "superadmin_user",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": "2",
   "password": "{{ vitamui_platform_informations.default_password }}",
   "email": "superadmin@{{ vitamui_platform_informations.default_email_domain }}",
@@ -1075,7 +1060,7 @@ db.users.insert({
   "_id": "support_user",
   "level": "SUPPORT",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": "3",
   "password": "{{ vitamui_platform_informations.default_password }}",
   "email": "support@{{ vitamui_platform_informations.default_email_domain }}",
@@ -1102,7 +1087,7 @@ db.users.insert({
   "_id": "casuser",
   "level": "",
   "enabled": true,
-  "readonly": true,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": "4",
   "password": "{{ vitamui_platform_informations.default_password }}",
   "email": "cas@{{ vitamui_platform_informations.default_email_domain }}",

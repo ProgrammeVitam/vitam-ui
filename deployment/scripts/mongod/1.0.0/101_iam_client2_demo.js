@@ -139,7 +139,7 @@ db.profiles.insert({
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
@@ -172,7 +172,7 @@ db.profiles.insert({
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
@@ -203,7 +203,7 @@ db.profiles.insert(
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
@@ -222,7 +222,7 @@ db.profiles.insert(
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
@@ -250,7 +250,7 @@ db.profiles.insert(
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });
@@ -278,7 +278,7 @@ db.profiles.insert(
 		}
 	],
 	"level": "",
-	"readonly": true,
+	"readonly": false,
 	"customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
 	"_class": "profiles"
 });

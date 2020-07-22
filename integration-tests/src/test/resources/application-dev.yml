@@ -74,3 +74,4 @@ vitamui_platform_informations:
   first_customer_tenant: 9
   system_archive_tenant_identifier: 9
   client1_tenant_identifier: 102
+  system_readonly_setting: false

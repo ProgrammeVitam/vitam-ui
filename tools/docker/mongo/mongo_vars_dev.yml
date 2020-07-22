@@ -75,6 +75,7 @@ vitamui_platform_informations:
   proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
+  system_readonly_setting: false
 
 # ----------------------------------------------------------------------------------------------------------------------
 # cas services cert value override

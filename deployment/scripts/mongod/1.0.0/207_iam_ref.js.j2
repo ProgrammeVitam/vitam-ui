@@ -10,7 +10,7 @@ db.tenants.insert({
   "name": "Tenant Auto Referentiel",
   "proof": true,
   "enabled": true,
-  "readonly": false,
+  "readonly": {{ vitamui_platform_informations.system_readonly_setting  | lower  }},
   "identifier": NumberInt(maxIdTenant + 1),
   "ownerId": "system_owner",
   "customerId": "system_customer",
