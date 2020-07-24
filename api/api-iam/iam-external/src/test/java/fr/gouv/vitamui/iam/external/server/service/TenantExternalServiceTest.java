@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -67,7 +68,7 @@ public class TenantExternalServiceTest {
         user.setLevel("");
         user.setCustomerId(userCustomerId);
         final List<String> roles = Arrays.asList(userRoles);
-        if (roles != null && roles.size() > 0) {
+        if (CollectionUtils.isNotEmpty(roles)) {
             roles.forEach(r -> Mockito.when(externalSecurityService.hasRole(r)).thenReturn(true));
         }
         Mockito.when(externalSecurityService.getCustomerId()).thenReturn(userCustomerId);

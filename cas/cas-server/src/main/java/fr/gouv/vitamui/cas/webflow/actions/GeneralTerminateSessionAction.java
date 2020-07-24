@@ -199,8 +199,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 flowScope.put(Constants.VITAM_LOGO, logo);
             }
             catch (final IOException e) {
-                LOGGER.warn("Can't find vitam logo");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam logo", e);
             }
         }
         if (vitamuiLargeLogoPath != null) {
@@ -210,8 +209,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
             }
             catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam ui large logo", e);
             }
         }
 
@@ -222,8 +220,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 flowScope.put(Constants.VITAM_UI_FAVICON, favicon);
             }
             catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui favicon");
-                e.printStackTrace();
+                LOGGER.warn("Can't find vitam ui favicon", e);
             }
         }
 
