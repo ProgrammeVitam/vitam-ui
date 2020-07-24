@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -116,7 +118,7 @@ public class Utils {
 
     public Object getAttributeValue(final Map<String, List<Object>> attributes, final String key) {
         final List<Object> attributeList = attributes.get(key);
-        if (attributeList != null && attributeList.size() > 0) {
+        if (CollectionUtils.isNotEmpty(attributeList)) {
             return attributeList.get(0);
         }
         return null;
@@ -133,8 +135,8 @@ public class Utils {
 
     public boolean htmlEmail(final String text, final String from, final String subject, final String to, final String cc, final String bcc) {
         try {
-            if (mailSender == null || org.apache.commons.lang3.StringUtils.isBlank(text) || org.apache.commons.lang3.StringUtils.isBlank(from)
-                || org.apache.commons.lang3.StringUtils.isBlank(subject) || org.apache.commons.lang3.StringUtils.isBlank(to)) {
+            if (mailSender == null || StringUtils.isBlank(text) || StringUtils.isBlank(from)
+                || StringUtils.isBlank(subject) || StringUtils.isBlank(to)) {
                 LOGGER.warn(
                     "Could not send email to [{}] because either no address/subject/text is found or email settings are not configured.",
                     to);
