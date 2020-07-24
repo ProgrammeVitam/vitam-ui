@@ -6,7 +6,7 @@
     <app-owner-preview *ngIf="openedItem && previewType==='TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content class="overflow-none">
     <img src="assets/bg-fingerprint.svg" class="bg-fingerprint"/>
 
     <div class="vitamui-header">

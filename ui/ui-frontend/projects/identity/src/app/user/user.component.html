@@ -4,7 +4,7 @@
     <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"></app-user-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content class="overflow-none">
 
     <img src="assets/bg-fingerprint.svg" class="bg-fingerprint"/>
 
