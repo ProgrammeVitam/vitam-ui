@@ -1,8 +1,0 @@
----
-- import_tasks: check_auth.yml
-
-- import_tasks: iam.yml
-
-- import_tasks: security.yml
-
-- import_tasks: cas.yml

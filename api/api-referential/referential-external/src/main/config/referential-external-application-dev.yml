@@ -23,11 +23,11 @@ server:
   host:
   port: 8087
   ssl:
-    key-store: src/main/config/referential-external.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
-    trust-store: src/main/config/truststore.jks
-    trust-store-password: jkspasswd
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential-external.jks
+    key-store-password: changeme
+    key-password: changeme
+    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
     client-auth: need
 management:
   server:

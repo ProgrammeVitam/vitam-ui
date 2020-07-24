@@ -1,0 +1,7 @@
+{% for script in mongod_eligible_files %}
+  {% if mongodb.docker is defined and mongodb.docker.enable %}
+    load('{{ mongodb.docker.internal_dir}}/app/mongod/{{ script.finalname }}');
+  {% else %}
+    load('{{mongod_output_dir_entry_point}}/{{ script.finalname }}');
+  {% endif %}
+{% endfor %}

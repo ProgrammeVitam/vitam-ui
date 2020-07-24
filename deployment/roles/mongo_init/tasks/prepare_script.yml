@@ -1,0 +1,29 @@
+---
+
+- fail: msg="Variable '{{ mongo_file }}' is not defined"
+  when: mongo_file is undefined
+
+- name: 
+  debug:
+    msg: ">>>> Execution of the file {{ mongo_file.finalname }}<<<<"
+
+- name: Check if the script exists
+  stat:
+    path: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+  register: stat_result
+
+- fail: msg="The file '{{ mongo_file.finalname }}' does not exist"
+  when: not stat_result.stat.exists
+
+- name: Get script content.
+  shell: "cat {{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+  register: script_content
+
+- name: Compute versionned script files
+  template:
+    src: "versioned_script.js.j2"
+    dest: "{{ mongod_output_dir_entry_point }}/{{ mongo_file.finalname }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: 0755        
+

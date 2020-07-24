@@ -9,7 +9,7 @@ server-identity:
 
 certs-folder: certs/local/
 generic-cert: ${certs-folder}/generic-it.jks
-jks-password: jkspasswd
+jks-password: changeme
 
 # Iam client configuration
 iam-client:
@@ -17,10 +17,10 @@ iam-client:
   port: 8083
   ssl:
     keystore:
-      path: ${certs-folder}/ui-identity.jks
+      path: ${certs-folder}/keystore_ui-identity.jks
       password: ${jks-password}
     truststore:
-      path: ${certs-folder}/truststore.jks
+      path: ${certs-folder}/truststore_server.jks
       password: ${jks-password}
 
 # Mongo
@@ -37,7 +37,7 @@ workspace:
 
 # Front configuration
 ui-portal:
-  base-url: https://dev-portal.vitamui.com:4200
+  base-url: https://dev.vitamui.com:4200
 
 environnement: dev
 

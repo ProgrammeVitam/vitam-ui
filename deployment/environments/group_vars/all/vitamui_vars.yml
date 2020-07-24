@@ -1,7 +1,9 @@
 ---
 
 single_vm_hostnames: ['localhost']
-vitamui_env_name: "{{ vitam_site_name }}"
+vitamui_site_name: "{{ vitam_site_name }}"
+
+pki_dir: "{{ inventory_dir }}/certs"
 
 vitamui_defaults:
   folder:
@@ -240,9 +242,3 @@ vitamui_platform_informations:
   proof_tenant: 3
   cas_tenant: -1
   first_customer_tenant: 9
-
-mongodb_vitamuiScripts_version:
-  - "1.0.0"
-  - "1.0.1"
-
-mongod_addedScripts: []

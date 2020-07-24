@@ -17,8 +17,8 @@ services:
       - "27018:27018"
     volumes:
         # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
-      - "$PWD/mongo-entrypoint/:/vitamui/scripts/mongo/data"
-      - "$PWD/replica-set/:/vitamui/scripts/mongo/replica-set"
+      - "$PWD/mongo-entrypoint/:/scripts/mongo/data"
+      - "$PWD/replica-set/:/scripts/mongo/replica-set"
 
     # no --auth is needed here as presence of username and password add this option automatically
     command: mongod --replSet "rs0" --port=27018
@@ -38,8 +38,8 @@ services:
       - "27019:27019"
     volumes:
         # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
-      - "$PWD/mongo-entrypoint/:/vitamui/scripts/mongo/data"
-      - "$PWD/replica-set/:/vitamui/scripts/mongo/replica-set"
+      - "$PWD/mongo-entrypoint/:/scripts/mongo/data"
+      - "$PWD/replica-set/:/scripts/mongo/replica-set"
 
     # no --auth is needed here as presence of username and password add this option automatically
     command: mongod --replSet "rs0" --port=27019
@@ -59,8 +59,8 @@ services:
       - "27020:27020"
     volumes:
         # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
-      - "$PWD/mongo-entrypoint/:/vitamui/scripts/mongo/data"
-      - "$PWD/replica-set/:/vitamui/scripts/mongo/replica-set"
+      - "$PWD/mongo-entrypoint/:/scripts/mongo/data"
+      - "$PWD/replica-set/:/scripts/mongo/replica-set"
 
     # no --auth is needed here as presence of username and password add this option automatically
     command: mongod --replSet "rs0" --port=27020
