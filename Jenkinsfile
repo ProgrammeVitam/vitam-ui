@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'contrib'
+        label 'java11'
     }
 
     environment {
