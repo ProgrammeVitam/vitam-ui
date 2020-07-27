@@ -38,7 +38,7 @@ import theme with `@import "~@vitamui/common/sass/theme"`
 
 ## Developing new features or fixing bugs in angular common
 
-In order to test the modifications you made to the angular-commons library without publishing to the nexus repo, you can run `npm run packagr` to generate a `ui-frontend-common-X.X.X.tgz` tarball.
+In order to test the modifications you made to the angular-commons library without publishing to the nexus repo, you can run `npm run packagr:tar` to generate a `ui-frontend-common-X.X.X.tgz` tarball.
 
 You can now import your new `ui-frontend-common` package in your application by running `npm install ../ui-frontend-common/ui-frontend-common-X.X.X.tgz` (relative path from ui-frontend folder - path depends on where your app is located)
 

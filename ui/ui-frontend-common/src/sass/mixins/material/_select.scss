@@ -1,7 +1,7 @@
 @mixin mat-select-panel {
     border-radius: 5px;
     background-color: white;
-    border: solid 1px $greeny-blue;
+    border: solid 1px var(--vitamui-secondary);
     padding: 10px 0;
 
     .mat-select-content {
@@ -9,7 +9,7 @@
     }
 
     .mat-option {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         font-size: 15px;
         line-height: 2em;
         height: 2em;
@@ -19,11 +19,13 @@
     .mat-option.mat-active,
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled) {
-        background-color: transparentize($greeny-blue, 0.85);
+        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
+        color: white;
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
-        background-color: transparentize($greeny-blue, 0.85);
+        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
+        color: white;
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {
@@ -32,12 +34,12 @@
 
     .mat-option.mat-selected:not(.mat-option-multiple) {
         font-weight: 500;
-        color: $greeny-blue;
+        color: white;
 
         &:before {
             content: 'check';
             font-family: 'Material Icons';
-            color: $greeny-blue;
+            color: white;
             display: block;
             position: absolute;
             left: 10px;

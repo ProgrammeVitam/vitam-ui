@@ -38,15 +38,15 @@
         /*]]>*/
     </script>
 </head>
-<body>
+<body th:styleappend="${@environment.getProperty('theme.body.style')}">
 
     <div class="login">
     </div>
 
     <div class="login-box step-password">
         <header>
-            <img class="vitam-logo" th:src="@{/images/vitam-logo.png}">
-            <h1><img th:src="@{/images/vitamui-logo-large.png}"></h1>
+            <img class="vitam-logo" th:src=" ${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png} ">
+            <h1><img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
 	        <p>
 	        	<span th:if="${!#strings.isEmpty(superUser)}">
 	            Bon retour parmi nous [[${superUser}]] !<br>

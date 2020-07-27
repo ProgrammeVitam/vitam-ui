@@ -1,9 +1,9 @@
-<form [formGroup]="graphicIdentityForm">
+<form [formGroup]="graphicIdentityForm" id="graphicIdentityForm">
   <div class="content">
     <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
 
     <div class="form-group">
-      <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher le logo du client</vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique personnalisée</vitamui-common-slide-toggle>
     </div>
 
     <div class="d-flex">
@@ -32,6 +32,10 @@
     </div>
     <div class="error-message" *ngIf="hasError">
       {{ message }}
+    </div>
+
+    <div class="customer-colors-input">
+      <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" themeOverloadSelector="form#graphicIdentityForm" ></app-customer-colors-input>
     </div>
 
     <div class="actions">

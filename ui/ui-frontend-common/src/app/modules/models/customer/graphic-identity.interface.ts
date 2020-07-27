@@ -38,5 +38,6 @@ export interface GraphicIdentity {
 
     hasCustomGraphicIdentity: boolean;
     logoDataBase64: string;
+    themeColors: any;
 
 }

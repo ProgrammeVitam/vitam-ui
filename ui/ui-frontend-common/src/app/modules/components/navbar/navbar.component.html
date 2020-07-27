@@ -1,5 +1,7 @@
 <nav class="vitamui-navbar">
-  <a href="{{portalUrl}}" class="vitamui-navbar-logo"><img src="../../../../assets/navbar-logo-vitamui.png"></a>
+  <a href="{{portalUrl}}" class="vitamui-navbar-logo">
+    <img [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'">
+  </a>
 
   <ul class="menu">
 
@@ -28,7 +30,7 @@
     <br/>
     {{currentUser?.lastname}}
     </div>
-    <i class="material-icons vitamui-menu-caret" style="color:#fe4f02">keyboard_arrow_down</i>
+    <i class="material-icons vitamui-menu-caret">keyboard_arrow_down</i>
 
     <div class="account-menu">
       <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">

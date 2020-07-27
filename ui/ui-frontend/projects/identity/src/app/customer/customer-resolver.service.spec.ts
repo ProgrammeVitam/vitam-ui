@@ -67,7 +67,8 @@ const expectedCustomer: Customer = {
     city: 'paris',
     country: 'france'
   },
-  owners: []
+  owners: [],
+  themeColors: {}
 };
 
 describe('CustomerResolver', () => {

@@ -4,7 +4,7 @@
 .menu-container {
 
     .menu-modal {
-        background-color: #F7F8FB;
+        background-color: $pale-grey;
         border-radius: 10px;
         padding: 40px;
 
@@ -48,7 +48,7 @@
 
     i {
         margin-right: 10px;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         font-size: 24px;
         vertical-align: middle;
 

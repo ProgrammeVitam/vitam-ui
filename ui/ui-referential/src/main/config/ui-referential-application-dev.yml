@@ -25,6 +25,12 @@ management:
       enabled: false
 
 ui-referential:
+  #theme-logo: /path/to/logo.png
+  platform-name: VITAM-UI
+  theme-colors:
+    vitamui-primary: "#ff4a54"
+    vitamui-secondary: "#241f63"
+  assets: src/main/config
   iam-external-client:
     server-host: localhost
     server-port: 8083

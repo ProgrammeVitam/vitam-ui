@@ -15,10 +15,11 @@
         border-bottom: 1px solid #f0f0f0;
     }
 
+  // FIXME: Seems that var( --colorName ) cant be applied in transparentize function. How to load specific color with a composite here ?
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled),
     .mat-option.mat-active {
-        background: transparentize($greeny-blue, 0.85);
+        background: rgba(var(--vitamui-secondary-rgb), 0.85);
     }
 
     .mat-option-text {
@@ -34,7 +35,7 @@
         }
 
         > i {
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             margin-left: 10px;
         }
 

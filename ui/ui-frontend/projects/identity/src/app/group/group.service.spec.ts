@@ -74,7 +74,8 @@ describe('GroupService', () => {
         '/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL'
     );
     expect(req.request.method).toEqual('GET');
-    req.flush({ values: [] });
+    const result: any = { values: [] };
+    req.flush(result);
   });
 
   it('should call /fake-api/groups?page=42&size=15&orderBy=name&direction=DESC&embedded=ALL', () => {
@@ -83,7 +84,8 @@ describe('GroupService', () => {
     const req = httpTestingController.expectOne(
       '/fake-api/groups?page=42&size=15&orderBy=name&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
-    req.flush({ values: [] });
+    const result: any = { values: [] };
+    req.flush(result);
   });
 
   it('should call /fake-api/groups?page=0&size=15&orderBy=&direction=DESC&embedded=ALL', () => {
@@ -92,7 +94,8 @@ describe('GroupService', () => {
     let req = httpTestingController.expectOne(
       '/fake-api/groups?page=0&size=15&orderBy=&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
-    req.flush({ pageNum: 0, hasMore: true, pageSize: 15, values: [null] });
+    let result: any = { pageNum: 0, hasMore: true, pageSize: 15, values: [null] };
+    req.flush(result);
 
     groupService.loadMore().subscribe(
       (response) => expect(response).toEqual([null, null]),
@@ -101,14 +104,16 @@ describe('GroupService', () => {
     req = httpTestingController.expectOne(
       '/fake-api/groups?page=1&size=15&orderBy=&direction=DESC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
-    req.flush({ pageNum: 1, pageSize: 15, hasMore: false, values: [null] });
+    result = { pageNum: 1, pageSize: 15, hasMore: false, values: [null] };
+    req.flush(result);
   });
 
   it('should not load more results', () => {
     groupService.search().subscribe((response) => expect(response).toEqual([null]), fail);
     const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
-    req.flush({ hasMore: false, pageSize: 20, pageNum: 0, values: [null] });
+    const result: any = { hasMore: false, pageSize: 20, pageNum: 0, values: [null] };
+    req.flush(result);
 
     groupService.loadMore().subscribe(
       (response) => expect(response).toEqual([null]),
@@ -131,7 +136,8 @@ describe('GroupService', () => {
     );
     const req = httpTestingController.expectOne('/fake-api/groups?page=0&size=20&orderBy=name&direction=ASC&embedded=ALL');
     expect(req.request.method).toEqual('GET');
-    req.flush({ hasMore: true, values: [null] });
+    const result: any = { hasMore: true, values: [null] };
+    req.flush(result);
   });
 
   it('should call /fake-api/groups and display a success message', () => {

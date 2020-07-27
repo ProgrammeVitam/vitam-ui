@@ -62,7 +62,7 @@ import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
     MatDialogModule,
   ],
   declarations: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],
-  exports: [NavbarComponent],
+  exports: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],
   entryComponents: [CommonMenuComponent]
 })
 export class NavbarModule { }

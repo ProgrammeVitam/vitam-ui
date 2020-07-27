@@ -74,6 +74,23 @@ class OwnerFormStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
+@Component({
+  selector: 'app-customer-colors-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+    multi: true,
+  }]
+})
+class CustomerColorsInputStubComponent implements ControlValueAccessor {
+    @Input() placeholder: string;
+    @Input() spinnerDiameter = 25;
+    writeValue() {}
+    registerOnChange() {}
+    registerOnTouched() {}
+}
+
 const expectedCustomer = {
   enabled: true,
   code: '424242',
@@ -101,7 +118,8 @@ const expectedCustomer = {
       city: 'Paris',
       country: 'FR',
     }
-  }]
+  }],
+  themeColors: {}
 };
 
 let component: CustomerCreateComponent;
@@ -143,6 +161,7 @@ describe('CustomerCreateComponent', () => {
       declarations: [
         CustomerCreateComponent,
         OwnerFormStubComponent,
+        CustomerColorsInputStubComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -183,16 +202,9 @@ describe('CustomerCreateComponent', () => {
       expect(page.control('passwordRevocationDelay')).toBeTruthy();
       expect(page.control('otp')).toBeTruthy();
       expect(page.control('emailDomains')).toBeTruthy();
-      // expect(page.control('hasCustomGraphicIdentity')).toBeTruthy();
     });
 
-    it('should have a submit button', () => {
-      expect(page.submit).toBeTruthy();
-      expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedCustomer);
-      fixture.detectChanges();
-      expect(page.submit.attributes.disabled).toBeFalsy();
-    });
+
   });
 
   describe('Form', () => {

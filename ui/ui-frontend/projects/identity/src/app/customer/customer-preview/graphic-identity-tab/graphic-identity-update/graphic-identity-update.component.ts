@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
-import { Customer } from 'ui-frontend-common';
+import {Customer, ThemeService} from 'ui-frontend-common';
 import { CustomerService } from '../../../../core/customer.service';
 
 const IMAGE_TYPE_PREFIX = 'image';
@@ -59,8 +59,11 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   lastImageUploaded: File = null;
   imageUrl: any;
   lastUploadedImageUrl: any;
+  lastColors: {[key: string]: string};
   hasError = true;
   message: string;
+
+  hexPattern = /#([0-9A-Fa-f]{6})/;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -68,18 +71,38 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     public dialogRef: MatDialogRef<GraphicIdentityUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, logo: SafeUrl },
     private formBuilder: FormBuilder,
-    private customerService: CustomerService
-    ) {
-      this.customer = this.data.customer;
-      this.logoUrl = this.data.logo;
-      this.graphicIdentityForm = this.formBuilder.group({
-        hasCustomGraphicIdentity: null
+    private customerService: CustomerService,
+    private themeService: ThemeService
+  ) {
+    this.customer = this.data.customer;
+    this.logoUrl = this.data.logo;
+    this.graphicIdentityForm = this.formBuilder.group({
+      hasCustomGraphicIdentity: null,
+      themeColors: null
+    });
+  }
+
+  ngOnInit() {
+
+    this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
+    this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
+
+
+    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
+    this.lastColors = {
+      primary: customerTheme['vitamui-primary'],
+      secondary: customerTheme['vitamui-secondary']
+    };
+    if (this.hasCustomGraphicIdentity) {
+      this.graphicIdentityForm.get('themeColors').setValue(this.lastColors);
+    } else {
+      const defaultTheme = this.themeService.getThemeColors();
+      this.graphicIdentityForm.get('themeColors').setValue({
+        primary: defaultTheme['vitamui-primary'],
+        secondary: defaultTheme['vitamui-secondary']
       });
     }
 
-  ngOnInit() {
-    this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
-    this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
 
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
@@ -87,14 +110,26 @@ export class GraphicIdentityUpdateComponent implements OnInit {
       if (this.hasCustomGraphicIdentity) {
         this.imageUrl = this.lastUploadedImageUrl;
         this.imageToUpload = this.lastImageUploaded;
+        if (this.lastColors) {
+          this.graphicIdentityForm.get('themeColors').setValue(this.lastColors);
+        }
       } else {
+        this.lastColors = this.graphicIdentityForm.get('themeColors').value;
+        const defaultTheme = this.themeService.getThemeColors();
+        this.graphicIdentityForm.get('themeColors').setValue({
+          primary: defaultTheme['vitamui-primary'],
+          secondary: defaultTheme['vitamui-secondary']
+        });
         this.lastImageUploaded = this.imageToUpload;
         this.lastUploadedImageUrl = this.imageUrl;
         this.imageToUpload = null;
         this.imageUrl = null;
       }
-  });
-}
+    });
+
+
+
+  }
 
   onCancel() {
     this.dialogRef.close();
@@ -152,24 +187,40 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   }
 
   updateGraphicIdentity() {
-    if (!this.isGraphicIdentityFormValid) { return; }
+
+    if ( ! this.isGraphicIdentityFormValid()) {
+      return;
+    }
+
+    const colorValues = this.graphicIdentityForm.get('themeColors').value;
+
     const formData = {
       id : this.customer.id,
-      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value };
+      hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
+      themeColors: this.themeService.getThemeColors({
+        'vitamui-primary': colorValues.primary,
+        'vitamui-secondary': colorValues.secondary
+      })
+    };
     this.customerService.patch(formData, this.imageToUpload)
       .subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error) => {
-        this.dialogRef.close(false);
-        console.error(error);
-      });
+        () => {
+          this.dialogRef.close(true);
+        },
+        (error) => {
+          this.dialogRef.close(false);
+          console.error(error);
+        });
   }
 
   isGraphicIdentityFormValid() {
-    return this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
-            (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true && this.imageUrl);
+    return this.graphicIdentityForm.get('themeColors').value.primary.match(this.hexPattern) &&
+    this.graphicIdentityForm.get('themeColors').value.secondary.match(this.hexPattern) &&
+    (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
+        (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true &&
+          (this.data.logo || this.imageUrl)
+        )
+      );
   }
 
 }

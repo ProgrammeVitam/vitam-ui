@@ -5,8 +5,8 @@
     align-items: center;
     justify-content: center;
     background: $white;
-    border: 1px solid $greeny-blue;
-    color: $greeny-blue;
+    border: 1px solid var(--vitamui-secondary);
+    color: var(--vitamui-secondary);
     border-radius: 25px;
     height: 50px;
     padding: 0px 30px;
@@ -35,15 +35,15 @@
     }
 
     &.active {
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
         color:white;
     }
 }
 
 .btn.primary {
     @include button-primary;
-    border-color: $blood-orange;
-    background-color: $blood-orange;
+    border-color: var(--vitamui-primary);
+    background-color: var(--vitamui-primary);
 
     .mat-progress-spinner circle, .mat-spinner circle {
         stroke: white
@@ -51,14 +51,14 @@
 
     &.active {
         background-color: white;
-        color: $blood-orange;
+        color: var(--vitamui-primary);
     }
 }
 
 .btn.secondary {
     @include button-primary;
     font-weight: 600;
-    background-color: $greeny-blue;
+    background-color: var(--vitamui-secondary);
 
     .mat-progress-spinner circle, .mat-spinner circle {
         stroke: white
@@ -66,7 +66,7 @@
 
     &.active {
         background-color: white;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 }
 
@@ -86,8 +86,8 @@
     @include elevation-1;
 
     border-radius: 50%;
-    border: 1px solid $greeny-blue;
-    color: $greeny-blue;
+    border: 1px solid var(--vitamui-secondary);
+    color: var(--vitamui-secondary);
     background: $white;
     display: inline-block;
     width: 40px;
@@ -117,30 +117,29 @@
     }
 
     &.active {
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
         color:white;
     }
 
     &.primary {
         border: none;
-        background: $greeny-blue;
+        background: var(--vitamui-secondary);
         color: $white;
     }
 }
 
 .btn-link {
-    // TODO Rename variable to vitamui-link
-    @include login-link;
+    @include vitamui-link;
     background: none;
     border: none;
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     text-decoration: underline;
     padding: 0;
     transition: color 200ms ease-out;
     cursor: pointer;
 
     &:hover, &:focus, &:active {
-        color: #45ccb4;
+        color: var(--vitamui-secondary-light);
     }
 }
 
@@ -166,7 +165,7 @@ button.back {
     display: flex;
     align-items: center;
     background: transparent;
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     font-size: 14px;
     font-weight: normal;
     border: none;
@@ -177,7 +176,7 @@ button.back {
     i {
         display: block;
         font-size: 18px;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         background-color: #e7f5f2;
         width: 30px;
         height: 30px;
@@ -188,7 +187,7 @@ button.back {
     }
 
     &:hover i {
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
         color: $white;
     }
 }

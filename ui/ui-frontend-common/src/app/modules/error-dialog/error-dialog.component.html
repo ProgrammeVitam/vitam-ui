@@ -1,5 +1,6 @@
 <div class="error-message">
-  <img class="vitamui-logo" src="/assets/vitamui-logo.png">
+  <img class="vitamui-logo" [src]="trustedAppLogoUrl ? trustedAppLogoUrl : '/assets/logo.png'">
+
   <h2 i18n="@@serverErrorTitle">Erreur serveur interne (500)</h2>
   <p i18n="@@serverErrorMessage">Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste.</p>
 

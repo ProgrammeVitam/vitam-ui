@@ -44,6 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,7 +65,8 @@ registerLocaleData(localeFr, 'fr');
     MatDialogModule,
     VitamUICommonModule,
     AppRoutingModule,
-    LoggerModule.forRoot()
+    LoggerModule.forRoot(),
+    QuicklinkModule,
   ],
   providers: [
     Title,

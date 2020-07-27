@@ -9,7 +9,7 @@
     }
 
     .mat-menu-item {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
         background: white;
         font-size: 16px;
         font-weight: 500;
@@ -36,7 +36,7 @@
     .mat-menu-item.cdk-keyboard-focused:not([disabled]),
     .mat-menu-item-highlighted:not([disabled]) {
         color: white;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
     }
 
     .mat-menu-item.vitamui-menu-item-header {
@@ -103,7 +103,7 @@
         &.cdk-program-focused:not([disabled]),
         &.cdk-keyboard-focused:not([disabled]),
         &.mat-menu-item-highlighted:not([disabled]) {
-            background-color: $greeny-blue;
+            background-color: var(--vitamui-secondary);
         }
     }
 
@@ -120,7 +120,7 @@
     }
 
     .mat-menu-item {
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
         color: white;
         transition: background-color 200ms ease-out;
         font-size: 15px;
@@ -129,11 +129,11 @@
     }
 
     .mat-menu-item {
-        border-top: 1px solid #51a495;
+        border-top: 1px solid var(--vitamui-secondary);
     }
 
     .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
-        background-color: lighten($greeny-blue, 10);
+        background-color: var(--vitamui-secondary-light);
     }
 
     .mat-menu-item[disabled] {
@@ -143,7 +143,7 @@
     .more-action-divider {
         height: 10px;
         width: 100%;
-        background-color: lighten($greeny-blue, 8);
+        background-color: var(--vitamui-secondary-light-8);
 
         + .mat-menu-item {
             border-top-color: transparent;

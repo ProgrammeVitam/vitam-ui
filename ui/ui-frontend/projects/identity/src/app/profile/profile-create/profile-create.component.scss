@@ -50,7 +50,7 @@ button.back {
     display: flex;
     align-items: center;
     background: transparent;
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     font-size: 14px;
     font-weight: normal;
     border: none;
@@ -61,7 +61,7 @@ button.back {
     i {
         display: block;
         font-size: 18px;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         background-color: #e7f5f2;
         width: 30px;
         height: 30px;
@@ -136,7 +136,7 @@ button > small {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
         color: $white;
         line-height: 30px;
         text-align: center;
@@ -152,7 +152,7 @@ button > small {
 
     .selected-group-name {
 
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
         border-radius: 5px;
         display: flex;
         height: 50px;
@@ -279,7 +279,7 @@ input[type=radio] {
 }
 
 .radio-label {
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     display: inline-block;
     cursor: pointer;
     font-weight: bold;
@@ -288,11 +288,11 @@ input[type=radio] {
 
 input[type=radio]:checked + label{
     color: $white;
-    background: $greeny-blue;
+    background: var(--vitamui-secondary);
 }
 
 .radio-group {
-    border: solid 1px $greeny-blue;
+    border: solid 1px var(--vitamui-secondary);
     display: inline-block;
     margin: 20px;
     border-radius: 5px;
@@ -316,7 +316,7 @@ vitamui-common-input.description {
 }
 
 label {
-    color: #a6a6a6;
+    color: $greyish-two;
     font-size: 15px;
 }
 

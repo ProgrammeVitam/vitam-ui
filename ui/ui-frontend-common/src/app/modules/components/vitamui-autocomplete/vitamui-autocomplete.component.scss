@@ -32,11 +32,11 @@ $animation-time: 150ms;
   right: 16px;
   top: 14px;
   pointer-events: none;
-  color: $blood-orange;
+  color: var(--vitamui-primary);
 }
 
 .input-label {
-  color: #a6a6a6;
+  color: $greyish-two;
   position: absolute;
   left: 30px;
   top: 16px;

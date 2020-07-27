@@ -405,7 +405,7 @@
         </context-group>
         <note priority="1" from="description">Customer graphical identity title</note>
       </trans-unit><trans-unit id="customerCreateVisualIdentityToggleLabel" datatype="html">
-        <source>Afficher l'identité graphique personnalisée</source><target state="final">Afficher l'identité graphique personnalisée</target>
+        <source>Afficher le logo du client</source><target state="final">Afficher le logo du client</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
           <context context-type="linenumber">162</context>
@@ -416,7 +416,7 @@
         </context-group>
         <note priority="1" from="description">Custom visual identity</note>
       </trans-unit><trans-unit id="customerGraphicalIdentityUploadLabel" datatype="html">
-        <source>Uploader le logo du client</source><target state="final">Uploader le logo du client</target>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Sélectionner<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> le logo du client</source><target state="final"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Sélectionner<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/> le logo du client</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
           <context context-type="linenumber">167</context>
@@ -426,6 +426,7 @@
           <context context-type="linenumber">11</context>
         </context-group>
         <note priority="1" from="description">Customer graphical identity upload label</note>
+
       </trans-unit><trans-unit id="customerGraphicalIdentityMaxSizeLabel" datatype="html">
         <source>(taille max 280px * 100px)</source><target state="final">(taille max 280px * 100px)</target>
         <context-group purpose="location">
@@ -437,7 +438,22 @@
           <context context-type="linenumber">12</context>
         </context-group>
         <note priority="1" from="description">Customer graphical identity max size label</note>
+      </trans-unit><trans-unit id="customerCreateColorNamePlaceholder" datatype="html">
+        <source>Identifiant de Couleur</source><target state="final">Identifiant de Couleur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <note priority="1" from="description">Customer color name input placeholder</note>
+      </trans-unit><trans-unit id="customerCreateColorValuePlaceholder" datatype="html">
+        <source>Couleur RGB</source><target state="final">Couleur hexadécimale</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
+        <note priority="1" from="description">Customer color value input placeholder</note>
       </trans-unit>
+
       <trans-unit id="customerCreateCreateOwnerButton" datatype="html">
         <source>
               Créer le propriétaire
@@ -2929,47 +2945,29 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         </context-group>
       </trans-unit><trans-unit id="hierarchyListHeaderName" datatype="html">
         <source>Nom du profil administrateur</source><target state="final">Nom du profil administrateur</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
+
         <note priority="1" from="description">Profile name</note>
-      </trans-unit><trans-unit id="hierarchyListHeaderIdentifier" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="hierarchyListHeaderIdentifier" datatype="html">
         <source>Identifiant</source><target state="final">Identifiant</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
+
         <note priority="1" from="description">Profile identifier</note>
-      </trans-unit><trans-unit id="hierarchyListHeaderApplication" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="hierarchyListHeaderApplication" datatype="html">
         <source>Application</source><target state="final">Application</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
+
         <note priority="1" from="description">Profile application</note>
-      </trans-unit><trans-unit id="hierarchyListHeaderDescription" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="hierarchyListHeaderDescription" datatype="html">
         <source>Description</source><target state="final">Description</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
+
         <note priority="1" from="description">Description</note>
-      </trans-unit><trans-unit id="hierarchyListHeaderLevel" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="hierarchyListHeaderLevel" datatype="html">
         <source>Niveau</source><target state="final">Niveau</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">14</context>
-        </context-group>
+
         <note priority="1" from="description">Description</note>
-      </trans-unit><trans-unit id="hierarchyListHeaderUsersCount" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="hierarchyListHeaderUsersCount" datatype="html">
         <source>Nombre d'utilisateurs</source><target state="final">Nombre d'utilisateurs</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context>
-          <context context-type="linenumber">15</context>
-        </context-group>
+
         <note priority="1" from="description">Users count</note>
-      </trans-unit><trans-unit id="hierarchyDetailTabInformation" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy-list/hierarchy-list.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit><trans-unit id="hierarchyDetailTabInformation" datatype="html">
         <source>Informations</source><target state="final">Informations</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/hierarchy/hierarchy-detail/hierarchy-detail.component.html</context>

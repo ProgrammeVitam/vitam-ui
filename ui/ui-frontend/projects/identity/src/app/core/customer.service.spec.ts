@@ -192,5 +192,6 @@ const expectedCustomer: Customer = {
       country: 'FR',
     },
     readonly: false
-  }]
+  }],
+  themeColors: {}
 };

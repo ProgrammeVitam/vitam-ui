@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import java.util.Map;
+
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
@@ -62,4 +64,12 @@ public class UIPropertiesImpl implements UIProperties {
     private BaseUrl baseUrl = new BaseUrl();
 
     private RestClientConfiguration iamExternalClient;
+
+    private String themeLogo;
+
+    private Map<String, String> themeColors;
+
+    private String assets;
+
+    private String platformName;
 }

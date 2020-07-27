@@ -10,7 +10,7 @@
     .header {
         padding: 31px 40px 0px 40px;
         height: 200px;
-        background-color: $greeny-blue;
+        background-color: var(--vitamui-secondary);
 
         .title {
             display: flex;
@@ -49,7 +49,7 @@
             border: none;
 
             i {
-                color: $greeny-blue;
+                color: var(--vitamui-secondary);
                 font-size: 28px;
             }
         }
@@ -66,7 +66,7 @@
         top: 163px;
 
         // label {
-        //     color: #a6a6a6;
+        //     color: $greyish-two;
         //     font-size: 13px;
         //     font-weight: normal;
         // }

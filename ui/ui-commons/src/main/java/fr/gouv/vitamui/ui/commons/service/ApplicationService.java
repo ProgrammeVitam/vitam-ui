@@ -36,14 +36,21 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
@@ -63,6 +70,8 @@ import fr.gouv.vitamui.ui.commons.property.UIProperties;
  *
  *
  */
+@EnableConfigurationProperties
+@ConfigurationProperties
 public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
@@ -88,8 +97,10 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @Value("${ui.redirect-url}")
     @NotNull
     private String uiRedirectUrl;
+    
+    private static String PLATFORM_NAME = "PLATFORM_NAME";
 
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, IamExternalRestClientFactory factory) {
+    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         if (this.properties == null) {
@@ -98,11 +109,11 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         else if (this.properties.getBaseUrl() == null) {
             LOGGER.warn("base-url properties not provided");
         }
-        this.client = factory.getApplicationExternalRestClient();
+        client = factory.getApplicationExternalRestClient();
     }
 
     public Collection<ApplicationDto> getApplications(final ExternalHttpContext context, final boolean filterApp) {
-        QueryDto query = new QueryDto(QueryOperator.AND);
+        final QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
         return client.getAll(context, Optional.of(query.toJson()));
     }
@@ -111,14 +122,34 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return properties.getBaseUrl().getPortal();
     }
 
-    public Map<String, String> getConf() {
-        final Map<String, String> configurationData = new HashMap<>();
+    public Map<String, Object> getConf() {
+        final Map<String, Object> configurationData = new HashMap<>();
         configurationData.put(CommonConstants.PORTAL_URL, properties.getBaseUrl().getPortal());
-        // TODO check if it s used
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
+        configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
+        if(properties.getPlatformName() != null) {
+            configurationData.put(PLATFORM_NAME, properties.getPlatformName());
+        } else {
+            configurationData.put(PLATFORM_NAME, "VITAM-UI");
+        }
+
+        String vitamLogoPath = properties.getThemeLogo();
+
+        if(vitamLogoPath != null) {
+            if( ! vitamLogoPath.startsWith( "/" ) ) {
+                vitamLogoPath = '/' + vitamLogoPath;
+            }
+            String logo = getBase64File(vitamLogoPath, "");
+            if(logo != null) {
+                configurationData.put(CommonConstants.APP_LOGO, logo);
+                return configurationData;
+            }
+        }
+
+        configurationData.put(CommonConstants.APP_LOGO, null);
         return configurationData;
     }
 
@@ -126,9 +157,25 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
 
-
     @Override
     public ApplicationExternalRestClient getClient() {
         return client;
+    }
+
+    public String getBase64File(String fileName, String basePath) {
+        final Path assetFile = Paths.get(basePath, fileName).normalize();
+        String base64Asset = null;
+        try {
+            base64Asset = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
+        }
+        catch (IOException e) {
+            LOGGER.error("Error while resolving logo path", e);
+            return  null;
+        }
+        return base64Asset;
+    }
+
+    public String getBase64Asset(String fileName) {
+        return getBase64File(fileName, properties.getAssets());
     }
 }

@@ -83,7 +83,8 @@ const expectedCustomer: Customer = {
     },
     customerId: 'idCustomer',
     readonly: false
-  }]
+  }],
+  themeColors: {}
 };
 
 // TODO fix tests with filling plan

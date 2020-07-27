@@ -2,7 +2,7 @@
   <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
 
     <cdk-step>
@@ -159,7 +159,7 @@
         <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher le logo du client</vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique personnalisée</vitamui-common-slide-toggle>
         </div>
 
         <div class="d-flex">
@@ -183,6 +183,10 @@
             </div>
           </div>
         </div>
+
+        <div class="customer-colors-input">
+          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" themeOverloadSelector="form#formCreateCustomer"></app-customer-colors-input>
+        </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
         </div>
@@ -190,7 +194,7 @@
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
               Créer le propriétaire
-              <small>des éléments de preuves</small>
+              <small> des éléments de preuves</small>
             </button>
           <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>
@@ -198,6 +202,7 @@
           <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
         </button>
       </div>
+
     </cdk-step>
 
     <cdk-step>

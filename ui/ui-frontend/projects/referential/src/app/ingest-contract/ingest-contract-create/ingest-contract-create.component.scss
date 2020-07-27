@@ -33,7 +33,7 @@ h2 {
 .field-tooltip {
   cursor: default;
   margin-left: 10px;
-  color: $greeny-blue;
+  color: var(--vitamui-secondary);
 }
 
 .select-tooltip {
@@ -54,7 +54,7 @@ label {
   display: block;
 
   .required-marker {
-    color: $blood-orange;
+    color: var(--vitamui-primary);
   }
 
   small {

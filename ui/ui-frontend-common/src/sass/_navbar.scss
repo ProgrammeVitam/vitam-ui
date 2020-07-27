@@ -48,7 +48,7 @@
     font-weight: 500;
     line-height: 1em;
     text-align: left;
-    color: $blood-orange;
+    color: var(--vitamui-primary);
     outline: none;
     display: flex;
     align-items: center;
@@ -72,4 +72,5 @@
 
 .vitamui-menu-caret {
     margin-left: 15px;
+    color: var(--vitamui-primary);
 }

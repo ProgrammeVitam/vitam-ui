@@ -38,7 +38,7 @@ label {
   display: block;
 
   .required-marker {
-    color: $blood-orange;
+    color: var(--vitamui-primary);
   }
 
   small {

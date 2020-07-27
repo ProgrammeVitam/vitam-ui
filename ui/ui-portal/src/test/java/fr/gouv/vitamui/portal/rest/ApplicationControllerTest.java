@@ -49,7 +49,6 @@ public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> 
 
     @Test
     public void testfindApplicationsByNames() throws Exception {
-        LOGGER.debug("testfindApplicationsByName");
         final ResultActions result = performGet(StringUtils.EMPTY, ImmutableMap.of("term", "ab", "lang", "ENGLISH"));
     }
 

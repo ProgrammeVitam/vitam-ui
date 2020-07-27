@@ -98,7 +98,8 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         zipCode: '75009',
         city: 'Paris',
         country: 'France'
-      }
+      },
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -153,7 +154,8 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         zipCode: '75008',
         city: 'Paris',
         country: 'France'
-      }
+      },
+      themeColors: {}
     },
   ],
   pageNum: 0,
@@ -216,7 +218,8 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         zipCode: '75009',
         city: 'Paris',
         country: 'France'
-      }
+      },
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -271,7 +274,8 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         zipCode: '75008',
         city: 'Paris',
         country: 'France'
-      }
+      },
+      themeColors: {}
     },
   ],
   pageNum: 0,

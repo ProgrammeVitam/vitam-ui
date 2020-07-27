@@ -81,7 +81,8 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
       emailDomains: customer.emailDomains,
       defaultEmailDomain: customer.defaultEmailDomain,
       owners: customer.owners,
-      readonly: customer.readonly
+      readonly: customer.readonly,
+      themeColors: customer.themeColors
     }));
     if (logo) {
       formData.append('logo', logo);

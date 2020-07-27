@@ -37,8 +37,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
+import { Title } from '@angular/platform-browser';
 import { AuthService } from './modules/auth.service';
 import { ErrorDialogComponent } from './modules/error-dialog/error-dialog.component';
+import { StartupService } from './modules/startup.service';
 
 @Component({
   selector: 'vitamui-common-root',
@@ -48,8 +50,9 @@ import { ErrorDialogComponent } from './modules/error-dialog/error-dialog.compon
 export class AppComponent {
   title = 'app';
 
-  constructor(public authService: AuthService, private matDialog: MatDialog) {
-
+  constructor(public authService: AuthService, private matDialog: MatDialog, titleService: Title, startupService: StartupService
+  ) {
+    titleService.setTitle(startupService.getPlatformName());
   }
 
   openErrorModal() {

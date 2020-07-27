@@ -1,7 +1,7 @@
 @import "~ui-frontend-common/sass/variables/colors";
 
 .radio-group {
-  border: solid 1px $greeny-blue;
+  border: solid 1px var(--vitamui-secondary);
   display: inline-block;
   border-radius: 5px;
   overflow: hidden;
@@ -10,6 +10,6 @@
 label {
   pointer-events: none;
   .required-marker {
-    color: $blood-orange;
+    color: var(--vitamui-primary);
   }
 }

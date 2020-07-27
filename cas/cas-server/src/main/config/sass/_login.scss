@@ -47,15 +47,15 @@
         border: 1px solid transparent;
 
         &:focus {
-            border-color: #a6a6a6;
+            border-color: $greyish-two;
         }
 
         &.ng-valid.ng-touched {
-            border-color: #43ea2a;
+            border-color: $green;
         }
 
         &.ng-invalid.ng-touched {
-            border-color: #ff0000;
+            border-color: $red;
         }
 
         &[disabled] {
@@ -78,18 +78,18 @@
         border: none;
         height: 50px;
         border-radius: 25px;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
         box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
         padding: 0 30px;
         transition: opacity 200ms ease-in-out;
-        border: 1px solid $blood-orange;
+        border: 1px solid var(--vitamui-primary);
 
 
 
         &:focus:not([disabled]),
         &:hover:not([disabled]) {
             cursor: pointer;
-            background-color: #ff8b58;
+            opacity: 85%;
             outline: none;
         }
 
@@ -113,7 +113,7 @@
         display: flex;
         align-items: center;
         background: transparent;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         font-size: 14px;
         font-weight: normal;
         border: none;
@@ -124,8 +124,8 @@
         i {
             display: block;
             font-size: 18px;
-            color: $greeny-blue;
-            background-color: #e7f5f2;
+            color: white;
+            background-color: var(--vitamui-secondary);
             width: 30px;
             height: 30px;
             border-radius: 15px;
@@ -172,7 +172,7 @@
             text-align: center;
 
             i.check-icon {
-                color: #00acd5;
+                color: var(--vitamui-secondary);
                 font-size: 110px;
             }
         }

@@ -100,9 +100,9 @@ ul.provider-list {
         height: 60px;
         border-radius: 3px;
         background-color: $white;
-        border: solid 1px $greeny-blue;
+        border: solid 1px var(--vitamui-secondary);
         margin-left: 10px;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         font-weight: normal;
         font-size: 9px;
         text-align: center;

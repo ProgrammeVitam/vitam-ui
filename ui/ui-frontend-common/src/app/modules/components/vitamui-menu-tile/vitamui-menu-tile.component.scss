@@ -31,7 +31,7 @@
 
 .user-app {
     i {
-        color: $blood-orange;
+        color: var(--vitamui-primary);
 
         &.chevron-icon {
             font-size: 24px;
@@ -40,13 +40,13 @@
     }
 
     &.highlight {
-        border: 1px solid $blood-orange;
+        border: 1px solid var(--vitamui-primary);
     }
 }
 
 .admin-app {
     i {
-        color: $light-orange;
+        color: var(--vitamui-primary-light);
 
         &.chevron-icon {
             font-size: 24px;
@@ -55,14 +55,14 @@
     }
 
     &.highlight {
-        border: 1px solid $light-orange;
+        border: 1px solid var(--vitamui-primary-light);
     }
 
 }
 
 .settings-app {
     i {
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
 
         &.chevron-icon {
             font-size: 24px;
@@ -71,7 +71,7 @@
     }
 
     &.highlight {
-        border: 1px solid $greeny-blue;
+        border: 1px solid var(--vitamui-secondary);
 
     }
 
@@ -83,7 +83,7 @@
 }
 
 .archive-tile {
-    background-color: $blood-orange;
+    background-color: var(--vitamui-primary);
     color: $white;
 
     i {

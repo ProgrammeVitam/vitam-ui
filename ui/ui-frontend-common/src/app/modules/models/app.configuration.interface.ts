@@ -41,6 +41,10 @@ export interface AppConfiguration {
     CAS_LOGOUT_URL: string;
     LOGOUT_REDIRECT_UI_URL: string;
     SEARCH_URL?: string;
+    THEME_COLORS: any;
+    APP_LOGO: string;
+    LOGO: string;
     [key: string]: string;
+    PLATFORM_NAME: string;
 
 }

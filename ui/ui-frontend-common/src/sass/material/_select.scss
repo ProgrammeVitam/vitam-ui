@@ -14,7 +14,7 @@
 
     &.mat-focused {
         .mat-form-field-label {
-            color: #a6a6a6;
+            color: $greyish-two;
         }
     }
 
@@ -31,11 +31,11 @@
     }
 
     .mat-form-field-label {
-        color: #a6a6a6;
+        color: $greyish-two;
         font-weight: 400;
 
         .mat-form-field-required-marker {
-            color: $blood-orange;
+            color: var(--vitamui-primary);
         }
     }
 
@@ -78,11 +78,11 @@
         }
 
         .mat-form-field-label {
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
         }
 
         .mat-form-field-flex {
-            border: 1px solid $greeny-blue;
+            border: 1px solid var(--vitamui-secondary);
             padding-right: 15px;
 
             .mat-form-field-infix {
@@ -93,7 +93,7 @@
             }
 
             .mat-select .mat-select-value {
-                color: $greeny-blue;
+                color: var(--vitamui-secondary);
                 font-weight: 400;
             }
 
@@ -109,7 +109,7 @@
                 i {
                     height: 10px;
                     font-size: 18px;
-                    color: $greeny-blue;
+                    color: var(--vitamui-secondary);
                 }
             }
         }

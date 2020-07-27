@@ -47,6 +47,7 @@ import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
+import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
 
@@ -63,12 +64,14 @@ export class StartupService {
 
   private CURRENT_TENANT_IDENTIFIER: string;
 
+
   constructor(
     private logger: Logger,
     private authService: AuthService,
     private applicationService: ApplicationService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
+    private themeService: ThemeService,
     @Inject(WINDOW_LOCATION) private location: any
   ) { }
 
@@ -83,6 +86,23 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
+      .then(() => this.applicationApi.getAsset('logo.png').toPromise())
+      .then((data) => {
+        this.configurationData.LOGO = data['logo.png'];
+      })
+      .then(() => {
+        this.themeService.init(this.configurationData.THEME_COLORS);
+
+        let customerColorMap = null;
+
+        if (this.authService.user.basicCustomer.graphicIdentity.hasCustomGraphicIdentity) {
+          customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
+        }
+
+        this.themeService.overrideTheme(customerColorMap);
+
+
+      })
       .then(() => this.applicationService.list().toPromise());
   }
 
@@ -121,6 +141,40 @@ export class StartupService {
     } else {
       this.logger.log(this, 'startup data does not exists');
     }
+  }
+
+  getLogo(): string {
+    if (this.configurationLoaded()) {
+      if (this.configurationData.APP_LOGO) {
+        return this.configurationData.APP_LOGO;
+      } else {
+        return this.configurationData.LOGO;
+      }
+    }
+  }
+
+  getAppLogoURL(): string {
+    let trustedAppLogoUrl = null;
+    const base64Logo = this.getLogo();
+
+    if (base64Logo) {
+      trustedAppLogoUrl = base64Logo;
+    }
+
+    return trustedAppLogoUrl;
+  }
+
+  getCustomerLogoURL(): string {
+    let trustedInlineLogoUrl = null;
+
+    if (this.authService.user) {
+      const currentUser = this.authService.user;
+      if (currentUser.basicCustomer) {
+        trustedInlineLogoUrl = currentUser.basicCustomer.graphicIdentity.logoDataBase64;
+      }
+    }
+
+    return trustedInlineLogoUrl;
   }
 
   getPortalUrl(): string {
@@ -181,6 +235,14 @@ export class StartupService {
    */
   redirect(url?: string) {
     setTimeout(() => this.location.href = url ? url : this.getPortalUrl(), WARNING_DURATION);
+  }
+
+  getPlatformName(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.PLATFORM_NAME;
+    }
+
+    return null;
   }
 
 }

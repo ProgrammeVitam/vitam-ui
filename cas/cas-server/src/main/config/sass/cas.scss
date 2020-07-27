@@ -13,9 +13,9 @@
 
 body {
     margin: 0;
-    color: #485053;
+    color: $charcoal-grey;
     font-family: 'Roboto', sans-serif;
-    background: #f7f8fb;
+    background: $pale-grey;
 }
 
 * {
@@ -23,7 +23,7 @@ body {
 }
 
 .primary {
-    color: $blood-orange;
+    color: var(--vitamui-primary);
 }
 
 .picto-attention {

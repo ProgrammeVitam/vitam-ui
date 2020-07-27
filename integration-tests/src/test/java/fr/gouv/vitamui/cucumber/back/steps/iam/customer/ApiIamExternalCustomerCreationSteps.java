@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,22 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
         testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerDto,
                 Optional.of(ResourcesUtils.getResourcePath("data/vitamui-logo.png")));
     }
+
+    @When("^un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec un thème personnalisé dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS$")
+    public void un_utilisateur_avec_le_rôle_ROLE_CREATE_CUSTOMERS_ajoute_un_nouveau_client_avec_un_thème_personnalisé_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_CUSTOMERS()
+        throws IOException {
+        testContext.savedBasicCustomerDto = FactoryDto.buildDto(CustomerDto.class);
+
+        HashMap<String, String> themeColors = new HashMap<>();
+        themeColors.put("vitamui-primary", "#123456");
+        themeColors.put("vitamui-secondary", "#654321");
+        testContext.savedBasicCustomerDto.setHasCustomGraphicIdentity(true);
+        testContext.savedBasicCustomerDto.setThemeColors(themeColors);
+
+        testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerDto,
+            Optional.of(ResourcesUtils.getResourcePath("data/vitamui-logo.png")));
+    }
+
 
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto customerDto, final Optional<Path> logoPath) {
         final IamExternalWebClientFactory iamExternalWebClientFactory = getIamWebClientFactory(true, null, new String[] { ServicesData.ROLE_CREATE_CUSTOMERS });

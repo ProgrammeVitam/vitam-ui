@@ -33,7 +33,7 @@
     }
 
     a {
-        @include login-link;
+        @include vitamui-link;
         text-decoration: underline;
     }
 
@@ -81,11 +81,11 @@
         border: none;
         height: 50px;
         border-radius: 25px;
-        background-color: $blood-orange;
+        background-color: var(--vitamui-primary);
         box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
         padding: 0 30px;
         transition: opacity 200ms ease-in-out;
-        border: 1px solid $blood-orange;
+        border: 1px solid var(--vitamui-primary);
 
 
 
@@ -116,7 +116,7 @@
         display: flex;
         align-items: center;
         background: transparent;
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
         font-size: 14px;
         font-weight: normal;
         border: none;
@@ -127,7 +127,7 @@
         i {
             display: block;
             font-size: 18px;
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             background-color: #e7f5f2;
             width: 30px;
             height: 30px;

@@ -59,7 +59,7 @@ public class UICommonsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public UIProperties uiProperties() {
-        throw new InternalServerException("You must defined ui properties");
+        throw new InternalServerException("You must define ui properties");
     }
 
     @Bean

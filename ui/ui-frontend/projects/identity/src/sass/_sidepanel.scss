@@ -28,7 +28,7 @@
 .vitamui-sidepanel-header {
     padding: 30px 40px 0px 40px;
     height: 200px;
-    background-color: $greeny-blue;
+    background-color: var(--vitamui-secondary);
 
     .btn-popup {
         font-size: 32px;
@@ -90,7 +90,7 @@
             border: none;
 
             i {
-                color: $greeny-blue;
+                color: var(--vitamui-secondary);
                 font-size: 28px;
             }
         }

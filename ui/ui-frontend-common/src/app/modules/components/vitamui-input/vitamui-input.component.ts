@@ -36,7 +36,7 @@
  */
 /* tslint:disable: no-use-before-declare */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
@@ -51,12 +51,13 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   styleUrls: ['./vitamui-input.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
 })
-export class VitamUIInputComponent implements ControlValueAccessor {
+export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
 
   @Input() type = 'text';
   @Input() maxlength: number;
   @Input() placeholder: string;
   @Input() autofocus: boolean;
+  @Input() value: string | number;
   @Input()
   get required(): boolean { return this._required; }
   set required(value: boolean) { this._required = coerceBooleanProperty(value); }
@@ -73,7 +74,6 @@ export class VitamUIInputComponent implements ControlValueAccessor {
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  value: string | number;
 
   onChange = (_: any) => { };
   onTouched = () => { };
@@ -81,6 +81,10 @@ export class VitamUIInputComponent implements ControlValueAccessor {
   @HostListener('click')
   onClick() {
     this.input.nativeElement.focus();
+  }
+
+  ngOnInit() {
+    this.labelFloat = !!this.value;
   }
 
   writeValue(value: string | number) {
@@ -117,6 +121,7 @@ export class VitamUIInputComponent implements ControlValueAccessor {
 
   onFocus() {
     this.focused = true;
+    this.onTouched();
   }
 
   onBlur() {

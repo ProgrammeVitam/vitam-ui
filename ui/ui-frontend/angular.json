@@ -16,12 +16,13 @@
             "main": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
             "polyfills": "projects/identity/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "projects/commons/src/assets/",
+                "input": "node_modules/ui-frontend-common/assets",
                 "output": "/assets"
               }
             ],
@@ -133,12 +134,13 @@
             "main": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
             "polyfills": "projects/portal/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
               {
                 "glob": "**/*",
-                "input": "projects/commons/src/assets/",
+                "input": "node_modules/ui-frontend-common/assets",
                 "output": "/assets"
               }
             ],

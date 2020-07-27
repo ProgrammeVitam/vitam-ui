@@ -113,7 +113,8 @@ describe('CustomerListComponent', () => {
           city: 'paris',
           country: 'france'
         },
-        owners: []
+        owners: [],
+        themeColors: {}
       },
       {
         id: '12',
@@ -138,7 +139,8 @@ describe('CustomerListComponent', () => {
           city: 'paris',
           country: 'france'
         },
-        owners: []
+        owners: [],
+        themeColors: {}
       },
       {
         id: '13',
@@ -163,7 +165,8 @@ describe('CustomerListComponent', () => {
           city: 'paris',
           country: 'france'
         },
-        owners: []
+        owners: [],
+        themeColors: {}
       },
       {
         id: '14',
@@ -188,7 +191,8 @@ describe('CustomerListComponent', () => {
           city: 'paris',
           country: 'france'
         },
-        owners: []
+        owners: [],
+        themeColors: {}
       },
       {
         id: '15',
@@ -213,7 +217,8 @@ describe('CustomerListComponent', () => {
           city: 'paris',
           country: 'france'
         },
-        owners: []
+        owners: [],
+        themeColors: {}
       },
     ];
 

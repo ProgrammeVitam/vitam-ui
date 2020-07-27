@@ -5,7 +5,7 @@
     <title th:text="#{screen.surrogates.account.selection.header}">Surrogate Account Selection View</title>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div layout:fragment="content">
         <div class="alert alert-info">
             <form method="post" id="loginForm" class="fm-v clearfix">

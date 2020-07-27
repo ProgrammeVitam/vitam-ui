@@ -5,7 +5,7 @@
     <title th:text="#{screen.authnblocked.heading}">Authentication Blocked View</title>
 </head>
 
-<body id="cas">
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
         <h2 th:utext="#{screen.authnblocked.heading}">Authentication attempt is blocked.</h2>

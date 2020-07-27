@@ -18,13 +18,23 @@ Feature: API Customers : création d'un nouveau client
 
   @ApiIamCustomersCreationLogo
   Scenario: Cas normal avec un logo
-    When un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec son logo dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS
+    When un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec un thème personnalisé dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS
     Then le serveur retourne le client créé
     And un identity provider par défaut est associé au client
     And un tenant par défaut est créé
     And 6 profils sont créés pour le tenant principal
     And un utilisateur admin est associé au client
     And une trace de création d'un client est présente dans vitam
+
+    @ApiIamCustomersCreationWithTheme
+    Scenario: Cas normal avec un logo
+        When un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec son logo dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS
+        Then le serveur retourne le client créé
+        And un identity provider par défaut est associé au client
+        And un tenant par défaut est créé
+        And 6 profils sont créés pour le tenant principal
+        And un utilisateur admin est associé au client
+        And une trace de création d'un client est présente dans vitam
 
 
   Scenario Outline: Cas sécurité, par un utilisateur <(userRole) avec ou sans> les rôles ROLE_CREATE_CUSTOMERS sur le tenant principal, après avoir choisi le tenant <(headerTenant) principal ou secondaire> dans l'IHM, et en utilisant un certificat <(certRole) avec ou sans> les rôles ROLE_CREATE_CUSTOMERS <(certTenant) sur le tenant principal ou sur le tenant secondaire ou étant fullAccess> = le serveur <autorise ou refuse> l'accès à l'api customers

@@ -37,7 +37,9 @@
 // TODO Fix
 
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { MatDialog, MatProgressBarModule, MatSnackBar } from '@angular/material';
+// import { MatDialog } from '@angular/material/dialog';
+// import { MatSnackBar } from '@angular/material/snackbar';
+// import { MatProgressBarModule } from '@angular/material/progress-bar';
 // import { empty } from 'rxjs';
 
 // import { DownloadService } from '../download.service';

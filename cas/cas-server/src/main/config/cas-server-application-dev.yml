@@ -139,6 +139,13 @@ server-identity :
   identityServerId: 1
 
 
+# Example to override theme colors and logo
+theme:
+#  vitam-logo: /absolute/path/to/logo.png
+#  vitamui-logo-large: /absolute/path/to/logo.png
+  primary: '#ff4a54'
+  secondary: '#241f63'
+
 logging:
   config: src/main/config/logback-dev.xml
   level:

@@ -68,9 +68,11 @@ export class NavbarComponent {
   @Output() customerSelect = new EventEmitter<string>();
 
   portalUrl: string;
+  base64Logo: string;
   currentUser: AuthUser;
   hasAccountProfile = false;
   trustedInlineLogoUrl: SafeUrl;
+  trustedAppLogoUrl: SafeUrl;
 
   constructor(
     public authService: AuthService,
@@ -78,12 +80,15 @@ export class NavbarComponent {
     private subrogationService: SubrogationService,
     private domSanitizer: DomSanitizer) {
     this.portalUrl = startupService.getPortalUrl();
+    this.base64Logo = startupService.getLogo();
+
+    this.trustedAppLogoUrl = startupService.getAppLogoURL() ?
+    this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getAppLogoURL()) : null;
+
     if (this.authService.user) {
       this.currentUser = this.authService.user;
-      if (this.currentUser.basicCustomer) {
-        this.trustedInlineLogoUrl = this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' +
-                                                                        this.currentUser.basicCustomer.graphicIdentity.logoDataBase64);
-      }
+      this.trustedInlineLogoUrl = startupService.getCustomerLogoURL() ?
+      this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + startupService.getCustomerLogoURL()) : null;
       this.hasAccountProfile = this.authService.user.profileGroup.profiles.find((profile) =>
                                                                   profile.applicationName === ApplicationId.ACCOUNTS_APP) !== undefined;
     }

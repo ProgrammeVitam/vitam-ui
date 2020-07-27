@@ -7,7 +7,7 @@ input[type="radio"] {
 }
 
 .radio-label {
-  color: $greeny-blue;
+  color: var(--vitamui-secondary);
   display: inline-block;
   cursor: pointer;
   font-weight: bold;
@@ -23,5 +23,5 @@ input[type="radio"] {
 
 .radio-label.checked {
   color: $white;
-  background: $greeny-blue;
+  background: var(--vitamui-secondary);
 }

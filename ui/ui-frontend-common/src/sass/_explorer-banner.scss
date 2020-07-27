@@ -9,11 +9,11 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        border-right: 1px solid #f7f8fb;
+        border-right: 1px solid $pale-grey;
 
         > i {
             font-size: 18px;
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             background: #e7f5f2;
             border-radius: 15px;
             width: 30px;
@@ -24,8 +24,8 @@
         }
 
         &:hover > i {
-            background-color: $greeny-blue;
-            color: #fff;
+            background-color: var(--vitamui-secondary);
+            color: $white;
         }
     }
 

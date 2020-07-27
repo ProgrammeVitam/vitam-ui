@@ -47,6 +47,7 @@ server-identity:
 
 
 ui-identity:
+  platform-name: "{{ vitamui_platform_informations.platform_name }}"
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
@@ -62,6 +63,7 @@ ui-identity:
         key-password: {{ password_truststore }} # TODO OMA : revoir
       hostname-verification: false
 {% endif %}
+  assets: "{{ vitam_defaults.folder.root_path }}/conf/assets"
   base-url:
 {% if vitamui.portal.base_url is defined %}
     portal: "{{ vitamui.portal.base_url }}"

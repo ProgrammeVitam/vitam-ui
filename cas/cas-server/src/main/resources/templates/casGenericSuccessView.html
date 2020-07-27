@@ -41,7 +41,7 @@
         /*]]>*/
     </script>
 </head>
-<body class="login bg-portal">
+<body class="login bg-portal" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div class="background bg-success"></div>
 
 	<div class="login-box success">
@@ -49,7 +49,7 @@
 	    <h1>Connexion établie et sécurisée</h1>
 	    <i class="material-icons check-icon">check</i>
 	  </div>
-	  <img th:src="@{/images/vitamui-logo.png}" class="logo">
+	  <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}" class="logo">
   </div>
 
 </body>

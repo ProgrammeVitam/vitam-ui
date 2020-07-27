@@ -66,6 +66,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity_admin.server_name }};
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_identity_admin;
@@ -97,6 +101,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity.server_name }};
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_identity;
@@ -104,6 +112,44 @@ server {
         gunzip on;
         sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
         sub_filter /identity/ https://{{ vitamui.identity.server_name }}/;
+        sub_filter_once off;
+
+        proxy_set_header Host            $host;
+    	proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Authorization $http_authorization;
+
+        proxy_hide_header X-Frame-Options;
+        proxy_set_header  X-Forwarded-Ssl on;
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto $scheme;
+
+    }
+}
+
+
+# UI REFERENTIAL
+
+upstream ui_referential {
+    ip_hash;
+{% for h in groups['hosts_ui_referential'] %}
+    server {{ hostvars[h].ip_service }}:{{ vitamui.referential.port_service }};
+{% endfor %}
+}
+
+server {
+
+    listen 443 ssl;
+    include {{ reverse_conf_dir }}/ssl/ssl.conf;
+
+    server_name {{ vitamui.referential.server_name }};
+
+    location / {
+        proxy_pass https://ui_referential;
+
+        gunzip on;
+        sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
+        sub_filter /referential/ https://{{ vitamui.referential.server_name }}/;
         sub_filter_once off;
 
         proxy_set_header Host            $host;
@@ -209,6 +255,10 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name "{{ vitamui.portal.server_name }}";
+    
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 
     location / {
         proxy_pass https://ui_portal;

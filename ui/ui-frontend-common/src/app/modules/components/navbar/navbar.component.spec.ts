@@ -108,7 +108,7 @@ describe('NavbarComponent', () => {
 
   beforeEach(async(() => {
     const authServiceStub = { logout: () => { } };
-    const startupServiceStub = { getPortalUrl: () => { } };
+    const startupServiceStub = { getPortalUrl: () => { }, getLogo: () => { }, getAppLogoURL: () => { } , getCustomerLogoURL: () => { }  };
 
     TestBed.configureTestingModule({
       imports: [

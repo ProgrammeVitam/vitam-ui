@@ -21,7 +21,7 @@
         transition: background-color 200ms ease-out, color 200ms ease-out;
 
         &:hover {
-            color: $greeny-blue;
+            color: var(--vitamui-secondary);
             background-color: rgba(255, 255, 255, 0.8);
         }
 
@@ -50,7 +50,7 @@
     }
 
     .mat-tab-body-content {
-        padding: 30px 105px 30px 40px;
+        padding: 30px 85px 30px 40px;
         overflow: visible;
     }
 }

@@ -86,6 +86,7 @@ import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
@@ -317,10 +318,24 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "hasCustomGraphicIdentity" :
+                    LOGGER.debug("Update GraphicalIdentity");
                     final boolean newCustomGraphicIdentityValue = CastUtils.toBoolean(entry.getValue());
                     logbooks.add(new EventDiffDto(CustomerConverter.CUSTOM_GRAPHIC_IDENTITY_KEY, customer.getGraphicIdentity().isHasCustomGraphicIdentity(),
                             newCustomGraphicIdentityValue));
                     processGraphicIdentityPatch(newCustomGraphicIdentityValue, customer, logo);
+                    break;
+                case "themeColors":
+                    Object themeColorsValue = entry.getValue();
+
+                    LOGGER.debug("Update theme colors");
+
+                    if (themeColorsValue instanceof Map) {
+                        Map<String, String> themeColors = (Map) themeColorsValue;
+                        customer.getGraphicIdentity().setThemeColors(themeColors);
+                    } else {
+                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>.");
+                        throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() + " is not allowed");
+                    }
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
@@ -329,26 +344,28 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         iamLogbookService.updateCustomerEvent(customer, logbooks);
     }
 
-    private void processGraphicIdentityPatch(final Boolean newCustomGraphicIdentityValue, final Customer customer, final Optional<MultipartFile> logo) {
-        if (!logo.isPresent()) {
-            if (newCustomGraphicIdentityValue) {
-                throw new IllegalArgumentException(
-                        String.format("Unable to patch customer %s : custom graphic identity is true but no logo is provided.", customer.getId()));
-            }
-            customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
-            customer.getGraphicIdentity().setLogoDataBase64(null);
-        }
-        else {
-            if (!newCustomGraphicIdentityValue) {
-                throw new IllegalArgumentException(
-                        String.format("Unable to patch customer %s : custom graphic identity is false but a logo is provided.", customer.getId()));
-            }
-            customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
+    private void processGraphicIdentityPatch(final boolean newCustomGraphicIdentityValue, final Customer customer, final Optional<MultipartFile> logo) {
+
+
+        String base64logo = null;
+        if(logo.isPresent()) {
             try {
-                customer.getGraphicIdentity().setLogoDataBase64(VitamUIUtils.getBase64(logo.get()));
-            }
-            catch (final IOException e) {
+
+                customer.getGraphicIdentity().setHasCustomGraphicIdentity(true);
+
+                base64logo = VitamUIUtils.getBase64(logo.get());
+
+                customer.getGraphicIdentity().setLogoDataBase64(base64logo);
+
+            } catch (IOException e) {
                 throw new InvalidFormatException("Cannot store logo", e);
+            }
+
+        } else {
+            if(newCustomGraphicIdentityValue && customer.getGraphicIdentity().getLogoDataBase64().isEmpty()) {
+                throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": Custom graphic identity activated without providing a logo.");
+            } else {
+                customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
             }
         }
     }
@@ -360,8 +377,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         processPatch(customer, partialDto, logo);
         Assert.isTrue(getRepository().existsById(customer.getId()), "Unable to patch customer : no entity found with id: " + customer.getId());
         final Customer savedCustomer = getRepository().save(customer);
-        final CustomerDto dto = convertFromEntityToDto(savedCustomer);
-        return dto;
+        return convertFromEntityToDto(savedCustomer);
     }
 
     public CustomerDto getMyCustomer() {

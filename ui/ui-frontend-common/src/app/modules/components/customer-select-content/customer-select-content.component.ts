@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuOption } from '../navbar';
 import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.service';
@@ -44,7 +44,7 @@ import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.servi
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss']
 })
-export class CustomerSelectContentComponent {
+export class CustomerSelectContentComponent implements OnInit {
 
   @Input() customers: MenuOption[];
   @Input() isModalMenu: boolean;
@@ -55,6 +55,12 @@ export class CustomerSelectContentComponent {
     private router: Router,
     private route: ActivatedRoute,
     private customerMenuService: CustomerMenuService) { }
+
+  ngOnInit(): void {
+    if (this.customers) {
+      this.customers.sort((c1, c2) => c1.label.localeCompare(c2.label));
+    }
+  }
 
   selectCustomerId(customerId: string) {
     if (this.isModalMenu) {
