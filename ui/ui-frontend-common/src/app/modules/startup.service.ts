@@ -42,7 +42,6 @@ import { Inject, Injectable } from '@angular/core';
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
-import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
@@ -70,7 +69,6 @@ export class StartupService {
   constructor(
     private logger: Logger,
     private authService: AuthService,
-    private applicationService: ApplicationService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
     private themeService: ThemeService,
@@ -102,10 +100,7 @@ export class StartupService {
         }
 
         this.themeService.overrideTheme(customerColorMap);
-
-
-      })
-      .then(() => this.applicationService.list().toPromise());
+      });
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {

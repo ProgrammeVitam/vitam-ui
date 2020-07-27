@@ -1,8 +1,9 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
@@ -50,25 +51,21 @@ import { MenuOverlayRef } from './menu-overlay-ref';
     ])
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public state = '';
 
-  private applications: Application[];
+  public appMap: Map<Category, Application[]>;
 
   public filteredApplications: Application[] = null;
-
-  public applicationsGroupBy: _.Dictionary<Application[]>;
 
   public criteria: string;
 
   public tabSelectedIndex = 0;
 
-  public readonly CATEGORY = [
-    { position: 0, identifier: 'users', name: 'Utilisateur' },
-    { position: 1, identifier: 'administrators', name: 'Management' },
-    { position: 2, identifier: 'settings', name: 'Paramétrage' },
-  ] as Category[];
+  public selectedCategory: Category;
+
+  private unSub: Subscription;
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
@@ -96,20 +93,31 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.applications = _.orderBy(this.applicationService.applications, 'position');
-    this.applicationsGroupBy = _.groupBy(this.applications, 'category');
+    this.unSub = this.applicationService.getAppsGroupByCategories()
+      .subscribe((map: Map<Category, Application[]>) => {
+        this.appMap = map;
+      });
     this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
+  }
+
+  ngOnDestroy() {
+    this.unSub.unsubscribe();
   }
 
   public onSearch(value: string): void {
     if (value) {
       this.criteria = value;
-      this.filteredApplications = this.applications.filter((application: Application) =>
+      this.filteredApplications = this.appMap.get(Array.from(this.appMap.keys())[this.tabSelectedIndex])
+        .filter((application: Application) =>
         application.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
         .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()));
       this.cdrRef.detectChanges();
+
       if (this.filteredApplications.length > 0) {
-        (document.getElementById('searchResults').firstElementChild as any).focus();
+        const firstChildElem = document.getElementById('searchResults').firstElementChild as any;
+        if (firstChildElem) {
+          firstChildElem.focus();
+        }
       }
     } else {
       this.filteredApplications = null;
@@ -123,28 +131,21 @@ export class MenuComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.dialogRef.close(), 500);
   }
 
-  public getCategory(): Category[] {
-   return this.CATEGORY.sort((a, b) => {
-      return a.position < b.position ? -1 : 1;
-    });
-  }
-
   public changeTabFocus(value?: MatTabChangeEvent): void {
     if (value && value.index !== this.tabSelectedIndex) {
       this.tabSelectedIndex = value.index; // when clicking
     }
-    // tslint:disable-next-line: variable-name
-    setTimeout(() => this.selectedList.find((_select, index) => index === this.tabSelectedIndex).options.first.focus(), 300);
+    setTimeout(() => {
+      // tslint:disable-next-line: variable-name
+      const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex).options.first;
+      if (firstElem) {
+        firstElem.focus();
+      }
+    }, 300);
   }
 
   public openApplication(app: Application) {
-    const uiUrl = this.startupService.getConfigStringValue('UI_URL');
-
-    // If called app is in the same server...
-    if (app.url.includes(uiUrl)) {
-      this.router.navigate([app.url.replace(uiUrl, '')]);
-    } else {
-      window.location.href = app.url;
-    }
+    this.onClose();
+    this.applicationService.openApplication(app);
   }
 }

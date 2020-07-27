@@ -36,10 +36,14 @@
  */
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { Application } from './models/application/application.interface';
+import { Category } from './models/application/category.interface';
+import { StartupService } from './startup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,11 +54,30 @@ export class ApplicationService {
    * Applications list of the authenticated user.
    */
   set applications(apps: Application[]) { this._applications = apps; }
+
   get applications(): Application[] { return this._applications; }
+
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
-  constructor(private applicationApi: ApplicationApiService) { }
+  /**
+   * Map that will contain applications grouped by categories
+   */
+  private appMap: Map<Category, Application[]>;
+
+  private appMap$ = new BehaviorSubject(this.appMap);
+
+  private unsub: Subscription;
+
+  private categories = [
+    { position: 0, identifier: 'users', name: 'Utilisateur' },
+    { position: 1, identifier: 'administrators', name: 'Management' },
+    { position: 2, identifier: 'settings', name: 'Paramétrage' },
+  ] as Category[];
+
+  constructor(private applicationApi: ApplicationApiService, private router: Router, private startupService: StartupService) {
+    this.unsub = this.list().subscribe();
+  }
 
   /**
    * Get Applications list for an user and save it in a property.
@@ -69,5 +92,54 @@ export class ApplicationService {
         return apps;
       })
     );
+  }
+
+  /**
+   * Get Applications list grouped by categories in a hashMap.
+   */
+  public getAppsGroupByCategories(): Observable<Map<Category, Application[]>> {
+    if (!this.appMap) {
+      this.appMap = new Map<Category, Application[]>();
+
+      if (!this.applications) {
+        this.unsub.unsubscribe();
+        this.list().subscribe((apps) => {
+          this.fillCategoriesWithApps(this.categories, apps);
+          this.appMap$.next(this.appMap);
+        });
+      } else {
+      this.fillCategoriesWithApps(this.categories, this.applications);
+      this.appMap$.next(this.appMap);
+      }
+    }
+    return this.appMap$;
+  }
+
+  public openApplication(app: Application): void {
+    const uiUrl = this.startupService.getConfigStringValue('UI_URL');
+    // If called app is in the same server...
+    if (app.url.includes(uiUrl)) {
+      this.router.navigate([app.url.replace(uiUrl, '')]);
+    } else {
+      window.location.href = app.url;
+    }
+  }
+
+  private fillCategoriesWithApps(categories: Category[], applications: Application[]) {
+    categories.forEach((category: Category) => {
+      this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
+    });
+  }
+
+  private getSortedAppsOfCategory(category: Category, applications: Application[]): Application[] {
+    const apps = applications.filter(application => application.category === category.identifier) as Application[];
+    return this.sortApplications(apps);
+  }
+
+  private sortApplications(applications: Application[]): Application[] {
+    // Sort apps inside categories
+    return applications.sort((a, b) => {
+      return a.position < b.position ? -1 : 1;
+    });
   }
 }

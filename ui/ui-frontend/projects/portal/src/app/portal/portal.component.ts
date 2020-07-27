@@ -34,9 +34,9 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { StartupService } from 'ui-frontend-common';
 import { Application, ApplicationService, Category } from 'ui-frontend-common';
 
@@ -45,15 +45,9 @@ import { Application, ApplicationService, Category } from 'ui-frontend-common';
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss']
 })
-export class PortalComponent implements OnInit {
+export class PortalComponent implements OnInit, OnDestroy {
 
-  public applications: Application[] = [];
-
-  public categories = [
-    { position: 0, identifier: 'users', name: 'Utilisateur' },
-    { position: 1, identifier: 'administrators', name: 'Management' },
-    { position: 2, identifier: 'settings', name: 'Paramétrage' },
-  ] as Category[];
+  public applications: Map<Category, Application[]>;
 
   public welcomeTitle: string;
 
@@ -61,16 +55,20 @@ export class PortalComponent implements OnInit {
 
   public customerLogoUrl: string;
 
+  private sub: Subscription;
+
   constructor(
     private applicationService: ApplicationService,
     private startupService: StartupService,
-    private domSanitizer: DomSanitizer,
-    private router: Router
-    ) { }
+    private domSanitizer: DomSanitizer) { }
 
 
   ngOnInit() {
-    this.applications = this.applicationService.applications;
+    this.sub = this.applicationService.getAppsGroupByCategories()
+      .subscribe((map: Map<Category, Application[]>) => {
+        this.applications = map;
+    });
+
     this.welcomeTitle = this.startupService.getWelcomeTitle();
     this.welcomeMessage = this.startupService.getWelcomeMessage();
 
@@ -87,14 +85,11 @@ export class PortalComponent implements OnInit {
     }
   }
 
-  public openApplication(app: Application) {
-    const uiUrl = this.startupService.getConfigStringValue('UI_URL');
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
-    // If called app is in the same server...
-    if (app.url.includes(uiUrl)) {
-      this.router.navigate([app.url.replace(uiUrl, '')]);
-    } else {
-      window.location.href = app.url;
-    }
+  public openApplication(app: Application): void {
+    this.applicationService.openApplication(app);
   }
 }

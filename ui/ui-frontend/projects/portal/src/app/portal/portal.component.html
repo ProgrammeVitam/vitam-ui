@@ -1,4 +1,4 @@
 <div class="content">
     <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
-    <app-application-list [applications]="applications" [categories]="categories" (applicationClick)="openApplication($event)"></app-application-list>
+    <app-application-list [appMap]="applications" (applicationClick)="openApplication($event)"></app-application-list>
 </div>
