@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output} from '@angular/core';
 import {merge, Subject, Subscription} from 'rxjs';
 
 import {
@@ -47,6 +47,7 @@ import {
   SearchQuery
 } from 'ui-frontend-common';
 import { GroupService } from '../group.service';
+import {buildCriteriaFromGroupFilters} from './group-criteria-builder.util';
 
 @Component({
   selector: 'app-group-list',
@@ -85,18 +86,29 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     'description'
   ];
 
+  filterMap: { [key: string]: any[] } = {
+    status: ['ENABLED'],
+    level: null
+  };
+
   orderBy = 'name';
   direction = Direction.ASCENDANT;
 
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly orderChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
 
-  constructor(public groupService: GroupService) {
+  levelFilterOptions: Array<{ value: string, label: string }> = [];
+
+  constructor(public groupService: GroupService,
+              @Inject(LOCALE_ID) private locale: string) {
     super(groupService);
   }
 
   ngOnInit() {
     this.search();
+    this.refreshLevelOptions();
+
     this.updatedGroupSub = this.groupService.updated.subscribe((updatedGroup: Group) => {
       const profileGroupIndex = this.dataSource.findIndex((group) => updatedGroup.id === group.id);
       if (profileGroupIndex > -1) {
@@ -105,17 +117,25 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
     });
 
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange);
+    const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange);
 
     searchCriteriaChange.subscribe(() => {
       const query: SearchQuery = {
-        criteria: buildCriteriaFromSearch(this._search, this.searchKeys)
+        criteria: [
+          ...buildCriteriaFromGroupFilters(this.filterMap),
+          ...buildCriteriaFromSearch(this._search, this.searchKeys)
+          ]
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 
       this.search(pageRequest);
     });
 
+  }
+
+  onFilterChange(key: string, values: any[]) {
+    this.filterMap[key] = values;
+    this.filterChange.next(this.filterMap);
   }
 
   emitOrderChange() {
@@ -126,4 +146,15 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this.updatedGroupSub.unsubscribe();
   }
 
+  private refreshLevelOptions(query?: SearchQuery) {
+    this.groupService.getNonEmptyLevels(query).subscribe((levels: string[]) => {
+      this.levelFilterOptions = levels.map((level: string) => ({value: level, label: level }));
+      this.levelFilterOptions.sort(sortByLabel(this.locale));
+    });
+  }
+}
+
+
+function sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
+  return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
 }

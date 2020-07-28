@@ -7,6 +7,30 @@
     <tr>
       <th>
         <div class="vitamui-table-header">
+          <button
+            class="vitamui-filter-button"
+            [vitamuiCommonTableFilter]="statusFilterTemplate"
+          >
+            <i class="material-icons vitamui-row-icon">filter_list</i>
+          </button>
+
+          <ng-template #statusFilterTemplate>
+            <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+              <vitamui-common-table-filter-option value="ENABLED">
+                <div class="table-filter-icon" i18n="@@groupStatusEnabled">
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i>
+                  <span class="badge-state">Actif</span>
+                </div>
+              </vitamui-common-table-filter-option>
+              <vitamui-common-table-filter-option value="DISABLED">
+                <div class="table-filter-icon" i18n="@@groupStatusDisabled">
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i>
+                  <span class="badge-state">Désactivé</span>
+                </div>
+              </vitamui-common-table-filter-option>
+            </vitamui-common-table-filter>
+          </ng-template>
+
           <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
           <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"
               (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
@@ -35,6 +59,22 @@
       </th>
       <th>
         <div class="vitamui-table-header">
+          <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate"
+                  [class.active]="filterMap['level'] && filterMap['level'].length > 0" #levelFilterTrigger="vitamuiCommonTableFilter">
+            <i class="material-icons vitamui-row-icon">filter_list</i>
+          </button>
+
+          <ng-template #levelFilterTemplate>
+            <vitamui-common-table-filter-search
+              [(filter)]="filterMap['level']"
+              [options]="levelFilterOptions"
+              (filterChange)="onFilterChange('level', $event)"
+              (filterClose)="levelFilterTrigger?.close()"
+              emptyValueOption="-Niveau vide-"
+              i18n-emptyValueOption="@@groupsListLevelFilterEmpty"
+            ></vitamui-common-table-filter-search>
+          </ng-template>
+
           <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
           <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
                                           (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
