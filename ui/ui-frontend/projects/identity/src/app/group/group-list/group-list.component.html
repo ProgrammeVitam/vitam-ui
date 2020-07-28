@@ -5,11 +5,41 @@
 >
   <thead>
     <tr>
-      <th><i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i></th>
-      <th i18n="Group name@@profileGroupListHeaderName">Nom du groupe</th>
-      <th i18n="Group ID@@profileGroupListHeaderID">Identifiant</th>
-      <th i18n="Description@@profileGroupListHeaderDescription">Description</th>
-      <th i18n="Description@@profileGroupListHeaderLevel">Niveau</th>
+      <th>
+        <div class="vitamui-table-header">
+          <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
+          <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"
+              (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="Group name@@profileGroupListHeaderName">Nom du groupe</span>
+          <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="Group ID@@profileGroupListHeaderID">Identifiant</span>
+          <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="Description@@profileGroupListHeaderDescription">Description</span>
+          <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
+          <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
     </tr>
   </thead>
 

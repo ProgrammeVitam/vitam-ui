@@ -35,10 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {merge, Subject, Subscription} from 'rxjs';
 
-import { Group, InfiniteScrollTable } from 'ui-frontend-common';
+import {
+  buildCriteriaFromSearch,
+  DEFAULT_PAGE_SIZE, Direction,
+  Group,
+  InfiniteScrollTable,
+  PageRequest,
+  SearchQuery
+} from 'ui-frontend-common';
 import { GroupService } from '../group.service';
 
 @Component({
@@ -65,6 +72,25 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
   private updatedGroupSub: Subscription;
 
+  @Input('search')
+  set searchText(text: string) {
+    this._search = text;
+    this.searchChange.next(text);
+  }
+  // tslint:disable-next-line:variable-name
+  private _search: string;
+  private readonly searchKeys = [
+    'name',
+    'level',
+    'description'
+  ];
+
+  orderBy = 'name';
+  direction = Direction.ASCENDANT;
+
+  private readonly orderChange = new Subject<string>();
+  private readonly searchChange = new Subject<string>();
+
   constructor(public groupService: GroupService) {
     super(groupService);
   }
@@ -76,7 +102,24 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
       if (profileGroupIndex > -1) {
         this.dataSource[profileGroupIndex] = updatedGroup;
       }
+
     });
+
+    const searchCriteriaChange = merge(this.searchChange, this.orderChange);
+
+    searchCriteriaChange.subscribe(() => {
+      const query: SearchQuery = {
+        criteria: buildCriteriaFromSearch(this._search, this.searchKeys)
+      };
+      const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
+
+      this.search(pageRequest);
+    });
+
+  }
+
+  emitOrderChange() {
+    this.orderChange.next();
   }
 
   ngOnDestroy() {
