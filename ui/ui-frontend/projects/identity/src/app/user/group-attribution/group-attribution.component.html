@@ -4,10 +4,12 @@
 
   <div class="header-informations">
     <div class="controls">
-      <div class="search disabled">
-        <input type="search" placeholder="Filtrer par «nom», «id» ..." disabled i18-placeholder="Filter group filter@@filterGroup">
-        <i class="material-icons">search</i>
-      </div>
+      <vitamui-common-search-bar
+        name="group-attribution-search"
+        placeholder="Filtrer par nom ..."
+        i18-placeholder="Filter group filter@@filterGroup"
+        (search)="onSearch($event)">
+      </vitamui-common-search-bar>
     </div>
 
     <div class="actions" *ngIf="selectedGroupName">

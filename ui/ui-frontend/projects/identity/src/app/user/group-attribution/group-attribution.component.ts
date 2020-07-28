@@ -66,6 +66,7 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
 })
 export class GroupAttributionComponent implements OnInit {
 
+
   user: User;
   activeGroups: GroupSelection[];
   selectedGroupName: string;
@@ -83,6 +84,10 @@ export class GroupAttributionComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.data[0];
+    this.resetActiveGroups();
+  }
+
+  resetActiveGroups() {
     this.activeGroups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX];
     this.activeGroups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 :
       a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
@@ -131,4 +136,10 @@ export class GroupAttributionComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSearch(text?: string) {
+    this.resetActiveGroups();
+    if (text !== null && text.length > 0) {
+      this.activeGroups = this.activeGroups.filter((group) => group.name.includes(text) || group.description.includes(text));
+    }
+  }
 }
