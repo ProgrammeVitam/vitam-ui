@@ -1,13 +1,10 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
-import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
-import { StartupService } from '../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
 
 @Component({
@@ -84,9 +81,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private dialogRef: MenuOverlayRef,
     private applicationService: ApplicationService,
-    private startupService: StartupService,
-    private cdrRef: ChangeDetectorRef,
-    private router: Router) { }
+    private cdrRef: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
     this.changeTabFocus();

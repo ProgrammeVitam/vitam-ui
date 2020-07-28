@@ -40,7 +40,7 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { interval, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, last, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
-import * as moment_ from 'moment';
+import * as moment_ from 'moment-mini';
 import { SubrogationApiService } from '../api/subrogation-api.service';
 import { AuthService } from '../auth.service';
 import { VitamUISnackBarComponent } from '../components/vitamui-snack-bar/vitamui-snack-bar.component';

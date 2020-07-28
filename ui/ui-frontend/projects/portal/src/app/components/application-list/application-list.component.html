@@ -6,7 +6,7 @@
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let application of category.value">
             <mat-card (click)="applicationClick.emit(application)">
               
-              <img mat-card-image src="../../../assets/app1.png">
+              <img mat-card-image alt="application illustration" src="../../../assets/app1.png">
               
               <mat-card-header>
                 <mat-card-title>{{application.name}}</mat-card-title>

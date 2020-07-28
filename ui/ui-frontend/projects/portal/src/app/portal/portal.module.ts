@@ -41,7 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
-import { ApplicationSelectContentModule, VitamUICommonModule } from 'ui-frontend-common';
+import { ApplicationSelectContentModule } from 'ui-frontend-common';
 import { ApplicationListModule } from '../components/application-list/application-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
@@ -54,7 +54,6 @@ import { PortalComponent } from './portal.component';
     ReactiveFormsModule,
     RouterModule,
     ApplicationSelectContentModule,
-    VitamUICommonModule,
     WelcomeMessageModule,
     ApplicationListModule
   ],

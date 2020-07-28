@@ -30,7 +30,7 @@ html, body {
     font-style: normal;
     font-weight: normal;
     src: local('Roboto'), url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap) format('woff2');
-    font-display: swap;
+    font-display: optional;
 }
 
 body {
