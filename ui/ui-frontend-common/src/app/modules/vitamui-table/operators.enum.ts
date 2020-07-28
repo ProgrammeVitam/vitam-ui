@@ -47,4 +47,5 @@ export enum Operators {
   lowerThanOrEquals = 'LOWERTHANOREQUALS',
   notequals = 'NOTEQUALS',
   notin = 'NOTIN',
+  elemMatch = 'ELEMMATCH'
 }
