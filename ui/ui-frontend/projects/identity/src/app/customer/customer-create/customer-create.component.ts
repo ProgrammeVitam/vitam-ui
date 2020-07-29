@@ -120,10 +120,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
     const colors = this.themeService.getThemeColors();
     this.form.get('themeColors').setValue({
-      primary: colors['vitamui-primary'],
-      secondary: colors['vitamui-secondary']
+      'vitamui-primary': colors['vitamui-primary'],
+      'vitamui-secondary': colors['vitamui-secondary']
     });
-
     this.onChanges();
     this.form.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.form.get('hasCustomGraphicIdentity').value;
@@ -136,15 +135,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       } else {
         this.lastColors = this.form.get('themeColors').value;
         this.form.get('themeColors').setValue({
-          primary: colors['vitamui-primary'],
-          secondary: colors['vitamui-secondary']
+          'vitamui-primary': colors['vitamui-primary'],
+          'vitamui-secondary': colors['vitamui-secondary']
         });
         this.lastUploadedImageUrl = this.imageUrl;
         this.imageToUpload = null;
         this.imageUrl = null;
       }
     });
-
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -196,8 +194,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   updateForCustomerModel(formValue: any): Customer {
     const { themeColors, ...customer } = formValue;
     const customerTheme =  {
-      'vitamui-primary': themeColors.primary,
-      'vitamui-secondary': themeColors.secondary
+      'vitamui-primary': themeColors['vitamui-primary'],
+      'vitamui-secondary': themeColors['vitamui-secondary']
     };
     if (customer.hasCustomGraphicIdentity) {
       customer.themeColors = customerTheme;
@@ -273,11 +271,20 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   thirdStepValid(): boolean {
-    return this.form.get('themeColors').value.primary.match(this.hexPattern) &&
-        this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
+    return this.isThemeColorsFormValid() &&
         (this.form.get('hasCustomGraphicIdentity').value === false ||
               (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
         );
+  }
+
+  isThemeColorsFormValid() {
+    const value = this.form.get('themeColors').value;
+    for (const key of Object.keys(value)) {
+      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   get stepProgress() {

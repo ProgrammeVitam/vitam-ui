@@ -1,0 +1,14 @@
+<p>
+  <vitamui-common-input #colorPickerInput
+                        [colorPicker]="color" (colorPickerChange)="handlePicker($event)"
+                        (colorPickerOpen)="onPickerOpen()"
+                        [disabled]="disabled"
+                        (change)="forceHex()" (keyup)="forceHex()"
+                        [formControl]="colorInput"
+                        cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
+                        cpPosition="top" maxlength="7"
+                        placeholder="{{placeholder}}" >
+  </vitamui-common-input>
+  <span [ngClass]="'input-color-preview ' + colorVariationsClassNames[0]" (click)="openPicker()"></span>
+  <span *ngFor="let variation of colorVariationsClassNames.slice(1)" [ngClass]="'input-color-preview ' + variation"></span>
+</p>

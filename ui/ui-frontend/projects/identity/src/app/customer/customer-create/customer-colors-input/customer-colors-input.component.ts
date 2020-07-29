@@ -1,17 +1,8 @@
-import {Component, forwardRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
-
-import {
-  ControlValueAccessor,
-  FormBuilder,
-  FormGroup,
-  NG_VALUE_ACCESSOR,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
-import {ColorPickerDirective} from 'ngx-color-picker';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, ValidatorFn, Validators} from '@angular/forms';
 import {ThemeService} from 'ui-frontend-common';
 
-export const COLORS_INPUT_ACCESSOR: any = {
+export const THEME_COLORS_INPUT_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => CustomerColorsInputComponent),
   multi: true
@@ -21,145 +12,84 @@ export const COLORS_INPUT_ACCESSOR: any = {
   selector: 'app-customer-colors-input',
   templateUrl: './customer-colors-input.component.html',
   styleUrls: ['./customer-colors-input.component.scss'],
-  providers: [COLORS_INPUT_ACCESSOR]
+  providers: [THEME_COLORS_INPUT_ACCESSOR]
 })
 export class CustomerColorsInputComponent implements ControlValueAccessor, OnInit {
 
+  @Input() themeOverloadSelector: string;
 
-  @Input() placeholder: string;
-  @Input() spinnerDiameter = 25;
+  @Input() disabled: boolean;
 
-  // css selector to override color theme for preview (default = only colors preview)
-  @Input() themeOverloadSelector = '.field-color-preview';
+  colors: { [colorId: string]: string };
 
-  @Input() disabled = false;
-
-  @ViewChildren(ColorPickerDirective)
-  colorPickers: QueryList<ColorPickerDirective>;
-
-  colorForm: FormGroup;
-
-  colors: {[colorId: string]: string} = {
-    'vitamui-primary': '',
-    'vitamui-secondary': ''
-  };
+  public colorForm: FormGroup;
 
   onTouched: () => void;
 
   hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
-  constructor(private formBuilder: FormBuilder, private themeService: ThemeService) {
-    this.colorForm = this.formBuilder.group({
-      primary: ['', this.hexValidator],
-      secondary: ['', this.hexValidator]
-    });
+  baseColors: {[colorId: string]: string};
+  variations: { [colorId: string]: string[] } = {};
+  baseColorsNames: string[];
+
+  constructor(private themeService: ThemeService) {
+    this.baseColors = this.themeService.getBaseColors();
+    this.baseColorsNames = Object.keys(this.baseColors);
+
+    // Build dynamic formgroup and variations names array
+    this.colors = this.themeService.getThemeColors();
+
+    const group: {[k: string]: FormControl} = { };
+    for (const name of Object.keys(this.baseColors)) {
+
+      group[name] = new FormControl(
+        {value: this.colors[name], disabled: this.disabled},
+        [this.hexValidator, Validators.required]
+      );
+
+      group[name].valueChanges.subscribe((color: string) => {
+        this.handleChange(name, color);
+      });
+
+      this.variations[name] = this.themeService.getVariationColorsNames(name);
+    }
+    this.colorForm = new FormGroup(group);
   }
 
-  get value(): {[key: string]: string} {
-    return this.colors;
+
+  ngOnInit(): void {
+
   }
 
-  writeValue(colors: {primary: string, secondary: string}) {
-    this.colorForm.setValue(colors);
-  }
+  handleChange(name: string, color: string) {
+    const input = this.colorForm.get(name);
 
-  registerOnChange(fn: (colors: {[key: string]: string}) => void) {
-    this.colorForm.valueChanges.subscribe(fn);
-  }
-
-  registerOnTouched(fn: () => void) {
-    this.onTouched = fn;
-  }
-
-  handleValueChanges(colors: {primary: string, secondary: string}) {
-
-    if (this.colorForm.invalid || this.colorForm.pending) {
+    if (input.invalid || input.pending) {
       return;
     }
 
-    this.colors = {
-      'vitamui-primary': colors.primary,
-      'vitamui-secondary': colors.secondary
-    };
-
-    // If form is valid, overload local theme for preview
+    const newColors: {[colorId: string]: string} = {};
+    for (const key of Object.keys(this.baseColors)) {
+      if (key === name) {
+        newColors[key] = color;
+      } else {
+        newColors[key] = this.colors[key];
+      }
+    }
+    this.colors = newColors;
     this.themeService.overrideTheme(this.colors, this.themeOverloadSelector);
   }
 
-  ngOnInit(): void {
-    this.colorForm.valueChanges.subscribe((colors) => {
-      this.handleValueChanges(colors);
-    });
+  registerOnChange(fn: any): void {
+    this.colorForm.valueChanges.subscribe(fn);
   }
 
-
-  handlePicker(key: string, pickerValue: string) {
-
-    // Avoir 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
-    let inputValue: string = this.colorForm.get(key).value;
-    inputValue = inputValue.toUpperCase();
-    pickerValue = pickerValue.toUpperCase();
-    if (inputValue.startsWith('#')) {
-      inputValue = inputValue.substring(1);
-    }
-    if (pickerValue.startsWith('#')) {
-      pickerValue = pickerValue.substring(1);
-    }
-    if (inputValue.length === 3 && pickerValue.length === 6) {
-      for (let i = 0; i < 3; i++) {
-        if (inputValue.charAt(i) !== pickerValue.charAt(2 * i) || inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)) {
-          continue;
-        }
-        return;
-      }
-    }
-
-    if (key === 'primary') {
-      this.colorForm.setValue({
-        primary: '#' + pickerValue,
-        secondary: this.colorForm.value.secondary
-      });
-
-    } else if (key === 'secondary') {
-      this.colorForm.setValue({
-        primary: this.colorForm.value.primary,
-        secondary: '#' + pickerValue
-      });
-    }
-
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
-  forceHex() {
-    if (! this.colorForm.value.primary.startsWith('#')) {
-      this.colorForm.setValue({
-        primary: '#' + this.colorForm.value.primary,
-        secondary: this.colorForm.value.secondary
-      });
-
-    } else if (! this.colorForm.value.secondary.startsWith('#')) {
-      this.colorForm.setValue({
-        primary: this.colorForm.value.primary,
-        secondary: '#' + this.colorForm.value.secondary
-      });
-    }
-  }
-
-
-  onPickerOpen() {
-    if (this.disabled) {
-      this.colorPickers.forEach((cp) => {
-        cp.closeDialog();
-      });
-    }
-  }
-
-  openPicker(index: number) {
-    if ( ! this.disabled) {
-      const pickers = this.colorPickers.toArray();
-      if (index < pickers.length) {
-        pickers[index].openDialog();
-      }
-    }
+  writeValue(value: {[colorId: string]: string}): void {
+      this.colorForm.setValue(value, {emitEvent: true});
   }
 
 }

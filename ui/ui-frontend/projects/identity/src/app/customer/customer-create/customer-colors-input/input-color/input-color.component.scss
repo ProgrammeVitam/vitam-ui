@@ -1,0 +1,45 @@
+p {
+  height: 80px;
+}
+
+div {
+  margin-bottom: 30px;
+}
+
+input {
+  display: none;
+}
+
+.input-color-preview {
+  padding: 0;
+  margin: 0 5px 0 0;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  position: relative;
+  top: 35px;
+  left: -50px;
+
+  &.vitamui-primary {
+    background-color: var(--vitamui-primary);
+  }
+  &.vitamui-primary-light {
+    background-color: var(--vitamui-primary-light);
+  }
+  &.vitamui-primary-light-20 {
+    background-color: var(--vitamui-primary-light-20);
+  }
+  &.vitamui-secondary {
+    background-color: var(--vitamui-secondary);
+  }
+  &.vitamui-secondary-light {
+    background-color: var(--vitamui-secondary-light);
+  }
+  &.vitamui-secondary-light-8 {
+    background-color: var(--vitamui-secondary-light-8);
+  }
+  &.vitamui-secondary-dark-5 {
+    background-color: var(--vitamui-secondary-dark-5);
+  }
+}
