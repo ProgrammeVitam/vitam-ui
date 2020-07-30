@@ -81,20 +81,16 @@ export class ProbativeValueCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form valid ? ', this.form.invalid);
     if (this.form.invalid) {
       return;
     }
-    console.log('data: ', this.form.value);
-
     this.probativeValueService.create(
       this.createDsl(this.form.value), new HttpHeaders({'X-Access-Contract-Id': this.accessContractSelect.value})).subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
       },
-      (error: any) => {
+      () => {
         this.dialogRef.close({success: false, action: 'none'});
-        console.error(error);
       });
   }
 

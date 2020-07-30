@@ -538,7 +538,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">71</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/admin-dsl/admin-dsl.component.html</context>
@@ -1060,15 +1060,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
           <context context-type="linenumber">90</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="notificationProbativeValueRun" datatype="html">
-        <source>
-      Le relevé de valeur probante a bien été lancé
-    </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
-          <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirmActionConfirmDialogConfirmLabel" datatype="html">
@@ -2936,6 +2927,16 @@
         </context-group>
         <note priority="1" from="description">probativeValue CreatedDate column header</note>
       </trans-unit>
+      <trans-unit id="formErrorMinlengthField" datatype="html">
+        <source>
+                    Le champ doit contenir au moins <x id="INTERPOLATION" equiv-text="{{ minlength.requiredLength }}"/> caractères
+                  </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <note priority="1" from="description">Minlength field error hint</note>
+      </trans-unit>
       <trans-unit id="probativeValueCreateIdentifierPlaceholder" datatype="html">
         <source>Identifiant</source>
         <context-group purpose="location">
@@ -2948,7 +2949,7 @@
         <source>Version</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">67</context>
         </context-group>
         <note priority="1" from="description">Version</note>
       </trans-unit>

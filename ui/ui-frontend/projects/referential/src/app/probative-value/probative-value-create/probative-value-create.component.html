@@ -17,6 +17,16 @@
             <ng-container *ngIf="form.get('unitId')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('unitId')?.errors?.required"
                                           i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              <ng-container *ngIf="form.get('unitId')?.errors?.minlength" >
+                <ng-template #minlengthErrorTemplate let-minlength="minlength">
+                  <vitamui-common-input-error i18n="Minlength field error hint@@formErrorMinlengthField">
+                    Le champ doit contenir au moins {{ minlength.requiredLength }} caractères
+                  </vitamui-common-input-error>
+                </ng-template>
+                <ng-container *ngTemplateOutlet="minlengthErrorTemplate;context:form.get('unitId').errors">
+                </ng-container>
+              </ng-container>
+
             </ng-container>
           </vitamui-common-input>
         </div>
@@ -64,14 +74,10 @@
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn primary">Terminer</button>
+          <button type="submit" class="btn primary" [disabled]="form.invalid">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
 
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container>Retour</ng-container>
-        </button>
       </div>
     </cdk-step>
   </vitamui-common-stepper>
