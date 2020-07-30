@@ -36,6 +36,7 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ApplicationService } from './application.service';
 
 import { Inject, Injectable } from '@angular/core';
 
@@ -72,6 +73,7 @@ export class StartupService {
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
     private themeService: ThemeService,
+    private applicationService: ApplicationService,
     @Inject(WINDOW_LOCATION) private location: any
   ) { }
 
@@ -100,7 +102,8 @@ export class StartupService {
         }
 
         this.themeService.overrideTheme(customerColorMap);
-      });
+      })
+      .then(() => this.applicationService.list().toPromise());
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {

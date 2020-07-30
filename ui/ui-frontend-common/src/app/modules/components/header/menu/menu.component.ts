@@ -1,10 +1,11 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
+import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
 
 @Component({
@@ -48,7 +49,7 @@ import { MenuOverlayRef } from './menu-overlay-ref';
     ])
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MenuComponent implements OnInit, AfterViewInit {
 
   public state = '';
 
@@ -62,7 +63,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public selectedCategory: Category;
 
-  private unSub: Subscription;
+  private firstResult: any;
+
+  private firstResultFocused = false;
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
@@ -75,50 +78,54 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.tabSelectedIndex > 0) {
           this.tabSelectedIndex--;
         }
+      } else if (event.key === 'ArrowDown') {
+        if (this.firstResult && !this.firstResultFocused) {
+          this.firstResult.focus();
+          this.firstResultFocused = true;
+        }
       }
   }
 
   constructor(
     private dialogRef: MenuOverlayRef,
     private applicationService: ApplicationService,
-    private cdrRef: ChangeDetectorRef) { }
+    private cdrRef: ChangeDetectorRef,
+    private router: Router,
+    private startupService: StartupService) { }
 
   ngAfterViewInit(): void {
     this.changeTabFocus();
   }
 
   ngOnInit() {
-    this.unSub = this.applicationService.getAppsGroupByCategories()
-      .subscribe((map: Map<Category, Application[]>) => {
-        this.appMap = map;
-      });
+    this.appMap = this.applicationService.getAppsGroupByCategories();
     this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
-  }
-
-  ngOnDestroy() {
-    this.unSub.unsubscribe();
   }
 
   public onSearch(value: string): void {
     if (value) {
       this.criteria = value;
-      this.filteredApplications = this.appMap.get(Array.from(this.appMap.keys())[this.tabSelectedIndex])
-        .filter((application: Application) =>
-        application.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-        .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()));
+      this.firstResultFocused = false;
+
+      const flattenApps = [].concat.apply([], Array.from(this.appMap.values()));
+      this.filteredApplications = flattenApps.filter((application: Application) => {
+        return application.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+          .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
+      });
       this.cdrRef.detectChanges();
 
       if (this.filteredApplications.length > 0) {
-        const firstChildElem = document.getElementById('searchResults').firstElementChild as any;
-        if (firstChildElem) {
-          firstChildElem.focus();
-        }
+        this.firstResult = document.getElementById('searchResults').firstElementChild as any;
       }
     } else {
-      this.filteredApplications = null;
-      this.criteria = '';
-      this.changeTabFocus();
+      this.resetSearch();
     }
+  }
+
+  public resetSearch(): void {
+    this.filteredApplications = null;
+    this.criteria = '';
+    this.changeTabFocus();
   }
 
   public onClose(): void {
@@ -141,6 +148,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public openApplication(app: Application) {
     this.onClose();
-    this.applicationService.openApplication(app);
+    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }

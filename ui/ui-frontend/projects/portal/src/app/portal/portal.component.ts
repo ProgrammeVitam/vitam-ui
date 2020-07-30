@@ -34,9 +34,9 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { StartupService } from 'ui-frontend-common';
 import { Application, ApplicationService, Category } from 'ui-frontend-common';
 
@@ -45,7 +45,7 @@ import { Application, ApplicationService, Category } from 'ui-frontend-common';
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss']
 })
-export class PortalComponent implements OnInit, OnDestroy {
+export class PortalComponent implements OnInit {
 
   public applications: Map<Category, Application[]>;
 
@@ -55,20 +55,14 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   public customerLogoUrl: string;
 
-  private sub: Subscription;
-
   constructor(
     private applicationService: ApplicationService,
     private startupService: StartupService,
-    private domSanitizer: DomSanitizer) { }
-
+    private domSanitizer: DomSanitizer,
+    private router: Router) { }
 
   ngOnInit() {
-    this.sub = this.applicationService.getAppsGroupByCategories()
-      .subscribe((map: Map<Category, Application[]>) => {
-        this.applications = map;
-    });
-
+    this.applications = this.applicationService.getAppsGroupByCategories();
     this.welcomeTitle = this.startupService.getWelcomeTitle();
     this.welcomeMessage = this.startupService.getWelcomeMessage();
 
@@ -85,11 +79,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   public openApplication(app: Application): void {
-    this.applicationService.openApplication(app);
+    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }

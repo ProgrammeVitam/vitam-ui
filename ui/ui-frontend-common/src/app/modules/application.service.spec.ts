@@ -110,4 +110,12 @@ describe('ApplicationService', () => {
       fail
     );
   });
+
+  it('should return a map', () => {
+    const appMap = appService.getAppsGroupByCategories();
+    appService.applications = [];
+    expect(appMap).toBeTruthy();
+    expect(appMap.keys.length).toBeDefined();
+    expect(appMap.values).toBeDefined();
+  });
 });

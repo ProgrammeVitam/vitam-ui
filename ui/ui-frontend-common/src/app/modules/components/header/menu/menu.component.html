@@ -6,7 +6,8 @@
         <vitamui-common-search-bar
             class="col-6 p-0 mr-auto"
             name="category-search"
-            (search)="onSearch($event)"
+            (searchChanged)="onSearch($event)"
+            (clear)="resetSearch()"
             placeholder="Saisir le nom de l'application" 
             i18n-placeholder="@@categorySearchPlaceholder"
         ></vitamui-common-search-bar>
@@ -18,7 +19,7 @@
 
     <div class="pt-4">
         <ng-container *ngIf="filteredApplications; else displayMats">
-            <span class="px-3" i18n="menuComponent@@results">Résultat : </span>
+            <span class="px-3" i18n="menuComponent@@results">Résultats : </span>
             <hr class="mb-0">
             <mat-selection-list id="searchResults"
                 class="py-3 overflow"
