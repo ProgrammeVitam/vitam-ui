@@ -16,12 +16,11 @@
     </div>
     <div class="vitamui-sidepanel-body">
         <mat-tab-group class="preview-tab-group">
-
-            <mat-tab label="Informations">
+            <mat-tab label="Informations" i18n-label="History tab@@userPreviewTabVerification">
                 <app-securisation-information-tab [securisation]="securisation"></app-securisation-information-tab>
             </mat-tab>
 
-            <mat-tab label="Véricifation">
+            <mat-tab label="Vérification" i18n-label="History tab@@userPreviewTabVerification">
                 <app-securisation-check-tab [id]="securisation?.id"></app-securisation-check-tab>
             </mat-tab>
 
