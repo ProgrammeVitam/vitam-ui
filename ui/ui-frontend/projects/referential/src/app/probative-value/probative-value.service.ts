@@ -20,8 +20,6 @@ export class ProbativeValueService extends SearchService<Event> {
   }
 
   create(probativeValueRequest: any, headers: HttpHeaders) {
-    console.log('Probative value, DSL: ', probativeValueRequest);
-
     for (const header in this.headers) {
       if (this.headers.hasOwnProperty(header)) {
         headers.set(header, this.headers.get(header));
@@ -31,10 +29,10 @@ export class ProbativeValueService extends SearchService<Event> {
     return this.operationApiService.runProbativeValue(probativeValueRequest, headers)
       .pipe(
         tap(
-          (response: any) => {
+          () => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: {type: 'probativeValueRun', name: response.identifier},
+              data: {type: 'probativeValueRun'},
               duration: 10000
             });
           },

@@ -91,6 +91,10 @@
       <i class="vitamui-icon vitamui-icon-audit"></i> L'audit {{data?.id}} a bien été lancé.
     </ng-container>
 
+    <ng-container *ngSwitchCase="'probativeValueRun'" i18n="@@notificationProbativeValueRun">
+      Le relevé de valeur probante a bien été lancé
+    </ng-container>
+
   </span>
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>

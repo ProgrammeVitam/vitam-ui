@@ -1062,6 +1062,15 @@
           <context context-type="linenumber">90</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="notificationProbativeValueRun" datatype="html">
+        <source>
+      Le relevé de valeur probante a bien été lancé
+    </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="confirmActionConfirmDialogConfirmLabel" datatype="html">
         <source>Valider</source>
         <context-group purpose="location">
