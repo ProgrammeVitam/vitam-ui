@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'contrib'
+        label 'contrib-java8'
     }
 
     environment {
