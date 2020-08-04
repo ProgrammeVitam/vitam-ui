@@ -11,13 +11,15 @@ import org.mockito.MockitoAnnotations;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+
 
 /**
  * Tests the {@link OwnerInternalController}.
  *
  *
  */
-public final class OwnerInternalControllerTest {
+public final class OwnerInternalControllerTest extends AbstractServerIdentityBuilder {
 
     @InjectMocks
     private OwnerInternalController controller;
