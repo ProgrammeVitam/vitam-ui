@@ -5,14 +5,18 @@
         <div class="title">
             <h2>{{securisation?.id}}</h2>
         </div>
-      <mat-form-field class="vitamui-mat-select">
-        <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="updateAccessContractId($event)">
-          <mat-option *ngFor='let accessContract of accessContracts'
-                      [value]="accessContract.identifier">{{accessContract.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-        <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
+
+        <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
+            <mat-form-field class="vitamui-mat-select">
+                <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="updateAccessContractId($event)">
+                    <mat-option *ngFor='let accessContract of accessContracts'
+                                [value]="accessContract.identifier">{{accessContract.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" 
+                    [disabled]="!accessContractId">Télécharger le rapport</button>
+        </ng-container>
     </div>
     <div class="vitamui-sidepanel-body">
         <mat-tab-group class="preview-tab-group">
