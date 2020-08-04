@@ -17,6 +17,7 @@ server:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
     key-store-password: changeme
     key-password: changeme
+  servlet.session.cookie.path: /referential-api
 management:
   server:
     address: localhost
