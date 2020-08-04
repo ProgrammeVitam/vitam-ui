@@ -150,7 +150,7 @@ public class BaseWebClientFactory implements WebClientFactory {
             SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
             sslContextBuilder = sslContextBuilder.clientAuth(ClientAuth.NONE);
 
-            if (ks != null) {
+            if (ks != null && restClientConfig.isKeystoreNeeded()) {
                 sslContextBuilder = sslContextBuilder.keyManager(createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
             }
 
