@@ -81,6 +81,7 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
   // tslint:disable-next-line:variable-name
   private _search: string;
   private readonly searchKeys = [
+    'identifier',
     'name',
     'level',
     'description'

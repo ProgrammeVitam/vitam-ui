@@ -69,6 +69,6 @@ const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array
   }
 };
 
-export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }) {
+export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }): Array<Criterion | SearchQuery> {
   return buildCriteriaFromFilters(filterMap, GROUP_FILTER_CONVERTER);
 }
