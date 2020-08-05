@@ -72,7 +72,7 @@ export class GroupAttributionComponent implements OnInit {
   selectedGroupName: string;
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
 
-  profileGroupChange(event: Group) {
+  public profileGroupChange(event: Group): void {
     this.user.groupId = event.id;
     this.selectedGroupName = event.name;
   }
@@ -82,15 +82,14 @@ export class GroupAttributionComponent implements OnInit {
     public dialogRef: MatDialogRef<GroupAttributionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.user = this.data[0];
     this.resetActiveGroups();
   }
 
-  resetActiveGroups() {
+  public resetActiveGroups(): void {
     this.activeGroups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX];
-    this.activeGroups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 :
-      a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
+    this.activeGroups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
     if (this.data[1]) {
       this.selectedGroupName = this.data[1].name;
       const selectedGroup = this.activeGroups.find((group) => group.id === this.data[1].id);
@@ -100,13 +99,13 @@ export class GroupAttributionComponent implements OnInit {
     }
   }
 
-  removeGroup() {
+  public removeGroup(): void {
     this.selectedGroupName = null;
     this.user.groupId = null;
     this.unselectAllProfileGroups();
   }
 
-  updateGroup(groupId: string, groupName: string, groupLevel: string, collapseDirective: CollapseDirective) {
+  public updateGroup(groupId: string, groupName: string, groupLevel: string, collapseDirective: CollapseDirective): void {
     this.selectedGroupName = groupName;
     this.user.groupId = groupId;
     this.user.level = groupLevel;
@@ -118,11 +117,11 @@ export class GroupAttributionComponent implements OnInit {
     }
   }
 
-  unselectAllProfileGroups() {
+  public unselectAllProfileGroups(): void {
     this.activeGroups.forEach((group) => group.selected = false);
   }
 
-  saveUserUpdate() {
+  public saveUserUpdate(): void {
     this.userService.patch({ id: this.user.id, groupId: this.user.groupId })
       .subscribe(
         () => this.dialogRef.close(true),
@@ -131,12 +130,12 @@ export class GroupAttributionComponent implements OnInit {
         });
   }
 
-  onCancel() {
+  public onCancel(): void {
     this.unselectAllProfileGroups();
     this.dialogRef.close();
   }
 
-  onSearch(text?: string) {
+  public onSearch(text?: string): void {
     this.resetActiveGroups();
     if (text !== null && text.length > 0) {
       this.activeGroups = this.activeGroups.filter((group) => group.name.includes(text) || group.description.includes(text));
