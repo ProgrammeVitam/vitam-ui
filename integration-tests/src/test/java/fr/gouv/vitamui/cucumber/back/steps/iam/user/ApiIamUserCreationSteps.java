@@ -6,18 +6,17 @@ import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import cucumber.api.Transform;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.cucumber.back.transformers.LevelTransformer;
-import fr.gouv.vitamui.cucumber.back.transformers.RoleTransformer;
-import fr.gouv.vitamui.cucumber.back.transformers.RolesTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.LevelParameterType;
+import fr.gouv.vitamui.cucumber.common.parametertypes.RoleParameterType;
+import fr.gouv.vitamui.cucumber.common.parametertypes.RolesParameterType;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Teste l'API Users dans IAM admin : opérations de création.
@@ -78,9 +77,8 @@ public class ApiIamUserCreationSteps extends CommonSteps {
     @Then("^le serveur refuse la création de l'utilisateur à cause du mauvais client$")
     public void le_serveur_refuse_la_création_de_l_utilisateur_à_cause_du_mauvais_client() {
         assertThat(testContext.exception).isNotNull();
-        assertThat(testContext.exception.toString())
-                .isEqualTo("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create user: customerId " + CLIENT1_CUSTOMER_ID
-                        + " is not allowed");
+        assertThat(testContext.exception.toString()).isEqualTo(
+                "fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create user: customerId " + CLIENT1_CUSTOMER_ID + " is not allowed");
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_USERS ajoute un nouvel utilisateur mais avec un email existant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_USERS$")
@@ -136,20 +134,19 @@ public class ApiIamUserCreationSteps extends CommonSteps {
         try {
             getUserRestClient(testContext.fullAccess, testContext.certificateTenants, testContext.certificateRoles)
                     .create(getContext(testContext.tenantIHMContext, testContext.tokenUser), dto);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
 
-    @Given("^un utilisateur de ce niveau avec le rôle (ROLE_.*)$")
-    public void un_utilisateur_de_ce_niveau(@Transform(RoleTransformer.class) final String role) {
-        testContext.tokenUser = tokenUserTest(new String[] { role }, testContext.mainTenant, testContext.customerId, testContext.level);
+    @Given("un utilisateur de ce niveau avec le rôle {role}")
+    public void un_utilisateur_de_ce_niveau(final RoleParameterType role) {
+        testContext.tokenUser = tokenUserTest(new String[]{role.getData()}, testContext.mainTenant, testContext.customerId, testContext.level);
     }
 
-    @Given("^un utilisateur de ce niveau avec les rôles (ROLE_.*)$")
-    public void un_utilisateur_de_ce_niveau(@Transform(RolesTransformer.class) final String[] roles) {
-        testContext.tokenUser = tokenUserTest(roles, testContext.mainTenant, testContext.customerId, testContext.level);
+    @Given("un utilisateur de ce niveau avec les rôles {roles}")
+    public void un_utilisateur_de_ce_niveau(final RolesParameterType roles) {
+        testContext.tokenUser = tokenUserTest(roles.getData(), testContext.mainTenant, testContext.customerId, testContext.level);
     }
 
     @When("^cet utilisateur crée un nouvel utilisateur avec pour attribut ce groupe$")
@@ -158,8 +155,7 @@ public class ApiIamUserCreationSteps extends CommonSteps {
         user.setGroupId(testContext.groupDto.getId());
         try {
             newUser = getUserRestClient().create(getContext(testContext.mainTenant, testContext.tokenUser), user);
-        }
-        catch (final RuntimeException e) {
+        } catch (final RuntimeException e) {
             testContext.exception = e;
         }
     }
@@ -178,10 +174,11 @@ public class ApiIamUserCreationSteps extends CommonSteps {
         assertThat(newUser.getGroupId()).overridingErrorMessage("Le groupe de l'utilisateur créé est incorrect").isEqualTo(testContext.groupDto.getId());
     }
 
-    @Then("^le niveau du nouvel utilisateur est bien le niveau " + LevelTransformer.REGEX_LEVEL_OR_VOID + "$")
-    public void le_niveau_du_nouvel_utilisateur_est_bien_le_niveau_vide(@Transform(LevelTransformer.class) final String level) {
+    @Then("le niveau du nouvel utilisateur est bien le niveau {level}")
+    public void le_niveau_du_nouvel_utilisateur_est_bien_le_niveau_vide(final LevelParameterType level) {
         assertThat(newUser.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé est null").isNotNull();
-        assertThat(newUser.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level + "\"").isEqualTo(level);
+        assertThat(newUser.getLevel()).overridingErrorMessage("Le niveau de l'utilisateur créé n'est pas le niveau \"" + level.getData() + "\"")
+                .isEqualTo(level.getData());
     }
 
     @Then("^le serveur refuse l'accès l'API Users$")

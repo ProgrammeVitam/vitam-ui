@@ -106,7 +106,7 @@ public class IamAuthentificationService {
             // Save token to extend its lifetime but the very old tokens used in development
             final LocalDate date = convertToLocalDate(token.getUpdatedDate());
             if (date.isAfter(LocalDate.of(2018, 10, 1))) {
-                token.setUpdatedDate(DateUtils.addMinutes(new Date(), tokenAdditionalTtl));
+                token.setUpdatedDate(DateUtils.addMinutes(token.getUpdatedDate(), tokenAdditionalTtl));
                 tokenRepository.save(token);
             }
         }

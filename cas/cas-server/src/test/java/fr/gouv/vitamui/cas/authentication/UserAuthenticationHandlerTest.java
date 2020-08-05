@@ -18,14 +18,12 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
+import lombok.val;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.PreventedException;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -62,12 +60,10 @@ public final class UserAuthenticationHandlerTest {
 
     @Before
     public void setUp() {
-        handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory());
         casExternalRestClient = mock(CasExternalRestClient.class);
-        handler.setCasExternalRestClient(casExternalRestClient);
+        val utils = new Utils(null, 0, null, null);
+        handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils, null);
         credential = new UsernamePasswordCredential(USERNAME, PASSWORD);
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
-        handler.setUtils(utils);
     }
 
     @Test
@@ -75,7 +71,7 @@ public final class UserAuthenticationHandlerTest {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
                 .thenReturn(basicUser(UserStatusEnum.ENABLED));
 
-        final AuthenticationHandlerExecutionResult result = handler.authenticate(credential);
+        val result = handler.authenticate(credential);
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
@@ -104,7 +100,7 @@ public final class UserAuthenticationHandlerTest {
 
     @Test(expected = AccountPasswordMustChangeException.class)
     public void testExpiredPassword() throws GeneralSecurityException, PreventedException {
-        final UserDto user = basicUser(UserStatusEnum.ENABLED);
+        val user = basicUser(UserStatusEnum.ENABLED);
         user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
             .thenReturn(user);
@@ -137,7 +133,7 @@ public final class UserAuthenticationHandlerTest {
     }
 
     private UserDto basicUser(final UserStatusEnum status) {
-        final UserDto user = new UserDto();
+        val user = new UserDto();
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));

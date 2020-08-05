@@ -36,32 +36,30 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
+import org.apereo.cas.ticket.TicketFactory;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.util.io.CommunicationsManager;
+import org.apereo.cas.web.support.WebUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.HierarchicalMessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
+import org.springframework.webflow.execution.Event;
+import org.springframework.webflow.execution.RequestContext;
+
 import fr.gouv.vitamui.cas.pm.PmMessageToSend;
+import fr.gouv.vitamui.cas.pm.PmTransientSessionTicketExpirationPolicyBuilder;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
-import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
-import org.apereo.cas.pm.PasswordManagementService;
-import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
-import org.apereo.cas.util.io.CommunicationsManager;
-import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.HierarchicalMessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
-import org.springframework.webflow.execution.Event;
-import org.springframework.webflow.execution.RequestContext;
-
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
+import lombok.val;
 
 /**
  * Send reset password emails with i18n messages.
@@ -70,52 +68,55 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory
-            .getInstance(I18NSendPasswordResetInstructionsAction.class);
-
-    @Autowired
-    @Qualifier("messageSource")
-    private HierarchicalMessageSource messageSource;
-
-    @Autowired
-    private ProvidersService providersService;
-
-    @Autowired
-    private IdentityProviderHelper identityProviderHelper;
-
-    @Autowired
-    private Utils utils;
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
 
     private final CasConfigurationProperties casProperties;
 
     private final CommunicationsManager communicationsManager;
 
-    @Autowired
-    private JavaMailSender mailSender;
-
     private final PasswordManagementService passwordManagementService;
 
+    private final HierarchicalMessageSource messageSource;
+
+    private final ProvidersService providersService;
+
+    private final IdentityProviderHelper identityProviderHelper;
+
+    private final Utils utils;
+
+    @Value("${theme.vitamui-platform-name:VITAM-UI}")
+    private String vitamuiPlatformName;
+
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
-            final CommunicationsManager communicationsManager,
-            final PasswordManagementService passwordManagementService) {
-        super(casProperties, communicationsManager, passwordManagementService);
+                                                   final CommunicationsManager communicationsManager,
+                                                   final PasswordManagementService passwordManagementService,
+                                                   final TicketRegistry ticketRegistry,
+                                                   final TicketFactory ticketFactory,
+                                                   final HierarchicalMessageSource messageSource,
+                                                   final ProvidersService providersService,
+                                                   final IdentityProviderHelper identityProviderHelper,
+                                                   final Utils utils) {
+        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory);
         this.casProperties = casProperties;
         this.communicationsManager = communicationsManager;
         this.passwordManagementService = passwordManagementService;
+        this.messageSource = messageSource;
+        this.providersService = providersService;
+        this.identityProviderHelper = identityProviderHelper;
+        this.utils = utils;
     }
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
         communicationsManager.validate();
         if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn(
-                    "CAS is unable to send password-reset emails given no settings are defined to account for email servers");
-            return error();
+            return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
         }
-        final PasswordManagementProperties pm = casProperties.getAuthn().getPm();
-        final HttpServletRequest request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
-        // JLE: changed from CAS
+
+        val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        request.removeAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE);
         String username = request.getParameter("username");
+        // added from CAS:
         if (StringUtils.isBlank(username)) {
             // try to get the username from the credentials also (after a password expiration)
             final MutableAttributeMap flowScope = requestContext.getFlowScope();
@@ -125,73 +126,42 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                 username = usernamePasswordCredential.getUsername();
             }
         }
-
         if (StringUtils.isBlank(username)) {
-            LOGGER.warn("No username is provided");
-            return error();
+            LOGGER.warn("No username parameter is provided");
+            return getErrorEvent("username.required", "No username is provided", requestContext);
         }
 
-        // JLE: changed from CAS
-        final String to = passwordManagementService.findEmail(username);
-        if (StringUtils.isBlank(to)) {
+        // changed from CAS:
+        final String email = passwordManagementService.findEmail(username);
+        if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
-        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), to)) {
-            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", to);
+        } else if (!identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email)) {
+            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
             return success();
         }
 
-        final String url = buildPasswordResetUrl(username, passwordManagementService, casProperties);
-
-        LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
-                utils.sanitizePasswordResetUrl(url), pm.getReset().getExpirationMinutes());
-        if (sendPasswordResetEmailToAccount(to, url)) {
-            return success();
+        val service = WebUtils.getService(requestContext);
+        val url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
+        if (StringUtils.isNotBlank(url)) {
+            val pm = casProperties.getAuthn().getPm();
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
+                    pm.getReset().getExpirationMinutes());
+            if (sendPasswordResetEmailToAccount(email, url)) {
+                return success();
+            }
+        } else {
+            LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
-        LOGGER.error("Failed to notify account [{}]", to);
-        return error();
+        LOGGER.error("Failed to notify account [{}]", email);
+        return getErrorEvent("contact.failed", "Failed to send the password reset link to the given email address or phone number", requestContext);
     }
 
     @Override
     protected boolean sendPasswordResetEmailToAccount(final String to, final String url) {
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "", "10", url,
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "", "10", url, vitamuiPlatformName,
                 LocaleContextHolder.getLocale());
-        return htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
-                messageToSend.getSubject(), to, null, null);
-    }
-
-    private boolean htmlEmail(final String text, final String from, final String subject, final String to,
-            final String cc, final String bcc) {
-        try {
-            if (this.mailSender == null || StringUtils.isBlank(text) || StringUtils.isBlank(from)
-                    || StringUtils.isBlank(subject) || StringUtils.isBlank(to)) {
-                LOGGER.warn(
-                        "Could not send email to [{}] because either no address/subject/text is found or email settings are not configured.",
-                        to);
-                return false;
-            }
-
-            final MimeMessage message = this.mailSender.createMimeMessage();
-            final MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setTo(to);
-            message.setContent(text, "text/html; charset=UTF-8");
-            helper.setSubject(subject);
-            helper.setFrom(from);
-            helper.setPriority(1);
-
-            if (StringUtils.isNotBlank(cc)) {
-                helper.setCc(cc);
-            }
-
-            if (StringUtils.isNotBlank(bcc)) {
-                helper.setBcc(bcc);
-            }
-            this.mailSender.send(message);
-            return true;
-        }
-        catch (final Exception ex) {
-            LOGGER.error(ex.getMessage(), ex);
-        }
-        return false;
+        return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(), messageToSend.getSubject(), to, null,
+                null);
     }
 }

@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -410,7 +409,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     }
 
     private void checkEmailDomains(final List<String> emailDomains, final String message) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(emailDomains), message + ": a customer must have emails domains.");
+        Assert.isTrue(emailDomains != null && emailDomains.size() > 0, message + ": a customer must have emails domains.");
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
@@ -420,7 +419,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     }
 
     private void checkEmailDomains(final List<String> emailDomains, final String customerId, final String message) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(emailDomains), message + ": a customer must have emails domains.");
+        Assert.isTrue(emailDomains != null && emailDomains.size() > 0, message + ": a customer must have emails domains.");
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
@@ -432,7 +431,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     }
 
     private void checkOwners(final List<OwnerDto> owners, final String message) {
-        Assert.isTrue(CollectionUtils.isNotEmpty(owners), message + ": a customer must have owners.");
+        Assert.isTrue(owners != null && owners.size() > 0, message + ": a customer must have owners.");
     }
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {

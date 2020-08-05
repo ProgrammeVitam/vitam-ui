@@ -62,7 +62,7 @@ import lombok.ToString;
 public class Operation extends IdDocument {
 
     @NotNull
-    private OperationType type;
+    private String type;
 
     private String author;
 

@@ -1,0 +1,6 @@
+# Task for rsyslog uninstallation
+
+- name: Remove vitamui template
+  file:
+    path: /etc/rsyslog.d/vitamui_transport.conf
+    state: absent

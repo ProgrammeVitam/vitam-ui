@@ -52,8 +52,10 @@ import org.springframework.security.cas.authentication.CasAuthenticationProvider
 import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -108,6 +110,9 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
     @NotNull
     private String casTrustStoreType;
 
+    @Value("${cas.ssl.hostname-verification:true}")
+    protected Boolean hostnameVerification;
+
     @Value("${cas.callback-url}")
     @NotNull
     private String casCallbackUrl;
@@ -159,9 +164,9 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
             if (sslSocketFactory == null) {
                 sslSocketFactory = SSLContext.getDefault().getSocketFactory();
             }
-
+            final HostnameVerifier hostnameVerifier = hostnameVerification ? null : TrustAllHostnameVerifier.INSTANCE;
             final Cas30ServiceTicketValidator validator = new Cas30ServiceTicketValidator(casInternalUrl);
-            validator.setURLConnectionFactory(new TrustedHttpURLConnectionFactory(null, sslSocketFactory));
+            validator.setURLConnectionFactory(new TrustedHttpURLConnectionFactory(hostnameVerifier, sslSocketFactory));
             return validator;
         }
         catch (final Exception e) {
@@ -175,6 +180,7 @@ public abstract class BaseCasSecurityConfigurer extends WebSecurityConfigurerAda
         casAuthenticationFilter.setFilterProcessesUrl("/" + uiPrefix + CALLBACK_ENDPOINT);
         casAuthenticationFilter.setAuthenticationManager(authenticationManager());
         casAuthenticationFilter.setSessionAuthenticationStrategy(new SessionFixationProtectionStrategy());
+        casAuthenticationFilter.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(casExternalUrl));
         return casAuthenticationFilter;
     }
 

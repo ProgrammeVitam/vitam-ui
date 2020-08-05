@@ -47,6 +47,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.xerces.xs.XSModel;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.util.Assert;
+
+import com.thaiopensource.relaxng.translate.Driver;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -59,13 +66,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Result;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.xerces.xs.XSModel;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.util.Assert;
-
-import com.thaiopensource.relaxng.translate.Driver;
 
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
@@ -191,8 +191,9 @@ public class ManifestGenerationHelper {
 
     /**
      * Method allowing to convert an RNG file to an XSD file.
-     * @param rngFileStream Stream of the RNG file.
-     * @param workspacePath
+     *
+     * @param rngFilePath Stream of the RNG file.
+     * @param xsdFilePath
      * @return
      */
     protected static void convertRNGFileToXSDFile(final Path rngFilePath, final Path xsdFilePath) {

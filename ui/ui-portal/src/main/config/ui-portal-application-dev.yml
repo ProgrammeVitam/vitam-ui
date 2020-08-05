@@ -17,12 +17,18 @@ server:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-portal.jks
     key-store-password: changeme
     key-password: changeme
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
 management:
   server:
     address: localhost
     port: 8182
     ssl:
       enabled: false
+
+ui-prefix : ${ui-portal.prefix}
 
 ui-portal:
   #theme-logo: /path/to/logo.png

@@ -1,7 +1,7 @@
 package fr.gouv.vitamui.cucumber.front.steps.portal;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import net.thucydides.core.annotations.Steps;
 
 public class PortalSteps {

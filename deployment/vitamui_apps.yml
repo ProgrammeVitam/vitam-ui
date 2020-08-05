@@ -13,6 +13,8 @@
     password_truststore: "{{ truststores_server }}"
     vitam_cert: "{{ vitam_certs.vitamui }}"
     consul_tags: "iam-internal, api, internal"
+  tags:
+    - iam-internal
 
 - hosts: hosts_vitamui_security_internal
   gather_facts: no
@@ -25,6 +27,8 @@
     password_keystore: "{{ keystores_server_security_internal }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "security-internal, api, internal"
+  tags:
+    - security-internal
 
 # External apps
 - hosts: hosts_vitamui_iam_external
@@ -38,6 +42,8 @@
     password_keystore: "{{ keystores_server_iam_external }}"
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "iam-external, api, external"
+  tags:
+    - iam-external
 
 - hosts: hosts_cas_server
   gather_facts: no
@@ -50,6 +56,8 @@
     password_keystore: "{{ keystores_server_cas_server }}"
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "cas-server, cas, external"
+  tags:
+    - cas-server
 
 #UI
 - hosts: hosts_ui_identity
@@ -63,6 +71,8 @@
     password_keystore: "{{ keystores_server_ui_identity }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-identity, ui"
+  tags:
+    - ui-identity
 
 
 - hosts: hosts_ui_portal
@@ -76,6 +86,8 @@
     password_keystore: "{{ keystores_server_ui_portal }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-portal, ui"
+  tags:
+    - ui-portal
 
 # supposed portlets
 - hosts: hosts_ui_identity_admin
@@ -89,3 +101,5 @@
     password_keystore: "{{ keystores_server_ui_identity_admin }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-identity-admin, ui"
+  tags:
+    - ui-identity-admin

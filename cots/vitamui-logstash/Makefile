@@ -6,8 +6,8 @@
 # Args parsing
 NAME                := logstash
 VERSION             := 0.0.0
-LOGSTASH_VERSION    := 6.4.2
-DEPENDENCIES        := systemd,java-1.8.0-openjdk
+LOGSTASH_VERSION    := 7.6.0
+DEPENDENCIES        := systemd,java-11-openjdk
 
 
 # Src configuration:

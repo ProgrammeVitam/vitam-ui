@@ -2,14 +2,13 @@ package fr.gouv.vitamui.cucumber.back.steps.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import cucumber.api.Transform;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import fr.gouv.vitamui.cucumber.back.transformers.RoleTransformer;
-import fr.gouv.vitamui.cucumber.back.transformers.RolesTransformer;
-import fr.gouv.vitamui.cucumber.back.transformers.TenantTransformer;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.cucumber.common.parametertypes.RoleParameterType;
+import fr.gouv.vitamui.cucumber.common.parametertypes.RolesParameterType;
+import fr.gouv.vitamui.cucumber.common.parametertypes.TenantParameterType;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 
 public class SecuritySteps extends CommonSteps {
 
@@ -131,94 +130,86 @@ public class SecuritySteps extends CommonSteps {
         assertThat(testContext.exception).overridingErrorMessage("Le serveur n'a pas refusé l'accès : aucune exception n'a été levée").isNotNull();
         final String message = testContext.exception.toString();
         assertThat(message).isNotNull();
-        final boolean isInvalidFormatException = message
-                .matches("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create user (.+): group does not exist");
+        final boolean isInvalidFormatException =
+                message.matches("fr.gouv.vitamui.commons.api.exception.InvalidFormatException: Unable to create user (.+): group does not exist");
         final boolean isINotFoundException = message.matches(
                 "fr.gouv.vitamui.commons.api.exception.NotFoundException: Entity not found fr.gouv.vitamui.iam.internal.server.group.domain.Group with id : (.*)");
         assertThat(isInvalidFormatException || isINotFoundException).overridingErrorMessage(
                 "Le serveur a bien refusé l'accès, mais pour une raison inattendue. Le message d'erreur obtenu est le suivant : " + message).isTrue();
     }
 
-    @Given("^l'utilisateur a selectionné le tenant (principal|secondaire) dans l'IHM$")
-    public void le_même_tenant_choisi_dans_l_IHM(@Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        testContext.tenantIHMContext = tenant;
+    @Given("l'utilisateur a selectionné le tenant {tenant} dans l'IHM")
+    public void le_même_tenant_choisi_dans_l_IHM(final TenantParameterType tenant) throws Exception {
+        testContext.tenantIHMContext = tenant.getTenant(testContext);
     }
 
-    @Given("^un utilisateur avec le rôle (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_utilisateur_avec_le_rôle_ROLE_sur_le_tenant_x(@Transform(RoleTransformer.class) final String role,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        testContext.tokenUser = tokenUserTestSystemCustomer(role, tenant);
+    @Given("un utilisateur avec le rôle {role} sur le tenant {tenant}")
+    public void un_utilisateur_avec_le_rôle_ROLE_sur_le_tenant_x(final RoleParameterType role, final TenantParameterType tenant) throws Exception {
+        testContext.tokenUser = tokenUserTestSystemCustomer(role.getData(), tenant.getTenant(testContext));
     }
 
-    @Given("^un utilisateur avec les rôles (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_utilisateur_avec_les_rôles_ROLE_sur_le_tenant_x(@Transform(RolesTransformer.class) final String[] roles,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        testContext.tokenUser = tokenUserTestSystemCustomer(roles, tenant);
+    @Given("un utilisateur avec les rôles {roles} sur le tenant {tenant}")
+    public void un_utilisateur_avec_les_rôles_ROLE_sur_le_tenant_x(final RolesParameterType roles, final TenantParameterType tenant) throws Exception {
+        testContext.tokenUser = tokenUserTestSystemCustomer(roles.getData(), tenant.getTenant(testContext));
     }
 
-    @Given("^un utilisateur sans le rôle (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_utilisateur_sans_le_rôle_ROLE_sur_ce_tenant(@Transform(RoleTransformer.class) final String role,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        testContext.tokenUser = tokenUserNoRole(tenant);
+    @Given("un utilisateur sans le rôle {role} sur le tenant {tenant}")
+    public void un_utilisateur_sans_le_rôle_ROLE_sur_ce_tenant(final RoleParameterType role, final TenantParameterType tenant) throws Exception {
+        testContext.tokenUser = tokenUserNoRole(tenant.getTenant(testContext));
     }
 
-    @Given("^un utilisateur sans les rôles (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_utilisateur_sans_les_rôles_ROLE_sur_ce_tenant(@Transform(RolesTransformer.class) final String[] roles,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        testContext.tokenUser = tokenUserNoRole(tenant);
+    @Given("un utilisateur sans les rôles {roles} sur le tenant {tenant}")
+    public void un_utilisateur_sans_les_rôles_ROLE_sur_ce_tenant(final RolesParameterType roles, final TenantParameterType tenant) throws Exception {
+        testContext.tokenUser = tokenUserNoRole(tenant.getTenant(testContext));
     }
 
-    @Given("^un certificat avec le rôle (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_certificat_avec_le_rôle_ROLE_sur_le_même_tenant(@Transform(RoleTransformer.class) final String role,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        setCertificateContext(false, tenant, role);
+    @Given("un certificat avec le rôle {role} sur le tenant {tenant}")
+    public void un_certificat_avec_le_rôle_ROLE_sur_le_même_tenant(final RoleParameterType role, final TenantParameterType tenant) throws Exception {
+        setCertificateContext(false, tenant.getTenant(testContext), role.getData());
     }
 
-    @Given("^un certificat avec les rôles (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_certificat_avec_les_rôles_ROLE_sur_le_même_tenant(@Transform(RolesTransformer.class) final String[] roles,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        setCertificateContext(false, tenant, roles);
+    @Given("un certificat avec les rôles {roles} sur le tenant {tenant}")
+    public void un_certificat_avec_les_rôles_ROLE_sur_le_même_tenant(final RolesParameterType roles, final TenantParameterType tenant) throws Exception {
+        setCertificateContext(false, tenant.getTenant(testContext), roles.getData());
     }
 
-    @Given("^un certificat sans le rôle (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_certificat_sans_le_rôle_ROLE_FLOWS_sur_le_même_tenant(@Transform(RoleTransformer.class) final String role,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        setCertificateContext(false, tenant, testContext.defaultRole);
+    @Given("un certificat sans le rôle {role} sur le tenant {tenant}")
+    public void un_certificat_sans_le_rôle_ROLE_FLOWS_sur_le_même_tenant(final RoleParameterType role, final TenantParameterType tenant) throws Exception {
+        setCertificateContext(false, tenant.getTenant(testContext), testContext.defaultRole);
     }
 
-    @Given("^un certificat sans les rôles (ROLE_.*) sur le tenant (principal|secondaire)$")
-    public void un_certificat_sans_les_rôles_ROLE_FLOWS_sur_le_même_tenant(@Transform(RolesTransformer.class) final String[] roles,
-            @Transform(TenantTransformer.class) final Integer tenant) throws Exception {
-        setCertificateContext(false, tenant, testContext.defaultRole);
+    @Given("un certificat sans les rôles {roles} sur le tenant {tenant}")
+    public void un_certificat_sans_les_rôles_ROLE_FLOWS_sur_le_même_tenant(final RolesParameterType roles, final TenantParameterType tenant) throws Exception {
+        setCertificateContext(false, tenant.getTenant(testContext), testContext.defaultRole);
     }
 
-    @Given("^un certificat avec le rôle (ROLE_.*) étant fullAccess$")
-    public void un_certificat_avec_le_rôle_ROLE_étant_fullAccess(@Transform(RoleTransformer.class) final String role) throws Exception {
-        setCertificateContext(true, null, role);
+    @Given("un certificat avec le rôle {role} étant fullAccess")
+    public void un_certificat_avec_le_rôle_ROLE_étant_fullAccess(final RoleParameterType role) throws Exception {
+        setCertificateContext(true, null, role.getData());
     }
 
-    @Given("^un certificat avec les rôles (ROLE_.*) étant fullAccess$")
-    public void un_certificat_avec_les_rôles_ROLE_étant_fullAccess(@Transform(RolesTransformer.class) final String[] roles) throws Exception {
-        setCertificateContext(true, null, roles);
+    @Given("un certificat avec les rôles {roles} étant fullAccess")
+    public void un_certificat_avec_les_rôles_ROLE_étant_fullAccess(final RolesParameterType roles) throws Exception {
+        setCertificateContext(true, null, roles.getData());
     }
 
-    @Given("^un certificat sans le rôle (ROLE_.*) étant fullAccess$")
-    public void un_certificat_sans_le_rôle_ROLE_étant_fullAccess(@Transform(RoleTransformer.class) final String role) throws Exception {
+    @Given("un certificat sans le rôle {role} étant fullAccess")
+    public void un_certificat_sans_le_rôle_ROLE_étant_fullAccess(final RoleParameterType role) throws Exception {
         setCertificateContext(true, null, testContext.defaultRole);
     }
 
-    @Given("^un certificat sans les rôles (ROLE_.*) étant fullAccess$")
-    public void un_certificat_sans_les_rôles_ROLE_étant_fullAccess(@Transform(RolesTransformer.class) final String[] roles) throws Exception {
+    @Given("un certificat sans les rôles {roles} étant fullAccess")
+    public void un_certificat_sans_les_rôles_ROLE_étant_fullAccess(final RolesParameterType roles) throws Exception {
         setCertificateContext(true, null, testContext.defaultRole);
     }
 
     private void setCertificateContext(final boolean fullAccess, final Integer tenant, final String role) {
-        setCertificateContext(fullAccess, tenant, new String[] { role });
+        setCertificateContext(fullAccess, tenant, new String[]{role});
     }
 
     private void setCertificateContext(final boolean fullAccess, final Integer tenant, final String[] roles) {
         if (fullAccess == true || tenant == null) {
-            testContext.certificateTenants = new Integer[] {};
+            testContext.certificateTenants = new Integer[]{};
         }
         else {
             testContext.certificateTenants = new Integer[] { tenant };

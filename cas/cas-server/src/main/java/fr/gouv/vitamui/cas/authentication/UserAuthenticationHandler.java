@@ -51,71 +51,65 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import org.apereo.cas.authentication.*;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.exceptions.AccountDisabledException;
 import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
 import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.services.ServicesManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.webflow.context.ExternalContext;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
-import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
+
+import lombok.val;
 
 /**
  * Authentication handler to check the username/password on the IAM API.
  *
  *
  */
-@Getter
-@Setter
 public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserAuthenticationHandler.class);
 
-    @Autowired
-    private CasExternalRestClient casExternalRestClient;
+    private final CasExternalRestClient casExternalRestClient;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Value("${ip.header}")
-    private String ipHeaderName;
+    private final String ipHeaderName;
 
-    public UserAuthenticationHandler(final ServicesManager servicesManager, final PrincipalFactory principalFactory) {
+    public UserAuthenticationHandler(final ServicesManager servicesManager, final PrincipalFactory principalFactory,
+                                     final CasExternalRestClient casExternalRestClient, final Utils utils, final String ipHeaderName) {
         super(UserAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
+        this.casExternalRestClient = casExternalRestClient;
+        this.utils = utils;
+        this.ipHeaderName = ipHeaderName;
     }
 
     @Override
     protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(final UsernamePasswordCredential transformedCredential,
                                                                                         final String originalPassword) throws GeneralSecurityException, PreventedException {
 
-        final String username = transformedCredential.getUsername().toLowerCase();
-        final RequestContext requestContext = RequestContextHolder.getRequestContext();
+        val username = transformedCredential.getUsername().toLowerCase();
+        val requestContext = RequestContextHolder.getRequestContext();
         String surrogate = null;
         String ip = null;
         if (requestContext != null) {
-            final MutableAttributeMap<Object> flow = requestContext.getFlowScope();
+            val flow = requestContext.getFlowScope();
             if (flow != null) {
-                final Object credential = flow.get("credential");
+                val credential = flow.get("credential");
                 if (credential instanceof SurrogateUsernamePasswordCredential) {
                     surrogate = ((SurrogateUsernamePasswordCredential) credential).getSurrogateUsername();
                 }
             }
-            final ExternalContext externalContext = requestContext.getExternalContext();
+            val externalContext = requestContext.getExternalContext();
             if (externalContext != null) {
                 ip = ((HttpServletRequest) externalContext.getNativeRequest()).getHeader(ipHeaderName);
             }
@@ -123,9 +117,9 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
 
         LOGGER.debug("Authenticating username: {} / surrogate: {} / IP: {}", username, surrogate, ip);
 
-        final ExternalHttpContext context = utils.buildContext(username);
+        val context = utils.buildContext(username);
         try {
-            final UserDto user = casExternalRestClient.login(context, username, originalPassword, surrogate, ip);
+            val user = casExternalRestClient.login(context, username, originalPassword, surrogate, ip);
             if (user != null) {
                 if (mustChangePassword(user)) {
                     LOGGER.info("Password expired for: {}", username);
@@ -162,7 +156,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     }
 
     protected boolean mustChangePassword(final UserDto user) {
-        final OffsetDateTime pwdExpirationDate = user.getPasswordExpirationDate();
+        val pwdExpirationDate = user.getPasswordExpirationDate();
         return (pwdExpirationDate == null || pwdExpirationDate.isBefore(OffsetDateTime.now()));
     }
 }

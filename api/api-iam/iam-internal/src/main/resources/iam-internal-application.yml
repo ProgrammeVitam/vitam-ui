@@ -20,7 +20,7 @@ management:
     jmx:
       domain: ${server-identity.identityRole}
       unique-names: true
-    web.exposure.include: info,health,prometheus
+    web.exposure.include: '*'
   endpoint:
     health:
       show-details: always

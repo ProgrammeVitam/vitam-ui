@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -56,24 +57,31 @@ import org.apereo.cas.authentication.principal.SimpleWebApplicationServiceImpl;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
-import org.apereo.cas.logout.LogoutRequest;
+import org.apereo.cas.logout.slo.SingleLogoutRequest;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.InvalidTicketException;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.TicketGrantingTicketImpl;
-import org.apereo.cas.ticket.support.NeverExpiresExpirationPolicy;
+import org.apereo.cas.ticket.expiration.NeverExpiresExpirationPolicy;
+import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.FrontChannelLogoutAction;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
-import org.apereo.cas.web.support.CookieRetrievingCookieGenerator;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
+import javax.xml.bind.DatatypeConverter;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -107,9 +115,18 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
     @Autowired
     private FrontChannelLogoutAction frontChannelLogoutAction;
 
+    @Value("${theme.vitam-logo:#{null}}")
+    private String vitamLogoPath;
+
+    @Value("${theme.vitamui-logo-large:#{null}}")
+    private String vitamuiLargeLogoPath;
+
+    @Value("${theme.vitamui-favicon:#{null}}")
+    private String vitamuiFaviconPath;
+
     public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
-                                         final CookieRetrievingCookieGenerator ticketGrantingTicketCookieGenerator,
-                                         final CookieRetrievingCookieGenerator warnCookieGenerator,
+                                         final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+                                         final CasCookieBuilder warnCookieGenerator,
                                          final LogoutProperties logoutProperties) {
         super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties);
     }
@@ -130,9 +147,10 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 if (ticket != null) {
 
                     final Principal principal = ticket.getAuthentication().getPrincipal();
-                    final String authToken = (String) utils.getAttributeValue(principal, AUTHTOKEN_ATTRIBUTE);
-                    final String principalEmail = (String) utils.getAttributeValue(principal, EMAIL_ATTRIBUTE);
-                    final String emailSuperUser = (String) utils.getAttributeValue(principal, SUPER_USER_ATTRIBUTE);
+                    final Map<String, List<Object>> attributes = principal.getAttributes();
+                    final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
+                    final String principalEmail = (String) utils.getAttributeValue(attributes, EMAIL_ATTRIBUTE);
+                    final String emailSuperUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
 
                     final ExternalHttpContext externalHttpContext;
                     if (StringUtils.isNotBlank(emailSuperUser)) {
@@ -158,12 +176,12 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         // fallback cases:
         // no CAS cookie -> general logout
         if (tgtId == null) {
-            final List<LogoutRequest> logoutRequests = performGeneralLogout("nocookie");
+            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout("nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
 
             // no ticket or expired -> general logout
         } else if (ticket == null || ticket.isExpired()) {
-            final List<LogoutRequest> logoutRequests = performGeneralLogout(tgtId);
+            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout(tgtId);
             WebUtils.putLogoutRequests(context, logoutRequests);
         }
 
@@ -173,10 +191,43 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             frontChannelLogoutAction.doExecute(context);
         }
 
+        final MutableAttributeMap<Object> flowScope = context.getFlowScope();
+        if (vitamLogoPath != null) {
+            try {
+                final Path logoFile = Paths.get(vitamLogoPath);
+                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
+                flowScope.put(Constants.VITAM_LOGO, logo);
+            }
+            catch (final IOException e) {
+                LOGGER.warn("Can't find vitam logo", e);
+            }
+        }
+        if (vitamuiLargeLogoPath != null) {
+            try {
+                final Path logoFile = Paths.get(vitamuiLargeLogoPath);
+                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
+                flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
+            }
+            catch (final IOException e) {
+                LOGGER.warn("Can't find vitam ui large logo", e);
+            }
+        }
+
+        if (vitamuiFaviconPath != null) {
+            try {
+                final Path faviconFile = Paths.get(vitamuiFaviconPath);
+                final String favicon = DatatypeConverter.printBase64Binary(Files.readAllBytes(faviconFile));
+                flowScope.put(Constants.VITAM_UI_FAVICON, favicon);
+            }
+            catch (final IOException e) {
+                LOGGER.warn("Can't find vitam ui favicon", e);
+            }
+        }
+
         return event;
     }
 
-    protected List<LogoutRequest> performGeneralLogout(final String tgtId) {
+    protected List<SingleLogoutRequest> performGeneralLogout(final String tgtId) {
         try {
 
             final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
@@ -193,7 +244,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
             final Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
             int i = 1;
             for (final RegisteredService registeredService : registeredServices) {
-                final URL logoutUrl = registeredService.getLogoutUrl();
+                final String logoutUrl = registeredService.getLogoutUrl();
                 if (logoutUrl != null) {
                     final String serviceId = logoutUrl.toString();
                     final String fakeSt = "ST-fake-" + i;

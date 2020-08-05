@@ -44,17 +44,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
-import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
-import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
-import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
@@ -73,39 +65,11 @@ public class MongoConfig {
     MongoDbFactory mongoDbFactory;
 
     @Bean
-    public MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoDbFactory, getDefaultMongoConverter());
-    }
-
-    @Bean
-    public TransactionTemplate transactionTemplate(MongoTransactionManager mongoTransactionManager) {
-        return new TransactionTemplate(mongoTransactionManager);
-    }
-
-    @Bean
-    public MappingMongoConverter getDefaultMongoConverter() {
-        final MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory),
-                new MongoMappingContext());
-        converter.setCustomConversions(customConversions());
-        return converter;
-    }
-
-    @Bean
-    public CustomConversions customConversions() {
-        final List<Converter<?, ?>> converterList = new ArrayList<>();
-        converterList.add(new OffsetDateTimeToStringConverter());
-        converterList.add(new StringToOffsetDateTimeConverter());
-        return new MongoCustomConversions(converterList);
-    }
-
-    @Bean
-    public ValidatingMongoEventListener validatingMongoEventListener() {
-        return new ValidatingMongoEventListener(validator());
-    }
-
-    @Bean
-    public LocalValidatorFactoryBean validator() {
-        return new LocalValidatorFactoryBean();
+    public MongoCustomConversions customConversions() {
+        final List<Converter<?, ?>> converters = new ArrayList<Converter<?, ?>>();
+        converters.add(new OffsetDateTimeToStringConverter());
+        converters.add(new StringToOffsetDateTimeConverter());
+        return new MongoCustomConversions(converters);
     }
 
     @Bean

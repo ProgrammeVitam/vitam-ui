@@ -49,7 +49,6 @@ import javax.validation.ValidatorFactory;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OperationDto;
-import fr.gouv.vitamui.commons.api.enums.OperationType;
 import fr.gouv.vitamui.commons.mongo.converter.OperationConverter;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.dao.OperationRepository;
@@ -60,7 +59,7 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
 
     protected final OperationRepository<Operation> repository;
 
-    private final Map<OperationType, Converter> customConverters = new HashMap<>();
+    private final Map<String, Converter> customConverters = new HashMap<>();
 
     private final Converter<OperationDto, Operation> defaultConverter;
 
@@ -126,7 +125,7 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
         return getConverter(dto.getType()).convertDtoToEntity(dto);
     }
 
-    protected Converter<OperationDto, Operation> getConverter(final OperationType type) {
+    protected Converter<OperationDto, Operation> getConverter(final String type) {
         if (!customConverters.containsKey(type)) {
             return defaultConverter;
         }
@@ -138,7 +137,7 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
      * @param type Type of the operation.
      * @param converter Converter linked to the type.
      */
-    public void addConverter(final OperationType type, final Converter<? extends OperationDto, ? extends Operation> converter) {
+    public void addConverter(final String type, final Converter<? extends OperationDto, ? extends Operation> converter) {
         customConverters.put(type, converter);
     }
 

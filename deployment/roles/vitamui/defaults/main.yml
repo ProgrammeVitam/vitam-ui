@@ -2,7 +2,7 @@
 
 # defaults file for common
 memory_opts: "-Xms512m -Xmx512m"
-gc_opts: "-Xloggc:{{ vitamui_folder_log }}/gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime"
+gc_opts: ""
 java_opts: ""
 java_args: ""
 service_name: "{{ vitamui_struct.service_name }}"

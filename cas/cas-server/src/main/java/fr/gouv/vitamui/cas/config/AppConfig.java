@@ -36,29 +36,27 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import org.apereo.cas.CipherExecutor;
+import fr.gouv.vitamui.cas.authentication.*;
+import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
+import lombok.SneakyThrows;
+import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
-import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
-import org.apereo.cas.authentication.AuthenticationHandler;
-import org.apereo.cas.authentication.AuthenticationMetaDataPopulator;
-import org.apereo.cas.authentication.AuthenticationPostProcessor;
+import org.apereo.cas.authentication.*;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.model.support.oauth.OAuthAccessTokenProperties;
-import org.apereo.cas.configuration.support.Beans;
+import org.apereo.cas.pm.PasswordHistoryService;
+import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
-import org.apereo.cas.ticket.ExpirationPolicy;
-import org.apereo.cas.ticket.TicketCatalog;
-import org.apereo.cas.ticket.TicketDefinition;
-import org.apereo.cas.ticket.TicketGrantingTicketFactory;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
-import org.apereo.cas.ticket.accesstoken.AccessTokenFactory;
-import org.apereo.cas.ticket.accesstoken.AccessTokenImpl;
-import org.apereo.cas.ticket.accesstoken.OAuthAccessTokenExpirationPolicy;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
+import org.apereo.cas.ticket.*;
+import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
+import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
+import org.apereo.cas.ticket.registry.TicketRegistry;
+import org.apereo.cas.token.JwtBuilder;
+import org.apereo.cas.util.crypto.CipherExecutor;
+import org.pac4j.core.context.session.SessionStore;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,18 +69,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
-import fr.gouv.vitamui.cas.authentication.SurrogatedUserPrincipalFactory;
-import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
-import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
-import fr.gouv.vitamui.cas.metrics.TimedAspect;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.ticket.CustomAccessTokenFactory;
+import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
@@ -94,7 +82,7 @@ import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
-import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -107,6 +95,9 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
+
+    @Autowired
+    private CasConfigurationProperties casProperties;
 
     @Autowired
     @Qualifier("servicesManager")
@@ -147,13 +138,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private AuditableExecution surrogateEligibilityAuditableExecution;
 
     @Autowired
-    @Qualifier("pac4jDelegatedSessionCookieManager")
-    private DelegatedSessionCookieManager delegatedSessionCookieManager;
-
-    @Autowired
-    private DelegatedClientWebflowManager delegatedClientWebflowManager;
-
-    @Autowired
     private RestTemplateBuilder restTemplateBuilder;
 
     @Autowired
@@ -161,10 +145,41 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private UniqueTicketIdGenerator ticketGrantingTicketUniqueIdGenerator;
 
     @Autowired
-    private ExpirationPolicy grantingTicketExpirationPolicy;
+    @Qualifier("accessTokenJwtBuilder")
+    private JwtBuilder accessTokenJwtBuilder;
+
+    @Autowired
+    @Qualifier("grantingTicketExpirationPolicy")
+    private ObjectProvider<ExpirationPolicyBuilder> grantingTicketExpirationPolicy;
 
     @Autowired
     private CipherExecutor protocolTicketCipherExecutor;
+
+    @Autowired
+    @Qualifier("accessTokenExpirationPolicy")
+    private ExpirationPolicyBuilder accessTokenExpirationPolicy;
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    @Qualifier("delegatedClientDistributedSessionStore")
+    private SessionStore delegatedClientDistributedSessionStore;
+
+    @Autowired
+    private TicketRegistry ticketRegistry;
+
+    @Autowired
+    @Qualifier("centralAuthenticationService")
+    private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
+
+    @Autowired
+    @Qualifier("passwordManagementCipherExecutor")
+    private CipherExecutor passwordManagementCipherExecutor;
+
+    @Autowired
+    @Qualifier("passwordHistoryService")
+    private PasswordHistoryService passwordHistoryService;
 
     @Value("${token.api.cas}")
     private String tokenApiCas;
@@ -172,40 +187,44 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${api.token.ttl}")
     private Integer apiTokenTtl;
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    @Value("${ip.header}")
+    private String ipHeaderName;
+
+    @Value("${vitamui.cas.tenant.identifier}")
+    private Integer casTenantIdentifier;
+
+    @Value("${vitamui.cas.identity}")
+    private String casIdentity;
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
-        return new UserAuthenticationHandler(servicesManager, principalFactory);
+        return new UserAuthenticationHandler(servicesManager, principalFactory, casRestClient(), utils(), ipHeaderName);
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
-        final ObjectMapper mapperDontFailOnUnknowProperties = new ObjectMapper();
-        mapperDontFailOnUnknowProperties.registerModule(new JavaTimeModule());
-        mapperDontFailOnUnknowProperties.registerModule(new Jdk8Module());
-        mapperDontFailOnUnknowProperties.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapperDontFailOnUnknowProperties;
+    @RefreshScope
+    public PrincipalResolver surrogatePrincipalResolver() {
+        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
+            identityProviderHelper(), providersService());
     }
 
     @Bean
-    public UserPrincipalResolver userResolver() {
-        return new UserPrincipalResolver();
+    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler() {
+        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler(), surrogatePrincipalResolver());
     }
 
     @Bean
-    public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(final UserAuthenticationHandler userAuthenticationHandler,
-            final UserPrincipalResolver userResolver) {
-        return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(userAuthenticationHandler, userResolver);
-    }
-
-    @Bean
-    public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer(final UserPrincipalResolver userResolver) {
+    public AuthenticationEventExecutionPlanConfigurer pac4jAuthenticationEventExecutionPlanConfigurer() {
         return plan -> {
-            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, userResolver);
-            plan.registerMetadataPopulator(clientAuthenticationMetaDataPopulator);
+            plan.registerAuthenticationHandlerWithPrincipalResolver(clientAuthenticationHandler, surrogatePrincipalResolver());
+            plan.registerAuthenticationMetadataPopulator(clientAuthenticationMetaDataPopulator);
         };
+    }
+
+    @Bean
+    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
+        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
+            registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
     }
 
     @Bean
@@ -235,58 +254,48 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public PrincipalFactory surrogatePrincipalFactory() {
-        return new SurrogatedUserPrincipalFactory();
-    }
-
-    @Bean
-    public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
-        return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-                registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution);
-    }
-
-    @Bean
     public IdentityProviderHelper identityProviderHelper() {
         return new IdentityProviderHelper();
     }
 
     @Bean
     public Utils utils() {
-        return new Utils(casRestClient(), delegatedClientWebflowManager, delegatedSessionCookieManager, tokenApiCas);
+        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender);
     }
 
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
-        return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy, protocolTicketCipherExecutor);
-    }
-
-    @Bean
-    public TimedAspect timedAspect(@Autowired final MeterRegistry meterRegistry) {
-        return new TimedAspect(meterRegistry);
-    }
-
-    @Bean
-    public ExpirationPolicy accessTokenExpirationPolicy() {
-        final OAuthAccessTokenProperties oauth = casProperties.getAuthn().getOauth().getAccessToken();
-        if (casProperties.getLogout().isRemoveDescendantTickets()) {
-            return new OAuthAccessTokenExpirationPolicy(Beans.newDuration(oauth.getMaxTimeToLiveInSeconds()).getSeconds(),
-                    Beans.newDuration(oauth.getTimeToKillInSeconds()).getSeconds());
-        }
-        return new OAuthAccessTokenExpirationPolicy.OAuthAccessTokenSovereignExpirationPolicy(Beans.newDuration(oauth.getMaxTimeToLiveInSeconds()).getSeconds(),
-                Beans.newDuration(oauth.getTimeToKillInSeconds()).getSeconds());
+        return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
+            protocolTicketCipherExecutor);
     }
 
     @Bean
     @RefreshScope
-    public AccessTokenFactory defaultAccessTokenFactory() {
-        return new CustomAccessTokenFactory(accessTokenExpirationPolicy());
+    public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
+        return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy,
+            accessTokenJwtBuilder, servicesManager);
     }
 
     @Override
     public void configureTicketCatalog(final TicketCatalog plan) {
-        final TicketDefinition metadata = buildTicketDefinition(plan, "TOK", AccessTokenImpl.class, Ordered.HIGHEST_PRECEDENCE);
+        final TicketDefinition metadata = buildTicketDefinition(plan, "TOK", OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
         metadata.getProperties().setStorageName("oauthAccessTokensCache");
         metadata.getProperties().setStorageTimeout(apiTokenTtl);
         registerTicketDefinition(plan, metadata);
+    }
+
+    @RefreshScope
+    @Bean
+    @SneakyThrows
+    public SurrogateAuthenticationService surrogateAuthenticationService() {
+        return new IamSurrogateAuthenticationService(casRestClient(), servicesManager, utils());
+    }
+
+    @RefreshScope
+    @Bean
+    public PasswordManagementService passwordChangeService() {
+        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor,
+            casProperties.getServer().getPrefix(), passwordHistoryService, casRestClient(), providersService(),
+            identityProviderHelper(), centralAuthenticationService.getObject(), utils(), ticketRegistry);
     }
 }

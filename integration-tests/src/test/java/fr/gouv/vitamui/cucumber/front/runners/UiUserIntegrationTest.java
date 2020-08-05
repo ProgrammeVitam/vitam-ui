@@ -2,21 +2,26 @@ package fr.gouv.vitamui.cucumber.front.runners;
 
 import org.junit.runner.RunWith;
 
-import cucumber.api.CucumberOptions;
+import io.cucumber.junit.CucumberOptions;
 import net.serenitybdd.cucumber.CucumberWithSerenity;
 
 /**
  * Test UI Portal.
- *
- *
  */
 
 @RunWith(CucumberWithSerenity.class)
-@CucumberOptions(features = "src/test/resources/features/front/user", glue = {
-        "fr.gouv.vitamui.cucumber.front.steps.user",
-        "fr.gouv.vitamui.cucumber.front.steps.common"},
-         monochrome = true)
-
+//@formatter:off
+@CucumberOptions(
+        plugin = { "pretty" },
+        features = "src/test/resources/features/front/user",
+        glue = {
+            "fr.gouv.vitamui.cucumber.front.steps.user",
+            "fr.gouv.vitamui.cucumber.front.steps.common",
+            "fr.gouv.vitamui.cucumber.common"
+        },
+        monochrome = true
+)
+//@formatter:on
 public class UiUserIntegrationTest {
 
 }

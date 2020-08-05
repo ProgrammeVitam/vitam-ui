@@ -16,11 +16,11 @@
 ##
 ################################################################
 
-## GC configuration
--XX:+UseParNewGC
--XX:+UseConcMarkSweepGC
--XX:CMSInitiatingOccupancyFraction=75
--XX:+UseCMSInitiatingOccupancyOnly
+## G1GC Configuration
+# NOTE: G1 GC is only supported on JDK version 10 or later
+-XX:+UseG1GC
+-XX:G1ReservePercent=25
+-XX:InitiatingHeapOccupancyPercent=30
 
 ## Locale
 # Set the locale language
@@ -35,7 +35,7 @@
 ## basic
 
 # set the I/O temp directory
-#-Djava.io.tmpdir=$HOME
+-Djava.io.tmpdir={{ logstash_tmp_dir }}
 
 # set to headless, just in case
 -Djava.awt.headless=true
@@ -50,6 +50,8 @@
 -Djruby.compile.invokedynamic=true
 # Force Compilation
 -Djruby.jit.threshold=0
+# Make sure joni regexp interruptability is enabled
+-Djruby.regexp.interruptible=true
 
 ## heap dumps
 
@@ -61,17 +63,5 @@
 # ensure the directory exists and has sufficient space
 #-XX:HeapDumpPath=${LOGSTASH_HOME}/heapdump.hprof
 
-## GC logging
-#-XX:+PrintGCDetails
-#-XX:+PrintGCTimeStamps
-#-XX:+PrintGCDateStamps
-#-XX:+PrintClassHistogram
-#-XX:+PrintTenuringDistribution
-#-XX:+PrintGCApplicationStoppedTime
-
-# log GC status to a file with time stamps
-# ensure the directory exists
-#-Xloggc:${LS_GC_LOG_FILE}
-
-# Entropy source for randomness
--Djava.security.egd=file:/dev/urandom
+# JDK 9+ GC logging
+-Xlog:gc*,gc+age=trace,safepoint:file={{ logstash_log_dir }}/gc.log:utctime,pid,tags:filecount=32,filesize=64m

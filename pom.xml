@@ -43,19 +43,8 @@
     </scm>
 
     <repositories>
-        <repository>
-            <id>vitam</id>
-            <url>${env.SERVICE_NEXUS_URL}/repository/maven-public/</url>
-        </repository>
+        <!-- <id>vitam</id> to be defined in Profiles -->
     </repositories>
-
-    <!--<repositories>
-        <!- - <id>vitam</id> to be defined in Profiles - ->
-        <repository>
-            <id>shibboleth-maven</id>
-            <url>https://build.shibboleth.net/nexus/content/repositories/releases/</url>
-        </repository>
-    </repositories>-->
     <distributionManagement>
         <!-- <id>vitam</id> to be defined in Profiles -->
     </distributionManagement>
@@ -72,77 +61,79 @@
         <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.version>11</java.version>
+        <java.release>11</java.release>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Dependencies version -->
-        <apache.commons.codec.version>1.11</apache.commons.codec.version>
+        <apache.commons.codec.version>1.14</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.16</apache.pdfbox.version>
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
-        <bouncycastle.version>1.60</bouncycastle.version>
-        <cas.version>5.3.8</cas.version>
+        <assertj.version>3.15.0</assertj.version>
+        <bouncycastle.version>1.65</bouncycastle.version>
+        <cas.version>6.1.6</cas.version>
+        <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
         <commons.compress.version>1.20</commons.compress.version>
-        <commons.fileupload.version>1.3.3</commons.fileupload.version>
-        <commons.httpclient.version>3.0</commons.httpclient.version>
+        <commons.fileupload.version>1.4</commons.fileupload.version>
+        <commons.httpclient.version>3.1</commons.httpclient.version>
         <commons.io.version>2.6</commons.io.version>
-        <commons.lang3.version>3.8.1</commons.lang3.version>
-        <commons.text.version>1.4</commons.text.version>
-        <easymock.version>3.4</easymock.version>
-        <embedded.mongo.version>2.1.2</embedded.mongo.version>
-        <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
+        <commons.lang3.version>3.9</commons.lang3.version>
+        <commons.text.version>1.8</commons.text.version>
+        <cucumber.version>5.6.0</cucumber.version>
+        <easymock.version>4.2</easymock.version>
+        <embedded.mongo.version>2.2.0</embedded.mongo.version>
+		<fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
-        <javax.el.version.version>3.0.0</javax.el.version.version>
-        <gson.version>2.8.2</gson.version>
-        <guava.version>25.1-jre</guava.version>
-        <hibernate.validator.version>6.1.2.Final</hibernate.validator.version>
-        <http.client.version>4.5.9</http.client.version>
-        <http.core.version>4.4.11</http.core.version>
-        <jackson.version>2.10.2</jackson.version>
+        <gson.version>2.8.6</gson.version>
+        <guava.version>29.0-jre</guava.version>
+        <http.client.version>4.5.12</http.client.version>
+        <http.core.version>4.4.13</http.core.version>
+        <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
+        <jackson.version>2.11.0.rc1</jackson.version>
+        <jakarta.xml.binding.version>2.3.2</jakarta.xml.binding.version>
+        <javax.el.version.version>3.0.1-b06</javax.el.version.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
-        <javax.ws.rs.version>2.0.1</javax.ws.rs.version>
-        <jaxb.version>2.3.0</jaxb.version>
-        <jlibs.version>2.2.2</jlibs.version>
-        <junit.version>4.12</junit.version>
-        <assertj.version>3.15.0</assertj.version>
+        <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
+        <jaxb.version>2.4.0-b180830.0359</jaxb.version>
+        <jaxb.core.version>2.3.0.1</jaxb.core.version>
+        <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
+        <jlibs.version>2.2.3</jlibs.version>
+        <junit.version>4.13</junit.version>
+        <junit.jupiter.version>5.5.0</junit.jupiter.version>
+        <junit.jupiter.platform.version>1.5.0</junit.jupiter.platform.version>
         <jruby.complete.version>1.7.26</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.3</logback.version>
-        <lombok.version>1.18.8</lombok.version>
-        <micrometer.version>1.1.5</micrometer.version>
+        <lombok.version>1.18.12</lombok.version>
+        <micrometer.version>1.3.6</micrometer.version>
+        <mapstruct.version>1.3.0.Final</mapstruct.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
-        <pac4j.version>3.8.3</pac4j.version>
-        <poi.version>3.17</poi.version>
-        <powermock.version>2.0.2</powermock.version>
-        <fop.version>2.4</fop.version>
-        <!-- Temporary fix for Multipart upload issues cf
-        https://github.com/spring-projects/spring-framework/issues/23372
-        https://github.com/reactor/reactor-netty/issues/820
-         -->
-        <reactor.netty.version>0.9.4.RELEASE</reactor.netty.version>
+        <pac4j.version>4.0.0</pac4j.version>
+        <poi.version>4.1.2</poi.version>
+        <powermock.version>2.0.0</powermock.version>
         <selma.version>1.0</selma.version>
-        <serenity.cucumber.version>1.9.7</serenity.cucumber.version>
-        <serenity.maven.plugin>1.9.19</serenity.maven.plugin>
-        <serenity.spring.version>1.9.7</serenity.spring.version>
-        <serenity.version>1.9.19</serenity.version>
-        <slf4j.version>1.7.26</slf4j.version>
-        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
-        <spring.version>5.1.8.RELEASE</spring.version>
-        <spring.cloud.consul.version>2.1.2.RELEASE</spring.cloud.consul.version>
-        <spring.security.version>5.1.5.RELEASE</spring.security.version>
-        <swagger.version>2.8.0</swagger.version>
+        <serenity.cucumber.version>2.2.2</serenity.cucumber.version>
+        <serenity.maven.plugin>2.2.2</serenity.maven.plugin>
+        <serenity.spring.version>2.2.2</serenity.spring.version>
+        <serenity.version>2.2.2</serenity.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <spring.cloud.consul.version>2.2.2.RELEASE</spring.cloud.consul.version>
+        <spring.security.version>5.3.1.RELEASE</spring.security.version>
+        <swagger.version>2.9.2</swagger.version>
         <trang.version>20181222</trang.version>
-        <vitam.version>2.15.3</vitam.version>
-        
-        <xml.apis-version>1.4.01</xml.apis-version>
+        <vitam.version>3.0.1</vitam.version>
+        <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
-        <xom.version>1.2.5</xom.version>
-        <xdocreport.version>2.0.1</xdocreport.version>
-        <xerces.version>2.12.0</xerces.version>
+        <xom.version>1.3.4</xom.version>
+		<xdocreport.version>2.0.2</xdocreport.version>
+		<xerces.version>2.12.0</xerces.version>
 
         <!-- Web Pack -->
         <node.version>v12.4.0</node.version>
@@ -151,11 +142,12 @@
         <!--Plugins version -->
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.asciidoctor.plugin.version>1.5.6</maven.asciidoctor.plugin.version>
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.dependencycheck.version>5.2.2</maven.dependencycheck.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
+        <maven.filtering.plugin.version>1.3</maven.filtering.plugin.version>
         <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
         <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
         <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
@@ -170,9 +162,10 @@
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
-        <maven.surefire.plugin.version>2.21.0</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
         <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
-        <maven.war.plugin.version>2.6</maven.war.plugin.version>
+        <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
+        <maven.assembly.version>3.2.0</maven.assembly.version>
 
         <!-- Profile properties -->
         <angular.additional.test.informations></angular.additional.test.informations>
@@ -184,8 +177,6 @@
         <angular.test.profile></angular.test.profile>
         <!-- we can specify the project name to build -->
         <!-- <angular.build.project></angular.build.project> -->
-        <!--we can choose between 'npm install' & 'npm ci'-->
-        <npm.install.arguments>install</npm.install.arguments>
         <rpm.jar-file>${project.build.finalName}.jar</rpm.jar-file>
         <!-- Put this properties to false sub-module when you want to use profile -->
         <rpm.skip>true</rpm.skip>
@@ -194,9 +185,9 @@
         <swagger.dir>.</swagger.dir>
         <swagger.skip>true</swagger.skip>
         <!--we can choose to build angular project and embedded it in our jar or not-->
-        <webpack.skip>true</webpack.skip>
+        <skipAllFrontend>true</skipAllFrontend>
         <!--we can choose to execute Karma tests or not-->
-        <webpack.test.skip>true</webpack.test.skip>
+        <skipAllFrontendTests>true</skipAllFrontendTests>
 
         <itCoverageAgent></itCoverageAgent>
     </properties>
@@ -378,7 +369,6 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <!--<artifactId>spring-cloud-starter-consul-all</artifactId>-->
                 <artifactId>spring-cloud-starter-consul-discovery</artifactId>
                 <version>${spring.cloud.consul.version}</version>
             </dependency>
@@ -406,6 +396,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-json</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
@@ -438,11 +433,21 @@
                 <artifactId>spring-oxm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
 
             <!-- Security -->
             <dependency>
                 <groupId>org.pac4j</groupId>
-                <artifactId>pac4j-saml</artifactId>
+                <artifactId>pac4j-saml-opensamlv3</artifactId>
                 <version>${pac4j.version}</version>
             </dependency>
             <dependency>
@@ -552,7 +557,12 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
-                <artifactId>logbook-common</artifactId>
+                <artifactId>common-private</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
+            <dependency>
+				<groupId>fr.gouv.vitam</groupId>
+				<artifactId>logbook-common</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
 
@@ -574,28 +584,12 @@
                 <version>${swagger.version}</version>
             </dependency>
 
-            <!-- Hibernate -->
-            <dependency>
-                <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.validator.version}</version>
-            </dependency>
-
             <!-- Utils -->
-            <!-- Temporary fix for Multipart upload issues cf
-            https://github.com/spring-projects/spring-framework/issues/23372
-            https://github.com/reactor/reactor-netty/issues/820
-             -->
-            <dependency>
-                <groupId>io.projectreactor.netty</groupId>
-                <artifactId>reactor-netty</artifactId>
-                <version>${reactor.netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.synchronoss.cloud</groupId>
-                <artifactId>nio-multipart-parser</artifactId>
-                <version>${nio.multipart.parser.version}</version>
-            </dependency>
+			<dependency>
+			    <groupId>org.synchronoss.cloud</groupId>
+			    <artifactId>nio-multipart-parser</artifactId>
+			    <version>${nio.multipart.parser.version}</version>
+			</dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -612,6 +606,12 @@
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
                 <version>${commons.fileupload.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons.beanutils.version}</version>
             </dependency>
 
             <dependency>
@@ -637,6 +637,13 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- Dependency for Lombok-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
 
             <dependency>
@@ -706,6 +713,11 @@
                 <artifactId>jackson-core</artifactId>
                 <version>${jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>commons-httpclient</groupId>
@@ -745,9 +757,25 @@
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-impl</artifactId>
-                <version>${jaxb.version}</version>
+                <artifactId>jaxb-core</artifactId>
+                <version>${jaxb.core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.impl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${jakarta.xml.binding.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${glassfish.jaxb.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>xml-resolver</groupId>
                 <artifactId>xml-resolver</artifactId>
@@ -815,6 +843,18 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>${junit.jupiter.platform.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <dependency>
                 <groupId>org.easymock</groupId>
@@ -848,18 +888,36 @@
 			    <version>${assertj.version}</version>
 			    <scope>test</scope>
 			</dependency>
-            
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${apache.pdfbox.version}</version>
+                <scope>test</scope>
+            </dependency>
 
             <!-- CUCUMBER SERENITY -->
             <dependency>
                 <groupId>net.serenity-bdd</groupId>
                 <artifactId>serenity-core</artifactId>
                 <version>${serenity.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>net.serenity-bdd</groupId>
-                <artifactId>serenity-cucumber</artifactId>
-                <version>${serenity.cucumber.version}</version>
+                <artifactId>serenity-junit</artifactId>
+                <version>${serenity.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-screenplay</artifactId>
+                <version>${serenity.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-screenplay-webdriver</artifactId>
+                <version>${serenity.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -868,6 +926,13 @@
                 <version>${serenity.spring.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>net.serenity-bdd</groupId>
+                <artifactId>serenity-cucumber5</artifactId>
+                <version>${serenity.cucumber.version}</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.github.stefanbirkner</groupId>
                 <artifactId>fake-sftp-server-rule</artifactId>
@@ -1017,6 +1082,13 @@
                         <nonFilteredFileExtension>pem</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.shared</groupId>
+                        <artifactId>maven-filtering</artifactId>
+                        <version>${maven.filtering.plugin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -1029,8 +1101,15 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.compiler.plugin.version}</version>
                     <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -1072,10 +1151,63 @@
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven.project.info.reports.plugin.version}</version>
                 </plugin>
+                
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${maven.frontend.plugin.version}</version>
+                    <configuration>
+                        <workingDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</workingDirectory>
+                        <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
+                        <skip>${skipAllFrontend}</skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>install node and npm</id>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <nodeVersion>${node.version}</nodeVersion>
+                                <npmVersion>${npm.version}</npmVersion>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm install</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>install --loglevel warn</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm run build</id>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <skip>${skipAllFrontend}</skip>
+                                <arguments>run build${angular.build.profile} -- --project=${angular.build.project} --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>npm test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${skipAllFrontendTests}</skip>
+                                <arguments>run test${angular.test.profile} -- --project=${angular.build.project} ${angular.additional.test.informations}</arguments>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1322,7 +1454,7 @@
                                         <argument>USER=vitamui</argument>
                                         <!-- If you want to changes default dependencies (only systemd),
                                         define them as a comma separated list of packages -->
-                                        <argument>DEPENDENCIES=systemd,java-1.8.0-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -1372,7 +1504,20 @@
                 </property>
             </activation>
             <properties>
-                <webpack.test.skip>true</webpack.test.skip>
+                <skipAllFrontendTests>true</skipAllFrontendTests>
+            </properties>
+        </profile>
+
+        <!-- This profile is used to define skipTests value for Karma when -DskipAllFrontend is used during maven process. -->
+        <profile>
+            <id>skipAllFrontendTestsRun</id>
+            <activation>
+                <property>
+                    <name>skipAllFrontend</name>
+                </property>
+            </activation>
+            <properties>
+                <skipAllFrontendTests>true</skipAllFrontendTests>
             </properties>
         </profile>
 

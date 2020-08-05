@@ -1,1 +1,1 @@
-CMD_LINE_ARGS=-jar "/vitamui/app/__NAME__/__JAR_FILE__" $JAVA_OPTS --spring.config.location="/vitamui/conf/__NAME__/application.yml"
+CMD_LINE_ARGS=-jar "/vitamui/app/__NAME__/__JAR_FILE__" $JAVA_OPTS --spring.config.additional-location="/vitamui/conf/__NAME__/application.yml"

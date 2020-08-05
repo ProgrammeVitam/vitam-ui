@@ -17,12 +17,10 @@
         <angular.build.project>identity</angular.build.project>
 		<rpm.skip>false</rpm.skip>
 		<sonar.sources>src/main/java</sonar.sources>
+        <skipAllFrontend>false</skipAllFrontend>
+		<skipAllFrontendTests>false</skipAllFrontendTests>
         <swagger.dir>ui</swagger.dir>
         <swagger.skip>false</swagger.skip>
-		<webpack.skip>false</webpack.skip>
-		<webpack.test.skip>false</webpack.test.skip>
-        <skipTests>false</skipTests>
-        <skipAllFrontend>false</skipAllFrontend>
     </properties>
 
 	<dependencies>
@@ -73,6 +71,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -115,12 +117,6 @@
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>javax.ws.rs-api</artifactId>
-		</dependency>
-
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
 		<!--TEST -->
@@ -199,60 +195,7 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>${maven.frontend.plugin.version}</version>
-                <configuration>
-                    <workingDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</workingDirectory>
-                    <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <nodeVersion>${node.version}</nodeVersion>
-                            <npmVersion>${npm.version}</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <arguments>install --loglevel warn</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <arguments>run build -- --project=identity --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipTests}</skip>
-                            <arguments>run test:conf-ci</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
-
 		</plugins>
 	</build>
 
@@ -287,7 +230,7 @@
                                            If you want to changes default dependencies (only systemd), define them as a
                                             comma separated list of packages
                                         -->
-                                        <argument>DEPENDENCIES=systemd,java-1.8.0-openjdk</argument>
+                                        <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

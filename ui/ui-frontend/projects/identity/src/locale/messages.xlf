@@ -26,7 +26,7 @@
       </trans-unit>
       <trans-unit id="notificationSubrogationActivated" datatype="html">
         <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu&apos;à
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Le mode subrogation est activé pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu&apos;à
       <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: &apos;H&apos;}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: &apos;mm&apos;}}"/>. Veuillez ne pas changer d&apos;application.
     </source>
         <context-group purpose="location">

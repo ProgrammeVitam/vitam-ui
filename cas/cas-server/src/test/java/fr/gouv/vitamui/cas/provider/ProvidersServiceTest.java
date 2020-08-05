@@ -4,13 +4,11 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
-import org.apereo.cas.web.pac4j.DelegatedSessionCookieManager;
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,14 +50,13 @@ public final class ProvidersServiceTest {
     @Before
     public void setUp() {
         service = new ProvidersService();
-        final Clients clients = new Clients();
+        val clients = new Clients();
         service.setClients(clients);
-        final Saml2ClientBuilder builder = mock(Saml2ClientBuilder.class);
+        val builder = mock(Saml2ClientBuilder.class);
         service.setSaml2ClientBuilder(builder);
         restClient = mock(IdentityProviderExternalRestClient.class);
         service.setIdentityProviderExternalRestClient(restClient);
-        final CasExternalRestClient casExternalRestClient = mock(CasExternalRestClient.class);
-        final Utils utils = new Utils(casExternalRestClient, mock(DelegatedClientWebflowManager.class), mock(DelegatedSessionCookieManager.class), null);
+        val utils = new Utils(null, 0, null, null);
         service.setUtils(utils);
 
         provider = new IdentityProviderDto();
@@ -81,10 +78,10 @@ public final class ProvidersServiceTest {
 
         service.loadData();
 
-        final Optional<IdentityProviderDto> missingProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@vitamui.com");
+        val missingProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@vitamui.com");
         assertFalse(missingProvider.isPresent());
 
-        final Optional<IdentityProviderDto> userProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@company.com");
+        val userProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@company.com");
         assertTrue(userProvider.isPresent());
         assertEquals(PROVIDER_ID, userProvider.get().getId());
         assertEquals(saml2Client, ((SamlIdentityProviderDto) userProvider.get()).getSaml2Client());

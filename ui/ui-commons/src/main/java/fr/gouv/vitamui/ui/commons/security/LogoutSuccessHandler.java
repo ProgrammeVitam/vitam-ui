@@ -54,7 +54,7 @@ public class LogoutSuccessHandler extends HttpStatusReturningLogoutSuccessHandle
 
     @Override
     public void onLogoutSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
         // set content because strict MIME type checking is enabled
         response.setContentType("text/html");
         super.onLogoutSuccess(request, response, authentication);

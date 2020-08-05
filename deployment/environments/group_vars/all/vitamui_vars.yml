@@ -60,7 +60,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   identity_admin:
     host: "identity-admin.service.{{ consul_domain }}"
     vitamui_component: "ui-identity-admin"
@@ -99,7 +99,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   portal:
     host: "portal.service.{{ consul_domain }}"
     vitamui_component: "ui-portal"
@@ -148,6 +148,11 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
+    theme:
+      vitamui_platform_name: VITAM-UI
+      vitamui_favicon: "{{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico"
+      vitam_logo: "{{ vitamui_defaults.folder.root_path }}/conf/assets/logo.png"
+      vitamui_logo_large: "{{ vitamui_defaults.folder.root_path }}/conf/assets/logo-large.png"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -156,7 +161,7 @@ vitamui:
       vitamui_level: "INFO"
     # Custom directories linked to the module
     dirs:
-      - "{{ vitam_defaults.folder.root_path }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   iam_external:
     host: "iam-external.service.{{ consul_domain }}"
     vitamui_component: "iam-external"
@@ -206,7 +211,7 @@ vitamui:
     store_name: "cas-server"
     service_name: "vitamui-cas-server"
     port_service: 8001
-    port_admin: 7001 # declared but is useless
+    port_admin: 7001
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -216,9 +221,9 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
-    reset_password_url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+    reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
   security_internal:
-    host: "security-internal.service.{{ consul_domain }}"
+    host: "vitamui-security-internal.service.consul"
     vitamui_component: "security-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-security-internal"
@@ -254,3 +259,4 @@ vitamui_platform_informations:
   theme_colors:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
+  platform_name: VITAM-UI

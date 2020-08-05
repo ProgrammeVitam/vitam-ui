@@ -2,7 +2,7 @@ package fr.gouv.vitamui.cucumber.front.steps.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import cucumber.api.java.en.Then;
+import io.cucumber.java.en.Then;
 import net.thucydides.core.annotations.Steps;
 
 public class UserSteps {

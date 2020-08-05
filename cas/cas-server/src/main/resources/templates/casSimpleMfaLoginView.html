@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <title th:text="#{cas.mfa.simple.pagetitle}"></title>
+</head>
+
+<body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
+<div layout:fragment="content">
+
+    <div class="mfa-login">
+
+        <p class="text1" th:utext="#{screen.mfa.sms.login.text1(${mobile})}"/>
+
+        <div class="information">
+            <div class="bckicon">
+                <span class="icon">i</span>
+            </div>
+            <div>
+                <p class="text2" th:utext="#{screen.mfa.sms.login.text2}"/>
+            </div>
+        </div>
+
+        <form method="post" id="loginForm" th:object="${credential}">
+            <div class="formfields">
+                <div class="textfield">
+                    <input type="text" autofocus class="required" id="token" name="token" size="4" tabindex="1"
+                       autocomplete="off" maxlength="4" />
+                    <div class="error" th:if="${#fields.hasErrors('*')}">
+                        <div>
+                            <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
+                        </div>
+                        <div>
+                            <div class="error-field" th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttonbckgrnd">
+                    <a class="submittoken" th:utext="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
+                </div>
+                <div class="countdown">
+                    <span th:utext="#{screen.mfa.sms.login.countdown}"/>
+                </div>
+            </div>
+            <div>
+                <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+                <input type="hidden" name="geolocation"/>
+                <input type="hidden" name="_eventId" value="submit"/>
+            </div>
+        </form>
+
+        <div class="missingphone">
+            <p class="text3" th:utext="#{screen.mfa.sms.login.text3}"/>
+        </div>
+
+        <form method="post" id="resendCodeForm">
+            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+            <input type="hidden" name="_eventId" value="resend"/>
+            <input type="hidden" name="token" value="ignored"/>
+            <span class="reset1" th:utext="#{screen.mfa.sms.login.resetcode1}" /> <a class="reset2" th:utext="#{screen.mfa.sms.login.resetcode2(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

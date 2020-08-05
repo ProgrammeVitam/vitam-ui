@@ -39,16 +39,16 @@ package fr.gouv.vitamui.iam.common.utils;
 import java.util.Base64;
 import java.util.Optional;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.StringUtils;
-import org.pac4j.core.context.Pac4jConstants;
+import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+
+import javax.validation.constraints.NotNull;
 
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.rest.ErrorsConstants;
@@ -82,7 +82,7 @@ public class Saml2ClientBuilder {
 
                 final byte[] keystore = Base64.getDecoder().decode(keystoreBase64);
 
-                String entityIdUrl = casLoginUrl + "/" + technicalName;
+                final String entityIdUrl = casLoginUrl + "/" + technicalName;
                 final SAML2Configuration saml2Config = new SAML2Configuration(
                         new ByteArrayResource(keystore),
                         keystorePassword,

@@ -29,7 +29,7 @@ public class VitamUILoggerImplWithoutConfigurationTest {
     */
     protected static IMocksControl iMocksControl = EasyMock.createControl();
 
-    @Test(expected = InternalServerException.class)
+    @Test(expected = IllegalAccessError.class)
     public void testMessagePrependWithoutServerIdentity() {
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
 

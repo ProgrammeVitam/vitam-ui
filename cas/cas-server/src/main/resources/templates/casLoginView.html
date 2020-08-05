@@ -5,38 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta charset="UTF-8"/>
-    <title>Vitam-UI</title>
+    <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+    <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}">
     <link th:href="@{/css/cas.css}" rel="stylesheet"/>
 
-    <script type="text/javascript" th:src="@{#{webjars.zxcvbn.js}}"></script>
     <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
     <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
-    <script type="text/javascript" th:src="@{#{webjars.jquerycookie.js}}"></script>
     <script src="//www.google.com/recaptcha/api.js" async defer th:if="${recaptchaSiteKey}"></script>
-    <script th:src="@{#{webjars.bootstrapmin.js}}"></script>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-
-        var trackGeoLocation = /*[[${trackGeoLocation}]]*/ === "true";
-
-        var googleAnalyticsTrackingId = /*[[${googleAnalyticsTrackingId}]]*/;
-
-        if (googleAnalyticsTrackingId != null && googleAnalyticsTrackingId != '') {
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-
-            ga('create', googleAnalyticsTrackingId, 'auto');
-            ga('send', 'pageview');
-        }
-
-        /*]]>*/
-    </script>
 </head>
 <body th:styleappend="${@environment.getProperty('theme.body.style')}">
 
@@ -89,6 +65,7 @@
 	        <div class="form-control" th:if="${!#strings.isEmpty(superUser)}">
 	            <label for="surrogate" th:utext="#{screen.welcome.label.surrogate}"/> <span th:utext="${surrogate}" /><br />
 	            <label for="superUser" th:utext="#{screen.welcome.label.superuser}"/> <span th:utext="${superUser}" /><br />
+                <input type="hidden" id="username" name="username" th:value="${surrogate + ',' + superUser}" />
 
 				<br><br>
                 <div class="error" th:if="${#fields.hasErrors('*')}">
@@ -110,7 +87,7 @@
             <button type="submit" class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
         <p class="helper">Appuyez sur <strong>Entrée</strong> pour valider</p>
-		<button class="back" type="button" th:onclick="|location.href = '@{/login}';|" th:if="${!#strings.isEmpty(superUser)}">
+		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
 			<i class="material-icons">arrow_back</i> Retour
 	    </button>
     </div>

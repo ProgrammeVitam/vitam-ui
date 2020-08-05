@@ -1,0 +1,24 @@
+---
+- name: force java-1.8 is absent
+  package:
+    name: "openjdk-8-jdk-headless"
+    state: absent
+  when: ansible_os_family == "Debian"
+
+- name: force java-1.8.0-openjdk is absent
+  package:
+    name: "java-1.8.0-openjdk"
+    state: absent
+  when: ansible_os_family == "RedHat"
+
+- name: force java-1.8.0-openjdk-headless is absent
+  package:
+    name: "java-1.8.0-openjdk-headless"
+    state: absent
+  when: ansible_os_family == "RedHat"
+
+- name: install java 11 on the machine
+  package:
+    name: "java-11-openjdk-headless"
+    state: present
+  when: ansible_os_family == "RedHat"

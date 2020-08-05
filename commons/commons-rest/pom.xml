@@ -58,14 +58,6 @@
         </dependency>
 
         <!-- UTIL -->
-		<!-- Temporary fix for Multipart upload issues cf
-        https://github.com/spring-projects/spring-framework/issues/23372
-        https://github.com/reactor/reactor-netty/issues/820
-         -->
-		<dependency>
-			<groupId>io.projectreactor.netty</groupId>
-			<artifactId>reactor-netty</artifactId>
-		</dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -129,6 +121,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
             <scope>test</scope>
         </dependency>
 

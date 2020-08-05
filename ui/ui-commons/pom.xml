@@ -15,9 +15,6 @@
 
     <properties>
         <sonar.sources>src/main/java</sonar.sources>
-        <!--<webpack.skip>false</webpack.skip>-->
-		<!--<webpack.test.skip>false</webpack.test.skip>-->
-        <!--<angular.build.project>commons</angular.build.project>-->
     </properties>
 
 	<dependencies>
@@ -33,12 +30,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
     		<scope>provided</scope>
         </dependency>
-
-		<!-- Metrics -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>
 
 		<!-- VITAMUI -->
 		<dependency>
@@ -90,13 +81,6 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<scope>provided</scope>
-		</dependency>
-
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<!-- Testing -->

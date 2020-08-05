@@ -47,7 +47,6 @@ import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
-import fr.gouv.vitamui.cucumber.back.transformers.TenantTransformer;
 import fr.gouv.vitamui.cucumber.common.context.Context;
 import fr.gouv.vitamui.cucumber.common.context.TestContext;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -171,12 +170,10 @@ public abstract class CommonSteps extends BaseIntegration {
 
     protected void setMainTenant(final int mainTenant) {
         testContext.mainTenant = mainTenant;
-        TenantTransformer.mainTenant = mainTenant;
     }
 
     protected void setSecondTenant(final int secondTenant) {
         testContext.otherTenant = secondTenant;
-        TenantTransformer.secondTenant = secondTenant;
     }
 
     protected String tokenUser(final String[] roles, final String customerId, final String email, final String level, final int tenant, final String globalId) {
@@ -254,11 +251,11 @@ public abstract class CommonSteps extends BaseIntegration {
 
     protected ObjectNode buildOperationQuery(final String obId, final String obIdReq, final String evType) {
         final Select select = new Select();
-        BooleanQuery andQuery;
-        CompareQuery obIdQuery;
-        CompareQuery obIdReqQuery;
-        CompareQuery eventTypeQuery;
-        CompareQuery evDateTime;
+        final BooleanQuery andQuery;
+        final CompareQuery obIdQuery;
+        final CompareQuery obIdReqQuery;
+        final CompareQuery eventTypeQuery;
+        final CompareQuery evDateTime;
         try {
             andQuery = QueryHelper.and();
             obIdQuery = QueryHelper.eq("events.obId", obId);
@@ -311,7 +308,7 @@ public abstract class CommonSteps extends BaseIntegration {
         final JsonNode responseJson = getLogbookRestClient(true, null, new String[] { ServicesData.ROLE_LOGBOOKS })
                 .findOperations(getArchiveTenantUserAdminContext(tenantIdentifier), buildOperationQuery(identifier, collectionNames, eventType));
 
-        LogbookOperationsResponseDto response;
+        final LogbookOperationsResponseDto response;
         try {
             response = JsonUtils.treeToValue(responseJson, LogbookOperationsResponseDto.class, false);
         }

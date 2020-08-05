@@ -36,38 +36,38 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.webflow.CustomLoginWebflowConfigurer;
+import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.ticket.ServiceTicket;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
+
+import lombok.val;
 
 /**
  * Select the appropriate redirect action: directly to the service or via the "secure connexion" page.
  *
  *
  */
+@RequiredArgsConstructor
 public class SelectRedirectAction extends AbstractAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SelectRedirectAction.class);
 
-    @Autowired
-    @Qualifier("centralAuthenticationService")
-    private CentralAuthenticationService centralAuthenticationService;
+    private final CentralAuthenticationService centralAuthenticationService;
 
     @Override
     protected Event doExecute(final RequestContext requestContext) {
         boolean isFromNewLogin = false;
 
-        final String stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
+        val stId = WebUtils.getServiceTicketFromRequestScope(requestContext);
         if (stId != null) {
-            final ServiceTicket st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
+            val st = centralAuthenticationService.getTicket(stId, ServiceTicket.class);
             if (st != null) {
                 isFromNewLogin = st.isFromNewLogin();
             }

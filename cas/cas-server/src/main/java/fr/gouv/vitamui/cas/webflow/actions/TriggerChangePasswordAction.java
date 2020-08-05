@@ -40,12 +40,12 @@ import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.apereo.cas.authentication.UsernamePasswordCredential;
+import lombok.RequiredArgsConstructor;
+import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.pm.web.flow.PasswordManagementWebflowConfigurer;
 import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -56,6 +56,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
  *
  *
  */
+@RequiredArgsConstructor
 public class TriggerChangePasswordAction extends AbstractAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TriggerChangePasswordAction.class);
@@ -63,11 +64,9 @@ public class TriggerChangePasswordAction extends AbstractAction {
     public static final String EVENT_ID_CHANGE_PASSWORD = "changePassword";
     public static final String EVENT_ID_CONTINUE = "continue";
 
-    @Autowired
-    private TicketRegistrySupport ticketRegistrySupport;
+    private final TicketRegistrySupport ticketRegistrySupport;
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
     protected Event doExecute(final RequestContext context) {
 
@@ -79,7 +78,7 @@ public class TriggerChangePasswordAction extends AbstractAction {
             // and a specific property: pswdChangePostLogin in the flow
             final RequestContext requestContext = RequestContextHolder.getRequestContext();
             final Principal principal = WebUtils.getPrincipalFromRequestContext(requestContext, ticketRegistrySupport);
-            final String username = (String) utils.getAttributeValue(principal, CommonConstants.EMAIL_ATTRIBUTE);
+            final String username = (String) utils.getAttributeValue(principal.getAttributes(), CommonConstants.EMAIL_ATTRIBUTE);
             final UsernamePasswordCredential credential = new UsernamePasswordCredential(username, null);
             WebUtils.putCredential(requestContext, credential);
             requestContext.getFlowScope().put("pswdChangePostLogin", true);
