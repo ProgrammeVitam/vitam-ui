@@ -87,7 +87,7 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pvitam,rpm,prod -DskipTests -DskipAllFrontend=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND deploy -Pvitam,rpm,webpack -DskipTests -DskipAllFrontend=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
         }
