@@ -208,7 +208,7 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         });
   }
 
-  isThemeColorsFormValid() {
+  private isThemeColorsFormValid(): boolean {
     const value = this.graphicIdentityForm.get('themeColors').value;
     for (const key of Object.keys(value)) {
       if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
@@ -218,7 +218,7 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     return true;
   }
 
-  isGraphicIdentityFormValid() {
+  public isGraphicIdentityFormValid(): boolean {
     return this.isThemeColorsFormValid() &&
     (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
         (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true &&

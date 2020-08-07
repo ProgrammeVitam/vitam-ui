@@ -20,17 +20,17 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
 
   @Input() disabled: boolean;
 
-  colors: { [colorId: string]: string };
+  public colors: { [colorId: string]: string };
 
   public colorForm: FormGroup;
 
-  onTouched: () => void;
+  public onTouched: () => void;
 
-  hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
+  private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
-  baseColors: {[colorId: string]: string};
-  variations: { [colorId: string]: string[] } = {};
-  baseColorsNames: string[];
+  public baseColors: {[colorId: string]: string};
+  public variations: { [colorId: string]: string[] } = {};
+  public baseColorsNames: string[];
 
   constructor(private themeService: ThemeService) {
     this.baseColors = this.themeService.getBaseColors();
@@ -57,11 +57,11 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
   }
 
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
   }
 
-  handleChange(name: string, color: string) {
+  public handleChange(name: string, color: string): void {
     const input = this.colorForm.get(name);
 
     if (input.invalid || input.pending) {
@@ -80,15 +80,15 @@ export class CustomerColorsInputComponent implements ControlValueAccessor, OnIni
     this.themeService.overrideTheme(this.colors, this.themeOverloadSelector);
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.colorForm.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  writeValue(value: {[colorId: string]: string}): void {
+  public writeValue(value: {[colorId: string]: string}): void {
       this.colorForm.setValue(value, {emitEvent: true});
   }
 

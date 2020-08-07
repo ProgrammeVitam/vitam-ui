@@ -1,4 +1,4 @@
-<p>
+<div>
   <vitamui-common-input #colorPickerInput
                         [colorPicker]="color" (colorPickerChange)="handlePicker($event)"
                         (colorPickerOpen)="onPickerOpen()"
@@ -11,4 +11,4 @@
   </vitamui-common-input>
   <span [ngClass]="'input-color-preview ' + colorVariationsClassNames[0]" (click)="openPicker()"></span>
   <span *ngFor="let variation of colorVariationsClassNames.slice(1)" [ngClass]="'input-color-preview ' + variation"></span>
-</p>
+</div>

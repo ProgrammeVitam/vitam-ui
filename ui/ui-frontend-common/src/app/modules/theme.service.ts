@@ -29,9 +29,9 @@ export class ThemeService {
   };
 
   // Theme for current app configuration
-  applicationColorMap;
+  applicationColorMap: {[colorId: string]: string};
 
-  public getBaseColors() {
+  public getBaseColors(): { [p: string]: string } {
     return this.baseColors;
   }
 
@@ -39,7 +39,7 @@ export class ThemeService {
     return Object.keys(this.defaultMap).filter((colorName) => colorName.startsWith(baseName));
   }
 
-  init(appMap) {
+  public init(appMap): void {
     this.applicationColorMap = appMap;
   }
 
@@ -48,7 +48,7 @@ export class ThemeService {
    * Setting base colors (primary, secondary) will return updated variations (primary-light etc..)
    * @param customerColors Entries to override
    */
-  getThemeColors(customerColors: {[colorId: string]: string} = null): {[colorId: string]: string} {
+  public getThemeColors(customerColors: {[colorId: string]: string} = null): {[colorId: string]: string} {
 
     const colors = {};
     for (const key in this.defaultMap) {
@@ -59,16 +59,15 @@ export class ThemeService {
     return colors;
   }
 
-  overrideTheme(customerThemeMap, selector= 'body') {
-      const element: HTMLElement = document.querySelector(selector);
-      const themeColors = this.getThemeColors(customerThemeMap);
-      for (const key in themeColors) {
+  public overrideTheme(customerThemeMap, selector= 'body'): void {
+    const element: HTMLElement = document.querySelector(selector);
+    const themeColors = this.getThemeColors(customerThemeMap);
+    for (const key in themeColors) {
       if (themeColors.hasOwnProperty(key)) {
-          element.style.setProperty('--' + key, themeColors[key]);
-          element.style.setProperty('--' + key + '-rgb', hexToRgbString(themeColors[key]));
+        element.style.setProperty('--' + key, themeColors[key]);
+        element.style.setProperty('--' + key + '-rgb', hexToRgbString(themeColors[key]));
       }
     }
-
   }
 
 }

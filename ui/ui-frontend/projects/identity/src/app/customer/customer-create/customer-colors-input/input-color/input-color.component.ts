@@ -20,17 +20,17 @@ export class InputColorComponent implements ControlValueAccessor, OnInit {
 
   @Input() colorVariationsClassNames: string[];
 
-  hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
+  private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
-  color: string;
+  public color: string;
 
-  colorInput: FormControl;
+  public colorInput: FormControl;
 
   @ViewChild('colorPickerInput', {read: ColorPickerDirective, static: false})
-  colorPicker: ColorPickerDirective;
+  private colorPicker: ColorPickerDirective;
 
 
-  onTouched: () => void;
+  public onTouched: () => void;
 
   constructor() {
     this.colorInput = new FormControl('', [this.hexValidator, Validators.required]);
@@ -39,42 +39,42 @@ export class InputColorComponent implements ControlValueAccessor, OnInit {
     });
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
 
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.colorInput.valueChanges.subscribe(fn);
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  writeValue(color: string): void {
+  public writeValue(color: string): void {
     this.colorInput.setValue(color);
   }
 
 
-  onPickerOpen() {
+  public onPickerOpen(): void {
     if (this.disabled) {
       this.colorPicker.closeDialog();
     }
   }
 
-  openPicker() {
+  public openPicker(): void {
     if ( ! this.disabled) {
       this.colorPicker.openDialog();
     }
   }
 
-  forceHex() {
+  public forceHex(): void {
     if (! this.colorInput.value.startsWith('#')) {
       this.colorInput.setValue('#' + this.colorInput.value);
     }
   }
 
-  handlePicker(pickerValue: string) {
+  public handlePicker(pickerValue: string): void {
 
     // Avoid 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
     let inputValue: string = this.colorInput.value.toUpperCase();

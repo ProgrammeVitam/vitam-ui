@@ -277,7 +277,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         );
   }
 
-  isThemeColorsFormValid() {
+  private isThemeColorsFormValid(): boolean {
     const value = this.form.get('themeColors').value;
     for (const key of Object.keys(value)) {
       if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
