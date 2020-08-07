@@ -44,6 +44,18 @@ ui-identity:
       title: "Paramétrage"
       displayTitle: true
       order: 3
+    referential:
+      title: Référentiels
+      displayTitle: true
+      order: 5
+    opaudit:
+      title: Audits et Opérations
+      displayTitle: true
+      order: 6
+    techadmin:
+      title: Administration Technique
+      displayTitle: true
+      order: 7
     users:
       title: ""
       displayTitle: false

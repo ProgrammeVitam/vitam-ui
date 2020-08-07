@@ -69,7 +69,7 @@ import java.io.InputStream;
 import java.util.Optional;
 
 /**
- * UI Ingest External controller.
+ * UI Ingest External controller
  *
  *
  */
@@ -127,5 +127,4 @@ public class IngestExternalController {
         LOGGER.debug("export atr for ingest with id :{}", id);
         return ingestExternalService.downloadATR(id);
     }
-
 }

@@ -203,6 +203,9 @@ Autre possibilité, Ansible version 2.7.0 doit être installé pour lancer le sc
 * Vérifier que l'installation c'est bien déroulée `ansible --version`
 * Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redémarage soit nécessaire
 
+Pour lancer [VITAM](tools/vitamui-conf-dev/README.md) en mode développement et permettre à VITAMUI d'accéder à ces APIs,
+voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
+
 ### 1 - Démarrage du Mongo VITAMUI
 
 ```
@@ -210,11 +213,7 @@ Autre possibilité, Ansible version 2.7.0 doit être installé pour lancer le sc
 │   ├── docker
 │   │   ├── mongo: './restart_dev.sh'
 
-### 2 démarrage de la plateforme logicielle Vitam
-Pour lancer [VITAM](tools/vitamui-conf-dev/README.md) en mode développement et permettre à VITAMUI d'accéder à ces APIs,
-voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
-
-### 3 - Démarrage du docker smpt4dev
+### 2 - Démarrage du docker smpt4dev
 
 ```
 ├── tools
@@ -222,14 +221,14 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── mail: './start.sh'
 ```
 
-### 4 - Lancement de l'application SpringBoot Security-Internal
+### 3 - Lancement de l'application SpringBoot Security-Internal
 
 ```
 │   ├── api-security
 │   │   ├── security-internal: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-### 5 - Lancement de l'application SpringBoot IAM-Internal
+### 4 - Lancement de l'application SpringBoot IAM-Internal
 
 ```
 ├── api
@@ -237,7 +236,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── iam-internal: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-### 6 - Lancement de l'application SpringBoot IAM-External
+### 5 - Lancement de l'application SpringBoot IAM-External
 
 ```
 ├── api
@@ -246,7 +245,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
                         ou './run.sh'
 ```
 
-### 7 - Lancement de l'application SpringBoot Ingest-Internal
+### 6 - Lancement de l'application SpringBoot Ingest-Internal
 
 ```
 ├── api
@@ -254,7 +253,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── ingest-internal: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-### 8 - Lancement de l'application SpringBoot Ingest-External
+### 7 - Lancement de l'application SpringBoot Ingest-External
 
 ```
 ├── api
@@ -262,8 +261,7 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 │   │   ├── ingest-external: 'mvn clean spring-boot:run' ou './run.sh'
 ```
 
-### 9 - Lancement de l'application CAS Server. La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
-
+### 8 - Lancement de l'application CAS Server. La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
 **CAS-Server dépend de security-internal, iam-internal & iam-external**
 
 ```
@@ -273,42 +271,42 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 
 ## Scénario 1 : utilisation en dev
 
-### 10a - Lancement de l'application SpringBoot correspondant au back de UI-Portal
+### 9a - Lancement de l'application SpringBoot correspondant au back de UI-Portal
 
 ```
 └── ui
     └── ui-portal: 'mvn clean spring-boot:run'
 ```
 
-### 10b - Lancement de l'application Angular UI-Portal
+### 9b - Lancement de l'application Angular UI-Portal
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:portal'
 ```
 
-### 11a - Lancement de l'application SpringBoot correspondant au back de UI-Identity
+### 10a - Lancement de l'application SpringBoot correspondant au back de UI-Identity
 
 ```
 └── ui
     └── ui-identity: 'mvn clean spring-boot:run'
 ```
 
-### 11b - Lancement de l'application Angular UI-Identity
+### 10b - Lancement de l'application Angular UI-Identity
 
 ```
 └── ui
     ├── ui-frontend: 'npm run start:identity'
 ```
 
-### 12a - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
+### 11a - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
 
 ```
 └── ui
     └── ui-ingest: 'mvn clean spring-boot:run'
 ```
 
-### 12b - Lancement de l'application Angular UI-Ingest
+### 11b - Lancement de l'application Angular UI-Ingest
 
 ```
 └── ui
@@ -319,49 +317,43 @@ voir la [configuration](tools/vitamui-conf-dev/README.md) suivante.
 **Attention les JAR doivent contenir les pages et scripts de la partie UI Frontend généré avec ng build.**
 
 
-### 13 - Lancement de l'application SpringBoot correspondant au back de UI-Portal
+### 12 - Lancement de l'application SpringBoot correspondant au back de UI-Portal
 
 ```
 └── ui
     └── ui-portal: './run.sh'
 ```
 
-### 14 - Lancement de l'application SpringBoot correspondant au back de UI-Identity
+### 13 - Lancement de l'application SpringBoot correspondant au back de UI-Identity
 
 ```
 └── ui
     └── ui-identity : './run.sh'
 ```
 
-### 15 - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
+### 14 - Lancement de l'application SpringBoot correspondant au back de UI-Ingest
 
 ```
 └── ui
     └── ui-ingest : './run.sh'
 ```
 
-### 16. Les certificats sont auso-signés, il faut accepter les certificats dans le navigateur pour :
+### 15. Les certificats sont auso-signés, il faut accepter les certificats dans le navigateur pour :
 
 **Attention : sans cette étape, le logout sur toutes les applications par CAS ne fonctionne pas**
 
 UI-Frontend
-
 * https://dev.vitamui.com:4200
-
 * https://dev.vitamui.com:4201/user
-
-* https://dev-ingest.vitamui.com:4202
+* https://dev-vitamui.com:4208
 
 Ui-Back
-
 * https://dev.vitamui.com:9000/
-
 * https://dev.vitamui.com:9001/
+* https://dev.vitamui.com:9008/
 
-* https://dev-ingest.vitamui.com:9008/
-
-### 17. Se connecter sur le portail via
+### 16. Se connecter sur le portail via
 * https://dev.vitamui.com:4200
 
-### 18. Se connecter sur la page de réception des mails smpt4dev via
+### 17. Se connecter sur la page de réception des mails smpt4dev via
 * http://localhost:3000/

@@ -60,7 +60,6 @@ import java.util.stream.Collectors;
 /**
  * The service to create vitam ingest.
  *
- *
  */
 @Getter
 @Setter

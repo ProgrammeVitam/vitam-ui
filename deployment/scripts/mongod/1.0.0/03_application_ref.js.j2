@@ -123,17 +123,3 @@ db.applications.insert({
     "tooltip": "Consulter mes informations, Choisir la langue de l'interface",
     "target": "_self"
 });
-
-db.applications.insert({
-    "identifier" : "INGEST_APP",
-    "url": "https://{{ vitamui_services.ui_ingest.server_name }}/ingest",
-    "icon": "vitamui-icon vitamui-icon-archive-ingest",
-    "name": "Dépot et suivi des versements",
-    "category": "ingests",
-    "position": NumberInt(1),
-    "hasCustomerList": false,
-    "hasTenantList": false,
-    "hasHighlight": false,
-    "tooltip": "Consultation des versements ou création d'un nouveau versement",
-    "target": "_self"
-});

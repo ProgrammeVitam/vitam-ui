@@ -108,7 +108,6 @@ public class ExternalHttpContext extends AbstractHttpContext {
     private static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final String userToken, final Integer tenantIdentifier,
             final String accessContract) {
         LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
-        SanityChecker.sanitizeHeaders(new ServletServerHttpRequest(request).getHeaders());
         String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
@@ -137,7 +136,6 @@ public class ExternalHttpContext extends AbstractHttpContext {
      */
     public static ExternalHttpContext buildFromExternalRequest(final HttpServletRequest request) {
         LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
-        SanityChecker.sanitizeHeaders(new ServletServerHttpRequest(request).getHeaders());
         final Integer tenantIdentifier = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), request.getRequestURI());
 
         final String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);

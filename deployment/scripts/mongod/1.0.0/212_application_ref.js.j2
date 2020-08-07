@@ -1,0 +1,24 @@
+db = db.getSiblingDB('iam')
+
+print("START 212_application_ref.js");
+
+// -------- VITAM ADMINISTRATION -----
+
+db.applications.insert({
+    "identifier" : "INGEST_MANAGEMENT_APP",
+{% if vitamui.ingest.base_url is defined %}
+    "url": "{{ vitamui.ingest.base_url }}/ingest",
+{% else %}
+    "url": "{{ url_prefix }}/ingest/ingest",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-archive-ingest",
+    "name": "Dépot et suivi des versements",
+    "category": "ingests",
+    "position": NumberInt(1),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Consultation des versements ou création d'un nouveau versement",
+    "target": "_self"
+});
+print("END 212_application_ref.js");

@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;

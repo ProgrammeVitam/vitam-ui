@@ -56,7 +56,7 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  host: dev-ingest.vitamui.com
+  host: dev.vitamui.com
   port: 8088
   scheme: https
   ssl:

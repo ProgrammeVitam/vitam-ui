@@ -91,7 +91,7 @@ describe('IngestComponent', () => {
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_APP' }) } },
+        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) } },
         { provide: environment, useValue: environment }
       ],
       schemas: [ NO_ERRORS_SCHEMA ]

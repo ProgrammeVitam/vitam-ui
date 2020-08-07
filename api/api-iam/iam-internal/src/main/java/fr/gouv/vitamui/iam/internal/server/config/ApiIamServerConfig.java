@@ -305,5 +305,4 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public AddressService addressService() {
         return new AddressService();
     }
-
 }

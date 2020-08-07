@@ -63,7 +63,7 @@ const routes: Routes = [
     path: 'ingest',
     loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_APP' }
+    data: { appId: 'INGEST_MANAGEMENT_APP' }
   },
   // =====================================================
   //                      unknown path

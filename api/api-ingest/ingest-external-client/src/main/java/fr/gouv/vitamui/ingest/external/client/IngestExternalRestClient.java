@@ -94,5 +94,4 @@ public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
-
 }

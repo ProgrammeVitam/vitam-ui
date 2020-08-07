@@ -177,14 +177,4 @@ public class SanityCheckerTest {
         SanityChecker.sanitizeCriteria(Optional.of(json.toString()));
     }
 
-    @Test(expected = InvalidSanitizeHeaderException.class)
-    public void testHeaders() {
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add("test", "ok");
-        SanityChecker.sanitizeHeaders(headers);
-        final String bad = "aa<![CDATA[bb";
-        headers.add("test", bad);
-        SanityChecker.sanitizeHeaders(headers);
-    }
 }

@@ -56,7 +56,19 @@ portal
 [ingest_external]
 # put list here
 
+[referential_external]
+# put list here
+
+[ingest_external]
+# put list here
+
 [iam_internal]
+# put list here
+
+[referential_internal]
+# put list here
+
+[ingest_internal]
 # put list here
 
 [referential_internal]

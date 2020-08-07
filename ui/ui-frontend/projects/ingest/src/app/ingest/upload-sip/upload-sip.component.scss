@@ -67,7 +67,7 @@ button > small {
     margin-left: 15%;
     width: 450px;
     height: 160px;
-    border: 2px dashed $greeny-blue;
+    border: 2px dashed var(--vitamui-secondary);
     border-radius: 6px;
     box-shadow: 0px 0px 80px rgba(255, 255, 249, 0.3);
     background: $white;
@@ -78,7 +78,7 @@ button > small {
     }
 }
 .on-over {
-    border: 2px solid $greeny-blue;
+    border: 2px solid var(--vitamui-secondary);
 
     p {
         color: $white;
@@ -111,7 +111,7 @@ button > small {
     color: #a5a5a5;
     text-align: center;
     .upload {
-        color: $greeny-blue;
+        color: var(--vitamui-secondary);
     }
 
 }

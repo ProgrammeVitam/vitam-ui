@@ -206,41 +206,6 @@ public class SanityChecker {
         });
     }
 
-    public static void sanitizeHeaders(MultiValueMap<String, String> headers) {
-        try {
-            SanityChecker.checkHeadersMap(headers);
-        } catch (final InvalidParseOperationException exc) {
-            throw new InvalidSanitizeHeaderException(INVALID_HEADER_SANITIZE + exc.getMessage());
-        }
-    }
-
-    /**
-     * Checks sanity of Headers: no javascript/xml tag, neither html tag
-     *
-     * @param requestHeaders
-     * @throws InvalidParseOperationException
-     */
-    // TODO to verify if some checks are done by spring layers !! if yes, then this check is redundant
-    public static void checkHeadersMap(MultiValueMap<String, String> requestHeaders)
-        throws InvalidParseOperationException {
-
-        if (requestHeaders != null && !requestHeaders.isEmpty()) {
-            for (final String header : requestHeaders.keySet()) {
-                // Validate Header's name
-                if (isStringInfected(header, HTTP_HEADER_NAME)) {
-                    throw new InvalidParseOperationException(String.format("%s header has wrong name", header));
-                }
-
-                // Validate Header's values
-                final List<String> values = requestHeaders.get(header);
-                if (values != null && values.stream()
-                    .anyMatch(value -> isStringInfected(value, HTTP_HEADER_VALUE) | isIssueOnParam(value))) {
-                    throw new InvalidParseOperationException(String.format("%s header has wrong value", header));
-                }
-            }
-        }
-    }
-
     /**
      * Find out XSS by ESAPI validator
      *

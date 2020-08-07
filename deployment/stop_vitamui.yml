@@ -179,7 +179,6 @@
     verbe: "Stopping"
     etat: "stopped"
 
-
 - hosts: hosts_vitamui_iam_external
   gather_facts: no
   roles:

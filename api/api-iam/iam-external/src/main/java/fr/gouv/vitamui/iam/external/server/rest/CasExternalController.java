@@ -139,8 +139,9 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_LOGOUT)
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
+        // FIXME 6880: Make another API point for superuser logout and keep an api point with "normal user" (authTokenOnly) logout
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
-        ParameterChecker.checkParameter("The authToken and superUser are mandatory : ", authToken, superUser);
+        ParameterChecker.checkParameter("The authToken is mandatory : ", authToken);
         casService.logout(authToken, superUser);
     }
 }

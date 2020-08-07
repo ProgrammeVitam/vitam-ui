@@ -7,7 +7,6 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-
 export class IngestApiService extends BaseHttpClient<any> {
 
   baseUrl: string;

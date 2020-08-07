@@ -89,6 +89,18 @@ localhost
 [hosts_vitamui_ingest_external]
 localhost
 
+[hosts_vitamui_referential_internal]
+localhost
+
+[hosts_vitamui_referential_external]
+localhost
+
+[hosts_vitamui_ingest_internal]
+localhost
+
+[hosts_vitamui_ingest_external]
+localhost
+
 [hosts_vitamui_security_internal]
 localhost
 

@@ -8,12 +8,12 @@
     width: 140px;
     height: 70px;
     background-color: $white;
-    border: solid 1px $greeny-blue;
+    border: solid 1px var(--vitamui-secondary);
     border-radius: 5px;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
     text-align: center;
-    color: $greeny-blue;
+    color: var(--vitamui-secondary);
     padding: 25px 12px 25px 13px;
     margin-right: 10px;
 

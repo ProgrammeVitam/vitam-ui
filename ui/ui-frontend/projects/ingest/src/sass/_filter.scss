@@ -35,11 +35,11 @@
       display: none;
     }
     .mat-select-placeholder {
-      color: $greeny-blue;
-      -webkit-text-fill-color: $greeny-blue;
+      color: var(--vitamui-secondary);
+      -webkit-text-fill-color: var(--vitamui-secondary);
     }
     .mat-option.mat-active {
-      background: $greeny-blue !important;
+      background: var(--vitamui-secondary) !important;
     }
     .mat-form-field-wrapper {
       padding: 0;
@@ -57,7 +57,7 @@
       outline: none;
       position: relative;
       min-width: 200px;
-      border: 1px solid $greeny-blue;
+      border: 1px solid var(--vitamui-secondary);
       border-radius: 5px;
       border-width: 1px 1px 1px 1px;
 

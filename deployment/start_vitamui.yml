@@ -184,7 +184,7 @@
     verbe: "Starting"
     etat: "started"
 
-- hosts: hosts_vitamui_ui_ingest
+- hosts: hosts_ui_ingest
   gather_facts: no
   roles:
     - service_state

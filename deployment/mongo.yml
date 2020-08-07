@@ -10,6 +10,4 @@
             tags: mongo_init
           }
         - mongo_configure
-        - init_bdd
-        - init_ingest_app_bdd
         - { role: mongo-express, when: "mongo_express is defined and mongo_express|lower == 'true'"}

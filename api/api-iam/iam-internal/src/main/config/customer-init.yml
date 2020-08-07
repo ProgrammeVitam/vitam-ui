@@ -40,15 +40,6 @@ customer-init:
        - ROLE_GET_CONTEXTS
        - ROLE_CREATE_CONTEXTS
        - ROLE_UPDATE_CONTEXTS
-
-    - name: Profil Ingest
-      description: Gestion des application de dépot et suivi des versements
-      app-name: INGEST_APP
-      level:
-      roles:
-        - ROLE_GET_INGEST
-        - ROLE_CREATE_INGEST
-        - ROLE_GET_ALL_INGEST
   #- name: profileName
   #  description: desc
   #  level: 1
@@ -73,7 +64,6 @@ customer-init:
   #   profiles-group-name: group1
   #   level: 1
   #   email-prefix: a@mail.com
-
   # Default profiles for each tenant created
   tenant-profiles:
     - name: Profil pour la gestion des contrats d'accès
@@ -119,6 +109,14 @@ customer-init:
       level:
       roles:
         - ROLE_LOGBOOKS
+    - name: Profil Ingest
+      description: Gestion des application de dépot et suivi des versements
+      app-name: INGEST_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_GET_INGEST
+        - ROLE_CREATE_INGEST
+        - ROLE_GET_ALL_INGEST
 
   #- name: profileName
   #  description: desc

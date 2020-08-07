@@ -1,3 +1,5 @@
+debug: true
+
 spring:
   profiles:
     active: dev,swagger
@@ -10,7 +12,7 @@ spring:
         register: false
 
 server:
-  host: dev-ingest.vitamui.com
+  host: dev.vitamui.com
   port: 9008
   scheme: https
   ssl:
@@ -72,8 +74,8 @@ ui-ingest:
       order: 1
 
 ui:
-  url: "https://dev-ingest.vitamui.com:4202"
-  redirect-url: https://dev-ingest.vitamui.com:9008/${ui-prefix}
+  url: "https://dev.vitamui.com:4208"
+  redirect-url: https://dev.vitamui.com:9008/${ui-prefix}
 
 cas:
   internal-url: https://dev.vitamui.com:8080/cas
@@ -88,7 +90,6 @@ logging:
     fr.gouv.vitamui: DEBUG
     org.springframework.web: INFO
     reactor.netty.*: DEBUG
-
 management.endpoints.web.exposure.include: "*"
 # Uncomment if you want to use you specific logback config.
 #logging:

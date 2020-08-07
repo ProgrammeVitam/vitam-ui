@@ -373,7 +373,6 @@ public class ServicesData {
             ROLE_CAS_USERS,
             ROLE_CAS_SUBROGATIONS,
 
-
             ROLE_CHECK_USERS,
             ROLE_CHECK_TENANTS,
 

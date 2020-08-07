@@ -49,7 +49,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 import {Agency} from 'projects/vitamui-library/src/lib/models/agency';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject, Subscription} from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import {debounceTime, distinctUntilChanged, filter, map, tap} from 'rxjs/operators';
 import {
   AccessContract,
@@ -95,7 +95,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
 
   private groups: Array<{ id: string, group: any }> = [];
-  private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -163,7 +162,6 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   }
 
   ngOnDestroy() {
-    this.updatedUserSub.unsubscribe();
     this.updatedData.unsubscribe();
   }
 

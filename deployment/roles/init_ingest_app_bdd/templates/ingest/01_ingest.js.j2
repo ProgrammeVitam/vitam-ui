@@ -18,7 +18,7 @@ db.profiles.update(
               "name": "Ingest Profile",
               "description": "Ingest Profile",
               "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-              "applicationName": "INGEST_APP",
+              "applicationName": "INGEST_MANAGEMENT_APP",
               "level": "",
               "enabled": true,
               "readonly": false,
@@ -70,7 +70,7 @@ db.groups.updateOne(
 
 
 db.applications.update(
-    { "identifier" : "INGEST_APP" },
+    { "identifier" : "INGEST_MANAGEMENT_APP" },
     {
         "$set" : {
 {% if vitamui.ingest.base_url is defined %}
@@ -89,7 +89,7 @@ db.applications.update(
              "target": "_self"
         },
         "$setOnInsert": {
-            "identifier" : "INGEST_APP"
+            "identifier" : "INGEST_MANAGEMENT_APP"
         }
     },
     { "upsert":true }

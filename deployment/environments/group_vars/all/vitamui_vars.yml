@@ -55,6 +55,18 @@ vitamui_defaults:
       title: ""
       displayTitle: false
       order: 1
+    referential:
+      title: "Référentiels"
+      displayTitle: true
+      order: 5
+    opaudit:
+      title: "Opérations et Audits"
+      displayTitle: true
+      order: 6
+    techadmin:
+      title: "Administration technique"
+      displayTitle: true
+      order: 7
 
 
 vitamui:

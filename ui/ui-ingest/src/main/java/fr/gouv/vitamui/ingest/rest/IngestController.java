@@ -191,5 +191,4 @@ public class IngestController extends AbstractUiRestController {
         headers.add(CommonConstants.X_REQUEST_ID_HEADER, requestId);
         return new ResponseEntity<>(headers, HttpStatus.OK);
     }
-
 }

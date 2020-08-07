@@ -44,7 +44,7 @@ logging:
     fr.gouv.vitamui.ingest.*:  {{ vitamui_struct.log.vitamui_level }}
 
 server-identity:
-  identityName: {{ vitamui_env_name }}
+  identityName: {{ vitamui_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -80,7 +80,10 @@ ui-ingest:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
-
+  assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+  theme-colors:
+    vitamui-primary: "{{ vitamui_platform_informations.theme_colors.vitamui_primary }}"
+    vitamui-secondary: "{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}"
   base-url:
 {% if vitamui.portal.base_url is defined %}
     portal: "{{ vitamui.portal.base_url }}"

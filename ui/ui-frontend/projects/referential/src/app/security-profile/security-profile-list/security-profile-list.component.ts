@@ -9,9 +9,9 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
-import {merge, Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import { SecurityProfile } from 'projects/vitamui-library/src/lib/models/security-profile';
+import { merge, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -22,7 +22,7 @@ import {
   PageRequest,
   Role
 } from 'ui-frontend-common';
-import {SecurityProfileService} from '../security-profile.service';
+import { SecurityProfileService } from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -61,7 +61,6 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
 
-  private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -116,7 +115,6 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   }
 
   ngOnDestroy() {
-    this.updatedUserSub.unsubscribe();
     this.updatedData.unsubscribe();
   }
 

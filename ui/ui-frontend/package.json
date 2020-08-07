@@ -45,7 +45,6 @@
     "lint:identity": "ng lint identity --format=stylish",
     "lint:ingest": "ng lint ingest --format=stylish",
     "lint:portal": "ng lint portal --format=stylish",
-    "lint:referential": "ng lint referential --format=stylish",
     "e2e": "ng e2e",
     "i18n-extract": "ng xi18n --outputPath=locale --i18n-locale=fr",
     "i18n-merge": "xliffmerge --profile xliffmerge.json fr en",

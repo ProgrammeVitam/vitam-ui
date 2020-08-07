@@ -126,8 +126,6 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         if (accessContractId != null) {
             headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContractId));
         }
-        SanityChecker.sanitizeHeaders(headers);
-
     }
 
     private void buildHeadersInternal(final InternalHttpContext context, final MultiValueMap<String, String> headers) {
@@ -139,7 +137,6 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         if (customerId != null) {
             headers.put(CommonConstants.X_CUSTOMER_ID_HEADER, Collections.singletonList(customerId));
         }
-        SanityChecker.sanitizeHeaders(headers);
     }
 
     protected void checkResponse(final ResponseEntity response, final Integer... acceptedStatus) {

@@ -83,11 +83,7 @@ export class ApplicationSelectContentComponent {
     apps.forEach((application) => {
       const app = this.authService.user.tenantsByApp.find((appToTest) => appToTest.name === application.id);
       if (app) {
-        if (app.tenants && app.tenants.length > 1 && application.hasTenantList) {
-          application.hasTenantList = true;
-        } else {
-          application.hasTenantList = false;
-        }
+          application.hasTenantList = app.tenants && app.tenants.length > 1 && application.hasTenantList;
       }
     });
   }

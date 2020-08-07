@@ -225,8 +225,9 @@ public class CasInternalController {
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
+        // FIXME 6880: Make another API point for superuser logout and keep an api point with "normal user" (authTokenOnly) logout
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
-        ParameterChecker.checkParameter("The arguments authToken and user are mandatory : ", authToken, superUser);
+        ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
         final String principal = casService.removeTokenAndGetUsername(authToken);
 
         if (StringUtils.isNotBlank(principal) && StringUtils.isNotBlank(superUser)) {
