@@ -52,6 +52,7 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
   customer: Customer;
   customers: MenuOption[];
+  search: string;
 
   constructor(
     public dialog: MatDialog,
@@ -85,6 +86,10 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
   changeCustomer(customerId: string) {
     this.router.navigate(['..', customerId], { relativeTo: this.route });
+  }
+
+  onSearchSubmit(search: string) {
+    this.search = search;
   }
 
 }

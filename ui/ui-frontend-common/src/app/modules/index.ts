@@ -88,6 +88,7 @@ export * from './components/role-toggle/index';
 export * from './components/search-bar/index';
 export * from './components/stepper/index';
 export * from './components/table-filter/index';
+export * from './components/order-by-button/index';
 
 export * from './directives/collapse/index';
 export * from './directives/drag-and-drop/index';
