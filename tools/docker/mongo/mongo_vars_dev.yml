@@ -9,7 +9,7 @@ vitamui_defaults:
     root_path: "{{lookup('env','PWD')}}/mongo-entrypoint"
   users:
     vitamuidb: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
 
 mongodb:
   included_scripts:
