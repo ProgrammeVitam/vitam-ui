@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -290,7 +290,7 @@ public final class MongoUtils {
                 criteria = buildAndOperator(startCriteria, endCriteria);
                 break;
             case ELEMMATCH :
-                criteria = Criteria.where(key).elemMatch(queryDTOToCriterion((QueryDto)val));
+                criteria = Criteria.where(key).elemMatch(queryDtoToCriterion((QueryDto)val));
                 break;
             default :
                 throw new IllegalArgumentException("Operator " + operator + " is not supported");
@@ -298,7 +298,7 @@ public final class MongoUtils {
         return criteria;
     }
 
-    public static Criteria queryDTOToCriterion(QueryDto queryDto) {
+    public static Criteria queryDtoToCriterion(QueryDto queryDto) {
         Collection<CriteriaDefinition> criteria = new ArrayList<>();
         queryDto.getCriterionList().forEach(criterion -> {
             criteria.add(MongoUtils.getCriteria(criterion.getKey(), criterion.getValue(), criterion.getOperator()));
@@ -306,15 +306,25 @@ public final class MongoUtils {
 
         // if the criteria contains subQueries, a recursive call is made for each subQuery
         queryDto.getSubQueries().forEach(queryDtoItem -> {
-            criteria.add(queryDTOToCriterion(queryDtoItem));
+            criteria.add(queryDtoToCriterion(queryDtoItem));
         });
 
         final Criteria commonCustomCriteria = new Criteria();
-        if (queryDto.getQueryOperator() == QueryOperator.AND) {
-            commonCustomCriteria.andOperator(criteria.stream().map(c -> (Criteria) c).toArray(Criteria[]::new));
-        } else if (queryDto.getQueryOperator() == QueryOperator.OR) {
-            commonCustomCriteria.orOperator(criteria.stream().map(c -> (Criteria) c).toArray(Criteria[]::new));
+        Criteria[] criteriaList = criteria.stream().map(c -> (Criteria) c).toArray(Criteria[]::new);
+        switch (queryDto.getQueryOperator()){
+            case AND:
+                commonCustomCriteria.andOperator(criteriaList);
+                break;
+            case OR:
+                commonCustomCriteria.orOperator(criteriaList);
+                break;
+            case NOR:
+                commonCustomCriteria.norOperator(criteriaList);
+                break;
+            default:
+                throw new NotImplementedException("Method is not implemented => " + queryDto.getQueryOperator().name());
         }
+
         return commonCustomCriteria;
     }
 
