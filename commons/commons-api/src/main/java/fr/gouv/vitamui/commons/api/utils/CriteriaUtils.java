@@ -122,15 +122,28 @@ public final class CriteriaUtils {
 
     /**
      * Check if criteria contains only allowed keys
-     * @param criteriaDto
+     * @param queryDto
      * @param allowedKeys
      */
-    public static void checkContainsAuthorizedKeys(final QueryDto criteriaDto, final Collection<String> allowedKeys) {
-        criteriaDto.getCriterionList().forEach(criterion -> {
-            if (!allowedKeys.contains(criterion.getKey())) {
+    public static void checkContainsAuthorizedKeys(final QueryDto queryDto, final Collection<String> allowedKeys) {
+        queryDto.getCriterionList().forEach(criterion -> {
+            // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
+            // field.childField
+            if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
+                allowedKeys.stream().anyMatch(key -> key.startsWith(criterion.getKey() + "."))) {
+                // we recurse on children to check the allowed key
+                try {
+                    QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
+                    checkContainsAuthorizedKeys(elemMatchQuery, allowedKeys);
+                }
+                catch (JsonProcessingException e) {
+                    throw new InvalidFormatException(e.getMessage(), e);
+                }
+            } else if (!allowedKeys.contains(criterion.getKey())) {
                 throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
             }
         });
+        queryDto.getSubQueries().forEach(queryDtoItem -> checkContainsAuthorizedKeys(queryDtoItem, allowedKeys));
     }
 
     public static QueryDto fromJson(final String criteriaJson) {
