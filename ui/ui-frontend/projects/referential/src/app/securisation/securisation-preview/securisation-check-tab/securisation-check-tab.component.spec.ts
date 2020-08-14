@@ -43,7 +43,7 @@ import {AccessContractService} from '../../../access-contract/access-contract.se
 import {SecurisationService} from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
-fdescribe('SecurisationCheckTabComponent', () => {
+describe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
   let fixture: ComponentFixture<SecurisationCheckTabComponent>;
 
