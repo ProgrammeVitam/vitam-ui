@@ -46,10 +46,12 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.internal.client.OntologyInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.OntologyInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,6 +67,9 @@ public class OntologyExternalService extends AbstractResourceClientService<Ontol
 
     @Autowired
     private OntologyInternalRestClient ontologyInternalRestClient;
+    
+    @Autowired
+    private OntologyInternalWebClient ontologyInternalWebClient;
 
     public OntologyExternalService(@Autowired ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
@@ -122,5 +127,9 @@ public class OntologyExternalService extends AbstractResourceClientService<Ontol
 
     public boolean check(OntologyDto ontologyDto) {
         return ontologyInternalRestClient.check(getInternalHttpContext(), ontologyDto);
+    }
+    
+    public JsonNode importOntologies(String fileName, MultipartFile file) {
+        return ontologyInternalWebClient.importOntologies(getInternalHttpContext(), fileName, file);
     }
 }

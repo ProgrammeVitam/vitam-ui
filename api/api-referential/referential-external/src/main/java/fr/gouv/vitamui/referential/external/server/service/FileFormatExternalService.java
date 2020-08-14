@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -58,7 +59,9 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.FileFormatInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -69,6 +72,9 @@ public class FileFormatExternalService extends AbstractResourceClientService<Fil
 
     @Autowired
     private FileFormatInternalRestClient fileFormatInternalRestClient;
+    
+    @Autowired
+    private FileFormatInternalWebClient fileFormatInternalWebClient;
 
     public FileFormatExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
@@ -134,5 +140,8 @@ public class FileFormatExternalService extends AbstractResourceClientService<Fil
     public ResponseEntity<Resource> export() {
         return fileFormatInternalRestClient.export(getInternalHttpContext());
     }
-
+    
+    public JsonNode importFileFormats(String fileName, MultipartFile file) {
+        return fileFormatInternalWebClient.importFileFormats(getInternalHttpContext(), fileName, file);
+    }
 }

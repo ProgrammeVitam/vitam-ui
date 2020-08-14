@@ -63,6 +63,7 @@ import fr.gouv.vitamui.referential.common.service.OntologyService;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -260,5 +261,12 @@ public class OntologyInternalService {
         	throw new InternalServerException("Unable to fetch history", e);
         }
     }
-
+    
+    public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
+        try {
+            return ontologyService.importOntologies(context, fileName, file).toJsonNode();
+        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,22 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+package fr.gouv.vitamui.referential.internal.client;
 
-import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ],
-  exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ]
-})
-export class SharedModule {
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+
+public class ReferentialInternalWebClientFactory extends BaseWebClientFactory  {
+    public ReferentialInternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
+    }
+
+    public ReferentialInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+        super(restClientConfig, httpPoolConfig);
+    }
+
+    public AgencyInternalWebClient getAgencyInternalWebClient() {
+        return new AgencyInternalWebClient(getWebClient(), getBaseUrl());
+    }
+    
+    public FileFormatInternalWebClient getFileFormatInternalWebClient() {
+        return new FileFormatInternalWebClient(getWebClient(), getBaseUrl());
+    }
+    
+    public OntologyInternalWebClient getOntologyInternalWebClient() {
+        return new OntologyInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return super.getBaseUrl();
+    }
 }

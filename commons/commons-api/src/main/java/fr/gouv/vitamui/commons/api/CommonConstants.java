@@ -116,10 +116,16 @@ public class CommonConstants {
     public static final String UPLOAD_ROLE_PREFIX = ROLE_PREFIX + "UPLOAD_";
 
     public static final String EXPORT_ROLE_PREFIX = ROLE_PREFIX + "EXPORT_";
-
+    
+    public static final String IMPORT_ROLE_PREFIX = ROLE_PREFIX + "IMPORT_";
+    
     public static final String PATH_CHECK = "/check";
 
     public static final String PATH_LEVELS = "/levels";
+    
+    public static final String PATH_IMPORT = "/import";
+    
+    public static final String PATH_EXPORT = "/export";
 
     public static final String USER_ID_ATTRIBUTE = "id";
 

@@ -36,20 +36,25 @@
  */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
-import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
+import {VitamUIImportDialogComponent} from './vitamui-import-dialog.component';
+
+
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
+    SharedModule,
+    MatProgressBarModule,
+    VitamUICommonModule
   ],
-  exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ]
+  declarations: [
+    VitamUIImportDialogComponent
+  ],
+  entryComponents: [VitamUIImportDialogComponent]
 })
-export class SharedModule {
+export class VitamUIImportDialogModule {
 }

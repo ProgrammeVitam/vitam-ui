@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,22 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+package fr.gouv.vitamui.referential.external.client;
 
-import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ],
-  exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ]
-})
-export class SharedModule {
+public class ReferentialExternalWebClientFactory extends BaseWebClientFactory  {
+    public ReferentialExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
+    }
+
+    public ReferentialExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
+        super(restClientConfig, httpPoolConfig);
+    }
+
+    public AgencyExternalWebClient getAgencyExternalWebClient() {
+        return new AgencyExternalWebClient(getWebClient(), getBaseUrl());
+    }
+    
+    public FileFormatExternalWebClient getFileFormatExternalWebClient() {
+        return new FileFormatExternalWebClient(getWebClient(), getBaseUrl());
+    }
+    
+    public OntologyExternalWebClient getOntologyExternalWebClient() {
+        return new OntologyExternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return super.getBaseUrl();
+    }
 }

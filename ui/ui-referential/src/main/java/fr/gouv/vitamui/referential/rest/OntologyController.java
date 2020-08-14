@@ -53,13 +53,19 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -154,5 +160,18 @@ public class OntologyController extends AbstractUiRestController {
     public void delete(final @PathVariable String id) {
         LOGGER.debug("delete ontology with id :{}", id);
         service.delete(buildUiHttpContext(), id);
+    }
+    
+    /***
+     * Import ontologies from a json file
+     * @param request HTTP request
+     * @param input the agency csv file
+     * @return the Vitam response
+     */
+    @ApiOperation(value = "import an ontology file")
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importOntologies(@Context HttpServletRequest request, MultipartFile file) {
+        LOGGER.debug("Import ontology file {}", file != null ? file.getOriginalFilename() : null);
+        return service.importOntologies(buildUiHttpContext(), file);
     }
 }

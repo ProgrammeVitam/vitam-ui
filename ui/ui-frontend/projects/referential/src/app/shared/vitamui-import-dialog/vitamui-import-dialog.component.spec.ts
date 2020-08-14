@@ -34,22 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {VitamUIImportDialogModule} from './vitamui-import-dialog/vitamui-import-dialog.module';
-import {VitamUISnackBarModule} from './vitamui-snack-bar';
+import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ],
-  exports: [
-    VitamUISnackBarModule,
-    VitamUIImportDialogModule
-  ]
-})
-export class SharedModule {
-}
+describe('VitamUIImportDialogComponent', () => {
+  let component: VitamUIImportDialogComponent;
+  let fixture: ComponentFixture<VitamUIImportDialogComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ VitamUIImportDialogComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(VitamUIImportDialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

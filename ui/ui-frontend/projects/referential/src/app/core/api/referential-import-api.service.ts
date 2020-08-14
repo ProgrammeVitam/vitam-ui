@@ -34,54 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders } from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {Agency} from '../../../../../vitamui-library/src/lib/models/agency';
-
-const HTTP_STATUS_OK = 200;
+import {BASE_URL } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AgencyApiService extends BaseHttpClient<Agency> {
+export class ReferentialImportApiService {
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/agency');
+  constructor(private http: HttpClient, @Inject(BASE_URL) private baseUrl: string) {
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
-    return super.getAllByParams(params, headers);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Agency>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  getOne(id: string, headers?: HttpHeaders): Observable<Agency> {
-    return super.getOne(id, headers);
-  }
-
-  patch(partialAgency: { id: string, [key: string]: any }, headers?: HttpHeaders) {
-    return super.patch(partialAgency, headers);
-  }
-
-  create(agency: Agency, headers?: HttpHeaders): Observable<Agency> {
-    return super.getHttp().post<any>(super.getApiUrl(), agency, {headers});
-  }
-
-  check(agency: Agency, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', agency, {observe: 'response', headers})
-      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
-  }
-
-  delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
-  }
-
-  export(headers?: HttpHeaders): Observable<any> {
-    return super.getHttp().get(super.getApiUrl() + '/export', {headers, responseType: 'text'});
+  importReferential(referential: string, file: File, headers?: HttpHeaders) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, {headers, responseType: 'text'});
   }
 }

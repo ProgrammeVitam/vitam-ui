@@ -50,6 +50,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -251,5 +252,12 @@ public class FileFormatInternalService {
         return logbookService.findEventsByIdentifierAndCollectionNames(
                 identifier, AdminCollections.AGENCIES.getName(), vitamContext).toJsonNode();
     }
-
+    
+    public JsonNode importFileFormats(VitamContext context, String fileName, MultipartFile file) {
+        try {
+            return vitamFileFormatService.importFileFormats(context, fileName, file).toJsonNode();
+        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            throw new InternalServerException("Unable to import file format file " + fileName + " : ", e);
+        }
+    }
 }
