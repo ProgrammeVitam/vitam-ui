@@ -290,7 +290,7 @@ public final class MongoUtils {
                 criteria = buildAndOperator(startCriteria, endCriteria);
                 break;
             case ELEMMATCH :
-                criteria = Criteria.where(key).elemMatch(queryDtoToCriterion((QueryDto)val));
+                criteria = Criteria.where(key).elemMatch(queryDtoToCriteria((QueryDto)val));
                 break;
             default :
                 throw new IllegalArgumentException("Operator " + operator + " is not supported");
@@ -298,7 +298,12 @@ public final class MongoUtils {
         return criteria;
     }
 
-    public static Criteria queryDtoToCriterion(QueryDto queryDto) {
+    /**
+     * convert QueryDto to mongodb criteria
+     * @param queryDto the QueryDto to convert
+     * @return mongodb criteria
+     */
+    public static Criteria queryDtoToCriteria(QueryDto queryDto) {
         Collection<CriteriaDefinition> criteria = new ArrayList<>();
         queryDto.getCriterionList().forEach(criterion -> {
             criteria.add(MongoUtils.getCriteria(criterion.getKey(), criterion.getValue(), criterion.getOperator()));
@@ -306,7 +311,7 @@ public final class MongoUtils {
 
         // if the criteria contains subQueries, a recursive call is made for each subQuery
         queryDto.getSubQueries().forEach(queryDtoItem -> {
-            criteria.add(queryDtoToCriterion(queryDtoItem));
+            criteria.add(queryDtoToCriteria(queryDtoItem));
         });
 
         final Criteria commonCustomCriteria = new Criteria();
