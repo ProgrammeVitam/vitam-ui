@@ -29,7 +29,9 @@ package fr.gouv.vitamui.ingest.internal.server.rest;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -95,6 +97,7 @@ public class IngestInternalController {
         @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile path)
         throws IngestExternalException {
         LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
+        SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }
 
@@ -104,6 +107,7 @@ public class IngestInternalController {
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
         LOGGER.debug("export manifest for operation with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Response response = ingestInternalService.exportManifest(vitamContext, id);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
@@ -119,6 +123,7 @@ public class IngestInternalController {
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
         LOGGER.debug("export atr for operation with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Response response = ingestInternalService.exportATR(vitamContext, id);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {

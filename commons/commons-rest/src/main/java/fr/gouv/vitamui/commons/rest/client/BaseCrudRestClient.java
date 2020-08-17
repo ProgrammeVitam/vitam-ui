@@ -36,23 +36,8 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -60,6 +45,19 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier.
@@ -86,11 +84,13 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     }
 
     public List<D> getAll(final C context, final Optional<String> criteria) {
+        SanityChecker.sanitizeCriteria(criteria);
         return getAll(context, criteria, Optional.empty());
     }
 
     public List<D> getAll(final C context, final Optional<String> criteria, final Optional<String> embedded) {
         LOGGER.debug("Get ALL");
+
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
 
         final URIBuilder builder = getUriBuilderFromUrl();
@@ -105,6 +105,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public boolean checkExist(final C context, final String criteria) {
         LOGGER.debug("Check exists criteria={}", criteria);
+        SanityChecker.check(criteria);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_CHECK);
         builder.addParameter(CRITERIA_QUERY_PARAM, criteria);
@@ -122,6 +123,10 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public D getOne(final C context, final String id, final Optional<String> criteria) {
         LOGGER.debug("Get {}, criteria={}", id, criteria);
+
+        SanityChecker.check(id);
+        SanityChecker.sanitizeCriteria(criteria);
+
         return getOne(context, id, criteria, Optional.empty());
     }
 
@@ -162,9 +167,8 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_ID);
         final String id = (String) partialDto.get("id");
-        final MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, buildHeaders(context));
 
-        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
         final ResponseEntity<D> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request,
                 getDtoClass());
         checkResponse(response);
@@ -187,6 +191,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public void delete(final C context, final String id) {
         LOGGER.debug("Delete {}", id);
+        SanityChecker.check(id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, getDtoClass(), id);
     }
@@ -194,17 +199,16 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
     /**
      * Find operation by id and collection name.
      *
-     * @param context
-     * @param identifier
-     * @param collectionName
-     * @return
+     * @param context context
+     * @param id identifier
+     * @return JsonNode
      */
     public JsonNode findHistoryById(final C context, final String id) {
         LOGGER.debug("Get logbook of id :{}", id);
+        SanityChecker.check(id);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_LOGBOOK);
-        final MultiValueMap<String, String> headers = buildHeaders(context);
-        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(headers);
+        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request,
                 JsonNode.class);
         checkResponse(response);
@@ -241,7 +245,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     /**
      * Method for get UriBuilder from Url
-     * @return
+     * @return URIBuilder
      */
     @Override
     protected URIBuilder getUriBuilderFromPath(final String path) {
@@ -262,4 +266,5 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
     }
+
 }

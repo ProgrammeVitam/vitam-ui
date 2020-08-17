@@ -36,10 +36,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui.commons</groupId>
-            <artifactId>commons-vitam</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

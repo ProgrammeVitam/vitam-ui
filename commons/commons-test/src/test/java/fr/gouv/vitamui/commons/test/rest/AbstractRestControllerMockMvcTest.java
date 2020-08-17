@@ -216,6 +216,12 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
         return perform(builder, StringUtils.EMPTY, HttpMethod.GET, status().isOk(), headers);
     }
 
+    protected ResultActions performGet(final String endpoint, final Map<String, Object> params, final HttpHeaders headers, final ResultMatcher resultMatcher) {
+        final UriComponentsBuilder builder = getUriBuilder(endpoint);
+        addParams(params, builder);
+        return perform(builder, StringUtils.EMPTY, HttpMethod.GET, resultMatcher, headers);
+    }
+
     /**
      * Method for performMultipart
      * @param builder

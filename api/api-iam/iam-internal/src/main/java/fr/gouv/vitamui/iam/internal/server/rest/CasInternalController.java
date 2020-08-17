@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -58,7 +59,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -181,6 +190,7 @@ public class CasInternalController {
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     public UserDto getUserByEmail(@RequestParam final String email, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {}", email);
+        ParameterChecker.checkParameter("user email is mandatory : ", email);
         return casService.getUserByEmail(email, embedded);
     }
 
@@ -193,12 +203,14 @@ public class CasInternalController {
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserEmail")
     public List<SubrogationDto> getSubrogationsBySuperUserEmail(@RequestParam final String superUserEmail) {
         LOGGER.debug("getMySubrogationAsSuperuser: {}", superUserEmail);
+        ParameterChecker.checkParameter("super user email is mandatory : ", superUserEmail);
         return casService.getSubrogationsBySuperUser(superUserEmail);
     }
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserId")
     public List<SubrogationDto> getSubrogationsBySuperUserId(@RequestParam final String superUserId) {
         LOGGER.debug("findBySuperUserId: {}", superUserId);
+        ParameterChecker.checkParameter("super user identifier is mandatory : ", superUserId);
         final UserDto user = internalUserService.getOne(superUserId, Optional.empty());
         if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
             final String email = user.getEmail();
@@ -214,7 +226,7 @@ public class CasInternalController {
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
-
+        ParameterChecker.checkParameter("The arguments authToken and user are mandatory : ", authToken, superUser);
         final String principal = casService.removeTokenAndGetUsername(authToken);
 
         if (StringUtils.isNotBlank(principal) && StringUtils.isNotBlank(superUser)) {

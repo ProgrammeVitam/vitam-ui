@@ -29,14 +29,6 @@
 
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>1.3.0.RELEASE</version>
-            <optional>true</optional>
-        </dependency>
-
         <!--VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.ui</groupId>

@@ -36,16 +36,9 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -55,6 +48,12 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.Assert;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Abstract class for CRUD calls for UI.
@@ -93,6 +92,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T patch(final ExternalHttpContext c, final Map<String, Object> partialDto, final String id) {
+        SanityChecker.check(id);
         beforePatch(partialDto, id);
         return getClient().patch(c, partialDto);
     }
@@ -106,6 +106,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T getOne(final ExternalHttpContext context, final String id) {
+        SanityChecker.check(id);
         Assert.isTrue(!id.contains(","), "No comma must be contains");
         final T entity = getClient().getOne(context, id);
         if (entity == null) {
@@ -117,6 +118,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T getOne(final ExternalHttpContext context, final String id, final Optional<String> embedded) {
+        SanityChecker.check(id);
         Assert.isTrue(!id.contains(","), "No comma must be contains");
         final T entity = getClient().getOne(context, id, Optional.empty(), embedded);
         if (entity == null) {
@@ -132,6 +134,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public void delete(final ExternalHttpContext context, final String id) {
+        SanityChecker.check(id);
         getClient().delete(context, id);
     }
 
@@ -144,6 +147,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
      * @return
      */
     public LogbookOperationsResponseDto findHistoryById(final ExternalHttpContext context, final String id) {
+        SanityChecker.check(id);
         final JsonNode body = getClient().findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
@@ -152,4 +156,5 @@ public abstract class AbstractCrudService<T extends IdDto> {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }
+
 }

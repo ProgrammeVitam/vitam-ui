@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -50,7 +52,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -87,6 +97,8 @@ public class CasExternalController {
     @ResponseBody
     public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password) {
         LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
+        ParameterChecker.checkParameter("The user and password are mandatory : ", username, password);
+        SanityChecker.check(username);
         casService.changePassword(username, password);
         return "true";
     }
@@ -95,6 +107,7 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUserByEmail(@RequestParam final String email, @RequestParam final Optional<String> embedded) {
         LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
+        ParameterChecker.checkParameter("The email is mandatory : ", email);
         return casService.getUserByEmail(email, embedded);
     }
 
@@ -102,6 +115,7 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_USERS)
     public UserDto getUserById(@RequestParam final String id) {
         LOGGER.debug("getUserById: {}", id);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         return casService.getUserById(id);
     }
 
@@ -109,6 +123,7 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
     public List<SubrogationDto> getSubrogationsBySuperUserEmail(@RequestParam final String superUserEmail) {
         LOGGER.debug("getMySubrogationAsSuperuser: {}", superUserEmail);
+        ParameterChecker.checkParameter("The superUserEmail is mandatory : ", superUserEmail);
         return casService.getSubrogationsBySuperUser(superUserEmail);
     }
 
@@ -116,6 +131,7 @@ public class CasExternalController {
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
     public List<SubrogationDto> getSubrogationsBySuperUserId(@RequestParam final String superUserId) {
         LOGGER.debug("getSubrogationsBySuperUserId: {}", superUserId);
+        ParameterChecker.checkParameter("The superUserId is mandatory : ", superUserId);
         return casService.getSubrogationsBySuperUserId(superUserId);
     }
 
@@ -124,6 +140,7 @@ public class CasExternalController {
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
+        ParameterChecker.checkParameter("The authToken and superUser are mandatory : ", authToken, superUser);
         casService.logout(authToken, superUser);
     }
 }

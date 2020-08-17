@@ -97,7 +97,7 @@ public class IngestExternalController {
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
-    @Secured(ServicesData.ROLE_GET_INGEST)
+    @Secured(ServicesData.ROLE_CREATE_INGEST)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<RequestResponseOK> upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,

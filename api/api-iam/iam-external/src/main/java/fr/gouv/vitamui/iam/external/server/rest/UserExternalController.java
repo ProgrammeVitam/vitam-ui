@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -127,6 +129,7 @@ public class UserExternalController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_UPDATE_USERS)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "Unable to update user : the DTO id must match the path id");
         return userExternalService.update(dto);
     }
@@ -136,6 +139,8 @@ public class UserExternalController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_UPDATE_USERS)
     public UserDto patch(final @PathVariable("id") String id, final @RequestBody Map<String, Object> partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user : the DTO id must match the path id");
         return userExternalService.patch(partialDto);
     }
@@ -150,6 +155,8 @@ public class UserExternalController implements CrudController<UserDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for user with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         return userExternalService.findHistoryById(id);
     }
 

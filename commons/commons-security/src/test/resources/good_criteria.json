@@ -1,0 +1,30 @@
+{
+    "queryOperator": "AND",
+    "criteria": [
+        {
+            "key": "tenantId",
+            "value": "10",
+            "operator": "EQUALS"
+        },
+        {
+            "key": "customer",
+            "value": "toto",
+            "operator": "CONTAINSIGNORECASE"
+        },
+        {
+            "queryOperator": "OR",
+            "criteria": [
+                {
+                    "key": "firstname",
+                    "value": "Pierre",
+                    "operator": "CONTAINSIGNORECASE"
+                },
+                {
+                    "key": "lastname",
+                    "value": "NOLE",
+                    "operator": "CONTAINSIGNORECASE"
+                }
+            ]
+        }
+    ]
+}
