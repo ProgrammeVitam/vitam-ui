@@ -127,21 +127,32 @@ public final class CriteriaUtils {
      */
     public static void checkContainsAuthorizedKeys(final QueryDto queryDto, final Collection<String> allowedKeys) {
         queryDto.getCriterionList().forEach(criterion -> {
+            if (allowedKeys.contains(criterion.getKey())) {
+                return;
+            }
+
             // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
             // field.childField
+            String keyWithPoint = criterion.getKey() + ".";
             if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
-                allowedKeys.stream().anyMatch(key -> key.startsWith(criterion.getKey() + "."))) {
-                // we recurse on children to check the allowed key
+                allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))) {
+                // we recurse on children's to check the allowed key
                 try {
                     QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
-                    checkContainsAuthorizedKeys(elemMatchQuery, allowedKeys);
+                    List<String> elemAllowedKeys =
+                        allowedKeys.stream()
+                            .filter(key -> key.startsWith(keyWithPoint))
+                            .map(key -> key.replaceFirst(keyWithPoint, ""))
+                            .collect(Collectors.toList());
+                    checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
                 }
                 catch (JsonProcessingException e) {
                     throw new InvalidFormatException(e.getMessage(), e);
                 }
-            } else if (!allowedKeys.contains(criterion.getKey())) {
-                throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
+                return;
             }
+
+            throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
         });
         queryDto.getSubQueries().forEach(queryDtoItem -> checkContainsAuthorizedKeys(queryDtoItem, allowedKeys));
     }
