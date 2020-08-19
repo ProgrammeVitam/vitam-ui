@@ -4,6 +4,7 @@ import {ColorPickerDirective} from 'ngx-color-picker';
 
 export const COLOR_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  /* tslint:disable-next-line: no-use-before-declare */
   useExisting: forwardRef(() => InputColorComponent),
   multi: true
 };

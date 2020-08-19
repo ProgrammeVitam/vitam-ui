@@ -4,6 +4,7 @@ import {ThemeService} from 'ui-frontend-common';
 
 export const THEME_COLORS_INPUT_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
+  /* tslint:disable-next-line: no-use-before-declare */
   useExisting: forwardRef(() => CustomerColorsInputComponent),
   multi: true
 };
