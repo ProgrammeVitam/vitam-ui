@@ -59,7 +59,7 @@ public class RestClientConfiguration {
 
     private boolean secure;
 
-    private boolean keystoreNeeded = true;
+    private boolean noClientAuthentication = false;
 
     private SSLConfiguration sslConfiguration;
 
