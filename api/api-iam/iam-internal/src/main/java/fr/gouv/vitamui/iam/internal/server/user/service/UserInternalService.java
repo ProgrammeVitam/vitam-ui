@@ -908,7 +908,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, "lastTenantIdentifier");
+        Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID, "lastTenantIdentifier", "lastTenantIdentifier");
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");

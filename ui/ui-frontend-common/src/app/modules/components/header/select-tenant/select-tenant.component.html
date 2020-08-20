@@ -1,9 +1,9 @@
 <mat-form-field appearance="fill">
-    <mat-label *ngIf="selectedTenant" class="selected-tenant-label">{{'SELECT-TENANT.SELECTED' | translate}}</mat-label>
-    <mat-label *ngIf="!selectedTenant" class="unselected-tenant-label">{{'SELECT-TENANT.SELECT' | translate}}</mat-label>
-    <mat-select (selectionChange)="selectTenant($event.source.value)" [(value)]="selectedTenant">
-        <mat-option *ngFor="let tenant of tenants" [value]="tenant">
-            {{ tenant.name }}
-        </mat-option>
-    </mat-select>
+  <mat-label *ngIf="selectedTenant" class="selected-tenant-label">{{'SELECT-TENANT.SELECTED' | translate}}</mat-label>
+  <mat-label *ngIf="!selectedTenant" class="unselected-tenant-label">{{'SELECT-TENANT.SELECT' | translate}}</mat-label>
+  <mat-select (selectionChange)="selectTenant($event.source.value)" [(value)]="selectedTenant">
+    <mat-option *ngFor="let tenant of tenants" [value]="tenant">
+      {{ tenant.name }}
+    </mat-option>
+  </mat-select>
 </mat-form-field>
