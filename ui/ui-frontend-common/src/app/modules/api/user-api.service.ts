@@ -51,7 +51,7 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public create(data: { applicationId?: string }): Observable<User> {
+  public create(data: { applicationId?: string, lastTenantIdentifier?: number }): Observable<User> {
     return this.http.post<User>(this.apiUrl + '/analytics', data);
   }
 }

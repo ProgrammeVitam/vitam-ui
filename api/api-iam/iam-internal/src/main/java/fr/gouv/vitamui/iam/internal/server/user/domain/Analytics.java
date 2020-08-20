@@ -12,6 +12,8 @@ public class Analytics implements Serializable {
 
     private List<ApplicationAnalytics> applications = new ArrayList<>();
 
+    private Integer lastTenantIdentifier;
+
     public void tagApplicationAsLastUsed(String applicationId) {
         applications.stream().filter(application -> Objects.equals(application.getApplicationId(), applicationId)).findAny()
                 .ifPresentOrElse(ApplicationAnalytics::tagAsLastUsed, () -> applications.add(new ApplicationAnalytics(applicationId)));

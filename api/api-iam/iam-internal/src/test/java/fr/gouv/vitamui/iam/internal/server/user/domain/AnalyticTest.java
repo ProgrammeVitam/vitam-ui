@@ -58,4 +58,11 @@ class AnalyticTest {
         assertThat(sut.getApplications().get(1).getApplicationId()).isEqualTo(applicationId2);
         assertThat(sut.getApplications().get(1).getAccessCounter()).isEqualTo(1);
     }
+
+    @Test
+    void shouldAddLastTenantIdentifier() {
+        sut.setLastTenantIdentifier(10);
+        assertThat(sut.getLastTenantIdentifier()).isNotNull();
+        assertThat(sut.getLastTenantIdentifier()).isEqualTo(10);
+    }
 }
