@@ -84,7 +84,7 @@
 	        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
 	        <input type="hidden" name="_eventId" value="submit"/>
 
-            <button type="submit" class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
+            <button  type="submit" autofocus  class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
         <p class="helper">Appuyez sur <strong>Entrée</strong> pour valider</p>
 		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
