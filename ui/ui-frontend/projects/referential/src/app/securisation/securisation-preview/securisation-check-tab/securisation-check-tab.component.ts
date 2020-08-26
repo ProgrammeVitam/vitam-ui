@@ -36,8 +36,8 @@
  */
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {ApiEvent, Event, LogbookApiService} from 'ui-frontend-common';
-import {AccessContract} from 'vitamui-library';
 import {AccessContractService} from '../../../access-contract/access-contract.service';
 import {SecurisationService} from '../../securisation.service';
 

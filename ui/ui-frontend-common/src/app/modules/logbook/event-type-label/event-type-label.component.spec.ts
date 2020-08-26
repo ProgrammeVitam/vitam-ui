@@ -38,7 +38,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
 
-// TODO test jenkins 
+// TODO test jenkins
 // Error: Timeout - Async callback was not invoked within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
 xdescribe('EventTypeLabelComponent', () => {
   let component: EventTypeLabelComponent;
