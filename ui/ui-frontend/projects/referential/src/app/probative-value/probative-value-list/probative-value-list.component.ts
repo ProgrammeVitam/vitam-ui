@@ -7,6 +7,11 @@ import {ProbativeValueService} from '../probative-value.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
+export class ProbativeValueFilters {
+  startDate: string;
+  endDate: string;
+}
+
 @Component({
   selector: 'app-probative-value-list',
   templateUrl: './probative-value-list.component.html',
@@ -23,6 +28,16 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
   // tslint:disable-next-line:variable-name
   private _searchText: string;
 
+  @Input('filters')
+  set filters(filters: ProbativeValueFilters) {
+    console.log('Filters: ', filters);
+    this._filters = filters;
+    this.filterChange.next(filters);
+  }
+
+  // tslint:disable-next-line:variable-name
+  private _filters: ProbativeValueFilters;
+
   loaded = false;
 
   orderBy = '#id';
@@ -30,6 +45,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
+  private readonly filterChange = new Subject<any>();
 
   @Output() probativeValueClick = new EventEmitter<any>();
 
@@ -46,29 +62,39 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
         DEFAULT_PAGE_SIZE,
         this.orderBy,
         Direction.ASCENDANT,
-        JSON.stringify(this.buildProbativeVlaueCriteriaFromSearch())))
+        JSON.stringify(this.buildProbativeValueCriteriaFromSearch())))
       .subscribe((data: any[]) => {
         this.dataSource = data;
       });
 
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange)
+    const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
-      const query: any = this.buildProbativeVlaueCriteriaFromSearch();
+      const query: any = this.buildProbativeValueCriteriaFromSearch();
       console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
   }
 
-  buildProbativeVlaueCriteriaFromSearch() {
+  buildProbativeValueCriteriaFromSearch() {
     const criteria: any = {};
     criteria.evTypeProc = 'AUDIT';
     criteria.evType = 'EXPORT_PROBATIVE_VALUE';
     if (this._searchText !== undefined && this._searchText.length > 0) {
       criteria['#id'] = this._searchText;
     }
+
+    if (this._filters) {
+      if (this._filters.startDate) {
+        criteria.evDateTime_Start = this._filters.startDate;
+      }
+      if (this._filters.endDate) {
+        criteria.evDateTime_End = this._filters.endDate;
+      }
+    }
+
     return criteria;
   }
 
@@ -76,23 +102,24 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
     this.updatedData.unsubscribe();
   }
 
-  searchProbativeVlaueOrdered() {
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
+  searchProbativeValueOrdered() {
+    const query: any = this.buildProbativeValueCriteriaFromSearch();
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(query)));
   }
 
   emitOrderChange() {
     this.orderChange.next();
   }
 
-  probativeVlaueStatus(probativeVlaue: any): string {
-    return (probativeVlaue.events !== undefined && probativeVlaue.events.length !== 0) ?
-      probativeVlaue.events[probativeVlaue.events.length - 1].outcome :
-      probativeVlaue.outcome;
+  probativeValueStatus(probativeValue: any): string {
+    return (probativeValue.events !== undefined && probativeValue.events.length !== 0) ?
+      probativeValue.events[probativeValue.events.length - 1].outcome :
+      probativeValue.outcome;
   }
 
-  probativeVlaueMessage(probativeVlaue: any): string {
-    return (probativeVlaue.events !== undefined && probativeVlaue.events.length !== 0) ?
-      probativeVlaue.events[probativeVlaue.events.length - 1].outMessage :
-      probativeVlaue.outMessage;
+  probativeValueMessage(probativeValue: any): string {
+    return (probativeValue.events !== undefined && probativeValue.events.length !== 0) ?
+      probativeValue.events[probativeValue.events.length - 1].outMessage :
+      probativeValue.outMessage;
   }
 }

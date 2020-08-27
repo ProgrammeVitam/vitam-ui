@@ -1,15 +1,17 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-probative-value-preview *ngIf="openedItem" (previewClose)="closePanel()" [probativeValue]="openedItem"></app-probative-value-preview>
-  </mat-sidenav>
+    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+        <app-probative-value-preview *ngIf="openedItem" (previewClose)="closePanel()" [probativeValue]="openedItem">
+        </app-probative-value-preview>
+    </mat-sidenav>
 
-  <mat-sidenav-content>
+    <mat-sidenav-content>
 
         <div class="vitamui-header">
             <div class="vitamui-container">
 
-              <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"></vitamui-common-navbar>
+                <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
+                </vitamui-common-navbar>
 
                 <h2>
                     Rechercher mes <strong>Relevés de valeur probante</strong>
@@ -17,14 +19,16 @@
 
                 <div class="controls">
                     <div class="search-bar-filters">
-                        <vitamui-common-search-bar #searchBar name="probativeVlaue-search" (search)="onSearchSubmit($event)"
-                            placeholder="Identifiant de relevé, identifiant d'UA" i18n-placeholder="@@probativeValueSearchPlaceholder">
+                        <vitamui-common-search-bar #searchBar name="probativeValue-search"
+                            (search)="onSearchSubmit($event)" placeholder="Identifiant de relevé, identifiant d'UA"
+                            i18n-placeholder="@@probativeValueSearchPlaceholder">
                         </vitamui-common-search-bar>
                         <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
                     </div>
                     <div class="actions">
-                        <button class="btn secondary" (click)="openCreateProbativeVlaueDialog()">
-                            <i class="vitamui-icon vitamui-icon-probativeVlaue btn-create"></i> <span>Lancer un relevé</span>
+                        <button class="btn secondary" (click)="openCreateProbativeValueDialog()">
+                            <i class="vitamui-icon vitamui-icon-probativeValue btn-create"></i> <span>Lancer un
+                                relevé</span>
                         </button>
                     </div>
 
@@ -65,7 +69,8 @@
             </div>
         </div>
         <div class="vitamui-body vitamui-container">
-            <app-probative-value-list (probativeValueClick)="showProbativeValue($event)" [search]="search"></app-probative-value-list>
+            <app-probative-value-list (probativeValueClick)="showProbativeValue($event)" [search]="search"
+                [filters]="filters"></app-probative-value-list>
         </div>
     </mat-sidenav-content>
 

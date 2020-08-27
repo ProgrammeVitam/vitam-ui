@@ -20,7 +20,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   filters: any = {};
 
   @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
-  @ViewChild(ProbativeValueListComponent, {static: true}) probativeVlaueListComponent: ProbativeValueListComponent;
+  @ViewChild(ProbativeValueListComponent, {static: true}) probativeValueListComponent: ProbativeValueListComponent;
 
   constructor(
     public dialog: MatDialog,
@@ -35,12 +35,20 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
       endDate: null
     });
 
-    this.dateRangeFilterForm.valueChanges.subscribe((value) => {
-      this.filters.dateRange = value;
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
+      this.filters.startDate = value;
+      this.probativeValueListComponent.filters = this.filters;
+    });
+    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
+      if (value) {
+        value.setDate(value.getDate() + 1);
+      }
+      this.filters.endDate = value;
+      this.probativeValueListComponent.filters = this.filters;
     });
   }
 
-  openCreateProbativeVlaueDialog() {
+  openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true
@@ -53,10 +61,10 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   }
 
   private refreshList() {
-    if (!this.probativeVlaueListComponent) {
+    if (!this.probativeValueListComponent) {
       return;
     }
-    this.probativeVlaueListComponent.searchProbativeVlaueOrdered();
+    this.probativeValueListComponent.searchProbativeValueOrdered();
   }
 
   onSearchSubmit(search: string) {
@@ -86,6 +94,6 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 }
