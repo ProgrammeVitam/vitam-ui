@@ -434,6 +434,30 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- Apereo CAS Server Core Api Ticket -->
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-core-api-ticket</artifactId>
+                <version>${cas.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-core-tickets-api</artifactId>
+                <version>${cas.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
             <!-- Web -->
             <dependency>
                 <groupId>javax.servlet</groupId>

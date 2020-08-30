@@ -67,7 +67,7 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
  */
 public final class UserInternalServiceTest {
 
-    private static final String TOKEN_VALUE = "TOK1234567890";
+    private static final String TOKEN_VALUE = "TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu";
 
     private static final String USER_ID = "userId";
 
