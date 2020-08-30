@@ -49,6 +49,8 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -162,6 +164,8 @@ public class CasInternalService {
     @SuppressWarnings("unused")
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CasInternalService.class);
 
+    private static final UniqueTicketIdGenerator TICKET_GENERATOR = new DefaultUniqueTicketIdGenerator();
+
     @Transactional
     public void updatePassword(final String email, final String rawPassword) {
         final User user = checkUserInformations(email);
@@ -272,7 +276,7 @@ public class CasInternalService {
     private void createEventsSubrogation(final UserDto surrogate, final boolean isSubrogation) {
         if (isSubrogation) {
             final Subrogation subro = subrogationRepository.findOneBySurrogate(surrogate.getEmail());
-            EventType type;
+            final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
             }
@@ -310,7 +314,7 @@ public class CasInternalService {
         }
         final Date nowPlusXMinutes = DateUtils.addMinutes(new Date(), ttlInMinutes);
         token.setUpdatedDate(nowPlusXMinutes);
-        token.setId(TOKEN_PREFIX + tokenRepository.generateSuperId().toUpperCase());
+        token.setId(TICKET_GENERATOR.getNewTicketId(TOKEN_PREFIX));
         token.setSurrogation(isSubrogation);
         tokenRepository.save(token);
         user.setLastConnection(OffsetDateTime.now());

@@ -175,8 +175,8 @@ The call must be a POST request:
 
 The result contains the auth token in a plain response:
 
-`access_token=TOK5CE669E223C9741AA6DCD46xxx02C8F6FB9DC98DC25B779&expires_in=28800`
+`access_token=TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu&expires_in=28800`
 
 or in a JSON response:
 
-`{"access_token":"TOK5CE669E223C9741AA6DCD46xxx02C8F6FB9DC98DC25B779","token_type":"bearer","expires_in":28800}`
+`{"access_token":"TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu","token_type":"bearer","expires_in":28800}`
