@@ -96,6 +96,13 @@ public class IngestExternalController {
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
+    @Secured(ServicesData.ROLE_GET_INGEST)
+    @GetMapping(CommonConstants.PATH_ID)
+    public LogbookOperationDto getOne(@PathVariable("id") final String id) {
+        LOGGER.debug("get One Ingest id={}", id);
+        return ingestExternalService.getOne(id);
+    }
+
     @Secured(ServicesData.ROLE_CREATE_INGEST)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<RequestResponseOK> upload(

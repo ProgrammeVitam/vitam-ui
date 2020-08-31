@@ -107,6 +107,14 @@ public class IngestController extends AbstractUiRestController {
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
+    @ApiOperation(value = "Get one ingest operation details")
+    @GetMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public LogbookOperationDto getOne(final @PathVariable("id") String id ) {
+        LOGGER.error("Get Ingest={}", id);
+        return service.getOne(buildUiHttpContext(), id);
+    }
+
     @ApiOperation(value = "download Docx Report for an ingest operation")
     @GetMapping("/docxreport" + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> genereateDocX(final @PathVariable("id") String id) {

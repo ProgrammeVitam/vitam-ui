@@ -35,53 +35,47 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IngestService } from '../../ingest.service';
+import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { Event } from '../../event';
 
 @Component({
-  selector: 'app-ingest-information-tab',
-  templateUrl: './ingest-information-tab.component.html',
-  styleUrls: ['./ingest-information-tab.component.scss']
+  selector: 'app-ingest-event-detail',
+  templateUrl: './ingest-event-detail.component.html',
+  styleUrls: ['./ingest-event-detail.component.scss']
 })
-export class IngestInformationTabComponent implements OnInit, OnChanges {
+export class IngestEventDetailComponent implements OnInit, OnChanges {
+
   @Input()
   ingest: any;
 
-  ingestDetails: any;
-  constructor(private ingestService: IngestService) { }
+  events: Event[] = [];
+  isShown = false;
+
+  constructor(private eventDisplayHelper: EventDisplayHelperService) { }
 
   ngOnInit() {
-    this.getIngestDetails(this.ingest);
+    this.events = this.eventDisplayHelper.initEvents(this.ingest);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.ingest) {
-      this.getIngestDetails(changes.ingest.currentValue);
+      this.events = this.eventDisplayHelper.initEvents(changes.ingest.currentValue);
     }
   }
 
-  getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
-      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
-        this.ingestDetails = data;
-      });
-    } else {
-      this.ingestDetails = null;
-    }
+  toggleShow() {
+    this.isShown = !this.isShown;
   }
 
   ingestMessage(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessg :
-      ingest.outMessg;
+      ingest.events[ingest.events.length - 1].outMessage :
+      ingest.outMessage;
   }
 
   ingestEndDate(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].evDateTime :
-      ingest.evDateTime;
-  }
-
-  ingestStatus(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+      ingest.events[ingest.events.length - 1].dateTime :
+      ingest.dateTime;
   }
 }

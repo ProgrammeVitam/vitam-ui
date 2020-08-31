@@ -81,6 +81,10 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
+    public LogbookOperationDto getOne(final ExternalHttpContext context, final String id) {
+        return super.getOne(context,id);
+    }
+
     @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);
