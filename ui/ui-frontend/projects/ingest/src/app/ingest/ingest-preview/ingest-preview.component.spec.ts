@@ -6,7 +6,7 @@ import { LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { IngestService } from '../ingest.service';
 
-fdescribe('IngestPreviewComponent', () => {
+describe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
 

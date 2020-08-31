@@ -89,6 +89,13 @@ public class IngestInternalController {
     }
 
 
+    @GetMapping(CommonConstants.PATH_ID)
+    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
+        LOGGER.debug("get Ingest Entities for id={} ", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestInternalService.getOne(vitamContext, id);
+    }
+
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RequestResponseOK upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,

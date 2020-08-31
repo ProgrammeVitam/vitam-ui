@@ -40,6 +40,7 @@ import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
 import { Observable } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -79,4 +80,8 @@ downloadDocxReport(id : string)  {
   })
 
 }
+
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
 }

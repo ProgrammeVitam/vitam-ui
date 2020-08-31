@@ -40,7 +40,8 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
@@ -98,6 +99,11 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
 
      public ResponseEntity<byte[]> generateDocX(String id) {
         return ingestInternalRestClient.generateDocX(getInternalHttpContext(), id);
+    }
+
+    public LogbookOperationDto getOne(final String id) {
+        return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
+
     }
 
     @Override
