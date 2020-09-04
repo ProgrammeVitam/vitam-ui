@@ -49,6 +49,7 @@ import {SecurisationService} from '../../securisation.service';
 
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   @Input() id: string;
+  @Input() securisation: Event;
 
   events: Event[] = [];
   display = false;
