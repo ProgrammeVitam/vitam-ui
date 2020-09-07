@@ -40,9 +40,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,6 +52,8 @@ import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -184,8 +188,26 @@ public class VitamContextService {
         final List<ContextVitamDto> listOfContexts = convertContextsToModelOfCreation(contextDto);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfContexts, JsonNode.class);
-        LOGGER.debug("The json for creation access contract, sent to Vitam {}", node);
-
+        
+        // FIXME ? The "accessContracts" and "ingestContracts" in the permissions must be rename to "AccessContracts" and "IngestContracts" to be saved in Vitam
+        final ArrayNode arrayNode = (ArrayNode) node;
+        arrayNode.forEach(contextNode -> {
+        	final ArrayNode permissionsNode = (ArrayNode) contextNode.get("Permissions");
+        	if (permissionsNode != null) {
+            	permissionsNode.forEach(permissionNode -> {
+            		final ObjectNode objectNode = (ObjectNode) permissionNode;
+                	if (permissionNode.get("accessContracts") != null) {
+                		objectNode.set("AccessContracts", permissionNode.get("accessContracts"));
+                		objectNode.remove("accessContracts");
+                	}
+                	if (permissionNode.get("ingestContracts") != null) {
+                		objectNode.set("IngestContracts", permissionNode.get("ingestContracts"));
+                		objectNode.remove("ingestContracts");
+                	}
+            	});	
+        	}
+        });
+    
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             mapper.writeValue(byteArrayOutputStream, node);
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
