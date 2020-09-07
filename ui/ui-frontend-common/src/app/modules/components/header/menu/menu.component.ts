@@ -80,20 +80,20 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-      if (event.key === 'ArrowRight') {
-        if (this.tabSelectedIndex < this.selectedList.length - 1) {
-          this.tabSelectedIndex++;
-        }
-      } else if (event.key === 'ArrowLeft') {
-        if (this.tabSelectedIndex > 0) {
-          this.tabSelectedIndex--;
-        }
-      } else if (event.key === 'ArrowDown') {
-        if (this.firstResult && !this.firstResultFocused) {
-          this.firstResult.focus();
-          this.firstResultFocused = true;
-        }
+    if (event.key === 'ArrowRight') {
+      if (this.tabSelectedIndex < this.selectedList.length - 1) {
+        this.tabSelectedIndex++;
       }
+    } else if (event.key === 'ArrowLeft') {
+      if (this.tabSelectedIndex > 0) {
+        this.tabSelectedIndex--;
+      }
+    } else if (event.key === 'ArrowDown') {
+      if (this.firstResult && !this.firstResultFocused) {
+        this.firstResult.focus();
+        this.firstResultFocused = true;
+      }
+    }
   }
 
   constructor(
@@ -175,7 +175,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public openApplication(app: Application) {
     this.onClose();
     this.applicationService.
-      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
+    openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
   }
 
   public updateApps(tenant: Tenant) {
@@ -184,4 +184,5 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.appMap = this.applicationService.getTenantAppMap(tenant);
     }
   }
+
 }
