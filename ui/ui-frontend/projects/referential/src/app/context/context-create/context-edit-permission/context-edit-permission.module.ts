@@ -45,6 +45,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonModule} from 'ui-frontend-common';
 import {ContextEditPermissionComponent} from './context-edit-permission.component';
 
@@ -59,7 +60,8 @@ import {ContextEditPermissionComponent} from './context-edit-permission.componen
     MatSnackBarModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    VitamUICommonModule
+    VitamUICommonModule,
+    VitamUILibraryModule,
   ],
   declarations: [
     ContextEditPermissionComponent

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ConfirmActionComponent, Context} from 'projects/vitamui-library/src/public-api';
@@ -49,7 +49,7 @@ import {ContextPermissionTabComponent} from './context-permission-tab/context-pe
   templateUrl: './context-preview.component.html',
   styleUrls: ['./context-preview.component.scss']
 })
-export class ContextPreviewComponent implements OnInit {
+export class ContextPreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() context: Context;
@@ -73,10 +73,7 @@ export class ContextPreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private contextService: ContextService) {
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.permsTab;

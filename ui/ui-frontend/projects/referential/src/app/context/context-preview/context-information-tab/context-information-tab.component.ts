@@ -160,6 +160,7 @@ export class ContextInformationTabComponent {
   }
 
   resetForm(context: Context) {
+    this.statusControl.setValue(context.status === 'ACTIVE');
     this.form.reset(context, {emitEvent: false});
   }
 }

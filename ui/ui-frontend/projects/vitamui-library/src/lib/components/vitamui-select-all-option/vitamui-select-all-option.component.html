@@ -1,0 +1,14 @@
+<mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
+    [state]="checkboxState"
+    [disabled]="disabled"
+    [ngClass]="selected ? 'bg-accent': ''">
+</mat-pseudo-checkbox>
+
+<span class="mat-option-text">
+    {{title}}
+</span>
+
+<div class="mat-option-ripple" mat-ripple
+    [matRippleTrigger]="_getHostElement()"
+    [matRippleDisabled]="disabled || disableRipple">
+</div>

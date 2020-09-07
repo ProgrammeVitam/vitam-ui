@@ -165,4 +165,13 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     this.disabled = isDisabled;
   }
 
+  getAccessContractKeys(tenant: string): string[] {
+    const contracts: Option[] = this.accessContracts.get(tenant);
+    return contracts != null ? contracts.map(item => item.key)  : [];
+  }
+
+  getIngestContractKeys(tenant: string) {
+    const contracts: Option[] = this.ingestContracts.get(tenant);
+    return contracts != null ? contracts.map(item => item.key)  : [];
+  }
 }

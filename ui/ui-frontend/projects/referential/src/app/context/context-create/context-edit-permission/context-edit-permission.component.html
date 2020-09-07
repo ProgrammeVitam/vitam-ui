@@ -33,6 +33,10 @@
           <mat-select [(value)]="permission.accessContracts" placeholder="Contrats d'accès" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                       multiple required>
+            <vitamui-select-all-option [value]="permission.accessContracts" [values]="getAccessContractKeys(permission.tenant)" 
+                                       title="Tous les contrats d'accès" i18n-title="Application@@accessContractsFormApplicationSelectAll"
+                                       (toggleSelection)="permission.accessContracts = $event">
+            </vitamui-select-all-option>
             <mat-option *ngFor='let contract of accessContracts.get(permission.tenant)' [value]="contract.key">
               {{contract.label}}
             </mat-option>
@@ -47,6 +51,10 @@
           <mat-select [(value)]="permission.ingestContracts" placeholder="Contrats d'entrée" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                       multiple required>
+            <vitamui-select-all-option [value]="permission.ingestContracts" [values]="getIngestContractKeys(permission.tenant)" 
+                                       title="Tous les contrats d'entrée" i18n-title="Application@@ingestContractsFormApplicationSelectAll"
+                                       (toggleSelection)="permission.ingestContracts = $event">
+            </vitamui-select-all-option>
             <mat-option *ngFor='let contract of ingestContracts.get(permission.tenant)' [value]="contract.key">
               {{contract.label}}
             </mat-option>
