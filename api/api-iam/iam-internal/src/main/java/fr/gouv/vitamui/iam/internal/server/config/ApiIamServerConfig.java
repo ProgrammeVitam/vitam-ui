@@ -240,10 +240,10 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             final TenantRepository tenantRepository, final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository,
             final ProfileRepository profilRepository, final GroupInternalService groupInternalService, final GroupRepository groupRepository,
             final IamLogbookService iamLogbookService, final UserConverter userConverter, final MongoTransactionManager mongoTransactionManager,
-            final LogbookService logbookService, final AddressService addressService) {
+            final LogbookService logbookService, final AddressService addressService, final ApplicationInternalService applicationInternalService) {
         return new UserInternalService(sequenceRepository, userRepository, groupInternalService, profileInternalService, userEmailInternalService,
                 tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository, iamLogbookService, userConverter,
-                mongoTransactionManager, logbookService, addressService);
+                mongoTransactionManager, logbookService, addressService, applicationInternalService);
     }
 
     @Bean

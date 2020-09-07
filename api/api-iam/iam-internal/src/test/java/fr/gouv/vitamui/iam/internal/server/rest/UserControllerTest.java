@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -343,6 +344,23 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         }
 
     }
+
+    @Test
+    public void testPatchAnalyticsOk() {
+        UserDto userDto = buildUserDto();
+        UserInternalService userInternalService = Mockito.mock(UserInternalService.class);
+        when(userInternalService.patchAnalytics(any())).thenReturn(userDto);
+        userController = new UserInternalController(userInternalService);
+        Map<String, Object> partialDto = Map.of("applicationId", "SUBROGATIONS_APP");
+
+        UserDto result = userController.patchAnalytics(partialDto);
+
+        ArgumentCaptor<Map<String, Object> > captor = ArgumentCaptor.forClass(Map.class);
+        verify(userInternalService).patchAnalytics(captor.capture());
+        assertThat(captor.getValue()).isEqualTo(partialDto);
+        assertThat(result).isEqualTo(userDto);
+    }
+
 
     @Test(expected = UnsupportedOperationException.class)
     public void testCannotDelete() {
