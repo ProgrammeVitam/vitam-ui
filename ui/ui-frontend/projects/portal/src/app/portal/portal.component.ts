@@ -77,13 +77,13 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
   }
 
+  public openApplication(app: Application): void {
+    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-  }
-
-  public openApplication(app: Application): void {
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }
