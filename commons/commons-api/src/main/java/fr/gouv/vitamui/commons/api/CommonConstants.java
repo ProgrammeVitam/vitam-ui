@@ -63,6 +63,8 @@ public class CommonConstants {
 
     public static final String PATH_ME = "/me";
 
+    public static final String PATH_ANALYTICS = "/analytics";
+
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 
     public static final String X_XSRF_TOKEN_HEADER = "X-XSRF-Token";

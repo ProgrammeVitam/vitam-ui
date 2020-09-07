@@ -116,5 +116,7 @@ public class UserDto extends CustomerIdDto {
 
     private String internalCode;
 
+    private AnalyticsDto analytics;
+
     private String siteCode;
 }

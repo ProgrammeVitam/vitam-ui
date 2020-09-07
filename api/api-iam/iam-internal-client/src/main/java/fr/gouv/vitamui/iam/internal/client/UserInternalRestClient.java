@@ -54,6 +54,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -105,6 +106,18 @@ public class UserInternalRestClient extends BasePaginatingAndSortingRestClient<U
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<List<String>> response = restTemplate.exchange(buildUriBuilder(builder),
                 HttpMethod.GET, request, getStringListClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public UserDto patchAnalytics(final InternalHttpContext context, final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch analytics partialDto={}");
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_ANALYTICS);
+        final URI uri = buildUriBuilder(uriBuilder);
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
+        final ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.POST,
+                request, getDtoClass());
         checkResponse(response);
         return response.getBody();
     }
