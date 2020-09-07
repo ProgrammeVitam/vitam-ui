@@ -124,10 +124,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.changeTabFocus();
   }
 
-  ngOnDestroy() {
-    this.destroyer$.next();
-  }
-
   public onSearch(value: string): void {
     if (value) {
       this.criteria = value;
@@ -182,6 +178,12 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     if (tenant) {
       this.selectedTenant = tenant;
       this.appMap = this.applicationService.getTenantAppMap(tenant);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
     }
   }
 }
