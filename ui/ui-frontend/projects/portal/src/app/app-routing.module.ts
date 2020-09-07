@@ -42,9 +42,11 @@ import { PortalComponent } from './portal';
 
 
 const routes: Routes = [
-  { path: '',
+  {
+    path: '',
     component: PortalComponent,
     canActivate: [AuthGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: ApplicationId.PORTAL_APP }
   },
   {

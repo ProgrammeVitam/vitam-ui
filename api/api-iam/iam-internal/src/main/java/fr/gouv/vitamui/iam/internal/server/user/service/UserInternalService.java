@@ -152,6 +152,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private final String ADMIN_EMAIL_PATTERN = "admin@";
 
+    private final String PORTAL_APP_IDENTIFIER = "PORTAL_APP";
+
     private MongoTransactionManager mongoTransactionManager;
 
     private LogbookService logbookService;
@@ -922,7 +924,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private void checkApplicationAccessPermission(String applicationId) {
         List<ApplicationDto> loggedUserApplications = applicationInternalService.getAll(Optional.empty(), Optional.empty());
         boolean userHasPermission = loggedUserApplications.stream().anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
-        if (!userHasPermission) {
+        if (!userHasPermission && !applicationId.equals(PORTAL_APP_IDENTIFIER)) {
             throw new IllegalArgumentException(String.format("User has no permission to access to the application : %s", applicationId));
         }
     }

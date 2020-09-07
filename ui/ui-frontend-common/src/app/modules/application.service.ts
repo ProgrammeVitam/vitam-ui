@@ -37,11 +37,14 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
+import { AuthService } from './auth.service';
 import { Application } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
+import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -58,18 +61,32 @@ export class ApplicationService {
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
+  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
+
+  set applicationsAnalytics(apps: ApplicationAnalytics[]) {
+    this._applicationsAnalytics = apps;
+    this.analyticsUpdated$.next();
+  }
+
+  // tslint:disable-next-line:variable-name
+  _applicationsAnalytics: ApplicationAnalytics[];
+
+  private analyticsUpdated$ = new Subject();
+
   /**
    * Map that will contain applications grouped by categories
    */
   private appMap: Map<Category, Application[]>;
 
+  private appMap$ = new BehaviorSubject(this.appMap);
+
   private categories = [
-    { position: 0, identifier: 'users', name: 'Utilisateur' },
-    { position: 1, identifier: 'administrators', name: 'Management' },
-    { position: 2, identifier: 'settings', name: 'Paramétrage' },
+    { position: 1, identifier: 'users', name: 'Utilisateur' },
+    { position: 2, identifier: 'administrators', name: 'Management' },
+    { position: 3, identifier: 'settings', name: 'Paramétrage' },
   ] as Category[];
 
-  constructor(private applicationApi: ApplicationApiService) { }
+  constructor(private applicationApi: ApplicationApiService, private authService: AuthService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
@@ -89,12 +106,19 @@ export class ApplicationService {
   /**
    * Get Applications list grouped by categories in a hashMap.
    */
-  public getAppsGroupByCategories(): Map<Category, Application[]> {
+  public getAppsGroupByCategories(): Observable<Map<Category, Application[]>> {
     if (!this.appMap) {
-      this.appMap = new Map<Category, Application[]>();
-      this.fillCategoriesWithApps(this.categories, this.applications);
+      this.appMap = this.fillCategoriesWithApps(this.categories, this.applications);
+      this.analyticsUpdated$.subscribe(() => {
+        const lastUsedApps = this.getLastUsedApps(this.categories, this.applications);
+        if (lastUsedApps) {
+          this.appMap.set(lastUsedApps.category, lastUsedApps.apps);
+          this.appMap = this.sortMapByCategory(this.appMap);
+        }
+        this.appMap$.next(this.appMap);
+      });
     }
-    return this.appMap;
+    return this.appMap$;
   }
 
   public openApplication(app: Application, router: Router, uiUrl: string): void {
@@ -106,22 +130,67 @@ export class ApplicationService {
     }
   }
 
-  private fillCategoriesWithApps(categories: Category[], applications: Application[]) {
+  private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
+    return new Map([...appMap.entries()].sort((a, b) => a[0].position < b[0].position ? -1 : 1));
+  }
+
+  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<Category, Application[]> {
+    const resultMap = new Map<Category, Application[]>();
     categories.forEach((category: Category) => {
-      this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
     });
+    return this.sortMapByCategory(resultMap);
+  }
+
+  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
+    let dataSource: ApplicationAnalytics[];
+    if (this.applicationsAnalytics) {
+      dataSource = this.applicationsAnalytics;
+    } else if (this.authService.user.analytics && this.authService.user.analytics.applications) {
+      dataSource = this.authService.user.analytics.applications;
+    }
+
+    if (dataSource) {
+      const lastUsedAppsCateg = { position: 0, identifier: 'lastUsedApps', name: 'Dernières utilisées' };
+      // Define & set last used apps array
+      let lastUsedApps = applications.filter((application: Application) => {
+        return dataSource.findIndex((app: ApplicationAnalytics) => app.applicationId === application.identifier) !== -1;
+      });
+
+      if (lastUsedApps.length !== 0) {
+        // Check if category already exists
+        const categoryIndex = categories.findIndex((category: Category) => category.identifier === lastUsedAppsCateg.identifier);
+        if (categoryIndex === -1) {
+          this.categories.push(lastUsedAppsCateg);
+        }
+
+        // Sort last used apps by date
+        lastUsedApps.sort((a: Application, b: Application) => {
+          const c = dataSource.find((app: ApplicationAnalytics) => app.applicationId === a.identifier);
+          const d = dataSource.find((app: ApplicationAnalytics) => app.applicationId === b.identifier);
+          return c && d && new Date(c.lastAccess).getTime() > new Date(d.lastAccess).getTime() ? -1 : 1;
+        });
+
+        // Get 8 last used apps if there is more than 8
+        if (lastUsedApps.length > max) {
+          lastUsedApps = lastUsedApps.slice(0, 7);
+        }
+
+        return { category: lastUsedAppsCateg, apps: lastUsedApps };
+      }
+    }
   }
 
   private getSortedAppsOfCategory(category: Category, applications: Application[]): Application[] {
     if (applications) {
-      const apps = applications.filter(application => application.category === category.identifier) as Application[];
+      const apps = applications.filter((application: Application) => application.category === category.identifier) as Application[];
       return this.sortApplications(apps);
     }
   }
 
   private sortApplications(applications: Application[]): Application[] {
     // Sort apps inside categories
-    return applications.sort((a, b) => {
+    return applications.sort((a: Application, b: Application) => {
       return a.position < b.position ? -1 : 1;
     });
   }

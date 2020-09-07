@@ -161,6 +161,8 @@ public class CommonConstants {
 
     public static final String GROUP_ID_ATTRIBUTE = "groupId";
 
+    public static final String ANALYTICS_ATTRIBUTE = "analytics";
+
     public static final String PROFILE_GROUP_ATTRIBUTE = "profileGroup";
 
     public static final String ROLES_ATTRIBUTE = "roles";
