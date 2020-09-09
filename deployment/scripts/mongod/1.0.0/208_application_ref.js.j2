@@ -202,22 +202,4 @@ db.applications.insert({
     "target" : "_self"
 });
 
-db.applications.insert({
-    "identifier" : "LOGBOOK_OPERATION_APP",
-{% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.referential.base_url }}/logbook-operation",
-{% else %}
-    "url": "{{ url_prefix }}/referential/logbook-operation",
-{% endif %}
-    "icon": "vitamui-icon vitamui-icon-api-supervision",
-    "name": "Journal des Opérations",
-    "category": "referential",
-    "position": NumberInt(16),
-    "hasCustomerList": false,
-    "hasTenantList": false,
-    "hasHighlight": false,
-    "tooltip": "Consultation des journaux des opérations d'entrées, de bases, d'éliminations",
-    "target": "_self"
-});
-
 print("END 208_application_ref.js");

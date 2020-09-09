@@ -129,6 +129,15 @@ const routes: Routes = [
     data: {appId: 'DSL_APP'}
   },
   // =====================================================
+  //                       RULES
+  // =====================================================
+  {
+    path: 'rule',
+    loadChildren: () => import('./rule/rule.module').then(m => m.RuleModule),
+    canActivate: [AuthGuard, AppGuard],
+    data: {appId: 'RULES_APP'}
+  },
+  // =====================================================
   //                      unknown path
   // =====================================================
   {path: '**', redirectTo: ''}
