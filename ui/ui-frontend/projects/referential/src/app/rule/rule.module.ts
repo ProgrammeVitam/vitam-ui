@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,58 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {
+  MatDialogModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatSnackBarModule
+} from '@angular/material';
+import {RouterModule} from '@angular/router';
+import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
+import {SharedModule} from '../shared/shared.module';
+import {RuleRoutingModule} from './rule-routing.module';
+import {RuleComponent} from './rule.component';
+import {RuleListComponent} from './rule-list/rule-list.component';
+import {RuleCreateModule} from './rule-create/rule-create.module';
+import {RulePreviewModule} from './rule-preview/rule-preview.module';
 
-    private static final String PREFIX = "/referential/v1";
+@NgModule({
+  imports: [
+    CommonModule,
+    RouterModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    RuleRoutingModule,
+    RuleCreateModule,
+    RulePreviewModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    SharedModule,
+    TableFilterModule
+  ],
+  declarations: [
+    RuleComponent,
+    RuleListComponent
+  ]
 
-    public static final String STATUS_URL = "/status";
-
-    public static final String AUTOTEST_URL = "/autotest";
-
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
-
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
-
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
-
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
-
-    public static final String AGENCIES_URL = PREFIX + "/agency";
-
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
-
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
+})
+export class RuleModule {
 }

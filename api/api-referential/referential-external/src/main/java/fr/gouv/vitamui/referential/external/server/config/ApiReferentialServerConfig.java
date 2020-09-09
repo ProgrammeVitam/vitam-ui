@@ -187,4 +187,9 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public ProfileInternalRestClient profileInternalRestClient(final ReferentialInternalRestClientFactory factory) {
         return factory.getProfileInternalRestClient();
     }
+
+    @Bean
+    public RuleInternalRestClient ruleInternalRestClient(final ReferentialInternalRestClientFactory factory) {
+        return factory.getRuleInternalRestClient();
+    }
 }

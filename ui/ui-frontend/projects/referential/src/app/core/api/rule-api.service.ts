@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,58 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {Rule} from '../../../../../vitamui-library/src/lib/models/rule';
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+const HTTP_STATUS_OK = 200;
 
-    private static final String PREFIX = "/referential/v1";
+@Injectable({
+  providedIn: 'root'
+})
+export class RuleApiService extends BaseHttpClient<Rule> {
 
-    public static final String STATUS_URL = "/status";
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/rule');
+  }
 
-    public static final String AUTOTEST_URL = "/autotest";
+  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+    return super.getAllByParams(params, headers);
+  }
 
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
+  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Rule>> {
+    return super.getAllPaginated(pageRequest, embedded, headers);
+  }
 
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
+  getOne(id: string, headers?: HttpHeaders): Observable<Rule> {
+    return super.getOne(id, headers);
+  }
 
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
+  patch(partialRule: {id: string, [key: string]: any}, headers?: HttpHeaders) {
+    return super.patch(partialRule, headers);
+  }
 
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
+  create(rule: Rule, headers?: HttpHeaders): Observable<Rule> {
+    return super.getHttp().post<any>(super.getApiUrl(), rule, {headers});
+  }
 
-    public static final String AGENCIES_URL = PREFIX + "/agency";
+  check(rule: Rule, headers?: HttpHeaders): Observable<boolean> {
+    return super.getHttp().post<any>(super.getApiUrl() + '/check', rule, {observe: 'response', headers})
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
+  }
 
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
+  delete(id: string, headers?: HttpHeaders) {
+    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
+  }
 
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
 }
