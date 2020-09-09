@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,58 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
+import {RuleCreateComponent} from './rule-create.component';
+import {RuleCreateValidators} from './rule-create.validators';
 
-    private static final String PREFIX = "/referential/v1";
-
-    public static final String STATUS_URL = "/status";
-
-    public static final String AUTOTEST_URL = "/autotest";
-
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
-
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
-
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
-
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
-
-    public static final String AGENCIES_URL = PREFIX + "/agency";
-
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
-
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    VitamUICommonModule
+  ],
+  declarations: [
+    RuleCreateComponent
+  ],
+  entryComponents: [RuleCreateComponent],
+  providers: [RuleCreateValidators]
+})
+export class RuleCreateModule {
 }

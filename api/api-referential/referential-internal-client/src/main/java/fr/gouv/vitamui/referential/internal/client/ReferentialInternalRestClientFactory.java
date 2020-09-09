@@ -105,4 +105,8 @@ public class ReferentialInternalRestClientFactory extends BaseRestClientFactory 
     public ManagementContractInternalRestClient getManagementContractInternalRestClient() {
         return new ManagementContractInternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+    public RuleInternalRestClient getRuleInternalRestClient() {
+        return new RuleInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

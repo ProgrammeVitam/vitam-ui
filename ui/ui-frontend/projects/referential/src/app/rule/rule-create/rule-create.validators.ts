@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,58 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+import {Injectable} from '@angular/core';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+import {of, timer} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
+import {RuleService} from '../rule.service';
 
-    private static final String PREFIX = "/referential/v1";
+@Injectable()
+export class RuleCreateValidators {
 
-    public static final String STATUS_URL = "/status";
+  private debounceTime = 400;
 
-    public static final String AUTOTEST_URL = "/autotest";
+  constructor(private ruleService: RuleService) {
+  }
 
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('name', 'nameExists', nameToIgnore);
+  }
 
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
+  uniquePuid = (identifierToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('puid', 'puidExists', identifierToIgnore);
+  }
 
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
+  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
+    return (control: AbstractControl) => {
 
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
+      const properties: any = {};
+      properties[field] = control.value;
+      const existField: any = {};
+      existField[existTag] = true;
 
-    public static final String AGENCIES_URL = PREFIX + "/agency";
-
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
-
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
+      return timer(this.debounceTime).pipe(
+        switchMap(() => control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false)),
+        take(1),
+        map((exists: boolean) => exists ? existField : null)
+      );
+    };
+  }
 }
