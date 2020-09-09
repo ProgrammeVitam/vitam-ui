@@ -12,6 +12,7 @@ $arrow-size: 20px;
     padding: 5px 20px;
     position: relative;
     overflow: visible;
+    white-space: pre-line;
 
     &:before {
         content: '';
