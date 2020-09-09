@@ -1,0 +1,42 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+        <app-rule-preview *ngIf="openedItem" (previewClose)="closePanel()" [rule]="openedItem"></app-rule-preview>
+    </mat-sidenav>
+
+
+    <mat-sidenav-content>
+
+        <div class="vitamui-header">
+            <div class="vitamui-container">
+                <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
+                </vitamui-common-navbar>
+
+                <h2 i18n="Search rules@@rulesSearchHeader">
+                    Paramétrer les <strong>Règles de gestion</strong>
+                </h2>
+
+                <div class="controls">
+
+                    <vitamui-common-search-bar name="rules-search" (search)="onSearchSubmit($event)"
+                        placeholder="Nom, ID, ..." i18n-placeholder="@@rulesSearchPlaceholder">
+                    </vitamui-common-search-bar>
+
+                    <div class="actions">
+                        <button class="btn secondary" (click)="openCreateRuleDialog()">
+                            <i class="vitamui-icon vitamui-icon-rules btn-create"></i> <span
+                                i18n="Create a business rule button label@@RulesListCreateButton">Créer une règle de
+                                gestion</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="vitamui-body vitamui-container">
+            <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

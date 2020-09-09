@@ -34,58 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+package fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat;
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+import lombok.Getter;
+import lombok.Setter;
 
-    private static final String PREFIX = "/referential/v1";
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
-    public static final String STATUS_URL = "/status";
+@XmlAccessorType(XmlAccessType.FIELD)
+@Setter
+@Getter
+public class RuleCollection {
 
-    public static final String AUTOTEST_URL = "/autotest";
+    @XmlElement(name="Rules")
+    private List<Rule> rules;
 
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
-
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
-
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
-
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
-
-    public static final String AGENCIES_URL = PREFIX + "/agency";
-
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
-
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
 }

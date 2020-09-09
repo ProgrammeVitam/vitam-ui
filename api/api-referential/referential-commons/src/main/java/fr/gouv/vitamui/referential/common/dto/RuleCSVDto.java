@@ -34,58 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.rest;
+package fr.gouv.vitamui.referential.common.dto;
 
-/**
- * The URLs of the REST API.
- *
- *
- */
-public abstract class RestApi {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-    private static final String PREFIX = "/referential/v1";
+import java.io.Serializable;
 
-    public static final String STATUS_URL = "/status";
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+public class RuleCSVDto implements Serializable {
 
-    public static final String AUTOTEST_URL = "/autotest";
+    @JsonProperty("RuleId")
+    private String ruleId;
 
-    public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
+    @JsonProperty("RuleType")
+    private String ruleType;
 
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontract";
+    @JsonProperty("RuleValue")
+    private String ruleValue;
 
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
+    @JsonProperty("RuleDescription")
+    private String ruleDescription;
 
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
+    @JsonProperty("RuleDuration")
+    private String ruleDuration;
 
-    public static final String AGENCIES_URL = PREFIX + "/agency";
-
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
-
-    public static final String CONTEXTS_URL = PREFIX + "/context";
-
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
-
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
-
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
-
-    public static final String RULES_URL = PREFIX + "/rules";
-
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
-
-    public static final String PROFILES_URL = PREFIX + "/profile";
-
-    public static final String SEARCH_PATH = "/search";
-
-    public static final String UNITS_PATH = "/units";
-
-    public static final String DSL_PATH = "/dsl";
-
-    public static final String FILING_PLAN_PATH = "/filingplan";
-
-    public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
-
-    private RestApi() {
-        // do nothing
-    }
+    @JsonProperty("RuleMeasurement")
+    private String ruleMeasurement;
 }
