@@ -41,7 +41,7 @@ import {Observable, of} from 'rxjs';
 import {catchError, filter, map, switchMap} from 'rxjs/operators';
 import {diff} from 'ui-frontend-common';
 import {extend, isEmpty} from 'underscore';
-import {RULE_TYPES, RULE_MEASUREMENTS} from '../../rule.component';
+import {RULE_TYPES, RULE_MEASUREMENTS} from '../../rules.constants';
 import {RuleService} from '../../rule.service';
 
 
@@ -104,6 +104,9 @@ export class RuleInformationTabComponent {
   }
 
   unchanged(): boolean {
+    if (this.previousValue().ruleDescription === undefined && this.form.getRawValue().ruleDescription != null) {
+      this.previousValue().ruleDescription = "";
+    }
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
