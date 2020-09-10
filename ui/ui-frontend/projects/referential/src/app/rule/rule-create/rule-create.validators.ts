@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 import {of, timer} from 'rxjs';
 import {map, switchMap, take} from 'rxjs/operators';
@@ -43,18 +43,20 @@ import {RuleService} from '../rule.service';
 
 @Injectable()
 export class RuleCreateValidators {
-
   private debounceTime = 400;
 
   constructor(private ruleService: RuleService) {
   }
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
+  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
   }
 
-  uniquePuid = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('puid', 'puidExists', identifierToIgnore);
+  ruleIdPattern = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const regexp = /[À-ÖØ-öø-ÿ ]/;
+      return regexp.test(control.value) ? {ruleIdPattern: true} : null;
+    };
   }
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {

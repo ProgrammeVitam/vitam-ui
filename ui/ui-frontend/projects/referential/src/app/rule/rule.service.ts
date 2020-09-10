@@ -40,13 +40,13 @@ import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
-
 import {RuleApiService} from '../core/api/rule-api.service';
 import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class RuleService extends SearchService<Rule> {
 
   updated = new Subject<Rule>();
@@ -71,9 +71,6 @@ export class RuleService extends SearchService<Rule> {
 
   existsProperties(properties: {name?: string, ruleId?: string}): Observable<any> {
     const rule: any = {};
-    if (properties.name) {
-      rule.name = properties.name;
-    }
     if (properties.ruleId) {
       rule.ruleId = properties.ruleId;
     }
@@ -86,10 +83,10 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.create(rule, this.headers)
       .pipe(
         tap(
-          (response: Rule) => {
+          () => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
-              data: {type: 'ruleCreate', name: response.ruleId},
+              data: {type: 'ruleCreate', name: rule.ruleId},
               duration: 10000
             });
           },
@@ -109,11 +106,11 @@ export class RuleService extends SearchService<Rule> {
       .pipe(
         tap((response) => this.updated.next(response)),
         tap(
-          (response) => {
+          () => {
             this.snackBar.openFromComponent(VitamUISnackBarComponent, {
               panelClass: 'vitamui-snack-bar',
               duration: 10000,
-              data: {type: 'ruleUpdate', name: response.ruleId}
+              data: {type: 'ruleUpdate', name: data.ruleId}
             });
           },
           (error) => {

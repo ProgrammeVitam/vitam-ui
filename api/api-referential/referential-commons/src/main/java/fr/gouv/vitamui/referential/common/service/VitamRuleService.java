@@ -269,9 +269,10 @@ public class VitamRuleService {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ContextResponseDto contextResponseDto = objectMapper.treeToValue(vitamRules.toJsonNode(), ContextResponseDto.class);
+            final RuleResponseDto contextResponseDto = objectMapper.treeToValue(vitamRules.toJsonNode(), RuleResponseDto.class);
             final List<String> contextRuleIds = checkRules.stream().map(context -> context.getRuleId()).collect(Collectors.toList());
-            if (contextResponseDto.getResults().stream().anyMatch(context -> contextRuleIds.contains(context.getIdentifier()))) {
+
+            if (contextResponseDto.getResults().stream().anyMatch(context -> contextRuleIds.contains(context.getRuleId()))) {
                 throw new ConflictException("Can't create rule, a rule with the same identifier already exist in Vitam");
             }
         }

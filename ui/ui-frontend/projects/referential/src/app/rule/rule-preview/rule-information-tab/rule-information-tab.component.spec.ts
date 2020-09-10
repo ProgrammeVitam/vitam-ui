@@ -5,7 +5,7 @@ import {FormBuilder} from '@angular/forms';
 import {Rule} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {RuleService} from '../../rule.service';
-import {RuleInformationTabComponent} from './rule./rule-information-tab.component
+import {RuleInformationTabComponent} from './rule-information-tab.component';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;
@@ -20,26 +20,23 @@ describe('RuleInformationTabComponent', () => {
     puid: 'EXTERNAL_puid',
     name: 'Name',
     mimeType: 'application/puid',
-    version: '1.0',
+    version: 1,
     versionPronom: '3.0',
     extensions: ['.puid']
   };
 
   const previousValue: Rule = {
     id: 'vitam_id',
-    documentVersion: 0,
-    version: '1.0',
-    versionPronom: '3.0',
-    puid: 'EXTERNAL_puid',
-    name: 'Name',
-    description: 'Format de Fichier',
-    mimeType: 'application/puid',
-    hasPriorityOverRuleIDs: [],
-    group: 'test',
-    alert: false,
-    comment: 'No Comment',
-    extensions: ['.puid'],
-    createdDate: '20/02/2020'
+    tenant: 1,
+    version: 1,
+    ruleId: 'ruleId',
+    ruleType: 'AppraisalRule',
+    ruleValue: 'RuleValue',
+    ruleDescription: 'Règle de gestion',
+    ruleDuration: '10',
+    ruleMeasurement: 'Day',
+    creationDate: '20/02/2020',
+    updateDate: '20/02/2020'
   };
 
   beforeEach(async(() => {

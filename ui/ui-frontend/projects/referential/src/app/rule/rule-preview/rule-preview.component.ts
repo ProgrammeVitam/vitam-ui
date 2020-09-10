@@ -85,7 +85,7 @@ export class RulePreviewComponent implements OnInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitAccessContractUpdate: Observable<Rule> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitAccessContractUpdate: Observable<Rule> = this.infoTab.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
         this.ruleService.get(this.rule.ruleId).subscribe(
@@ -95,7 +95,7 @@ export class RulePreviewComponent implements OnInit {
         );
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.rule);
+      this.infoTab.resetForm(this.rule);
     }
   }
 
