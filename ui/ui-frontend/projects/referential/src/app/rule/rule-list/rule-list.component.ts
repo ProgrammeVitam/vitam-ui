@@ -64,7 +64,7 @@ import {
 } from 'ui-frontend-common';
 import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
 import {RuleService} from '../rule.service';
-import {RULE_TYPES, RULE_MEASUREMENTS} from '../rule.component';
+import {RULE_TYPES, RULE_MEASUREMENTS} from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 

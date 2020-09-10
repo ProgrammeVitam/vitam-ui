@@ -41,7 +41,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatUpdate'" i18n="@@notificationFileFormatUpdate">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le formet de fichier {{ data?.name }} a bien été mis à jour.
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été mis à jour.
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatDelete'" i18n="@@notificationFileFormatDelete">
@@ -52,6 +52,22 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Suppression du format de fichier {{ data?.name }} en cours...
     </ng-container>
 
+    <ng-container *ngSwitchCase="'ruleCreate'" i18n="@@notificationRuleCreate">
+      <i class="vitamui-icon vitamui-icon-rules"></i> La règle de gestion {{ data?.name }} a bien été créée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleUpdate'" i18n="@@notificationRuleUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été mise à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDelete'" i18n="@@notificationRuleDelete">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été supprimée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDeleteStart'" i18n="@@notificationRuleDeleteStart">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> Suppression de la règle de gestion {{ data?.name }} en
+      cours...
+    </ng-container>
 
     <ng-container *ngSwitchCase="'contextCreate'" i18n="@@notificationContextCreate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le contexte applicatif {{ data?.name }} a bien été créé

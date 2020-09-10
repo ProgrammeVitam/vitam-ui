@@ -15,7 +15,7 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" minlength="1" maxlength="3"
+      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*" maxlength="3"
         required placeholder="Durée" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
         <ng-container *ngIf="form.get('ruleDuration')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"

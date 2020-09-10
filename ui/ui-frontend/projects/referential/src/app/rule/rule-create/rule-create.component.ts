@@ -42,7 +42,8 @@ import {Subscription} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
 
 import {RuleService} from '../rule.service';
-import {RULE_TYPES, RULE_MEASUREMENTS} from '../rule.component';
+import {RULE_TYPES, RULE_MEASUREMENTS} from '../rules.constants';
+import {RuleCreateValidators} from './rule-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -77,13 +78,14 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private ruleService: RuleService
+    private ruleService: RuleService,
+    private ruleCreateValidator: RuleCreateValidators
   ) {
   }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      ruleId: [null, Validators.required],
+      ruleId: [null, [Validators.required, this.ruleCreateValidator.ruleIdPattern()], this.ruleCreateValidator.uniqueRuleId()],
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
       ruleDescription: [null],

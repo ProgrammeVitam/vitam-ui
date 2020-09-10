@@ -64,8 +64,8 @@
           </div>
 
           <div class="col-8 form-control d-flex">
-            <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" minlength="1" maxlength="3"
-              required placeholder="Durée" i18n-placeholder="Identifier@@ruleCreateRuleValuePlaceholder">
+            <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*"
+              maxlength="3" required placeholder="Durée" i18n-placeholder="Identifier@@ruleCreateRuleValuePlaceholder">
               <ng-container *ngIf="form.get('ruleDuration')?.touched">
                 <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"
                   i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
@@ -83,6 +83,9 @@
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
+            <i class="material-icons field-tooltip select-tooltip" matTooltip="Jour
+            &#13;Mois
+            &#13;Année" matTooltipClass="vitamui-tooltip">info</i>
           </div>
 
         </div>
