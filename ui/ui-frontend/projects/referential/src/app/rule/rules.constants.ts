@@ -9,6 +9,10 @@ export const RULE_TYPES: Option[] = [
     {key: 'ClassificationRule', label: 'Durée de classification', info: ''}
 ];
 
+export const NULL_TYPE: Option[] = [
+    {key: null, label: 'Tous', info: ''}
+];
+
 // FIXME: Get list from common var ?
 export const RULE_MEASUREMENTS: Option[] = [
     {key: 'Day', label: 'Jour', info: ''},
