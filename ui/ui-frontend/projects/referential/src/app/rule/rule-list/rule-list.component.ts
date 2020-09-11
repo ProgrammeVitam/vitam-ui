@@ -81,8 +81,17 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.searchChange.next(searchText);
   }
 
+  @Input('filters')
+  set filters(filters: string) {
+    this._filters = filters;
+    this.filterChange.next(filters);
+  }
+
   // tslint:disable-next-line:variable-name
   private _searchText: string;
+
+  // tslint:disable-next-line:variable-name
+  private _filters: string;
 
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
@@ -100,6 +109,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   private groups: Array<{id: string, group: any}> = [];
   private updatedUserSub: Subscription;
+  private readonly filterChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
@@ -135,7 +145,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
         this.dataSource = data;
       });
 
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange)
+    const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
@@ -150,6 +160,10 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     const criteria: any = {};
     if (this._searchText.length > 0) {
       criteria.RuleValue = this._searchText;
+    }
+
+    if (this._filters && this._filters.length > 0) {
+      criteria.RuleType = this._filters;
     }
 
     return criteria;

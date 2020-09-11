@@ -31,12 +31,29 @@
                     </div>
 
                 </div>
+
+                <div>
+                    <form [formGroup]="typeFilterForm" class="filter-controls">
+                        <div class="filter-banner-container">
+                            <mat-form-field class="mat-form-field-filter">
+                                <mat-select class="mat-select-filter"
+                                    placeholder="Filtres - Type de règle               " panelclass="vitamui-mat-select"
+                                    formControlName="ruleTypes">
+                                    <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">
+                                        {{ruleType.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <div class="vitamui-body vitamui-container">
             <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
         </div>
+
     </mat-sidenav-content>
 
 </mat-sidenav-container>

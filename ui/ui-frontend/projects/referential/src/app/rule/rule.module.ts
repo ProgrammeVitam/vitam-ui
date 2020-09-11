@@ -41,6 +41,7 @@ import {
   MatMenuModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
+  MatSelectModule,
   MatSnackBarModule
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
@@ -53,11 +54,14 @@ import {RuleComponent} from './rule.component';
 import {RuleListComponent} from './rule-list/rule-list.component';
 import {RuleCreateModule} from './rule-create/rule-create.module';
 import {RulePreviewModule} from './rule-preview/rule-preview.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     RuleRoutingModule,
@@ -68,6 +72,7 @@ import {RulePreviewModule} from './rule-preview/rule-preview.module';
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     SharedModule,
     TableFilterModule
   ],

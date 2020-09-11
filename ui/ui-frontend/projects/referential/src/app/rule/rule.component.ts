@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
 import {RuleListComponent} from './rule-list/rule-list.component';
 import {RuleCreateComponent} from './rule-create/rule-create.component';
+import {RULE_TYPES, NULL_TYPE} from './rules.constants';
 
 @Component({
   selector: 'app-rules',
@@ -53,13 +55,18 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   @ViewChild(RuleListComponent, {static: true}) ruleListComponentListComponent: RuleListComponent;
 
   search = '';
+  typeFilterForm: FormGroup;
+  filters: string;
   tenantId: number;
+
+  ruleTypes = NULL_TYPE.concat(RULE_TYPES);
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
-    globalEventService: GlobalEventService) {
+    globalEventService: GlobalEventService,
+    private formBuilder: FormBuilder) {
 
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -72,6 +79,17 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
         this.tenantId = params.tenantIdentifier;
       }
     });
+
+    this.typeFilterForm
+      = this.formBuilder.group({
+        ruleTypes: null
+      });
+
+    this.typeFilterForm
+      .controls.ruleTypes.valueChanges.subscribe(value => {
+        this.filters = value;
+        this.ruleListComponentListComponent.filters = this.filters;
+      });
   }
 
   openCreateRuleDialog() {
