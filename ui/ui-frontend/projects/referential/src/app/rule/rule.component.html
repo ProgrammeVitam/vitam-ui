@@ -28,6 +28,18 @@
                                 i18n="Create a business rule button label@@RulesListCreateButton">Créer une règle de
                                 gestion</span>
                         </button>
+
+                        <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
+                            <i class="material-icons">more_horiz</i> <span
+                                i18n="More actions button label@@customerListMoreActionsButton">Autres actions</span>
+                        </button>
+                        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu"
+                            xPosition="before">
+                            <button mat-menu-item i18n="Import@@RuleImportButton"
+                                (click)="openImportRuleDialog()">Importer</button>
+                            <button mat-menu-item i18n="Export@@RuleExportButton"
+                                (click)="exportRules()">Exporter</button>
+                        </mat-menu>
                     </div>
 
                 </div>
@@ -36,9 +48,8 @@
                     <form [formGroup]="typeFilterForm" class="filter-controls">
                         <div class="filter-banner-container">
                             <mat-form-field class="mat-form-field-filter">
-                                <mat-select class="mat-select-filter"
-                                    placeholder="Filtres - Type de règle               " panelclass="vitamui-mat-select"
-                                    formControlName="ruleTypes">
+                                <mat-select class="mat-select-filter" placeholder="Filtres - Type de règle"
+                                    panelclass="vitamui-mat-select" formControlName="ruleTypes">
                                     <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">
                                         {{ruleType.label}}
                                     </mat-option>

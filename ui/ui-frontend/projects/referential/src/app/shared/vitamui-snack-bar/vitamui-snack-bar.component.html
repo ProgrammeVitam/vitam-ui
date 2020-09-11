@@ -69,6 +69,10 @@
       cours...
     </ng-container>
 
+    <ng-container *ngSwitchCase="'ruleExportAll'" i18n="@@notificationRuleCreate">
+      <i class="vitamui-icon vitamui-icon-rules"></i> Export des règles de gestion en cours...
+    </ng-container>
+
     <ng-container *ngSwitchCase="'contextCreate'" i18n="@@notificationContextCreate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le contexte applicatif {{ data?.name }} a bien été créé
     </ng-container>

@@ -42,17 +42,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.model.administration.FileFormatModel;
-import fr.gouv.vitam.common.model.administration.OntologyModel;
-import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.*;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.*;
-import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormat;
-import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatCollection;
-import fr.gouv.vitamui.referential.common.dto.xml.fileformat.FileFormatXMLRootDto;
-import fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat.Rule;
-import fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat.RuleCollection;
-import fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat.RuleXMLRootDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -62,6 +56,7 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -71,9 +66,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.springframework.http.HttpStatus;
 
-import javax.xml.bind.JAXBContext;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -279,6 +273,18 @@ public class VitamRuleService {
         catch (final JsonProcessingException e) {
             throw new UnexpectedDataException("Can't create rule, Error while parsing Vitam response : " + e.getMessage());
         }
+    }
+
+    public Response export(VitamContext context) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
+        JsonNode query = VitamQueryHelper.getLastOperationQuery(VitamQueryHelper.RULE_IMPORT_OPERATION_TYPE);
+        RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(context, query);
+        fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+
+        if (lastImportOperation.getHits().getTotal() == 0) {
+            throw new VitamClientException("Can't get a result while selecting last rule import");
+        }
+
+        return adminExternalClient.downloadRulesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
 
 }

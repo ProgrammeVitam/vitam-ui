@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat;
+package fr.gouv.vitamui.referential.common.dto.xml.rule;
 
 import lombok.Getter;
 import lombok.Setter;

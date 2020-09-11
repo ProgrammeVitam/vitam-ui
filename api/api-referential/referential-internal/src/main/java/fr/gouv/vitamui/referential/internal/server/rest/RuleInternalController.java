@@ -151,7 +151,7 @@ public class RuleInternalController {
 
     @GetMapping("/export")
     public ResponseEntity<Resource> export() {
-        LOGGER.debug("Export File Formats");
+        LOGGER.debug("Export Rules");
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
 
         Response response = ruleInternalService.export(vitamContext);
