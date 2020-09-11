@@ -241,13 +241,19 @@ public class RuleInternalService {
     }
 
     public Response export(VitamContext context) {
-        throw new NotImplementedException("Can not export rule");
+        try {
+            return ruleService.export(context);
+        } catch (InvalidParseOperationException | InvalidCreateOperationException | VitamClientException e) {
+            throw new InternalServerException("Unable to export agencies", e);
+        }
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier) throws VitamClientException {
-        LOGGER.debug("findHistoryById for identifier" + identifier);
-        return logbookService.findEventsByIdentifierAndCollectionNames(
-                identifier, AdminCollections.AGENCIES.getName(), vitamContext).toJsonNode();
+        try {
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(identifier),vitamContext).toJsonNode();
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Unable to fetch history", e);
+        }
     }
 
 }

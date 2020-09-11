@@ -60,6 +60,7 @@ public class VitamQueryHelper {
 
     /* Operation types */
     public static final String AGENCY_IMPORT_OPERATION_TYPE = "IMPORT_AGENCIES.OK";
+    public static final String RULE_IMPORT_OPERATION_TYPE = "STP_IMPORT_RULES.OK";
 
     /* Query fields */
     private static final String IDENTIFIER = "Identifier";

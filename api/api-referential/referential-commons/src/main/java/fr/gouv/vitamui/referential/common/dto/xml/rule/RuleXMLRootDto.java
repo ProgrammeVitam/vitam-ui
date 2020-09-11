@@ -34,40 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto.xml.rule.fileformat;
+package fr.gouv.vitamui.referential.common.dto.xml.rule;
 
+import fr.gouv.vitamui.referential.common.dto.xml.fileformat.InternalSignatureCollection;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import java.io.Serializable;
-import java.util.List;
+import javax.xml.bind.annotation.*;
+import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "FFSignatureFile")
 @Setter
 @Getter
-public class Rule implements Serializable {
+public class RuleXMLRootDto {
 
-    @XmlAttribute(name="ID")
-    private Integer id;
+    // fileformat Version field
+    @XmlAttribute(name="Version")
+    private Integer version;
 
-    @XmlAttribute(name="RuleId")
-    private String ruleId;
+    @XmlAttribute(name="DateCreated")
+    private Date createdDate;
 
-    @XmlAttribute(name="RuleDescription")
-    private String ruleDescription;
+    @XmlAttribute(name="xmlns")
+    private final String namespace = "http://www.nationalarchives.gov.uk/pronom/SignatureFile";
 
-    @XmlAttribute(name="RuleMeasurement")
-    private String ruleMeasurement;
+    @XmlElement(name="InternalSignatureCollection")
+    private InternalSignatureCollection internalSignatureCollection = new InternalSignatureCollection();
 
-    @XmlAttribute(name="RuleDuration")
-    private String ruleDuration;
+    @XmlElement(name="RuleCollection")
+    private RuleCollection ruleCollection;
 
-    @XmlElement(name="RuleType")
-    private String ruleType;
-
-
+    @Override public String toString() {
+        return "" + createdDate + version + "[" + ruleCollection.getRules().size() + " rules]";
+    }
 }

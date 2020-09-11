@@ -38,11 +38,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
-import {RuleListComponent} from './rule-list/rule-list.component';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {RuleCreateComponent} from './rule-create/rule-create.component';
-import {RULE_TYPES, NULL_TYPE} from './rules.constants';
+import {RuleListComponent} from './rule-list/rule-list.component';
+import {RuleService} from './rule.service';
+import {NULL_TYPE, RULE_TYPES} from './rules.constants';
 
 @Component({
   selector: 'app-rules',
@@ -62,6 +63,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   ruleTypes = NULL_TYPE.concat(RULE_TYPES);
 
   constructor(
+    public ruleService: RuleService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
@@ -127,6 +129,14 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
   showRule(item: Rule) {
     this.openPanel(item);
+  }
+
+  exportRules() {
+    this.ruleService.export();
+  }
+
+  openImportRuleDialog() {
+    console.log('Not implemented yet');
   }
 
 }

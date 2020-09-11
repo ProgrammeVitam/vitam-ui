@@ -141,4 +141,32 @@ export class RuleService extends SearchService<Rule> {
     );
   }
 
+  export() {
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      duration: 10000,
+      data: {type: 'ruleExportAll'}
+    });
+
+    this.ruleApiService.export().subscribe(
+      (response) => {
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.style.display = 'none';
+
+        const blob = new Blob([response], {type: 'octet/stream'});
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'rules.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }, (error) => {
+        this.snackBar.open(error.error.message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000
+        });
+      }
+    );
+  }
+
 }
