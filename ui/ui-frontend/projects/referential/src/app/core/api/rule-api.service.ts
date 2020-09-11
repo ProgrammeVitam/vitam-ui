@@ -81,4 +81,8 @@ export class RuleApiService extends BaseHttpClient<Rule> {
     return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
   }
 
+  export(headers?: HttpHeaders): Observable<any> {
+    return super.getHttp().get(super.getApiUrl() + '/export', {headers, responseType: 'text'});
+  }
+
 }
