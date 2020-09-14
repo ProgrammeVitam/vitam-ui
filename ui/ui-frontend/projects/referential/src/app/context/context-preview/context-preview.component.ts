@@ -98,7 +98,6 @@ export class ContextPreviewComponent implements OnInit {
         );
       });
     } else {
-      console.log('ResetForm: ', this.tabs.selectedIndex);
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.context);
     }
   }

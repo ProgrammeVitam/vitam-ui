@@ -126,10 +126,10 @@ public class ProbativeValueInternalService {
 			File file = new File(workspaceOperationPath, operationId + ".json");
 			FileUtils.copyInputStreamToFile(reportStream, file);
 		} catch (VitamClientException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error("Error while getting probative value report from Vitam", e.getMessage());
 			throw new InternalServerException("Unable to get Probative Value Report from VITAM", e);
 		} catch (IOException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error("Error on probative value report", e.getMessage());
 			throw new InternalServerException("Unable to create JSON from Probative Value Report", e);
 		}
 
@@ -153,11 +153,11 @@ public class ProbativeValueInternalService {
 				dataMap.put("report", report);
 				PdfFileGenerator.createPdf(odtTemplate, pdfOutputStream, dataMap);
 			} catch (Exception e) {
-				LOGGER.error(e.getMessage());
+				LOGGER.error("Unable to create PDF from Probative Value Report template ODT", e.getMessage());
 				throw new InternalServerException("Unable to create PDF from Probative Value Report template ODT", e);
 			}
 		} catch (InvalidParseOperationException | VitamClientException exc) {
-			LOGGER.error(exc.getMessage());
+			LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc.getMessage());
 			throw new InternalServerException("Unable to create PDF from Probative Value Report Json value", exc);
 		}
 
@@ -172,7 +172,7 @@ public class ProbativeValueInternalService {
 			streams.put(operationId + ".json", new FileInputStream(jsonFile));
 			streams.put(operationId + ".pdf", new FileInputStream(pdfFile));
 		} catch (FileNotFoundException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error("Unable to generate ZIP", e.getMessage());
 			throw new InternalServerException(String.format("Unable to generate ZIP: %s", e.getMessage()), e);
 		}
 		ZipUtils.generate(streams, outputStream);

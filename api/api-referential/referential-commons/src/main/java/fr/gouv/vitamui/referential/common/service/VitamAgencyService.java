@@ -152,7 +152,6 @@ public class VitamAgencyService {
         RequestResponse r = importAgencies(vitamContext, actualAgencies.stream()
                 .filter( agency -> !id.equals(agency.getId()) )
                 .collect(Collectors.toList()));
-        LOGGER.error("is ok ? {}", r.isOk());
         return r.isOk();
     }
 
