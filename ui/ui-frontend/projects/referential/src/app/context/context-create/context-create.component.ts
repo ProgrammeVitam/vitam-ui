@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option, Tenant} from 'ui-frontend-common';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
