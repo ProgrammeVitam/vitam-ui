@@ -2,20 +2,7 @@
 
     <div class="row">
         <div class="col-10 form-control">
-            <vitamui-common-slide-toggle #f>Originel binaire obligatoire
-            </vitamui-common-slide-toggle>
-            <div class="form-group" *ngIf="f?.value == false">
-                <mat-form-field class="vitamui-mat-select">
-                    <mat-select placeholder="Sélectionnez les formats de fichiers"
-                        panelclass="vitamui-mat-select" multiple>
-                        <!--<mat-option *ngFor='let originatingAgencie of originatingAgencies' [value]="originatingAgencie.key">
-                                                        {{originatingAgencie.label}}</mat-option>-->
-                    </mat-select>
-                    <div class="select-arrow">
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                </mat-form-field>
-            </div>
+          <vitamui-common-slide-toggle formControlName="masterMandatory">Original binaire obligatoire</vitamui-common-slide-toggle>
         </div>
     </div>
 

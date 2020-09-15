@@ -1,8 +1,14 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
 
   <app-context-edit-permission formControlName="permissions" [editMode]="true"></app-context-edit-permission>
+  <ng-container>
+      <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
+            i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>
+      <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions"
+            i18n="Required permissions error hint@@formErrorRequiredField">Au moins une permission doit être renseignée</span>
+  </ng-container>
 
   <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+    <button type="submit" class="btn secondary" [disabled]="isInvalidOrUnchanged() || submited">Enregistrer</button>
   </div>
 </form>

@@ -15,12 +15,12 @@ import {RouterModule} from '@angular/router';
 import {NgxFilesizeModule} from 'ngx-filesize';
 import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonModule} from 'ui-frontend-common';
+import {SecurisationCheckTabComponent} from './securisation-check-tab/securisation-check-tab.component';
 import {SecurisationInformationTabComponent} from './securisation-information-tab/securisation-information-tab.component';
 import {SecurisationPreviewComponent} from './securisation-preview.component';
 
-
 @NgModule({
-  declarations: [SecurisationPreviewComponent, SecurisationInformationTabComponent],
+  declarations: [SecurisationPreviewComponent, SecurisationInformationTabComponent, SecurisationCheckTabComponent],
   imports: [
     CommonModule,
     RouterModule,

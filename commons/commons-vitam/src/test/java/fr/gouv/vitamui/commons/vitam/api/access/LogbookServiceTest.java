@@ -13,6 +13,8 @@ import javax.ws.rs.core.Response;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AccessExternalClientFactory;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClientFactory;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -32,13 +34,16 @@ public class LogbookServiceTest {
 
     private IngestExternalClient ingestExternalClient;
 
+    private AdminExternalClient adminExternalClient;
+
     @Before
     public void setup() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
         accessExternalClient = AccessExternalClientFactory.getInstance().getClient();
         ingestExternalClient = IngestExternalClientFactory.getInstance().getClient();
-        logbookService = new LogbookService(accessExternalClient, ingestExternalClient);
+        adminExternalClient = AdminExternalClientFactory.getInstance().getClient();
+        logbookService = new LogbookService(accessExternalClient, ingestExternalClient, adminExternalClient);
     }
 
     @Test

@@ -142,16 +142,17 @@ public class VitamAgencyService {
         return importAgencies(vitamContext, actualAgencies);
     }
 
-    public RequestResponse<?> deleteAgency(final VitamContext vitamContext, final String id)
+    public boolean deleteAgency(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
 
         RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
         final List<AgencyModelDto> actualAgencies = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
 
-        return importAgencies(vitamContext, actualAgencies.stream()
+        RequestResponse r = importAgencies(vitamContext, actualAgencies.stream()
                 .filter( agency -> !id.equals(agency.getId()) )
                 .collect(Collectors.toList()));
+        return r.isOk();
     }
 
     public RequestResponse<?> create(final VitamContext vitamContext, AgencyModelDto newAgency)
@@ -256,9 +257,14 @@ public class VitamAgencyService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final AgencyResponseDto accessContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), AgencyResponseDto.class);
             final List<String> accessContractsNames = accessContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            final boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
+            boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 throw new ConflictException("Can't create access contract, a contract with the same name already exist in Vitam");
+            }
+            final List<String> accessContractsIds = accessContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsIds.contains(ac.getIdentifier()));
+            if (alreadyCreated) {
+                throw new ConflictException("Can't create access contract, a contract with the same id already exist in Vitam");
             }
         }
         catch (final JsonProcessingException e) {

@@ -144,9 +144,9 @@ public class AgencyExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_AGENCIES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
+    public ResponseEntity<Boolean> delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete agency with id :{}", id);
-        agencyExternalService.delete(id);
+        return agencyExternalService.deleteWithResponse(id);
     }
 
     @Secured(ServicesData.ROLE_EXPORT_AGENCIES)

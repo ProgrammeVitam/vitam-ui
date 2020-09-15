@@ -46,7 +46,7 @@
 			<groupId>fr.gouv.vitamui</groupId>
 			<artifactId>iam-security</artifactId>
 		</dependency>
-		
+
 
 		<!-- SPRING BOOT -->
 		<dependency>
@@ -106,19 +106,42 @@
 
 		<!-- PDF generation -->
 		<dependency>
-			<groupId>org.apache.xmlgraphics</groupId>
-			<artifactId>fop</artifactId>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.opensagres.xdocreport</groupId>
+			<artifactId>fr.opensagres.odfdom.converter.core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.opensagres.xdocreport</groupId>
+			<artifactId>fr.opensagres.xdocreport.converter.odt.odfdom</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.opensagres.xdocreport</groupId>
+			<artifactId>fr.opensagres.xdocreport.document.odt</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.opensagres.xdocreport</groupId>
+			<artifactId>fr.opensagres.xdocreport.template.freemarker</artifactId>
+			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
-					<groupId>javax.media</groupId>
-					<artifactId>jai-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.media</groupId>
-					<artifactId>jai-codec</artifactId>
+					<groupId>org.freemarker</groupId>
+					<artifactId>freemarker</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.upgraded.version}</version>
+		</dependency>
+
 
 		<!-- Metrics -->
 		<dependency>
@@ -162,10 +185,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -225,6 +244,25 @@
     </dependencies>
 
 	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/templates</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>*.odt</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

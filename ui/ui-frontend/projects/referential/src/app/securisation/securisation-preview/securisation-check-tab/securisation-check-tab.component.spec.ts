@@ -35,24 +35,42 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ActivatedRoute} from '@angular/router';
 
-import { EventTypeLabelComponent } from './event-type-label.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {of} from 'rxjs';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {SecurisationService} from '../../securisation.service';
+import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 
-// TODO test jenkins
-// Error: Timeout - Async callback was not invoked within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
-xdescribe('EventTypeLabelComponent', () => {
-  let component: EventTypeLabelComponent;
-  let fixture: ComponentFixture<EventTypeLabelComponent>;
+describe('SecurisationCheckTabComponent', () => {
+  let component: SecurisationCheckTabComponent;
+  let fixture: ComponentFixture<SecurisationCheckTabComponent>;
 
   beforeEach(async(() => {
+    const activatedRouteMock = {
+      params: of({tenantIdentifier: 1}),
+      data: of({appId: 'TRACEABILITY_APP'})
+    };
+
+    const accessContractServiceMock = {
+      getAllForTenant: () => of([])
+    };
+
     TestBed.configureTestingModule({
-      declarations: [ EventTypeLabelComponent ]
+      declarations: [ SecurisationCheckTabComponent ],
+      providers: [
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: SecurisationService, useValue: {}},
+        {provide: ActivatedRoute, useValue: activatedRouteMock}
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EventTypeLabelComponent);
+    fixture = TestBed.createComponent(SecurisationCheckTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

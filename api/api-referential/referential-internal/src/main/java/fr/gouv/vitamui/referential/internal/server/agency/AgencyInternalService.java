@@ -214,8 +214,7 @@ public class AgencyInternalService {
 
     public boolean delete(VitamContext context, String id) {
         try {
-            RequestResponse<?> requestResponse = vitamAgencyService.deleteAgency(context, id);
-            return requestResponse.isOk();
+            return vitamAgencyService.deleteAgency(context, id);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
             throw new InternalServerException("Unable to delete agency", e);
         }

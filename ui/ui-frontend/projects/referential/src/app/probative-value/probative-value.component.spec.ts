@@ -3,7 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {MatDialog, MatSelectModule, MatSidenavModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -34,7 +34,8 @@ describe('ProbativeValueComponent', () => {
       providers: [
         FormBuilder,
         {provide: MatDialog, useValue: {}},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        {provide: ActivatedRoute, useValue: activatedRouteMock},
+        { provide: Router, useValue: { navigate: () => {} } }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -34,68 +34,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {AccessContract} from 'projects/vitamui-library/src/public-api';
+import {ApiEvent, Event, LogbookApiService} from 'ui-frontend-common';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {SecurisationService} from '../../securisation.service';
 
-import {ContextPermission} from 'projects/vitamui-library/src/public-api';
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
-import {ContextService} from '../context.service';
+@Component({
+  selector: 'app-securisation-check-tab',
+  templateUrl: './securisation-check-tab.component.html',
+  styleUrls: ['./securisation-check-tab.component.scss']
+})
 
-@Injectable()
-export class ContextCreateValidators {
+export class SecurisationCheckTabComponent implements OnChanges, OnInit {
+  @Input() id: string;
 
-  private debounceTime = 400;
+  events: Event[] = [];
+  display = false;
 
-  constructor(private contextService: ContextService) {
-  }
+  accessContracts: AccessContract[];
+  accessContractId: string;
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    console.log('Triggered uniqueName');
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  constructor(
+    private securisationService: SecurisationService,
+    private accessContractService: AccessContractService,
+    private route: ActivatedRoute) { }
 
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  }
 
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value;
-      const existField: any = {};
-      existField[existTag] = true;
-
-      return timer(this.debounceTime).pipe(
-        switchMap(() => control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false)),
-        take(1),
-        map((exists: boolean) => exists ? existField : null)
-      );
-    };
-  }
-
-  public permissionInvalid() {
-    return (control: AbstractControl) => {
-      switch (this.checkTenantsValid(control.value)) {
-        case 'tenant': return of({ permissionsTenant: true });
-        case 'empty': return of({ noPermissions: true });
-        default: return of(null);
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params.tenantIdentifier) {
+        this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
+          this.accessContracts = value;
+        });
       }
-    };
+    });
   }
 
-  private checkTenantsValid(value: ContextPermission[]): string {
-    if (!value || value.length === 0) {
-      return 'empty';
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.hasOwnProperty('id')) {
+      this.display = false;
+      this.events = [];
     }
-
-    for (const permission of value) {
-      if (!permission.tenant) {
-        return 'tenant';
-      }
-    }
-
-    return null;
   }
 
+  updateAccessContractId(event: any) {
+    this.accessContractId = event.value;
+  }
+
+  checkTraceability() {
+    this.securisationService.checkTraceabilityOperation(this.id, this.accessContractId).subscribe((response: {$results: ApiEvent[]}) => {
+      this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
+      this.display = true;
+    });
+  }
 }

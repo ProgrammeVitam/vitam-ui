@@ -108,6 +108,10 @@ public class OperationExternalService extends AbstractResourceClientService<Logb
         return operationInternalRestClient.export(getInternalHttpContext(), id, type);
     }
 
+    public JsonNode checkTraceabilityOperation(String id) {
+        return operationInternalRestClient.checkTraceabilityOperation(getInternalHttpContext(), id);
+    }
+
     public boolean runProbativeValue(final ProbativeValueRequest probativeValueRequest) {
         return operationInternalRestClient.runProbativeValue(getInternalHttpContext(), probativeValueRequest);
     }

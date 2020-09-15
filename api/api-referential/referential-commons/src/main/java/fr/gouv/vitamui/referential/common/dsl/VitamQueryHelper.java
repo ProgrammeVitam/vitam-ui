@@ -115,11 +115,15 @@ public class VitamQueryHelper {
                     case IDENTIFIER:
                     case ID:
                     case PUID:
-                    case EV_TYPE_PROC:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         queryOr.add(eq(searchKey, stringValue));
                         haveOrParameters = true;
+                        break;
+                    case EV_TYPE_PROC:
+                        // string equals operation
+                        final String evTypeProc = (String) entry.getValue();
+                        query.add(eq(searchKey, evTypeProc));
                         break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]

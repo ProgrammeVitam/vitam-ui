@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
@@ -60,6 +64,7 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.database.builder.request.single.Update;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.ContextModel;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -74,6 +79,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
+import fr.gouv.vitamui.referential.common.dto.PermissionDto;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
 
 @Service
@@ -200,76 +206,71 @@ public class ContextInternalService {
     }
 
     // FIXME ? Do an automatic transformation without passing from Map<lowerCase, Value> to vitamUIDto to vitamDto to Map<UpperCase, Value>
-    private Map<String, Object> convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
-
-        // Remove non mutable and internal fields
-        partialDto.remove("name");
-        partialDto.remove("identifier");
-        partialDto.remove("id");
-
+    private ObjectNode convertPartialDtoToUpperCaseVitamFields(ContextDto partialDto) throws InvalidParseOperationException {
+        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
-        if (partialDto.get("status") != null) {
-            partialDto.put("Status", partialDto.get("status"));
-            partialDto.remove("status");
+        if (partialDto.getStatus() != null) {
+            propertiesToUpdate.put("Status", partialDto.getStatus());
         }
-        if (partialDto.get("creationDate") != null) {
-            partialDto.put("CreationDate", partialDto.get("creationDate"));
-            partialDto.remove("creationDate");
+        if (partialDto.getCreationDate() != null) {
+            propertiesToUpdate.put("CreationDate", partialDto.getCreationDate());
         }
-        if (partialDto.get("lastUpdate") != null) {
-            partialDto.put("LastUpdate", partialDto.get("lastUpdate"));
-            partialDto.remove("lastUpdate");
+        if (partialDto.getLastUpdate() != null) {
+            propertiesToUpdate.put("LastUpdate", partialDto.getLastUpdate());
         }
-        if (partialDto.get("activationDate") != null) {
-            partialDto.put("ActivationDate", partialDto.get("activationDate"));
-            partialDto.remove("activationDate");
+        if (partialDto.getActivationDate() != null) {
+            propertiesToUpdate.put("ActivationDate", partialDto.getActivationDate());
         }
-        if (partialDto.get("lastUpdate") != null) {
-            partialDto.put("LastUpdate", partialDto.get("lastUpdate"));
-            partialDto.remove("lastUpdate");
+        if (partialDto.getDeactivationDate() != null) {
+            propertiesToUpdate.put("DeactivationDate", partialDto.getDeactivationDate());
         }
-        if (partialDto.get("activationDate") != null) {
-            partialDto.put("ActivationDate", partialDto.get("activationDate"));
-            partialDto.remove("activationDate");
+        if (partialDto.getEnableControl() != null) {
+            propertiesToUpdate.put("EnableControl", partialDto.getEnableControl());
         }
-        if (partialDto.get("deactivationDate") != null) {
-            partialDto.put("DeactivationDate", partialDto.get("deactivationDate"));
-            partialDto.remove("deactivationDate");
+        if (partialDto.getSecurityProfile() != null) {
+            propertiesToUpdate.put("SecurityProfile", partialDto.getSecurityProfile());
         }
-        if (partialDto.get("enableControl") != null) {
-            partialDto.put("EnableControl", partialDto.get("enableControl"));
-            partialDto.remove("enableControl");
-        }
-        if (partialDto.get("securityProfile") != null) {
-            partialDto.put("SecurityProfile", partialDto.get("securityProfile"));
-            partialDto.remove("securityProfile");
-        }
-        if (partialDto.get("permissions") != null) {
-            partialDto.put("Permissions", partialDto.get("permissions"));
-            partialDto.remove("permissions");
+        if (partialDto.getPermissions() != null) {
+            ArrayNode array = JsonHandler.createArrayNode();
+            for (PermissionDto value: partialDto.getPermissions()) {
+                JsonNode node = JsonHandler.toJsonNode(value);
+                ObjectNode permission = JsonHandler.createObjectNode();
+                permission.set("tenant", new IntNode(Integer.valueOf(node.get("tenant").textValue())));
+                permission.set("AccessContracts", node.get("accessContracts"));
+                permission.set("IngestContracts", node.get("ingestContracts"));
+                array.add(permission);
+            }
+            propertiesToUpdate.set("Permissions", array);
         }
 
-        return partialDto;
+        return propertiesToUpdate;
     }
 
-    public ContextDto patch(VitamContext vitamContext,final Map<String, Object> partialDto) {
-        Update updateRequest = new Update();
-
-        String id = (String) partialDto.get("identifier");
+    public ContextDto patch(VitamContext vitamContext,final ContextDto partialDto) {
+        String id = partialDto.getIdentifier();
         if (id == null) {
             throw new BadRequestException("id must be one the the update criteria");
         }
-        partialDto.remove("id");
-        partialDto.remove("identifier");
 
         try {
-            updateRequest.addActions( UpdateActionHelper.set( convertMapPartialDtoToUpperCaseVitamFields(partialDto) ) );
-            RequestResponse<?> requestResponse =  vitamContextService.patchContext(vitamContext, id, updateRequest.getFinalUpdateById());
+
+            JsonNode fieldsUpdated = convertPartialDtoToUpperCaseVitamFields(partialDto);
+
+            ObjectNode action = JsonHandler.createObjectNode();
+            action.set("$set", fieldsUpdated);
+
+            ArrayNode actions = JsonHandler.createArrayNode();
+            actions.add(action);
+
+            ObjectNode query = JsonHandler.createObjectNode();
+            query.set("$action", actions);
+
+            RequestResponse<?> requestResponse =  vitamContextService.patchContext(vitamContext, id, query);
             final ContextModel contextVitamDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ContextModel.class);
             return converter.convertVitamToDto(contextVitamDto);
-        } catch (InvalidParseOperationException | InvalidCreateOperationException | AccessExternalClientException | JsonProcessingException e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
             throw new InternalServerException("Can't patch the context", e);
         }
     }

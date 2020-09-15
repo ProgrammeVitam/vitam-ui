@@ -127,9 +127,9 @@ public class ContextExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CONTEXTS)
-    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "The DTO identifier must match the path identifier for update.");
         return contextExternalService.patch(partialDto);
     }
 

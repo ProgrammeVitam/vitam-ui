@@ -155,7 +155,7 @@
         <div class="form-group">
           <div class="row">
             <div class="col-6 form-control">
-              <vitamui-common-slide-toggle formControlName="binaryObjectMandatory">Originel binaire obligatoire</vitamui-common-slide-toggle>
+              <vitamui-common-slide-toggle formControlName="binaryObjectMandatory">Original binaire obligatoire</vitamui-common-slide-toggle>
               <i class="material-icons field-tooltip" matTooltip="option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »" matTooltipClass="vitamui-tooltip">info</i>
             </div>
           </div>
@@ -235,21 +235,21 @@
     <cdk-step>
       <div class="content">
         <h3>Création d'un contrat d'entrée</h3>
-        <h2> Noeud de rattachement (UA) </h2>
+        <h2> Noeud de rattachement (UA) <i class="material-icons field-tooltip radio-tooltip" style="top: 0;"
+             matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
+             matTooltipClass="vitamui-tooltip">info</i> </h2>
 
         <div class="form-group">
           <div class="row">
             <div class="col">
               <vitamui-radio-group formControlName="checkParentLink">
-                <vitamui-radio label="Autorisé" value="AUTHORIZED" [checked]="true"></vitamui-radio>
-                <vitamui-radio label="Obligatoire" value="REQUIRED"></vitamui-radio>
-                <vitamui-radio label="Interdit" value="UNAUTHORIZED"></vitamui-radio>
+                <vitamui-radio matTooltipClass="vitamui-tooltip" [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'"
+                               label="Autorisé" value="AUTHORIZED" [checked]="true"></vitamui-radio>
+                <vitamui-radio  matTooltipClass="vitamui-tooltip" [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'"
+                                label="Obligatoire" value="REQUIRED"></vitamui-radio>
+                <vitamui-radio  matTooltipClass="vitamui-tooltip" [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'"
+                                label="Interdit" value="UNAUTHORIZED"></vitamui-radio>
               </vitamui-radio-group>
-            </div>
-            <div class="col">
-              <i class="material-icons field-tooltip radio-tooltip" style="top: 20px;"
-                 matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
-                 matTooltipClass="vitamui-tooltip">info</i>
             </div>
           </div>
         </div>

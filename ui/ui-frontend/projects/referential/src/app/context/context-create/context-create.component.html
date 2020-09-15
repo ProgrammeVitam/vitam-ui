@@ -72,9 +72,18 @@
         <h2 i18n="Create context title@@contextCreateTitle1">Création d'un contexte applicatif</h2>
         <h3 i18n="Create context title@@contextCreateTitle2">Permissions</h3>
 
-        <app-context-edit-permission formControlName="permissions"></app-context-edit-permission>
 
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
+        <div class="form-group">
+          <app-context-edit-permission formControlName="permissions"></app-context-edit-permission>
+          <ng-container>
+            <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
+                                        i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>
+            <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions"
+                                        i18n="Required permissions error hint@@formErrorRequiredField">Au moins une permission doit être renseignée</span>
+          </ng-container>
+        </div>
+
+        <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
                 i18n="Finish context creation button@@contextCreateFinishButton">Terminer</button>
         <button type="button" class="btn cancel" (click)="onCancel()"
                 i18n="Cancel context creation@@contextCreateCancelButton">Annuler</button>

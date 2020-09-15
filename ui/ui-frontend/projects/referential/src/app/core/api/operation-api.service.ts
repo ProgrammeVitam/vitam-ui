@@ -67,6 +67,11 @@ export class OperationApiService extends BaseHttpClient<Event> {
     );
   }
 
+  checkTraceabilityOperation(id: string, accessContract: string): Observable<any> {
+    const headers = new HttpHeaders({ 'X-Access-Contract-Id': accessContract });
+    return super.getHttp().get(`${this.apiUrl}/check/${id}`, { headers });
+  }
+
   getInfoFromTimestamp(timestamp: string): Observable<any> {
     return super.getHttp().post(this.apiUrl + '/timestamp', timestamp);
   }

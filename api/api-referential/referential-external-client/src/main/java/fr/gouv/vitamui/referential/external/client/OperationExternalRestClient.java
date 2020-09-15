@@ -56,6 +56,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 public class OperationExternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
     public OperationExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
@@ -89,6 +91,14 @@ public class OperationExternalRestClient extends BasePaginatingAndSortingRestCli
         final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
             request, Boolean.class);
         return response.getStatusCode() == HttpStatus.OK;
+    }
+
+    public JsonNode checkTraceabilityOperation(ExternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/check" + CommonConstants.PATH_ID);
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, JsonNode.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
     public ResponseEntity<Resource> export(ExternalHttpContext context, String id, ReportType type) {

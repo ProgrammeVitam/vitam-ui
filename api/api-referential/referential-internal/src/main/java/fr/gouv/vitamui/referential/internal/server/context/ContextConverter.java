@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.referential.internal.server.context;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import fr.gouv.vitam.common.model.administration.ContextModel;
@@ -68,7 +70,7 @@ public class ContextConverter {
         dto.setEnableControl(context.isEnablecontrol());
         dto.setSecurityProfile(context.getSecurityProfileIdentifier());
 
-        List<PermissionDto> permissions = new ArrayList<>();
+        Set<PermissionDto> permissions = new HashSet<>();
         for (PermissionModel permission: context.getPermissions()) {
             PermissionDto permissionDto = new PermissionDto();
             permissionDto.setTenant(permission.getTenant().toString());

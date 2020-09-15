@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.internal.server.probativevalue;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -95,8 +94,8 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 	}
 
 	@Test
-	public void testCreateOK() throws JsonParseException, JsonMappingException, VitamClientException, IOException,
-			InvalidParseOperationException {
+	public void shoudl_generate_report_on_probativereport() throws JsonParseException, JsonMappingException,
+			VitamClientException, IOException, InvalidParseOperationException {
 		File workspace = this.folder.newFolder();
 		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
 				.thenReturn(buildVitamProbativeReport("data/provative_report_WARNING.json"));
@@ -124,13 +123,11 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 		assertTrue(json.exists());
 		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
 		assertTrue(pdf.exists());
-		File xml = new File(workspace.getAbsolutePath(), operationId + ".xml");
-		assertFalse(xml.exists());
 	}
 
 	@Test
-	public void testCreateMultipleEntriesOK() throws JsonParseException, JsonMappingException, VitamClientException,
-			IOException, InvalidParseOperationException {
+	public void shoudl_generate_report_on_probativereport_multiple_entries() throws JsonParseException,
+			JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
 		File workspace = this.folder.newFolder();
 		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
 				.thenReturn(buildVitamProbativeReport("data/provative_report_WARNING_multiple_entries.json"));
@@ -159,14 +156,43 @@ public class ProbativeValueInternalServiceTest extends AbstractServerIdentityBui
 		assertTrue(Files.exists(zipJsonFile));
 		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
 		assertTrue(Files.exists(zipPdfFile));
-		
 
 		File json = new File(workspace.getAbsolutePath(), operationId + ".json");
 		assertTrue(json.exists());
 		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
 		assertTrue(pdf.exists());
-		File xml = new File(workspace.getAbsolutePath(), operationId + ".xml");
-		assertFalse(xml.exists());
+	}
+
+	@Test
+	public void shoudl_generate_report_on_probativereport_ko() throws JsonParseException, JsonMappingException,
+			VitamClientException, IOException, InvalidParseOperationException {
+		File workspace = this.folder.newFolder();
+		when(vitamProbativeValueService.downloadBatchReport(any(), any()))
+				.thenReturn(buildVitamProbativeReport("data/provative_report_KO.json"));
+		when(unitService.getByIdIn(any(), any()))
+				.thenReturn(buildVitamUISearchResponseDto("data/vitam_units_response_ko.json"));
+		when(unitService.findObjectMetadataById(any(), any()))
+				.thenReturn(buildGotMetadataResponse("data/vitam_got_metadatas_response_ko.json"));
+		VitamContext vitamContext = new VitamContext(0);
+		String operationId = "Test_KO";
+
+		File zip = new File(workspace.getAbsolutePath(), operationId + ".zip");
+		FileOutputStream zipOutputStream = new FileOutputStream(zip);
+		probativeValueInternalService.exportReport(vitamContext, operationId, workspace.getAbsolutePath(),
+				zipOutputStream);
+		zipOutputStream.close();
+
+		assertTrue(zip.exists());
+		FileSystem zipFs = FileSystems.newFileSystem(zip.toPath(), null);
+		Path zipJsonFile = zipFs.getPath(operationId + ".json");
+		assertTrue(Files.exists(zipJsonFile));
+		Path zipPdfFile = zipFs.getPath(operationId + ".pdf");
+		assertTrue(Files.exists(zipPdfFile));
+
+		File json = new File(workspace.getAbsolutePath(), operationId + ".json");
+		assertTrue(json.exists());
+		File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
+		assertTrue(pdf.exists());
 	}
 
 	private InputStream buildVitamProbativeReport(String filename)

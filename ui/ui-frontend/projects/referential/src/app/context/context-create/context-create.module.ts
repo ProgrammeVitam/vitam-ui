@@ -45,12 +45,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
-import {VitamUICommonModule} from 'ui-frontend-common';
+import {VitamUICommonModule, VitamUIFieldErrorModule} from 'ui-frontend-common';
 import {TenantService} from '../../../../../identity/src/app/customer/tenant.service';
 import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
 import {ContextCreateComponent} from './context-create.component';
 import {ContextCreateValidators} from './context-create.validators';
 import {ContextEditPermissionModule} from './context-edit-permission/context-edit-permission.module';
+
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import {ContextEditPermissionModule} from './context-edit-permission/context-edi
     MatTooltipModule,
     ReactiveFormsModule,
     VitamUICommonModule,
+    VitamUIFieldErrorModule,
     ContextEditPermissionModule
   ],
   declarations: [

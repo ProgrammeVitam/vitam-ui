@@ -90,9 +90,8 @@ public class ContextExternalService extends AbstractResourceClientService<Contex
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override
-    public ContextDto patch(final Map<String, Object> partialDto) {
-        return super.patch(partialDto);
+    public ContextDto patch(final ContextDto partialDto) {
+        return super.patchWithDto(partialDto);
     }
 
     public ContextDto create(final ContextDto accessContractDto) {

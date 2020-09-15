@@ -144,10 +144,10 @@ public class ContextController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch context : the DTO id must match the path id.");
-        return service.patch(buildUiHttpContext(), partialDto, id);
+        Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "Unable to patch context : the DTO id must match the path id.");
+        return service.patchWithDto(buildUiHttpContext(), partialDto, id);
     }
 
     @ApiOperation(value = "get history by context's id")

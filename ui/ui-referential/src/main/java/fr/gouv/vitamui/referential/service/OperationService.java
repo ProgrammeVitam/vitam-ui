@@ -44,14 +44,21 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.external.client.OperationExternalRestClient;
@@ -90,6 +97,16 @@ public class OperationService extends AbstractPaginateService<LogbookOperationDt
 
     public Collection<LogbookOperationDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
         return client.getAll(context, criteria);
+    }
+
+    public LogbookOperationsResponseDto checkTraceabilityOperation(ExternalHttpContext context, String operationId) {
+        final JsonNode body = client.checkTraceabilityOperation(context, operationId);
+        try {
+            return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
+        }
+        catch (final JsonProcessingException e) {
+            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
+        }
     }
 
     public boolean runAudit(ExternalHttpContext context, AuditOptions auditOptions) {

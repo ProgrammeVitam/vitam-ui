@@ -91,7 +91,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       identifier: [null],
       securityProfile: [null, Validators.required],
       enableControl: [false],
-      permissions: [null]
+      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, this.contextCreateValidators.permissionInvalid()]
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -146,6 +146,10 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       this.form.get('status').invalid || this.form.get('status').pending ||
       this.form.get('enableControl').invalid || this.form.get('enableControl').pending ||
       this.form.get('securityProfile').invalid || this.form.get('securityProfile').pending;
+  }
+
+  lastStepInvalid() {
+    return this.form.get('permissions').invalid;
   }
 
   get stepProgress() {

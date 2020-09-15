@@ -68,5 +68,14 @@ public class ProbativeOperationDto {
 
 	@JsonProperty("evDateTime")
 	private String evDateTime;
+	
+	@JsonProperty("archivalAgreement")
+	private String archivalAgreement;
+	
+	@JsonProperty("profil")
+	private String profil;
+	
+	@JsonProperty("accessContract")
+	private String accessContract;
 
 }

@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.referential.internal.server.operation;
 
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,7 +46,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.exception.AccessUnauthorizedException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.AuditOptions;
@@ -152,6 +158,22 @@ public class OperationInternalService {
 
         } catch (VitamClientException | AccessExternalClientServerException e) {
             throw new InternalServerException("Unable to export operation report", e);
+        }
+    }
+
+    public JsonNode checkTraceabilityOperation(VitamContext vitamContext, String id) {
+        final Select select = new Select();
+        final BooleanQuery query;
+
+        try {
+            query = and();
+            query.add(eq("evIdProc", id));
+            select.setQuery(query);
+
+            RequestResponse response = logbookService.checkTraceability(vitamContext, select.getFinalSelect());
+            return response.toJsonNode();
+        } catch (InvalidCreateOperationException | AccessExternalClientServerException | InvalidParseOperationException | AccessUnauthorizedException e) {
+            throw new InternalServerException("Unable to check traceability operation", e);
         }
     }
 

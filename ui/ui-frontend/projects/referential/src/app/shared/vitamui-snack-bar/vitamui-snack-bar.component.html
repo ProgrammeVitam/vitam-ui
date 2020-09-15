@@ -32,6 +32,10 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été supprimé.
     </ng-container>
 
+    <ng-container *ngSwitchCase="'agencyExportAll'" i18n="@@notificationAgencyExport">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Export des services agent en cours...
+    </ng-container>
+
     <ng-container *ngSwitchCase="'fileFormatCreate'" i18n="@@notificationFileFormatCreate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été créé
     </ng-container>
@@ -85,6 +89,10 @@
 
     <ng-container *ngSwitchCase="'auditRun'" i18n="@@notificationAuditRun">
       <i class="vitamui-icon vitamui-icon-audit"></i> L'audit {{data?.id}} a bien été lancé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'probativeValueRun'" i18n="@@notificationProbativeValueRun">
+      Le relevé de valeur probante a bien été lancé
     </ng-container>
 
   </span>
