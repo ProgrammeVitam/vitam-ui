@@ -1,6 +1,12 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
 
-  <app-context-edit-permission formControlName="permissions" [editMode]="true"></app-context-edit-permission>
+  <app-context-edit-permission formControlName="permissions" 
+    [editMode]="true" 
+    [tenants]="tenants" 
+    (changeOrganisations)="onChangeOrganisations($event)"></app-context-edit-permission>
+  <div *ngIf="isPermissionsOnMultipleOrganisations">
+    <span class="error-message" i18n="Multiple organisation warning hint@@formWarningMultipleOrganisations">Attention vous avez renseigné deux organisations différentes</span>
+  </div>
   <ng-container>
       <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
             i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>

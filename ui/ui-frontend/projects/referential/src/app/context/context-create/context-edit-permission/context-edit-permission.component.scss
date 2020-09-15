@@ -30,8 +30,13 @@
 }
 
 .contractsSelect {
-  max-width: 190px;
+  max-width: 150px;
 }
+
+.customers {
+  max-width: 150px;
+}
+
 .tenants {
   max-width: 150px;
 }
@@ -48,4 +53,8 @@
 .editTd {
   padding-left: 0;
   padding-right: 0;
+}
+
+.defaultTd {
+  padding-left: 0 !important;
 }

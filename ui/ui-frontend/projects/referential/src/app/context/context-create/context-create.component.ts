@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option} from 'ui-frontend-common';
+import {ConfirmDialogService, Option, Tenant} from 'ui-frontend-common';
 
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -54,11 +54,13 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 export class ContextCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+  statusControl = new FormControl(false);
   stepIndex = 0;
   accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
+  isPermissionsOnMultipleOrganisations = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -81,8 +83,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     private securityProfileService: SecurityProfileService
   ) {
   }
-
-  statusControl = new FormControl(false);
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -150,6 +150,22 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   lastStepInvalid() {
     return this.form.get('permissions').invalid;
+  }
+
+  onChangeOrganisations(organisations: string[]) {
+    this.isPermissionsOnMultipleOrganisations = false;
+    if (organisations && organisations.length > 1) {
+      let idx = 0;
+      let organisationId: string = null;
+      while (idx < organisations.length && !this.isPermissionsOnMultipleOrganisations) {
+        if (idx === 0) {
+          organisationId = organisations[0];
+        } else if (organisations[idx] != null && organisations[idx] !== organisationId) {
+          this.isPermissionsOnMultipleOrganisations = true;
+        }
+        idx++;
+      }
+    }
   }
 
   get stepProgress() {

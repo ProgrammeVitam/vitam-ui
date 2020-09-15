@@ -58,6 +58,7 @@ export class ContextPermissionTabComponent {
   form: FormGroup;
 
   submited = false;
+  isPermissionsOnMultipleOrganisations = false;
 
   // tslint:disable-next-line:variable-name
   private _context: Context;
@@ -194,5 +195,21 @@ export class ContextPermissionTabComponent {
         [...(permission.ingestContracts ? permission.ingestContracts : [])]));
     }
     this.form.controls.permissions.setValue(permissionCopy);
+  }
+
+  onChangeOrganisations(organisations: string[]) {
+    this.isPermissionsOnMultipleOrganisations = false;
+    if (organisations && organisations.length > 1) {
+      let idx = 0;
+      let organisationId: string = null;
+      while (idx < organisations.length && !this.isPermissionsOnMultipleOrganisations) {
+        if (idx === 0) {
+          organisationId = organisations[0];
+        } else if (organisations[idx] != null && organisations[idx] !== organisationId) {
+          this.isPermissionsOnMultipleOrganisations = true;
+        }
+        idx++;
+      }
+    }
   }
 }

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.config;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
@@ -118,6 +119,11 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public TenantExternalRestClient tenantCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
         return iamExternalRestClientFactory.getTenantExternalRestClient();
+    }
+    
+    @Bean
+    public CustomerExternalRestClient customerCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
+        return iamExternalRestClientFactory.getCustomerExternalRestClient();
     }
 
     @Bean

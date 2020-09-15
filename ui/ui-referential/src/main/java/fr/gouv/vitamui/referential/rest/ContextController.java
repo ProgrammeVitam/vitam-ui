@@ -147,6 +147,7 @@ public class ContextController extends AbstractUiRestController {
     public ContextDto patch(final @PathVariable("id") String id, @RequestBody final ContextDto partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, partialDto.getId()), "Unable to patch context : the DTO id must match the path id.");
+        
         return service.patchWithDto(buildUiHttpContext(), partialDto, id);
     }
 
