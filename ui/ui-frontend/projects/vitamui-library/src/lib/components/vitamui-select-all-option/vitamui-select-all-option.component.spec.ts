@@ -1,6 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MatPseudoCheckboxModule, MatRippleModule } from '@angular/material/core';
 import { VitamUISelectAllOptionComponent } from './vitamui-select-all-option.component';
+
 
 describe('VitamuiSelectAllOptionComponent', () => {
   let component: VitamUISelectAllOptionComponent;
@@ -8,6 +10,11 @@ describe('VitamuiSelectAllOptionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        CommonModule,
+        MatPseudoCheckboxModule,
+        MatRippleModule
+      ],
       declarations: [ VitamUISelectAllOptionComponent ]
     })
     .compileComponents();
