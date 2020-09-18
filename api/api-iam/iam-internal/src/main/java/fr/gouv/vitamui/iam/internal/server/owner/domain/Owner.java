@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.internal.server.owner.domain;
 
 import javax.validation.constraints.NotNull;
 
+import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -82,6 +83,11 @@ public class Owner extends CustomerIdDocument {
     private String companyName;
 
     private Address address;
+
+    private String internalCode;
+
+    @NotNull
+    private AddressType addressType;
 
     private boolean readonly;
 }

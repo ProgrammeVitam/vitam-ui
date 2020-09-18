@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -213,6 +214,14 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
                 case "companyName" :
                     logbooks.add(new EventDiffDto(OwnerConverter.COMPANY_NAME_KEY, owner.getCompanyName(), entry.getValue()));
                     owner.setCompanyName(CastUtils.toString(entry.getValue()));
+                    break;
+                case "addressType" :
+                    logbooks.add(new EventDiffDto(OwnerConverter.ADDRESS_TYPE_KEY, owner.getAddressType(), entry.getValue()));
+                    owner.setAddressType((AddressType) entry.getValue());
+                    break;
+                case "internalCode" :
+                    logbooks.add(new EventDiffDto(OwnerConverter.INTERNAL_CODE_KEY, owner.getInternalCode(), entry.getValue()));
+                    owner.setInternalCode(CastUtils.toString(entry.getValue()));
                     break;
                 case "address" :
                     Address address;

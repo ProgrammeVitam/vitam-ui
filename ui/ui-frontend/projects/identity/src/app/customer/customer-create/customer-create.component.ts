@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { merge, Subscription } from 'rxjs';
-import { ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
+import { AddressType, ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -45,7 +45,15 @@ import { CustomerService } from '../../core/customer.service';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
+
 const IMAGE_TYPE_PREFIX = 'image';
+
+interface CustomerInfo {
+   code: string;
+   name: string;
+   companyName: string;
+   addressType: AddressType;
+}
 
 @Component({
   selector: 'app-customer-create',
@@ -54,30 +62,53 @@ const IMAGE_TYPE_PREFIX = 'image';
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
 
-  form: FormGroup;
-  stepIndex = 0;
-  customerInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
-  hasCustomGraphicIdentity = false;
-  hasDropZoneOver = false;
-  imageToUpload: File = null;
-  lastImageUploaded: File = null;
-  imageUrl: any;
-  lastUploadedImageUrl: any;
-  lastColors: {[key: string]: string};
-  hasError = true;
-  message: string;
-  creating = false;
+  public form: FormGroup;
 
-  hexPattern = /#([0-9A-Fa-f]{6})/;
+  public stepIndex = 0;
+
+  public hasCustomGraphicIdentity = false;
+
+  public hasDropZoneOver = false;
+
+  public imageToUpload: File = null;
+
+  public lastImageUploaded: File = null;
+
+  public imageUrl: any;
+
+  public lastUploadedImageUrl: any;
+
+  public lastColors: {[key: string]: string};
+
+  public hasError = true;
+
+
+  public message: string;
+
+  public creating = false;
+
+  public JSON = JSON;
+
+  public hexPattern = /#([0-9A-Fa-f]{6})/;
+
+  public customerInfo: CustomerInfo = {
+    code: '',
+    name: '',
+    companyName: '',
+    addressType: AddressType.POSTAL
+  };
+
+  public ADDRESS_TYPE = AddressType;
+
+  @ViewChild('fileSearch', { static: false }) public fileSearch: any;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 4;
-  private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
+  private keyPressSubscription: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -103,16 +134,18 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       passwordRevocationDelay: 6,
       otp: OtpState.OPTIONAL,
       address: this.formBuilder.group({
-        street: [null, Validators.required],
-        zipCode: [null, Validators.required],
-        city: [null, Validators.required],
-        country: ['FR', Validators.required],
+        street: [''],
+        zipCode: [''],
+        city: [''],
+        country: ['FR']
       }),
+      internalCode: [null],
+      addressType: [AddressType.POSTAL, Validators.required],
       language: ['FRENCH', Validators.required],
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
-      themeColors: null,
+      themeColors: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ])
@@ -157,14 +190,16 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     merge(
       this.form.get('code').valueChanges,
       this.form.get('name').valueChanges,
-      this.form.get('companyName').valueChanges
+      this.form.get('companyName').valueChanges,
+      this.form.get('addressType').valueChanges
     )
     .subscribe(() => {
       // reset object to trigger customerInfo input update in child component
       this.customerInfo = {
         code: this.form.get('code').value,
         name: this.form.get('name').value,
-        companyName: this.form.get('companyName').value
+        companyName: this.form.get('companyName').value,
+        addressType: this.form.get('addressType').value
       };
     });
   }
@@ -178,9 +213,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.lastStepIsInvalid()) { return; }
     this.creating = true;
-
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
     this.customerService.create(customer, this.imageToUpload).subscribe(
@@ -191,6 +225,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.creating = false;
         console.error(error);
       });
+  }
+
+  isFormValid(form: FormGroup): boolean {
+    if (this.form.get('addressType').value === AddressType.INTERNAL_CODE) {
+      return form.get('internalCode').valid;
+    } else {
+      return form.valid;
+    }
   }
 
   updateForCustomerModel(formValue: any): Customer {
@@ -256,13 +298,18 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    return this.form.get('code').invalid || this.form.get('code').pending ||
-      this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('companyName').invalid || this.form.get('companyName').pending ||
-      this.form.get('address.street').invalid || this.form.get('address.street').pending ||
+    const response = this.form.get('code').invalid || this.form.get('code').pending ||
+    this.form.get('name').invalid || this.form.get('name').pending ||
+    this.form.get('companyName').invalid || this.form.get('companyName').pending;
+
+    if (this.form.get('addressType').value === AddressType.POSTAL) {
+      return response || this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
       this.form.get('address.city').invalid || this.form.get('address.city').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending;
+    } else if (this.form.get('addressType').value === AddressType.INTERNAL_CODE) {
+      return response || this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
+    }
   }
 
   secondStepInvalid(): boolean {
@@ -278,6 +325,21 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         (this.form.get('hasCustomGraphicIdentity').value === false ||
               (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
         );
+  }
+
+  lastStepIsInvalid(): boolean {
+      const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
+      return this.form.pending || invalid || this.creating;
+  }
+
+  private isThemeColorsFormValid(): boolean {
+    const value = this.form.get('themeColors').value;
+    for (const key of Object.keys(value)) {
+      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   get stepProgress() {

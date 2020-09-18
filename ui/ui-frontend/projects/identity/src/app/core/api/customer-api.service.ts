@@ -77,6 +77,8 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
       otp: customer.otp,
       idp: customer.idp,
       address: customer.address,
+      addressType: customer.addressType,
+      internalCode: customer.internalCode,
       language: customer.language,
       emailDomains: customer.emailDomains,
       defaultEmailDomain: customer.defaultEmailDomain,

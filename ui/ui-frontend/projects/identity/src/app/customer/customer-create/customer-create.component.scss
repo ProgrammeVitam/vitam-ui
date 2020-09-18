@@ -217,3 +217,19 @@ button > small {
     font-size: 14px;
     margin-bottom: 30px;
 }
+
+.selected {
+    background-color: var(--vitamui-secondary);
+    color: $white;
+}
+
+:host::ng-deep {
+    .mat-button-toggle-button {
+        min-width: 100px;
+    }
+
+    .mat-button-toggle-label-content {
+        max-height: 40px!important;
+        line-height: 2!important;
+    }
+}

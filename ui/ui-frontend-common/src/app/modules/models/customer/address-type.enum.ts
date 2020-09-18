@@ -34,12 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './address.interface';
-export * from './customer.interface';
-export * from './otp-state.enum';
-export * from './owner.interface';
-export * from './identity-provider.interface';
-export * from './tenant.interface';
-export * from './basic-customer.interface';
-export * from './customer.interface';
-export * from './address-type.enum';
+export enum AddressType {
+    POSTAL = 'POSTAL',
+    INTERNAL_CODE = 'INTERNAL_CODE'
+}
