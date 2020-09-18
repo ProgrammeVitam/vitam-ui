@@ -74,8 +74,12 @@ public class RuleExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleExternalController.class);
 
-    @Autowired
     private RuleExternalService ruleExternalService;
+
+    @Autowired
+    public RuleExternalController(final RuleExternalService ruleExternalService) {
+        this.ruleExternalService = ruleExternalService;
+    }
 
     @GetMapping()
     @Secured(ServicesData.ROLE_GET_RULES)
