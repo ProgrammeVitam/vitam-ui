@@ -67,11 +67,12 @@ import lombok.Setter;
 @Service
 public class RuleExternalService extends AbstractResourceClientService<RuleDto, RuleDto> {
 
-    @Autowired
     private RuleInternalRestClient ruleInternalRestClient;
 
-    public RuleExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient) {
         super(externalSecurityService);
+        this.ruleInternalRestClient = ruleInternalRestClient;
     }
 
     public List<RuleDto> getAll(final Optional<String> criteria) {
