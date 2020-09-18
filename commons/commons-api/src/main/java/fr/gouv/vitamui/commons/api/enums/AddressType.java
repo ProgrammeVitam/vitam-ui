@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,29 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from '../id.interface';
-import { AddressType } from './address-type.enum';
-import { Address } from './address.interface';
-import { OtpState } from './otp-state.enum';
-import { Owner } from './owner.interface';
+package fr.gouv.vitamui.commons.api.enums;
 
-export interface Customer extends Id {
-  enabled?: boolean;
-  code: string;
-  identifier: string;
-  name: string;
-  companyName: string;
-  passwordRevocationDelay: number;
-  otp: OtpState;
-  idp?: boolean;
-  address: Address;
-  internalCode?: string;
-  addressType: AddressType;
-  language: string;
-  emailDomains: string[];
-  defaultEmailDomain: string;
-  owners: Owner[];
-  readonly: boolean;
-  hasCustomGraphicIdentity: boolean;
-  themeColors: {[key: string]: string};
+/** Possible address types of a Customer or an Owner **/
+public enum AddressType {
+    POSTAL,
+    INTERNAL_CODE,
 }

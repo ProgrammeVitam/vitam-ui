@@ -41,6 +41,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -104,8 +105,12 @@ public class Customer extends IdDocument {
     @NotNull
     private String defaultEmailDomain;
 
-    @NotNull
     private Address address;
+
+    private String internalCode;
+
+    @NotNull
+    private AddressType addressType;
 
     private boolean readonly = false;
 

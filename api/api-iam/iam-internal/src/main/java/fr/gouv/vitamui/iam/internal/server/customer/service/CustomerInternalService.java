@@ -312,6 +312,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     }
                     addressService.processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks);
                     break;
+                case "internalCode" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.INTERNAL_CODE_KEY, customer.getInternalCode(), entry.getValue()));
+                    customer.setInternalCode(CastUtils.toString(entry.getValue()));
+                    break;
                 case "subrogeable" :
                     logbooks.add(new EventDiffDto(CustomerConverter.SUBROGEABLE_KEY, customer.isSubrogeable(), entry.getValue()));
                     customer.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
