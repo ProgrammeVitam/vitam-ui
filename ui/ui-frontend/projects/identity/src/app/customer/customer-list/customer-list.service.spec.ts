@@ -69,7 +69,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           name: 'Emmanuel Deviller',
           code: '002345',
           companyName: 'vitamui',
-          addressType: AddressType.POSTAL,
           address: {
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
@@ -85,7 +84,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           name: 'Julien Cornille',
           code: '002345',
           companyName: 'vitamui',
-          addressType: AddressType.POSTAL,
           address: {
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
@@ -128,7 +126,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           name: 'Mr Président',
           code: '022345',
           companyName: 'Electricité de france',
-          addressType: AddressType.POSTAL,
           address: {
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
@@ -144,7 +141,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           name: 'Jean Dupond',
           code: '025000',
           companyName: 'Electricité de france',
-           addressType: AddressType.POSTAL,
           address: {
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
@@ -195,7 +191,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           name: 'Emmanuel Deviller',
           code: '002345',
           companyName: 'vitamui',
-          addressType: AddressType.POSTAL,
           address: {
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
@@ -211,7 +206,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           name: 'Julien Cornille',
           code: '002345',
           companyName: 'vitamui',
-          addressType: AddressType.POSTAL,
           address: {
             street: '73 rue du Faubourg Poissonnière ',
             zipCode: '75009',
@@ -254,7 +248,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           name: 'Mr Président',
           code: '022345',
           companyName: 'Electricité de france',
-          addressType: AddressType.POSTAL,
           address: {
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',
@@ -270,7 +263,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           name: 'Jean Dupond',
           code: '025000',
           companyName: 'Electricité de france',
-          addressType: AddressType.POSTAL,
           address: {
             street: '22-30 Avenue de WAGRAM',
             zipCode: '75008',

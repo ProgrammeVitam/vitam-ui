@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AddressType, ConfirmDialogService, Owner } from 'ui-frontend-common';
+import { ConfirmDialogService, Owner } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable:max-classes-per-file directive-selector */
@@ -82,7 +82,6 @@ describe('OwnerCreateComponent', () => {
       name: 'Mr Président',
       code: '02234512',
       companyName: 'Electricité de france',
-      addressType: AddressType.POSTAL,
       address: {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',

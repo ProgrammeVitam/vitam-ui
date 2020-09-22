@@ -108,7 +108,6 @@ let expectedCustomer: Customer = {
     code: '254791',
     name: 'owner name',
     companyName: 'company name',
-    addressType: AddressType.POSTAL,
     address: {
       street: '85 rue des bois',
       zipCode: '75013',
@@ -218,7 +217,6 @@ describe('UserInfoTabComponent', () => {
         code: '254791',
         name: 'owner name',
         companyName: 'company name',
-        addressType: AddressType.POSTAL,
         address: {
           street: '85 rue des bois',
           zipCode: '75013',

@@ -58,6 +58,8 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
 
+  @Input() addressType: AddressType;
+
   form: FormGroup;
 
   private sub: any;
@@ -113,7 +115,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       name: [null, Validators.required],
       companyName: [null, Validators.required],
       internalCode: [null],
-      addressType: [this.customerInfo.addressType],
       address: this.formBuilder.group({
         street: null,
         zipCode: null,
@@ -141,7 +142,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       name: null,
       companyName: null,
       internalCode: null,
-      addressType: this.customerInfo.addressType,
       address: {
         street: null,
         zipCode: null,

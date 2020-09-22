@@ -186,7 +186,6 @@ const expectedCustomer: Customer = {
     code: '666666',
     name: 'Alice Vans',
     companyName: 'Vans',
-    addressType: AddressType.POSTAL,
     address: {
       street: 'street2',
       zipCode: '43121',

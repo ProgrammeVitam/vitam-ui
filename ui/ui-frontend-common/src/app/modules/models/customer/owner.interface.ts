@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Id } from '../id.interface';
-import { AddressType } from './address-type.enum';
 import { Address } from './address.interface';
 
 export interface Owner extends Id {
@@ -45,7 +44,6 @@ export interface Owner extends Id {
   companyName: string;
   address: Address;
   internalCode?: string;
-  addressType: AddressType;
   customerId: string;
   readonly: boolean;
 }
