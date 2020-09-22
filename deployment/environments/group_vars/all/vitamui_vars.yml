@@ -222,7 +222,8 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
     reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
-    cors.enabled: false
+    cors:
+      enabled: false
   security_internal:
     host: "vitamui-security-internal.service.{{ consul_domain }}"
     vitamui_component: "security-internal"
