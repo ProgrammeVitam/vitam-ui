@@ -42,7 +42,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of ,  Subject } from 'rxjs';
 
-import { OtpState, Owner, Tenant } from 'ui-frontend-common';
+import { AddressType, OtpState, Owner, Tenant } from 'ui-frontend-common';
 import { extend } from 'underscore';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
@@ -265,6 +265,7 @@ describe('OwnerListComponent', () => {
       customerId: testhost.customer.id,
       name: 'Toto',
       companyName: 'Toto & Co',
+      addressType: AddressType.POSTAL,
       address: {
         street: null,
         zipCode: null,
