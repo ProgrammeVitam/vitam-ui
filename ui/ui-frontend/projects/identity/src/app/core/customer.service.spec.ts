@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ENVIRONMENT, LoggerModule } from 'ui-frontend-common';
+import { AddressType, ENVIRONMENT, LoggerModule } from 'ui-frontend-common';
 import { BASE_URL, Customer, Operators, OtpState, SearchQuery } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
@@ -169,6 +169,7 @@ const expectedCustomer: Customer = {
   companyName: 'John Co.',
   passwordRevocationDelay: 3,
   otp: OtpState.OPTIONAL,
+  addressType: AddressType.POSTAL,
   address: {
     street: 'street',
     zipCode: '12345',
@@ -185,6 +186,7 @@ const expectedCustomer: Customer = {
     code: '666666',
     name: 'Alice Vans',
     companyName: 'Vans',
+    addressType: AddressType.POSTAL,
     address: {
       street: 'street2',
       zipCode: '43121',

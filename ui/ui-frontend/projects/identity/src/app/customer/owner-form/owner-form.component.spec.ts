@@ -44,7 +44,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of ,  timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Owner } from 'ui-frontend-common';
+import { AddressType, Owner } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
@@ -106,6 +106,7 @@ describe('OwnerFormComponent', () => {
       code: '43214345345',
       name: 'Toto',
       companyName: 'Toto & Co.',
+      addressType: AddressType.POSTAL,
       address: {
         street: 'Street name',
         zipCode: '2134',
@@ -134,6 +135,7 @@ describe('OwnerFormComponent', () => {
       code: 'invalid-code',
       name: 'Toto',
       companyName: 'Toto & Co.',
+      addressType: AddressType.POSTAL,
       address: {
         street: 'Street name',
         zipCode: '2134',
@@ -167,6 +169,7 @@ describe('OwnerFormComponent', () => {
       code: '43214345345',
       name: 'Toto',
       companyName: 'Toto & Co.',
+      addressType: AddressType.POSTAL,
       address: {
         street: 'Street name',
         zipCode: '2134',

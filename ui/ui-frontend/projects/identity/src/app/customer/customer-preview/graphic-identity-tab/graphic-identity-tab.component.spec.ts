@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { ENVIRONMENT } from 'ui-frontend-common';
+import { AddressType, ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, LoggerModule, OtpState } from 'ui-frontend-common';
 import { VitamUISnackBar } from '../../../shared/vitamui-snack-bar';
 import { environment } from './../../../../environments/environment';
@@ -57,6 +57,7 @@ let expectedCustomer: Customer = {
   passwordRevocationDelay: 6,
   otp: OtpState.DEACTIVATED,
   idp: true,
+  addressType: AddressType.POSTAL,
   address: {
     street: '85 rue des bois',
     zipCode: '75013',
@@ -74,6 +75,7 @@ let expectedCustomer: Customer = {
     code: '254791',
     name: 'owner name',
     companyName: 'company name',
+    addressType: AddressType.POSTAL,
     address: {
       street: '85 rue des bois',
       zipCode: '75013',
@@ -118,6 +120,7 @@ describe('GraphicIdentityTabComponent', () => {
       passwordRevocationDelay: 6,
       otp: OtpState.DEACTIVATED,
       idp: true,
+      addressType: AddressType.POSTAL,
       address: {
         street: '85 rue des bois',
         zipCode: '75013',
@@ -135,6 +138,7 @@ describe('GraphicIdentityTabComponent', () => {
         code: '254791',
         name: 'owner name',
         companyName: 'company name',
+        addressType: AddressType.POSTAL,
         address: {
           street: '85 rue des bois',
           zipCode: '75013',
