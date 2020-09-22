@@ -198,3 +198,12 @@ logging:
     fr.gouv.vitamui.cas: DEBUG
     org.elasticsearch.metrics: DEBUG
     fr.gouv.vitamui.commons: DEBUG
+
+{% if vitamui.cas_server.cors.enabled|lower == "true" %}
+# Cas CORS (necessary for mobile app)
+cas.httpWebRequest.cors.enabled: true
+cas.httpWebRequest.cors.allowCredentials: false
+cas.httpWebRequest.cors.allowOrigins: ['*']
+cas.httpWebRequest.cors.allowMethods: ['*']
+cas.httpWebRequest.cors.allowHeaders: ['*']
+{% endif %}
