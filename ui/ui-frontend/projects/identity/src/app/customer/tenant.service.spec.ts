@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AddressType, BASE_URL, Operators, Owner, SearchQuery, Tenant } from 'ui-frontend-common';
+import { BASE_URL, Operators, Owner, SearchQuery, Tenant } from 'ui-frontend-common';
 
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
@@ -66,7 +66,6 @@ const expectedOwner: Owner = {
   code: '10234501',
   companyName: 'vitamui',
   readonly: false,
-  addressType: AddressType.POSTAL,
   address: {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',

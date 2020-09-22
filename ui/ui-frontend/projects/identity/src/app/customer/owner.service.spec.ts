@@ -39,7 +39,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { AddressType, BASE_URL, Owner } from 'ui-frontend-common';
+import { BASE_URL, Owner } from 'ui-frontend-common';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { OwnerService } from './owner.service';
 
@@ -50,7 +50,6 @@ const expectedOwner: Owner = {
   name: 'Julien Cornille',
   code: '10234665',
   companyName: 'vitamui',
-  addressType: AddressType.POSTAL,
   address: {
     street: '73 rue du Faubourg Poissonnière ',
     zipCode: '75009',

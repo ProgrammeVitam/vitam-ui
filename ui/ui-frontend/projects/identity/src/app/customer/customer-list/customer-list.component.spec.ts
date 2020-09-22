@@ -367,7 +367,6 @@ describe('CustomerListComponent', () => {
       customerId: customers[0].id,
       name: 'Toto',
       companyName: 'Toto & Co',
-      addressType: AddressType.POSTAL,
       address: {
         street: null,
         zipCode: null,

@@ -38,7 +38,6 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import javax.validation.constraints.NotNull;
 
-import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.hibernate.validator.constraints.Length;
 
 import lombok.EqualsAndHashCode;
@@ -72,9 +71,6 @@ public class OwnerDto extends CustomerIdDto {
     private AddressDto address;
 
     private String internalCode;
-
-    @NotNull
-    private AddressType addressType;
 
     private boolean readonly;
 

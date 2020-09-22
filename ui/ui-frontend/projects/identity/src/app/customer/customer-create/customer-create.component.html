@@ -258,7 +258,7 @@
         <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire des éléments de preuve
         </h2>
         <div class="form-group">
-          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
+          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo" [addressType]="form.get('addressType').value"></app-owner-form>
           <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le
             coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
         </div>
