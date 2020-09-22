@@ -16,6 +16,7 @@
                 <vitamui-radio label="Existence" value="AUDIT_FILE_EXISTING"></vitamui-radio>
                 <vitamui-radio label="Intégrité" value="AUDIT_FILE_INTEGRITY" checked></vitamui-radio>
                 <vitamui-radio label="Cohérence" value="AUDIT_FILE_CONSISTENCY"></vitamui-radio>
+                <vitamui-radio label="Correctif" value="AUDIT_FILE_RECTIFICATION"></vitamui-radio>
               </vitamui-radio-group>
             </div>
           </div>
@@ -25,9 +26,9 @@
           <div class="col-8 form-control">
             <mat-form-field class="vitamui-mat-select">
               <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
-                          panelclass="vitamui-mat-select" required>
-                <mat-option *ngFor='let accessContract of accessContracts'
-                            [value]="accessContract.identifier">{{accessContract.name}}
+                panelclass="vitamui-mat-select" required>
+                <mat-option *ngFor='let accessContract of accessContracts' [value]="accessContract.identifier">
+                  {{accessContract.name}}
                 </mat-option>
               </mat-select>
               <div class="select-arrow">
@@ -35,6 +36,21 @@
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group" *ngIf="form.value.auditActions === 'AUDIT_FILE_RECTIFICATION'">
+          <div class="row">
+            <div class="col-8 form-control">
+              <vitamui-common-input class="field-evidenceAudit" formControlName="evidenceAudit"
+                placeholder="Identifiant d'audit de cohérence"
+                i18n-placeholder="evidenceAudit@@auditCreateEvidenceAudit">
+              </vitamui-common-input>
+              <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit')?.errors?.invalidEvidenceAuditId"
+                i18n="Identfier exists error hint@@formErrorIdentifierExists">L'identifiant d'audit de cohérence saisi
+                n'existe pas
+              </vitamui-common-input-error>
+            </div>
           </div>
         </div>
 
@@ -48,9 +64,9 @@
             <div class="col-8 form-control">
               <mat-form-field class="vitamui-mat-select" *ngIf="allServices.value===false && accessionRegisters">
                 <mat-select formControlName="objectId" placeholder="Selectionnez le service producteur"
-                            panelclass="vitamui-mat-select" required>
-                  <mat-option *ngFor='let accession of accessionRegisters'
-                              [value]="accession.originatingAgency">{{accession.originatingAgency}}
+                  panelclass="vitamui-mat-select" required>
+                  <mat-option *ngFor='let accession of accessionRegisters' [value]="accession.originatingAgency">
+                    {{accession.originatingAgency}}
                   </mat-option>
                 </mat-select>
                 <div class="select-arrow">
@@ -87,10 +103,9 @@
         <h4> Noeud de rattachement (SIP) </h4>
 
         <div class="form-group">
-          <vitamui-library-filing-plan [formControl]="selectedNodes"
-                                       [tenantIdentifier]="tenantIdentifier"
-                                       [accessContract]="accessContractSelect.value"
-                                       [mode]="FILLING_PLAN_MODE_INCLUDE"></vitamui-library-filing-plan>
+          <vitamui-library-filing-plan [formControl]="selectedNodes" [tenantIdentifier]="tenantIdentifier"
+            [accessContract]="accessContractSelect.value" [mode]="FILLING_PLAN_MODE_INCLUDE">
+          </vitamui-library-filing-plan>
         </div>
         <div class="actions">
           <button type="submit" class="btn primary">Terminer</button>

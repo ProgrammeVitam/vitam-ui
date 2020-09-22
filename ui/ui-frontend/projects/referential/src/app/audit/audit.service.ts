@@ -38,8 +38,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {AccessionRegister, Event} from 'projects/vitamui-library/src/public-api';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService} from 'ui-frontend-common';
+import {map, tap} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, PageRequest, SearchService} from 'ui-frontend-common';
 
 import {AccessionRegisterApiService} from '../core/api/accession-register-api.service';
 import {OperationApiService} from '../core/api/operation-api.service';
@@ -93,18 +93,31 @@ export class AuditService extends SearchService<Event> {
   download(id: string, accessContractId: string) {
     this.operationApiService.downloadOperation(
       id, 'AUDIT', new HttpHeaders({'X-Access-Contract-Id': accessContractId})).subscribe((blob) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(blob);
-      element.download = id + '.json';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    });
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(blob);
+        element.download = id + '.json';
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      });
 
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegister[]> {
     return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({'X-Access-Contract-Id': accessContractId}));
+  }
+
+  checkEvidenceAuditExistence(evidenceAuditId: string): Observable<boolean> {
+    const criteria: any = {};
+    criteria.evTypeProc = 'AUDIT';
+    criteria.evType = ['EVIDENCE_AUDIT'];
+    criteria['#id'] = evidenceAuditId;
+
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, '#id', Direction.ASCENDANT, JSON.stringify(criteria));
+
+    return this.search(pageRequest).pipe(
+      map(res => res.length === 0)
+    );
   }
 }

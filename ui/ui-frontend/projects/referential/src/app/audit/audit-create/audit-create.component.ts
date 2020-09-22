@@ -8,6 +8,7 @@ import {ConfirmDialogService, StartupService} from 'ui-frontend-common';
 
 import {AccessContractService} from '../../access-contract/access-contract.service';
 import {AuditService} from '../audit.service';
+import {AuditCreateValidators} from './audit-create-validator';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -47,7 +48,8 @@ export class AuditCreateComponent implements OnInit {
     private confirmDialogService: ConfirmDialogService,
     private auditService: AuditService,
     private startupService: StartupService,
-    protected accessContractService: AccessContractService
+    protected accessContractService: AccessContractService,
+    private auditCreateValidator: AuditCreateValidators
   ) {
   }
 
@@ -59,15 +61,25 @@ export class AuditCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       auditActions: [null, Validators.required],
       auditType: ['tenant', Validators.required],
+      evidenceAudit: [null, Validators.required, this.auditCreateValidator.checkEvidenceAuditId()],
       objectId: [this.startupService.getTenantIdentifier(), Validators.required],
       query: [this.getRootQuery(null)]
+    });
+
+    this.form.controls.auditActions.valueChanges.subscribe(auditActions => {
+      if (auditActions === 'AUDIT_FILE_RECTIFICATION') {
+        this.allServices.setValue(false);
+      } else {
+        this.allServices.setValue(true);
+      }
     });
 
     this.accessContractSelect.valueChanges.subscribe(accessContractId => {
       console.log('AC ID: ', accessContractId);
       if (this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' ||
-        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY') {
-        console.log('Integrité / Existance');
+        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY' ||
+        this.form.controls.auditActions.value === 'AUDIT_FILE_RECTIFICATION') {
+        console.log('Integrité / Existance / Correctif');
         this.auditService.getAllAccessionRegister(accessContractId).subscribe(accessionRegisters => {
           console.log('Services Producteurs: ', accessionRegisters);
           this.accessionRegisters = accessionRegisters;
@@ -89,7 +101,9 @@ export class AuditCreateComponent implements OnInit {
     });
 
     this.allServices.valueChanges.subscribe((value) => {
-      this.form.controls.auditType.setValue((value) ? 'tenant' : 'originatingagency');
+      if (this.form.controls.auditActions.value !== 'AUDIT_FILE_RECTIFICATION') {
+        this.form.controls.auditType.setValue((value) ? 'tenant' : 'originatingagency');
+      }
       this.form.controls.objectId.setValue((value) ? this.startupService.getTenantIdentifier() : null);
     });
 
@@ -102,18 +116,26 @@ export class AuditCreateComponent implements OnInit {
       console.log('query: ', this.form.controls.query.value);
     });
 
+    this.form.controls.evidenceAudit.valueChanges.subscribe(value => {
+      this.form.controls.auditType.setValue(value);
+    });
+
     this.allNodes.valueChanges.subscribe((value) => this.stepCount = (value) ? 1 : 2);
   }
 
   isStepValid(): boolean {
     const isEvidenceAuditValid = this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' &&
       !this.accessContractSelect.invalid && !this.accessContractSelect.pending;
+    const isRectificationAuditValid = this.form.value.auditActions === 'AUDIT_FILE_RECTIFICATION' &&
+      !this.accessContractSelect.invalid && !this.accessContractSelect.pending &&
+      !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending &&
+      !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
     const isOtherAuditValid = (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' ||
       this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
       !this.accessContractSelect.invalid && !this.accessContractSelect.pending &&
       !this.form.get('auditType').invalid && !this.form.get('auditType').pending &&
       !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
-    return isEvidenceAuditValid || isOtherAuditValid;
+    return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
   }
 
   ngOnDestroy = () => {

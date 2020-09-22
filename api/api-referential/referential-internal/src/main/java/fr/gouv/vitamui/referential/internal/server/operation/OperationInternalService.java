@@ -143,6 +143,8 @@ public class OperationInternalService {
             LOGGER.info("All Operations Audit EvIdAppSession : {} " , context.getApplicationSessionId());
             if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions()))  {
                 operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
+            } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions()))  {
+                operationService.lauchRectificationAudit(context, auditOptions.getAuditType());
             } else {
                 auditOptions.setQuery(null);
                 operationService.runAudit(context, mapper.valueToTree(auditOptions));
