@@ -189,7 +189,7 @@ public class VitamContextService {
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfContexts, JsonNode.class);
         
-        // FIXME ? The "accessContracts" and "ingestContracts" in the permissions must be rename to "AccessContracts" and "IngestContracts" to be saved in Vitam
+        // The "accessContracts" and "ingestContracts" in the permissions must be rename to "AccessContracts" and "IngestContracts" to be saved in Vitam
         final ArrayNode arrayNode = (ArrayNode) node;
         arrayNode.forEach(contextNode -> {
         	final ArrayNode permissionsNode = (ArrayNode) contextNode.get("Permissions");

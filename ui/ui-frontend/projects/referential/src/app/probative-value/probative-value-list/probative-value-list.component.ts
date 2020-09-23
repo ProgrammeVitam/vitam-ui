@@ -30,7 +30,6 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
   @Input('filters')
   set filters(filters: ProbativeValueFilters) {
-    console.log('Filters: ', filters);
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -72,7 +71,6 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildProbativeValueCriteriaFromSearch();
-      console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
