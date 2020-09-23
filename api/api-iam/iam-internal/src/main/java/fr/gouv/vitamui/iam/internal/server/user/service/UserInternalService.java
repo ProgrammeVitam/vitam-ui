@@ -561,6 +561,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     }
                     addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, true);
                     break;
+                case "internalCode" :
+                    logbooks.add(new EventDiffDto(UserConverter.INTERNAL_CODE_KEY, user.getInternalCode(), entry.getValue()));
+                    user.setInternalCode(CastUtils.toString(entry.getValue()));
+                    break;
                 case "siteCode" :
                     logbooks.add(new EventDiffDto(UserConverter.SITE_CODE, user.getSiteCode(), entry.getValue()));
                     user.setSiteCode(CastUtils.toString(entry.getValue()));

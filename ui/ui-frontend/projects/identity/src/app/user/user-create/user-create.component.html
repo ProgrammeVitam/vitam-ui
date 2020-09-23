@@ -157,8 +157,15 @@
       <div class="content">
         <h2 i18n="@@userCreateAddressTitle">Coordonnées</h2>
 
-        <ng-container formGroupName="address">
+        <ng-container *ngIf="customer.addressType === ADDRESS_TYPE.INTERNAL_CODE">
+          <div>
+            <vitamui-common-input class="field-street" required formControlName="internalCode" maxlength="20" placeholder="Code interne"
+              i18n-placeholder="@@userCreateInternalCodeInputPlaceholder">
+            </vitamui-common-input>
+          </div>
+        </ng-container>
 
+        <ng-container formGroupName="address" *ngIf="!customer.addressType || customer.addressType === ADDRESS_TYPE.POSTAL">
           <div>
             <vitamui-common-input class="field-street" [required]="!addressEmpty" formControlName="street" maxlength="250" placeholder="N° et nom de rue"
               i18n-placeholder="@@userCreateStreetInputPlaceholder">
@@ -196,16 +203,16 @@
               </div>
             </mat-form-field>
           </div>
+
+          <div>
+            <vitamui-common-input class="field-site-code" formControlName="siteCode" placeholder="Code du site"
+                                  i18n-placeholder="user create siteCode@@userCreateSiteCode">
+            </vitamui-common-input>
+          </div>
         </ng-container>
 
-        <div>
-          <vitamui-common-input class="field-site-code" formControlName="siteCode" placeholder="Code du site"
-                                i18n-placeholder="user create siteCode@@userCreateSiteCode">
-          </vitamui-common-input>
-        </div>
-
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="form.get('address').pending || form.get('address').invalid"
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()"
             i18n="user create next step otp@@userCreateNextStepOtpButton">
             Continuer en gérant l'authentification
           </button>

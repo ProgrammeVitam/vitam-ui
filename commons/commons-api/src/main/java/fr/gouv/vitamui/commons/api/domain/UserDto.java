@@ -111,5 +111,7 @@ public class UserDto extends CustomerIdDto {
 
     private AddressDto address = new AddressDto();
 
+    private String internalCode;
+
     private String siteCode;
 }
