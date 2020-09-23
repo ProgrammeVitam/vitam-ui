@@ -338,6 +338,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Type\":\"NOMINATIVE\","
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
+                + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
                 + "\"Code du site\":\"001\","
                 + "\"Nom de la rue\":\"rue faubourg poissoniére\","

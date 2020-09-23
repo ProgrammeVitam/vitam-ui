@@ -84,12 +84,15 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String GROUP_IDENTIFIER_KEY = "Groupe de profils";
 
+    public static final String INTERNAL_CODE_KEY = "Code interne";
+
     /**
      * Used for described user's blocked duration
      */
     public static final String BLOCKED_DURATION = "Durée du blocage";
 
     public static final String SITE_CODE = "Code du site";
+
 
     private final GroupRepository groupRepository;
 
@@ -112,6 +115,7 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(TYPE_KEY, LogbookUtils.getValue(user.getType().toString()));
         userLogbookData.put(STATUS_KEY, LogbookUtils.getValue(user.getStatus().toString()));
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
+        userLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(user.getInternalCode()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
         AddressDto address = user.getAddress() != null ? user.getAddress() : new AddressDto();
