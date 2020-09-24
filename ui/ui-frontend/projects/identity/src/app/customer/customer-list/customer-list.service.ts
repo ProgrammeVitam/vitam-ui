@@ -95,6 +95,7 @@ export class CustomerListService extends SearchService<Customer> {
       otp: customer.otp,
       address: customer.address,
       addressType: customer.addressType,
+      internalCode: customer.internalCode,
       language: customer.language,
       emailDomains: customer.emailDomains,
       defaultEmailDomain: customer.defaultEmailDomain,
