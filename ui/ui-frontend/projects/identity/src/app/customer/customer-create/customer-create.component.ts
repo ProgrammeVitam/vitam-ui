@@ -61,36 +61,24 @@ interface CustomerInfo {
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
+  public readonly ADDRESS_TYPE = AddressType;
+
+  @ViewChild('fileSearch', { static: false }) public fileSearch: any;
 
   public form: FormGroup;
-
   public stepIndex = 0;
-
   public hasCustomGraphicIdentity = false;
-
   public hasDropZoneOver = false;
-
   public imageToUpload: File = null;
-
   public lastImageUploaded: File = null;
-
   public imageUrl: any;
-
   public lastUploadedImageUrl: any;
-
   public lastColors: {[key: string]: string};
-
   public hasError = true;
-
-
   public message: string;
-
   public creating = false;
-
   public JSON = JSON;
-
   public hexPattern = /#([0-9A-Fa-f]{6})/;
-
   public customerInfo: CustomerInfo = {
     code: '',
     name: '',
@@ -98,16 +86,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     addressType: AddressType.POSTAL
   };
 
-  public ADDRESS_TYPE = AddressType;
-
-  @ViewChild('fileSearch', { static: false }) public fileSearch: any;
-
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 4;
-
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -225,14 +208,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.creating = false;
         console.error(error);
       });
-  }
-
-  isFormValid(form: FormGroup): boolean {
-    if (this.form.get('addressType').value === AddressType.INTERNAL_CODE) {
-      return form.get('internalCode').valid;
-    } else {
-      return form.valid;
-    }
   }
 
   updateForCustomerModel(formValue: any): Customer {

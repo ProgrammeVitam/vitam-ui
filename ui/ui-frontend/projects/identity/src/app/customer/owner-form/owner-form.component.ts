@@ -86,7 +86,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
           code: customerInfo.code,
           name: customerInfo.name,
           companyName: customerInfo.companyName,
-          addressType: customerInfo.addressType
         });
     }
   }
