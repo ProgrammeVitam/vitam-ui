@@ -61,6 +61,7 @@ export class ProbativeValueCreateComponent implements OnInit {
 
     this.form = this.formBuilder.group({
       unitId: [null, Validators.required],
+      accessContract: this.accessContractSelect,
       usage: [null, Validators.required],
       version: [null, Validators.required]
     });

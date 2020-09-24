@@ -75,7 +75,7 @@ public class ContextConverter {
             PermissionDto permissionDto = new PermissionDto();
             permissionDto.setTenant(permission.getTenant().toString());
             permissionDto.setAccessContracts(permission.getAccessContract());
-            permissionDto.setAccessContracts(permission.getAccessContract());
+            permissionDto.setIngestContracts(permission.getIngestContract());
             permissions.add(permissionDto);
         }
 

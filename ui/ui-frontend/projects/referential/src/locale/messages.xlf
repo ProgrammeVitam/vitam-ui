@@ -85,10 +85,6 @@
           <context context-type="sourcefile">../vitamui-library/src/lib/components/application-select-content/application-select-content.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/application-select-content/application-select-content.component.d.ts</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
         <note priority="1" from="description">Management category</note>
       </trans-unit>
       <trans-unit id="PortalSettingsCategory" datatype="html">
@@ -99,10 +95,6 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">../vitamui-library/src/lib/components/application-select-content/application-select-content.component.html</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/application-select-content/application-select-content.component.d.ts</context>
           <context context-type="linenumber">50</context>
         </context-group>
         <note priority="1" from="description">Settings category</note>
@@ -137,14 +129,6 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">../vitamui-library/src/lib/components/confirm-action/confirm-action.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
-          <context context-type="linenumber">2</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
@@ -1097,14 +1081,6 @@
           <context context-type="sourcefile">../vitamui-library/src/lib/components/confirm-action/confirm-action.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
-          <context context-type="linenumber">3</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="confirmActionCancelDialogCancelLabel" datatype="html">
         <source>Annuler</source>
@@ -1116,23 +1092,11 @@
           <context context-type="sourcefile">../vitamui-library/src/lib/components/confirm-action/confirm-action.component.html</context>
           <context context-type="linenumber">11</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/confirm-action/confirm-action.component.d.ts</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="PortalReferentialCategory" datatype="html">
         <source>Référentiels</source>
         <context-group purpose="location">
           <context context-type="sourcefile">../vitamui-library/src/lib/components/application-select-content/application-select-content.component.html</context>
-          <context context-type="linenumber">10</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/application-select-content/application-select-content.component.d.ts</context>
           <context context-type="linenumber">10</context>
         </context-group>
         <note priority="1" from="description">Referential category</note>
@@ -1145,14 +1109,6 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">../vitamui-library/src/lib/components/application-select-content/application-select-content.component.html</context>
-          <context context-type="linenumber">30</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/application-select-content/application-select-content.component.d.ts</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../../dist/vitamui-library/lib/components/application-select-content/application-select-content.component.d.ts</context>
           <context context-type="linenumber">30</context>
         </context-group>
         <note priority="1" from="description">operations and audits category</note>
@@ -2606,6 +2562,14 @@
         </context-group>
         <note priority="1" from="description">Application</note>
       </trans-unit>
+      <trans-unit id="accessContractsFormApplicationSelectAll" datatype="html">
+        <source>Tous les contrats d&apos;accès</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/context/context-create/context-edit-permission/context-edit-permission.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">Application</note>
+      </trans-unit>
       <trans-unit id="accessContractsFormApplicationPlaceholder" datatype="html">
         <source>Contrats d&apos;accès</source>
         <context-group purpose="location">
@@ -2614,7 +2578,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/context/context-create/context-edit-permission/context-edit-permission.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <note priority="1" from="description">Application</note>
+      </trans-unit>
+      <trans-unit id="ingestContractsFormApplicationSelectAll" datatype="html">
+        <source>Tous les contrats d&apos;entrée</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/context/context-create/context-edit-permission/context-edit-permission.component.html</context>
+          <context context-type="linenumber">55</context>
         </context-group>
         <note priority="1" from="description">Application</note>
       </trans-unit>
@@ -3024,64 +2996,6 @@
           <context context-type="linenumber">66</context>
         </context-group>
         <note priority="1" from="description">Clear Response adminDsl button</note>
-      </trans-unit>
-      <trans-unit id="ImportDialogMainTitle" datatype="html">
-        <source>Nouveau versement</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-        <note priority="1" from="description">Import dialog title</note>
-      </trans-unit>
-      <trans-unit id="ImportDialogAgencyTitle" datatype="html">
-        <source>
-                    Import d&apos;un référentiel de service agent
-                </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-        <note priority="1" from="description">Import dialog title</note>
-      </trans-unit>
-      <trans-unit id="importDialogDragAndDrop" datatype="html">
-        <source>Glisser-déposer</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-        <note priority="1" from="description">Import dialog drag</note>
-      </trans-unit>
-      <trans-unit id="importDialogOr" datatype="html">
-        <source>ou</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">31</context>
-        </context-group>
-        <note priority="1" from="description">Import dialog drag</note>
-      </trans-unit>
-      <trans-unit id="importDialogBrowse" datatype="html">
-        <source> cliquer pour Parcourir</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">32</context>
-        </context-group>
-        <note priority="1" from="description">Import dialog drag</note>
-      </trans-unit>
-      <trans-unit id="importFinishButton" datatype="html">
-        <source>Terminer</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
-        <note priority="1" from="description">Finish import button</note>
-      </trans-unit>
-      <trans-unit id="importCancelButton" datatype="html">
-        <source>Annuler</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
-          <context context-type="linenumber">52</context>
-        </context-group>
-        <note priority="1" from="description">Cancel import button</note>
       </trans-unit>
     </body>
   </file>

@@ -28,17 +28,17 @@
       <tr class="vitamui-table-row">
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">
           <i class="vitamui-icon vitamui-icon-probativeValue vitamui-row-icon status-badge"
-             [ngClass]="{'status-badge-green': probativeVlaueStatus(probativeValue) == 'OK', 'status-badge-grey':probativeVlaueStatus(probativeValue) == 'STARTED',
-                        'status-badge-orange': probativeVlaueStatus(probativeValue) == 'WARNING', 'status-badge-red': probativeVlaueStatus(probativeValue) == 'KO' || probativeVlaueStatus(probativeValue) == 'FATAL' }"></i>
+             [ngClass]="{'status-badge-green': probativeValueStatus(probativeValue) == 'OK', 'status-badge-grey':probativeValueStatus(probativeValue) == 'STARTED',
+                        'status-badge-orange': probativeValueStatus(probativeValue) == 'WARNING', 'status-badge-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL' }"></i>
         </td>
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.id }}</td>
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.dateTime | date: 'dd/MM/yyyy'  }}
         </td>
         <td class="clickable" (click)="probativeValueClick.emit(probativeValue)"
-          [ngClass]="{'text-green': probativeVlaueStatus(probativeValue) == 'OK', 'text-grey':probativeVlaueStatus(probativeValue) == 'STARTED',
-                                             'text-orange': probativeVlaueStatus(probativeValue) == 'WARNING', 'text-red': probativeVlaueStatus(probativeValue) == 'KO' || probativeVlaueStatus(probativeValue) == 'FATAL' }">
-          {{ probativeVlaueStatus(probativeValue) }}</td>
-        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeVlaueMessage(probativeValue)  }}</td>
+          [ngClass]="{'text-green': probativeValueStatus(probativeValue) == 'OK', 'text-grey':probativeValueStatus(probativeValue) == 'STARTED',
+                                             'text-orange': probativeValueStatus(probativeValue) == 'WARNING', 'text-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL' }">
+          {{ probativeValueStatus(probativeValue) }}</td>
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValueMessage(probativeValue)  }}</td>
       </tr>
     </ng-container>
     </tbody>

@@ -10,6 +10,7 @@ import {VitamUIInputModule} from './components/vitamui-input/vitamui-input.modul
 import {UpdatedVitamUIMenuTileModule} from './components/vitamui-menu-tile/vitamui-menu-tile.module';
 import {VitamUIRadioGroupModule} from './components/vitamui-radio-group/vitamui-radio-group.module';
 import {VitamUIRadioModule} from './components/vitamui-radio/vitamui-radio.module';
+import {VitamUISelectAllOptionModule} from './components/vitamui-select-all-option/vitamui-select-all-option.module';
 
 @NgModule({
   declarations: [],
@@ -23,7 +24,8 @@ import {VitamUIRadioModule} from './components/vitamui-radio/vitamui-radio.modul
     UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,
-    VitamUIRadioModule
+    VitamUIRadioModule,
+    VitamUISelectAllOptionModule
   ],
   exports: [
     CardGroupModule,
@@ -35,7 +37,8 @@ import {VitamUIRadioModule} from './components/vitamui-radio/vitamui-radio.modul
     UpdatedVitamUIMenuTileModule,
     VitamUIInputModule,
     VitamUIRadioGroupModule,
-    VitamUIRadioModule
+    VitamUIRadioModule,
+    VitamUISelectAllOptionModule
   ]
 })
 export class VitamUILibraryModule {
