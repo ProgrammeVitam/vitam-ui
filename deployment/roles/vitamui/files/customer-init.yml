@@ -163,6 +163,7 @@ customer-init:
         - ROLE_CREATE_ARCHIVE
         - ROLE_GET_ARCHIVE
         - ROLE_GET_ALL_ARCHIVE
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName
