@@ -50,17 +50,21 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
+import { IngestPopupComponent } from './ingest-popup.component';
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
 import { EventDisplayHelperService } from './event-display-helper.service';
 import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 
 
+
 @NgModule({
   declarations: [
-    IngestPreviewComponent,
-    IngestInformationTabComponent,
-    IngestEventDetailComponent,
-    EventDisplayComponent],
+  IngestPreviewComponent,
+  IngestInformationTabComponent,
+  EventDisplayComponent,
+  IngestPopupComponent,
+  IngestEventDetailComponent],
+
   imports: [
     CommonModule,
     RouterModule,
@@ -75,9 +79,11 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule
   ],
   exports: [
+    IngestPopupComponent,
     IngestPreviewComponent,
     IngestInformationTabComponent,
     IngestEventDetailComponent,

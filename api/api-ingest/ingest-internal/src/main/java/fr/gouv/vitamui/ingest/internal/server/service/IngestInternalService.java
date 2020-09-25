@@ -168,7 +168,6 @@ public class IngestInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
-
     public LogbookOperationDto getOne(VitamContext vitamContext, final String id) {
 
         final RequestResponse<LogbookOperation> requestResponse;

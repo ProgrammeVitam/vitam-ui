@@ -89,11 +89,12 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   openPopup() {
     window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+      + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
     this.emitClose();
   }
 
-  updateStatus( status: string) {
+
+  updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
       dialogToOpen = this.confirmEnabledUserDialog;
@@ -102,14 +103,14 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     }
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     dialogRef.afterClosed()
-    .pipe(filter((result) => !!result))
-    .subscribe(() => {
-      this.userService.patch({id: this.user.id, status })
-      .subscribe((user) => {
-        this.user = user;
-      });
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.userService.patch({ id: this.user.id, status })
+          .subscribe((user) => {
+            this.user = user;
+          });
 
-    });
+      });
   }
 
   levelNotAllowed(): boolean {

@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
@@ -65,7 +66,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   @Input('filters')
   set filters(filters: IngestFilters) {
-    console.log('Filters: ', filters);
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -76,7 +76,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   loaded = false;
 
-  orderBy = '#id';
+  orderBy = 'events.evDateTime';
   direction = Direction.ASCENDANT;
 
   private readonly searchChange = new Subject<string>();
@@ -89,7 +89,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   ngOnInit() {
     this.ingestService.search(
-      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT,
+      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.DESCENDANT,
         JSON.stringify(this.buildIngestCriteriaFromSearch()))
     ).subscribe((data: any[]) => {
       data.map((element: any) => {
@@ -103,8 +103,11 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
           element.rightsStatementIdentifier = JSON.parse(element.rightsStatementIdentifier);
         }
       });
+
       this.dataSource = data;
+
     });
+
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -114,6 +117,8 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+
+
   }
 
   buildIngestCriteriaFromSearch() {

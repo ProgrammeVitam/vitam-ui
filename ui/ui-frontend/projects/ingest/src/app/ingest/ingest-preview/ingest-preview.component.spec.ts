@@ -1,11 +1,13 @@
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
+import { RouterTestingModule } from '@angular/router/testing';
 
-import { BASE_URL, LogbookService } from 'ui-frontend-common';
+import { BASE_URL, LogbookService, LoggerModule, InjectorModule, AuthService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { IngestService } from '../ingest.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
@@ -21,11 +23,16 @@ describe('IngestPreviewComponent', () => {
       declarations: [IngestPreviewComponent, MockTruncatePipe],
       imports: [
         HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        InjectorModule,
+        RouterTestingModule,
         MatMenuModule
       ],
-      providers: [ { provide: LogbookService, useValue: {} },
-         { provide: IngestService, useIngestServiceValue: {} },
-         { provide: BASE_URL, useValue: '/fake-api' } ],
+      providers: [ { provide: WINDOW_LOCATION, useValue: {} },
+                   { provide: AuthService, useValue: {} },
+                   { provide: LogbookService, useValue: {}},
+                   { provide: IngestService, useIngestServiceValue: {} },
+                   { provide: BASE_URL, useValue: '/fake-api' } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

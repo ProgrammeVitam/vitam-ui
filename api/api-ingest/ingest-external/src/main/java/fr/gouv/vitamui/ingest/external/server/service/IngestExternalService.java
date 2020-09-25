@@ -96,13 +96,14 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
                 result.isHasMore());
     }
 
-    public LogbookOperationDto getOne(final String id) {
-        return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
-
-    }
 
      public ResponseEntity<byte[]> generateDocX(String id) {
         return ingestInternalRestClient.generateDocX(getInternalHttpContext(), id);
+    }
+
+    public LogbookOperationDto getOne(final String id) {
+        return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
+
     }
 
     @Override

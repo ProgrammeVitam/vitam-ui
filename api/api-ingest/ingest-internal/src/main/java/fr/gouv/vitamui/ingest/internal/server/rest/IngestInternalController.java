@@ -106,6 +106,7 @@ public class IngestInternalController {
         return ingestInternalService.upload(path, contextId, action);
     }
 
+
     @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)
         throws IOException {

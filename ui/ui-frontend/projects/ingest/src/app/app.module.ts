@@ -40,12 +40,12 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { IngestModule } from './ingest';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
+
 
 registerLocaleData(localeFr, 'fr');
 

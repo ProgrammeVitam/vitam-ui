@@ -11,14 +11,15 @@
         (fileToUploadEmitter)="onDropped($event)" (fileDragOverEmitter)="onDragOver($event)" (fileDragLeaveEmitter)="onDragLeave($event)">
         <div *ngIf="fileName && fileSize>0 && fileSizeString" class="drag-container">
           <div class="file-info-class">{{ fileName }}
-            <span class="text-grey" class="font-class-file"> | {{ fileSizeString }} </span>
+            <span class="text-grey" [ngStyle]="{'font-size':'13px'}"> | {{ fileSizeString }} </span>
             <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
             <div>
               <span class="text-red">{{ message }} </span> <i class="material-icons error-icon"
-                                                              *ngIf="hasError">error</i>
+                *ngIf="hasError">error</i>
             </div>
           </div>
         </div>
+
 
         <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
 
@@ -32,6 +33,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
       </div>
