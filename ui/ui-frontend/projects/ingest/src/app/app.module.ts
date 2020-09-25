@@ -44,6 +44,8 @@ import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { IngestModule } from './ingest';
+import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -57,6 +59,8 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
+    IngestModule,
+    HoldingFillingSchemeModule
   ],
   providers: [
     Title,

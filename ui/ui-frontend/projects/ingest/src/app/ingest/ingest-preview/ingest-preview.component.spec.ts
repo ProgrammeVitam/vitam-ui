@@ -5,7 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 
-fdescribe('IngestPreviewComponent', () => {
+describe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
 

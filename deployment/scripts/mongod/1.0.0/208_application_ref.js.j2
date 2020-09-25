@@ -220,4 +220,21 @@ db.applications.insert({
     "target": "_self"
 });
 
+db.applications.insert({
+    "identifier" : "HOLDING_FILLING_SCHEME_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.ingest.base_url }}/holding-filling-scheme",
+{% else %}
+    "url": "{{ url_prefix }}/ingest/holding-filling-scheme",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-filing",
+    "name" : "Arbres et Plans",
+    "category" : "referential",
+    "position" : NumberInt(16),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Importer un arbre de positionnement ou un plan de classement",
+    "target" : "_self"
+});
 print("END 208_application_ref.js");

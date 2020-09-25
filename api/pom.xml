@@ -17,6 +17,7 @@
         <module>api-iam</module>
         <module>api-referential</module>
         <module>api-ingest</module>
+        <module>api-archive</module>
     </modules>
 
 </project>

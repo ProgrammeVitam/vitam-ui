@@ -91,3 +91,5 @@ vitamui:
     base_url: "https://dev.vitamui.com:4202"
   ingest:
     base_url: "https://dev.vitamui.com:4208"
+  archive:
+    base_url: "https://dev.vitamui.com:4209"
