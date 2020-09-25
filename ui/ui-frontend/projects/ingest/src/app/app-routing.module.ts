@@ -70,6 +70,13 @@ const routes: Routes = [
   //                      TREES PLANS API
   // =====================================================
   {
+    path: 'trees-plans-api',
+    loadChildren: () => import('./trees-plans/trees-plans.module').then(m => m.TreesPlansModule),
+    canActivate: [AuthGuard, AppGuard],
+    data: { appId: 'TREES_PLANS_APP' }
+  },
+
+ {
     path: 'holding-filling-scheme',
     loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
     canActivate: [AuthGuard, AppGuard],
