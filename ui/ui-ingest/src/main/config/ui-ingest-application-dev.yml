@@ -16,9 +16,10 @@ server:
   port: 9008
   scheme: https
   ssl:
-    key-store: src/main/config/ui-ingest.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-ingest.jks
+    key-store-password: changeme
+    key-password: changeme
+  servlet.session.cookie.path: /ingest-api
 management:
   server:
     address: localhost
@@ -27,18 +28,24 @@ management:
       enabled: false
 
 ui-ingest:
+  #theme-logo: /path/to/logo.png
+  platform-name: VITAM-UI
+  theme-colors:
+    vitamui-primary: "#ff4a54"
+    vitamui-secondary: "#241f63"
+  assets: src/main/config
   iam-external-client:
     server-host: localhost
     server-port: 8083
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/config/ui-ingest.jks
-        key-password: jkspasswd
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-ingest.jks
+        key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/config/truststore.jks
-        key-password: jkspasswd
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
       hostname-verification: false
   ingest-external-client:
     server-host: localhost
@@ -46,15 +53,16 @@ ui-ingest:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/config/ui-ingest.jks
-        key-password: jkspasswd
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-ingest.jks
+        key-password: changeme
         type: JKS
       truststore:
-        key-path: src/main/config/truststore.jks
-        key-password: jkspasswd
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
       hostname-verification: false
   base-url:
-    portal: "https://dev-portal.vitamui.com:4200"
+    portal: "https://dev.vitamui.com:4200"
+
   portal-categories:
     ingests:
       title: "Suivi des Versements"
@@ -82,8 +90,8 @@ cas:
   external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/ingest-api/callback
   ssl:
-    trust-store: src/main/config/truststore.jks
-    trust-store-password: jkspasswd
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
 
 logging:
   level:

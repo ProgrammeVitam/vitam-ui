@@ -71,10 +71,6 @@ hosts_vitamui_referential_internal
 hosts_vitamui_referential_external
 hosts_vitamui_ingest_internal
 hosts_vitamui_ingest_external
-hosts_vitamui_referential_internal
-hosts_vitamui_referential_external
-hosts_vitamui_ingest_internal
-hosts_vitamui_ingest_external
 hosts_vitamui_security_internal
 
 [hosts_vitamui_iam_internal]
@@ -93,21 +89,6 @@ vitam-env-vitamuifo-app-02.vitam-env
 # EDIT
 vitam-env-vitamuifo-app-01.vitam-env
 
-[hosts_vitamui_ingest_internal]
-# EDIT
-vitam-env-vitamuifo-app-01.vitam-env
-
-[hosts_vitamui_ingest_external]
-# EDIT
-vitam-env-vitamuifo-app-02.vitam-env
-
-[hosts_vitamui_referential_internal]
-# EDIT
-vitam-env-vitamuifo-app-02.vitam-env
-
-[hosts_vitamui_referential_external]
-# EDIT
-vitam-env-vitamuifo-app-01.vitam-env
 [hosts_vitamui_ingest_internal]
 # EDIT
 vitam-env-vitamuifo-app-01.vitam-env

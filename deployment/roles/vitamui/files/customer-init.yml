@@ -20,6 +20,7 @@ customer-init:
   #   profiles:
   #     - profileName
   #  ...
+
   # Default users for each customer created
   users:
   #- last-name: lastName
@@ -104,15 +105,6 @@ customer-init:
         - ROLE_GET_INGEST
         - ROLE_CREATE_INGEST
         - ROLE_GET_ALL_INGEST
-  #- name: profileName
-  #  description: desc
-  #  level: 1
-  #  app-name: app
-  #  roles:
-  #   - role_1
-  #   - role_2
-  #   - role_3
-  #  ...
 
   # Other Default profiles for admin group
   admin-profiles:

@@ -90,4 +90,4 @@ vitamui:
   referential:
     base_url: "https://dev.vitamui.com:4202"
   ingest:
-    base_url: "https://dev.vitamui.com:4202"
+    base_url: "https://dev.vitamui.com:4208"
