@@ -34,59 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
-} from 'ui-frontend-common';
-import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
-const routes: Routes = [
-  {
-    // we use PORTAL_APP as our appId so that the AppGuard won't find a profile with this appId
-    // and we'll be redirected to the Portal Application
-    path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PORTAL_APP' }
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCOUNTS_APP' }
-  },
-  // =====================================================
-  //                      Ingests
-  // =====================================================
-  {
-    path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_MANAGEMENT_APP' }
-  },
-
-  // =====================================================
-  //                      TREES PLANS API
-  // =====================================================
-  {
-    path: 'trees-plans-api',
-    loadChildren: () => import('./trees-plans/trees-plans.module').then(m => m.TreesPlansModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'TREES_PLANS_APP' }
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
-  { path: '**', redirectTo: '' }
-];
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
+import { TreesPlansComponent } from './trees-plans.component';
+import { TreesPlansRoutingModule } from './trees-plans-routing.module';
+import { MatProgressBarModule } from '@angular/material';
+import { UploadTreesPlansModule } from './upload-trees-plans/upload-trees-plans.module';
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  imports: [
+    CommonModule,
+    VitamUICommonModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatSidenavModule,
+    SharedModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    TreesPlansRoutingModule,
+    MatProgressBarModule,
+    UploadTreesPlansModule
+  ],
+  declarations: [
+    TreesPlansComponent
+  ],
   providers: [
-    ActiveTenantGuard,
-    AuthGuard
   ]
 })
-export class AppRoutingModule { }
+export class TreesPlansModule { }
