@@ -961,8 +961,6 @@ db.profiles.insert({
    ]
 });
 
-// ========================================= partie archive ============================================
-
 db.profiles.insert({
   "_id": "system_archive_profile",
   "identifier" : NumberInt(23),
@@ -989,6 +987,29 @@ db.profiles.insert({
 
 //========================================== partie archive =============================================
 
+db.profiles.insert({
+  "_id": "system_trees_plans_profile",
+  "identifier" : NumberInt(55),
+  "name": "Arbres et Plans",
+  "description": "Arbres et Plans",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "TREES_PLANS_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_TREES_PLANS"
+  },
+  {
+    "name": "ROLE_GET_TREES_PLANS"
+  },
+  {
+    "name": "ROLE_GET_ALL_TREES_PLANS"
+  }
+   ]
+});
 // ========================================= GROUPS =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
@@ -1023,7 +1044,8 @@ db.groups.insert({
     "system_probative_value",
     "system_ingest_profile",
     "system_holding_filling_scheme_profile",
-    "system_archive_profile"
+    "system_archive_profile",
+    "system_trees_plans_profile"
   ],
   "customerId": "system_customer"
 });
@@ -1040,7 +1062,8 @@ db.groups.insert({
     "system_customer_profile",
     "system_surrogate_profile",
     "system_account_profile",
-    "system_ingest_profile"
+    "system_ingest_profile",
+    "system_trees_plans_profile"
   ],
   "customerId": "system_customer"
 });
