@@ -21,6 +21,7 @@
 
             </div>
           </div>
+
         </div>
 
         <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />

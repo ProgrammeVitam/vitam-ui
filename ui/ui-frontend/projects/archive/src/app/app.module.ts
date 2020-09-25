@@ -1,11 +1,11 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ArchiveComponent } from './archive/archive.component';
+import { ArchiveService } from './archive.service';
 import { HttpClientModule } from '@angular/common/http';
-import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { CoreModule } from './core/core.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 @NgModule({
   declarations: [

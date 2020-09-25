@@ -103,12 +103,6 @@ customer-init:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
 
-    - name: Profil Journal des Opérations
-      description: Gestion des applications des Journaux des Opérations
-      app-name: LOGBOOK_OPERATION_APP
-      level:
-      roles:
-        - ROLE_LOGBOOKS
     - name: Profil pour le dépôt et suivi des versements
       description: Gestion des applications de dépôt et suivi des versements
       app-name: INGEST_MANAGEMENT_APP
@@ -126,6 +120,13 @@ customer-init:
         - ROLE_CREATE_HOLDING_FILLING_SCHEME
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
+    - name: Profil Journal des Opérations
+      description: Gestion des applications des Journaux des Opérations
+      app-name: LOGBOOK_OPERATION_APP
+      level:
+      roles:
+        - ROLE_LOGBOOKS
 
     - name: Profil pour l'accès et la recherche d'archives
       description: Gestion d'accès et de recherche des archives dans Vitam
