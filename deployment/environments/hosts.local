@@ -70,6 +70,8 @@ hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 hosts_vitamui_ingest_internal
 hosts_vitamui_ingest_external
+hosts_vitamui_archive_internal
+hosts_vitamui_archive_external
 
 [hosts_vitamui_iam_internal]
 localhost
@@ -89,8 +91,15 @@ localhost
 [hosts_vitamui_ingest_external]
 localhost
 
+[hosts_vitamui_archive_internal]
+localhost
+
+[hosts_vitamui_archive_external]
+localhost
+
 [hosts_vitamui_security_internal]
 localhost
+
 
 ########################################################
 # ZONE UI
@@ -102,6 +111,8 @@ hosts_ui_portal
 hosts_ui_search
 hosts_ui_referential
 hosts_ui_ingest
+hosts_ui_archive
+
 
 localhost
 
@@ -109,6 +120,9 @@ localhost
 localhost
 
 [hosts_ui_ingest]
+localhost
+
+[hosts_ui_archive]
 localhost
 
 [hosts_ui_search]
@@ -159,6 +173,7 @@ localhost
 
 [hosts_ingest_external]
 localhost
+
 
 [hosts_access_external]
 localhost

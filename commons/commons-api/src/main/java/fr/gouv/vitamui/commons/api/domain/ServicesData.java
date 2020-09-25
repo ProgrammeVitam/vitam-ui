@@ -47,7 +47,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
@@ -248,7 +247,7 @@ public class ServicesData {
     public static final String ROLE_DELETE_AGENCIES = DELETE_ROLE_PREFIX + SERVICE_AGENCIES;
 
     public static final String ROLE_EXPORT_AGENCIES = EXPORT_ROLE_PREFIX + SERVICE_AGENCIES;
-    
+
     public static final String ROLE_IMPORT_AGENCIES = IMPORT_ROLE_PREFIX + SERVICE_AGENCIES;
 
     //---------------------------------- FILE FORMATS --------------------------------------------
@@ -264,7 +263,7 @@ public class ServicesData {
     public static final String ROLE_DELETE_FILE_FORMATS = DELETE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     public static final String ROLE_EXPORT_FILE_FORMATS = EXPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
-    
+
     public static final String ROLE_IMPORT_FILE_FORMATS = IMPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     //------------------------------------ CONTEXTS -----------------------------------------
@@ -298,11 +297,11 @@ public class ServicesData {
     public static final String ROLE_GET_RULES = GET_ROLE_PREFIX + SERVICE_RULES;
 
     public static final String ROLE_CREATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
-    
+
     public static final String ROLE_UPDATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
 
     public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
-    
+
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
@@ -312,7 +311,7 @@ public class ServicesData {
     public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
-    
+
     public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     //------------------------------------- OPERATIONS --------------------------------------------
@@ -446,14 +445,15 @@ public class ServicesData {
             ROLE_GET_OPERATIONS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_GET_ALL_INGEST,
-            ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST,
+        ROLE_GET_ALL_INGEST,
+        ROLE_GET_INGEST,
+        ROLE_CREATE_INGEST,
 
-            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
-            );
+        ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+        ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+        ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+
+    );
 
     /**
      * List of all the roles in the VITAMUI application (including the admin roles present in the ADMIN_VITAMUI_ROLES list)
@@ -560,13 +560,17 @@ public class ServicesData {
             ROLE_RUN_AUDITS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_GET_ALL_INGEST,
-            ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST,
+        ROLE_GET_ALL_INGEST,
+        ROLE_GET_INGEST,
+        ROLE_CREATE_INGEST,
 
-            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+        ROLE_GET_ALL_ARCHIVE,
+        ROLE_GET_ARCHIVE,
+        ROLE_CREATE_ARCHIVE,
+
+        ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+        ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+        ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
 
             );
     //@formatter:on
