@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -152,7 +153,7 @@ export class UploadSipComponent implements OnInit {
   displaySnackBar(uploadComplete: boolean) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
-      data: { type: 'sipUploaded', name: uploadComplete },
+      data: { type: 'fileUploaded', name: uploadComplete },
       duration: 10000
     });
   }
@@ -178,3 +179,5 @@ export class UploadSipComponent implements OnInit {
   }
 
 }
+=======
+>>>>>>> 3af54ac9... Delete no more used components

@@ -65,6 +65,16 @@ const routes: Routes = [
     canActivate: [AuthGuard, AppGuard],
     data: { appId: 'INGEST_MANAGEMENT_APP' }
   },
+
+  // =====================================================
+  //                      TREES PLANS API
+  // =====================================================
+  {
+    path: 'holding-filling-scheme',
+    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
+    canActivate: [AuthGuard, AppGuard],
+    data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
+  },
   // =====================================================
   //                      unknown path
   // =====================================================

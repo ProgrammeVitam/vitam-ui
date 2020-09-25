@@ -103,12 +103,6 @@ customer-init:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
 
-    - name: Profil Journal des Opérations
-      description: Gestion des applications des Journaux des Opérations
-      app-name: LOGBOOK_OPERATION_APP
-      level:
-      roles:
-        - ROLE_LOGBOOKS
     - name: Profil pour le dépôt et suivi des versements
       description: Gestion des applications de dépôt et suivi des versements
       app-name: INGEST_MANAGEMENT_APP
@@ -117,6 +111,22 @@ customer-init:
         - ROLE_GET_INGEST
         - ROLE_CREATE_INGEST
         - ROLE_GET_ALL_INGEST
+
+    - name: Profil Arbres et Plans
+      description: Gestion des applications d'import d'arbres de positionnement et plans de classement
+      app-name: HOLDING_FILLING_SCHEME_APP
+      level:
+      roles:
+        - ROLE_CREATE_HOLDING_FILLING_SCHEME
+        - ROLE_GET_HOLDING_FILLING_SCHEME
+        - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
+    - name: Profil Journal des Opérations
+      description: Gestion des applications des Journaux des Opérations
+      app-name: LOGBOOK_OPERATION_APP
+      level:
+      roles:
+        - ROLE_LOGBOOKS
 
   #- name: profileName
   #  description: desc

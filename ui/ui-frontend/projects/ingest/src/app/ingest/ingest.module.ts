@@ -45,11 +45,19 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestComponent } from './ingest.component';
-import { UploadSipModule } from './upload-sip/upload-sip.module';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
+<<<<<<< HEAD
+=======
+import { UploadModule } from '../core/common/upload.module';
+import { IngestResolverService } from './ingest-resolver.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+
+
+>>>>>>> b0524bc2... Commonize filing, holding and ingest upload components and services
 
 @NgModule({
   imports: [
@@ -59,7 +67,7 @@ import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
     MatMenuModule,
     MatSidenavModule,
     IngestRoutingModule,
-    UploadSipModule,
+    UploadModule,
     SharedModule,
     IngestListModule,
     IngestPreviewModule,
