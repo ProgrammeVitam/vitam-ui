@@ -34,59 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
-} from 'ui-frontend-common';
-import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-const routes: Routes = [
-  {
-    // we use PORTAL_APP as our appId so that the AppGuard won't find a profile with this appId
-    // and we'll be redirected to the Portal Application
-    path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PORTAL_APP' }
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCOUNTS_APP' }
-  },
-  // =====================================================
-  //                      Ingests
-  // =====================================================
-  {
-    path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_MANAGEMENT_APP' }
-  },
-
-  // =====================================================
-  //                      TREES PLANS API
-  // =====================================================
-  {
-    path: 'trees-plans-api',
-    loadChildren: () => import('./trees-plans/trees-plans.module').then(m => m.TreesPlansModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'TREES_PLANS_APP' }
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
-  { path: '**', redirectTo: '' }
-];
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { UploadTreesPlansService } from './upload-trees-plans.service';
+import { SharedModule } from '../../shared/shared.module';
+import { UploadTreesPlansComponent } from './upload-trees-plans.component';
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
-  ]
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    MatProgressBarModule
+  ],
+  declarations: [
+    UploadTreesPlansComponent
+  ],
+  entryComponents: [UploadTreesPlansComponent],
+  providers: [UploadTreesPlansService]
 })
-export class AppRoutingModule { }
+export class UploadTreesPlansModule { }

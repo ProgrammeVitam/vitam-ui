@@ -152,7 +152,7 @@ export class UploadSipComponent implements OnInit {
   displaySnackBar(uploadComplete: boolean) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
-      data: { type: 'sipUploaded', name: uploadComplete },
+      data: { type: 'fileUploaded', name: uploadComplete },
       duration: 10000
     });
   }
