@@ -11,7 +11,7 @@
 
                 <div class="controls">
                     <div class="holding-filling-scheme-search">
-                        <vitamui-common-search-bar #searchBar name="ingest-search"
+                        <vitamui-common-search-bar #searchBar name="ingest-search" (search)="onSearchSubmit($event)"
                             placeholder="Noeud de l'arbre ou plan" i18n-placeholder="@@treePlanSearchPlaceholder">
                         </vitamui-common-search-bar>
                     </div>
