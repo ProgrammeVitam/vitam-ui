@@ -353,6 +353,16 @@ public class ServicesData {
     public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
     public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
 
+
+    //------------------------------------ API TREES & PLANS -----------------------------------------
+
+    public static final String SERVICE_TREES_PLANS_ROLE = "TREES_PLANS";
+
+    public static final String ROLE_CREATE_TREES_PLANS_ROLE = CREATE_ROLE_PREFIX + SERVICE_TREES_PLANS_ROLE;
+    public static final String ROLE_GET_TREES_PLANS_ROLE = GET_ROLE_PREFIX + SERVICE_TREES_PLANS_ROLE;
+    public static final String ROLE_GET_ALL_TREES_PLANS_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_TREES_PLANS_ROLE;
+
+
     //@formatter:off
 
     /**
@@ -438,7 +448,11 @@ public class ServicesData {
 
             ROLE_GET_ALL_INGEST,
             ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST
+            ROLE_CREATE_INGEST,
+
+            ROLE_CREATE_TREES_PLANS_ROLE,
+            ROLE_GET_TREES_PLANS_ROLE,
+            ROLE_GET_ALL_TREES_PLANS_ROLE
             );
 
     /**
@@ -548,7 +562,11 @@ public class ServicesData {
 
             ROLE_GET_ALL_INGEST,
             ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST
+            ROLE_CREATE_INGEST,
+
+            ROLE_CREATE_TREES_PLANS_ROLE,
+            ROLE_GET_TREES_PLANS_ROLE,
+            ROLE_GET_ALL_TREES_PLANS_ROLE
 
             );
     //@formatter:on
