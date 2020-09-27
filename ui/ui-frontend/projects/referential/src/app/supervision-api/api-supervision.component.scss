@@ -1,0 +1,31 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+.vitamui-header {
+    background-image: none;
+
+    .controls {
+        margin-top: 57.5px;
+
+        h2 {
+            font-weight: 300;
+            font-size: 28px;
+
+            > img {
+                vertical-align: middle;
+                width: 37px;
+                margin-right: 17px;
+            }
+        }
+    }
+}
+
+.filter-banner-container {
+  display: flex;
+  height: 70px;
+  margin-left: 10px;
+}
+
+.custom-flex-controls{
+    text-align: right;
+    justify-content: space-between;
+}

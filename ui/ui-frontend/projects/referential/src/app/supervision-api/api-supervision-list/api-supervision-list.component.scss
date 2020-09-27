@@ -1,0 +1,29 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+.cell-content-bold {
+    color: $charcoal-grey;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.vitamui-cell-content {
+    &.success {
+        color: #74C31C;
+    }
+
+    &.warning {
+        color: $mustard-yellow;
+    }
+
+    &.error {
+        color: $red;
+    }
+}
+
+.break-content {
+    word-break: break-all;
+}
+
+.fixed-layout {
+    table-layout: auto;
+}

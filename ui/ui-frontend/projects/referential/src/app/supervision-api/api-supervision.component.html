@@ -1,0 +1,89 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-api-supervision-detail *ngIf="openedItem" [tenantIdentifier]="tenantIdentifier" [eventId]="openedItem?.id"
+      (closePanel)="closePanel()"></app-api-supervision-detail>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <div class="vitamui-header">
+      <div class="vitamui-container">
+        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true" (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
+        <div class="controls">
+          <h2 i18n="@@apiSupervisionPageTitle">
+            <img src="assets/mini-logo-vitam.png"> Supervision des <strong>API</strong>s
+          </h2>
+
+          <div class="actions">
+
+            <button class="btn secondary" (click)="refreshList()">
+              <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
+            </button>
+
+            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
+              <i class="material-icons">more_horiz</i> <span i18n="@@apiSupervisionMoreActionsButton">Autres actions</span>
+            </button>
+
+            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
+              <span mat-menu-item i18n="@@apiSupervisionComingSoon">
+                Bientôt
+              </span>
+
+            </mat-menu>
+          </div>
+        </div>
+
+        <div class="filter-controls">
+
+          <form [formGroup]="dateRangeFilterForm" class="date-filter-container">
+            <div class="date-filter-container">
+              <div class="date-filter">
+                <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate" (click)="pickerStart.open()"
+                  i18n="@@apiSupervisionStartDate">Date de début</span>
+                <ng-template #showStartDate>
+                  <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | date:'dd/MM/yyyy'
+                    }}</span>
+                  <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
+                </ng-template>
+                <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate" [max]="dateRangeFilterForm.get('endDate').value">
+                <mat-datepicker #pickerStart></mat-datepicker>
+              </div>
+              <div class="date-filter">
+                <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()"
+                  i18n="@@apiSupervisionEndDate">Date de fin</span>
+                <ng-template #showEndDate><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value
+                    | date:'dd/MM/yyyy' }} </span> <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i></ng-template>
+                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate" [min]="dateRangeFilterForm.get('startDate').value">
+                <mat-datepicker #pickerEnd></mat-datepicker>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="custom-flex-controls">
+
+          <button class="btn" (click)="toggleTypeFilter('INGEST')" [class.active]="filters?.type === 'INGEST'">
+            <i class="vitamui-icon" i18n="@@apiSupervisionFilterIngest"></i> <span>Entrées</span>
+          </button>
+
+          <button class="btn" (click)="toggleTypeFilter('ELIMINATION')" [class.active]="filters?.type === 'ELIMINATION'">
+            <i class="vitamui-icon" i18n="@@apiSupervisionFilterElimination"></i> <span>Eliminations</span>
+          </button>
+
+          <button class="btn" (click)="toggleTypeFilter('MASTERDATA')" [class.active]="filters?.type === 'MASTERDATA'">
+            <i class="vitamui-icon" i18n="@@apiSupervisionFilterMasterData"></i> <span>Données de base</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="vitamui-body vitamui-container">
+      <app-api-supervision-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" (eventClick)="openPanel($event)"></app-api-supervision-list>
+    </div>
+
+  </mat-sidenav-content>
+
+
+</mat-sidenav-container>

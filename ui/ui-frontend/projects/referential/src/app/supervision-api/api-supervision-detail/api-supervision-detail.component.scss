@@ -1,0 +1,43 @@
+.title {
+    max-width: 504px;
+
+    h2 {
+        word-break: break-all;
+    }
+
+    .vitamui-icon.no-margin {
+        margin-right: 0;
+    }
+
+    .status-badge-mini {
+        margin-right: 10px;
+
+        &:after {
+            margin-left: -11px;
+            margin-top: -11px;
+            width: 9px;
+            height: 9px;
+        }
+    }
+}
+
+.panel-row {
+    display: flex;
+}
+
+.word-break {
+    word-break: break-all;
+}
+
+.vitamui-sidepanel-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

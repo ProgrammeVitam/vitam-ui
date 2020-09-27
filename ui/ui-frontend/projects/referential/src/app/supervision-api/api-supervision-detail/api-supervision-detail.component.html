@@ -1,0 +1,83 @@
+<div class="vitamui-sidepanel">
+  <div class="vitamui-sidepanel-header">
+    <ng-container *ngIf="!isPopup">
+      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
+    </ng-container>
+    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+    <div class="header-container">
+      <div class="title">
+        <div class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
+          <i class="vitamui-icon vitamui-icon-box-hand no-margin"></i>
+        </div>
+        <h2>{{ event?.id }}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group">
+      <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">
+
+        <div class="read-only-field">
+          <label>Catégorie d'opération</label>
+          <div class="word-break">{{ event?.typeProc }}</div>
+        </div>
+
+        <div class="panel-row">
+          <div class="read-only-field">
+            <label>Identifiants des agents externes</label>
+            <div class="word-break">{{ event?.agIdExt }}</div>
+          </div>
+          <div class="read-only-field">
+            <label>Contrat associé</label>
+            <div class="word-break">{{ event?.rightsStatementIdentifier }}</div>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="read-only-field">
+            <label>Identification de l'application</label>
+            <div class="word-break">{{ event?.agIdApp }}</div>
+          </div>
+          <div class="read-only-field">
+            <label>Numéro de transaction</label>
+            <div class="word-break">{{ event?.idRequest }}</div>
+          </div>
+        </div>
+
+        <div class="panel-row">
+          <div class="read-only-field">
+            <label>Identification de l'opération</label>
+            <div class="word-break">{{ event?.objectId }}</div>
+          </div>
+          <div class="read-only-field">
+            <label>Acteur(s) interne(s)</label>
+            <div class="word-break">{{ event?.agId }}</div>
+          </div>
+        </div>
+
+        <div class="read-only-field">
+          <label>Rapport</label>
+          <div>-</div>
+        </div>
+
+        <div class="read-only-field">
+          <label>Informations complémentaires sur l'opération</label>
+          <div class="word-break">{{ event?.data }}</div>
+        </div>
+
+        <div class="read-only-field">
+          <label>Message</label>
+          <div>{{ (event | lastEvent)?.outMessage }}</div>
+        </div>
+
+      </mat-tab>
+      <mat-tab label="Historique" i18n-label="History tab@@eventDetailTabInformation">
+          <vitamui-common-history-events [events]="event?.events"></vitamui-common-history-events>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="vitamui-sidepanel-loading-overlay" *ngIf="loading" @fadeInOut>
+    <mat-spinner color="accent" diameter="40"></mat-spinner>
+  </div>
+</div>

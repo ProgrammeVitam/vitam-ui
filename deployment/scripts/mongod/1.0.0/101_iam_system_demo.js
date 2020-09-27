@@ -199,7 +199,8 @@ db.groups.insert({
         "system_audit",
         "system_secure",
         "system_dsl",
-        "system_probative_value"
+        "system_probative_value",
+         "system_supervision_api_profile"
 	],
 	"readonly": false,
 	"level": "",

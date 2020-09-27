@@ -202,4 +202,22 @@ db.applications.insert({
     "target" : "_self"
 });
 
+db.applications.insert({
+    "identifier" : "SUPERVISION_API_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.referential.base_url }}/supervision-api",
+{% else %}
+    "url": "{{ url_prefix }}/referential/supervision-api",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-api-supervision",
+    "name": "Supervision des APIs",
+    "category": "referential",
+    "position": NumberInt(16),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Consultation des journaux des opérations d'entrées, de bases, d'éliminations",
+    "target": "_self"
+});
+
 print("END 208_application_ref.js");

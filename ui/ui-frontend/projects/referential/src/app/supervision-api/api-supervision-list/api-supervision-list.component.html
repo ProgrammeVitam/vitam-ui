@@ -1,0 +1,81 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <thead>
+    <tr>
+      <th style="width: 60px;" class="no-first-cell-padding">
+        <i class="vitamui-icon vitamui-row-icon"></i>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListIdentifiantHeader">Identifiant</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListOperationHeader">Opération</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListStartDateHeader">Date de création</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListEndDateHeader">Fin d'exécution</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListStatusHeader">Statut</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="@@apiSupervisionListStepHeader">Etape</span>
+        </div>
+      </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let event of dataSource; let index = index" (click)="selectEvent(event)" class="vitamui-table-row">
+      <td style="width:60px;" class="no-first-cell-padding">
+        <div class="vitamui-cell-icon aligned">
+          <div class="status-badge" [ngClass]="event | eventTypeBadgeClass">
+            <i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon status-badge"></i>
+          </div>
+        </div>
+      </td>
+      <td><div class="vitamui-cell-content break-content" [title]="event.id">{{ event.id }}</div></td>
+      <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass"><vitamui-common-event-type-label [key]="event.type"></vitamui-common-event-type-label></div></td>
+      <td>
+        <div class="vitamui-cell-content">{{ event.dateTime | date:'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-sub-content cell-content-bold">
+          <span>{{ event.dateTime | date:'hh:mm:ss' }}</span>
+        </div>
+      </td>
+      <td>
+        <div class="vitamui-cell-content">{{ (event | lastEvent).dateTime | date:'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-sub-content cell-content-bold">
+          <span>{{ (event | lastEvent).dateTime | date:'hh:mm:ss' }}</span>
+        </div>
+      </td>
+      <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent).outcome }}</div></td>
+      <td><div class="vitamui-cell-content cell-content-bold break-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent).type }}</div></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="vitamui-table-footer">
+  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <button *ngIf="!pending && infiniteScrollDisabled && logbookSearchService.canLoadMore" (click)="loadMore()" class="btn"
+    i18n="Show more results@@tableMoreResultButton">
+    Afficher plus de résultats...
+  </button>
+</div>

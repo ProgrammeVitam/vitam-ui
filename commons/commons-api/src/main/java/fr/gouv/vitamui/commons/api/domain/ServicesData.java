@@ -310,8 +310,8 @@ public class ServicesData {
 
     public static final String ROLE_RUN_AUDITS = ROLE_PREFIX + "RUN_" + SERVICE_AUDITS;
 
-    //------------------------------------- PROBATIVE_VALUE --------------------------------------------    
-    
+    //------------------------------------- PROBATIVE_VALUE --------------------------------------------
+
     public static final String SERVICE_PROBATIVE_VALUE = "PROBATIVE_VALUE";
 
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
@@ -325,6 +325,14 @@ public class ServicesData {
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
+
+    //------------------------------------ API SUPERVISION -----------------------------------------
+
+    public static final String SERVICE_API_SUPERVISION_ROLE = "SUPERVISION_API";
+
+    public static final String ROLE_CREATE_SUPERVISION_ROLE = CREATE_ROLE_PREFIX + SERVICE_API_SUPERVISION_ROLE;
+    public static final String ROLE_GET_SUPERVISION_ROLE = GET_ROLE_PREFIX + SERVICE_API_SUPERVISION_ROLE;
+    public static final String ROLE_GET_ALL_SUPERVISION_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_API_SUPERVISION_ROLE;
 
     //@formatter:off
 
@@ -404,7 +412,11 @@ public class ServicesData {
 
             ROLE_RUN_AUDITS,
             ROLE_GET_OPERATIONS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
+
+            ROLE_CREATE_SUPERVISION_ROLE,
+            ROLE_GET_SUPERVISION_ROLE,
+            ROLE_GET_ALL_SUPERVISION_ROLE
 
             );
 
@@ -507,7 +519,11 @@ public class ServicesData {
             ROLE_DELETE_ONTOLOGIES,
 
             ROLE_RUN_AUDITS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
+
+            ROLE_CREATE_SUPERVISION_ROLE,
+            ROLE_GET_SUPERVISION_ROLE,
+            ROLE_GET_ALL_SUPERVISION_ROLE
 
             );
     //@formatter:on

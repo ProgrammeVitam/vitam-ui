@@ -111,6 +111,15 @@ const routes: Routes = [
     data: {appId: 'PROBATIVE_VALUE_APP'}
   },
   // =====================================================
+  //                      SUPERVISION API
+  // =====================================================
+  {
+    path: 'supervision-api',
+    loadChildren: () => import('./supervision-api/api-supervision.module').then(m => m.ApiSupervisionModule),
+    canActivate: [AuthGuard, AppGuard],
+    data: { appId: 'SUPERVISION_API_APP' }
+  },
+  // =====================================================
   //                       DSL
   // =====================================================
   {

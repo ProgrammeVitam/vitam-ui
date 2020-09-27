@@ -407,6 +407,33 @@ db.profiles.insert({
 	 ]
 });
 
+db.profiles.insert({
+  "_id": "system_supervision_api_profile",
+  "identifier" : NumberInt(maxIdProfile++),
+  "name": "Supervision API Profile",
+  "description": "Supervision Profile api",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "SUPERVISION_API_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_SUPERVISION_API"
+  },
+  {
+    "name": "ROLE_GET_SUPERVISION_API"
+  },
+  {
+    "name": "ROLE_GET_ALL_SUPERVISION_API"
+  },
+  {
+       "name": "ROLE_LOGBOOKS"
+  }
+   ]
+});
+
 db.sequences.updateOne({
     "_id": "profile_identifier"
 }, {
@@ -436,7 +463,8 @@ db.groups.updateOne( {
                 "system_audit",
                 "system_secure",
                 "system_dsl",
-                "system_probative_value"
+                "system_probative_value",
+                "system_supervision_api_profile"
         	]
         }
     }
