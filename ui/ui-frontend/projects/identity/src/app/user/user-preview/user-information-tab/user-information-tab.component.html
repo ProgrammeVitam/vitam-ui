@@ -23,15 +23,15 @@
   </div>
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="lastname" [validator]="form?.get('lastname')?.validator" label="Nom"
-        i18n-label="user info tab lastname@@UserInfoTabLastname">
+      <vitamui-common-editable-input formControlName="lastname" [validator]="form?.get('lastname')?.validator"
+        label="Nom" i18n-label="user info tab lastname@@UserInfoTabLastname">
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
           requis</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="firstname" [validator]="form?.get('firstname')?.validator" label="Prénom"
-        i18n-label="user info tab firstname@@UserInfoTabFirstname">
+      <vitamui-common-editable-input formControlName="firstname" [validator]="form?.get('firstname')?.validator"
+        label="Prénom" i18n-label="user info tab firstname@@UserInfoTabFirstname">
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
           requis</vitamui-common-field-error>
       </vitamui-common-editable-input>
@@ -43,9 +43,11 @@
       <vitamui-common-editable-email-input formControlName="email" [validator]="form?.get('email')?.validator"
         [asyncValidator]="form?.get('email')?.asyncValidator" [domains]="clientEmailDomains" label="Adresse E-mail"
         i18n-label="user info tab email@@UserInfoTabEmail">
-        <vitamui-common-field-error errorKey="email" i18n="Required field error hint@@formErrorRequiredField">Champ requis
+        <vitamui-common-field-error errorKey="email" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueEmail" i18n="Existing email error hint@@formErrorExistingEmail">E-mail
+        <vitamui-common-field-error errorKey="uniqueEmail" i18n="Existing email error hint@@formErrorExistingEmail">
+          E-mail
           déjà existant</vitamui-common-field-error>
       </vitamui-common-editable-email-input>
     </div>
@@ -84,9 +86,9 @@
     </div>
 
     <div class="row">
-      <div class="col-6 form-control">
-        <vitamui-common-editable-select formControlName="country" label="Pays" i18n-label="User country@@userPreviewLabelCountry"
-          [validator]="form?.get('address.country')?.validator"
+      <div class="col-12 form-control">
+        <vitamui-common-editable-select formControlName="country" label="Pays"
+          i18n-label="User country@@userPreviewLabelCountry" [validator]="form?.get('address.country')?.validator"
           [asyncValidator]="form?.get('address.country')?.asyncValidator">
           <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
@@ -102,7 +104,13 @@
   <div class="row">
     <div class="col-6 form-control">
       <vitamui-common-editable-input formControlName="siteCode" label="Code du site"
-                                     i18n-label="user info tab siteCode@@UserInfoTabSiteCode">
+        i18n-label="user info tab siteCode@@UserInfoTabSiteCode">
+      </vitamui-common-editable-input>
+    </div>
+
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="internalCode" label="Code interne" [maxlength]="20"
+        i18n-label="Internal Code@@UserInfoTabInternalCode">
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -135,8 +143,8 @@
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator" label="Numéro de fixe"
-        i18n-label="user info tab phone@@UserInfoTabPhone">
+      <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator"
+        label="Numéro de fixe" i18n-label="user info tab phone@@UserInfoTabPhone">
         <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format
           international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
       </vitamui-common-editable-input>

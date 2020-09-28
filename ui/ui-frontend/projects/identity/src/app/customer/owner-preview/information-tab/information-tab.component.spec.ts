@@ -63,6 +63,7 @@ const expectedOwner: Owner = {
     city: 'Paris',
     country: 'France'
   },
+  internalCode: '1',
   readonly : false
 };
 
@@ -94,6 +95,7 @@ const owner = {
     city: 'Paris',
     country: 'France'
   },
+  internalCode: '1',
   readonly : false
 };
 
@@ -192,7 +194,8 @@ describe('Owner InformationTabComponent', () => {
           zipCode: null,
           city: null,
           country: null
-        }
+        },
+        internalCode: null
       });
       expect(testhost.component.ownerForm.get('id').valid).toBeFalsy('id');
       expect(testhost.component.ownerForm.get('customerId').valid).toBeFalsy('customerId');
@@ -203,6 +206,7 @@ describe('Owner InformationTabComponent', () => {
       expect(testhost.component.ownerForm.get('address.zipCode').valid).toBeTruthy('zipCode');
       expect(testhost.component.ownerForm.get('address.city').valid).toBeTruthy('city');
       expect(testhost.component.ownerForm.get('address.country').valid).toBeTruthy('country');
+      expect(testhost.component.ownerForm.get('internalCode').valid).toBeTruthy('internalCode');
     });
 
     it('should have the pattern validator', () => {
@@ -232,7 +236,8 @@ describe('Owner InformationTabComponent', () => {
           zipCode: expectedOwner.address.zipCode,
           city: expectedOwner.address.city,
           country: expectedOwner.address.country,
-        }
+        },
+        internalCode: expectedOwner.internalCode
       });
       expect(testhost.component.ownerForm.valid).toBeTruthy();
     });
