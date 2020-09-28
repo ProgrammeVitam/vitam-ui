@@ -42,4 +42,3 @@ export * from './identity-provider.interface';
 export * from './tenant.interface';
 export * from './basic-customer.interface';
 export * from './customer.interface';
-export * from './address-type.enum';

@@ -156,16 +156,7 @@
     <cdk-step>
       <div class="content">
         <h2 i18n="@@userCreateAddressTitle">Coordonnées</h2>
-
-        <ng-container *ngIf="customer.addressType === ADDRESS_TYPE.INTERNAL_CODE">
-          <div>
-            <vitamui-common-input class="field-street" required formControlName="internalCode" maxlength="20" placeholder="Code interne"
-              i18n-placeholder="@@userCreateInternalCodeInputPlaceholder">
-            </vitamui-common-input>
-          </div>
-        </ng-container>
-
-        <ng-container formGroupName="address" *ngIf="!customer.addressType || customer.addressType === ADDRESS_TYPE.POSTAL">
+        <ng-container formGroupName="address">
           <div>
             <vitamui-common-input class="field-street" [required]="!addressEmpty" formControlName="street" maxlength="250" placeholder="N° et nom de rue"
               i18n-placeholder="@@userCreateStreetInputPlaceholder">
@@ -202,6 +193,12 @@
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
+          </div>
+
+          <div>
+            <vitamui-common-input class="field-street" required formControlName="internalCode" maxlength="20" placeholder="Code interne"
+              i18n-placeholder="@@userCreateInternalCodeInputPlaceholder">
+            </vitamui-common-input>
           </div>
 
           <div>

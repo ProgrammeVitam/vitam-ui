@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AddressType } from 'ui-frontend-common';
 import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
@@ -100,7 +99,6 @@ const expectedCustomer = {
   hasCustomGraphicIdentity: false,
   passwordRevocationDelay: 3,
   otp: OtpState.OPTIONAL,
-  addressType: AddressType.POSTAL,
   address: {
     street: 'street',
     zipCode: '12345',

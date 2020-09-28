@@ -37,7 +37,7 @@
 /* tslint:disable: max-file-line-count max-classes-per-file */
 
 import { of } from 'rxjs';
-import { AddressType, AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
+import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
@@ -90,7 +90,6 @@ let expectedCustomer: Customer = {
   passwordRevocationDelay: 6,
   otp: OtpState.DEACTIVATED,
   idp: true,
-  addressType: AddressType.POSTAL,
   address: {
     street: '85 rue des bois',
     zipCode: '75013',
@@ -199,7 +198,6 @@ describe('UserInfoTabComponent', () => {
       passwordRevocationDelay: 6,
       otp: OtpState.DEACTIVATED,
       idp: true,
-      addressType: AddressType.POSTAL,
       address: {
         street: '85 rue des bois',
         zipCode: '75013',

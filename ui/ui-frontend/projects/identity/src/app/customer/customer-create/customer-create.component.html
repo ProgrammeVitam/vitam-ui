@@ -39,26 +39,7 @@
           </vitamui-common-input>
         </div>
 
-        <div class="mb-4">
-          <div i18n="Address type@@CustomerAddressType" class="mb-2">Type d'adresse</div>
-          <mat-button-toggle-group #group="matButtonToggleGroup" formControlName="addressType">
-            <mat-button-toggle color="primary" value="POSTAL"
-              [ngClass]="{'selected': form.get('addressType').value === ADDRESS_TYPE.POSTAL}">Postale</mat-button-toggle>
-            <mat-button-toggle color="primary" value="INTERNAL_CODE"
-              [ngClass]="{'selected': form.get('addressType').value === ADDRESS_TYPE.INTERNAL_CODE}">Code interne</mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
-
-        <div *ngIf="form.get('addressType').value === ADDRESS_TYPE.INTERNAL_CODE">
-          <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" required placeholder="Code interne"
-          i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
-            <vitamui-common-input-error
-            *ngIf="form.get('internalCode')?.touched && !!form.get('internalCode')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-          </vitamui-common-input>
-        </div>
-
-        <ng-container formGroupName="address" *ngIf="form.get('addressType').value === ADDRESS_TYPE.POSTAL">
+        <ng-container formGroupName="address">
           <div>
             <vitamui-common-input class="field-street" formControlName="street" maxlength="250" required
               placeholder="N° et nom de rue"
@@ -102,6 +83,9 @@
             </mat-form-field>
           </div>
         </ng-container>
+
+        <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" placeholder="Code interne"
+        i18n-placeholder="Internal code@@customerInternalCodePlaceholder"></vitamui-common-input>
 
         <div class="d-flex">
           <label for="language" class="inline-label label-language"
@@ -258,7 +242,7 @@
         <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire des éléments de preuve
         </h2>
         <div class="form-group">
-          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo" [addressType]="form.get('addressType').value"></app-owner-form>
+          <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
           <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le
             coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
         </div>

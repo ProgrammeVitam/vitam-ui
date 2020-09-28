@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.any;
 import java.util.Arrays;
 import java.util.Optional;
 
-import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -120,7 +119,6 @@ public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
         customer.setOtp(OtpEnum.OPTIONAL);
         customer.setLanguage(LanguageDto.FRENCH);
         customer.setOwners(Arrays.asList(new OwnerDto()));
-        customer.setAddressType(AddressType.POSTAL);
         customer.setAddress(new AddressDto("street", "zipCode", "city", "country"));
         customer.setDefaultEmailDomain("@vitamui.com");
         customer.setPasswordRevocationDelay(1);

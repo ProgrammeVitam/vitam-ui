@@ -40,7 +40,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 
-import { AddressType, Customer, OtpState } from 'ui-frontend-common';
+import { Customer, OtpState } from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
 import { CustomerResolver } from './customer-resolver.service';
 
@@ -61,7 +61,6 @@ const expectedCustomer: Customer = {
     'kouygues.com',
   ],
   defaultEmailDomain: 'kouygues.com',
-  addressType: AddressType.POSTAL,
   address: {
     street: '13 rue faubourg',
     zipCode: '75009',

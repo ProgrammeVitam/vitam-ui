@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import { AddressType } from 'ui-frontend-common';
 import {
   AdminUserProfile, AuthService, ConfirmDialogService, Customer, isRootLevel, OtpState, ProfileSelection
 } from 'ui-frontend-common';
@@ -88,8 +87,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   public creating = false;
 
-  public ADDRESS_TYPE = AddressType;
-
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
@@ -124,11 +121,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       domain: [this.customer.emailDomains[0]]
     });
 
-    let internalCode: string;
-    if (this.customer.addressType === AddressType.INTERNAL_CODE) {
-      internalCode = this.customer.internalCode;
-    }
-
     this.form = this.formBuilder.group(
       {
         enabled: true,
@@ -158,7 +150,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           city: [null],
           country: ['FR']
         }),
-        internalCode: [internalCode],
+        internalCode: [this.customer.internalCode],
         siteCode: [null],
       },
       { validator: UserValidators.missingPhoneNumber }
@@ -240,10 +232,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   public thirdStepInvalid(): boolean {
-    if (!this.customer.addressType || this.customer.addressType === AddressType.POSTAL) {
-      return this.form.get('address').pending || this.form.get('address').invalid;
-    }
-    return this.form.get('internalCode').pending || this.form.get('internalCode').invalid;
+    return this.form.get('address').pending || this.form.get('address').invalid ||
+    this.form.get('internalCode').pending || this.form.get('internalCode').invalid;
   }
 
   passGroupStep() {
