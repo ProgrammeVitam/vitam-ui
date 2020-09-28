@@ -9,7 +9,7 @@ Dans ce fichier, nous expliquerons l'architecture de VITAM-UI en tant qu'applica
 - **Service CAS :**  <br/>  Projet qui permet de gérer la partie authentification, c’est un service nécessaire pour démarrer l’application de VITAM-UI.
 
 
-###Les modules maven coté backend : 
+### Les modules maven coté backend : 
 - **Modules internes :**  <br/>Continent 3 applications maven (iam-internal, ingest-internal et referential-internal) : ils représentent la couche interne qui permet de communiquer directement avec la base de données de VITAM-UI (MongoDB) et aussi avec les couches externes de VITAM.
 - **Modules externes :**  <br/>Contient les applications (iam-external, ingest-external et referential-external), ils représentent la couche externe qui permet de faire des vérifications des droits au niveau des différentes requêtes envoyées par les utilisateurs, et en se basant sur le profil de chaque utilisateur.
 - **Les modules UI :**  <br/>Content les applications (ui-identity, ui-portal, ui-ingest, ui-referential et ui-commons), ils sont des services servant les applications Front et aussi les API vers la couche externe de VITAM-UI, tout cela en utilisant toujours par ui-commons.
