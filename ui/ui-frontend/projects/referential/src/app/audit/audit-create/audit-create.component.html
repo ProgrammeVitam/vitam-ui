@@ -44,12 +44,16 @@
             <div class="col-8 form-control">
               <vitamui-common-input class="field-evidenceAudit" formControlName="evidenceAudit"
                 placeholder="Identifiant d'audit de cohérence"
-                i18n-placeholder="evidenceAudit@@auditCreateEvidenceAudit">
+                i18n-placeholder="evidenceAudit@@auditCreateEvidenceAudit" required>
               </vitamui-common-input>
-              <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit')?.errors?.invalidEvidenceAuditId"
-                i18n="Identfier exists error hint@@formErrorIdentifierExists">L'identifiant d'audit de cohérence saisi
-                n'existe pas
-              </vitamui-common-input-error>
+              <ng-container *ngIf="form.get('evidenceAudit')?.touched">
+                <vitamui-common-input-error *ngIf="!!form.get('evidenceAudit')?.errors?.required"
+                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="!!form?.get('evidenceAudit')?.errors?.invalidEvidenceAuditId"
+                  i18n="Identfier exists error hint@@formErrorIdentifierExists">L'identifiant d'audit de cohérence saisi
+                  n'existe pas
+                </vitamui-common-input-error>
+              </ng-container>
             </div>
           </div>
         </div>
