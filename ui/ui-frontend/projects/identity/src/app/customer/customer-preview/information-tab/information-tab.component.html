@@ -111,6 +111,16 @@
 
   <div class="row">
     <div class="col-12 form-control">
+      <vitamui-common-editable-input
+        formControlName="internalCode"
+        maxlength="20"
+        label="Code interne" i18n-label="Internal code@@customerPreviewLabelInternalCode"
+      ></vitamui-common-editable-input>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 form-control">
       <vitamui-common-editable-select
         formControlName="language"
         label="Langue de l'interface (par défault pour l'utilisateur)" i18n-label="Customer default language@@customerPreviewLabelLanguage"
