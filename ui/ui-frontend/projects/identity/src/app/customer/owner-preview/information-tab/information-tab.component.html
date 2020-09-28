@@ -1,51 +1,42 @@
 <form [formGroup]="ownerForm">
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input
-        formControlName="code"
-        maxlength="20"
-        label="Code propriétaire" i18n-label="Owner code@@ownerPreviewLabelOwnerCode"
-        [validator]="ownerForm?.get('code')?.validator"
-        [asyncValidator]="ownerForm?.get('code')?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-field-error>
+      <vitamui-common-editable-input formControlName="code" maxlength="20" label="Code propriétaire"
+        i18n-label="Owner code@@ownerPreviewLabelOwnerCode" [validator]="ownerForm?.get('code')?.validator"
+        [asyncValidator]="ownerForm?.get('code')?.asyncValidator">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern"
+          i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)
+        </vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà
+          existant</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="identifier"
-        maxlength="12"
-        label="Identifiant" i18n-label="Identifier@@ownerDetailLabelIdentifier"
-        [validator]="ownerForm?.get('identifier')?.validator"
-        [asyncValidator]="ownerForm?.get('identifier')?.asyncValidator"
-      >
+      <vitamui-common-editable-input formControlName="identifier" maxlength="12" label="Identifiant"
+        i18n-label="Identifier@@ownerDetailLabelIdentifier" [validator]="ownerForm?.get('identifier')?.validator"
+        [asyncValidator]="ownerForm?.get('identifier')?.asyncValidator">
       </vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input
-        formControlName="name"
-        maxlength="100"
-        label="Nom du propriétaire" i18n-label="Owner name@@ownerPreviewLabelName"
-        [validator]="ownerForm?.get('name')?.validator"
-        [asyncValidator]="ownerForm?.get('name')?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      <vitamui-common-editable-input formControlName="name" maxlength="100" label="Nom du propriétaire"
+        i18n-label="Owner name@@ownerPreviewLabelName" [validator]="ownerForm?.get('name')?.validator"
+        [asyncValidator]="ownerForm?.get('name')?.asyncValidator">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
-      <vitamui-common-editable-input
-        formControlName="companyName"
-        maxlength="250"
-        label="Raison sociale" i18n-label="Owner company name@@ownerPreviewLabelCompanyName"
+      <vitamui-common-editable-input formControlName="companyName" maxlength="250" label="Raison sociale"
+        i18n-label="Owner company name@@ownerPreviewLabelCompanyName"
         [validator]="ownerForm?.get('companyName')?.validator"
-        [asyncValidator]="ownerForm?.get('companyName')?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        [asyncValidator]="ownerForm?.get('companyName')?.asyncValidator">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -53,40 +44,29 @@
   <ng-container formGroupName="address">
     <div class="row">
       <div class="col-12 form-control">
-        <vitamui-common-editable-input
-          formControlName="street"
-          maxlength="250"
-          label="N° et nom de rue" i18n-label="Street number and name@@ownerPreviewLabelStreetNumberName"
-        >
+        <vitamui-common-editable-input formControlName="street" maxlength="250" label="N° et nom de rue"
+          i18n-label="Street number and name@@ownerPreviewLabelStreetNumberName">
         </vitamui-common-editable-input>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-4 form-control">
-        <vitamui-common-editable-input
-          formControlName="zipCode"
-          maxlength="10"
-          label="Code postal" i18n-label="Owner Zip Code@@ownerPreviewLabelZipCode"
-        >
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input formControlName="zipCode" maxlength="10" label="Code postal"
+          i18n-label="Owner Zip Code@@ownerPreviewLabelZipCode">
         </vitamui-common-editable-input>
       </div>
-      <div class="col-6 form-control">
-        <vitamui-common-editable-input
-          formControlName="city"
-          maxlength="100"
-          label="Ville" i18n-label="Owner city@@ownerPreviewLabelCity"
-        >
+      <div class="col-7 form-control">
+        <vitamui-common-editable-input formControlName="city" maxlength="100" label="Ville"
+          i18n-label="Owner city@@ownerPreviewLabelCity">
         </vitamui-common-editable-input>
       </div>
     </div>
 
     <div class="row">
       <div class="col-6 form-control">
-        <vitamui-common-editable-select
-          formControlName="country"
-          label="Pays" i18n-label="Owner country@@ownerPreviewLabelCountry"
-        >
+        <vitamui-common-editable-select formControlName="country" label="Pays"
+          i18n-label="Owner country@@ownerPreviewLabelCountry">
           <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
@@ -97,6 +77,14 @@
       </div>
     </div>
   </ng-container>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-input formControlName="internalCode" maxlength="20" label="Code interne"
+        i18n-label="Internal code@@ownerPreviewLabelInternalCode">
+      </vitamui-common-editable-input>
+    </div>
+  </div>
 </form>
 
 <mat-divider *ngIf="tenant"></mat-divider>
@@ -110,57 +98,50 @@
       </div>
     </div>
     <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="name"
-        maxlength="100"
-        label="Nom du coffre" i18n-label="Tenant name@@ownerPreviewLabelTenantName"
-        [validator]="tenantForm?.get('name')?.validator"
-        [asyncValidator]="tenantForm?.get('name')?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueName" i18n="Existing name field error hint@@formErrorExistingName">Nom déjà existant</vitamui-common-field-error>
+      <vitamui-common-editable-input formControlName="name" maxlength="100" label="Nom du coffre"
+        i18n-label="Tenant name@@ownerPreviewLabelTenantName" [validator]="tenantForm?.get('name')?.validator"
+        [asyncValidator]="tenantForm?.get('name')?.asyncValidator">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueName" i18n="Existing name field error hint@@formErrorExistingName">
+          Nom déjà existant</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-        <vitamui-common-editable-input
-        formControlName="accessContractHoldingIdentifier"
-        label="Contrat d'accès pour l'arbre" i18n-label="Tenant AccessContractHoldingIdentifier@@ownerPreviewLabelTenantAccessContractHoldingIdentifier"
+      <vitamui-common-editable-input formControlName="accessContractHoldingIdentifier"
+        label="Contrat d'accès pour l'arbre"
+        i18n-label="Tenant AccessContractHoldingIdentifier@@ownerPreviewLabelTenantAccessContractHoldingIdentifier"
         [validator]="tenantForm?.get('accessContractHoldingIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('accessContractHoldingIdentifier')?.asyncValidator"
-      >
+        [asyncValidator]="tenantForm?.get('accessContractHoldingIdentifier')?.asyncValidator">
       </vitamui-common-editable-input>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <vitamui-common-editable-input
-        formControlName="ingestContractHoldingIdentifier"
-        label="Contrat d'entrée pour l'arbre" i18n-label="Tenant IngestContractHoldingIdentifier@@ownerPreviewLabelTenantIngestContractHoldingIdentifier"
+      <vitamui-common-editable-input formControlName="ingestContractHoldingIdentifier"
+        label="Contrat d'entrée pour l'arbre"
+        i18n-label="Tenant IngestContractHoldingIdentifier@@ownerPreviewLabelTenantIngestContractHoldingIdentifier"
         [validator]="tenantForm?.get('ingestContractHoldingIdentifier')?.validator"
-        [asyncValidator]="tenantForm?.get('ingestContractHoldingIdentifier')?.asyncValidator"
-      >
+        [asyncValidator]="tenantForm?.get('ingestContractHoldingIdentifier')?.asyncValidator">
       </vitamui-common-editable-input>
     </div>
   </div>
   <div *ngIf="tenant.proof" class="row">
     <div class="col-12">
-      <vitamui-common-editable-input
-          formControlName="accessContractLogbookIdentifier"
-          label="Contrat d'accès logbook" i18n-label="Tenant AccessContractLogbookIdentifier@@ownerPreviewLabelTenantAccessContractLogbookIdentifier"
-          [validator]="tenantForm?.get('accessContractLogbookIdentifier')?.validator"
-          [asyncValidator]="tenantForm?.get('accessContractLogbookIdentifier')?.asyncValidator"
-      >
+      <vitamui-common-editable-input formControlName="accessContractLogbookIdentifier" label="Contrat d'accès logbook"
+        i18n-label="Tenant AccessContractLogbookIdentifier@@ownerPreviewLabelTenantAccessContractLogbookIdentifier"
+        [validator]="tenantForm?.get('accessContractLogbookIdentifier')?.validator"
+        [asyncValidator]="tenantForm?.get('accessContractLogbookIdentifier')?.asyncValidator">
       </vitamui-common-editable-input>
     </div>
     <div class="col-12">
-      <vitamui-common-editable-input
-          formControlName="itemIngestContractIdentifier"
-          label="Contrat d'entrée des bordereaux" i18n-label="Tenant ItemIngestContractIdentifier@@ownerPreviewLabelTenantItemIngestContractIdentifier"
-          [validator]="tenantForm?.get('itemIngestContractIdentifier')?.validator"
-          [asyncValidator]="tenantForm?.get('itemIngestContractIdentifier')?.asyncValidator"
-      >
+      <vitamui-common-editable-input formControlName="itemIngestContractIdentifier"
+        label="Contrat d'entrée des bordereaux"
+        i18n-label="Tenant ItemIngestContractIdentifier@@ownerPreviewLabelTenantItemIngestContractIdentifier"
+        [validator]="tenantForm?.get('itemIngestContractIdentifier')?.validator"
+        [asyncValidator]="tenantForm?.get('itemIngestContractIdentifier')?.asyncValidator">
       </vitamui-common-editable-input>
     </div>
   </div>
