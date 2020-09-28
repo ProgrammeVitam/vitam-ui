@@ -43,7 +43,6 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import fr.gouv.vitamui.commons.api.enums.AddressType;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -101,12 +100,10 @@ public class CustomerDto extends IdDto {
     @NotNull
     private String defaultEmailDomain;
 
+    @NotNull
     private AddressDto address;
 
     private String internalCode;
-
-    @NotNull
-    private AddressType addressType;
 
     private boolean subrogeable = false;
 

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { merge, Subscription } from 'rxjs';
-import { AddressType, ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
+import { ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -52,7 +52,6 @@ interface CustomerInfo {
    code: string;
    name: string;
    companyName: string;
-   addressType: AddressType;
 }
 
 @Component({
@@ -61,8 +60,6 @@ interface CustomerInfo {
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
-  public readonly ADDRESS_TYPE = AddressType;
-
   @ViewChild('fileSearch', { static: false }) public fileSearch: any;
 
   public form: FormGroup;
@@ -83,7 +80,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     code: '',
     name: '',
     companyName: '',
-    addressType: AddressType.POSTAL
   };
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
@@ -117,13 +113,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       passwordRevocationDelay: 6,
       otp: OtpState.OPTIONAL,
       address: this.formBuilder.group({
-        street: [''],
-        zipCode: [''],
-        city: [''],
-        country: ['FR']
+        street: [null, Validators.required],
+        zipCode: [null, Validators.required],
+        city: [null, Validators.required],
+        country: ['FR', Validators.required]
       }),
       internalCode: [null],
-      addressType: [AddressType.POSTAL, Validators.required],
       language: ['FRENCH', Validators.required],
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
@@ -174,7 +169,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('code').valueChanges,
       this.form.get('name').valueChanges,
       this.form.get('companyName').valueChanges,
-      this.form.get('addressType').valueChanges
     )
     .subscribe(() => {
       // reset object to trigger customerInfo input update in child component
@@ -182,7 +176,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         code: this.form.get('code').value,
         name: this.form.get('name').value,
         companyName: this.form.get('companyName').value,
-        addressType: this.form.get('addressType').value
       };
     });
   }
@@ -273,18 +266,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    const response = this.form.get('code').invalid || this.form.get('code').pending ||
-    this.form.get('name').invalid || this.form.get('name').pending ||
-    this.form.get('companyName').invalid || this.form.get('companyName').pending;
-
-    if (this.form.get('addressType').value === AddressType.POSTAL) {
-      return response || this.form.get('address.street').invalid || this.form.get('address.street').pending ||
+    return this.form.get('code').invalid || this.form.get('code').pending ||
+      this.form.get('name').invalid || this.form.get('name').pending ||
+      this.form.get('companyName').invalid || this.form.get('companyName').pending ||
+      this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
       this.form.get('address.city').invalid || this.form.get('address.city').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending;
-    } else if (this.form.get('addressType').value === AddressType.INTERNAL_CODE) {
-      return response || this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
-    }
+      this.form.get('address.country').invalid || this.form.get('address.country').pending ||
+      this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
   }
 
   secondStepInvalid(): boolean {

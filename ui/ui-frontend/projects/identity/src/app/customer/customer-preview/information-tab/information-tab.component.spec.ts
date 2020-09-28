@@ -41,7 +41,7 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-import { AddressType, Customer, OtpState } from 'ui-frontend-common';
+import { Customer, OtpState } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
@@ -64,7 +64,6 @@ let expectedCustomer: Customer = {
         'kouygues.com',
     ],
     defaultEmailDomain: 'kouygues.com',
-    addressType: AddressType.POSTAL,
     address: {
         street: '13 rue faubourg',
         zipCode: '75009',
@@ -143,7 +142,6 @@ describe('Customer InformationTabComponent', () => {
         'kouygues.com',
       ],
       defaultEmailDomain: 'kouygues.com',
-      addressType: AddressType.POSTAL,
       address: {
         street: '13 rue faubourg',
         zipCode: '75009',

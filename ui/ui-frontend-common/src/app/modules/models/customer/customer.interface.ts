@@ -36,7 +36,6 @@
  */
 import {ThemeColors} from '../../utils';
 import { Id } from '../id.interface';
-import { AddressType } from './address-type.enum';
 import { Address } from './address.interface';
 import { OtpState } from './otp-state.enum';
 import { Owner } from './owner.interface';
@@ -52,7 +51,6 @@ export interface Customer extends Id {
   idp?: boolean;
   address: Address;
   internalCode?: string;
-  addressType: AddressType;
   language: string;
   emailDomains: string[];
   defaultEmailDomain: string;

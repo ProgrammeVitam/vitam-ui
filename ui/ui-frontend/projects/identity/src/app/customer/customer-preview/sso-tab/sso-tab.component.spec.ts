@@ -40,7 +40,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of ,  Subject } from 'rxjs';
 
-import { AddressType, Customer, IdentityProvider, OtpState } from 'ui-frontend-common';
+import { Customer, IdentityProvider, OtpState } from 'ui-frontend-common';
 import { IdentityProviderService } from './identity-provider.service';
 import { SsoTabComponent } from './sso-tab.component';
 
@@ -85,7 +85,6 @@ class TestHostComponent {
         'test6.com',
     ],
     defaultEmailDomain : '1test.com',
-    addressType: AddressType.POSTAL,
     address : {
         street : '73 rue du Faubourg Poissonnière ',
         zipCode : '75009',

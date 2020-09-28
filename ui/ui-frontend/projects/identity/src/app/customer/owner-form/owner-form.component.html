@@ -17,12 +17,7 @@
     </vitamui-common-input>
   </div>
 
-  <div *ngIf="addressType === ADDRESS_TYPE.INTERNAL_CODE">
-    <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" placeholder="Code interne"
-    i18n-placeholder="Internal code@@OwnerInternalCodePlaceholder"></vitamui-common-input>
-  </div>
-
-  <ng-container formGroupName="address" *ngIf="addressType === ADDRESS_TYPE.POSTAL">
+  <ng-container formGroupName="address">
     <div>
       <vitamui-common-input class="field-street" formControlName="street" maxlength="250" placeholder="N° et nom de la rue" i18n-placeholder="Owner street input placeholder@@ownerFormStreetInputPlaceholder"></vitamui-common-input>
     </div>
@@ -47,4 +42,8 @@
       </div>
     </mat-form-field>
   </ng-container>
+
+  <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" placeholder="Code interne"
+  i18n-placeholder="Internal code@@OwnerInternalCodePlaceholder"></vitamui-common-input>
+
 </ng-container>

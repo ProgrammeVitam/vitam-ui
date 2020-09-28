@@ -94,7 +94,6 @@ export class CustomerListService extends SearchService<Customer> {
       passwordRevocationDelay: customer.passwordRevocationDelay,
       otp: customer.otp,
       address: customer.address,
-      addressType: customer.addressType,
       internalCode: customer.internalCode,
       language: customer.language,
       emailDomains: customer.emailDomains,

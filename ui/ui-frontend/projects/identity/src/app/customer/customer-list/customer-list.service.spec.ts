@@ -38,7 +38,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { AddressType, ENVIRONMENT } from 'ui-frontend-common';
+import { ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, Direction, LoggerModule, OtpState, PageRequest } from 'ui-frontend-common';
 import { environment } from './../../../environments/environment';
 import { CustomerListService } from './customer-list.service';
@@ -93,7 +93,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
-      addressType: AddressType.POSTAL,
       internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
@@ -151,7 +150,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
-      addressType: AddressType.POSTAL,
       internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
@@ -217,7 +215,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
-      addressType: AddressType.POSTAL,
       internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
@@ -275,7 +272,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
-      addressType: AddressType.POSTAL,
       internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',

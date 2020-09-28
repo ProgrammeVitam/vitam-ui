@@ -45,7 +45,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of ,  Subject } from 'rxjs';
 
-import { AddressType, Customer, OtpState, Owner, Tenant } from 'ui-frontend-common';
+import { Customer, OtpState, Owner, Tenant } from 'ui-frontend-common';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
@@ -107,7 +107,6 @@ describe('CustomerListComponent', () => {
           'kouygues.com',
         ],
         defaultEmailDomain: 'kouygues.com',
-        addressType: AddressType.POSTAL,
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
@@ -134,7 +133,6 @@ describe('CustomerListComponent', () => {
           'louygues.com',
         ],
         defaultEmailDomain: 'louygues.com',
-        addressType: AddressType.POSTAL,
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
@@ -161,7 +159,6 @@ describe('CustomerListComponent', () => {
           'mouygues.com',
         ],
         defaultEmailDomain: 'mouygues.com',
-        addressType: AddressType.POSTAL,
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
@@ -188,7 +185,6 @@ describe('CustomerListComponent', () => {
           'nrange.com',
         ],
         defaultEmailDomain: 'nrange.com',
-        addressType: AddressType.POSTAL,
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',
@@ -215,7 +211,6 @@ describe('CustomerListComponent', () => {
           'bouygues.com',
         ],
         defaultEmailDomain: 'bouygues.com',
-        addressType: AddressType.POSTAL,
         address: {
           street: '13 rue faubourg',
           zipCode: '75009',

@@ -39,7 +39,7 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { AddressType, Customer } from 'ui-frontend-common';
+import { Customer } from 'ui-frontend-common';
 
 import { Owner } from 'ui-frontend-common';
 import { OwnerFormValidators } from './owner-form.validators';
@@ -58,13 +58,9 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
 
-  @Input() addressType: AddressType;
-
   form: FormGroup;
 
   private sub: any;
-
-  public ADDRESS_TYPE = AddressType;
 
   @Input()
   set customerId(customerId: string) {
