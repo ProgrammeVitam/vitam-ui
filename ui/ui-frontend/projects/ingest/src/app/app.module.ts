@@ -47,6 +47,7 @@ import { CoreModule } from './core/core.module';
 import { IngestModule } from './ingest';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({

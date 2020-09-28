@@ -28,7 +28,7 @@
   </div>
   <div class="col-6 mb-3">
     <label>Date de fin</label>
-    <div>{{ ingestEndDate(ingest) }}</div>
+    <div>{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy' }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>Service Producteur</label>
@@ -43,7 +43,7 @@
     <div>{{ ingest?.evDetData?.ArchivalAgreement }}</div>
   </div>
   <div class="col-6 mb-3">
-    <label>Profile d'archivage</label>
+    <label>Profil d'archivage</label>
     <div>{{ ingest?.ArchivalProfile }}</div>
   </div>
   <div class="col-6 mb-3">

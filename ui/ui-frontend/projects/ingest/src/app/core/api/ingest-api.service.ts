@@ -36,10 +36,12 @@ export class IngestApiService extends BaseHttpClient<any> {
     );
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<any> {
+  getOne(id: string, headers?: HttpHeaders): Observable<Event> {
     return super.getOne(id, headers).pipe(
       tap(ev => ev.parsedData = (ev.data != null) ? JSON.parse(ev.data) : null)
     );
+
+    //return super.getOne(id, headers);
   }
 
   downloadDocxReport(id : string) : Observable<Blob> {
