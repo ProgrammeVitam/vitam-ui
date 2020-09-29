@@ -47,11 +47,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
@@ -106,14 +106,14 @@ public class BaseRestClientFactory implements RestClientFactory {
     }
 
     public BaseRestClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig,
-                                 final RestTemplateBuilder restTemplateBuilder) {
+            final RestTemplateBuilder restTemplateBuilder) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
 
         final boolean useSSL = restClientConfig.isSecure();
         baseUrl = RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
 
         HttpPoolConfiguration myPoolConfig = httpPoolConfig;
-        // configure the pool from the restClientConfig if poolMaxTotal is not negative
+        // configure the pool from the restClientConfig if the value of poolMaxTotal is positive
         if(restClientConfig.getPoolMaxTotal() >= 0) {
             myPoolConfig = new HttpPoolConfiguration();
             myPoolConfig.setMaxTotal(restClientConfig.getPoolMaxTotal());
@@ -129,7 +129,7 @@ public class BaseRestClientFactory implements RestClientFactory {
             .build();
 
         restTemplate = restTemplateBuilder.errorHandler(new ErrorHandler()).build();
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new CustomHttpComponentsClientHttpRequestFactory(httpClient)));
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())));
     }
 
     /*
@@ -156,7 +156,7 @@ public class BaseRestClientFactory implements RestClientFactory {
             }
 
             sslContext = sslContextBuilder.loadTrustMaterial(new File(ts.getKeyPath()), ts.getKeyPassword().toCharArray()).setProtocol("TLS")
-                .setSecureRandom(new java.security.SecureRandom()).build();
+                    .setSecureRandom(new java.security.SecureRandom()).build();
         }
         catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException | CertificateException | IOException | UnrecoverableKeyException e) {
             LOGGER.error("Unable to build the Registry<ConnectionSocketFactory>.", e);
@@ -171,7 +171,7 @@ public class BaseRestClientFactory implements RestClientFactory {
     }
 
     private KeyStore loadPkcs(final String type, final String filename, final char[] password)
-        throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+            throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         final KeyStore keyStore = KeyStore.getInstance(type);
         final File key = ResourceUtils.getFile(filename);
         try (InputStream in = new FileInputStream(key)) {
@@ -187,11 +187,11 @@ public class BaseRestClientFactory implements RestClientFactory {
      * from the pool rather than creating a brand new connection.
      */
     private PoolingHttpClientConnectionManager buildConnectionManager(final HttpPoolConfiguration poolConfig,
-                                                                      final Registry<ConnectionSocketFactory> socketFactoryRegistry) {
+            final Registry<ConnectionSocketFactory> socketFactoryRegistry) {
 
         final PoolingHttpClientConnectionManager connectionManager = (socketFactoryRegistry != null)
-            ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
-            : new PoolingHttpClientConnectionManager();
+                ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
+                : new PoolingHttpClientConnectionManager();
 
         if (poolConfig != null) {
             connectionManager.setMaxTotal(poolConfig.getMaxTotal());
@@ -209,7 +209,7 @@ public class BaseRestClientFactory implements RestClientFactory {
 
     private RequestConfig buildRequestConfig() {
         return RequestConfig.custom().setConnectionRequestTimeout(connectionRequestTimeout).setConnectTimeout(connectTimeout).setSocketTimeout(socketTimeout)
-            .build();
+                .build();
     }
 
     @Override
