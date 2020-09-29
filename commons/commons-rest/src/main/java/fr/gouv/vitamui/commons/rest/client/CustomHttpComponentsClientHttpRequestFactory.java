@@ -91,7 +91,6 @@ public class CustomHttpComponentsClientHttpRequestFactory extends HttpComponents
      */
     @Override
     protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri)  {
-        LOGGER.debug("Context creation");
         HttpContext context = HttpClientContext.create();
         context.setAttribute(HttpClientContext.USER_TOKEN, userToken);
         return context;
