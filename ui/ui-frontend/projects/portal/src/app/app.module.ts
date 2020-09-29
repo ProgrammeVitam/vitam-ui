@@ -44,6 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -67,6 +68,7 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     LoggerModule.forRoot(),
     QuicklinkModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     Title,
