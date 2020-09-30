@@ -327,7 +327,6 @@ public abstract class BaseIntegration {
                 getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)));
         return webClientFactory;
     }
-
     private ReferentialExternalRestClientFactory getReferentialRestClientFactory() {
         if (restReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
@@ -589,7 +588,7 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-
+    
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
