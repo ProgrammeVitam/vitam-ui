@@ -79,12 +79,10 @@ public class ApiReferentialExternalContextCreationSteps extends CommonSteps {
         final ContextDto dto = FactoryDto.buildDto(ContextDto.class);
         testContext.savedContextDto = getContextRestClient().create(getSystemTenantUserAdminContext(), dto);
     }
-
     @Then("^le serveur retourne le contexte créé$")
     public void le_status_de_la_réponse_doit_etre() {
         assertThat(testContext.savedContextDto).overridingErrorMessage("la réponse retournée est null").isNotNull();
     }
-
     @Then("^(.*) permissions sont créés dans le contexte$")
     public void des_permissions_sont_créés_dans_le_contexte(final Integer profilesNumber) {
         assertThat(testContext.savedContextDto.getPermissions()).isNotNull().isNotEmpty();

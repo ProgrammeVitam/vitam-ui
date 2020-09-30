@@ -98,7 +98,7 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-
+    
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
     
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
