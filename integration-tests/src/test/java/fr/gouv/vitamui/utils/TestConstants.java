@@ -96,6 +96,12 @@ public class TestConstants {
     public static final String EVENT_DATE_TIME_KEY = "Date d'opération";
 
     public static final String PIERRE_USER_PREFIX_EMAIL = "pierre";
+    
+    public static final String CONTEXT_ID = "CONTEXT_ID";
+    
+    public static final String CONTEXT_IDENTIFIER = "CT-000001";
+    
+    public static final String CONTEXT_NAME = "admin-context";
 
     private TestConstants() {
         // do nothing
