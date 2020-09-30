@@ -66,7 +66,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity_admin.server_name }};
-    
+
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
@@ -101,7 +101,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity.server_name }};
-    
+
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
@@ -149,7 +149,7 @@ server {
         return 302 $scheme://$host/login;
     }
 
-    location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0) {
+    location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0|clientredirect) {
         proxy_pass https://cas;
         proxy_set_header Host            $host;
     	proxy_set_header X-Forwarded-For $remote_addr;
@@ -179,7 +179,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name "{{ vitamui.portal.server_name }}";
-    
+
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
