@@ -1591,7 +1591,7 @@
                                     </executable>
                                     <workingDirectory>target</workingDirectory>
                                     <arguments>
-                                        <argument>${env.SERVICE_RPM_REPOSITORY_URL}/upload/${rpm.publication.env}/Packages</argument>
+                                        <argument>${rpm.publication.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
