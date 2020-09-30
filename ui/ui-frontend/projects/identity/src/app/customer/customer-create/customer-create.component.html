@@ -9,14 +9,13 @@
       <div class="content">
         <h2 i18n="Create customer title@@customerCreateTitle1">Création d'un client</h2>
         <div>
-          <vitamui-common-input class="field-code" formControlName="code" maxlength="20" required
-            placeholder="Code client"
+          <vitamui-common-input class="field-code" formControlName="code" placeholder="Code client"
             i18n-placeholder="Customer code input placeholder + format@@customerCreateCustomerCodeInputPlaceholder">
             <ng-container *ngIf="form.get('code')?.touched">
               <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
                 i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
-                i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres
+                i18n="Wrong format (4 digits minimum) error hint@@formError6DigitsField">Format incorrect (4 chiffres
                 minimum)</vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
                 i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-input-error>
@@ -84,8 +83,9 @@
           </div>
         </ng-container>
 
-        <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" placeholder="Code interne"
-        i18n-placeholder="Internal code@@customerInternalCodePlaceholder"></vitamui-common-input>
+        <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20"
+          placeholder="Code interne" i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
+        </vitamui-common-input>
 
         <div class="d-flex">
           <label for="language" class="inline-label label-language"
@@ -170,9 +170,9 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
-            i18n="Next step button label@@customerCreateNextButton">Suivant</button>
+            i18n="@@customerCreateNextButton">Suivant</button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+            i18n="@@customerCreateCancelButton">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
@@ -223,12 +223,9 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()"
-            i18n="Create owner button@@customerCreateCreateOwnerButton">
-            Créer le propriétaire
-            <small> des éléments de preuves</small>
-          </button>
+            i18n="@@customerCreateNextButton">Suivant</button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+            i18n="@@customerCreateCancelButton">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
@@ -246,9 +243,9 @@
           <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le
             coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
         </div>
-        
-        <button type="submit" class="btn primary" 
-          i18n="Finish customer creation button@@customerCreateFinishButton" [disabled]="lastStepIsInvalid()">Terminer</button>
+
+        <button type="submit" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
+          [disabled]="lastStepIsInvalid()">Terminer</button>
         <button type="button" class="btn cancel" (click)="onCancel()"
           i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         <button type="button" class="back" cdkStepperPrevious>

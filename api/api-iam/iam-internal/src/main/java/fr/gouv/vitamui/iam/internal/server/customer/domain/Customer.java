@@ -73,7 +73,7 @@ public class Customer extends IdDocument {
     private String identifier;
 
     @NotNull
-    @Length(min = 6, max = 20)
+    @Length(min = 4, max = 25)
     @Indexed(name = "idx_customer_code", unique = true, background = true)
     private String code;
 

@@ -77,9 +77,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public JSON = JSON;
   public hexPattern = /#([0-9A-Fa-f]{6})/;
   public customerInfo: CustomerInfo = {
-    code: '',
-    name: '',
-    companyName: '',
+    code: null,
+    name: null,
+    companyName: null,
   };
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
@@ -105,7 +105,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       enabled: [true, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
         this.customerCreateValidators.uniqueCode(),
       ],
       name: [null, Validators.required],

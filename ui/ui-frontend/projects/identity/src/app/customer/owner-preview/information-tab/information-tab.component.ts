@@ -103,7 +103,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
       customerId: [null, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
         this.ownerFormValidators.uniqueCode(),
       ],
       name: [null, Validators.required],
