@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 import { ScrollTopComponent } from './scroll-top.component';
 
 describe('ScrollTopComponent', () => {

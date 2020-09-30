@@ -46,7 +46,7 @@ import { VitamUIListInputComponent } from './vitamui-list-input.component';
 
 @Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>'})
 class TestHostComponent {
-  @ViewChild(VitamUIListInputComponent, { static: false }) component: VitamUIListInputComponent;
+  @ViewChild(VitamUIListInputComponent) component: VitamUIListInputComponent;
   values: string[];
   validators = Validators.maxLength(10);
 }

@@ -49,7 +49,7 @@ describe('SecurityApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: SecurityApiService = TestBed.get(SecurityApiService);
+    const service: SecurityApiService = TestBed.inject(SecurityApiService);
     expect(service).toBeTruthy();
   });
 });

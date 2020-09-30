@@ -1,6 +1,7 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
+import { MatSelectionList } from '@angular/material/list';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -63,7 +63,7 @@ describe('PatternComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -86,7 +86,7 @@ describe('PatternComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
-  it('should set the patterns', async(() => {
+  it('should set the patterns', waitForAsync(() => {
     testhost.patterns = ['option1.com', 'option2.com'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {

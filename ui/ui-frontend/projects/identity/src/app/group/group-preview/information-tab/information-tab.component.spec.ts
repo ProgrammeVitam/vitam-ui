@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 
@@ -77,7 +77,7 @@ describe('Profile Group InformationTabComponent', () => {
   );
   const authServiceMock = { user : { level: ''}};
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     expectedGroup = {
       id: '42',
       enabled: true,

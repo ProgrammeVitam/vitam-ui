@@ -1,5 +1,5 @@
 import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTreeModule} from '@angular/material/tree';
 import {EMPTY, of} from 'rxjs';
@@ -28,7 +28,7 @@ describe('FilingPlanComponent', () => {
     loadTree: () => of([])
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatTreeModule,

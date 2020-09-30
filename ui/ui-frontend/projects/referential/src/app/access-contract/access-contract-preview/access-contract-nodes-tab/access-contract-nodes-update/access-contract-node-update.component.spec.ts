@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState} from 'ui-frontend-common';
@@ -92,7 +92,7 @@ xdescribe('AccessContractNodeUpdateComponent', () => {
   let component: AccessContractNodeUpdateComponent;
   let fixture: ComponentFixture<AccessContractNodeUpdateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
     TestBed.configureTestingModule({

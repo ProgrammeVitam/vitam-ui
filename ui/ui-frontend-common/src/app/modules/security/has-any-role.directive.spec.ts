@@ -75,7 +75,7 @@ describe('HasAnyRoleDirective', () => {
 
   it('should show or clear content based on the roles of the logged user', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
-    const authService = TestBed.get(AuthService);
+    const authService = TestBed.inject(AuthService);
     // Triggers a change detection cycle for the component.
     fixture.detectChanges();
 
@@ -93,7 +93,7 @@ describe('HasAnyRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
     fixture.detectChanges();
     // The element should now be displayed
     expect(getTestElement(fixture)).toBeTruthy();
@@ -111,7 +111,7 @@ describe('HasAnyRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
     fixture.detectChanges();
     // The element should not be displayed
     expect(getTestElement(fixture)).toBeNull();
@@ -121,7 +121,7 @@ describe('HasAnyRoleDirective', () => {
   it('should show or clear content based on the input roles', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
     const testHost = fixture.componentInstance;
-    const authService = TestBed.get(AuthService);
+    const authService = TestBed.inject(AuthService);
     // Sets a logged user with the required role
     authService.userLoaded = new BehaviorSubject({
       profileGroup : {
@@ -136,7 +136,7 @@ describe('HasAnyRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
     // Triggers a change detection cycle for the component.
     fixture.detectChanges();
 
@@ -152,7 +152,7 @@ describe('HasAnyRoleDirective', () => {
 
   it('should not recreate the content multiple times', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
-    const authService = TestBed.get(AuthService);
+    const authService = TestBed.inject(AuthService);
 
     authService.userLoaded = new BehaviorSubject({
       profileGroup : {
@@ -167,7 +167,7 @@ describe('HasAnyRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
 
     fixture.detectChanges();
 
@@ -184,7 +184,7 @@ describe('HasAnyRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
 
     fixture.detectChanges();
 

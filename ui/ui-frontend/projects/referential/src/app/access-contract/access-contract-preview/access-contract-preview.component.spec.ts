@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {AccessContractPreviewComponent} from './access-contract-preview.component';
 
@@ -7,7 +7,7 @@ xdescribe('AccessContractPreviewComponent', () => {
   let component: AccessContractPreviewComponent;
   let fixture: ComponentFixture<AccessContractPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AccessContractPreviewComponent]
     })

@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {AccessContractService} from '../../access-contract.service';
@@ -36,7 +36,7 @@ describe('AccessContractNodesTabComponent', () => {
     excludedRootUnits: ['']
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const accessContractServiceMock = {
       getAll: () => of([])

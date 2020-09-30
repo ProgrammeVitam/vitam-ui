@@ -65,7 +65,7 @@ class TesthostComponent {
   value: string;
   label = 'Test label';
   maxlength = 42;
-  @ViewChild(EditableInputComponent, { static: false }) component: EditableInputComponent;
+  @ViewChild(EditableInputComponent) component: EditableInputComponent;
 
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {

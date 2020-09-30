@@ -52,7 +52,7 @@ describe('SubrogationApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: SubrogationApiService = TestBed.get(SubrogationApiService);
+    const service: SubrogationApiService = TestBed.inject(SubrogationApiService);
     expect(service).toBeTruthy();
   });
 });

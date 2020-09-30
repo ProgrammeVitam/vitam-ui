@@ -90,7 +90,7 @@ export class ApplicationService {
   // tslint:disable-next-line:variable-name
   _categories: { [categoryId: string]: Category };
 
-  private appMap$ = new BehaviorSubject(this.appMap);
+  private appMap$ = new BehaviorSubject(undefined);
 
   constructor(private applicationApi: ApplicationApiService, private authService: AuthService,
               private tenantService: TenantSelectionService) { }

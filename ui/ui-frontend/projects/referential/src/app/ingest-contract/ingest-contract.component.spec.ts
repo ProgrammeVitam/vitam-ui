@@ -1,6 +1,6 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialog} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
@@ -13,7 +13,7 @@ describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
   let fixture: ComponentFixture<IngestContractComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const activatedRouteMock = {
       params: of({tenantIdentifier: 1}),

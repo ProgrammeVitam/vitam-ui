@@ -1,6 +1,7 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, Input} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialogModule, MatMenuModule, MatSidenavModule} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialogModule, MatMenuModule, MatSidenavModule} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {RouterTestingModule} from '@angular/router/testing';
 import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -25,7 +26,7 @@ describe('AgencyComponent', () => {
   let component: AgencyComponent;
   let fixture: ComponentFixture<AgencyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AgencyComponent,

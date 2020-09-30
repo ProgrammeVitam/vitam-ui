@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialog} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
 import {of} from 'rxjs';
 
 import {SecurisationService} from '../securisation.service';
@@ -14,7 +14,7 @@ describe('SecurisationListComponent', () => {
     search: () => of(null)
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecurisationListComponent],
       providers: [

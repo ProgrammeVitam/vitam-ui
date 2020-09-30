@@ -1,5 +1,5 @@
-import {Event} from 'ui-frontend-common';
+import {Event as IEvent} from 'ui-frontend-common';
 
-export interface Event extends Event {
+export interface Event extends IEvent {
   idAppSession: string;
 }

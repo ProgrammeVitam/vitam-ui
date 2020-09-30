@@ -1,8 +1,11 @@
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
-import {MatDatepickerModule, MatDialog, MatNativeDateModule, MatSidenavModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
@@ -14,7 +17,7 @@ describe('SecurisationComponent', () => {
   let component: SecurisationComponent;
   let fixture: ComponentFixture<SecurisationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({tenantIdentifier: 1}),
       data: of({appId: 'SECURISATION_APP'})

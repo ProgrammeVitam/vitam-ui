@@ -1,6 +1,6 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialog} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 
@@ -36,7 +36,7 @@ describe('IngestContractAttachmentTabComponent', () => {
     managementContractId: 'MC-000001'
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const accessContractServiceMock = {
       getAll: () => of([])

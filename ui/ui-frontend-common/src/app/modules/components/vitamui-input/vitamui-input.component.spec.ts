@@ -49,8 +49,8 @@ import { VitamUIInputComponent } from './vitamui-input.component';
   `
 })
 class TesthostComponent {
-  @ViewChild(VitamUIInputComponent, {static: false}) vitamuiInputComponent: VitamUIInputComponent;
-  @ViewChild('input', {static: false}) ngModel: NgModel;
+  @ViewChild(VitamUIInputComponent) vitamuiInputComponent: VitamUIInputComponent;
+  @ViewChild('input') ngModel: NgModel;
 
   value = 'initial value';
 }

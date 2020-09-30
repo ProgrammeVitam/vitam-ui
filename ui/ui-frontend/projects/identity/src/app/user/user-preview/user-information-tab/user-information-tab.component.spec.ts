@@ -41,7 +41,7 @@ import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-fron
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -158,7 +158,7 @@ describe('UserInfoTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     expectedUser = {
       id: 'idUser',
       identifier: '8',

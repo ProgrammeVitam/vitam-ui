@@ -1,7 +1,7 @@
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatProgressSpinnerModule} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {BASE_URL} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 import {ContextListComponent} from './context-list.component';
@@ -11,7 +11,7 @@ xdescribe('ContextListComponent', () => {
   let component: ContextListComponent;
   let fixture: ComponentFixture<ContextListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContextListComponent],
       imports: [

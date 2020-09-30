@@ -66,7 +66,7 @@ import { EditableTextareaComponent } from './editable-textarea.component';
     value: string;
     label = 'Test label';
     maxlength = 42;
-    @ViewChild(EditableTextareaComponent, {static: false}) component: EditableTextareaComponent;
+    @ViewChild(EditableTextareaComponent) component: EditableTextareaComponent;
 
     validator = Validators.required;
     asyncValidator = (control: AbstractControl) => {

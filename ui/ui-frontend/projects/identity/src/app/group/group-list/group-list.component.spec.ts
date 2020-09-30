@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file directive-selector */
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -87,7 +87,7 @@ const levels: string[] = ['level1', 'level2'];
 
 describe('GroupListComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     groups = [
       {
         id: '1',
@@ -147,10 +147,9 @@ describe('GroupListComponent', () => {
     })
     .compileComponents();
 
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     spyOn(groupService, 'search').and.callThrough();
     spyOn(groupService, 'loadMore').and.callThrough();
-    spyOn(groupService, 'getNonEmptyLevels').and.callFake(groupListServiceSpy.getNonEmptyLevels);
 
   }));
 
@@ -179,7 +178,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should have a list of profile groups', () => {
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     expect(groupService.search).toHaveBeenCalledTimes(1);
     expect(page.rows).toBeTruthy();
     expect(page.rows.length).toBe(2);

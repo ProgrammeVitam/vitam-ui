@@ -35,22 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
-import {
-  AfterContentInit,
-  ContentChildren,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  HostListener,
-  Input,
-  Output,
-  QueryList,
-  ViewChild,
-} from '@angular/core';
+import { AfterContentInit, ContentChildren, ElementRef, EventEmitter, HostBinding, HostListener, Input, Output, QueryList, ViewChild, Directive } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
+@Directive()
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
 
   @Input() label: string;
@@ -78,7 +68,7 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   @Output() editOpen = new EventEmitter<void>();
   @Output() editClose = new EventEmitter<boolean>();
 
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;
 
   @HostBinding('class.readonly') readonly = false;

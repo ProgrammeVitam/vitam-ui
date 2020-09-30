@@ -36,7 +36,7 @@
  */
 /* tslint:disable: max-classes-per-file directive-selector */
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -80,7 +80,7 @@ let page: Page;
 
 describe('FileFormatCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', {create: of({})});
     const fileFormatCreateValidatorsSpy = jasmine.createSpyObj(

@@ -49,8 +49,8 @@ import { VitamUIInputPositiveNumberComponent } from './vitamui-input-positive-nu
   `
 })
 class TesthostComponent {
-  @ViewChild(VitamUIInputPositiveNumberComponent, {static: false}) VitamUIInputPositiveNumberComponent: VitamUIInputPositiveNumberComponent;
-  @ViewChild('input', {static: false}) ngModel: NgModel;
+  @ViewChild(VitamUIInputPositiveNumberComponent) VitamUIInputPositiveNumberComponent: VitamUIInputPositiveNumberComponent;
+  @ViewChild('input') ngModel: NgModel;
 
   value = 'initial value';
 }

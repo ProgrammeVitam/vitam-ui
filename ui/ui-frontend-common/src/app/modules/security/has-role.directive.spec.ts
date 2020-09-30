@@ -85,7 +85,7 @@ describe('HasRoleDirective', () => {
 
   it('should show or clear content based on the logged user\'s roles', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
-    const authService = TestBed.get(AuthService);
+    const authService = TestBed.inject(AuthService);
     // Triggers a change detection cycle for the component.
     fixture.detectChanges();
 
@@ -106,7 +106,7 @@ describe('HasRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
     fixture.detectChanges();
     // The element should not be displayed
     expect(getTestElement(fixture)).toBeNull();
@@ -123,7 +123,7 @@ describe('HasRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
     fixture.detectChanges();
     // The element should be displayed
     expect(getTestElement(fixture)).toBeTruthy();
@@ -132,7 +132,7 @@ describe('HasRoleDirective', () => {
 
   it('should not recreate the content multiple times', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
-    const authService = TestBed.get(AuthService);
+    const authService = TestBed.inject(AuthService);
 
     authService.userLoaded = new BehaviorSubject({
       profileGroup : {
@@ -147,7 +147,7 @@ describe('HasRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
 
     fixture.detectChanges();
 
@@ -164,7 +164,7 @@ describe('HasRoleDirective', () => {
           },
         ]
       }
-    });
+    } as any);
 
     fixture.detectChanges();
 

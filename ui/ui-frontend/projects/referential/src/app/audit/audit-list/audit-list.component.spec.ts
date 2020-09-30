@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {of} from 'rxjs';
@@ -9,7 +9,7 @@ describe('AuditListComponent', () => {
   let component: AuditListComponent;
   let fixture: ComponentFixture<AuditListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const auditServiceMock = {
       search: () => of(null)

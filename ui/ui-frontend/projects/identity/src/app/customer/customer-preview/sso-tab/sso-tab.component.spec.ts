@@ -36,7 +36,7 @@
  */
 /* tslint:disable:max-classes-per-file no-magic-numbers */
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of ,  Subject } from 'rxjs';
 
@@ -102,7 +102,7 @@ describe('SsoTabComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let providers: any[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     providers = [
       {
         id: '5ad5f14c894e6a414edc7b60c5397d744f4b4ed8bd86934d0a8e8311add40f3f',

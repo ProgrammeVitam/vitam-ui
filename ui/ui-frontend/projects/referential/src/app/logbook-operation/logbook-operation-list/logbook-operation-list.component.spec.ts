@@ -37,7 +37,7 @@
 import { EMPTY } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LogbookSearchService } from '../logbook-search.service';
 import { EventTypeBadgeClassPipe } from './event-type-badge-class.pipe';
@@ -49,7 +49,7 @@ describe('LogbookOperationListComponent', () => {
   let component: LogbookOperationListComponent;
   let fixture: ComponentFixture<LogbookOperationListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LogbookOperationListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe ],
       providers: [

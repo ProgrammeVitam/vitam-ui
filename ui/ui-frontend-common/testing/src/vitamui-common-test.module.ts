@@ -178,6 +178,7 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 // Editable fields
 
+@Directive()
 export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;

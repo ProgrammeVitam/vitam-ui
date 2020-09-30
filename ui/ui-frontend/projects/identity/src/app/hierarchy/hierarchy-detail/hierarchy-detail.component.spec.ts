@@ -37,7 +37,7 @@
 /* tslint:disable: max-classes-per-file no-magic-numbers */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -114,7 +114,7 @@ describe('HierarchyDetailComponent', () => {
     readonly : false
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,

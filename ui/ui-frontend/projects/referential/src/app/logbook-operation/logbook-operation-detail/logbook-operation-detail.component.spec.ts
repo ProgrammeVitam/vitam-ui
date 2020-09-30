@@ -37,7 +37,7 @@
 import { AuthService, LogbookService } from 'ui-frontend-common';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
 import { EventTypeBadgeClassPipe } from '../logbook-operation-list/event-type-badge-class.pipe';
@@ -48,7 +48,7 @@ describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
   let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe ],
       providers: [

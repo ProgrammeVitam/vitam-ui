@@ -37,7 +37,7 @@
 /* tslint:disable: directive-selector no-magic-numbers */
 /* tslint:disable: max-file-line-count */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of, Subject } from 'rxjs';
@@ -85,7 +85,7 @@ describe('HierarchyListComponent', () => {
   let component: HierarchyListComponent;
   let fixture: ComponentFixture<HierarchyListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const hierarchyListServiceSpy = {
       search: () => of([]),
       canLoadMore: true,

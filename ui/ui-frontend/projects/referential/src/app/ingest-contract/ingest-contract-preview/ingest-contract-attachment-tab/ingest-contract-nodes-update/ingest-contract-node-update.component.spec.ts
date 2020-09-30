@@ -36,10 +36,10 @@
  */
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatSnackBarModule} from '@angular/material';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {FilingPlanModule} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.module';
 import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -53,7 +53,7 @@ xdescribe('IngestContractNodeUpdateComponent', () => {
   let component: IngestContractNodeUpdateComponent;
   let fixture: ComponentFixture<IngestContractNodeUpdateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
     TestBed.configureTestingModule({

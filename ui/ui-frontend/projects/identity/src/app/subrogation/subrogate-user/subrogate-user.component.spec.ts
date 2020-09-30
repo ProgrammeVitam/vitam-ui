@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 
@@ -45,7 +45,7 @@ describe('SubrogateUserComponent', () => {
   // let component: SubrogateUserComponent;
   let fixture: ComponentFixture<SubrogateUserComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
       declarations: [ SubrogateUserComponent ],

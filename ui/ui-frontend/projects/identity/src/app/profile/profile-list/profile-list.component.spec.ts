@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers */
 /* tslint:disable: max-file-line-count */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -51,7 +51,7 @@ describe('ProfileListComponent', () => {
   let component: ProfileListComponent;
   let fixture: ComponentFixture<ProfileListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const profileListServiceSpy = {
       search: () => of([]),
       canLoadMore: true,

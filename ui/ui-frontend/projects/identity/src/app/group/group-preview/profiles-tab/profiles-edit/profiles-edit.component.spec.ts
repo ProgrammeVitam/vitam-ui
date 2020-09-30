@@ -38,7 +38,7 @@ import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService } from 'ui-frontend-common';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -69,7 +69,7 @@ describe('ProfilesEditComponent', () => {
   let component: ProfilesEditComponent;
   let fixture: ComponentFixture<ProfilesEditComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
     TestBed.configureTestingModule({

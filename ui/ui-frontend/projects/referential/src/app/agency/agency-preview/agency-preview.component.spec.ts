@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {AgencyService} from '../agency.service';
 import {AgencyPreviewComponent} from './agency-preview.component';
 
@@ -9,7 +9,7 @@ describe('AgencyPreviewComponent', () => {
   let component: AgencyPreviewComponent;
   let fixture: ComponentFixture<AgencyPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AgencyPreviewComponent],
       providers: [

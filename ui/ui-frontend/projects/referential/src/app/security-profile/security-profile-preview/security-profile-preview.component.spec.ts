@@ -1,5 +1,5 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatDialog} from '@angular/material/dialog';
 
 import {SecurityProfileService} from '../security-profile.service';
@@ -9,7 +9,7 @@ describe('SecurityProfilePreviewComponent', () => {
   let component: SecurityProfilePreviewComponent;
   let fixture: ComponentFixture<SecurityProfilePreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecurityProfilePreviewComponent],
       providers: [

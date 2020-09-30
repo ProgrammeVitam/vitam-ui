@@ -40,7 +40,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable:max-classes-per-file */
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -93,7 +93,7 @@ let page: Page;
 
 describe('GroupCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const profileGroupServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
     const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });

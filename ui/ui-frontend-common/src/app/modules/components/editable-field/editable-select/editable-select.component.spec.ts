@@ -61,7 +61,7 @@ class TesthostComponent {
   label = 'Test label';
   maxlength = 42;
 
-  @ViewChild(EditableSelectComponent, { static: false }) component: EditableSelectComponent;
+  @ViewChild(EditableSelectComponent) component: EditableSelectComponent;
 }
 
 describe('EditableSelectComponent', () => {

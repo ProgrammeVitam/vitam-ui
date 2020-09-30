@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
 import { of, Subject } from 'rxjs';
@@ -164,7 +164,7 @@ describe('ProfilesTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective ],
       providers: [

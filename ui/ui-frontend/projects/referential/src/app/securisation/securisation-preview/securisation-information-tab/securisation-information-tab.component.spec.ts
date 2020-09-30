@@ -1,5 +1,5 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {NgxFilesizeModule} from 'ngx-filesize';
 import {of} from 'rxjs';
 
@@ -57,7 +57,7 @@ describe('SecurisationInformationTabComponent', () => {
     }]
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const securisationServiceMock = {
       getInfoFromTimestamp: () => of({})
     };

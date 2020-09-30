@@ -53,7 +53,7 @@ import { StepperModule } from './stepper.module';
   `
 })
 class TesthostComponent {
-  @ViewChild(StepperComponent, { static: false }) stepper: StepperComponent;
+  @ViewChild(StepperComponent) stepper: StepperComponent;
 }
 
 let testhost: TesthostComponent;

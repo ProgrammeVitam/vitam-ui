@@ -48,7 +48,7 @@ import { CollapseComponent } from './collapse.component';
   `
 })
 class TesthostComponent {
-  @ViewChild(CollapseComponent, {static: false}) component: CollapseComponent;
+  @ViewChild(CollapseComponent) component: CollapseComponent;
 }
 
 describe('CollapseComponent', () => {

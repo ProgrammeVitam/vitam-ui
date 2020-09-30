@@ -36,8 +36,8 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatTabsModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { ApplicationsListComponent } from './application-list.component';
 

@@ -49,8 +49,8 @@ import { VitamUITextareaComponent } from './vitamui-textarea.component';
   `
 })
 class TesthostComponent {
-  @ViewChild(VitamUITextareaComponent, {static: false}) vitamuiTextareaComponent: VitamUITextareaComponent;
-  @ViewChild('textarea', {static: false}) ngModel: NgModel;
+  @ViewChild(VitamUITextareaComponent) vitamuiTextareaComponent: VitamUITextareaComponent;
+  @ViewChild('textarea') ngModel: NgModel;
 
   value = 'initial value';
 }

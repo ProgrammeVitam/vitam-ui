@@ -40,7 +40,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable:max-classes-per-file directive-selector */
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -74,7 +74,7 @@ describe('OwnerCreateComponent', () => {
   let component: OwnerCreateComponent;
   let fixture: ComponentFixture<OwnerCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     owner = {
       id: '5ad5f14c894e6a414edc7b67',
       identifier : '1',

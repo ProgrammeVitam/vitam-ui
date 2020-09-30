@@ -55,10 +55,9 @@ export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
 export class EditableFileComponent extends EditableFieldComponent {
 
   @Input() accept: string;
-  @Input() disabled: boolean;
   file: File;
 
-  @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(elementRef: ElementRef) {
     super(elementRef);

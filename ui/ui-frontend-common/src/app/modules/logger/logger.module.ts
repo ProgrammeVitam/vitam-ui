@@ -51,7 +51,7 @@ export function loggerFactory(environment) {
 // @dynamic
 @NgModule()
 export class LoggerModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<LoggerModule> {
     return {
       ngModule: LoggerModule,
       providers: [

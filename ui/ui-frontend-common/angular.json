@@ -126,5 +126,8 @@
       }
     }
   },
-  "defaultProject": "ui-frontend-common"
+  "defaultProject": "ui-frontend-common",
+  "cli": {
+    "analytics": false
+  }
 }

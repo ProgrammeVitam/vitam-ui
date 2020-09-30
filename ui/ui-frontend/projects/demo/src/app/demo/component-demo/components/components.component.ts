@@ -37,7 +37,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Application, ApplicationId, ApplicationService, ConfirmDialogService } from 'ui-frontend-common';
+import { ApplicationId, ApplicationInfo, ApplicationService, ConfirmDialogService } from 'ui-frontend-common';
 
 const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 
@@ -52,7 +52,7 @@ export class ComponentsComponent implements OnInit {
 
   appId = ApplicationId.ACCOUNTS_APP; // FIXME: Why this app id, can we replace easy ?
 
-  applications: Application[];
+  applications: ApplicationInfo;
 
   vitamuiInputValue: string;
   vitamUIInputPositiveNumberValue: number;

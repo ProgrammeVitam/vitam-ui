@@ -37,7 +37,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatProgressSpinnerModule, MatTabsModule } from '@angular/material';
+import { MatDialogModule} from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'ui-frontend-common';

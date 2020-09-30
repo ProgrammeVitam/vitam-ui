@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers max-file-line-count max-classes-per-file */
 
 import { Component, Directive, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -157,7 +157,7 @@ describe('ProfilesFormComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -319,7 +319,7 @@ describe('ProfilesFormComponent', () => {
       expect(testhost.profiles).toEqual(['4']);
     });
 
-    it('should remove the profile Id from the list', async(() => {
+    it('should remove the profile Id from the list', waitForAsync(() => {
       testhost.profiles = ['3', '4'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -329,7 +329,7 @@ describe('ProfilesFormComponent', () => {
       });
     }));
 
-    it('should not show profiles which are already selected', async(() => {
+    it('should not show profiles which are already selected', waitForAsync(() => {
       testhost.profiles = ['2'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -353,7 +353,7 @@ describe('ProfilesFormComponent', () => {
       expect(testhost.component.profileSelect.disabled).toBeFalsy();
     });
 
-    it('should not show the app 2', async(() => {
+    it('should not show the app 2', waitForAsync(() => {
       testhost.profiles = ['3'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -365,7 +365,7 @@ describe('ProfilesFormComponent', () => {
       });
     }));
 
-    it('should not show the tenant 2', async(() => {
+    it('should not show the tenant 2', waitForAsync(() => {
       testhost.profiles = ['2'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {

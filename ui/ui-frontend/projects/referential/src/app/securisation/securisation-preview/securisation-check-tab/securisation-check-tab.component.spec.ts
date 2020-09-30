@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ActivatedRoute} from '@angular/router';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -94,7 +94,7 @@ describe('SecurisationCheckTabComponent', () => {
     }]
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({tenantIdentifier: 1}),
       data: of({appId: 'TRACEABILITY_APP'})

@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
@@ -95,7 +95,7 @@ class TestHostComponent {
 describe('Profile InformationTabComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const profileServiceMock = {
       patch: of({}), updated: new Subject(),
       convertToAdminUserProfile: () => {},

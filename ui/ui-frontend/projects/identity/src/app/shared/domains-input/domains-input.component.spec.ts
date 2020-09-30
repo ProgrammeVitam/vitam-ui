@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers */
 
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { of } from 'rxjs';
@@ -58,7 +58,7 @@ let fixture: ComponentFixture<TestHostComponent>;
 
 describe('DomainsInputComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
       'CustomerCreateValidators',
       { uniqueDomain: of(null) }
@@ -88,7 +88,7 @@ describe('DomainsInputComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
-  it('should have a list of domains', async(() => {
+  it('should have a list of domains', waitForAsync(() => {
     testhost.domains = [
       'toto.titi',
       'titi.tutu',
@@ -146,7 +146,7 @@ describe('DomainsInputComponent', () => {
     expect(testhost.selected).toBe('test.com');
   });
 
-  it('should emit the selected value', async(() => {
+  it('should emit the selected value', waitForAsync(() => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -158,7 +158,7 @@ describe('DomainsInputComponent', () => {
     });
   }));
 
-  it('should set the selected value', async(() => {
+  it('should set the selected value', waitForAsync(() => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     testhost.selected = 'tata.fr';
     fixture.detectChanges();
@@ -180,7 +180,7 @@ describe('DomainsInputComponent', () => {
     expect(elButton.attributes.disabled).toBeTruthy();
   });
 
-  it('should remove the domain', async(() => {
+  it('should remove the domain', waitForAsync(() => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {
@@ -191,7 +191,7 @@ describe('DomainsInputComponent', () => {
     });
   }));
 
-  it('should unset the selected item', async(() => {
+  it('should unset the selected item', waitForAsync(() => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     testhost.selected = 'tata.fr';
     fixture.detectChanges();

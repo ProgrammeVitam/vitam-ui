@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -52,7 +52,7 @@ describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['close']);
 
     TestBed.configureTestingModule({

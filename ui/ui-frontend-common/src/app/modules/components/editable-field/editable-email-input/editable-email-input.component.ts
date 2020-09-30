@@ -57,7 +57,7 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
 
 export class EditableEmailInputComponent extends EditableFieldComponent {
 
-  @ViewChild('select', { static: false }) select: MatSelect;
+  @ViewChild('select') select: MatSelect;
 
   constructor(formBuilder: FormBuilder, elementRef: ElementRef) {
     super(elementRef);

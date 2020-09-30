@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file directive-selector */
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -88,7 +88,7 @@ let tenants: Tenant[];
 
 describe('CustomerListComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     customers = [
       {
         id: '11',

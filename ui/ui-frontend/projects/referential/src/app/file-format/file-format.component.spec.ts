@@ -1,6 +1,7 @@
 import {Component, Input, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialogModule, MatSidenavModule} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {RouterTestingModule} from '@angular/router/testing';
 import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -24,7 +25,7 @@ describe('FileFormatComponent', () => {
   let component: FileFormatComponent;
   let fixture: ComponentFixture<FileFormatComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         FileFormatComponent,

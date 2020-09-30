@@ -39,7 +39,7 @@ import { of } from 'rxjs';
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -67,7 +67,7 @@ describe('EditableDomainInputComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
       'CustomerCreateValidators',
       { uniqueCode: () => of(null), uniqueDomain: () => of(null)
@@ -120,7 +120,7 @@ describe('EditableDomainInputComponent', () => {
       expect(elLabel.textContent).toContain('Test label');
     });
 
-    it('should display the list of domains', async(() => {
+    it('should display the list of domains', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -135,7 +135,7 @@ describe('EditableDomainInputComponent', () => {
       });
     }));
 
-    it('should display "(par défaut)" next to the selected domain', async(() => {
+    it('should display "(par défaut)" next to the selected domain', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com', 'test4.com'];
       testhost.defaultValue = testhost.value[1];
       fixture.detectChanges();
@@ -203,7 +203,7 @@ describe('EditableDomainInputComponent', () => {
 
   describe('Class', () => {
 
-    it('should set the control value', async(() => {
+    it('should set the control value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -258,7 +258,7 @@ describe('EditableDomainInputComponent', () => {
       });
     });
 
-    it('should emit a new value', async(() => {
+    it('should emit a new value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -274,7 +274,7 @@ describe('EditableDomainInputComponent', () => {
       });
     }));
 
-    it('should reverse the changes', async(() => {
+    it('should reverse the changes', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {

@@ -1,5 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialog, MatProgressSpinnerModule} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -14,7 +15,7 @@ describe('AgencyListComponent', () => {
   let component: AgencyListComponent;
   let fixture: ComponentFixture<AgencyListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const authServiceMock = {user: {proofTenantIdentifier: '1'}};
     const activatedRouteMock = {
       params: of({tenantIdentifier: 1}),

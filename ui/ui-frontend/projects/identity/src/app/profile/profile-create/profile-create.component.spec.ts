@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -53,7 +53,7 @@ describe('ProfileCreateComponent', () => {
   // let component: ProfileCreateComponent;
   let fixture: ComponentFixture<ProfileCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const profileServiceSpy = jasmine.createSpyObj('ProfileService', { create: of({}) });
     const startupServiceSpy = jasmine.createSpyObj('StartupService', { create: of({}) });

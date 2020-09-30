@@ -57,7 +57,7 @@ class TesthostComponent {
   defaultValue: string;
   label = 'Test label';
 
-  @ViewChild(MultipleEmailInputComponent, { static: false }) component: MultipleEmailInputComponent;
+  @ViewChild(MultipleEmailInputComponent) component: MultipleEmailInputComponent;
 }
 
 describe('MultipleEmailInputComponent', () => {

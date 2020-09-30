@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, Input} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {UpdatedApplicationSelectContentComponent} from './application-select-content.component';
 import {AuthService, WINDOW_LOCATION} from "ui-frontend-common";
@@ -53,7 +53,7 @@ describe('ApplicationSelectContentComponent', () => {
   let component: UpdatedApplicationSelectContentComponent;
   let fixture: ComponentFixture<UpdatedApplicationSelectContentComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         UpdatedApplicationSelectContentComponent,

@@ -59,7 +59,7 @@ class TesthostComponent {
   label = 'Test label';
   maxlength = 42;
 
-  @ViewChild(EditableToggleGroupComponent, { static: false }) component: EditableToggleGroupComponent;
+  @ViewChild(EditableToggleGroupComponent) component: EditableToggleGroupComponent;
 }
 
 describe('EditableSelectComponent', () => {

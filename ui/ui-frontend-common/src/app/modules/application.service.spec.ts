@@ -71,8 +71,8 @@ describe('ApplicationService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    appService = TestBed.get(ApplicationService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    appService = TestBed.inject(ApplicationService);
   });
 
   it('should be created', inject([ApplicationService], (service: ApplicationService) => {

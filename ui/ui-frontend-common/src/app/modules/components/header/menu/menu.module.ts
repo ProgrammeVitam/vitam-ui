@@ -2,7 +2,9 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { MatButtonModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -44,7 +46,7 @@ import { MenuComponent } from './menu.component';
   ]
 })
 export class MenuModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<MenuModule> {
     return {
       ngModule: MenuModule,
       providers: [MenuOverlayService]

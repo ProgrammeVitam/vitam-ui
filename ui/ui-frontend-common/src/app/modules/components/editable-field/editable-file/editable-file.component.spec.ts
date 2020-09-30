@@ -66,7 +66,7 @@ class TesthostComponent {
   value: File;
   label = 'Test label';
   accept = '.txt';
-  @ViewChild(EditableFileComponent, {static: false}) component: EditableFileComponent;
+  @ViewChild(EditableFileComponent) component: EditableFileComponent;
 
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {
