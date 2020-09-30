@@ -142,8 +142,8 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "applicationName", "name", "enabled", "description", LEVEL_KEY,
-                TENANT_IDENTIFIER_KEY, CUSTOMER_ID_KEY, "identifier");
+        return Arrays.asList("id", "applicationName", "name", "enabled", "description", LEVEL_KEY, TENANT_IDENTIFIER_KEY, CUSTOMER_ID_KEY, "identifier",
+                EXTERNAL_PARAM_ID_KEY);
     }
 
     @Override
@@ -194,6 +194,7 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         return CRITERIA_VERSION_V2;
     }
 
+    @Override
     public JsonNode findHistoryById(final String id) {
         checkLogbookRight(id);
         return getClient().findHistoryById(getInternalHttpContext(), id);
@@ -212,7 +213,7 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         }
     }
 
-    public List<String> getLevels(Optional<String> criteria) {
+    public List<String> getLevels(final Optional<String> criteria) {
         return getClient().getLevels(getInternalHttpContext(), checkAuthorization(criteria));
     }
 }
