@@ -9,6 +9,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
 
 public class TestContext {
 
@@ -71,6 +72,10 @@ public class TestContext {
     public OwnerDto ownerDto;
 
     public OwnerDto savedOwnerDto;
+    
+    public ContextDto contextDto;
+
+    public ContextDto savedContextDto;
 
     public void reset() {
         exception = null;
@@ -102,5 +107,7 @@ public class TestContext {
         savedUserDto = null;
         ownerDto = null;
         savedOwnerDto = null;
+        contextDto = null;
+        savedContextDto = null;
     }
 }

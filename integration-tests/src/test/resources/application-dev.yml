@@ -22,6 +22,18 @@ iam-client:
     truststore:
       path: ${certs-folder}/truststore_server.jks
       password: ${jks-password}
+      
+# Referential client configuration
+referential-client:
+  host: localhost
+  port: 8087
+  ssl:
+    keystore:
+      path: ${certs-folder}/keystore_ui-referential.jks
+      password: ${jks-password}
+    truststore:
+      path: ${certs-folder}/truststore_server.jks
+      password: ${jks-password}
 
 # Mongo
 mongo:
