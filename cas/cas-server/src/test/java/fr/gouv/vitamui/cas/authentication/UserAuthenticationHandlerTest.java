@@ -75,6 +75,16 @@ public final class UserAuthenticationHandlerTest {
         assertEquals(USERNAME, result.getPrincipal().getId());
     }
 
+    @Test
+    public void testSuccessfulAuthentication_when_spaceBeforeAndAfterUsername() throws GeneralSecurityException, PreventedException {
+        when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null)))
+                .thenReturn(basicUser(UserStatusEnum.ENABLED));
+
+        credential = new UsernamePasswordCredential(" " +USERNAME + "  ", PASSWORD);
+        val result = handler.authenticate(credential);
+        assertEquals(USERNAME, result.getPrincipal().getId());
+    }
+
     @Test(expected = AccountNotFoundException.class)
     public void testNoUser() throws GeneralSecurityException, PreventedException {
         when(casExternalRestClient.login(any(ExternalHttpContext.class), eq(USERNAME), eq(PASSWORD), eq(null), eq(null))).thenReturn(null);

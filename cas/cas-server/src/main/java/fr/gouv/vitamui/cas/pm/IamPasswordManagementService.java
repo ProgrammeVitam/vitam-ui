@@ -140,7 +140,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val username = upc.getUsername();
         Assert.notNull(username, "username can not be null");
         // username to lowercase
-        val usernameLowercase = username.toLowerCase();
+        val usernameLowercase = username.toLowerCase().trim();
         LOGGER.debug("username: {}", usernameLowercase);
         val identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
         Assert.isTrue(identityProvider.isPresent(), "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
