@@ -107,7 +107,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       identifier: [{value: null, disabled: true}, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
         this.customerCreateValidators.uniqueCode(),
       ],
       name: [null, Validators.required],

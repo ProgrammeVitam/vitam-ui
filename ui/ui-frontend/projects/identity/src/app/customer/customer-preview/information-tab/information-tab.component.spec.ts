@@ -250,9 +250,7 @@ describe('Customer InformationTabComponent', () => {
     expect(codeControl.valid).toBeFalsy();
     codeControl.setValue('aaaaaa');
     expect(codeControl.valid).toBeFalsy();
-    codeControl.setValue('12345');
-    expect(codeControl.valid).toBeFalsy();
-    codeControl.setValue('123456');
+    codeControl.setValue('1234');
     expect(codeControl.valid).toBeTruthy();
   });
 
