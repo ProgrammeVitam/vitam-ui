@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { trigger, style, transition, animate } from '@angular/animations';
 import { AuthService, Event, LogbookService } from 'ui-frontend-common';
 
 
 @Component({
-  selector: 'app-api-supervision-detail',
-  templateUrl: './api-supervision-detail.component.html',
-  styleUrls: ['./api-supervision-detail.component.scss'],
+  selector: 'app-logbook-operation-detail',
+  templateUrl: './logbook-operation-detail.component.html',
+  styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -57,7 +57,7 @@ import { AuthService, Event, LogbookService } from 'ui-frontend-common';
     ])
   ]
 })
-export class ApiSupervisionDetailComponent implements OnInit, OnChanges {
+export class LogbookOperationDetailComponent implements OnInit, OnChanges {
 
   @Input() eventId: string;
 
@@ -82,7 +82,7 @@ export class ApiSupervisionDetailComponent implements OnInit, OnChanges {
   }
 
   openPopup() {
-    window.open('/api-supervision/tenant/' + this.tenantIdentifier + '/event/' + this.event.id,
+    window.open('/logbook-operation/tenant/' + this.tenantIdentifier + '/event/' + this.event.id,
       'detailPopup', 'width=584, height=713, resizable=no, location=no');
     this.emitClose();
   }

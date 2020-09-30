@@ -34,35 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { AuthService, LogbookService } from 'ui-frontend-common';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
-@Component({
-  selector: 'app-api-supervision-popup',
-  template: `
-    <app-api-supervision-detail
-      (closePanel)="closePopup()"
-      [eventId]="eventId"
-      [tenantIdentifier]="tenantIdentifier"
-      [isPopup]="true"
-    ></app-api-supervision-detail>
-  `
-})
-export class ApiSupervisionPopupComponent implements OnInit {
+import { EventTypeBadgeClassPipe } from '../logbook-operation-list/event-type-badge-class.pipe';
+import { LastEventPipe } from '../logbook-operation-list/last-event.pipe';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 
-  eventId: string;
-  tenantIdentifier: number;
+describe('LogbookOperationDetailComponent', () => {
+  let component: LogbookOperationDetailComponent;
+  let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
-  constructor(private route: ActivatedRoute) {
-  }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe ],
+      providers: [
+        { provide: LogbookService, useValue: {} },
+        { provide: AuthService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+    .compileComponents();
+  }));
 
-  ngOnInit() {
-    this.eventId = this.route.snapshot.paramMap.get('id');
-    this.tenantIdentifier = +this.route.snapshot.paramMap.get('tenantIdentifier');
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LogbookOperationDetailComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  closePopup() {
-    window.close();
-  }
-
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

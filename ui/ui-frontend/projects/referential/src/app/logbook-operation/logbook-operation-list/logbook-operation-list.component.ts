@@ -34,39 +34,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY } from 'rxjs';
+import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+} from '@angular/core';
 
+import { EventFilter } from '../event-filter.interface';
 import { LogbookSearchService } from '../logbook-search.service';
-import { ApiSupervisionListComponent } from './api-supervision-list.component';
-import { EventTypeBadgeClassPipe } from './event-type-badge-class.pipe';
-import { EventTypeColorClassPipe } from './event-type-color-class.pipe';
-import { LastEventPipe } from './last-event.pipe';
 
-describe('ApiSupervisionListComponent', () => {
-  let component: ApiSupervisionListComponent;
-  let fixture: ComponentFixture<ApiSupervisionListComponent>;
+@Component({
+  selector: 'app-logbook-operation-list',
+  templateUrl: './logbook-operation-list.component.html',
+  styleUrls: ['./logbook-operation-list.component.scss']
+})
+export class LogbookOperationListComponent extends InfiniteScrollTable<Event> implements OnInit, OnChanges {
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ApiSupervisionListComponent, LastEventPipe, EventTypeColorClassPipe, EventTypeBadgeClassPipe ],
-      providers: [
-        { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-  }));
+  @Input() tenantIdentifier: number;
+  @Input() filters: Readonly<EventFilter>;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ApiSupervisionListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  @Output() eventClick = new EventEmitter<Event>();
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  orderBy = 'name';
+  direction = Direction.ASCENDANT;
+
+  constructor(public logbookSearchService: LogbookSearchService) {
+    super(logbookSearchService);
+  }
+
+  ngOnInit() {
+    this.refreshList();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.tenantIdentifier || changes.filters) {
+      this.refreshList();
+    }
+  }
+
+  refreshList() {
+    const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
+
+    const query = JSON.stringify(LogbookSearchService.buildVitamQuery(pageRequest, this.filters));
+
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, query));
+  }
+
+  selectEvent(event: Event) {
+    this.eventClick.emit(event);
+  }
+
+}

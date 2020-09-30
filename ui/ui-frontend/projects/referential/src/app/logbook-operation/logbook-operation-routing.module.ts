@@ -34,49 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { VitamUICommonModule } from 'ui-frontend-common';
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MatDatepickerModule, MatMenuModule, MatProgressSpinnerModule, MatSidenavModule, MatTabsModule, MatNativeDateModule
-} from '@angular/material';
+import { Route, RouterModule } from '@angular/router';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { LogbookOperationComponent } from './logbook-operation.component';
 
-import {
-  ApiSupervisionDetailComponent
-} from './api-supervision-detail/api-supervision-detail.component';
-import {
-  ApiSupervisionPopupComponent
-} from './api-supervision-detail/api-supervision-popup.component';
-import { ApiSupervisionListComponent } from './api-supervision-list/api-supervision-list.component';
-import { EventTypeBadgeClassPipe } from './api-supervision-list/event-type-badge-class.pipe';
-import { EventTypeColorClassPipe } from './api-supervision-list/event-type-color-class.pipe';
-import { LastEventPipe } from './api-supervision-list/last-event.pipe';
-import { ApiSupervisionComponent } from './api-supervision.component';
-import { ApiSupervisionRoutingModule } from './api-supervision-routing.module';
+const routes: Route[] = [
+  {
+    path: '',
+    redirectTo: 'tenant',
+    pathMatch: 'full'
+  },
+  {
+    path: 'tenant',
+    component: VitamUITenantSelectComponent,
+    pathMatch: 'full',
+    canActivate: [TenantSelectionGuard]
+  },
+  {
+    path: 'tenant/:tenantIdentifier',
+    component: LogbookOperationComponent,
+    canActivate: [ActiveTenantGuard]
+  }
+];
+
 
 @NgModule({
-  declarations: [
-    ApiSupervisionComponent,
-    ApiSupervisionListComponent,
-    ApiSupervisionDetailComponent,
-    ApiSupervisionPopupComponent,
-    LastEventPipe,
-    EventTypeColorClassPipe,
-    EventTypeBadgeClassPipe,
-  ],
+  declarations: [],
   imports: [
     CommonModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MatDatepickerModule,
-    MatProgressSpinnerModule,
-    MatTabsModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    ApiSupervisionRoutingModule,
-    MatNativeDateModule
+    RouterModule.forChild(routes)
+  ],
+  exports: [
+    RouterModule
   ]
 })
-export class ApiSupervisionModule { }
+export class LogbookOperationRoutingModule { }

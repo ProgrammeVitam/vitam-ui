@@ -34,40 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AuthService, LogbookService } from 'ui-frontend-common';
-
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { EventTypeBadgeClassPipe } from '../api-supervision-list/event-type-badge-class.pipe';
-import { LastEventPipe } from '../api-supervision-list/last-event.pipe';
-import { ApiSupervisionDetailComponent } from './api-supervision-detail.component';
+@Component({
+  selector: 'app-logbook-operation-popup',
+  template: `
+    <app-logbook-operation-detail
+      (closePanel)="closePopup()"
+      [eventId]="eventId"
+      [tenantIdentifier]="tenantIdentifier"
+      [isPopup]="true"
+    ></app-logbook-operation-detail>
+  `
+})
+export class LogbookOperationPopupComponent implements OnInit {
 
-describe('ApiSupervisionDetailComponent', () => {
-  let component: ApiSupervisionDetailComponent;
-  let fixture: ComponentFixture<ApiSupervisionDetailComponent>;
+  eventId: string;
+  tenantIdentifier: number;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ApiSupervisionDetailComponent, EventTypeBadgeClassPipe, LastEventPipe ],
-      providers: [
-        { provide: LogbookService, useValue: {} },
-        { provide: AuthService, useValue: {} },
-        { provide: ActivatedRoute, useValue: {} },
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
-  }));
+  constructor(private route: ActivatedRoute) {
+  }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ApiSupervisionDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  ngOnInit() {
+    this.eventId = this.route.snapshot.paramMap.get('id');
+    this.tenantIdentifier = +this.route.snapshot.paramMap.get('tenantIdentifier');
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  closePopup() {
+    window.close();
+  }
+
+}

@@ -111,13 +111,13 @@ const routes: Routes = [
     data: {appId: 'PROBATIVE_VALUE_APP'}
   },
   // =====================================================
-  //                      SUPERVISION API
+  //                      LOGBOOK OPERATION API
   // =====================================================
   {
-    path: 'supervision-api',
-    loadChildren: () => import('./supervision-api/api-supervision.module').then(m => m.ApiSupervisionModule),
+    path: 'logbook-operation',
+    loadChildren: () => import('./logbook-operation/logbook-operation.module').then(m => m.LogbookOperationModule),
     canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'SUPERVISION_API_APP' }
+    data: { appId: 'LOGBOOK_OPERATION_APP' }
   },
   // =====================================================
   //                       DSL

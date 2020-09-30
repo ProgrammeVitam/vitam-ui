@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { GlobalEventService, ENVIRONMENT } from 'ui-frontend-common';
+import { ENVIRONMENT, GlobalEventService } from 'ui-frontend-common';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -43,14 +43,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApiSupervisionComponent } from './api-supervision.component';
 import { EMPTY } from 'rxjs';
-import { LogbookSearchService } from './logbook-search.service';
 import { environment } from '../../environments/environment';
+import { LogbookOperationComponent } from './logbook-operation.component';
+import { LogbookSearchService } from './logbook-search.service';
 
-describe('ApiSupervisionComponent', () => {
-  let component: ApiSupervisionComponent;
-  let fixture: ComponentFixture<ApiSupervisionComponent>;
+describe('LogbookOperationComponent', () => {
+  let component: LogbookOperationComponent;
+  let fixture: ComponentFixture<LogbookOperationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('ApiSupervisionComponent', () => {
         MatMenuModule,
         ReactiveFormsModule
       ],
-      declarations: [ApiSupervisionComponent],
+      declarations: [LogbookOperationComponent],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
@@ -72,7 +72,7 @@ describe('ApiSupervisionComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApiSupervisionComponent);
+    fixture = TestBed.createComponent(LogbookOperationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

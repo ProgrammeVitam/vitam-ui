@@ -34,40 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { VitamUICommonModule } from 'ui-frontend-common';
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
-import { ApiSupervisionComponent } from './api-supervision.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatDatepickerModule, MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSidenavModule, MatTabsModule
+} from '@angular/material';
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full'
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    pathMatch: 'full',
-    canActivate: [TenantSelectionGuard]
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: ApiSupervisionComponent,
-    canActivate: [ActiveTenantGuard]
-  }
-];
-
+import {
+  LogbookOperationDetailComponent
+} from './logbook-operation-detail/logbook-operation-detail.component';
+import {
+  LogbookOperationPopupComponent
+} from './logbook-operation-detail/logbook-operation-popup.component';
+import { EventTypeBadgeClassPipe } from './logbook-operation-list/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from './logbook-operation-list/event-type-color-class.pipe';
+import { LastEventPipe } from './logbook-operation-list/last-event.pipe';
+import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import { LogbookOperationRoutingModule } from './logbook-operation-routing.module';
+import { LogbookOperationComponent } from './logbook-operation.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LogbookOperationComponent,
+    LogbookOperationListComponent,
+    LogbookOperationDetailComponent,
+    LogbookOperationPopupComponent,
+    LastEventPipe,
+    EventTypeColorClassPipe,
+    EventTypeBadgeClassPipe,
+  ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
+    MatSidenavModule,
+    MatMenuModule,
+    MatDatepickerModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    LogbookOperationRoutingModule,
+    MatNativeDateModule
   ]
 })
-export class ApiSupervisionRoutingModule { }
+export class LogbookOperationModule { }

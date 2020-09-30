@@ -326,13 +326,13 @@ public class ServicesData {
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
 
-    //------------------------------------ API SUPERVISION -----------------------------------------
+    //------------------------------------ API LOGBOOK OPERATION -----------------------------------------
 
-    public static final String SERVICE_API_SUPERVISION_ROLE = "SUPERVISION_API";
+    public static final String SERVICE_API_LOGBOOK_OPERATION_ROLE = "LOGBOOK_OPERATION_API";
 
-    public static final String ROLE_CREATE_SUPERVISION_ROLE = CREATE_ROLE_PREFIX + SERVICE_API_SUPERVISION_ROLE;
-    public static final String ROLE_GET_SUPERVISION_ROLE = GET_ROLE_PREFIX + SERVICE_API_SUPERVISION_ROLE;
-    public static final String ROLE_GET_ALL_SUPERVISION_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_API_SUPERVISION_ROLE;
+    public static final String ROLE_CREATE_LOGBOOK_OPERATION_ROLE = CREATE_ROLE_PREFIX + SERVICE_API_LOGBOOK_OPERATION_ROLE;
+    public static final String ROLE_GET_LOGBOOK_OPERATION_ROLE = GET_ROLE_PREFIX + SERVICE_API_LOGBOOK_OPERATION_ROLE;
+    public static final String ROLE_GET_ALL_LOGBOOK_OPERATION_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_API_LOGBOOK_OPERATION_ROLE;
 
     //@formatter:off
 
@@ -414,9 +414,9 @@ public class ServicesData {
             ROLE_GET_OPERATIONS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_CREATE_SUPERVISION_ROLE,
-            ROLE_GET_SUPERVISION_ROLE,
-            ROLE_GET_ALL_SUPERVISION_ROLE
+            ROLE_CREATE_LOGBOOK_OPERATION_ROLE,
+            ROLE_GET_LOGBOOK_OPERATION_ROLE,
+            ROLE_GET_ALL_LOGBOOK_OPERATION_ROLE
 
             );
 
@@ -521,9 +521,9 @@ public class ServicesData {
             ROLE_RUN_AUDITS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_CREATE_SUPERVISION_ROLE,
-            ROLE_GET_SUPERVISION_ROLE,
-            ROLE_GET_ALL_SUPERVISION_ROLE
+            ROLE_CREATE_LOGBOOK_OPERATION_ROLE,
+            ROLE_GET_LOGBOOK_OPERATION_ROLE,
+            ROLE_GET_ALL_LOGBOOK_OPERATION_ROLE
 
             );
     //@formatter:on

@@ -40,21 +40,21 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ApiSupervisionListComponent } from './api-supervision-list/api-supervision-list.component';
 import { EventFilter } from './event-filter.interface';
+import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 
 @Component({
-  selector: 'app-api-supervision',
-  templateUrl: './api-supervision.component.html',
-  styleUrls: ['./api-supervision.component.scss']
+  selector: 'app-logbook-operation',
+  templateUrl: './logbook-operation.component.html',
+  styleUrls: ['./logbook-operation.component.scss']
 })
-export class ApiSupervisionComponent extends SidenavPage<any> implements OnInit {
+export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
 
   dateRangeFilterForm: FormGroup;
   tenantIdentifier: number;
   filters: Readonly<EventFilter> = {};
 
-  @ViewChild(ApiSupervisionListComponent, { static: true }) list: ApiSupervisionListComponent;
+  @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -82,7 +82,7 @@ export class ApiSupervisionComponent extends SidenavPage<any> implements OnInit 
 
   ngOnInit() {
     if (!this.list) {
-      console.error('ApiSupervisionComponent Error: no list in the template');
+      console.error('LogbookOperationComponent Error: no list in the template');
     }
   }
 

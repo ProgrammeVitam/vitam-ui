@@ -203,14 +203,14 @@ db.applications.insert({
 });
 
 db.applications.insert({
-    "identifier" : "SUPERVISION_API_APP",
+    "identifier" : "LOGBOOK_OPERATION_APP",
 {% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.referential.base_url }}/supervision-api",
+    "url": "{{ vitamui.referential.base_url }}/logbook-operation",
 {% else %}
-    "url": "{{ url_prefix }}/referential/supervision-api",
+    "url": "{{ url_prefix }}/referential/logbook-operation",
 {% endif %}
     "icon": "vitamui-icon vitamui-icon-api-supervision",
-    "name": "Supervision des APIs",
+    "name": "Journal des Opérations",
     "category": "referential",
     "position": NumberInt(16),
     "hasCustomerList": false,

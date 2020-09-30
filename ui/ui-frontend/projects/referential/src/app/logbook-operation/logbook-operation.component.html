@@ -1,8 +1,8 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-api-supervision-detail *ngIf="openedItem" [tenantIdentifier]="tenantIdentifier" [eventId]="openedItem?.id"
-      (closePanel)="closePanel()"></app-api-supervision-detail>
+    <app-logbook-operation-detail *ngIf="openedItem" [tenantIdentifier]="tenantIdentifier" [eventId]="openedItem?.id"
+      (closePanel)="closePanel()"></app-logbook-operation-detail>
 
   </mat-sidenav>
   <mat-sidenav-content>
@@ -12,7 +12,7 @@
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true" (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
         <div class="controls">
           <h2 i18n="@@apiSupervisionPageTitle">
-            <img src="assets/mini-logo-vitam.png"> Supervision des <strong>API</strong>s
+            <img src="assets/mini-logo-vitam.png"> Journal des Opérations
           </h2>
 
           <div class="actions">
@@ -80,7 +80,7 @@
     </div>
 
     <div class="vitamui-body vitamui-container">
-      <app-api-supervision-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" (eventClick)="openPanel($event)"></app-api-supervision-list>
+      <app-logbook-operation-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" (eventClick)="openPanel($event)"></app-logbook-operation-list>
     </div>
 
   </mat-sidenav-content>
