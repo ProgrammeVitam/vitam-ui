@@ -23,7 +23,7 @@ Les instances docker sont démarrées et arrêtées automatiquement via l'utilis
 
 Il est nécessaire de démarrer les services utilisés par les tests d'intégration avant leur exécution en local.
 
-Par exemple, l'exécution des tests d'intégration Flow back-end nécessite : Referential external, Referential internal, IAM external, IAM internal, CAS, et Security
+Par exemple, l'exécution des tests d'intégration Referentiel back-end nécessite : Referential external, Referential internal, IAM external, IAM internal, CAS, et Security
 
 ## Execution en développement
 

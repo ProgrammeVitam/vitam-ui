@@ -19,7 +19,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -70,6 +69,7 @@ import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import fr.gouv.vitamui.utils.TestConstants;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -132,6 +132,8 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
+    
+    private ContextExternalRestClient contextRestClient;
 
     private ContextExternalRestClient contextRestClient;
 
@@ -196,8 +198,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword;
-
+    protected String iamTruststorePassword; 
+    
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -484,6 +486,8 @@ public abstract class BaseIntegration {
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
         //@formatter:off
         try {
+        	LOGGER.debug("Get certificate : {}", genericCert);
+        	LOGGER.debug("Get passaword : {}", jksPassword);
             final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)

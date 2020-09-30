@@ -79,10 +79,21 @@ public class ApiReferentialExternalContextCreationSteps extends CommonSteps {
         final ContextDto dto = FactoryDto.buildDto(ContextDto.class);
         testContext.savedContextDto = getContextRestClient().create(getSystemTenantUserAdminContext(), dto);
     }
+    
     @Then("^le serveur retourne le contexte créé$")
     public void le_status_de_la_réponse_doit_etre() {
         assertThat(testContext.savedContextDto).overridingErrorMessage("la réponse retournée est null").isNotNull();
     }
+    
+    @Then("^(.*) permissions sont créés dans le contexte$")
+    public void des_permissions_sont_créés_dans_le_contexte(final Integer profilesNumber) {
+        assertThat(testContext.savedContextDto.getPermissions()).isNotNull().isNotEmpty();
+        assertThat(testContext.savedContextDto.getPermissions().size()).isEqualTo(2);
+        assertThat(testContext.savedContextDto.getPermissions().stream().anyMatch(permission -> 
+        	(permission.getTenant().equals("tenant_1") || permission.getTenant().equals("tenant_2")) 
+        )).isTrue();
+    }
+
 
     @Then("^une trace de création d'un contexte est présente dans vitam$")
     public void une_trace_de_création_d_un_contexte_est_présente_dans_vitam() throws InterruptedException {
