@@ -93,6 +93,8 @@ cas.serviceRegistry.mongo.password: {{ mongodb.cas.password }}
 cas.authn.surrogate.separator: ","
 cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
+# 24 hours cache for login delegation
+cas.ticket.tst.timeToKillInSeconds: 86400
 
 cas.authn.pm.enabled: true
 cas.authn.pm.policyPattern: {{ lookup('file', "{{ inventory_dir }}/templates/policy_pattern.regex") }}

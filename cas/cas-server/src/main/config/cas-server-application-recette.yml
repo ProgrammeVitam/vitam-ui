@@ -65,8 +65,8 @@ cas.authn.surrogate.separator: ","
 cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
 
-# 5 minutes cache for login delegation
-cas.ticket.tst.timeToKillInSeconds: 300
+# 24 hours cache for login delegation
+cas.ticket.tst.timeToKillInSeconds: 86400
 
 
 cas.authn.pm.enabled: true
