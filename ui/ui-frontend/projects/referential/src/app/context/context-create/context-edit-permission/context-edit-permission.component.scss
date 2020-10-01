@@ -33,12 +33,21 @@
   max-width: 150px;
 }
 
+.delete {
+  padding-left: 0px !important;
+  padding-right: 10px;
+}
+
 .customers {
   max-width: 150px;
 }
 
 .tenants {
   max-width: 150px;
+}
+
+.ingestContracts {
+  padding-right: 0px;
 }
 
 .editMode {

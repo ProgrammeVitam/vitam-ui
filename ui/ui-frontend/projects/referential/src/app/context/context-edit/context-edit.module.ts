@@ -36,55 +36,42 @@
  */
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {
-  MatDialogModule,
-  MatMenuModule,
-  MatOptionModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSnackBarModule,
-  MatTabsModule,
-  MatDividerModule,
-} from '@angular/material';
-import {RouterModule} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-import {ConfirmActionModule, VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {VitamUICommonModule} from 'ui-frontend-common';
+import {VitamUICommonModule, VitamUIFieldErrorModule} from 'ui-frontend-common';
+import {TenantService} from '../../../../../identity/src/app/customer/tenant.service';
+import {SharedModule} from '../../../../../identity/src/app/shared/shared.module';
 import {ContextEditPermissionModule} from '../context-create/context-edit-permission/context-edit-permission.module';
-import {ContextInformationTabComponent} from './context-information-tab/context-information-tab.component';
-import {ContextPermissionTabComponent} from './context-permission-tab/context-permission-tab.component';
-import {ContextPreviewComponent} from './context-preview.component';
+import {ContextEditComponent} from './context-edit.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    ConfirmActionModule,
-    ContextEditPermissionModule,
-    RouterModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
+    SharedModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
     MatSelectModule,
-    MatOptionModule,
-    MatTabsModule,
-    MatDividerModule
+    MatSnackBarModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    VitamUIFieldErrorModule,
+    ContextEditPermissionModule
   ],
   declarations: [
-    ContextPreviewComponent,
-    ContextInformationTabComponent,
-    ContextPermissionTabComponent
+    ContextEditComponent
   ],
-  exports: [
-    ContextPreviewComponent
-  ]
+  entryComponents: [ContextEditComponent],
+  providers: [TenantService]
 })
-export class ContextPreviewModule {
+export class ContextEditModule {
 }

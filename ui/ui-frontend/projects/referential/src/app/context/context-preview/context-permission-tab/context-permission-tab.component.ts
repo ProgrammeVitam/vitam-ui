@@ -34,38 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Context, ContextPermission } from 'projects/vitamui-library/src/public-api';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { AccessContract } from 'projects/vitamui-library/src/public-api';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { AuthService, Customer, diff, Tenant } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-
-import { ContextCreateValidators } from '../../context-create/context-create.validators';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { CustomerApiService } from '../../../core/api/customer-api.service';
+import { TenantApiService } from '../../../core/api/tenant-api.service';
+import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
+import { ContextEditComponent } from '../../context-edit/context-edit.component';
 import { ContextService } from '../../context.service';
-
 
 @Component({
   selector: 'app-context-permission-tab',
   templateUrl: './context-permission-tab.component.html',
   styleUrls: ['./context-permission-tab.component.scss']
 })
-export class ContextPermissionTabComponent {
+export class ContextPermissionTabComponent implements OnInit {
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  form: FormGroup;
-
   submited = false;
+  unchanged = true;
+  dataLoaded = false;
   isPermissionsOnMultipleOrganisations = false;
 
+  // The initial context beforme modification
   // tslint:disable-next-line:variable-name
   private _context: Context;
+  // The updated permissions
+  private updatedPermissions: ContextPermission[] = new Array();
 
-  previousValue = (): Context => {
-    return this._context;
-  }
+  tenants: Map<string, Tenant> = new Map();
+  organisations: Map<string, Customer> = new Map();
+  accessContracts: Map<string, AccessContract> = new Map();
+  ingestContracts: Map<string, IngestContract> = new Map();
+
+  @Input()
+  readOnly: boolean;
 
   @Input()
   set context(context: Context) {
@@ -86,25 +97,79 @@ export class ContextPermissionTabComponent {
     this.resetForm(this.context);
     this.updated.emit(false);
   }
+
   get context(): Context { return this._context; }
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
+  previousValue = (): Context => {
+    return this._context;
   }
 
   constructor(
-    private formBuilder: FormBuilder,
+    public dialog: MatDialog,
     private contextService: ContextService,
-    private contextCreateValidators: ContextCreateValidators
-  ) {
-    this.form = this.formBuilder.group({
-      permissions: [[], Validators.required, this.contextCreateValidators.permissionInvalid()]
+    private customerApiService: CustomerApiService,
+    private tenantApiService: TenantApiService,
+    private authService: AuthService,
+    private accessService: AccessContractService,
+    private ingestService: IngestContractService
+  ) { }
+
+  ngOnInit(): void {
+    let accessContractObservable: Observable<any> = of();
+    let ingestContractObservable: Observable<any> = of();
+
+    // Build the forkJoins used to get the access and ingest contracts
+    if (this.authService.user) {
+      // Get the access contracts
+      const accessTenantsInfo = this.authService.user.tenantsByApp.find(
+        appTenantInfo => appTenantInfo.name === 'ACCESS_APP');
+      if (accessTenantsInfo && accessTenantsInfo.tenants && accessTenantsInfo.tenants.length > 0) {
+        accessContractObservable = forkJoin(accessTenantsInfo.tenants.map(tenant => {
+          return this.accessService.getAllForTenant('' + tenant.identifier).pipe(
+            tap((accessContracts) => {
+              accessContracts.forEach(accessContract => {
+                this.accessContracts.set(accessContract.identifier, accessContract);
+              });
+            })
+          );
+        }));
+      }
+
+      // Get the ingest contracts
+      const ingestTenantsInfo = this.authService.user.tenantsByApp.find(
+        appTenantInfo => appTenantInfo.name === 'INGEST_APP');
+      if (ingestTenantsInfo && ingestTenantsInfo.tenants && ingestTenantsInfo.tenants.length > 0) {
+        ingestContractObservable = forkJoin(ingestTenantsInfo.tenants.map(tenant => {
+          return this.ingestService.getAllForTenant('' + tenant.identifier).pipe(
+            tap((ingestContracts) => {
+              ingestContracts.forEach(ingestContract => {
+                this.ingestContracts.set(ingestContract.identifier, ingestContract);
+              });
+            })
+          );
+        }));
+      }
+    }
+
+    // Get the list of all the organisations and tenants
+    forkJoin([
+      this.tenantApiService.getAll(),
+      this.customerApiService.getAll(),
+      accessContractObservable,
+      ingestContractObservable
+    ]).subscribe(([tenants, customers]) => {
+      if (tenants && tenants.length > 0) {
+        tenants.forEach(tenant => {
+          this.tenants.set('' + tenant.identifier, tenant);
+        });
+      }
+      if (customers && customers.length > 0) {
+        customers.forEach(customer => {
+          this.organisations.set(customer.id, customer);
+        });
+      }
+
+      this.dataLoaded = true;
     });
   }
 
@@ -149,23 +214,13 @@ export class ContextPermissionTabComponent {
     return true;
   }
 
-  isInvalidOrUnchanged(): boolean {
-    const unchanged = this.samePermission(this.previousValue().permissions, this.form.getRawValue().permissions);
-    this.updated.emit(!unchanged);
-
-    if (this.isInvalid()) {
-      return true;
-    }
-
-    return unchanged;
-  }
-
-  isInvalid(): boolean {
-    return this.form.controls.permissions.invalid;
+  hasChanged() {
+    this.unchanged = this.samePermission(this.previousValue().permissions, this.updatedPermissions);
+    this.updated.emit(!this.unchanged);
   }
 
   prepareSubmit(): Observable<Context> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff({permissions: this.updatedPermissions}, this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))));
@@ -173,12 +228,12 @@ export class ContextPermissionTabComponent {
 
   onSubmit() {
     this.submited = true;
-    if (this.isInvalid()) { return; }
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
           this.submited = false;
           this.context = response;
+          this.hasChanged();
         }
       );
     }, () => {
@@ -187,29 +242,69 @@ export class ContextPermissionTabComponent {
   }
 
   resetForm(context: Context) {
-    this.form.reset(context, { emitEvent: false });
-    const permissionCopy: ContextPermission[] = [];
+    this.updatedPermissions = new Array();
     for (const permission of context.permissions) {
-      permissionCopy.push(new ContextPermission(permission.tenant,
-        [...(permission.accessContracts ? permission.accessContracts : [])],
-        [...(permission.ingestContracts ? permission.ingestContracts : [])]));
+      this.updatedPermissions.push(
+        new ContextPermission(permission.tenant, permission.accessContracts, permission.ingestContracts)
+      );
     }
-    this.form.controls.permissions.setValue(permissionCopy);
   }
 
-  onChangeOrganisations(organisations: string[]) {
-    this.isPermissionsOnMultipleOrganisations = false;
-    if (organisations && organisations.length > 1) {
-      let idx = 0;
-      let organisationId: string = null;
-      while (idx < organisations.length && !this.isPermissionsOnMultipleOrganisations) {
-        if (idx === 0) {
-          organisationId = organisations[0];
-        } else if (organisations[idx] != null && organisations[idx] !== organisationId) {
-          this.isPermissionsOnMultipleOrganisations = true;
-        }
-        idx++;
+  openEditContextDialog() {
+    const dialogRef = this.dialog.open(ContextEditComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: true,
+      data: this.updatedPermissions
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.permissions) {
+        this.updatedPermissions = result.permissions;
+        // Check if the permissions have been modified
+        this.hasChanged();
       }
+    });
+  }
+
+  getOrganisationName(tenantIdentifier: string): string {
+    let organisation: Customer = null;
+    if (this.tenants && this.organisations) {
+      const tenant = this.tenants.get(tenantIdentifier);
+      if (tenant) {
+        organisation = this.organisations.get(tenant.customerId);
+      }
+    }
+    return organisation ? organisation.name : '';
+  }
+
+  getAccessContractNames(accessContractIdentifiers: string[]): string {
+    let label = '';
+    if (accessContractIdentifiers && accessContractIdentifiers.length > 0) {
+      accessContractIdentifiers.forEach((identifier, index) => {
+        const contract = this.accessContracts.get(identifier);
+        if (contract) {
+          label += contract.name;
+        }
+        if (index < accessContractIdentifiers.length - 1) {
+          label += ', ';
+        }
+      });
+    }
+    return label;
+  }
+
+  getIngestContractNames(ingestContractIdentifiers: string[]): string {
+    let label = '';
+    if (ingestContractIdentifiers && ingestContractIdentifiers.length > 0) {
+      ingestContractIdentifiers.forEach((id, index) => {
+        const contract = this.ingestContracts.get(id);
+        if (contract) {
+          label += contract.name;
+        }
+        if (index < ingestContractIdentifiers.length - 1) {
+          label += ', ';
+        }
+      });
+      return label;
     }
   }
 }
