@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UploadTreesPlansComponent } from './upload-trees-plans.component';
+import { UploadComponent } from '../../core/common/upload.component';
 
-describe('UploadTreesPlansComponent', () => {
-  let component: UploadTreesPlansComponent;
-  let fixture: ComponentFixture<UploadTreesPlansComponent>;
+describe('UploadTrePlanComponent', () => {
+  let component: UploadComponent;
+  let fixture: ComponentFixture<UploadComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadTreesPlansComponent ]
+      declarations: [UploadComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadTreesPlansComponent);
+    fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

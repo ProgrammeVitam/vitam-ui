@@ -45,9 +45,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { UploadTreesPlansService } from './upload-trees-plans.service';
+import { UploadComponent } from './upload.component';
+import { UploadService } from './upload.service';
 import { SharedModule } from '../../shared/shared.module';
-import { UploadTreesPlansComponent } from './upload-trees-plans.component';
 
 @NgModule({
   imports: [
@@ -64,9 +64,9 @@ import { UploadTreesPlansComponent } from './upload-trees-plans.component';
     MatProgressBarModule
   ],
   declarations: [
-    UploadTreesPlansComponent
+    UploadComponent,
   ],
-  entryComponents: [UploadTreesPlansComponent],
-  providers: [UploadTreesPlansService]
+  entryComponents: [UploadComponent],
+  providers: [UploadService]
 })
-export class UploadTreesPlansModule { }
+export class UploadModule { }

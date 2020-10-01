@@ -268,7 +268,7 @@ db.profiles.insert({
 });
 
 db.profiles.insert({
-  "_id": "system_logbook_operation_profile",
+  "_id": "system_logbook_operation",
   "identifier" : NumberInt(maxIdProfile++),
   "name": "Journal des Opérations",
   "description": "Logbook Operation Profile",
@@ -281,6 +281,30 @@ db.profiles.insert({
   "roles": [
   {
        "name": "ROLE_LOGBOOKS"
+  }
+   ]
+});
+
+db.profiles.insert({
+  "_id": "system_trees_plans_profile",
+  "identifier" : NumberInt(maxIdProfile++),
+  "name": "Arbres et Plans",
+  "description": "Arbres et Plans",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "TREES_PLANS_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_TREES_PLANS"
+  },
+  {
+    "name": "ROLE_GET_TREES_PLANS"
+  },
+  {
+    "name": "ROLE_GET_ALL_TREES_PLANS"
   }
    ]
 });
@@ -312,7 +336,8 @@ db.groups.updateOne( {
                 "system_secure",
                 "system_dsl",
                 "system_probative_value",
-                "system_logbook_operation_profile"
+                "system_logbook_operation",
+                "system_trees_plans_profile"
         	]
         }
     }

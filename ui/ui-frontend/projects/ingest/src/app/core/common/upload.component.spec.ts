@@ -34,39 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { UploadSipComponent } from './upload-sip.component';
-import { UploadSipService } from './upload-sip.service';
-import { SharedModule } from '../../shared/shared.module';
+import { UploadComponent } from './upload.component';
+import { MatProgressBarModule, MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { of } from 'rxjs';
+import { UploadService } from './upload.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { LoggerModule } from 'ui-frontend-common';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    MatProgressBarModule
-  ],
-  declarations: [
-    UploadSipComponent,
-  ],
-  entryComponents: [UploadSipComponent],
-  providers: [UploadSipService]
-})
-export class UploadSipModule { }
+describe('UploadComponent', () => {
+  let component: UploadComponent;
+  let fixture: ComponentFixture<UploadComponent>;
+
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+  const uploadSipServiceSpy = jasmine.createSpyObj('UploadSipService', { create: of({}) });
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatProgressBarModule,
+        MatSnackBarModule,
+        LoggerModule.forRoot()
+      ],
+      declarations: [UploadComponent],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: UploadService, useValue: uploadSipServiceSpy }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UploadComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
