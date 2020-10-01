@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import {  ActivatedRoute, Router } from '@angular/router';
 import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
-import { UploadTreesPlansComponent } from './upload-trees-plans/upload-trees-plans.component';
+import { UploadComponent } from '../core/common/upload.component';
 
 @Component({
   selector: 'app-trees-plans',
@@ -36,7 +36,7 @@ export class TreesPlansComponent extends SidenavPage<any> implements OnInit {
       givenContextId: type
     };
 
-    const dialogRef = this.dialog.open(UploadTreesPlansComponent, dialogConfig);
+    const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

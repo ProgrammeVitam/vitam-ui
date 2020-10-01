@@ -23,7 +23,9 @@
             <button class="btn secondary" (click)="refresh()">
               <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
             </button>
-            <button class="btn more-actions" (click)="openImportSipDialog()">
+            <button class="btn more-actions" (click)="openImportSipDialog('DEFAULT_WORKFLOW')"
+              matTooltip="Déposer un nouveau versement d'archives (SIP)"
+              i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
               <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
             </button>
           </div>
