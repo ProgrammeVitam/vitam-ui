@@ -68,10 +68,9 @@ export class UploadComponent implements OnInit {
   contextId: string;
   messageImportType: string;
   messageLabelImportType: string;
-
   tenantIdentifier: string;
-
   uploadComplete = false;
+  isDisabled = true;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -92,7 +91,6 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     this.contextId = this.data.givenContextId;
-    console.log('contextId : ', this.contextId);
     this.initContextIdentifier(this.data.givenContextId);
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
@@ -130,6 +128,7 @@ export class UploadComponent implements OnInit {
   }
 
   handleFile(files: FileList) {
+    this.isDisabled = false;
     this.hasError = false;
     this.message = null;
     this.fileToUpload = files.item(0);
