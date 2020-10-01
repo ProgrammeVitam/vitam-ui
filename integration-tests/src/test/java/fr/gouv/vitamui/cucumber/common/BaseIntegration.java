@@ -19,6 +19,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -89,7 +90,7 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-    
+
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
@@ -113,8 +114,10 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
-    
+
     private ContextExternalRestClient contextRestClient;
+
+    private RuleExternalRestClient ruleRestClient;
 
     private static MongoClient mongoClientIam;
 
@@ -175,8 +178,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword; 
-    
+    protected String iamTruststorePassword;
+
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -324,19 +327,19 @@ public abstract class BaseIntegration {
                 getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)));
         return webClientFactory;
     }
-    
+
     private ReferentialExternalRestClientFactory getReferentialRestClientFactory() {
         if (restReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
             restReferentialClientFactory = new ReferentialExternalRestClientFactory(getRestClientConfiguration(referentialServerHost, referentialServerPort, true,
-                    getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)), restTemplateBuilder); 
+                    getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)), restTemplateBuilder);
             final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
             interceptors.add(new RegisterRestQueryInterceptor());
             restReferentialClientFactory.setRestClientInterceptor(interceptors);
         }
         return restReferentialClientFactory;
     }
- 
+
     protected CustomerExternalRestClient getCustomerRestClient() {
         if (customerClient == null) {
             customerClient = getIamRestClientFactory().getCustomerExternalRestClient();
@@ -586,12 +589,19 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-    
+
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
         }
         return contextRestClient;
+    }
+
+    protected RuleExternalRestClient getRuleRestClient() {
+        if (ruleRestClient == null) {
+            ruleRestClient = getReferentialRestClientFactory().getRuleExternalRestClient();
+        }
+        return ruleRestClient;
     }
 
     protected MongoCollection<Document> getProfilesCollection() {
