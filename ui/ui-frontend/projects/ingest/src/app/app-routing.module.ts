@@ -70,7 +70,7 @@ const routes: Routes = [
   //                      TREES PLANS API
   // =====================================================
   {
-    path: 'trees-plans-api',
+    path: 'trees-plans',
     loadChildren: () => import('./trees-plans/trees-plans.module').then(m => m.TreesPlansModule),
     canActivate: [AuthGuard, AppGuard],
     data: { appId: 'TREES_PLANS_APP' }

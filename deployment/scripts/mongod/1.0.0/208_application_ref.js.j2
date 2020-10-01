@@ -237,4 +237,21 @@ db.applications.insert({
     "tooltip" : "Importer un arbre de positionnement ou un plan de classement",
     "target" : "_self"
 });
+db.applications.insert({
+    "identifier" : "TREES_PLANS_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.ingest.base_url }}/trees-plans",
+{% else %}
+    "url": "{{ url_prefix }}/ingest/trees-plans",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-filing",
+    "name" : "Arbres et Plans",
+    "category" : "referential",
+    "position" : NumberInt(16),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Importer un arbre de positionnement ou un plan de classement",
+    "target" : "_self"
+});
 print("END 208_application_ref.js");

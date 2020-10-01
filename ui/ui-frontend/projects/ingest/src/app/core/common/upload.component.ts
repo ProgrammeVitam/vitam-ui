@@ -44,6 +44,9 @@ import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
 
 const action = 'RESUME';
+const tree = 'Importer un arbre de positionnement';
+const plan = 'Importer un plan de classement';
+const sip = 'Verser un SIP';
 
 @Component({
   selector: 'app-upload',
@@ -65,9 +68,10 @@ export class UploadComponent implements OnInit {
   contextId: string;
   messageImportType: string;
   messageLabelImportType: string;
+
   tenantIdentifier: string;
+
   uploadComplete = false;
-  isDisabled = true;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -88,6 +92,7 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     this.contextId = this.data.givenContextId;
+    console.log('contextId : ', this.contextId);
     this.initContextIdentifier(this.data.givenContextId);
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
@@ -97,19 +102,17 @@ export class UploadComponent implements OnInit {
   initContextIdentifier(contextInput: string) {
     switch (contextInput) {
       case 'HOLDING_SCHEME':
-        this.messageImportType = 'Importer un arbre de positionnement';
+        this.messageImportType = tree;
         this.messageLabelImportType = 'Nouvel arbre de positionnement';
         break;
       case 'FILING_SCHEME':
-        this.messageImportType = 'Importer un plan de classement';
+        this.messageImportType = plan;
         this.messageLabelImportType = 'Nouveau plan de classement';
         break;
-      case 'DEFAULT_WORKFLOW':
-        this.messageImportType = 'Verser un SIP';
+      default:
+        this.messageImportType = sip;
         this.messageLabelImportType = 'Nouveau versement';
         break;
-      default:
-      console.error('unknown context identifier');
     }
   }
 
@@ -127,7 +130,6 @@ export class UploadComponent implements OnInit {
   }
 
   handleFile(files: FileList) {
-    this.isDisabled = false;
     this.hasError = false;
     this.message = null;
     this.fileToUpload = files.item(0);
