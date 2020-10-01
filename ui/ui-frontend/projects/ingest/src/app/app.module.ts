@@ -44,6 +44,8 @@ import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { IngestModule } from './ingest';
+import { TreesPlansModule } from './trees-plans/trees-plans.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -57,6 +59,8 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
+    IngestModule,
+    TreesPlansModule
   ],
   providers: [
     Title,

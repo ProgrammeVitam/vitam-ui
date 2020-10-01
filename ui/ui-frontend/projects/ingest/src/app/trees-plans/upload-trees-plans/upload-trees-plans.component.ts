@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
-import { UploadTreesPlansService } from './upload-trees-plans.service';
+import { UploadService } from '../../core/common/upload.service';
 import { Logger, BytesPipe } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
@@ -26,7 +26,7 @@ export class UploadTreesPlansComponent implements OnInit {
   action = 'RESUME';
   HOLDING_SCHEME = 'HOLDING_SCHEME';
   tree = 'arbre de positionnement';
-  plan = '';
+  plan = 'plan de classement';
   messageImportType: string;
   tenantIdentifier: string;
 
@@ -38,7 +38,7 @@ export class UploadTreesPlansComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UploadTreesPlansComponent>,
     private formBuilder: FormBuilder,
-    private uploadService: UploadTreesPlansService,
+    private uploadService: UploadService,
     private snackBar: MatSnackBar,
     public logger: Logger
   ) {
@@ -51,7 +51,8 @@ export class UploadTreesPlansComponent implements OnInit {
 
   ngOnInit() {
     this.contextId = this.data.givenContextId;
-    this.messageImportType = this.contextId = this.HOLDING_SCHEME ? this.tree : this.plan;
+    console.log('contextId : ', this.contextId);
+    this.messageImportType = (this.contextId === this.HOLDING_SCHEME) ? this.tree : this.plan;
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.treePlanForm.get('hasTreePlan').setValue(true);
     this.hasTreePlan = this.treePlanForm.get('hasTreePlan').value;

@@ -36,7 +36,7 @@
  */
 import {Injectable} from '@angular/core';
 import { HttpRequest, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { IngestApiService } from '../../core/api/ingest-api.service';
+import { IngestApiService } from '../api/ingest-api.service';
 import { retry } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
@@ -52,7 +52,7 @@ const requestIdKey = 'X-Request-Id';
 const MAX_RETRIES = 3;
 
 @Injectable()
-export class UploadTreesPlansService {
+export class UploadService {
 
   uploadComplete = new Subject<boolean>();
 
