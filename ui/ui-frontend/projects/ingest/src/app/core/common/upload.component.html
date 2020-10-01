@@ -11,15 +11,9 @@
         (fileToUploadEmitter)="onDropped($event)" (fileDragOverEmitter)="onDragOver($event)"
         (fileDragLeaveEmitter)="onDragLeave($event)">
         <div *ngIf="fileName && fileSize>0 && fileSizeString" class="drag-container">
-          <div class="file-info-class">{{ fileName }}
-            <span class="text-grey" [ngStyle]="{'font-size':'13px'}"> | {{ fileSizeString }} </span>
+
+          <div class="file-info-class">{{ fileName }} : {{ fileSizeString }}
             <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
-            <div>
-
-              <span class="text-red">{{ message }} </span>
-              <i class="large material-icons icon-error " *ngIf="hasError">cancel</i>
-
-            </div>
           </div>
         </div>
 
@@ -27,12 +21,18 @@
 
         <div class="drop-area">
           <div *ngIf="!fileSize || !hasSip" class="sip-drop">
-            Glisser-déposer ou <br>
+
+            Glisser-déposer<br>
           </div>
           <div *ngIf="!fileSize || !hasSip">
-            <div class="sip-drop">
-              <div class="upload"><span class="underline" (click)="addSip()">Parcourir</span>
-              </div>
+            <div class="upload-text">
+              <div class="upload"><span class="underline" (click)="addSip()">Parcourir</span></div>
+            </div>
+          </div>
+          <div class="error-message drag-container" *ngIf="hasError">
+            <div>
+              <i class="material-icons error-icon">error</i>
+              {{ message }}
             </div>
           </div>
         </div>
@@ -41,8 +41,8 @@
     </div>
 
     <div class="actions">
-      <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">Confirmer le
-        versement</button>
+
+      <button type="button" class="btn primary" [disabled]="hasError" (click)="upload()">Confirmer le versement</button>
       <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
     </div>
   </div>

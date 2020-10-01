@@ -47,7 +47,7 @@ import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { TreesPlansComponent } from './trees-plans.component';
 import { TreesPlansRoutingModule } from './trees-plans-routing.module';
 import { MatProgressBarModule } from '@angular/material';
-import { UploadTreesPlansModule } from './upload-trees-plans/upload-trees-plans.module';
+import { UploadModule } from '../core/common/upload.module';
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { UploadTreesPlansModule } from './upload-trees-plans/upload-trees-plans.
     MatNativeDateModule,
     TreesPlansRoutingModule,
     MatProgressBarModule,
-    UploadTreesPlansModule
+    UploadModule
   ],
   declarations: [
     TreesPlansComponent

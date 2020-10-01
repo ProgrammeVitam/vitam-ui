@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -49,6 +50,10 @@ import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
+import { IngestResolverService } from './ingest-resolver.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+
 import { UploadModule } from '../core/common/upload.module';
 import { UploadSipComponent } from './upload-sip/upload-sip.component';
 import { MatProgressBarModule } from '@angular/material';
@@ -56,6 +61,7 @@ import { MatProgressBarModule } from '@angular/material';
 
 @NgModule({
   imports: [
+    MatTooltipModule,
     CommonModule,
     VitamUICommonModule,
     MatDialogModule,
@@ -68,7 +74,7 @@ import { MatProgressBarModule } from '@angular/material';
     IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule, 
+    MatNativeDateModule,
     MatProgressBarModule
   ],
   declarations: [
@@ -76,6 +82,7 @@ import { MatProgressBarModule } from '@angular/material';
     UploadSipComponent
   ],
   providers: [
+    IngestResolverService,
   ]
 })
 export class IngestModule { }
