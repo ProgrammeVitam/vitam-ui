@@ -45,6 +45,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -57,6 +58,9 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
+   
+
+
   ],
   providers: [
     Title,

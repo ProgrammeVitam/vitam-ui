@@ -63,6 +63,7 @@ export class UploadSipComponent implements OnInit {
   extensions: string[];
   contextId = 'DEFAULT_WORKFLOW';
   action = 'RESUME';
+  isDisabled = true;
 
   tenantIdentifier: string;
 
@@ -106,6 +107,7 @@ export class UploadSipComponent implements OnInit {
   }
 
   handleSipFile(files: FileList) {
+    this.isDisabled = false;
     this.hasError = false;
     this.message = null;
     this.sipToUpload = files.item(0);

@@ -35,6 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { StartupService } from 'ui-frontend-common';
+import { IngestService } from '../ingest.service';
 import { LogbookService } from 'ui-frontend-common';
 
 @Component({
@@ -45,11 +47,17 @@ import { LogbookService } from 'ui-frontend-common';
 export class IngestPreviewComponent implements OnInit {
 
   @Input() ingest: any; // Make a type ?
+  @Input() isPopup: boolean;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  //@Output() sendIngest : EventEmitter<any> = new EventEmitter();
 
-  constructor(private logbookService: LogbookService) { }
+
+  constructor(private logbookService: LogbookService,
+    private ingestService: IngestService,
+    private startupService: StartupService) { }
 
   ngOnInit() {
+
   }
 
   emitClose() {
@@ -69,6 +77,16 @@ export class IngestPreviewComponent implements OnInit {
 
   downloadManifest() {
     this.logbookService.downloadManifest(this.ingest.id);
+  }
+
+  openPopup() {
+
+    console.log("salam " +this.ingest);
+    //this.sendIngest.emit(this.ingest);
+
+    window.open(this.startupService.getConfigStringValue('UI_URL')
+      + '/ingest/' + this.ingest.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    this.emitClose();
   }
 
   downloadATR() {

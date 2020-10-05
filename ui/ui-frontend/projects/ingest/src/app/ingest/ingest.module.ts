@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -43,13 +44,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+
 import { IngestComponent } from './ingest.component';
 import { UploadSipModule } from './upload-sip/upload-sip.module';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
+import { IngestResolverService } from './ingest-resolver.service';
+
+
+
 
 @NgModule({
   imports: [
@@ -71,6 +76,7 @@ import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
     IngestComponent
   ],
   providers: [
+    IngestResolverService,
   ]
 })
 export class IngestModule { }

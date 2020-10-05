@@ -56,4 +56,12 @@ export class IngestService extends SearchService<any> {
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
   }
+
+ get(id: string): Observable<Event> {
+    return this.ingestApiService.getOne(id);
+  }
+
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
 }
