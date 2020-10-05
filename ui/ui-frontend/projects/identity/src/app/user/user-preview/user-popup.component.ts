@@ -53,7 +53,7 @@ export class UserPopupComponent implements OnInit {
   constructor(private route: ActivatedRoute, private customerService: CustomerService) {
     this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
     this.user = this.route.snapshot.data.user;
-}
+  }
 
   ngOnInit() {
   }

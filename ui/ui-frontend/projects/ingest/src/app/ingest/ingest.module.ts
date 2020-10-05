@@ -52,12 +52,14 @@ import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { UploadModule } from '../core/common/upload.module';
 import { IngestResolverService } from './ingest-resolver.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
 
 @NgModule({
   imports: [
+    MatTooltipModule,
     CommonModule,
     VitamUICommonModule,
     MatDialogModule,

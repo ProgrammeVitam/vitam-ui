@@ -14,7 +14,7 @@
         <div class="controls">
           <div class="search-bar-filters">
             <vitamui-common-search-bar #searchBar name="ingtest-search" (search)="onSearchSubmit($event)"
-                                       placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
+              placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
             </vitamui-common-search-bar>
             <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
           </div>
@@ -24,7 +24,7 @@
               i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
               <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
             </button>
-            <button class="btn more-actions" (click)="openImportSipDialog('DEFAULT_WORKFLOW')"
+            <button class="btn more-actions" (click)="openImportSipDialog()"
               matTooltip="Déposer un nouveau versement d'archives (SIP)"
               i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
               <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
