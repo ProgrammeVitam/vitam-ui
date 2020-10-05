@@ -1,20 +1,19 @@
 <div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
+  <div class="vitamui-sidepanel-header">
 
-      <ng-container *ngIf="!isPopup">
-        <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-      </ng-container>
+    <ng-container *ngIf="!isPopup">
+      <button class="btn-popup" role="button" (click)="openPopup()"><i
+          class="vitamui-icon vitamui-icon-pin"></i></button>
+    </ng-container>
 
-        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button> <br />
 
-        <div class="title">
-          <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"
-             [ngClass]="{'status-badge-green': ingestStatus(ingest) == 'OK',
+    <div class="title">
+      <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge" [ngClass]="{'status-badge-green': ingestStatus(ingest) == 'OK',
                       'status-badge-grey':ingestStatus(ingest) == 'STARTED',
                       'status-badge-orange': ingestStatus(ingest) == 'WARNING',
                       'status-badge-red': ingestStatus(ingest) == 'KO' || ingestStatus(ingest) == 'FATAL' }"></i>
-
-          <h2>{{ ingest?.evDetData?.EvDetailReq ? ingest?.evDetData?.EvDetailReq : ingest?.id }}</h2>
+      <h2>{{ ingest?.evDetData?.EvDetailReq ? ingest?.evDetData?.EvDetailReq : ingest?.id }}</h2>
         </div>
       <ng-container *ngIf="ingestStatus(ingest) !== 'FATAL'">
         <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
@@ -26,15 +25,16 @@
             <button mat-menu-item i18n="Ingest Generate DocX@@ingestPreviewGenerateDocX" (click)="generateDocX()" *ngIf="ingestStatus(ingest) === 'OK' || ingestStatus(ingest) === 'WARNING'">Télécharger le bordereau de versement</button>
         </mat-menu>
       </ng-container>
+    </div>
 
-    </div>
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group">
-            <mat-tab label="Informations">
-                <app-ingest-information-tab [ingest]="ingest"></app-ingest-information-tab>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
+  </div>
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group">
+      <mat-tab label="Informations">
+        <app-ingest-information-tab [ingest]="ingest"></app-ingest-information-tab>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </div>
 
 

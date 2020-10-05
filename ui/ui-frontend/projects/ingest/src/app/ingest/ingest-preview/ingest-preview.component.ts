@@ -75,10 +75,6 @@ export class IngestPreviewComponent implements OnInit {
   }
 
   openPopup() {
-
-    console.log("salam " +this.ingest);
-    //this.sendIngest.emit(this.ingest);
-
     window.open(this.startupService.getConfigStringValue('UI_URL')
       + '/ingest/' + this.ingest.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
     this.emitClose();
