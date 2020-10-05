@@ -221,11 +221,11 @@ db.applications.insert({
 });
 
 db.applications.insert({
-    "identifier" : "TREES_PLANS_APP",
+    "identifier" : "HOLDING_FILLING_SCHEME_APP",
 {% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.ingest.base_url }}/trees-plans",
+    "url": "{{ vitamui.ingest.base_url }}/holding-filling-scheme",
 {% else %}
-    "url": "{{ url_prefix }}/ingest/trees-plans",
+    "url": "{{ url_prefix }}/ingest/holding-filling-scheme",
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-filing",
     "name" : "Arbres et Plans",

@@ -36,7 +36,7 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
+import { MatSidenavModule, MatMenuModule, MatDialog, MatDialogModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,16 +49,16 @@ import { environment } from '../../environments/environment';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TreesPlansComponent } from './trees-plans.component';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 import { IngestService } from '../ingest/ingest.service';
 
 @Component({ selector: 'app-ingest-list', template: '' })
 class IngestListStubComponent {
 }
 
-describe('TreesPlansComponent', () => {
-  let component: TreesPlansComponent;
-  let fixture: ComponentFixture<TreesPlansComponent>;
+describe('HoldingFilingSchemeComponent', () => {
+  let component: HoldingFillingSchemeComponent;
+  let fixture: ComponentFixture<HoldingFillingSchemeComponent>;
 
   const ingestServiceMock = {
     ingest: () => of('test ingest'),
@@ -81,17 +81,18 @@ describe('TreesPlansComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule
+        SearchBarModule,
+        MatDialogModule,
       ],
       declarations: [
-        TreesPlansComponent,
+        HoldingFillingSchemeComponent,
         IngestListStubComponent
       ],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'TREES_PLANS_APP' }) } },
+        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) } },
         { provide: environment, useValue: environment }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -100,12 +101,26 @@ describe('TreesPlansComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TreesPlansComponent);
+    fixture = TestBed.createComponent(HoldingFillingSchemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call open', () => {
+    const matDialogSpy = TestBed.get(MatDialog);
+    component.openImportTreePlanPopup('HOLDING_SCHEME');
+    expect(matDialogSpy.open).toHaveBeenCalled();
+    expect(matDialogSpy.open.calls.count()).toBe(1);
+  });
+
+  it('should open a modal with HoldingFillingSchemeComponent', () => {
+    const matDialogSpy = TestBed.get(MatDialog);
+    component.openImportTreePlanPopup('FILING_SCHEME');
+    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(matDialogSpy.open).toHaveBeenCalled();
   });
 });
