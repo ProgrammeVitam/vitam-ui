@@ -44,9 +44,6 @@ import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
 
 const action = 'RESUME';
-const tree = 'Importer un arbre de positionnement';
-const plan = 'Importer un plan de classement';
-const sip = 'Verser un SIP';
 
 @Component({
   selector: 'app-upload',
@@ -100,17 +97,19 @@ export class UploadComponent implements OnInit {
   initContextIdentifier(contextInput: string) {
     switch (contextInput) {
       case 'HOLDING_SCHEME':
-        this.messageImportType = tree;
+        this.messageImportType = 'Importer un arbre de positionnement';
         this.messageLabelImportType = 'Nouvel arbre de positionnement';
         break;
       case 'FILING_SCHEME':
-        this.messageImportType = plan;
+        this.messageImportType = 'Importer un plan de classement';
         this.messageLabelImportType = 'Nouveau plan de classement';
         break;
-      default:
-        this.messageImportType = sip;
+      case 'DEFAULT_WORKFLOW':
+        this.messageImportType = 'Verser un SIP';
         this.messageLabelImportType = 'Nouveau versement';
         break;
+      default:
+      console.error('unknown context identifier');
     }
   }
 

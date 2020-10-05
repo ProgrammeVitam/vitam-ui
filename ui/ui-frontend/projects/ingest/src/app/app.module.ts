@@ -45,7 +45,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { IngestModule } from './ingest';
-import { TreesPlansModule } from './trees-plans/trees-plans.module';
+import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -60,7 +60,7 @@ registerLocaleData(localeFr, 'fr');
     VitamUICommonModule,
     AppRoutingModule,
     IngestModule,
-    TreesPlansModule
+    HoldingFillingSchemeModule
   ],
   providers: [
     Title,

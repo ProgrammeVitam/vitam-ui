@@ -34,42 +34,61 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Route, RouterModule } from '@angular/router';
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
-import { TreesPlansComponent } from './trees-plans.component';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import {  ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { UploadComponent } from '../core/common/upload.component';
 
-
-
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full'
-  },
-  {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    pathMatch: 'full',
-    canActivate: [TenantSelectionGuard]
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: TreesPlansComponent,
-    canActivate: [ActiveTenantGuard]
-  }
-];
-
-
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+@Component({
+  selector: 'app-holding-filling-scheme',
+  templateUrl: './holding-filling-scheme.component.html',
+  styleUrls: ['./holding-filling-scheme.component.scss']
 })
-export class TreesPlansRoutingModule { }
+export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
+
+  search: string;
+  tenantIdentifier: string;
+
+  constructor(private router: Router, private route: ActivatedRoute, globalEventService: GlobalEventService, public dialog: MatDialog) {
+    super(route, globalEventService);
+
+    route.params.subscribe(params => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
+  }
+
+  ngOnInit() {
+  }
+
+  openImportTreePlanPopup(type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.panelClass = 'vitamui-modal';
+    dialogConfig.disableClose = false;
+
+    dialogConfig.data = {
+      tenantIdentifier: this.tenantIdentifier,
+      givenContextId: type
+    };
+
+    const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.refresh();
+      }
+    });
+  }
+
+  onSearchSubmit(search: string) {
+    this.search = search || '';
+  }
+
+  changeTenant(tenantIdentifier: number) {
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+  }
+
+  refresh() {
+  }
+}

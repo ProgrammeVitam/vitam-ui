@@ -286,25 +286,25 @@ db.profiles.insert({
 });
 
 db.profiles.insert({
-  "_id": "system_trees_plans_profile",
+  "_id": "system_holding_filling_scheme_profile",
   "identifier" : NumberInt(maxIdProfile++),
   "name": "Arbres et Plans",
   "description": "Arbres et Plans",
   "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "TREES_PLANS_APP",
+  "applicationName": "HOLDING_FILLING_SCHEME_APP",
   "level": "",
   "enabled": true,
   "readonly": false,
   "customerId": "system_customer",
   "roles": [
   {
-    "name": "ROLE_CREATE_TREES_PLANS"
+    "name": "ROLE_CREATE_HOLDING_FILLING_SCHEME"
   },
   {
-    "name": "ROLE_GET_TREES_PLANS"
+    "name": "ROLE_GET_HOLDING_FILLING_SCHEME"
   },
   {
-    "name": "ROLE_GET_ALL_TREES_PLANS"
+    "name": "ROLE_GET_ALL_HOLDING_FILLING_SCHEME"
   }
    ]
 });
@@ -337,7 +337,7 @@ db.groups.updateOne( {
                 "system_dsl",
                 "system_probative_value",
                 "system_logbook_operation",
-                "system_trees_plans_profile"
+                "system_holding_filling_scheme_profile"
         	]
         }
     }

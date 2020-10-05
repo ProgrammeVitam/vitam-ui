@@ -44,8 +44,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { TreesPlansComponent } from './trees-plans.component';
-import { TreesPlansRoutingModule } from './trees-plans-routing.module';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { MatProgressBarModule } from '@angular/material';
 import { UploadModule } from '../core/common/upload.module';
 
@@ -59,14 +59,14 @@ import { UploadModule } from '../core/common/upload.module';
     SharedModule,
     ReactiveFormsModule,
     MatNativeDateModule,
-    TreesPlansRoutingModule,
+    HoldingFillingSchemeRoutingModule,
     MatProgressBarModule,
     UploadModule
   ],
   declarations: [
-    TreesPlansComponent
+    HoldingFillingSchemeComponent
   ],
   providers: [
   ]
 })
-export class TreesPlansModule { }
+export class HoldingFillingSchemeModule { }
