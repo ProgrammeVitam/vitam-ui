@@ -40,6 +40,5 @@ export class IngestApiService extends BaseHttpClient<any> {
     return super.getOne(id, headers).pipe(
       tap(ev => ev.parsedData = (ev.data != null) ? JSON.parse(ev.data) : null)
     );
-    //return super.getOne(id, headers);
   }
 }
