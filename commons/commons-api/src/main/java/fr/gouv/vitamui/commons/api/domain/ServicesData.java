@@ -36,6 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
@@ -44,13 +51,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * All the services.
@@ -337,11 +337,11 @@ public class ServicesData {
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
-    public static final String SERVICE_TREES_PLANS_ROLE = "TREES_PLANS";
+    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
 
-    public static final String ROLE_CREATE_TREES_PLANS_ROLE = CREATE_ROLE_PREFIX + SERVICE_TREES_PLANS_ROLE;
-    public static final String ROLE_GET_TREES_PLANS_ROLE = GET_ROLE_PREFIX + SERVICE_TREES_PLANS_ROLE;
-    public static final String ROLE_GET_ALL_TREES_PLANS_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_TREES_PLANS_ROLE;
+    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
 
 
@@ -352,15 +352,6 @@ public class ServicesData {
     public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
-
-
-    //------------------------------------ API TREES & PLANS -----------------------------------------
-
-    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
-
-    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
 
     //@formatter:off
@@ -448,11 +439,7 @@ public class ServicesData {
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
-
-            ROLE_CREATE_TREES_PLANS_ROLE,
-            ROLE_GET_TREES_PLANS_ROLE,
-            ROLE_GET_ALL_TREES_PLANS_ROLE
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
             );
 
     /**
@@ -565,11 +552,7 @@ public class ServicesData {
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
-
-            ROLE_CREATE_TREES_PLANS_ROLE,
-            ROLE_GET_TREES_PLANS_ROLE,
-            ROLE_GET_ALL_TREES_PLANS_ROLE
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
 
     );
     //@formatter:on

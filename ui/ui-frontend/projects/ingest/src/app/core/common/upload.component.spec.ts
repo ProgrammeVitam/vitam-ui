@@ -38,20 +38,20 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploadComponent } from './upload.component';
 import { MatProgressBarModule, MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule } from '@angular/material';
-import { of } from 'rxjs';
+import { of, EMPTY } from 'rxjs';
 import { UploadService } from './upload.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { LoggerModule } from 'ui-frontend-common';
+import { LoggerModule, ConfirmDialogService } from 'ui-frontend-common';
 
-describe('UploadComponent', () => {
+fdescribe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
   matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const uploadSipServiceSpy = jasmine.createSpyObj('UploadSipService', { create: of({}) });
+  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}) });
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,7 +65,8 @@ describe('UploadComponent', () => {
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: UploadService, useValue: uploadSipServiceSpy }
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: UploadService, useValue: uploadServiceSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -80,5 +81,72 @@ describe('UploadComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+
+  it('should call upload()', () => {
+    const uploadService = TestBed.get(UploadService);
+    const confirmerVersementButton = fixture.nativeElement.querySelector('button');
+    expect(confirmerVersementButton.attributes.disabled).toBeFalsy();
+    expect(confirmerVersementButton.textContent).toContain('Confirmer le versement');
+    component.sipForm.setValue({
+      hasSip: true
+    });
+    component.upload();
+    expect(uploadService.uploadFile.calls.count()).toBe(1);
+  });
+
+
+  describe('initContextIdentifier', () => {
+
+    beforeEach( () => {
+      spyOn(console, 'error');
+    });
+
+    it('should adapt the message with Holding scheme', () => {
+      component.initContextIdentifier('HOLDING_SCHEME');
+      expect(component.messageImportType).toEqual('Importer un arbre de positionnement');
+      expect(component.messageLabelImportType).toEqual('Nouvel arbre de positionnement');
+    });
+
+    it('should adapt the message with Filling scheme', () => {
+      component.initContextIdentifier('FILING_SCHEME');
+      expect(component.messageImportType).toEqual('Importer un plan de classement');
+      expect(component.messageLabelImportType).toEqual('Nouveau plan de classement');
+    });
+
+    it('should adapt the message with default ingest', () => {
+      component.initContextIdentifier('DEFAULT_WORKFLOW');
+      expect(component.messageImportType).toEqual('Verser un SIP');
+      expect(component.messageLabelImportType).toEqual('Nouveau versement');
+    });
+
+    it('should log error for unknown context', () => {
+      component.initContextIdentifier('XYZ');
+      expect(console.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('checkFileExtension', () => {
+
+    it('should return true when extension zip is correct', () => {
+      expect(component.checkFileExtension('correct.zip')).toBeTruthy();
+    });
+
+    it('should return true when extension tar is correct', () => {
+      expect(component.checkFileExtension('correct.tar')).toBeTruthy();
+    });
+
+    it('should return true when extension .tar.gz is correct', () => {
+      expect(component.checkFileExtension('correct.tar.gz')).toBeTruthy();
+    });
+
+    it('should return true when extension .tar.bz2 is correct', () => {
+      expect(component.checkFileExtension('correct.tar.bz2')).toBeTruthy();
+    });
+
+    it('should return true when extension is bad', () => {
+      expect(component.checkFileExtension('bad.json')).toBeFalsy();
+    });
   });
 });

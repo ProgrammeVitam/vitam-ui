@@ -62,6 +62,7 @@ registerLocaleData(localeFr, 'fr');
     VitamUICommonModule,
     AppRoutingModule,
     IngestModule,
+    HoldingFillingSchemeModule
     TreesPlansModule,
     HoldingFillingSchemeModule
   ],
