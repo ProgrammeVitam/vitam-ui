@@ -95,10 +95,10 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
       this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-      
+      this.filters.startDate = null;
     } else if (date === 'endDate') {
       this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
-      
+      this.filters.endDate = null;
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
