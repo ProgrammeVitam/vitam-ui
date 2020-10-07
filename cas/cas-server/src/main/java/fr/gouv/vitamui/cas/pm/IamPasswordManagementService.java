@@ -163,7 +163,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @Override
     public String findEmail(final String username) {
         String email = null;
-        val usernameWithLowercase = username.toLowerCase();
+        val usernameWithLowercase = username.toLowerCase().trim();
         try {
             val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
             if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
