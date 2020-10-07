@@ -57,11 +57,11 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   filters: any = {};
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(IngestListComponent, { static: true }) ingestListComponent: IngestListComponent;
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
 
-  constructor(private router: Router, private route: ActivatedRoute,
-    globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
+  constructor( private router: Router, private route: ActivatedRoute,
+               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
     super(route, globalEventService);
 
     route.params.subscribe(params => {
@@ -94,9 +94,11 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
@@ -135,7 +137,7 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
   refresh() {
