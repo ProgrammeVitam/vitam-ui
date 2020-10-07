@@ -25,6 +25,7 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 .vitamui-icon-barcode:before {
   content: "\e954";
 }
@@ -282,4 +283,10 @@ i.vitamui-icon {
 }
 .vitamui-icon-archive-room:before {
   content: "\e951";
+}
+.vitamui-icon-circle-up:before {
+  content: "\ea41";
+}
+.vitamui-icon-circle-down:before {
+  content: "\ea43";
 }
