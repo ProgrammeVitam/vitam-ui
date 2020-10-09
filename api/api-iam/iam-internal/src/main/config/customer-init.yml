@@ -118,6 +118,15 @@ customer-init:
         - ROLE_CREATE_INGEST
         - ROLE_GET_ALL_INGEST
 
+    - name: Profil Arbres et Plans
+      description: Gestion des application d'import d'arbres de positionnement et plans de classement
+      app-name: HOLDING_FILLING_SCHEME_APP
+      level:
+      roles:
+        - ROLE_CREATE_HOLDING_FILLING_SCHEME
+        - ROLE_GET_HOLDING_FILLING_SCHEME
+        - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
   #- name: profileName
   #  description: desc
   #  level: 1
