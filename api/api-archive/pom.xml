@@ -19,7 +19,6 @@
         <module>archive-external-client</module>
         <module>archive-internal</module>
         <module>archive-internal-client</module>
-
     </modules>
 
 </project>
