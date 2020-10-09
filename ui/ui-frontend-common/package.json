@@ -1,6 +1,6 @@
 {
   "name": "ui-frontend-common",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "src/index.ts",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
@@ -89,6 +89,7 @@
     "karma-jasmine": "^2.0.1",
     "karma-jasmine-html-reporter": "^1.5.4",
     "mini-svg-data-uri": "^1.2.3",
+    "moment-locales-webpack-plugin": "^1.2.0",
     "ng-packagr": "^5.7.1",
     "ngx-i18nsupport": "^0.17.1",
     "node-sass": "^4.14.1",
