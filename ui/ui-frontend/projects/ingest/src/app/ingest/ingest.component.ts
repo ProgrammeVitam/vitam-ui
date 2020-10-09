@@ -85,9 +85,6 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     });
   }
 
-  openCreateIngestDialog() {
-  }
-
   onSearchSubmit(search: string) {
     this.search = search || '';
   }

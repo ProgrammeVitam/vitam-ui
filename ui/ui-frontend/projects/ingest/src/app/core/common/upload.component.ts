@@ -158,14 +158,11 @@ export class UploadComponent implements OnInit {
 
     this.uploadService.uploadFile(this.fileToUpload, this.contextId, action, this.tenantIdentifier)
       .subscribe(
-        (res: boolean) => {
-          this.uploadComplete = res;
-          if (this.uploadComplete) {
-            this.dialogRef.close();
-            this.displaySnackBar(res);
-          }
+        () => {
+          this.dialogRef.close();
+          this.displaySnackBar(true);
         },
-        (error) => {
+        (error: any) => {
           console.error(error);
           this.message = error.message;
         });
