@@ -1,0 +1,30 @@
+#logging.level.org.springframework: DEBUG
+
+spring:
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+  api:
+    name: API Archive
+    description: This API is used to manage Archive operations
+    version: v1
+
+login.url: http://cas/login
+
+security:
+  host: xxx
+  port: 8089
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: archive
+  identityServerId: 1
+
+
+logbook.scheduling.sendEventToVitamTasks.enabled: false

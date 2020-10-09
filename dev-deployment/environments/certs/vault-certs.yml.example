@@ -15,3 +15,6 @@ server_ui_referential_key: changeme
 server_ingest_internal_key: changeme
 server_ingest_external_key: changeme
 server_ui_ingest_key: changeme
+server_archive_internal_key: changeme
+server_archive_external_key: changeme
+server_ui_archive_key: changeme
