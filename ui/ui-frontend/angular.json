@@ -193,7 +193,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "browserTarget": "portal:build",
             "host": "dev.vitamui.com",
@@ -298,7 +298,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "browserTarget": "demo:build"
           },
@@ -630,7 +630,7 @@
             },
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
-            "main": "projects/ingest/src/main.ts",            
+            "main": "projects/ingest/src/main.ts",
             "tsConfig": "projects/ingest/tsconfig.app.json",
             "polyfills": "projects/ingest/src/polyfills.ts",
             "assets": [
