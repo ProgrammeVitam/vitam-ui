@@ -105,6 +105,13 @@ customer-init:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
 
+    - name: Profil Journal des Opérations
+      description: Gestion des applications des Journaux des Opérations
+      app-name: LOGBOOK_OPERATION_APP
+      level:
+      roles:
+        - ROLE_LOGBOOKS
+
   #- name: profileName
   #  description: desc
   #  level: 1
