@@ -63,7 +63,12 @@
         </div>
       </div>
     </div>
+    <div class="vitamui-container">
+      <app-upload-tracking></app-upload-tracking>
+    </div>
+
     <div class="vitamui-body vitamui-container">
+      <h3>Suivi des versements</h3>
       <app-ingest-list (ingestClick)="showIngest($event)" [search]="search" [filters]="filters"></app-ingest-list>
     </div>
   </mat-sidenav-content>
