@@ -309,6 +309,32 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>archive-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>archive-internal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>archive-internal-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>archive-external</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>archive-external-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
