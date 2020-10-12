@@ -3,7 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AppConfiguration } from '.';
 import { AuthUser, ThemeDataType } from './models';
 import { Color } from './models/customer/theme/color.interface';
-import { convertLighten, getColorFromMaps, hexToRgb, hexToRgbString, ThemeColors } from './utils';
+import { convertLighten, getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
 
 export interface Theme {
   colors: {[colorId: string]: string};
@@ -29,13 +29,14 @@ export class ThemeService {
     private domSanitizer: DomSanitizer,
   ) { }
 
-  private baseColors: {[colorId: string]: string} = {
-    'vitamui-primary': 'Couleur principale',
-    'vitamui-secondary': 'Couleur secondaire',
-    'vitamui-tertiary': 'Couleur tertiaire',
-    'vitamui-header-footer': 'Couleur header/footer',
-    'vitamui-background': 'Couleur background',
+  private baseColors: {[colorId in ThemeColorType]?: string} = {
+    [ThemeColorType.VITAMUI_PRIMARY]: 'Couleur principale',
+    [ThemeColorType.VITAMUI_SECONDARY]: 'Couleur secondaire',
+    [ThemeColorType.VITAMUI_TERTIARY]: 'Couleur tertiaire',
+    [ThemeColorType.VITAMUI_HEADER_FOOTER]: 'Couleur header/footer',
+    [ThemeColorType.VITAMUI_BACKGROUND]: 'Couleur background'
   };
+
 
   // tslint:disable-next-line: variable-name
   private _defaultTheme: Theme = {
@@ -48,20 +49,19 @@ export class ThemeService {
   };
 
   // Default theme
-  defaultMap: ThemeColors = {
-    'vitamui-primary': '#604379',
-    'vitamui-primary-light': '',
-    'vitamui-primary-light-20': '',
-    'vitamui-primary-dark': '',
-
-    'vitamui-secondary': '#65B2E4',
-    'vitamui-secondary-light': '',
-    'vitamui-secondary-light-8': '',
-    'vitamui-secondary-dark-5': '',
-
-    'vitamui-tertiary': '#E7304D',
-    'vitamui-header-footer': '#604379',
-    'vitamui-background': '#F5F5F5',
+  defaultMap: {[colordId in ThemeColorType]: string} = {
+    [ThemeColorType.VITAMUI_PRIMARY]: '#604379',
+    [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
+    [ThemeColorType.VITAMUI_PRIMARY_LIGHT_20]: '',
+    [ThemeColorType.VITAMUI_PRIMARY_DARK]: '',
+    [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
+    [ThemeColorType.VITAMUI_SECONDARY_LIGHT]: '',
+    [ThemeColorType.VITAMUI_SECONDARY_LIGHT_8]: '',
+    [ThemeColorType.VITAMUI_SECONDARY_DARK_5]: '',
+    [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
+    [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
+    [ThemeColorType.VITAMUI_BACKGROUND]: '#F5F5F5',
+    [ThemeColorType.VITAMUI_GREY]: '#9E9E9E'
   };
 
   // Theme for current app configuration
@@ -76,7 +76,7 @@ export class ThemeService {
 
   public get backgroundChoice(): Color[] { return this._backgroundChoice; }
 
-  public getBaseColors(): { [p: string]: string } {
+  public getBaseColors(): {[colorId in ThemeColorType]?: string} {
     return this.baseColors;
   }
 
@@ -100,7 +100,7 @@ export class ThemeService {
 
       // init default background
       const defaultBackground = this.backgroundChoice
-            .find((color: Color) => color.value === conf.THEME_COLORS['vitamui-background']);
+            .find((color: Color) => color.value === conf.THEME_COLORS[ThemeColorType.VITAMUI_BACKGROUND]);
       if (defaultBackground) {
             defaultBackground.isDefault = true;
       }
@@ -151,7 +151,8 @@ export class ThemeService {
   }
 
   private add10Declinations(key: string, colors: {}, customerColors: {[colorId: string]: string}): void {
-    const map = customerColors ? customerColors : this.applicationColorMap;
+    // tslint:disable-next-line: variable-name
+    const map = {...this.defaultMap, ...this.applicationColorMap, ...customerColors};
     const rgbValue = hexToRgb(map[key]);
     // consider hs-L from color key as 500
     colors[key + '-900'] = convertLighten(rgbValue, -32);
@@ -174,7 +175,7 @@ export class ThemeService {
     const colors = {};
     for (const key in this.defaultMap) {
       if (this.defaultMap.hasOwnProperty(key)) {
-        if (key === 'vitamui-primary' || key === 'vitamui-secondary') {
+        if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
           this.add10Declinations(key, colors, customerColors);
         }
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);

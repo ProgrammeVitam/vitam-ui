@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {Color, hexToRgb, rgbToHsl, ThemeService} from 'ui-frontend-common';
+import {Color, hexToRgb, rgbToHsl, ThemeColorType, ThemeService} from 'ui-frontend-common';
 
 
 @Component({
@@ -20,9 +20,10 @@ export class CustomerColorsInputComponent implements OnInit {
 
   public colors: { [colorId: string]: string };
 
-  public baseColors: {[colorId: string]: string};
+  public baseColors: { [colorId in ThemeColorType]?: string };
   public displayTertiary = false;
   public backgroundColors: {id: string, label: string}[] = [];
+  public THEME_COLORS = ThemeColorType;
 
   constructor(private themeService: ThemeService) {}
 

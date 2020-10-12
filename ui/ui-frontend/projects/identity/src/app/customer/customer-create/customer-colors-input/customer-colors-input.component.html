@@ -1,5 +1,5 @@
 <ng-container [formGroup]="formGroup">
-  <div *ngFor="let color of ['vitamui-primary', 'vitamui-secondary']" class="pb-4">
+  <div *ngFor="let color of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="pb-4">
     <app-input-color 
       [disabled]="disabled"
       [colorInput]="formGroup.get(color)"
@@ -19,23 +19,23 @@
     [style.visibility]="!displayTertiary ? 'hidden' : 'visible'"
     [disabled]="disabled"
     class="pb-4"
-    [colorInput]="formGroup.get('vitamui-tertiary')"
-    [placeholder]="baseColors['vitamui-tertiary']">
+    [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
+    [placeholder]="baseColors[THEME_COLORS.VITAMUI_TERTIARY]">
   </app-input-color>
 
   <app-input-color
     class="pb-4"
-    [colorInput]="formGroup.get('vitamui-header-footer')"
+    [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER)"
     [disabled]="disabled"
-    [placeholder]="baseColors['vitamui-header-footer']">
+    [placeholder]="baseColors[THEME_COLORS.VITAMUI_HEADER_FOOTER]">
   </app-input-color>
 
   <vitamui-common-select 
     [disabled]="disabled" 
     [data]="backgroundColors"
-    [messages]="{'unselected': baseColors['vitamui-background'], 'selected': baseColors['vitamui-background']}"
-    [selected]="formGroup.get('vitamui-background').value"
-    (selectedChange)="formGroup.get('vitamui-background').setValue($event)">
+    [messages]="{'unselected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND], 'selected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND]}"
+    [selected]="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).value"
+    (selectedChange)="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).setValue($event)">
   </vitamui-common-select>
 
 </ng-container>

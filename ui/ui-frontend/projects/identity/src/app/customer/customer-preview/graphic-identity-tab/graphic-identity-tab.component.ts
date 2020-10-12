@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Customer, Theme, ThemeService } from 'ui-frontend-common';
+import { Customer, Theme, ThemeColorType, ThemeService } from 'ui-frontend-common';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 
@@ -79,10 +79,8 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   public defaultTheme: Theme;
 
   public theme: Theme;
-  public COLOR_NAME = { // to switch with ngx-translate
-    'vitamui-primary': 'Couleur principale',
-    'vitamui-secondary': 'Couleur secondaire',
-  };
+  public COLOR_NAME: {[colorId: string]: string};
+  public THEME_COLORS = ThemeColorType;
 
   constructor(private customerService: CustomerService, private dialog: MatDialog,
               private themeService: ThemeService) {
@@ -92,6 +90,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.COLOR_NAME = this.themeService.getBaseColors();
   }
 
   private majTheme(colors: {[colorId: string]: string}, portalMessage: string, portalTitle: string): Theme {

@@ -38,7 +38,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import {Customer, Logo, Theme, ThemeService} from 'ui-frontend-common';
+import {Customer, Logo, Theme, ThemeColorType, ThemeService} from 'ui-frontend-common';
 import { LogosSafeResourceUrl } from '../graphic-identity-tab.component';
 
 @Component({
@@ -94,11 +94,11 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
       id : null,
       hasCustomGraphicIdentity: false,
       themeColors: this.formBuilder.group({
-        'vitamui-primary': new FormControl('', [this.hexValidator, Validators.required]),
-        'vitamui-secondary': new FormControl('', [this.hexValidator, Validators.required]),
-        'vitamui-tertiary': new FormControl('', this.hexValidator),
-        'vitamui-header-footer': new FormControl('', [this.hexValidator, Validators.required]),
-        'vitamui-background': new FormControl('', [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_PRIMARY]: new FormControl('', [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_SECONDARY]: new FormControl('', [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_TERTIARY]: new FormControl('', this.hexValidator),
+        [ThemeColorType.VITAMUI_HEADER_FOOTER]: new FormControl('', [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_BACKGROUND]: new FormControl('', [this.hexValidator, Validators.required]),
       }),
       portalTitle: ['', [Validators.required]],
       portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
@@ -172,11 +172,16 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
 
     if (theme.colors) {
       newTheme = new FormGroup({
-        'vitamui-primary': new FormControl(theme.colors['vitamui-primary'], [this.hexValidator, Validators.required]),
-        'vitamui-secondary': new FormControl(theme.colors['vitamui-secondary'], [this.hexValidator, Validators.required]),
-        'vitamui-tertiary': new FormControl(theme.colors['vitamui-tertiary'], this.hexValidator),
-        'vitamui-header-footer': new FormControl(theme.colors['vitamui-header-footer'], [this.hexValidator, Validators.required]),
-        'vitamui-background': new FormControl(theme.colors['vitamui-background'], [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_PRIMARY]: new FormControl(
+          theme.colors[ThemeColorType.VITAMUI_PRIMARY], [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_SECONDARY]: new FormControl(
+          theme.colors[ThemeColorType.VITAMUI_SECONDARY], [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_TERTIARY]: new FormControl(
+          theme.colors[ThemeColorType.VITAMUI_TERTIARY], this.hexValidator),
+        [ThemeColorType.VITAMUI_HEADER_FOOTER]: new FormControl(
+          theme.colors[ThemeColorType.VITAMUI_HEADER_FOOTER], [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_BACKGROUND]: new FormControl(
+          theme.colors[ThemeColorType.VITAMUI_BACKGROUND], [this.hexValidator, Validators.required]),
       });
     }
 

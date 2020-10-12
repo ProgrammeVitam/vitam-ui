@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import {DomSanitizer} from '@angular/platform-browser';
+import { ThemeColorType } from '../utils';
 
 @Pipe({name: 'highlight'})
 export class  HighlightPipe implements PipeTransform {
@@ -21,7 +22,7 @@ export class  HighlightPipe implements PipeTransform {
     while (regex.exec(searchInWithoutAccent) !== null) {
       const matchedStringIndex = regex.lastIndex - args.length;
       // tslint:disable-next-line: max-line-length
-      const coloredString = `<span style='color: var(--vitamui-primary);font-weight: bold;'>${value.substring(matchedStringIndex, regex.lastIndex)}</span>`;
+      const coloredString = `<span style='color: var(--${ThemeColorType.VITAMUI_PRIMARY});font-weight: bold;'>${value.substring(matchedStringIndex, regex.lastIndex)}</span>`;
       result = result.concat(searchInWithoutAccent.substring(startIndex, matchedStringIndex), coloredString);
       startIndex = regex.lastIndex;
     }
