@@ -18,7 +18,8 @@
       "resources": {
         "files": [
           "/assets/**",
-          "/*.(eot|otf|svg|ttf|woff|woff2|ani)"
+          "/*.(eot|otf|svg|jpg|ttf|woff|woff2|ani)",
+          "/*-bg.png"
         ]
       }
     }
