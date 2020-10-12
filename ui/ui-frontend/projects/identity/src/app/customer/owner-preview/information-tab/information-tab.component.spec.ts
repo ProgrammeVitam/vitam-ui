@@ -218,7 +218,7 @@ describe('Owner InformationTabComponent', () => {
       codeControl.setValue('aaaaaa');
       expect(codeControl.valid).toBeFalsy();
       codeControl.setValue('1234');
-      expect(codeControl.valid).toBeTruthy();
+      expect(codeControl.valid).toBeFalsy();
     });
 
     it('should be valid and call patch()', () => {

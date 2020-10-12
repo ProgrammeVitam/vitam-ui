@@ -293,7 +293,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   lastStepIsInvalid(): boolean {
       const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
-      return this.form.pending || invalid || this.creating;
+      return this.form.pending || this.form.invalid || invalid || this.creating;
   }
 
   private isThemeColorsFormValid(): boolean {
