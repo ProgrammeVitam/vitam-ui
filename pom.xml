@@ -1098,7 +1098,7 @@
                 </plugin>
                 <!-- find bugs in current project -->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
+                    <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
                     <version>${maven.spotbugs.plugin.version}</version>
                 </plugin>
@@ -1535,6 +1535,7 @@
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${maven.spotbugs.plugin.version}</version>
                         <configuration>
                             <failOnError>false</failOnError>
                         </configuration>
