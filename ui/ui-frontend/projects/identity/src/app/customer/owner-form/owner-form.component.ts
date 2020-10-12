@@ -104,7 +104,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       identifier: null,
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
         this.ownerFormValidators.uniqueCode(),
       ],
       name: [null, Validators.required],

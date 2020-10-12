@@ -1,10 +1,10 @@
 <ng-container [formGroup]="form">
 
 
-  <vitamui-common-input class="field-code" formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
+  <vitamui-common-input class="field-code" maxlength="20" required formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
     <ng-container *ngIf="form.get('code')?.touched">
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern" i18n="Wrong format (4 digits minimum) error hint@@formError5DigitsField">Format incorrect (4 chiffres minimum)</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-input-error>
     </ng-container>
   </vitamui-common-input>
