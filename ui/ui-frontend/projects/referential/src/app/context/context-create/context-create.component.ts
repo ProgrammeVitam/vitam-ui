@@ -37,7 +37,7 @@
 import {Subscription} from 'rxjs';
 import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SecurityProfileService} from '../../security-profile/security-profile.service';
@@ -53,10 +53,12 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
 
+  @Input() isSlaveMode: boolean;
+
   form: FormGroup;
   statusControl = new FormControl(false);
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
+  accessContractInfo: {code: string, name: string, companyName: string} = {code: '', name: '', companyName: ''};
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -88,14 +90,16 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       status: ['INACTIVE'],
       name: [null, Validators.required, this.contextCreateValidators.uniqueName()],
-      identifier: [null],
+      identifier: [null, Validators.required, this.contextCreateValidators.uniqueIdentifier()],
       securityProfile: [null, Validators.required],
       enableControl: [false],
       permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, this.contextCreateValidators.permissionInvalid()]
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
-      this.form.controls.identifier.setValue(value);
+      if (!this.isSlaveMode) {
+        this.form.controls.identifier.setValue(value);
+      }
     });
 
     this.statusControl.valueChanges.subscribe((value) => {

@@ -282,4 +282,15 @@ export class ApplicationService {
       return a.position < b.position ? -1 : 1;
     });
   }
+
+  isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
+
+    return this.applicationApi.isApplicationExternalIdentifierEnabled(id).pipe(
+      catchError(() => of([])),
+      map((result: boolean) => {
+        return result;
+      })
+    );
+
+  }
 }

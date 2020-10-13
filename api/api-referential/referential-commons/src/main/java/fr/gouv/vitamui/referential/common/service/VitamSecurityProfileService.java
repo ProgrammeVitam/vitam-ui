@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -122,7 +123,9 @@ public class VitamSecurityProfileService {
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         LOGGER.info("Create Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         final List<SecurityProfileModel> actualSecurityProfiles = new ArrayList<>();
-        newSecurityProfile.setIdentifier(newSecurityProfile.getName());
+        if(StringUtils.isBlank(newSecurityProfile.getIdentifier())) {
+            newSecurityProfile.setIdentifier(newSecurityProfile.getName());
+        }
         actualSecurityProfiles.add(newSecurityProfile);
 
         return importSecurityProfiles(vitamSecurityProfile, actualSecurityProfiles);

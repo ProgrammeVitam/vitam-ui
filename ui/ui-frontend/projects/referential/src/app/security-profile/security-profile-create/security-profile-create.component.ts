@@ -37,7 +37,7 @@
 import {Subscription} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
 
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewChild, Input} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SecurityProfileService} from '../security-profile.service';
@@ -51,6 +51,8 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./security-profile-create.component.scss']
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
+
+  @Input() isSlaveMode: boolean;
 
   form: FormGroup;
   stepIndex = 0;
@@ -81,8 +83,15 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.form = this.formBuilder.group({
       name: [null, [Validators.required], this.securityProfileCreateValidators.uniqueName()],
+      identifier: [null, Validators.required, this.securityProfileCreateValidators.uniqueIdentifier()],
       fullAccess: [true],
       permissions: null,
+    });
+
+    this.form.controls.name.valueChanges.subscribe((value) => {
+      if (!this.isSlaveMode) {
+        this.form.controls.identifier.setValue(value);
+      }
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
