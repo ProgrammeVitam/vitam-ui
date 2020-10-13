@@ -81,4 +81,15 @@ export class ApplicationService {
     );
 
   }
+
+  isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
+
+    return this.applicationApi.isApplicationExternalIdentifierEnabled(id).pipe(
+      catchError(() => of([])),
+      map((result: boolean) => {
+        return result;
+      })
+    );
+
+  }
 }

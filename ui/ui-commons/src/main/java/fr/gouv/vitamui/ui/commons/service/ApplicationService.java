@@ -36,18 +36,19 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.DatatypeConverter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import fr.gouv.vitamui.ui.commons.utils.conf.FunctionalAdministration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -76,6 +77,7 @@ import fr.gouv.vitamui.ui.commons.property.UIProperties;
 public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
+    public static final String FUNCTIONAL_ADMINISTRATION_CONF_PATH = "/vitam/conf/functional-administration/functional-administration.conf";
 
     private final UIProperties properties;
 
@@ -125,6 +127,25 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, categories);
 
         return portalConfig;
+    }
+
+    public Boolean isApplicationExternalIdentifierEnabled(final ExternalHttpContext context, final String identifier) {
+        final Integer tenantId = context.getTenantIdentifier();
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+
+        try {
+            final FunctionalAdministration conf = mapper.readValue(new File(FUNCTIONAL_ADMINISTRATION_CONF_PATH), FunctionalAdministration.class);
+            final Map<Integer, List<String>> listEnableExternalIdentifiers = conf.getListEnableExternalIdentifiers();
+
+            if(listEnableExternalIdentifiers.containsKey(tenantId)) {
+                final List<String> enabledApplications = listEnableExternalIdentifiers.get(tenantId);
+                return(enabledApplications.contains(identifier));
+            }
+        } catch (IOException e) {
+            LOGGER.error("Failed to read file '{}', application is in master mode", FUNCTIONAL_ADMINISTRATION_CONF_PATH, e);
+        }
+
+        return false;
     }
 
     public String getBaseUrlPortal() {

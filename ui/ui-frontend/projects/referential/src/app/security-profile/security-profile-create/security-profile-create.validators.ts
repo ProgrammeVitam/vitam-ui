@@ -53,6 +53,10 @@ export class SecurityProfileCreateValidators {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
   }
 
+  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
+  }
+
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
 

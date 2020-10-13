@@ -56,6 +56,10 @@ export class ApplicationApiService {
     return this.http.get<ApplicationInfo>(this.apiUrl, { params, headers });
   }
 
+  isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
+    return this.http.get<boolean>(this.apiUrl  + '/' + id + '/externalid');
+  }
+
   getConfiguration(): Observable<AppConfiguration> {
     return this.http.get<AppConfiguration>(this.apiUrl + '/conf');
   }

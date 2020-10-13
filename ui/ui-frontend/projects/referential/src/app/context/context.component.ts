@@ -38,7 +38,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {Context} from '../../../../vitamui-library/src/lib/models/context';
 import {ContextCreateComponent} from './context-create/context-create.component';
 import {ContextListComponent} from './context-list/context-list.component';
@@ -51,15 +51,18 @@ import {ContextListComponent} from './context-list/context-list.component';
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
 
   search = '';
+  isSlaveMode: boolean;
 
   @ViewChild(ContextListComponent, {static: true}) contextListComponent: ContextListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService,
+              private applicationService: ApplicationService) {
     super(route, globalEventService);
   }
 
   openCreateContextDialog() {
     const dialogRef = this.dialog.open(ContextCreateComponent, {panelClass: 'vitamui-modal', disableClose: true});
+    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -77,11 +80,18 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
     this.contextListComponent.searchContextOrdered();
   }
 
+  updateSlaveMode() {
+    this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').subscribe((value) => {
+      this.isSlaveMode = value;
+    });
+  }
+
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
 
   ngOnInit() {
+    this.updateSlaveMode();
   }
 
   showContext(item: Context) {

@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -108,12 +109,14 @@ public class VitamContextService {
         return response;
     }
 
-    public RequestResponse<?> createContext(final VitamContext vitamContext, ContextDto newContexty)
+    public RequestResponse<?> createContext(final VitamContext vitamContext, ContextDto newContext)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
 
         final List<ContextDto> actualContexts = new ArrayList<>();
-        newContexty.setIdentifier(newContexty.getName());
-        actualContexts.add(newContexty);
+        if(StringUtils.isBlank(newContext.getIdentifier())) {
+            newContext.setIdentifier(newContext.getName());
+        }
+        actualContexts.add(newContext);
 
         return createContexts(vitamContext, actualContexts);
     }
@@ -188,7 +191,7 @@ public class VitamContextService {
         final List<ContextVitamDto> listOfContexts = convertContextsToModelOfCreation(contextDto);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfContexts, JsonNode.class);
-        
+
         // The "accessContracts" and "ingestContracts" in the permissions must be rename to "AccessContracts" and "IngestContracts" to be saved in Vitam
         final ArrayNode arrayNode = (ArrayNode) node;
         arrayNode.forEach(contextNode -> {
@@ -204,10 +207,10 @@ public class VitamContextService {
                 		objectNode.set("IngestContracts", permissionNode.get("ingestContracts"));
                 		objectNode.remove("ingestContracts");
                 	}
-            	});	
+            	});
         	}
         });
-    
+
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             mapper.writeValue(byteArrayOutputStream, node);
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());

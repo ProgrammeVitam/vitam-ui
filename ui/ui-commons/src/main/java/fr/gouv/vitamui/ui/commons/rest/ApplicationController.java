@@ -40,14 +40,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -81,6 +77,13 @@ public class ApplicationController extends AbstractUiRestController {
     public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) {
         LOGGER.debug("getApplications");
         return service.getApplications(buildUiHttpContext(), filterApp);
+    }
+
+    @ApiOperation(value = "Check if an application can have an external identifier")
+    @GetMapping(path = "/{identifier:.+}/externalid")
+    public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+        LOGGER.debug("isApplicationExternalIdentifierEnabled");
+        return service.isApplicationExternalIdentifierEnabled(buildUiHttpContext(), identifier);
     }
 
     /**
