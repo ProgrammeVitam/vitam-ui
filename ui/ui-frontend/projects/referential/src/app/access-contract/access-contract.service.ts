@@ -79,6 +79,19 @@ export class AccessContractService extends SearchService<AccessContract> {
     return this.accessContractApi.check(accessContract, this.headers);
   }
 
+  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+    const existContract: any = {};
+    if (properties.name) {
+      existContract.name = properties.name;
+    }
+    if (properties.identifier) {
+      existContract.identifier = properties.identifier;
+    }
+
+    const context = existContract as AccessContract;
+    return this.accessContractApi.check(context, this.headers);
+  }
+
   patch(data: { id: string, [key: string]: any }): Observable<AccessContract> {
     return this.accessContractApi.patch(data)
       .pipe(

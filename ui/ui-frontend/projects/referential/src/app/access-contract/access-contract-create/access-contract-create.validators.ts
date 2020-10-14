@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, ValidationErrors} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
 import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {Observable, of, timer} from 'rxjs';
+import {of, timer} from 'rxjs';
 import {map, switchMap, take} from 'rxjs/operators';
 
 import {AccessContractService} from '../access-contract.service';
@@ -52,29 +52,49 @@ export class AccessContractCreateValidators {
   constructor(private accessContractService: AccessContractService) {
   }
 
-  uniqueName = (): AsyncValidatorFn => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime)
-        .pipe(
-          switchMap(() => this.accessContractService.exists(control.value)),
-          take(1),
-          map((exists: boolean) => exists ? {nameExists: true} : null)
-        );
-    };
+  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('name', 'nameExists', nameToIgnore);
   }
 
-  uniqueNameWhileEdit = (accessContract: () => AccessContract): AsyncValidatorFn => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+  uniqueNameWhileEdit = (accessContract: () => AccessContract, nameToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFieldsWhileEdit(accessContract, 'name', 'nameExists', nameToIgnore);
+  }
+
+  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
+  }
+
+  private uniqueFieldsWhileEdit(accessContract: () => AccessContract, field: string, existTag: string, valueToIgnore?: string) {
+    return (control: AbstractControl) => {
+      const properties: any = {};
+      properties[field] = control.value;
+      const existField: any = {};
+      existField[existTag] = true;
+
       if (accessContract() === undefined || control.value === accessContract().name) {
         return of(null);
       } else {
-        return timer(400)
-          .pipe(
-            switchMap(() => this.accessContractService.exists(control.value)),
-            take(1),
-            map((exists: boolean) => exists ? {nameExists: true} : null)
-          );
+        return timer(this.debounceTime).pipe(
+          switchMap(() => control.value !== valueToIgnore ? this.accessContractService.existsProperties(properties) : of(false)),
+          take(1),
+          map((exists: boolean) => exists ? existField : null)
+        );
       }
+    };
+  }
+
+  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
+    return (control: AbstractControl) => {
+      const properties: any = {};
+      properties[field] = control.value;
+      const existField: any = {};
+      existField[existTag] = true;
+
+      return timer(this.debounceTime).pipe(
+        switchMap(() => control.value !== valueToIgnore ? this.accessContractService.existsProperties(properties) : of(false)),
+        take(1),
+        map((exists: boolean) => exists ? existField : null)
+      );
     };
   }
 

@@ -79,6 +79,19 @@ export class IngestContractService extends SearchService<IngestContract> {
     return this.ingestContractApi.check(ingestContract, this.headers);
   }
 
+  existsProperties(properties: { name?: string, identifier?: string }): Observable<any> {
+    const existContract: any = {};
+    if (properties.name) {
+      existContract.name = properties.name;
+    }
+    if (properties.identifier) {
+      existContract.identifier = properties.identifier;
+    }
+
+    const context = existContract as IngestContract;
+    return this.ingestContractApi.check(context, this.headers);
+  }
+
   patch(data: { id: string, [key: string]: any }): Observable<IngestContract> {
     return this.ingestContractApi.patch(data)
       .pipe(
