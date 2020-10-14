@@ -188,9 +188,15 @@ public class IngestContractService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final IngestContractResponseDto ingestContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), IngestContractResponseDto.class);
             final List<String> ingestContractsNames = ingestContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            final boolean alreadyCreated = ingestContractResponseDto.getResults().stream().anyMatch(ac -> ingestContractsNames.contains(ac.getName()));
+            boolean alreadyCreated = ingestContractResponseDto.getResults().stream().anyMatch(ac -> ingestContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
                 throw new ConflictException("Can't create ingest contract, a contract with the same name already exist in Vitam");
+            }
+
+            final List<String> ingestContractsIdentifiers = ingestContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            alreadyCreated = ingestContractResponseDto.getResults().stream().anyMatch(ac -> ingestContractsIdentifiers.contains(ac.getIdentifier()));
+            if (alreadyCreated) {
+                throw new ConflictException("Can't create ingest contract, a contract with the same identifier already exist in Vitam");
             }
         } catch (final JsonProcessingException e) {
             throw new UnexpectedDataException("Can't create ingest contracts, Error while parsing Vitam response : " + e.getMessage());

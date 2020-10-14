@@ -127,7 +127,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueName()],
+      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
       status: ['INACTIVE'],
       name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
       description: [null],
