@@ -8,6 +8,10 @@ spring:
         preferIpAddress: true
         tags: {{ consul_tags }}
 
+# should we fix some limit here ?
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
 server-identity:
   identityName: {{ vitamui_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}

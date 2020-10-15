@@ -8,6 +8,7 @@ zone_vitamui_rp
 [vitam:children]
 hosts_consul_server
 hosts_ingest_external
+hosts_archive_external
 hosts_access_external
 hosts_ihm_demo
 hosts_elasticsearch_log
@@ -223,6 +224,8 @@ vitam-env-vitamuibo-app-01.vitam-env
 [hosts_ingest_external]
 vitam-env-vitamuibo-app-02.vitam-env
 
+[hosts_archive_external]
+vitam-env-vitamuibo-app-02.vitam-env
 
 [hosts_access_external]
 vitam-env-vitamuibo-app-02.vitam-env
