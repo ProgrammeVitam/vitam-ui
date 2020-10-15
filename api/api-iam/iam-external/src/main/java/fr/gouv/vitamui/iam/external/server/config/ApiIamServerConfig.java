@@ -45,6 +45,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -124,8 +125,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamInternalWebClientFactory internalWebClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties) {
-        return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient());
+    public IamInternalWebClientFactory internalWebClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties, final WebClient.Builder webClientBuilder) {
+        return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient(), webClientBuilder);
 
     }
 

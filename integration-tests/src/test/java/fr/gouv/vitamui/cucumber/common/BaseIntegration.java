@@ -29,6 +29,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -204,6 +205,9 @@ public abstract class BaseIntegration {
     @Autowired
     protected RestTemplateBuilder restTemplateBuilder;
 
+    @Autowired
+    protected WebClient.Builder webClientBuilder;
+
     private void buildSystemTenantUserAdminContext() {
         getUsersCollection().updateOne(new BsonDocument("_id", new BsonString(ADMIN_USER)),
                 new BsonDocument("$set", new BsonDocument("groupId", new BsonString(ADMIN_USER_GROUP))));
@@ -291,14 +295,14 @@ public abstract class BaseIntegration {
         if (iamExternalWebClientFactory == null) {
             LOGGER.debug("Instantiating IAM webclient [host={}, port:{}, keystoreFilePath:{}]", serverHost, serverPort, keystoreFilePath);
             iamExternalWebClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(serverHost, serverPort, true,
-                    getSSLConfiguration(keystoreFilePath, keystorePassword, trustStoreFilePath, truststorePassword)));
+                    getSSLConfiguration(keystoreFilePath, keystorePassword, trustStoreFilePath, truststorePassword)), webClientBuilder);
         }
         return iamExternalWebClientFactory;
     }
 
     protected IamExternalWebClientFactory getIamWebClientFactory(final String keystorePrefix) {
         final IamExternalWebClientFactory webClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(serverHost, serverPort, true,
-                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", keystorePassword, trustStoreFilePath, truststorePassword)));
+                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", keystorePassword, trustStoreFilePath, truststorePassword)), webClientBuilder);
         return webClientFactory;
     }
 
@@ -319,7 +323,7 @@ public abstract class BaseIntegration {
     protected IamExternalWebClientFactory getIamWebClientFactory(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
         prepareGenericContext(fullAccess, tenants, roles);
         final IamExternalWebClientFactory restClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(serverHost, serverPort, true,
-                getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks", keystorePassword, trustStoreFilePath, truststorePassword)));
+                getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks", keystorePassword, trustStoreFilePath, truststorePassword)), webClientBuilder);
         final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new RegisterRestQueryInterceptor());
         return restClientFactory;
