@@ -234,6 +234,9 @@ vitam-env
 [hosts_ingest_external]
 vitam-env
 
+[hosts_archive_external]
+vitam-env
+
 [hosts_access_external]
 vitam-env
 

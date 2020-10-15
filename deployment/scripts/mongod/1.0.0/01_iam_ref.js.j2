@@ -1010,6 +1010,34 @@ db.profiles.insert({
   }
    ]
 });
+// ========================================= partie archive ============================================
+
+db.profiles.insert({
+  "_id": "system_archive_profile",
+  "identifier" : NumberInt(22),
+  "name": "Archive Profile",
+  "description": "Archive Profile",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "ARCHIVE_MANAGEMENT_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_ARCHIVE"
+  },
+  {
+    "name": "ROLE_GET_ARCHIVE"
+  },
+  {
+    "name": "ROLE_GET_ALL_ARCHIVE"
+  }
+   ]
+});
+
+//========================================== partie archive =============================================
+
 // ========================================= GROUPS =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
