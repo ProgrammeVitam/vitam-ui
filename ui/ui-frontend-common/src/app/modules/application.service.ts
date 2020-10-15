@@ -144,8 +144,11 @@ export class ApplicationService {
     if (tenantsByApp && tenant) {
       tenantsByApp.forEach((element: { name: string, tenants: Tenant[] }) => {
         const index = element.tenants.findIndex(value => value.identifier === tenant.identifier);
+        const items = this.applications.find(value => value.identifier === element.name);
         if (index !== -1) {
-          apps.push(this.applications.find(value => value.identifier === element.name));
+          apps.push(items);
+        } else if (!items.hasTenantList) {
+            apps.push(items);
         }
       });
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
