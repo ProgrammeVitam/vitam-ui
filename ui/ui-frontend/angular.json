@@ -193,7 +193,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "portal:build",
             "host": "dev.vitamui.com",
@@ -298,7 +298,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "demo:build"
           },
