@@ -3,8 +3,8 @@
 </div>
 <form [formGroup]="sipForm">
   <div class="content">
-    <h4>Nouveau versement</h4>
-    <h2>Verser un SIP</h2>
+    <h4>{{ messageLabelImportType }}</h4>
+    <h2>{{ messageImportType }}</h2>
 
     <div class="d-flex">
       <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
@@ -16,7 +16,7 @@
             <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
             <div>
 
-              <span class="text-red">{{ message }} </span> 
+              <span class="text-red">{{ message }} </span>
                 <i class="large material-icons icon-error "
                    *ngIf="hasError">cancel</i>
 
@@ -36,7 +36,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
