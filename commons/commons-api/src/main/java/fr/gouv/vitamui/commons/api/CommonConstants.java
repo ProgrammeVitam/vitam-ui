@@ -62,6 +62,8 @@ public class CommonConstants {
     public static final String PATH_CUSTOMER = "/{customerId}";
 
     public static final String PATH_ME = "/me";
+    
+    public static final String PATH_OBJECTS = "/objects";
 
     public static final String GDPR_STATUS = "/gdpr-status";
 

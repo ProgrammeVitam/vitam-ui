@@ -40,6 +40,8 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,13 +60,17 @@ public class UnitService {
     public UnitExternalRestClient getClient() {
         return unitRestClient;
     }
-
+    
     public VitamUISearchResponseDto searchById(final String id, final ExternalHttpContext context) {
         return getClient().findUnitById(context, id);
     }
 
-    public JsonNode findByDsl(final JsonNode dsl, final ExternalHttpContext context) {
-        return getClient().findUnitByDsl(context, dsl);
+    public JsonNode findByDsl(final Optional<String> id, final JsonNode dsl, final ExternalHttpContext context) {
+    	return getClient().findUnitByDsl(context, id, dsl);
+    }
+    
+    public JsonNode  findObjectMetadataById(final String id, final JsonNode dsl, final ExternalHttpContext context) {
+    	return getClient().findObjectMetadataById(context, id, dsl);
     }
 
     public VitamUISearchResponseDto findFilingPlan(ExternalHttpContext context) {

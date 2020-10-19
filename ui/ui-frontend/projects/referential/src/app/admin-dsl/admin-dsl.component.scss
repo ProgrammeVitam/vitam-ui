@@ -1,10 +1,19 @@
 .form_padding {
-  padding-left: 30px;
+  padding-left: 20px;
 }
-
 .form_size {
   width: 45%;
 }
+
+.full_size {
+  width: 100%;
+}
+
+::ng-deep .vitamui-mat-select.mat-form-field.mat-form-field-type-mat-select .mat-form-field-flex {
+  background-color: #FFFFFF;
+}
+
+
 
 .form_textarea {
   width: 45%;
@@ -19,6 +28,7 @@
   &:nth-child(2) {
     margin-right: 0;
   }
+
   .textarea {
     white-space: pre;
     background: #FFFFFF;
@@ -54,11 +64,11 @@
     &::-webkit-resizer {
       background-color: transparent;
     }
-
-
   }
 
   .actions {
+    display: flex;
+    flex-direction: row;
     .btn{
       background-color: transparent;
       color: var(--vitamui-secondary);

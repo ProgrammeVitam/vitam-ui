@@ -43,11 +43,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -66,17 +70,28 @@ public class UnitExternalController {
     @Autowired
     private UnitExternalService unitExternalService;
 
-    @PostMapping(CommonConstants.PATH_ID)
+    @GetMapping(CommonConstants.PATH_ID)
     public VitamUISearchResponseDto searchById(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
         return unitExternalService.findUnitById(id);
     }
 
-    @PostMapping(RestApi.DSL_PATH)
-    public JsonNode searchByDsl(final @RequestBody JsonNode dsl) {
+    @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
+    @Secured(ServicesData.ROLE_GET_UNITS)
+    public JsonNode searchByDsl(final @PathVariable Optional<String> id, final @RequestBody JsonNode dsl) {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
-        return unitExternalService.findUnitByDsl(dsl);
+        return unitExternalService.findUnitByDsl(id, dsl);
+    }
+    
+    @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
+    @Secured(ServicesData.ROLE_GET_UNITS)
+    public JsonNode findObjectMetadataById(            
+            @PathVariable final String id,
+            @RequestBody final JsonNode dsl) throws VitamClientException {
+        ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
+        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
+        return unitExternalService.findObjectMetadataById(id, dsl);
     }
 
     // TODO: Must Secure ? Multiple (OR) CREATE_APPNAME_ROLE ? Unique FILLING_PLAN_ACCESS ?

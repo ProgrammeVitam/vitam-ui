@@ -38,6 +38,8 @@ package fr.gouv.vitamui.referential.internal.server.unit;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,9 +70,9 @@ public class UnitInternalService {
         return response.toJsonNode();
     }
 
-    public JsonNode searchUnitsWithErrors(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+    public JsonNode searchUnitsWithErrors(final Optional<String> id, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
         LOGGER.info("Unit EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<JsonNode> response = unitService.searchUnitsWithErrors(dslQuery, vitamContext);
+        RequestResponse<JsonNode> response = unitService.searchUnitsWithErrors(id, dslQuery, vitamContext);
         return response.toJsonNode();
     }
 
@@ -79,6 +81,9 @@ public class UnitInternalService {
         RequestResponse<JsonNode> response = unitService.findUnitById(unitId, vitamContext);
         return response.toJsonNode();
     }
-
-
+    
+    public JsonNode findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+        RequestResponse<JsonNode> response = unitService.findObjectMetadataById(unitId, vitamContext);
+        return response.toJsonNode();
+    }
 }

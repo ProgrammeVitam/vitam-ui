@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpHeaders} from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 
 @Injectable({
@@ -48,11 +50,40 @@ export class AdminDslService {
     private unitApiService: SearchUnitApiService) {
   }
 
-  getByDsl(dsl: any, accessContractId: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContractId);
-    console.log('Headers: ', headers);
-    return this.unitApiService.getByDsl(dsl, headers);
+  getById(unitId: string, accessContractId: string) {
+    const headers = new HttpHeaders()
+      .append('X-Access-Contract-Id', accessContractId)
+      .append('Content-Type', 'application/stream');
+    return this.unitApiService.getById(unitId, headers);
   }
 
+  getByDsl(unitId: string, dsl: any, accessContractId: string) {
+    let headers = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append('X-Access-Contract-Id', accessContractId);
+
+    // We don't want to display the error popup launched in the http interceptor
+    // if the unit id is unknown
+    if (unitId) {
+      headers = headers.append('X-By-Passed-Error', '500');
+    }
+    return this.unitApiService.getByDsl(unitId, dsl, headers).pipe(
+      catchError((httpErrorResponse: HttpErrorResponse) => {
+        return of(httpErrorResponse.error);
+      })
+    );
+  }
+
+  getUnitObjectsByDsl(unitId: string, dsl: any, accessContractId: string) {
+    const headers = new HttpHeaders()
+      .append('Content-Type', 'application/json')
+      .append('X-Access-Contract-Id', accessContractId)
+      .append('X-By-Passed-Error', '500');
+
+    return this.unitApiService.getUnitObjectsByDsl(unitId, dsl, headers).pipe(
+      catchError((httpErrorResponse: HttpErrorResponse) => {
+        return of(httpErrorResponse.error);
+      })
+    );
+  }
 }

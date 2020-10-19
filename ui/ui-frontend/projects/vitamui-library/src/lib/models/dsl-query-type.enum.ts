@@ -1,0 +1,4 @@
+export enum DslQueryType {
+    ARCHIVE_UNIT = 'ARCHIVE_UNIT',
+    TECHNICAL_OBJECT_GROUP = 'TECHNICAL_OBJECT_GROUP'
+}

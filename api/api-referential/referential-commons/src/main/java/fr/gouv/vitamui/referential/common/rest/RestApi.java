@@ -80,6 +80,8 @@ public abstract class RestApi {
     public static final String UNITS_PATH = "/units";
 
     public static final String DSL_PATH = "/dsl";
+    
+    public static final String OBJECTS_PATH = "/objects";
 
     public static final String FILING_PLAN_PATH = "/filingplan";
 
