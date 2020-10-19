@@ -1,43 +1,43 @@
 <table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
   <thead>
     <tr>
-      <th style="width: 60px;" class="no-first-cell-padding">
+      <th class="no-first-cell-padding width60">
         <i class="vitamui-icon vitamui-icon-api-supervision vitamui-row-icon"></i>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListIdentifiantHeader">Identifiant</span>
+          <span i18n="@@logbookOperationListIdentifiantHeader">Identifiant</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListOperationHeader">Opération</span>
+          <span i18n="@@logbookOperationListOperationHeader">Opération</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListStartDateHeader">Date de création</span>
+          <span i18n="@@logbookOperationListStartDateHeader">Date de création</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListEndDateHeader">Fin d'exécution</span>
+          <span i18n="@@logbookOperationListEndDateHeader">Fin d'exécution</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListStatusHeader">Statut</span>
+          <span i18n="@@logbookOperationListStatusHeader">Statut</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@apiSupervisionListStepHeader">Etape</span>
+          <span i18n="@@logbookOperationListStepHeader">Etape</span>
         </div>
       </th>
 
@@ -45,7 +45,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let event of dataSource; let index = index" (click)="selectEvent(event)" class="vitamui-table-row">
-      <td style="width:60px;" class="no-first-cell-padding">
+      <td class="no-first-cell-padding width60">
         <div class="vitamui-cell-icon aligned">
           <div class="status-badge" [ngClass]="event | eventTypeBadgeClass">
             <i class="vitamui-icon vitamui-icon-api-supervision vitamui-row-icon status-badge"></i>

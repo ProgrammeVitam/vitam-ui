@@ -285,7 +285,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/securisation/securisation-preview/securisation-check-tab/securisation-check-tab.component.html</context>
-          <context context-type="linenumber">11</context>
+          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="menuCustomer" datatype="html">
@@ -1548,6 +1548,10 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value-list/probative-value-list.component.html</context>
           <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">78</context>
         </context-group>
         <note priority="1" from="description">Show more results</note>
       </trans-unit>
@@ -2855,7 +2859,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value.component.html</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="apiSupervisionEndDate" datatype="html">
@@ -2870,7 +2878,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userPreviewTabVerification" datatype="html">
@@ -2954,8 +2966,167 @@
         <source>Identifiant de relevé, identifiant d&apos;UA</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/probative-value/probative-value.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">23</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListIdentifiantHeader" datatype="html">
+        <source>Identifiant</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListOperationHeader" datatype="html">
+        <source>Opération</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListStartDateHeader" datatype="html">
+        <source>Date de création</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListEndDateHeader" datatype="html">
+        <source>Fin d&apos;exécution</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListStatusHeader" datatype="html">
+        <source>Statut</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationListStepHeader" datatype="html">
+        <source>Etape</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="apiSupervisionPageTitle" datatype="html">
+        <source>
+            <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/&gt;"/> Journal des Opérations
+          </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="apiSupervisionMoreActionsButton" datatype="html">
+        <source>Autres actions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="apiSupervisionComingSoon" datatype="html">
+        <source>
+                Bientôt
+              </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="logbookOperationCategory" datatype="html">
+        <source>Catégorie d&apos;opération</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <note priority="1" from="description">Operation category</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationAgIdExt" datatype="html">
+        <source>Identifiants des agents externes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">External Agencies Identifiers</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationContract" datatype="html">
+        <source>Contrat associé</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">Associated Contract</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationApplicationId" datatype="html">
+        <source>Identification de l&apos;application</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <note priority="1" from="description">Application Identifier</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationTransactionNumber" datatype="html">
+        <source>Numéro de transaction</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <note priority="1" from="description">Transaction number</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationOPI" datatype="html">
+        <source>Identification de l&apos;opération</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <note priority="1" from="description">Operation Identifier</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationAgId" datatype="html">
+        <source>Acteur(s) interne(s)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <note priority="1" from="description">Agency identifier</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationReport" datatype="html">
+        <source>Rapport</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+        <note priority="1" from="description">Report</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationAddInfos" datatype="html">
+        <source>Informations complémentaires sur l&apos;opération</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+        <note priority="1" from="description">Additionnal Infos</note>
+      </trans-unit>
+      <trans-unit id="logbookOperationMessage" datatype="html">
+        <source>Message</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <note priority="1" from="description">Message</note>
+      </trans-unit>
+      <trans-unit id="eventDetailTabInformation" datatype="html">
+        <source>Informations</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">75</context>
+        </context-group>
+        <note priority="1" from="description">Information tab</note>
       </trans-unit>
       <trans-unit id="accessContractFormApplicationPlaceholder" datatype="html">
         <source>Sélectionnez un contrat d&apos;accès</source>

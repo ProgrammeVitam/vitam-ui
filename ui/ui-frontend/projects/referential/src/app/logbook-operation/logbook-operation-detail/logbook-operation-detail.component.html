@@ -19,55 +19,55 @@
       <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">
 
         <div class="read-only-field">
-          <label>Catégorie d'opération</label>
+          <label i18n="Operation category@@logbookOperationCategory">Catégorie d'opération</label>
           <div class="word-break">{{ event?.typeProc }}</div>
         </div>
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label>Identifiants des agents externes</label>
+            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents externes</label>
             <div class="word-break">{{ event?.agIdExt }}</div>
           </div>
           <div class="read-only-field">
-            <label>Contrat associé</label>
+            <label i18n="Associated Contract@@logbookOperationContract">Contrat associé</label>
             <div class="word-break">{{ event?.rightsStatementIdentifier }}</div>
           </div>
         </div>
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label>Identification de l'application</label>
+            <label i18n="Application Identifier@@logbookOperationApplicationId">Identification de l'application</label>
             <div class="word-break">{{ event?.agIdApp }}</div>
           </div>
           <div class="read-only-field">
-            <label>Numéro de transaction</label>
+            <label i18n="Transaction number@@logbookOperationTransactionNumber">Numéro de transaction</label>
             <div class="word-break">{{ event?.idRequest }}</div>
           </div>
         </div>
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label>Identification de l'opération</label>
+            <label i18n="Operation Identifier@@logbookOperationOPI">Identification de l'opération</label>
             <div class="word-break">{{ event?.objectId }}</div>
           </div>
           <div class="read-only-field">
-            <label>Acteur(s) interne(s)</label>
+            <label i18n="Agency identifier@@logbookOperationAgId">Acteur(s) interne(s)</label>
             <div class="word-break">{{ event?.agId }}</div>
           </div>
         </div>
 
         <div class="read-only-field">
-          <label>Rapport</label>
+          <label i18n="Report@@logbookOperationReport">Rapport</label>
           <div>-</div>
         </div>
 
         <div class="read-only-field">
-          <label>Informations complémentaires sur l'opération</label>
+          <label i18n="Additionnal Infos@@logbookOperationAddInfos">Informations complémentaires sur l'opération</label>
           <div class="word-break">{{ event?.data }}</div>
         </div>
 
         <div class="read-only-field">
-          <label>Message</label>
+          <label i18n="Message@@logbookOperationMessage">Message</label>
           <div>{{ (event | lastEvent)?.outMessage }}</div>
         </div>
 
