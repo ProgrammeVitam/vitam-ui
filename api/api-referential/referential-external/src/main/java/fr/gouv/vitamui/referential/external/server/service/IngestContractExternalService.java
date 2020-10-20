@@ -60,11 +60,12 @@ import java.util.stream.Collectors;
 @Service
 public class IngestContractExternalService extends AbstractResourceClientService<IngestContractDto, IngestContractDto> {
 
-    @Autowired
     private IngestContractInternalRestClient ingestContractInternalRestClient;
 
-    public IngestContractExternalService(@Autowired ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public IngestContractExternalService(ExternalSecurityService externalSecurityService, IngestContractInternalRestClient ingestContractInternalRestClient) {
         super(externalSecurityService);
+        this.ingestContractInternalRestClient = ingestContractInternalRestClient;
     }
 
     public List<IngestContractDto> getAll(final Optional<String> criteria) {

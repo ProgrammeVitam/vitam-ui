@@ -59,11 +59,12 @@ import java.util.*;
 @Service
 public class AccessContractExternalService extends AbstractResourceClientService<AccessContractDto, AccessContractDto> {
 
-    @Autowired
     private AccessContractInternalRestClient accessContractInternalRestClient;
 
-    public AccessContractExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public AccessContractExternalService(ExternalSecurityService externalSecurityService, AccessContractInternalRestClient accessContractInternalRestClient) {
         super(externalSecurityService);
+        this.accessContractInternalRestClient = accessContractInternalRestClient;
     }
 
     public List<AccessContractDto> getAll(final Optional<String> criteria) {

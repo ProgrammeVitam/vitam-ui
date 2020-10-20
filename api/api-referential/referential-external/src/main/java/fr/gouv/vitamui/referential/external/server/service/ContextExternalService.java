@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,11 +65,12 @@ import lombok.Setter;
 @Service
 public class ContextExternalService extends AbstractResourceClientService<ContextDto, ContextDto> {
 
-    @Autowired
     private ContextInternalRestClient contextInternalRestClient;
 
-    public ContextExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public ContextExternalService(ExternalSecurityService externalSecurityService, ContextInternalRestClient contextInternalRestClient) {
         super(externalSecurityService);
+        this.contextInternalRestClient = contextInternalRestClient;
     }
 
     public List<ContextDto> getAll(final Optional<String> criteria) {
