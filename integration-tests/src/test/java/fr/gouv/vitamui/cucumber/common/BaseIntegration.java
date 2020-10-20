@@ -90,6 +90,8 @@ public abstract class BaseIntegration {
     protected static final String TEST_USER_EMAIL = "testuser@test.com";
 
     public static final String ACCESS_CONTRACT = "AC-000001";
+    
+    public static final String UNIT_CONTRACT = "ContratTNR";
 
     public static final String ADMIN_USER = "admin_user";
 
@@ -271,6 +273,11 @@ public abstract class BaseIntegration {
     protected ExternalHttpContext getArchiveTenantUserAdminContext(final Integer tenantIdentifier) {
         buildSystemTenantUserAdminContext();
         return new ExternalHttpContext(tenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", ACCESS_CONTRACT);
+    }
+    
+    protected ExternalHttpContext getUnitAdminContext() {
+        buildSystemTenantUserAdminContext();
+        return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", UNIT_CONTRACT);
     }
 
     protected ExternalHttpContext getContext(final int tenant, final String user) {
