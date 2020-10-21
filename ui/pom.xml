@@ -22,7 +22,6 @@
         <module>ui-ingest</module>
 
         <module>ui-archive</module>
-
     </modules>
 
 </project>
