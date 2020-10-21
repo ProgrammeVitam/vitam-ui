@@ -1,4 +1,4 @@
-<div 
+<div
     class="container p-0"
     [@opacityAnimation]="state"
     >
@@ -8,10 +8,9 @@
             name="category-search"
             (searchChanged)="onSearch($event)"
             (clear)="resetSearch()"
-            placeholder="Saisir le nom de l'application" 
-            i18n-placeholder="@@categorySearchPlaceholder"
+            placeholder="{{'MENU.GRAB_APPLICATION' | translate}}"
         ></vitamui-common-search-bar>
-        <span class="pr-2" i18n="menuComponent@@myApplications">Mes applications</span>
+        <span class="pr-2">{{'MENU.MY_APPLICATIONS' | translate}}</span>
         <button (click)="onClose()" mat-icon-button class="apps-button">
             <i class="vitamui-icon vitamui-icon-apps-colored"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span></i>
         </button>
@@ -19,7 +18,7 @@
 
     <div class="pt-4">
         <ng-container *ngIf="filteredApplications; else displayMats">
-            <span class="px-3" i18n="menuComponent@@results">Résultats : </span>
+            <span class="px-3">{{'MENU.RESULT' | translate}}&nbsp;: </span>
             <hr class="mb-0">
             <mat-selection-list id="searchResults"
                 class="py-3 overflow"
@@ -31,7 +30,7 @@
         </ng-container>
         <ng-template #displayMats>
                 <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
-                    <mat-tab *ngFor="let category of appMap | keyvalue" [label]="category.key.title">
+                    <mat-tab *ngFor="let category of appMap | keyvalue" [label]="'MENU.' + category.key.name | translate">
                         <mat-selection-list
                             class="py-3"
                             (selectionChange)="openApplication($event.option.value);">

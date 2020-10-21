@@ -1,0 +1,27 @@
+{
+    "FOOTER": {
+        "HELP": "Help",
+        "LEGAL_NOTICE": "Legal notice",
+        "TECHNICAL_REFERENT": "Technical referent"
+    },
+    "HEADER": {
+        "LOGOUT": "Logout",
+        "NAVIGATE_AS": "Activate subrogation mode",
+        "MY_ACCOUNT": "My account"
+    },
+    "MENU" : {
+        "GRAB_APPLICATION": "Grab application name", 
+        "MY_APPLICATIONS": "My applications",
+        "RESULT": "Result",
+        "Utilisateur": "User",
+		"Management": "Management",
+		"Paramétrage": "Setting"
+    },
+    "MENU-APPLICATION-TILE": {
+        "ENTER_APPLICATION": "Enter to launch the application"
+    },
+    "SELECT-TENANT": {
+        "SELECTED": "Selected tenant",
+        "SELECT" : "Select a tenant"
+    }
+}

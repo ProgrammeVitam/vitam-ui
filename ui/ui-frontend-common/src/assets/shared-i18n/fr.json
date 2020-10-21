@@ -1,0 +1,27 @@
+{
+    "FOOTER": {
+        "HELP": "Aide",
+        "LEGAL_NOTICE": "Mentions légales",
+        "TECHNICAL_REFERENT": "Référent technique"
+    },
+    "HEADER": {
+        "LOGOUT": "Déconnexion",
+        "NAVIGATE_AS": "Activer le mode subrogation",
+        "MY_ACCOUNT": "Mon compte"
+    },
+    "MENU" : {
+        "GRAB_APPLICATION": "Saisir le nom de l'application", 
+        "MY_APPLICATIONS": "Mes applications",
+        "RESULT": "Résultat(s)",
+        "Utilisateur": "Utilisateur",
+        "Management": "Management",
+        "Paramétrage": "Paramétrage"
+    },
+    "MENU-APPLICATION-TILE": {
+        "ENTER_APPLICATION": "Entrée pour lancer l'application"
+    },
+    "SELECT-TENANT": {
+        "SELECTED": "Coffre sélectioné",
+        "SELECT" : "Sélectionner un coffre"
+    }
+}
