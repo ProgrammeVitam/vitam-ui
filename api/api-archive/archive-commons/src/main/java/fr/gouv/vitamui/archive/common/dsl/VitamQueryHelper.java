@@ -98,7 +98,7 @@ public class VitamQueryHelper {
         final Select select = new Select();
         final BooleanQuery query = and();
         BooleanQuery queryOr = or();
-        boolean empty = true;
+        boolean isEmpty = true;
         boolean haveOrParameters = false;
         BooleanQuery orGroup = or();
         boolean haveOrGroup = false;
@@ -114,8 +114,8 @@ public class VitamQueryHelper {
         select.setLimitFilter(pageNumber * size, size);
 
         // Manage Query
-        if (!searchCriteriaMap.empty()) {
-            empty = false;
+        if (!searchCriteriaMap.isEmpty()) {
+            isEmpty = false;
             Set<Map.Entry<String, Object>> entrySet = searchCriteriaMap.entrySet();
 
             for (final Map.Entry<String, Object> entry : entrySet) {
@@ -147,7 +147,7 @@ public class VitamQueryHelper {
                     case STATUS:
                         // in list of string operation
                         final List<String> stringValues = (ArrayList<String>) entry.getValue();
-                        query.add(in(searchKey, stringValues.toArray(new String[]{})));
+                        query.add(in(searchKey, stringValues.toArray(new String[] {})));
                         break;
                     case EV_DATE_TIME_START:
                         query.add(gt("evDateTime", (String) entry.getValue()));
@@ -162,7 +162,7 @@ public class VitamQueryHelper {
             }
         }
 
-        if (!empty) {
+        if (!isEmpty) {
             if (haveOrParameters) {
                 query.add(queryOr);
             }
@@ -175,8 +175,6 @@ public class VitamQueryHelper {
 
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
-
-
     }
 
 }
