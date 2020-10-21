@@ -1,13 +1,13 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?mjucg2');
-  src:  url('fonts/vitamui-icon.eot?mjucg2#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?mjucg2') format('truetype'),
-    url('fonts/vitamui-icon.woff?mjucg2') format('woff'),
-    url('fonts/vitamui-icon.svg?mjucg2#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?poavac');
+  src:  url('fonts/vitamui-icon.eot?poavac#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?poavac') format('truetype'),
+    url('fonts/vitamui-icon.woff?poavac') format('woff'),
+    url('fonts/vitamui-icon.svg?poavac#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 i.vitamui-icon {
@@ -25,6 +25,1191 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-app_sip_seda .path1:before {
+  content: "\e95e";
+  color: rgb(226, 226, 225);
+}
+.vitamui-icon-app_sip_seda .path2:before {
+  content: "\e95f";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_sip_seda .path3:before {
+  content: "\e960";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+  opacity: 1;
+}
+.vitamui-icon-app_sip_seda .path4:before {
+  content: "\e961";
+  margin-left: -1.3525390625em;
+  color: rgb(135, 135, 135);
+}
+.vitamui-icon-app_sip_seda .path5:before {
+  content: "\e962";
+  margin-left: -1.3525390625em;
+  color: rgb(181, 181, 181);
+}
+.vitamui-icon-app_sip_seda .path6:before {
+  content: "\e963";
+  margin-left: -1.3525390625em;
+  color: rgb(135, 135, 135);
+}
+.vitamui-icon-app_sip_seda .path7:before {
+  content: "\e964";
+  margin-left: -1.3525390625em;
+  color: rgb(181, 181, 181);
+}
+.vitamui-icon-app_sip_seda .path8:before {
+  content: "\e965";
+  margin-left: -1.3525390625em;
+  color: rgb(100, 100, 99);
+}
+.vitamui-icon-app_sip_seda .path9:before {
+  content: "\e966";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_sip_seda .path10:before {
+  content: "\e967";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_sip_seda .path11:before {
+  content: "\e968";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_sip_seda .path12:before {
+  content: "\e969";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_sip_seda .path13:before {
+  content: "\e96a";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path14:before {
+  content: "\e96b";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path15:before {
+  content: "\e96c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path16:before {
+  content: "\e96d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path17:before {
+  content: "\e96e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path18:before {
+  content: "\e96f";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path19:before {
+  content: "\e970";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path20:before {
+  content: "\e971";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_sip_seda .path21:before {
+  content: "\e972";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light);
+}
+.vitamui-icon-app_sip_seda .path22:before {
+  content: "\e973";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-dark);
+}
+.vitamui-icon-app_sip_seda .path23:before {
+  content: "\e974";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path24:before {
+  content: "\e975";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path25:before {
+  content: "\e976";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path26:before {
+  content: "\e977";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path27:before {
+  content: "\e978";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path28:before {
+  content: "\e979";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path29:before {
+  content: "\e97a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path30:before {
+  content: "\e97b";
+  margin-left: -1.3525390625em;
+  color:var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_sip_seda .path31:before {
+  content: "\e97c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path32:before {
+  content: "\e97d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path33:before {
+  content: "\e97e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path34:before {
+  content: "\e97f";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path35:before {
+  content: "\e980";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path36:before {
+  content: "\e981";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path37:before {
+  content: "\e982";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path38:before {
+  content: "\e983";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path39:before {
+  content: "\e984";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path40:before {
+  content: "\e985";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path41:before {
+  content: "\e986";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path42:before {
+  content: "\e987";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path43:before {
+  content: "\e988";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path44:before {
+  content: "\e989";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path45:before {
+  content: "\e98a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path46:before {
+  content: "\e98b";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path47:before {
+  content: "\e98c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path48:before {
+  content: "\e98d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path49:before {
+  content: "\e98e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path50:before {
+  content: "\e9bf";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path51:before {
+  content: "\e9c0";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path52:before {
+  content: "\e9c1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path53:before {
+  content: "\e9c2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path54:before {
+  content: "\e9c3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path55:before {
+  content: "\e9c4";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path56:before {
+  content: "\e9c5";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path57:before {
+  content: "\e9c6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path58:before {
+  content: "\e9c7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path59:before {
+  content: "\e9c8";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path60:before {
+  content: "\e9c9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path61:before {
+  content: "\e9ca";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path62:before {
+  content: "\e9cb";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path63:before {
+  content: "\e9cc";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path64:before {
+  content: "\e9cd";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path65:before {
+  content: "\e9ce";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path66:before {
+  content: "\e9cf";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path67:before {
+  content: "\e9d0";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path68:before {
+  content: "\e9d1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path69:before {
+  content: "\e9d2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path70:before {
+  content: "\e9d3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path71:before {
+  content: "\e9d4";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path72:before {
+  content: "\e9d5";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path73:before {
+  content: "\e9d6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path74:before {
+  content: "\e9d7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path75:before {
+  content: "\e9d8";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path76:before {
+  content: "\e9d9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path77:before {
+  content: "\e9da";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path78:before {
+  content: "\e9db";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path79:before {
+  content: "\e9dc";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path80:before {
+  content: "\e9dd";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path81:before {
+  content: "\e9de";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path82:before {
+  content: "\e9df";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path83:before {
+  content: "\e9e0";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path84:before {
+  content: "\e9e1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path85:before {
+  content: "\e9e2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path86:before {
+  content: "\e9e3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path87:before {
+  content: "\e9e4";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path88:before {
+  content: "\e9e5";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path89:before {
+  content: "\e9e6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path90:before {
+  content: "\e9e7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path91:before {
+  content: "\e9e8";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path92:before {
+  content: "\e9e9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path93:before {
+  content: "\e9ea";
+  margin-left: -1.3525390625em;
+}
+.vitamui-icon-app_sip_seda .path94:before {
+  content: "\e9eb";
+  margin-left: -1.3525390625em;
+}
+.vitamui-icon-app_sip_seda .path95:before {
+  content: "\e9ec";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path96:before {
+  content: "\e9ed";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path97:before {
+  content: "\e9ee";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path98:before {
+  content: "\e9ef";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path99:before {
+  content: "\e9f0";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path100:before {
+  content: "\e9f1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path101:before {
+  content: "\e9f2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path102:before {
+  content: "\e9f3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path103:before {
+  content: "\e9f4";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path104:before {
+  content: "\e9f5";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path105:before {
+  content: "\e9f6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path106:before {
+  content: "\e9f7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path107:before {
+  content: "\e9f8";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path108:before {
+  content: "\e9f9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path109:before {
+  content: "\e9fa";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path110:before {
+  content: "\e9fb";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path111:before {
+  content: "\e9fc";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+  opacity: 1;
+}
+.vitamui-icon-app_sip_seda .path112:before {
+  content: "\e9fd";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path113:before {
+  content: "\e9fe";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path114:before {
+  content: "\e9ff";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path115:before {
+  content: "\ea00";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path116:before {
+  content: "\ea01";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path117:before {
+  content: "\ea02";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path118:before {
+  content: "\ea03";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path119:before {
+  content: "\ea04";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path120:before {
+  content: "\ea05";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path121:before {
+  content: "\ea06";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path122:before {
+  content: "\ea07";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path123:before {
+  content: "\ea08";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path124:before {
+  content: "\ea09";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path125:before {
+  content: "\ea0a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path126:before {
+  content: "\ea0b";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path127:before {
+  content: "\ea0c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path128:before {
+  content: "\ea0d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path129:before {
+  content: "\ea0e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path130:before {
+  content: "\ea10";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path131:before {
+  content: "\ea11";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path132:before {
+  content: "\ea12";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path133:before {
+  content: "\ea13";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path134:before {
+  content: "\ea14";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path135:before {
+  content: "\ea15";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_sip_seda .path136:before {
+  content: "\ea16";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path137:before {
+  content: "\ea17";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path138:before {
+  content: "\ea18";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path139:before {
+  content: "\ea19";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path140:before {
+  content: "\ea1a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path141:before {
+  content: "\ea1b";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path142:before {
+  content: "\ea1c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path143:before {
+  content: "\ea1d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path144:before {
+  content: "\ea1e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path145:before {
+  content: "\ea1f";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path146:before {
+  content: "\ea20";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path147:before {
+  content: "\ea21";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path148:before {
+  content: "\ea22";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path149:before {
+  content: "\ea23";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path150:before {
+  content: "\ea24";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path151:before {
+  content: "\ea25";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path152:before {
+  content: "\ea26";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path153:before {
+  content: "\ea27";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path154:before {
+  content: "\ea28";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path155:before {
+  content: "\ea29";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path156:before {
+  content: "\ea2a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path157:before {
+  content: "\ea2b";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path158:before {
+  content: "\ea2c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path159:before {
+  content: "\ea2d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path160:before {
+  content: "\ea2e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path161:before {
+  content: "\ea2f";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path162:before {
+  content: "\ea30";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path163:before {
+  content: "\ea31";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path164:before {
+  content: "\ea32";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path165:before {
+  content: "\ea33";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path166:before {
+  content: "\ea34";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path167:before {
+  content: "\ea35";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path168:before {
+  content: "\ea36";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path169:before {
+  content: "\ea37";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path170:before {
+  content: "\ea38";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path171:before {
+  content: "\ea39";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path172:before {
+  content: "\ea3a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path173:before {
+  content: "\ea3b";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path174:before {
+  content: "\ea3c";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path175:before {
+  content: "\ea3d";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path176:before {
+  content: "\ea3e";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path177:before {
+  content: "\ea3f";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path178:before {
+  content: "\ea40";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path179:before {
+  content: "\ea41";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path180:before {
+  content: "\ea42";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path181:before {
+  content: "\ea43";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_sip_seda .path182:before {
+  content: "\ea44";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light-8);
+}
+.vitamui-icon-app_sip_seda .path183:before {
+  content: "\ea45";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path184:before {
+  content: "\ea46";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path185:before {
+  content: "\ea47";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path186:before {
+  content: "\ea48";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path187:before {
+  content: "\ea49";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_sip_seda .path188:before {
+  content: "\ea4a";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_archive .path1:before {
+  content: "\e98f";
+  color: rgb(226, 226, 225);
+}
+.vitamui-icon-app_archive .path2:before {
+  content: "\e990";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+  opacity: 1;
+}
+.vitamui-icon-app_archive .path3:before {
+  content: "\e991";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+  opacity: 1;
+}
+.vitamui-icon-app_archive .path4:before {
+  content: "\e992";
+  margin-left: -1.3525390625em;
+  color: rgb(156, 155, 155);
+}
+.vitamui-icon-app_archive .path5:before {
+  content: "\e993";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path6:before {
+  content: "\e994";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_archive .path7:before {
+  content: "\e995";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path8:before {
+  content: "\e996";
+  margin-left: -1.3525390625em;
+  color: rgb(156, 155, 155);
+}
+.vitamui-icon-app_archive .path9:before {
+  content: "\e997";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path10:before {
+  content: "\e998";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path11:before {
+  content: "\e999";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+  opacity: 1;
+}
+.vitamui-icon-app_archive .path12:before {
+  content: "\e99a";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path13:before {
+  content: "\e99b";
+  margin-left: -1.3525390625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_archive .path14:before {
+  content: "\e99c";
+  margin-left: -1.3525390625em;
+  color: rgb(198, 198, 198);
+}
+.vitamui-icon-app_archive .path15:before {
+  content: "\e99d";
+  margin-left: -1.3525390625em;
+  color: rgb(156, 155, 155);
+}
+.vitamui-icon-app_archive .path16:before {
+  content: "\e99e";
+  margin-left: -1.3525390625em;
+  color: rgb(135, 135, 135);
+}
+.vitamui-icon-app_archive .path17:before {
+  content: "\e99f";
+  margin-left: -1.3525390625em;
+  color: rgb(135, 135, 135);
+}
+.vitamui-icon-app_archive .path18:before {
+  content: "\e9a0";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path19:before {
+  content: "\e9a1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light);
+}
+.vitamui-icon-app_archive .path20:before {
+  content: "\e9a2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path21:before {
+  content: "\e9a3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path22:before {
+  content: "\e9a4";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-dark);
+}
+.vitamui-icon-app_archive .path23:before {
+  content: "\e9a5";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_archive .path24:before {
+  content: "\e9a6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_archive .path25:before {
+  content: "\e9a7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_archive .path26:before {
+  content: "\e9a8";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_archive .path27:before {
+  content: "\e9a9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-dark);
+  opacity: 0.22;
+}
+.vitamui-icon-app_archive .path28:before {
+  content: "\e9aa";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path29:before {
+  content: "\e9ab";
+  margin-left: -1.3525390625em;
+  color: white;
+}
+.vitamui-icon-app_archive .path30:before {
+  content: "\e9ac";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path31:before {
+  content: "\e9ad";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+  opacity: 0.15;
+}
+.vitamui-icon-app_archive .path32:before {
+  content: "\e9ae";
+  margin-left: -1.3525390625em;
+  color: rgb(255, 255, 255);
+  opacity: 0.47;
+}
+.vitamui-icon-app_archive .path33:before {
+  content: "\e9af";
+  margin-left: -1.3525390625em;
+  color: rgb(255, 255, 255);
+  opacity: 0.47;
+}
+.vitamui-icon-app_archive .path34:before {
+  content: "\e9b0";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary);
+}
+.vitamui-icon-app_archive .path35:before {
+  content: "\e9b1";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-dark-5);
+}
+.vitamui-icon-app_archive .path36:before {
+  content: "\e9b2";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-secondary-light);
+}
+.vitamui-icon-app_archive .path37:before {
+  content: "\e9b3";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path38:before {
+  content: "\e9b4";
+  margin-left: -1.3525390625em;
+  color: #ffffff;
+}
+.vitamui-icon-app_archive .path39:before {
+  content: "\e9b5";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path40:before {
+  content: "\e9b6";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path41:before {
+  content: "\e9b7";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path42:before {
+  content: "\e9b8";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path43:before {
+  content: "\e9b9";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path44:before {
+  content: "\e9ba";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path45:before {
+  content: "\e9bb";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path46:before {
+  content: "\e9bc";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path47:before {
+  content: "\e9bd";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_archive .path48:before {
+  content: "\e9be";
+  margin-left: -1.3525390625em;
+  color: var(--vitamui-primary-light-20);
+}
 .vitamui-icon-apps-colored .path1:before {
   content: "\e955";
   color: var(--vitamui-primary);
