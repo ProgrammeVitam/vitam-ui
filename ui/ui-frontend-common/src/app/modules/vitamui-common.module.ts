@@ -64,6 +64,7 @@ import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
+import { TranslateVitamModule } from './components/translate/translate-vitam.module';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
 import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
@@ -144,7 +145,8 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
-    VitamuiBodyModule
+    VitamuiBodyModule,
+    TranslateVitamModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -187,7 +189,8 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
-    PipesModule
+    PipesModule,
+    TranslateVitamModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

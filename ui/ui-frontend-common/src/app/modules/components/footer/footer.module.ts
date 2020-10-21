@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
+import { TranslateVitamModule } from '../translate/translate-vitam.module';
 import { FooterComponent } from './footer.component';
 
 @NgModule({
@@ -43,6 +44,9 @@ import { FooterComponent } from './footer.component';
   ],
   exports: [
     FooterComponent
+  ],
+  imports: [
+    TranslateVitamModule
   ]
 })
 export class FooterModule {

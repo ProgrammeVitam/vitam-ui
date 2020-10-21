@@ -1,7 +1,7 @@
 <div class="content">
   <mat-tab-group>
     <div *ngFor="let category of appMap | keyvalue">
-      <mat-tab label="{{category.key.name}}">
+      <mat-tab label="{{'APPLICATION-LIST.' + category.key.name | translate}}">
         <div class="row category">
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let application of category.value">
             <mat-card (click)="applicationClick.emit(application)">

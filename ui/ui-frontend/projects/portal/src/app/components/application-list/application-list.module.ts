@@ -38,6 +38,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTabsModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { ApplicationsListComponent } from './application-list.component';
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ApplicationsListComponent } from './application-list.component';
   imports: [
     CommonModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    VitamUICommonModule
   ],
   exports: [ApplicationsListComponent]
 })

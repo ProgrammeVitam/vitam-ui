@@ -49,7 +49,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PortalModule } from './portal';
 
-
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({

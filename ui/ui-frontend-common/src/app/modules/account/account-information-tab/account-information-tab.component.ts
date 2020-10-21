@@ -77,7 +77,7 @@ export class AccountInformationTabComponent implements OnInit {
 
   ngOnInit() {
     this.form.valueChanges.subscribe((values: Account) => {
-      this.accountService.patch(values).subscribe();
+      this.accountService.patchMe(values).subscribe();
     });
   }
 
