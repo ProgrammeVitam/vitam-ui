@@ -191,3 +191,34 @@ button.back {
         color: $white;
     }
 }
+
+button.back-primary {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    color: var(--vitamui-primary);
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+
+    i {
+        display: block;
+        font-size: 18px;
+        color: $white;
+        background-color: var(--vitamui-primary);
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        line-height: 30px;
+        margin-right: 10px;
+        transition: color 200ms ease-out, background-color 200ms ease-out;
+    }
+
+    &:hover i {
+        background-color: $white;
+        color: var(--vitamui-primary);
+    }
+}

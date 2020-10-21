@@ -1,111 +1,69 @@
-<form [formGroup]="form">
-    <div class="wrapper">
-        <div class="form-row">
-            <div>
-                <vitamui-common-editable-input
-                    class="fields"
-                    formControlName="lastname"
-                    [validator]="form?.get('lastname')?.validator"
-                    label="Nom"
-                    i18n-label="user info tab lastname@@UserInfoTabLastname"
-                >
-                    <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-                </vitamui-common-editable-input>
-            </div>
-            <div>
-                <vitamui-common-editable-input
-                class="fields"
-                formControlName="firstname"
-                [validator]="form?.get('firstname')?.validator"
-                label="Prénom"
-                i18n-label="user info tab firstname@@UserInfoTabFirstname"
-                >
-                    <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-                </vitamui-common-editable-input>
-            </div>
-        </div>
-        <div class="form-row">
-            <vitamui-common-editable-email-input
-                class="fields-inline"
-                formControlName="email"
-                label="Adresse E-mail"
-                i18n-label="user info tab email@@UserInfoTabEmail" >
-                    <vitamui-common-field-error errorKey="email" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-                    <vitamui-common-field-error errorKey="uniqueEmail" i18n="Existing email error hint@@formErrorExistingEmail">E-mail déjà existant</vitamui-common-field-error>
-            </vitamui-common-editable-email-input>
-        </div>
-        <div class="form-row">
-            <div class="col-md-3 language-select">
-                <vitamui-common-editable-select
-                class="fields"
-                formControlName="language"
-                label="Langue de l'interface"
-                i18n-label="user info tab language@@UserInfoTabLanguage"
-                >
-                    <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish"></vitamui-common-editable-option>
-                    <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench"></vitamui-common-editable-option>
-                </vitamui-common-editable-select>
-
-            </div>
-        </div>
-        <div class="form-row">
-            <vitamui-common-slide-toggle formControlName="otp"
-                matTooltipPosition="below"
-                i18n="Two steps validation identity@@userTwoStepsValidation">Authentification OTP
-            </vitamui-common-slide-toggle>
-        </div>
-        <div class="form-row">
-            <vitamui-common-editable-input
-                class="fields"
-                formControlName="mobile"
-                [validator]="form?.get('mobile')?.validator"
-                label="Numéro de mobile"
-                i18n-label="user info tab mobile@@UserInfoTabMobile"
-                >
-                    <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-                    <vitamui-common-field-error errorKey="pattern" i18n="Mobile format error hint@@mobileFormatError">Format international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
-            </vitamui-common-editable-input>
-            <vitamui-common-editable-input
-                formControlName="phone"
-                class="fields"
-                [validator]="form?.get('phone')?.validator"
-                label="Numéro de fixe"
-                i18n-label="user info tab phone@@UserInfoTabPhone"
-                >
-                    <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
-            </vitamui-common-editable-input>
-        </div>
-      <div class="form-column">
-        <div class="read-only-field">
-            <label i18n="@@UserInfoTabAddress">Adresse</label>
-          <div>
-            <span *ngIf="form.get('address').value?.street">{{form.get('address').value?.street}}</span>
-            <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
-          </div>
-          <div>
-            <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">{{form.get('address').value?.zipCode}}, {{form.get('address').value?.city}}</span>
-          </div>
-        </div>
-      </div>
-        <div class="form-row">
-            <vitamui-common-editable-input
-            class="fields"
-            formControlName="level"
-            label="Niveau"
-            i18n-label="user info tab level@@UserInfoTabLevel"
-            >
-            </vitamui-common-editable-input>
-        </div>
-        <div class="form-column">
-            <div class="read-only-field">
-                <label>Mon groupe de profils</label>
-                <div>
-                    {{form.get('profileGroup').value?.name}}
-                </div>
-                <div class="profile-description">
-                    {{form.get('profileGroup').value?.description}}
-                </div>
-            </div>
-        </div>
+<form [formGroup]="form" class="form-pad">
+  <div class="row">
+    <div class="col-2">
+      <label i18n-label="user info tab lastname@@UserInfoTabLastname">Nom</label>
+      <span>{{form?.get('lastname')?.value}}</span>
     </div>
+    <div class="col-2">
+      <label i18n-label="user info tab firstname@@UserInfoTabFirstname">Prénom</label>
+      <span>{{form?.get('firstname')?.value}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <label i18n-label="user info tab email@@UserInfoTabEmail">Adresse E-mail</label>
+      <span>{{form?.get('email')?.value}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <vitamui-common-editable-select class="fields-padding" formControlName="language" label="Langue de l'interface"
+        i18n-label="user info tab language@@UserInfoTabLanguage">
+        <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish">
+        </vitamui-common-editable-option>
+        <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench">
+        </vitamui-common-editable-option>
+      </vitamui-common-editable-select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below"
+        i18n="Two steps validation identity@@userTwoStepsValidation">Authentification OTP
+      </vitamui-common-slide-toggle>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label i18n-label="user info tab mobile@@UserInfoTabMobile">Numéro de mobile</label>
+      <span>{{form?.get('mobile')?.value}}</span>
+
+      <label i18n-label="user info tab phone@@UserInfoTabPhone">Numéro de fix</label>
+      <span>{{form?.get('phone')?.value}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label i18n="@@UserInfoTabAddress">Adresse de livraison</label>
+      <span *ngIf="form.get('address').value?.street">{{form.get('address').value?.street}}
+        <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
+      </span>
+      <span
+        *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">{{form.get('address').value?.zipCode}},
+        {{form.get('address').value?.city}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <label i18n-label="user info tab email@@UserInfoTabLevel">Niveau</label>
+      <span>{{form?.get('level')?.value}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4">
+      <label>Mon groupe de profils</label>
+      <span>{{form.get('profileGroup').value?.name}}</span>
+      <span>{{form.get('profileGroup').value?.description}}</span>
+    </div>
+  </div>
 </form>

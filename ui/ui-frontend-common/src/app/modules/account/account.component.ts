@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -36,33 +37,36 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { AppRootComponent } from '../app-root-component.class';
 import { Account } from '../models/account/account.interface';
+import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
+  styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent extends AppRootComponent implements OnInit {
-
   account: Account;
   // TO HIDE TEMPORARILY THE APPLICATION TAB AND ASK FOR AN EDIT AND CONTACT THE ADMIN BUTTONS
-  displayAppTab: boolean;
-  displayEditionAndAdminContact: boolean;
+  displayAppTab = false;
+  displayEditionAndAdminContact = false;
 
-  constructor(private accountService: AccountService, route: ActivatedRoute) {
+  public dataBreadcrumb: BreadCrumbData[];
+
+  constructor(
+    private accountService: AccountService,
+    route: ActivatedRoute,
+    private location: Location
+  ) {
     super(route);
   }
 
   ngOnInit() {
-    this.displayAppTab = false;
-    this.displayEditionAndAdminContact = false;
     this.accountService.getMyAccount().subscribe((account) => {
       this.account = account;
     });
+    this.dataBreadcrumb = [{ label: 'Portal' }, { label: 'Mon compte' }];
   }
-
 }

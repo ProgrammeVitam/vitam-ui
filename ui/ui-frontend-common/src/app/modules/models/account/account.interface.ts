@@ -50,4 +50,5 @@ export interface Account extends Id {
   profileGroup: Group;
   customerId: string;
   otp: boolean;
+  photo?: string;
 }

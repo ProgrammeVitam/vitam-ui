@@ -1,8 +1,11 @@
-<div class="vitamui-header">
-  <div class="vitamui-container">
-    <h2 i18n="MyAccount@@MyAccountTitle">
-      <i class="vitamui-icon vitamui-icon-user"></i> Mon Compte
-    </h2>
+<div class="pt-5">
+
+  <vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
+    <div class="d-flex align-items-center user-photo">
+      <div *ngIf="account?.photo then userPhoto else defaultUserPhoto"></div><span class="pl-2" i18n="MyAccount@@MyAccountTitle">Mon Compte</span>
+   </div>
+
+  </vitamui-common-title-breadcrumb>
     <div class="div-btn">
       <div>
         <button class="btn secondary btn-header">Changer mon mot de passe</button>
@@ -14,17 +17,23 @@
         <button *ngIf="displayAppTab" class="btn secondary">Contacter l'administrateur</button>
       </div>
     </div>
+
+
+   <ng-template #defaultUserPhoto>
+     <img src="../../../assets/user_icon.png">
+   </ng-template>
+
+   <ng-template #userPhoto>
+     <img [src]="account.photo">
+   </ng-template>
+
   </div>
-</div>
+
 
 <div class="vitamui-body">
-  <div class="vitamui-container">
-    <mat-tab-group class="account-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@accountrPreviewTabInformation">
-        <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>
-      </mat-tab>
-      <mat-tab *ngIf="displayAppTab" label="Application" i18n-label="Groupe tab@@accountPreviewTabApplication" class="no-padding">
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+  <mat-tab-group>
+    <mat-tab label="Informations" i18n-label="Information tab@@profileDetailTabInformation">
+      <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
