@@ -643,7 +643,7 @@
               "projects/archive/src/assets"
             ],
             "styles": [
-              "projects/archive/src/sass/styles.scss"
+              "projects/archive/src/styles.scss"
             ],
             "scripts": []
           },
@@ -704,13 +704,13 @@
             "main": "projects/archive/src/test.ts",
             "polyfills": "projects/archive/src/polyfills.ts",
             "tsConfig": "projects/archive/tsconfig.spec.json",
-            "karmaConfig": "projects/archive/karma.conf.ci.js",
+            "karmaConfig": "projects/archive/karma.conf.js",
             "assets": [
               "projects/archive/src/favicon.ico",
               "projects/archive/src/assets"
             ],
             "styles": [
-              "projects/archive/src/sass/styles.scss"
+              "projects/archive/src/styles.scss"
             ],
             "scripts": []
           }
