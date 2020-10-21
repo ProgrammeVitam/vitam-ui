@@ -28,8 +28,6 @@
         <module>packaging</module>
         <module>cots</module>
         <module>ui</module>
-        <module>api-archive</module>
-        <module>archive-internal-client</module>
     </modules>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
