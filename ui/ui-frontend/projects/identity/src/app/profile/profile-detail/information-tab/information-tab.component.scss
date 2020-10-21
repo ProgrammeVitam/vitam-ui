@@ -8,6 +8,9 @@
     }
 }
 
-role-toggle div {
-    margin-bottom: 0px;
+:host::ng-deep {
+  .read-only-field{
+    padding: 7px 20px 7px 0px;
+  }
 }
+

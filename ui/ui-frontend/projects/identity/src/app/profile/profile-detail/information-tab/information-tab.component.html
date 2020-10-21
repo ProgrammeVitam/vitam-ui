@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" >
 
   <vitamui-common-slide-toggle formControlName="enabled" i18n="Enabled@@profileFormLabelEnabled"
   matTooltip="Profil encore attribué à un groupe" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
@@ -25,8 +25,7 @@
         maxlength="100"
         label="Nom" i18n-label="Name@@profileDetailLabelName"
         [validator]="form?.get('name')?.validator"
-        [asyncValidator]="form?.get('name')?.asyncValidator"
-      >
+        [asyncValidator]="form?.get('name')?.asyncValidator" >
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-field-error>
       </vitamui-common-editable-input>
@@ -35,7 +34,7 @@
 
   <div class="row">
       <div class="col-5">
-          <div class="read-only-field">
+          <div class="read-only-field pl-0">
               <label>Niveau du profil</label>
               <div>{{userLevel}}</div>
           </div>
@@ -56,17 +55,17 @@
 
   <div class="row">
     <div class="col-12">
-      <vitamui-common-editable-textarea
+      <vitamui-common-editable-input
         formControlName="description"
-        maxlength="250"
+        maxlength="380"
         label="Description" i18n-label="Description@@profileDetailLabelDescription"
         [validator]="form?.get('description')?.validator"
       >
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-      </vitamui-common-editable-textarea>
+      </vitamui-common-editable-input>
     </div>
 
-    <div class="role-toggle">
+    <div class="col-6 mb-5">
         <vitamui-common-role-toggle formControlName="roles">
             <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS" i18n="Strong authentication@@profileFormLabelStrongAuthentication">Authentification forte</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS" i18n="User creation@@profileFormLabeluserCreation">Création d'utilisateur</vitamui-common-role>
