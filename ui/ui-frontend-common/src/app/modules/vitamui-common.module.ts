@@ -104,6 +104,7 @@ export function startupServiceFactory(startupService: StartupService) {
   imports: [
     CommonModule,
     HttpClientModule,
+    TranslateVitamModule,
     MatDialogModule,
     MatSnackBarModule,
     AccountModule,
@@ -146,12 +147,12 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
-    TranslateVitamModule
   ],
   entryComponents: [
     ErrorDialogComponent
   ],
   exports: [
+    TranslateVitamModule,
     AccountModule,
     ApplicationSelectContentModule,
     BlankComponent,
@@ -190,7 +191,6 @@ export function startupServiceFactory(startupService: StartupService) {
     FooterModule,
     VitamuiBodyModule,
     PipesModule,
-    TranslateVitamModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

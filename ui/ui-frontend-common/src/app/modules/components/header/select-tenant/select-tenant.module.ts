@@ -11,7 +11,7 @@ import { SelectTenantComponent } from './select-tenant.component';
     CommonModule,
     MatSelectModule,
     FormsModule,
-    TranslateVitamModule
+    TranslateVitamModule,
   ],
   exports: [SelectTenantComponent]
 })

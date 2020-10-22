@@ -11,7 +11,6 @@ import { SelectLanguageComponent } from './select-language/select-language.compo
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient,  [
     {prefix: './assets/shared-i18n/', suffix: '.json'},
-    {prefix: './assets/i18n/', suffix: '.json'}
   ]);
 }
 
@@ -27,12 +26,19 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
         useFactory: httpLoaderFactory,
         deps: [HttpClient]
       },
-      isolate: false
+      isolate: false,
     })
   ],
   exports: [
+    SelectLanguageComponent,
     TranslateModule,
-    SelectLanguageComponent
-  ]
+  ],
 })
-export class TranslateVitamModule {}
+export class TranslateVitamModule {
+  static httpLoaderChildFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+     return new MultiTranslateHttpLoader(httpClient,  [
+      {prefix: './assets/shared-i18n/', suffix: '.json'},
+      {prefix: './assets/i18n/', suffix: '.json'}
+   ]);
+  }
+}

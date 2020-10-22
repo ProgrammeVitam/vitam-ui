@@ -46,7 +46,7 @@ import { FooterComponent } from './footer.component';
     FooterComponent
   ],
   imports: [
-    TranslateVitamModule
+    TranslateVitamModule,
   ]
 })
 export class FooterModule {
