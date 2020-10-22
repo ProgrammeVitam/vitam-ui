@@ -6,23 +6,23 @@ import { HttpClientModule } from '@angular/common/http';
 import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ArchiveComponent } from './archive/archive.component';
+import { ArchiveService } from './archive.service';
+import { HttpClientModule } from '@angular/common/http';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 @NgModule({
   declarations: [
     AppComponent,
-
+    ArchiveComponent
   ],
   imports: [
-    CoreModule,
-    BrowserAnimationsModule,
     VitamUICommonModule,
     HttpClientModule,
     BrowserModule,
-    AppRoutingModule,
-
-
+    AppRoutingModule
   ],
-  providers: [
+  providers: [ArchiveService,
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },
