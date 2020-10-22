@@ -41,7 +41,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
-import { ApplicationSelectContentModule } from 'ui-frontend-common';
+
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ApplicationSelectContentModule, TranslateVitamModule } from 'ui-frontend-common';
 import { ApplicationListModule } from '../components/application-list/application-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
@@ -56,6 +58,8 @@ import { PortalComponent } from './portal.component';
     ApplicationSelectContentModule,
     WelcomeMessageModule,
     ApplicationListModule,
+    MatProgressSpinnerModule,
+    TranslateVitamModule,
   ],
   declarations: [PortalComponent]
 })
