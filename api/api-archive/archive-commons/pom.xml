@@ -11,6 +11,8 @@
 
     <artifactId>archive-commons</artifactId>
     <name>VITAMUI Archive Commons</name>
+
+
     <dependencies>
         <!-- VITAMUI -->
         <dependency>
@@ -21,7 +23,6 @@
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-vitam</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -37,6 +38,4 @@
             <artifactId>jackson-core</artifactId>
         </dependency>
     </dependencies>
-
-
 </project>
