@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { SidenavPage, GlobalEventService } from 'ui-frontend-common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-archive',
