@@ -437,6 +437,10 @@ public class ServicesData {
             ROLE_GET_INGEST,
             ROLE_CREATE_INGEST,
 
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE,
+
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
@@ -549,6 +553,7 @@ public class ServicesData {
 
             ROLE_GET_ALL_ARCHIVE,
             ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
