@@ -101,6 +101,7 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
             "/actuator/**",
             "/swagger-resources/**", "/**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**",
             "/*.js",
+            "/*.css",
             "/ngsw*",
             "/*ngsw*"
         };

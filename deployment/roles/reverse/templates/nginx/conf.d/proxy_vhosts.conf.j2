@@ -74,13 +74,28 @@ server {
     location / {
         proxy_pass https://ui_identity_admin;
 
+        gunzip on;
+        sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
+        sub_filter /identity/ https://{{ vitamui.identity_admin.server_name }}/;
+        sub_filter_once off;
+
         proxy_set_header Host            $host;
     	proxy_set_header X-Forwarded-For $remote_addr;
 
     }
 
-    location ~ /identity/(identity-api(.*)) {
-        proxy_pass https://{{ vitamui.identity_admin.server_name }}/$1$is_args$args;
+    location /identity/ {
+        rewrite ^/identity/(.*)$  https://{{ vitamui.identity_admin.server_name }}/$1 break;
+    }
+
+    location /ngsw.json {
+        proxy_pass https://ui_identity_admin;
+
+        gunzip on;
+        proxy_set_header Accept-Encoding "";
+        sub_filter_types *;
+        sub_filter /identity/ '';
+        sub_filter_once off;
 
         proxy_set_header Host            $host;
         proxy_set_header X-Forwarded-For $remote_addr;
@@ -92,20 +107,7 @@ server {
         proxy_set_header  X-Forwarded-Proto $scheme;
 
     }
-    location ~* ^/identity/(.*\.(jpg|png|css|js|woff|woff2|svg|ttf|json)$)|(ngsw.json(.*)) {
-        proxy_pass https://{{ vitamui.identity_admin.server_name }}/$1;
 
-        proxy_set_header Host            $host;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Authorization $http_authorization;
-
-        proxy_hide_header X-Frame-Options;
-        proxy_set_header  X-Forwarded-Ssl on;
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header  X-Forwarded-Proto $scheme;
-
-    }
 }
 
 
@@ -132,6 +134,11 @@ server {
     location / {
         proxy_pass https://ui_identity;
 
+        gunzip on;
+        sub_filter_types text/html text/css text/javascript application/javascript application/x-javascript;
+        sub_filter /identity/ https://{{ vitamui.identity.server_name }}/;
+        sub_filter_once off;
+
         proxy_set_header Host            $host;
     	proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
@@ -144,8 +151,18 @@ server {
 
     }
 
-    location ~ /identity/(identity-api(.*)) {
-        proxy_pass https://{{ vitamui.identity.server_name }}/$1$is_args$args;
+    location /identity/ {
+        rewrite ^/identity/(.*)$  https://{{ vitamui.identity.server_name }}/$1 break;
+    }
+
+    location /ngsw.json {
+        proxy_pass https://ui_identity;
+
+        gunzip on;
+        proxy_set_header Accept-Encoding "";
+        sub_filter_types *;
+        sub_filter /identity/ https://{{ vitamui.identity.server_name }}/;
+        sub_filter_once off;
 
         proxy_set_header Host            $host;
         proxy_set_header X-Forwarded-For $remote_addr;
@@ -157,21 +174,6 @@ server {
         proxy_set_header  X-Forwarded-Proto $scheme;
 
     }
-    location ~* ^/identity/(.*\.(jpg|png|css|js|woff|woff2|svg|ttf|json)$)|(ngsw.json(.*)) {
-        proxy_pass https://{{ vitamui.identity.server_name }}/$1;
-
-        proxy_set_header Host            $host;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Authorization $http_authorization;
-
-        proxy_hide_header X-Frame-Options;
-        proxy_set_header  X-Forwarded-Ssl on;
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header  X-Forwarded-Proto $scheme;
-
-    }
-
 }
 
 
