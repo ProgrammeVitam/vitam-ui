@@ -61,7 +61,13 @@ public class ArchiveInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveInternalController.class);
 
-    private ArchiveInternalService archiveInternalService;
+    private   ArchiveInternalService archiveInternalService;
+
+    @Autowired
+    public  ArchiveInternalController(final ArchiveInternalService archiveInternalService) {
+
+        this.archiveInternalService = archiveInternalService;
+    }
 
     @Autowired
     public ArchiveInternalController(final ArchiveInternalService archiveInternalService) {
