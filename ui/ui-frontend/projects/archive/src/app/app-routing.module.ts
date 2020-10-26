@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ActiveTenantGuard, AppGuard, AuthGuard, AccountComponent } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
-import { ArchiveComponent } from './archive/archive.component';
 
 
 const routes: Routes = [
@@ -21,9 +20,8 @@ const routes: Routes = [
   },
   {
     path: 'archive',
-    // loadChildren: () => import('./archive/archive.module').then(m => m.ArchiveModule),
-    // canActivate: [AuthGuard, AppGuard],
-    component: ArchiveComponent,
+    loadChildren: () => import('./archive/archive.module').then(m => m.ArchiveModule),
+    canActivate: [AuthGuard, AppGuard],
     data: { appId: 'ARCHIVE_MANAGEMENT_APP' }
   },
 
