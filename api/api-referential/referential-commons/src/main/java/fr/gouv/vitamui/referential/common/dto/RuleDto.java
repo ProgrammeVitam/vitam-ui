@@ -51,23 +51,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class RuleDto extends IdDto implements Serializable {
+public class RuleDto extends RuleCSVDto implements Serializable {
 
     private Integer tenant;
 
     private Integer version;
-
-    private String ruleId;
-
-    private String ruleType;
-
-    private String ruleValue;
-
-    private String ruleDescription;
-
-    private String ruleDuration;
-
-    private String ruleMeasurement;
 
     private String creationDate;
 

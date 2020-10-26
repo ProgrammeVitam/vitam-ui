@@ -87,7 +87,6 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
             final Optional<String> orderBy, final Optional<DirectionDto> direction) {
 
         // Can't use DLab super.getAllPaginated because the criteria is updated for internal concern.
-        // TODO: Maybe needs a VITAM class for ResourceClientService ?
         ParameterChecker.checkPagination(size, page);
         final PaginatedValuesDto<RuleDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
