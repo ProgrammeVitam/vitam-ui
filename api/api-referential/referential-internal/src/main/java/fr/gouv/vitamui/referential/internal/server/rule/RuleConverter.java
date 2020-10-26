@@ -45,8 +45,6 @@ import fr.gouv.vitamui.referential.common.dto.RuleDto;
 
 public class RuleConverter {
 
-    // TODO : Make a model DTO able to be converted as XML Droid format ?
-
     public FileRulesModel convertDtoToVitam(final RuleDto dto) {
         final FileRulesModel rule = VitamUIUtils.copyProperties(dto, new FileRulesModel());
 

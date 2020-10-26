@@ -45,6 +45,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.*;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +137,7 @@ public class VitamRuleService {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
 
         LOGGER.debug("inputPatchRule {}", patchRule);
 
@@ -159,7 +160,7 @@ public class VitamRuleService {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class).getResults();
+            .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
 
         return importRules(vitamContext, actualRules.stream()
             .filter( rule -> !ruleId.equals(rule.getRuleId()) )
@@ -171,7 +172,7 @@ public class VitamRuleService {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class).getResults();
+                .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
 
         LOGGER.debug("Before Add List: {}", actualRules);
 
@@ -260,7 +261,7 @@ public class VitamRuleService {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final RuleResponseDto contextResponseDto = objectMapper.treeToValue(vitamRules.toJsonNode(), RuleResponseDto.class);
+            final RuleNodeResponseDto contextResponseDto = objectMapper.treeToValue(vitamRules.toJsonNode(), RuleNodeResponseDto.class);
             final List<String> contextRuleIds = checkRules.stream().map(context -> context.getRuleId()).collect(Collectors.toList());
 
             if (contextResponseDto.getResults().stream().anyMatch(context -> contextRuleIds.contains(context.getRuleId()))) {

@@ -143,7 +143,6 @@ public class RuleExternalController {
         ruleExternalService.delete(id);
     }
 
-    // TODO : Maybe change this role
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping("/export")
     public ResponseEntity<Resource> export() {
