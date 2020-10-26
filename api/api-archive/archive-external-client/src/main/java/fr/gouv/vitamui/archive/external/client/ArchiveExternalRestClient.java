@@ -72,6 +72,7 @@ public class ArchiveExternalRestClient extends BasePaginatingAndSortingRestClien
     protected ParameterizedTypeReference<List<UnitDto>> getDtoListClass() {
         return new ParameterizedTypeReference<List<UnitDto>>() {
         };
+
     }
 
     @Override
