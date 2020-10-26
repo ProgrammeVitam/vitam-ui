@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ArchiveApiService } from '../core/api/archive-api.service';
 
 @Component({
   selector: 'app-archive',
@@ -33,6 +34,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
 
 
   }
+    this.service.getMessageFromArchive().subscribe(
+
+      data => { console.log("Message from Archive "+data);},
+      errors => {console.log(errors);}
+    );
 
 
   changeTenant(tenantIdentifier: number) {
