@@ -47,7 +47,7 @@ import java.util.Optional;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
-import fr.gouv.vitam.common.model.administration.FileFormatModel;
+import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,14 +70,12 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
-import fr.gouv.vitamui.referential.common.dto.RuleResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamRuleService;
 
 @Service
@@ -105,8 +103,8 @@ public class RuleInternalService {
     public RuleDto getOne(VitamContext vitamContext, String identifier) {
         try {
             RequestResponse<FileRulesModel> requestResponse = ruleService.findRuleById(vitamContext, identifier);
-            final RuleResponseDto ruleResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper
+                    .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
             if (ruleResponseDto.getResults().size() == 0) {
                 return null;
             } else {
@@ -124,8 +122,8 @@ public class RuleInternalService {
             requestResponse = ruleService
                     .findRules(vitamContext, new Select().getFinalSelect());
             LOGGER.debug("Response: {}", requestResponse);
-            final RuleResponseDto ruleResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper
+                    .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
             return converter.convertVitamsToDtos(ruleResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find rules", e);
@@ -151,7 +149,7 @@ public class RuleInternalService {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
 
-        RuleResponseDto results = this.findAll(vitamContext, query);
+        RuleNodeResponseDto results = this.findAll(vitamContext, query);
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
         final List<RuleDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
@@ -159,13 +157,13 @@ public class RuleInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
-    private RuleResponseDto findAll(VitamContext vitamContext, JsonNode query) {
+    private RuleNodeResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<FileRulesModel> requestResponse;
         try {
             requestResponse = ruleService.findRules(vitamContext, query);
 
-            final RuleResponseDto ruleResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), RuleResponseDto.class);
+            final RuleNodeResponseDto ruleResponseDto = objectMapper
+                    .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class);
 
             LOGGER.debug("Formats: {}", ruleResponseDto);
 
