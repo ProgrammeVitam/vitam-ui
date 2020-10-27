@@ -1,0 +1,763 @@
+[
+    {
+        "Label": "AcquiredDate",
+        "Value": "AcquiredDate",
+        "Type": "DATE",
+        "ShortName": "Date de numérisation"
+    },
+    {
+        "Label": "Addressee.BirthPlace.PostalCode",
+        "Value": "Addressee.BirthPlace.PostalCode",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:29.887",
+        "ShortName": "Code postal naissance"
+    },
+    {
+        "Label": "Addressee.DeathPlace.PostalCode",
+        "Value": "Addressee.DeathPlace.PostalCode",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:29.887",
+        "ShortName": "Code postal décès"
+    },
+    {
+        "Label": "Addressee.Identifier",
+        "Value": "Addressee.Identifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.440",
+        "ShortName": "Identifiant adresse"
+    },
+    {
+        "Label": "ArchivalAgencyArchiveUnitIdentifier",
+        "Value": "ArchivalAgencyArchiveUnitIdentifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.573",
+        "ShortName": "Identifiant métier (Service d'archives)"
+    },
+    {
+        "Label": "ArchiveUnitProfile",
+        "Value": "ArchiveUnitProfile",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.660",
+        "ShortName": "Profil d'unité archivistique"
+    },
+    {
+        "Label": "AuthorizedAgent.BirthDate",
+        "Value": "AuthorizedAgent.BirthDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:29.345",
+        "ShortName": "Date de naissance"
+    },
+    {
+        "Label": "AuthorizedAgent.BirthPlace.PostalCode",
+        "Value": "AuthorizedAgent.BirthPlace.PostalCode",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:29.887",
+        "ShortName": "Code postal naissance"
+    },
+    {
+        "Label": "AuthorizedAgent.DeathDate",
+        "Value": "AuthorizedAgent.DeathDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:30.156",
+        "ShortName": "Date de décès AuthorizedAgent"
+    },
+    {
+        "Label": "AuthorizedAgent.DeathPlace.PostalCode",
+        "Value": "AuthorizedAgent.DeathPlace.PostalCode",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.042",
+        "LastUpdate": "2020-11-02T14:21:29.887",
+        "ShortName": "Code postal DeathPlace AuthorizedAgent "
+    },
+    {
+        "Label": "AuthorizedAgent.Identifier",
+        "Value": "AuthorizedAgent.Identifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.440",
+        "ShortName": "Identifiant AuthorizedAgent"
+    },
+    {
+        "Label": "CreatedDate",
+        "Value": "CreatedDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:31.004",
+        "ShortName": "Date de création"
+    },
+    {
+        "Label": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
+        "Value": "CustodialHistory.CustodialHistoryFile.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "DescriptionLevel",
+        "Value": "DescriptionLevel",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.401",
+        "ShortName": "Niveau de description"
+    },
+    {
+        "Label": "DescriptionLanguage",
+        "Value": "DescriptionLanguage",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.329",
+        "ShortName": "Langue des descriptions"
+    },
+    {
+        "Label": "EndDate",
+        "Value": "EndDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.551",
+        "ShortName": "Date de fin"
+    },
+    {
+        "Label": "Event.EventDateTime",
+        "Value": "Event.EventDateTime",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.056",
+        "LastUpdate": "2020-11-02T14:21:44.116",
+        "ShortName": "Date"
+    },
+    {
+        "Label": "Event.EventIdentifier",
+        "Value": "Event.EventIdentifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.056",
+        "LastUpdate": "2020-11-02T14:21:44.192",
+        "ShortName": "Identifiant de l'événement"
+    },
+    {
+        "Label": "FilePlanPosition",
+        "Value": "FilePlanPosition",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.693",
+        "ShortName": "Position dans le plan de classement"
+    },
+    {
+        "Label": "Gps.GpsAltitude",
+        "Value": "Gps.GpsAltitude",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.863",
+        "ShortName": "Niveau de la mer"
+    },
+    {
+        "Label": "Gps.GpsAltitudeRef",
+        "Value": "Gps.GpsAltitudeRef",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.863",
+        "ShortName": "Niveau de la mer"
+    },
+    {
+        "Label": "Gps.GpsDateStamp",
+        "Value": "Gps.GpsDateStamp",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.972",
+        "ShortName": "Heure et date GpsDateStamp"
+    },
+    {
+        "Label": "Gps.GpsLatitude",
+        "Value": "Gps.GpsLatitude",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.045",
+        "LastUpdate": "2020-11-02T14:21:32.035",
+        "ShortName": "Latitude"
+    },
+    {
+        "Label": "Gps.GpsLatitudeRef",
+        "Value": "Gps.GpsLatitudeRef",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.098",
+        "ShortName": "Référence GpsLatitudeRef"
+    },
+    {
+        "Label": "Gps.GpsLongitude",
+        "Value": "Gps.GpsLongitude",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.164",
+        "ShortName": "Longitude"
+    },
+    {
+        "Label": "Gps.GpsLongitudeRef",
+        "Value": "Gps.GpsLongitudeRef",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.236",
+        "ShortName": "Référence"
+    },
+    {
+        "Label": "Gps.GpsVersionID",
+        "Value": "Gps.GpsVersionID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.304",
+        "ShortName": "Identifiant de version du GPS"
+    },
+    {
+        "Label": "Keyword.KeywordContent",
+        "Value": "Keyword.KeywordContent",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.375",
+        "ShortName": "Mot clé"
+    },
+    {
+        "Label": "Keyword.KeywordReference",
+        "Value": "Keyword.KeywordReference",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.464",
+        "ShortName": "Référence Mot clé"
+    },
+    {
+        "Label": "Keyword.KeywordType",
+        "Value": "Keyword.KeywordType",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.523",
+        "ShortName": "Type Mot clé"
+    },
+    {
+        "Label": "Language",
+        "Value": "Language",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.585",
+        "ShortName": "Langue des documents"
+    },
+    {
+        "Label": "OriginatingAgency.Identifier",
+        "Value": "OriginatingAgency.Identifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.440",
+        "ShortName": "Identifiant OriginatingAgency"
+    },
+    {
+        "Label": "OriginatingAgencyArchiveUnitIdentifier",
+        "Value": "OriginatingAgencyArchiveUnitIdentifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.043",
+        "LastUpdate": "2020-11-02T14:21:30.440",
+        "ShortName": "OriginatingAgencyArchiveUnitIdentifier"
+    },
+    {
+        "Label": "OriginatingSystemId",
+        "Value": "OriginatingSystemId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.046",
+        "LastUpdate": "2020-11-02T14:21:32.644",
+        "ShortName": "Identifiant métier (Service producteur)"
+    },
+    {
+        "Label": "ReceivedDate",
+        "Value": "ReceivedDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.794",
+        "ShortName": "Date de réception"
+    },
+    {
+        "Label": "RelatedObjectReference.IsPartOf.ArchiveUnitRefId",
+        "Value": "RelatedObjectReference.IsPartOf.ArchiveUnitRefId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.908",
+        "ShortName": "Référence à une ArchiveUnit interne"
+    },
+    {
+        "Label": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectGroupReferenceId",
+        "Value": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectReferenceId",
+        "Value": "RelatedObjectReference.IsPartOf.DataObjectReference.DataObjectReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.982",
+        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.IsPartOf.RepositoryArchiveUnitPID",
+        "Value": "RelatedObjectReference.IsPartOf.RepositoryArchiveUnitPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.059",
+        "ShortName": "Référence à une ArchiveUnit déjà conservée"
+    },
+    {
+        "Label": "RelatedObjectReference.IsPartOf.RepositoryObjectPID",
+        "Value": "RelatedObjectReference.IsPartOf.RepositoryObjectPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.132",
+        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.IsVersionOf.ArchiveUnitRefId",
+        "Value": "RelatedObjectReference.IsVersionOf.ArchiveUnitRefId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.908",
+        "ShortName": "Référence à une ArchiveUnit interne"
+    },
+    {
+        "Label": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectGroupReferenceId",
+        "Value": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectReferenceId",
+        "Value": "RelatedObjectReference.IsVersionOf.DataObjectReference.DataObjectReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.982",
+        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.IsVersionOf.RepositoryArchiveUnitPID",
+        "Value": "RelatedObjectReference.IsVersionOf.RepositoryArchiveUnitPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.059",
+        "ShortName": "Référence à une ArchiveUnit déjà conservée"
+    },
+    {
+        "Label": "RelatedObjectReference.IsVersionOf.RepositoryObjectPID",
+        "Value": "RelatedObjectReference.IsVersionOf.RepositoryObjectPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.132",
+        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.References.ArchiveUnitRefId",
+        "Value": "RelatedObjectReference.References.ArchiveUnitRefId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.908",
+        "ShortName": "Référence à une ArchiveUnit interne"
+    },
+    {
+        "Label": "RelatedObjectReference.References.DataObjectReference.DataObjectGroupReferenceId",
+        "Value": "RelatedObjectReference.References.DataObjectReference.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "RelatedObjectReference.References.DataObjectReference.DataObjectReferenceId",
+        "Value": "RelatedObjectReference.References.DataObjectReference.DataObjectReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.982",
+        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.References.RepositoryArchiveUnitPID",
+        "Value": "RelatedObjectReference.References.RepositoryArchiveUnitPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.059",
+        "ShortName": "Référence à une ArchiveUnit déjà conservée"
+    },
+    {
+        "Label": "RelatedObjectReference.References.RepositoryObjectPID",
+        "Value": "RelatedObjectReference.References.RepositoryObjectPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.132",
+        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.Replaces.ArchiveUnitRefId",
+        "Value": "RelatedObjectReference.Replaces.ArchiveUnitRefId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.908",
+        "ShortName": "Référence à une ArchiveUnit interne"
+    },
+    {
+        "Label": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectGroupReferenceId",
+        "Value": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectReferenceId",
+        "Value": "RelatedObjectReference.Replaces.DataObjectReference.DataObjectReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.982",
+        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.Replaces.RepositoryArchiveUnitPID",
+        "Value": "RelatedObjectReference.Replaces.RepositoryArchiveUnitPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.059",
+        "ShortName": "Référence à une ArchiveUnit déjà conservée"
+    },
+    {
+        "Label": "RelatedObjectReference.Replaces.RepositoryObjectPID",
+        "Value": "RelatedObjectReference.Replaces.RepositoryObjectPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.132",
+        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.Requires.ArchiveUnitRefId",
+        "Value": "RelatedObjectReference.Requires.ArchiveUnitRefId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.908",
+        "ShortName": "Référence à une ArchiveUnit interne"
+    },
+    {
+        "Label": "RelatedObjectReference.Requires.DataObjectReference.DataObjectGroupReferenceId",
+        "Value": "RelatedObjectReference.Requires.DataObjectReference.DataObjectGroupReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.044",
+        "LastUpdate": "2020-11-02T14:21:31.104",
+        "ShortName": "Référence à un groupe d'objets"
+    },
+    {
+        "Label": "RelatedObjectReference.Requires.DataObjectReference.DataObjectReferenceId",
+        "Value": "RelatedObjectReference.Requires.DataObjectReference.DataObjectReferenceId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:32.982",
+        "ShortName": "Référence à un objet ou à un groupe d'objets interne(s)"
+    },
+    {
+        "Label": "RelatedObjectReference.Requires.RepositoryArchiveUnitPID",
+        "Value": "RelatedObjectReference.Requires.RepositoryArchiveUnitPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.059",
+        "ShortName": "Référence à une ArchiveUnit déjà conservée"
+    },
+    {
+        "Label": "RelatedObjectReference.Requires.RepositoryObjectPID",
+        "Value": "RelatedObjectReference.Requires.RepositoryObjectPID",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.132",
+        "ShortName": "Référence à un objet ou à un groupe d'objets déjà conservé(s)"
+    },
+    {
+        "Label": "SentDate",
+        "Value": "SentDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.798",
+        "ShortName": "Date d'envoi"
+    },
+    {
+        "Label": "Signature.DateSignature",
+        "Value": "Signature.DateSignature",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.047",
+        "LastUpdate": "2020-11-02T14:21:33.798",
+        "ShortName": "Date de Signature"
+    },
+    {
+        "Label": "StartDate",
+        "Value": "StartDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21",
+        "ShortName": "Date de début"
+    },
+    {
+        "Label": "Status",
+        "Value": "Status",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.381",
+        "ShortName": "Statut"
+    },
+    {
+        "Label": "SubmissionAgency.Identifier",
+        "Value": "SubmissionAgency.Identifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.381",
+        "ShortName": "SubmissionAgency.Identifier"
+    },
+    {
+        "Label": "SystemId",
+        "Value": "SystemId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.520",
+        "ShortName": "GUID"
+    },
+    {
+        "Label": "Tag",
+        "Value": "Tag",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.579",
+        "ShortName": "Tag"
+    },
+    {
+        "Label": "Titles",
+        "Value": "Titles",
+        "Type": "TEXT",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.579",
+        "ShortName": "Titles"
+    },
+    {
+        "Label": "TransactedDate",
+        "Value": "TransactedDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.805",
+        "ShortName": "Date de la transaction"
+    },
+    {
+        "Label": "TransferringAgencyArchiveUnitIdentifier",
+        "Value": "TransferringAgencyArchiveUnitIdentifier",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.865",
+        "ShortName": "ID métier (Service versant)"
+    },
+    {
+        "Label": "Type",
+        "Value": "Type",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.935",
+        "ShortName": "Type"
+    },
+    {
+        "Label": "Version",
+        "Value": "Version",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.048",
+        "LastUpdate": "2020-11-02T14:21:34.996",
+        "ShortName": "Version"
+    },
+    {
+        "Label": "elimination.OperationId",
+        "Value": "#elimination.OperationId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.044",
+        "ShortName": "OperationId"
+    },
+    {
+        "Label": "elimination.GlobalStatus",
+        "Value": "#elimination.GlobalStatus",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.120",
+        "ShortName": "GlobalStatus"
+    },
+    {
+        "Label": "elimination.DestroyableOriginatingAgencies",
+        "Value": "#elimination.DestroyableOriginatingAgencies",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.186",
+        "ShortName": "DestroyableOriginatingAgencies"
+    },
+    {
+        "Label": "elimination.NonDestroyableOriginatingAgencies",
+        "Value": "#elimination.NonDestroyableOriginatingAgencies",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "NonDestroyableOriginatingAgencies"
+    },
+    {
+        "Label": "elimination.ExtendedInfo",
+        "Value": "#elimination.ExtendedInfo",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.329",
+        "ShortName": "ExtendedInfoType"
+    },
+    {
+        "Label": "elimination.ExtendedInfo.ExtendedInfoType",
+        "Value": "#elimination.ExtendedInfo.ExtendedInfoType",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.329",
+        "ShortName": "ExtendedInfoType"
+    },
+    {
+        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails",
+        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.329",
+        "ShortName": "elimination.ExtendedInfo.ExtendedInfoDetails"
+    },
+    {
+        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.ParentUnitId",
+        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.ParentUnitId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.060",
+        "LastUpdate": "2020-11-02T14:21:48.404",
+        "ShortName": "ParentUnitId"
+    },
+    {
+        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.DestroyableOriginatingAgencies",
+        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.DestroyableOriginatingAgencies",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.186",
+        "ShortName": "DestroyableOriginatingAgencies"
+    },
+    {
+        "Label": "elimination.ExtendedInfo.ExtendedInfoDetails.NonDestroyableOriginatingAgencies",
+        "Value": "#elimination.ExtendedInfo.ExtendedInfoDetails.NonDestroyableOriginatingAgencies",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "NonDestroyableOriginatingAgencies"
+    },
+    {
+        "Label": "tenant",
+        "Value": "#tenant",
+        "Type": "LONG",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.055",
+        "LastUpdate": "2020-11-02T14:21:42.543",
+        "ShortName": "Tenant"
+    },
+    {
+        "Label": "unitType",
+        "Value": "#unitType",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.050",
+        "LastUpdate": "2020-11-02T14:21:36.934",
+        "ShortName": "Type d'unité archivistique"
+    },
+    {
+        "Label": "id",
+        "Value": "#id",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "LastUpdate": "2020-11-02T14:21:36.934",
+        "ShortName": "Identifiant du groupe d'objets"
+    }
+]

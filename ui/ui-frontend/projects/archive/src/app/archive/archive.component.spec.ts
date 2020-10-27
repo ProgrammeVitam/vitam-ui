@@ -83,7 +83,6 @@ describe('ArchiveComponent', () => {
       ],
       declarations: [
         ArchiveComponent
-       
       ],
       providers: [
         FormBuilder,
@@ -92,7 +91,7 @@ describe('ArchiveComponent', () => {
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_MANAGEMENT_APP' }) } },
         { provide: environment, useValue: environment }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));

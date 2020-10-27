@@ -1644,3 +1644,24 @@ i.vitamui-icon {
 .vitamui-icon-archive-room:before {
   content: "\e951";
 }
+.vitamui-icon-circle-up:before {
+  content: "\ea41";
+}
+.vitamui-icon-circle-down:before {
+  content: "\ea43";
+}
+.vitamui-icon-bin:before {
+  content: "\e9ac";
+}
+.vitamui-icon-search:before {
+  content: "\e986";
+}
+.vitamui-icon-cross1:before {
+  content: "\ea10";
+}
+.vitamui-icon-loop2:before {
+  content: "\ea2e";
+}
+.vitamui-icon-target:before {
+  content: "\e9b3";
+}
