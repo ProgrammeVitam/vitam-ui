@@ -1,0 +1,256 @@
+{
+  "$hits": {
+    "total": 20,
+    "offset": 0,
+    "limit": 10000,
+    "size": 20
+  },
+  "$results": [
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "attachement",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpdvqcyaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpdub7qaaaaq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpdub7qaaaaq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan6",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugeaaaaca",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugdyaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcugdyaaabq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan2",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugdyaaabq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "attachement",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpdx4jiaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpdwtryaaaaq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpdwtryaaaaq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "AS. Archives d'associations",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5oaaaaca",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "RattachementUnitTnrTitlePlan",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpd3y2yaaaaq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan4",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugcqaaacq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugcqaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcugcqaaabq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan3",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugcqaaabq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "RattachementUnitTnrTitlePlan",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpdi6syaaaaq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "Archives Nationales",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "RattachementUnitTnrTitleArbre",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpdwtryaaaaq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "AP. Archives personnelles et familiales",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaacq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "AQ. Archives d'entreprises",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5nyaaaba",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "AR. Archives de presse",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5oaaaaba",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "RattachementUnitTnrTitlePlan",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpdub7qaaaaq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "RattachementUnitTnrTitleArbre",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpd52gaaaaaq",
+      "#unitups": [],
+      "#allunitups": [],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "attachement",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpd6xwyaaaaq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpd52gaaaaaq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpd52gaaaaaq"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "testPlan5",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcugeaaaaba",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugdyaaabq"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcugbiaaabq",
+        "aeaqaaaaaahi3ttmab5s6alvtpcugdyaaabq"
+      ],
+      "#unitType": "FILING_UNIT"
+    },
+    {
+      "DescriptionLevel": "RecordGrp",
+      "Title": "FONDS PRIVES",
+      "#id": "aeaqaaaaaahi3ttmab5s6alvtpcy5kqaaabq",
+      "#unitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#allunitups": [
+        "aeaqaaaaaahi3ttmab5s6alvtpcy5iyaaaba"
+      ],
+      "#unitType": "HOLDING_UNIT"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [
+      {
+        "$in": {
+          "#unitType": [
+            "FILING_UNIT",
+            "HOLDING_UNIT"
+          ]
+        }
+      }
+    ],
+    "$filter": {
+    },
+    "$projection": {
+      "$fields": {
+        "#id": 1,
+        "Title": 1,
+        "Title_": 1,
+        "DescriptionLevel": 1,
+        "#unitType": 1,
+        "#unitups": 1,
+        "#allunitups": 1
+      }
+    }
+  }
+}

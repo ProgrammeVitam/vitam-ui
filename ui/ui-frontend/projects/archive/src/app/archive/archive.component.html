@@ -2,7 +2,6 @@
     <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     </mat-sidenav>
     <mat-sidenav-content>
-
         <div class="vitamui-header">
             <div class="vitamui-container">
                 <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false"
@@ -11,7 +10,16 @@
 
             </div>
         </div>
-        <h1>archives</h1>
+        <div class="marge">
+            <app-access-contract (selectedAccessContract)="onSelectAccessContract($event)"></app-access-contract>
+        </div>
+            <div *ngIf="foundAccessContract" class="row">
+                <div [style.display]="!show ? 'none' : 'block'" class="col-3">
+                    <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
+                </div>
+                <div [ngClass]="show ? 'col-9' : 'col-12'">
+                    <app-archive-search [accessContract]="accessContract"></app-archive-search>
+                </div>
+            </div>
     </mat-sidenav-content>
-
 </mat-sidenav-container>
