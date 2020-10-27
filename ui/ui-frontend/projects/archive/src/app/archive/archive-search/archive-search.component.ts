@@ -9,17 +9,18 @@ import { SearchCriteria, SearchCriteriaValue } from '../../core/search.criteria'
 })
 export class ArchiveSearchComponent implements OnInit {
   form: FormGroup;
-  searchCriterias: SearchCriteria[] = [];
+  searchCriterias: Map<string, SearchCriteria>;
+
+
+
   constructor(private formBuilder: FormBuilder,) { }
 
 
-
-
   ngOnInit() {
-    this.searchCriterias = [];
-    for(let i=0; i< 10; i++){
+    this.searchCriterias = new Map();
+    for(let i=0; i< 3; i++){
       let searchValues = [];
-      for(let j=0; j< i%2; j++){
+      for(let j=0; j< i*2 +1; j++){
 
         let searchValue: SearchCriteriaValue = {
             value: 'value'+i+j,
@@ -27,12 +28,13 @@ export class ArchiveSearchComponent implements OnInit {
         };
         searchValues.push(searchValue);
       }
+      let keyCriteria = 'BeginDt'+i;
       let criteria:SearchCriteria = {
-        key:'BeginDt',
-        label:'Begin Dt',
+        key:keyCriteria,
+        label:keyCriteria,
         values: searchValues
       }
-      this.searchCriterias.push(criteria);
+      this.searchCriterias.set(keyCriteria, criteria);
     }
 
 
@@ -46,9 +48,23 @@ export class ArchiveSearchComponent implements OnInit {
       serviceProdCode: ['', []],
       otherCriteria: ['', []]
     });
+  }
 
-
-
+  removeCriteria(keyElt: string, valueElt: string){
+    if(this.searchCriterias && this.searchCriterias.size > 0){
+      this.searchCriterias.forEach((val, key) => {
+        if(key === keyElt){
+          let values = val.values;
+          values = values.filter(item => item.value !== valueElt);
+          if(values.length === 0 ){
+            this.searchCriterias.delete(keyElt);
+          }else {
+            val.values = values;
+            this.searchCriterias.set(keyElt, val);
+        }
+        }
+      });
+    }
   }
 
 }
