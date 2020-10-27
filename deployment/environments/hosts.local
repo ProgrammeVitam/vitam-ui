@@ -73,6 +73,8 @@ hosts_vitamui_ingest_internal
 hosts_vitamui_ingest_external
 hosts_vitamui_archive_internal
 hosts_vitamui_archive_external
+hosts_vitamui_archive_internal
+hosts_vitamui_archive_external
 
 [hosts_vitamui_iam_internal]
 localhost
@@ -90,6 +92,12 @@ localhost
 localhost
 
 [hosts_vitamui_ingest_external]
+localhost
+
+[hosts_vitamui_archive_internal]
+localhost
+
+[hosts_vitamui_archive_external]
 localhost
 
 [hosts_vitamui_security_internal]
