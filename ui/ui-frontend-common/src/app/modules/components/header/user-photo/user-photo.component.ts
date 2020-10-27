@@ -8,9 +8,10 @@ import { User } from '../../../models/user/user.interface';
 })
 export class UserPhotoComponent implements OnInit {
 
-  @Input() user: User;
-
+  @Input() photo: string;
   @Input() size = 40;
+  @Input() hasStatus = false;
+  @Input() statusCondition = false;
 
   @Output() photoClicked = new EventEmitter<any>();
 

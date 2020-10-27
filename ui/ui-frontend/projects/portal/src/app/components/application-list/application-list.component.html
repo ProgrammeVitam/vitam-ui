@@ -4,7 +4,6 @@
       <mat-tab label="{{'MENU.' + category.key.identifier | translate}}">
         <div class="row category">
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 px-0" *ngFor="let application of category.value">
-            <a href="#">
             <mat-card (click)="applicationClick.emit(application)">
               <div mat-card-image class="appIcon">
                 <ng-container [ngSwitch]="application.identifier">
@@ -24,7 +23,6 @@
                 <mat-card-subtitle>{{application.tooltip}}</mat-card-subtitle>
               </mat-card-header>
             </mat-card>
-          </a>
           </div>
         </div>
       </mat-tab>

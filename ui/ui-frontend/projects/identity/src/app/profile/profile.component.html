@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-profile-detail *ngIf="openedItem" (profileClose)="closePanel()" [id]="openedItem?.id"></app-profile-detail>
+    <app-profile-detail (profileClose)="closePanel()" [profile]="openedItem"></app-profile-detail>
   </mat-sidenav>
 
   <mat-sidenav-content>

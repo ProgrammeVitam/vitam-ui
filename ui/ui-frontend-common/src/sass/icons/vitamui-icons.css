@@ -1,9 +1,10 @@
 @font-face {
-  font-family: "vitamui-icon";
-  src: url("fonts/vitamui-icon.eot?z21ztm");
-  src: url("fonts/vitamui-icon.eot?z21ztm#iefix") format("embedded-opentype"),
-    url("fonts/vitamui-icon.ttf?z21ztm") format("truetype"), url("fonts/vitamui-icon.woff?z21ztm") format("woff"),
-    url("fonts/vitamui-icon.svg?z21ztm#vitamui-icon") format("svg");
+  font-family: 'vitamui-icon';
+  src:  url('fonts/vitamui-icon.eot?bkkec0');
+  src:  url('fonts/vitamui-icon.eot?bkkec0#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?bkkec0') format('truetype'),
+    url('fonts/vitamui-icon.woff?bkkec0') format('woff'),
+    url('fonts/vitamui-icon.svg?bkkec0#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -11,7 +12,7 @@
 
 i.vitamui-icon {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "vitamui-icon" !important;
+  font-family: 'vitamui-icon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -23,6 +24,7 @@ i.vitamui-icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 .vitamui-icon-app_unknown .path1:before {
   content: "\ea4d";
   color: rgb(226, 226, 225);
@@ -1386,6 +1388,12 @@ i.vitamui-icon {
   margin-left: -1em;
   color: var(--vitamui-primary-light-20);
 }
+.vitamui-icon-mobile:before {
+  content: "\ea72";
+}
+.vitamui-icon-gestion-de-profil:before {
+  content: "\ea73";
+}
 .vitamui-icon-add:before {
   content: "\ea4b";
 }
@@ -1405,7 +1413,6 @@ i.vitamui-icon {
 .vitamui-icon-attribution-liste .path3:before {
   content: "\ea51";
   margin-left: -1em;
-  color: #fff;
 }
 .vitamui-icon-attribution-liste .path4:before {
   content: "\ea52";
@@ -1642,24 +1649,8 @@ i.vitamui-icon {
 .vitamui-icon-unfold-more:before {
   content: "\eb19";
 }
-.vitamui-icon-Utilisateur-attribuer .path1:before {
+.vitamui-icon-Utilisateur-attribuer:before {
   content: "\eb1a";
-}
-.vitamui-icon-Utilisateur-attribuer .path2:before {
-  content: "\eb1b";
-  margin-left: -1em;
-}
-.vitamui-icon-Utilisateur-attribuer .path3:before {
-  content: "\eb1c";
-  margin-left: -1em;
-}
-.vitamui-icon-Utilisateur-attribuer .path4:before {
-  content: "\eb1d";
-  margin-left: -1em;
-}
-.vitamui-icon-Utilisateur-attribuer .path5:before {
-  content: "\eb1e";
-  margin-left: -1em;
 }
 .vitamui-icon-Vrification-de-contenu:before {
   content: "\eb1f";

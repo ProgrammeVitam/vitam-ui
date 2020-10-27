@@ -59,6 +59,7 @@ import { LevelInputModule } from './components/editable-field/level-input/level-
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
+import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -158,7 +159,8 @@ export function startupServiceFactory(startupService: StartupService) {
     TranslateVitamModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
-    VitamuiCommonMoreButtonModule
+    VitamuiCommonMoreButtonModule,
+    UserPhotoModule,
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -209,7 +211,8 @@ export function startupServiceFactory(startupService: StartupService) {
     TranslateVitamModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
-    VitamuiCommonMoreButtonModule
+    VitamuiCommonMoreButtonModule,
+    UserPhotoModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

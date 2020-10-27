@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center mb-5">
+<div class="d-flex align-items-center mb-5 px-1">
   <vitamui-common-search-bar [disabled]="disableSearchBar" [placeholder]="searchbarPlaceholder" (search)="search.emit($event)"></vitamui-common-search-bar>
   <ng-content></ng-content>
   <vitamui-common-more-button [actions]="actionsList" (click)="action.emit($event)"></vitamui-common-more-button>
