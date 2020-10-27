@@ -227,6 +227,14 @@ deployment/playbooks/templates/vitamui/conf/*/*.jks
 # Imported vitamui app vitam truststore
 deployment/playbooks/templates/vitamui/conf/*/*.p12
 
+# Vitam development configuration
+
+###################################
+# Vitam development configuration #
+###################################
+api/api-referential/referential-internal/src/main/config/dev-vitam/*
+api/api-iam/iam-internal/src/main/config/dev-vitam/*
+
 ##########################################
 # Mongo workspace entry-point #
 ##########################################

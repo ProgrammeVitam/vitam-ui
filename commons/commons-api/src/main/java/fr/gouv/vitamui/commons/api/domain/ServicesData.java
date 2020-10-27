@@ -310,8 +310,8 @@ public class ServicesData {
 
     public static final String ROLE_RUN_AUDITS = ROLE_PREFIX + "RUN_" + SERVICE_AUDITS;
 
-    //------------------------------------- PROBATIVE_VALUE --------------------------------------------    
-    
+    //------------------------------------- PROBATIVE_VALUE --------------------------------------------
+
     public static final String SERVICE_PROBATIVE_VALUE = "PROBATIVE_VALUE";
 
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
@@ -325,7 +325,6 @@ public class ServicesData {
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
-
     //@formatter:off
 
     /**

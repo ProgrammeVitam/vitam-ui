@@ -407,6 +407,24 @@ db.profiles.insert({
 	 ]
 });
 
+db.profiles.insert({
+  "_id": "system_logbook_operation_profile",
+  "identifier" : NumberInt(maxIdProfile++),
+  "name": "Journal des Opérations",
+  "description": "Logbook Operation Profile api",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "LOGBOOK_OPERATION_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+       "name": "ROLE_LOGBOOKS"
+  }
+   ]
+});
+
 db.sequences.updateOne({
     "_id": "profile_identifier"
 }, {
@@ -436,7 +454,8 @@ db.groups.updateOne( {
                 "system_audit",
                 "system_secure",
                 "system_dsl",
-                "system_probative_value"
+                "system_probative_value",
+                "system_logbook_operation_profile"
         	]
         }
     }
