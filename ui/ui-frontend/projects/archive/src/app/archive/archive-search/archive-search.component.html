@@ -1,0 +1,12 @@
+<p>archive-search works!</p>
+<div class="row">
+    <div *ngFor="let criteria of searchCriterias">
+        <div class="col-2" *ngFor="let criteriaValue of criteria.values">
+            <div class="btn-group" role="group">
+                <button type="button" class="button-content btn btn-primary">{{criteria.label}}:{{criteriaValue.value}}</button>
+                <button type="button" class="button-middle  btn btn-primary">OU</button>
+                <button type="button" class="button-remove btn btn-primary"> X</button>
+            </div>
+        </div>
+    </div>
+</div>
