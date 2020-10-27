@@ -7,6 +7,8 @@ import { ArchiveRoutingModule } from './archive-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ArchiveComponent } from './archive.component';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { HoldingSchemaComponent } from './holding-schema/holding-schema.component';
 
 
 
@@ -25,7 +27,9 @@ import { ArchiveComponent } from './archive.component';
     MatNativeDateModule
   ],
   declarations: [
-    ArchiveComponent
+    ArchiveComponent,
+    ArchiveSearchComponent,
+    HoldingSchemaComponent
   ]
 })
 export class ArchiveModule { }

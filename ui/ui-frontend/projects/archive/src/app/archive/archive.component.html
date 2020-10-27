@@ -2,16 +2,25 @@
     <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     </mat-sidenav>
     <mat-sidenav-content>
-
         <div class="vitamui-header">
             <div class="vitamui-container">
                 <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false"
                     [hideCustomerMenu]="true"></vitamui-common-navbar>
-                <h2><img src="assets/mini-logo-vitam.png">Recherche et Consultation des archives</h2>
+                <h2><img src="assets/mini-logo-vitam.png">Recherche et Consultation d'Archives</h2>
 
             </div>
         </div>
         <h1>archives</h1>
+
+        <div class="row">
+            <div class="col-3 mb-3">
+                <app-holding-schema></app-holding-schema>
+            </div>
+            <div class="col-3 mb-3">
+                <app-archive-search></app-archive-search>
+            </div>
+        </div>
+
     </mat-sidenav-content>
 
 </mat-sidenav-container>
