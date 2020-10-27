@@ -12,6 +12,7 @@ import { HoldingSchemaComponent } from './holding-schema/holding-schema.componen
 
 
 
+
 @NgModule({
   imports: [
     MatTooltipModule,

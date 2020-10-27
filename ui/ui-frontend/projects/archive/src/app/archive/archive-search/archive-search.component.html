@@ -1,12 +1,13 @@
 <p>archive-search works!</p>
 <div class="row">
-    <div *ngFor="let criteria of searchCriterias">
-        <div class="col-2" *ngFor="let criteriaValue of criteria.values">
-            <div class="btn-group" role="group">
-                <button type="button" class="button-content btn btn-primary">{{criteria.label}}:{{criteriaValue.value}}</button>
-                <button type="button" class="button-middle  btn btn-primary">OU</button>
-                <button type="button" class="button-remove btn btn-primary"> X</button>
-            </div>
-        </div>
-    </div>
+    <div class="col-4" *ngFor="let criteria of searchCriterias | keyvalue  ">
+        <div class="btn-group" role="group">
+            <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isOdd = odd; let isLast = last">
+                <button type="button" [ngClass]="isFirst ? 'left-arround':'left-not-arround'"   class="button-content right-not-arround btn secondary">{{criteria.value.label}} : {{criteriaValue.value}}</button>
+                <button type="button" [ngClass]="isLast ? 'right-arround':'right-not-arround' "  class="button-remove left-not-arround btn secondary" (click)="removeCriteria(criteria.key, criteriaValue.value)"> X</button>
+                <button type="button" *ngIf="!isLast" class="button-or left-not-arround  right-not-arround btn secondary">OU</button>
+            </ng-container>
+
+</div>
+</div>
 </div>
