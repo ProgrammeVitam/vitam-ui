@@ -10,6 +10,9 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
+import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 
 public class TestContext {
 
@@ -77,6 +80,18 @@ public class TestContext {
 
     public ContextDto savedContextDto;
 
+    public AccessContractDto accessContractDto;
+
+    public AccessContractDto savedAccessContractDto;
+
+    public IngestContractDto ingestContractDto;
+
+    public IngestContractDto savedIngestContractDto;
+
+    public SecurityProfileDto securityProfileDto;
+
+    public SecurityProfileDto savedSecurityProfileDto;
+
     public void reset() {
         exception = null;
         tokenUser = null;
@@ -109,5 +124,11 @@ public class TestContext {
         savedOwnerDto = null;
         contextDto = null;
         savedContextDto = null;
+        accessContractDto = null;
+        savedAccessContractDto = null;
+        ingestContractDto = null;
+        savedIngestContractDto = null;
+        securityProfileDto = null;
+        savedSecurityProfileDto = null;
     }
 }

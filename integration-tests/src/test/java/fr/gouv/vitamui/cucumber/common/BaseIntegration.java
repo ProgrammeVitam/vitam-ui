@@ -19,10 +19,12 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import fr.gouv.vitamui.referential.external.client.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
+import org.checkerframework.checker.guieffect.qual.UI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -59,8 +61,6 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.utils.TestConstants;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -115,6 +115,14 @@ public abstract class BaseIntegration {
     private OwnerExternalRestClient ownerRestClient;
     
     private ContextExternalRestClient contextRestClient;
+
+    private UnitExternalRestClient unitRestClient;
+
+    private AccessContractExternalRestClient accessContractRestClient;
+
+    private IngestContractExternalRestClient ingestContractRestClient;
+
+    private SecurityProfileExternalRestClient securityProfileRestClient;
 
     private static MongoClient mongoClientIam;
 
@@ -592,6 +600,34 @@ public abstract class BaseIntegration {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
         }
         return contextRestClient;
+    }
+
+    protected AccessContractExternalRestClient getAccessContractRestClient() {
+        if (accessContractRestClient == null) {
+            accessContractRestClient = getReferentialRestClientFactory().getAccessContractExternalRestClient();
+        }
+        return accessContractRestClient;
+    }
+
+    protected IngestContractExternalRestClient getIngestContractRestClient() {
+        if (ingestContractRestClient == null) {
+            ingestContractRestClient = getReferentialRestClientFactory().getIngestContractExternalRestClient();
+        }
+        return ingestContractRestClient;
+    }
+
+    protected SecurityProfileExternalRestClient getSecurityProfileRestClient() {
+        if (securityProfileRestClient == null) {
+            securityProfileRestClient = getReferentialRestClientFactory().getSecurityProfileExternalRestClient();
+        }
+        return securityProfileRestClient;
+    }
+
+    protected UnitExternalRestClient getUnitRestClient() {
+        if (unitRestClient == null) {
+            unitRestClient = getReferentialRestClientFactory().getUnitExternalRestClient();
+        }
+        return unitRestClient;
     }
 
     protected MongoCollection<Document> getProfilesCollection() {

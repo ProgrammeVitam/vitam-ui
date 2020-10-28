@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.ContextStatus;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.dto.PermissionDto;
+import fr.gouv.vitamui.referential.common.dto.*;
 
 public class ReferentialDtoBuilder {
 
@@ -23,7 +23,36 @@ public class ReferentialDtoBuilder {
     
         return contextDto;
     }
-    
+
+    public static AccessContractDto buildAccessContractDto(final String id) {
+        final AccessContractDto accessContractDto = new AccessContractDto();
+        accessContractDto.setId(id);
+        accessContractDto.setIdentifier("identifier");
+        accessContractDto.setName("name");
+        accessContractDto.setStatus(ActivationStatus.ACTIVE.toString());
+
+        return accessContractDto;
+    }
+
+    public static IngestContractDto buildIngestContractDto(final String id) {
+        final IngestContractDto ingestContractDto = new IngestContractDto();
+        ingestContractDto.setId(id);
+        ingestContractDto.setIdentifier("identifier");
+        ingestContractDto.setName("name");
+        ingestContractDto.setStatus(ActivationStatus.ACTIVE);
+
+        return ingestContractDto;
+    }
+
+    public static SecurityProfileDto buildSecurityProfileDto(final String id) {
+        final SecurityProfileDto securityProfileDto = new SecurityProfileDto();
+        securityProfileDto.setId(id);
+        securityProfileDto.setIdentifier("identifier");
+        securityProfileDto.setName("name");
+
+        return securityProfileDto;
+    }
+
     private static Set<PermissionDto> buildPermissions() {
         Set<String> contracts = new HashSet<String>();
         contracts.add("contract");

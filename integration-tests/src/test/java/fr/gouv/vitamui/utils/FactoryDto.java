@@ -7,6 +7,7 @@ import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
+import fr.gouv.vitamui.referential.common.dto.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;	
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
 
 public class FactoryDto {
@@ -59,6 +59,15 @@ public class FactoryDto {
         }
         else if (clazz.equals(ContextDto.class)) {
             dto = (T) buildContextDto();
+        }
+        else if (clazz.equals(AccessContractDto.class)) {
+            dto = (T) buildAccessContractDto();
+        }
+        else if (clazz.equals(IngestContractDto.class)) {
+            dto = (T) buildIngestContractDto();
+        }
+        else if (clazz.equals(SecurityProfileDto.class)) {
+            dto = (T) buildSecurityProfileDto();
         }
         else {
             throw new InvalidArgumentException("build method not implemented for class " + clazz);
@@ -105,6 +114,18 @@ public class FactoryDto {
     
     private static ContextDto buildContextDto() {
         return ReferentialDtoBuilder.buildContextDto(null);
+    }
+
+    private static AccessContractDto buildAccessContractDto() {
+        return ReferentialDtoBuilder.buildAccessContractDto(null);
+    }
+
+    private static IngestContractDto buildIngestContractDto() {
+        return ReferentialDtoBuilder.buildIngestContractDto(null);
+    }
+
+    private static SecurityProfileDto buildSecurityProfileDto() {
+        return ReferentialDtoBuilder.buildSecurityProfileDto(null);
     }
 
 }
