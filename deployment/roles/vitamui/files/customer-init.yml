@@ -32,7 +32,7 @@ customer-init:
        - ROLE_GET_ONTOLOGIES
        - ROLE_CREATE_ONTOLOGIES
        - ROLE_DELETE_ONTOLOGIES
-	   - ROLE_IMPORT_ONTOLOGIES
+       - ROLE_IMPORT_ONTOLOGIES
 
     - name: Profile pour la gestion des contrats des contextes
       description: Gestion des contrats des contextes dans Vitam
@@ -99,7 +99,7 @@ customer-init:
        - ROLE_UPDATE_AGENCIES
        - ROLE_DELETE_AGENCIES
        - ROLE_EXPORT_AGENCIES
-	   - ROLE_IMPORT_AGENCIES
+       - ROLE_IMPORT_AGENCIES
 
     - name: Profil pour la gestion des Audits
       description: Gestion des audits dans Vitam
