@@ -18,7 +18,6 @@ zone_vitamui_rp
 [vitam:children]
 hosts_consul_server
 hosts_ingest_external
-hosts_archive_external
 hosts_access_external
 hosts_ihm_demo
 hosts_elasticsearch_log
@@ -232,9 +231,6 @@ vitamui-env
 vitam-env
 
 [hosts_ingest_external]
-vitam-env
-
-[hosts_archive_external]
 vitam-env
 
 [hosts_access_external]
