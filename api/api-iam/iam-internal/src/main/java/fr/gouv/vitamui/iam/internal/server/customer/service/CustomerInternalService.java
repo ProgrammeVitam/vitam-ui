@@ -191,7 +191,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         createdCustomerDto = convertFromEntityToDto(getRepository().save(entity));
 
         iamLogbookService.createCustomerEvent(dto);
-        initCustomerService.initCustomer(createdCustomerDto, dto.getOwners());
+        initCustomerService.initCustomer(dto.getTenantName(), createdCustomerDto, dto.getOwners());
 
         return createdCustomerDto;
     }
