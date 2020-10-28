@@ -54,6 +54,7 @@ import { CustomerService } from '../../core/customer.service';
 import { DomainsInputModule } from '../../shared/domains-input';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
+import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
@@ -119,7 +120,8 @@ const expectedCustomer = {
       country: 'FR',
     }
   }],
-  themeColors: {}
+  themeColors: {},
+  tenantName: 'tenantName'
 };
 
 let component: CustomerCreateComponent;
@@ -146,6 +148,9 @@ describe('CustomerCreateComponent', () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
+    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
+      uniqueName: () => of(null)
+    });
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -172,6 +177,7 @@ describe('CustomerCreateComponent', () => {
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -117,4 +117,7 @@ public class CustomerDto extends IdDto {
     private boolean hasCustomGraphicIdentity = false;
 
     private Map<String, String> themeColors = new HashMap<>();
+
+    @NotNull
+    private String tenantName;
 }
