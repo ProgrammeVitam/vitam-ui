@@ -42,6 +42,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
+import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
@@ -96,7 +97,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private tenantFormValidators: TenantFormValidators,
   ) {
   }
 
@@ -126,7 +128,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       themeColors: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
-      ])
+      ]),
+      tenantName: [
+        null,
+        [Validators.required],
+        this.tenantFormValidators.uniqueName(),
+      ]
     });
 
     const colors = this.themeService.getThemeColors();
@@ -176,6 +183,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         companyName: this.form.get('companyName').value,
       };
     });
+  }
+
+  getOwnerName(): string {
+    return this.form.get(['owners', 0]).value ? this.form.get(['owners', 0]).value.name : '';
   }
 
   onCancel() {
@@ -306,5 +317,4 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }
