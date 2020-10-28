@@ -7,7 +7,6 @@ zone_vitamui_rp
 [vitam:children]
 hosts_consul_server
 hosts_ingest_external
-hosts_archive_external
 hosts_access_external
 hosts_ihm_demo
 hosts_elasticsearch_log
@@ -73,8 +72,6 @@ hosts_vitamui_ingest_internal
 hosts_vitamui_ingest_external
 hosts_vitamui_archive_internal
 hosts_vitamui_archive_external
-hosts_vitamui_archive_internal
-hosts_vitamui_archive_external
 
 [hosts_vitamui_iam_internal]
 localhost
@@ -103,11 +100,6 @@ localhost
 [hosts_vitamui_security_internal]
 localhost
 
-[hosts_vitamui_archive_internal]
-localhost
-
-[hosts_vitamui_archive_external]
-localhost
 
 ########################################################
 # ZONE UI
@@ -181,8 +173,6 @@ localhost
 [hosts_ingest_external]
 localhost
 
-[hosts_archive_external]
-localhost
 
 [hosts_access_external]
 localhost
