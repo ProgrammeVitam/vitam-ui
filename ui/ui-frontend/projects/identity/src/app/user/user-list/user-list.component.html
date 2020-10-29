@@ -1,160 +1,138 @@
-<table
-  class="vitamui-table"
-  vitamuiCommonInfiniteScroll
-  (vitamuiScroll)="onScroll()"
->
-  <thead>
-    <tr>
-      <th>
-        <div class="vitamui-table-header">
-          <button
-            class="vitamui-filter-button"
-            [vitamuiCommonTableFilter]="statusFilterTemplate"
-            [class.active]="filterMap['status'] && filterMap['status'].length > 0"
-          >
-            <i class="material-icons vitamui-row-icon">filter_list</i>
-          </button>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="row col-2">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate"
+          [class.active]="filterMap['status'] && filterMap['status'].length > 0">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
 
-          <ng-template #statusFilterTemplate>
-            <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
-              <vitamui-common-table-filter-option value="ENABLED">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i>
-                  <span class="badge-state">Actif</span>
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option value="BLOCKED">
-                <div class="table-filter-icon" i18n="@@userStatusBlocked">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-orange close"></i>
-                  <span class="badge-state">Bloqué</span>
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option value="DISABLED">
-                <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey close"></i>
-                  <span class="badge-state">Désactivé</span>
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option value="REMOVED">
-                <div class="table-filter-icon" i18n="@@userStatusRemoved">
-                  <i class="vitamui-icon vitamui-icon-user parent"><span class="status-badge-anonym">x</span></i>
-                  <span class="badge-state">Effacé</span>
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC" [separator]="true">
-                <div class="table-filter-icon" i18n="@@userTypeGeneric">
-                  <i class="vitamui-icon vitamui-icon-user parent"></i>
-                  <span class="badge-state">Générique</span>
-                </div>
-              </vitamui-common-table-filter-option>
-            </vitamui-common-table-filter>
-          </ng-template>
-
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
-          <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="User name column header@@userListUserNameHeader">Nom / Prénom</span>
-          <vitamui-common-order-by-button orderByKey="lastname" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="User id column header@@userListIDHeader">Identifiant</span>
-          <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()">
-          </vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span i18n="User lastConnexion name column header@@userListLastConnexionHeader">Dernière <br>connexion</span>
-          <vitamui-common-order-by-button orderByKey="lastConnection" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()">
-          </vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate"
-            [class.active]="filterMap['level'] && filterMap['level'].length > 0" #levelFilterTrigger="vitamuiCommonTableFilter">
-            <i class="material-icons vitamui-row-icon">filter_list</i>
-          </button>
-
-          <ng-template #levelFilterTemplate>
-            <vitamui-common-table-filter-search
-              [(filter)]="filterMap['level']"
-              [options]="levelFilterOptions"
-              (filterChange)="onFilterChange('level', $event)"
-              (filterClose)="levelFilterTrigger?.close()"
-              emptyValueOption="-Niveau vide-"
-              i18n-emptyValueOption="@@userListLevelFilterEmpty"
-            ></vitamui-common-table-filter-search>
-          </ng-template>
-
-          <span i18n="Strong userGroup column header@@userListStrongAuthenticationHeader">Niveau</span>
-          <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
-            (orderChange)="emitOrderChange()">
-          </vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <button
-            class="vitamui-filter-button"
-            [vitamuiCommonTableFilter]="groupFilterTemplate"
-            [class.active]="filterMap['group'] && filterMap['group'].length > 0"
-            #groupFilterTrigger="vitamuiCommonTableFilter"
-          >
-            <i class="material-icons vitamui-row-icon">filter_list</i>
-          </button>
-
-          <ng-template #groupFilterTemplate>
-            <vitamui-common-table-filter-search
-              [(filter)]="filterMap['group']"
-              [options]="groupFilterOptions"
-              (filterChange)="onFilterChange('group', $event)"
-              (filterClose)="groupFilterTrigger?.close()"
-            ></vitamui-common-table-filter-search>
-          </ng-template>
-
-          <span i18n="Strong userProfileGroup column header@@userListStrongAuthenticationHeader">Groupe</span>
-        </div>
-      </th>
-    </tr>
-  </thead>
-  <tbody *ngIf="loaded">
-    <tr class="user-row" *ngFor="let user of dataSource; let index = index">
-      <td>
-        <ng-container *ngIf="user?.type !== 'GENERIC'; else genericUserIcon">
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="user?.status === 'ENABLED'"></i>
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="user?.status === 'BLOCKED'"></i>
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey" *ngIf="user?.status === 'DISABLED'"></i>
-          <div *ngIf="user?.status === 'REMOVED'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
-        </ng-container>
-        <ng-template #genericUserIcon>
-          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
+        <ng-template #statusFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="filterMap['status']"
+            (filterChange)="onFilterChange('status', $event)">
+            <vitamui-common-table-filter-option value="ENABLED" [separator]="true">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">
+                <span class="badge-state">Actif</span>
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="BLOCKED" [separator]="true">
+              <div class="table-filter-icon" i18n="@@userStatusBlocked">
+                <span class="badge-state">Bloqué</span>
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="DISABLED" [separator]="true">
+              <div class="table-filter-icon" i18n="@@userStatusDisabled">
+                <span class="badge-state">Désactivé</span>
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="REMOVED" [separator]="true">
+              <div class="table-filter-icon" i18n="@@userStatusRemoved">
+                <span class="badge-state">Effacé</span>
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC"
+              [separator]="true">
+              <div class="table-filter-icon" i18n="@@userTypeGeneric">
+                <span class="badge-state">Générique</span>
+              </div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
         </ng-template>
-      </td>
-      <td class="clickable" (click)="userClick.emit(user)">
-        {{ user?.lastname | uppercase }} {{ user?.firstname }} <br> <span class="email"> {{ user?.email }} </span>
-      </td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.identifier }}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.lastConnection|date:'dd/MM/yyyy'}}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.level }}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ getGroup(user)?.name }}</td>
-    </tr>
-  </tbody>
-</table>
 
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" class="vitamui-spinner medium"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && userService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
-    Afficher plus de résultats...
-  </button>
-  <!-- <span *ngIf="!pending && !userService.canLoadMore">Fin des résultats</span> -->
-</div>
+        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon " [style.fontSize.px]="30"></i>
+        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+
+      </div>
+      <div class="col-2" i18n="User name column header@@userListUserNameHeader"><span>Nom / Prénom&nbsp;</span>
+        <vitamui-common-order-by-button orderByKey="lastname" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+      <div class="col-2" i18n="User id column header@@userListIDHeader"><span>Identifiant&nbsp;</span>
+        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()">
+        </vitamui-common-order-by-button>
+      </div>
+      <div class="col-2" i18n="User lastConnexion name column header@@userListLastConnexionHeader"><span>Dernière
+          connexion&nbsp;</span>
+        <vitamui-common-order-by-button orderByKey="lastConnection" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()">
+        </vitamui-common-order-by-button>
+      </div>
+      <div class="row col-2">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate"
+          [class.active]="filterMap['level'] && filterMap['level'].length > 0"
+          #levelFilterTrigger="vitamuiCommonTableFilter">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+
+        <ng-template #levelFilterTemplate>
+          <vitamui-common-table-filter-search [(filter)]="filterMap['level']" [options]="levelFilterOptions"
+            (filterChange)="onFilterChange('level', $event)" (filterClose)="levelFilterTrigger?.close()"
+            emptyValueOption="-Niveau vide-" i18n-emptyValueOption="@@userListLevelFilterEmpty">
+          </vitamui-common-table-filter-search>
+        </ng-template>
+
+        <span i18n="Strong userGroup column header@@userListStrongAuthenticationHeader">Niveau du goupe&nbsp;</span>
+        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()">
+        </vitamui-common-order-by-button>
+      </div>
+      <div class="row col-2">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="groupFilterTemplate"
+          [class.active]="filterMap['group'] && filterMap['group'].length > 0"
+          #groupFilterTrigger="vitamuiCommonTableFilter">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+
+        <ng-template #groupFilterTemplate>
+          <vitamui-common-table-filter-search [(filter)]="filterMap['group']" [options]="groupFilterOptions"
+            (filterChange)="onFilterChange('group', $event)" (filterClose)="groupFilterTrigger?.close()">
+          </vitamui-common-table-filter-search>
+        </ng-template>
+
+        <span i18n="Strong userProfileGroup column header@@userListStrongAuthenticationHeader">Groupe de
+          profils&nbsp;</span>
+      </div>
+
+
+    </div>
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let user of dataSource; let index = index" (click)="userClick.emit(user)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="row col-2 padding-user">
+            <ng-container *ngIf="user?.type !== 'GENERIC'; else genericUserIcon">
+              <ng-container [ngSwitch]="user?.status">
+                <div *ngSwitchCase="'ENABLED'">
+                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close"
+                    [style.fontSize.px]="30"></i>
+                </div>
+                <div *ngSwitchCase="'BLOCKED'">
+                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange"
+                    [style.fontSize.px]="30"></i>
+                </div>
+                <div *ngSwitchCase="'DISABLED'">
+                  <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey"
+                    [style.fontSize.px]="30"></i>
+                </div>
+              </ng-container>
+              <div *ngIf="user?.status === 'REMOVED'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"
+                  [style.fontSize.px]="30"></i><span class="status-badge-anonym">x</span></div>
+            </ng-container>
+            <ng-template #genericUserIcon>
+              <i [style.fontSize.px]="30" class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
+            </ng-template>
+          </div>
+          <div class="col-3">
+            <div> {{ user?.lastname | uppercase }} {{ user?.firstname }} </div> <span class="email"> {{ user?.email }}
+            </span>
+          </div>
+          <div class="col-1 text-right">{{ user?.identifier }}</div>
+          <div class="col-2 text-right">{{ user?.lastConnection|date:'dd/MM/yyyy'|empty}}</div>
+          <div class="row col-2">{{ user?.level }}{{ user?.level }}</div>
+          <div class="row col-2">{{ getGroup(user)?.name }}</div>
+
+        </div>
+
+      </div>
+    </div>
