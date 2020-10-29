@@ -1,13 +1,105 @@
 <p>archive-search works!</p>
 <div class="row">
-    <div class="col-4" *ngFor="let criteria of searchCriterias | keyvalue  ">
-        <div class="btn-group" role="group">
-            <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isOdd = odd; let isLast = last">
-                <button type="button" [ngClass]="isFirst ? 'left-arround':'left-not-arround'"   class="button-content right-not-arround btn secondary">{{criteria.value.label}} : {{criteriaValue.value}}</button>
-                <button type="button" [ngClass]="isLast ? 'right-arround':'right-not-arround' "  class="button-remove left-not-arround btn secondary" (click)="removeCriteria(criteria.key, criteriaValue.value)"> X</button>
-                <button type="button" *ngIf="!isLast" class="button-or left-not-arround  right-not-arround btn secondary">OU</button>
+
+        <div class="btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
+            <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
+                <button type="button" [ngClass]="isFirst ? 'left-arround':'left-not-arround'"   class="criteria-btn button-content right-not-arround btn">{{criteria.value.label}} : {{criteriaValue.value}}</button>
+                <button type="button" [ngClass]="isLast ? 'right-arround':'right-not-arround' "  class="criteria-btn button-remove left-not-arround btn " (click)="removeCriteria(criteria.key, criteriaValue.value)"> X</button>
+                <button type="button" *ngIf="!isLast" class="criteria-btn button-or left-not-arround  right-not-arround btn">OU</button>
             </ng-container>
 
+        </div>
+
 </div>
+<div class="row float-right">
+    <button type="button" class="btn secondary">Rechercher</button>
 </div>
+
+
+<div class="row">
+ <div class="col-11">
+   <form [formGroup]="form" onsubmit="submit()">
+     <h3 i18n="Group searchFilter@@hierarchysearchFilter">Filtre de recherche</h3>
+    <div class="row">
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="title" [validator]="form?.get('title')?.validator" label="Title"
+            i18n-label="user info tab title@@UserInfoTabtitle">
+          </vitamui-common-editable-input>
+        </div>
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="beginDt" [validator]="form?.get('beginDt')?.validator" label="Date de début"
+            i18n-label="user info tab beginDt@@UserInfoTabeginDt">
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+
+    <div class="row">
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="description" [validator]="form?.get('description')?.validator" label="Description"
+            i18n-label="user info tab description@@UserInfoTabDescription">
+          </vitamui-common-editable-input>
+        </div>
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="endDt" [validator]="form?.get('endDt')?.validator" label="Date de fin"
+            i18n-label="user info tab endDt@@UserInfoTabendDt">
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="guid" [validator]="form?.get('guid')?.validator" label="Guid du versement"
+            i18n-label="user info tab guid@@UserInfoTabguid">
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-6 form-control">
+          <h3 i18n="Group productorService@@hierarchyproductorService">Service producteur: </h3>
+          <vitamui-common-editable-input formControlName="serviceProdCode" [validator]="form?.get('serviceProdCode')?.validator" label="Code"
+            i18n-label="user info tab serviceProdCode@@UserInfoTabserviceProdCode">
+          </vitamui-common-editable-input>
+        </div>
+        <div class="col-6 form-control">
+            <div class="form-group">
+                <h2 i18n="Group Communicability@@hierarchyCommunicability">Communicabilité: </h2>
+                <mat-button-toggle-group   formControlName="serviceProdCommunicability"  #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+                  <mat-button-toggle   value="YES" i18n=" userType nominative button@@userCreateTypeNominativeButton">OUI</mat-button-toggle>
+                  <mat-button-toggle value="NO" i18n="userType generic button@@userCreateTypeGenericButton">NON</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="serviceProdLabel" [validator]="form?.get('serviceProdLabel')?.validator" label="Libellé"
+            i18n-label="user info tab serviceProdLabel@@UserInfoTabserviceProdLabel">
+          </vitamui-common-editable-input>
+        </div>
+        <div class="col-6 form-control">
+            <vitamui-common-editable-input formControlName="serviceProdCommunicabilityDt" [validator]="form?.get('serviceProdCommunicabilityDt')?.validator" label="serviceProdCommunicabilityDt"
+              i18n-label="user info tab serviceProdCommunicabilityDt@@UserInfoTabserviceProdCommunicabilityDt">
+            </vitamui-common-editable-input>
+          </div>
+      </div>
+      <h3 i18n="Group otherCriteria@@hierarchyotherCriteria">Autre critère: </h3>
+      <div class="row">
+        <div class="col-6 form-control">
+          <vitamui-common-editable-input formControlName="serviceProdLabel" [validator]="form?.get('serviceProdLabel')?.validator" label="Libellé"
+            i18n-label="user info tab serviceProdLabel@@UserInfoTabserviceProdLabel">
+          </vitamui-common-editable-input>
+        </div>
+      </div>
+
+
+
+
+  </form>
+
+
+
+  </div>
+
 </div>

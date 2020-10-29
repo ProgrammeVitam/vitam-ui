@@ -1,34 +1,49 @@
-section {
-    display: table;
-  }
-
-.criteria-button {
-    font-size: 14px;
-    margin-left: 8px;
-    color: white;
-    display: table-cell;
-    font-size: 14px;
-    margin-left: 8px;
+.criteria-btn {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.criteria-group {
+    padding: 10px
+}
+.left-arround {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
-.button-middle {
+.left-not-arround {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
+}
+
+
+.right-arround {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.right-not-arround {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+}
+
+
+.button-or {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right-width: 0px;
+    border-left-width: 0px;
 }
 
 .button-content {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right-width: 0px;
 }
 
 
 .button-remove {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left-width: 0px;
 }
