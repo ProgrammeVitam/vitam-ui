@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta charset="UTF-8"/>
-    <title>${@environment.getProperty('theme.vitamui-platform-name')}</title>
+    <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}"></title>
 
     <meta http-equiv="refresh" th:attr="content=${'1; url=' + url}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">

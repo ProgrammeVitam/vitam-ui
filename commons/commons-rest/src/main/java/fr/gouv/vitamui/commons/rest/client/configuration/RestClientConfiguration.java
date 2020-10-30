@@ -59,6 +59,8 @@ public class RestClientConfiguration {
 
     private boolean secure;
 
+    private boolean noClientAuthentication = false;
+
     private SSLConfiguration sslConfiguration;
 
     /**

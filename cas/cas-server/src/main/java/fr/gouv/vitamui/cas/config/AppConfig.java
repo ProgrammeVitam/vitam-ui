@@ -39,9 +39,17 @@ package fr.gouv.vitamui.cas.config;
 import fr.gouv.vitamui.cas.authentication.*;
 import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
 import lombok.SneakyThrows;
+import lombok.val;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
-import org.apereo.cas.authentication.*;
+import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
+import org.apereo.cas.authentication.AuthenticationHandler;
+import org.apereo.cas.authentication.AuthenticationMetaDataPopulator;
+import org.apereo.cas.authentication.AuthenticationPostProcessor;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
@@ -49,13 +57,27 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.ticket.*;
+import org.apereo.cas.support.oauth.authenticator.Authenticators;
+import org.apereo.cas.support.oauth.web.OAuth20HandlerInterceptorAdapter;
+import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenGrantRequestExtractor;
+import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
+import org.apereo.cas.ticket.ExpirationPolicyBuilder;
+import org.apereo.cas.ticket.TicketCatalog;
+import org.apereo.cas.ticket.TicketCatalogConfigurer;
+import org.apereo.cas.ticket.TicketDefinition;
+import org.apereo.cas.ticket.TicketGrantingTicketFactory;
+import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
+import org.pac4j.core.client.Client;
+import org.pac4j.core.client.DirectClient;
+import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -83,6 +105,7 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -195,6 +218,38 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
+
+    @Autowired
+    @Qualifier("oauthSecConfig")
+    private ObjectProvider<Config> oauthSecConfig;
+
+    @Autowired
+    @Qualifier("accessTokenGrantRequestExtractors")
+    private Collection<AccessTokenGrantRequestExtractor> accessTokenGrantRequestExtractors;
+
+    @Bean
+    public SecurityInterceptor requiresAuthenticationAuthorizeInterceptor() {
+        val interceptor = new SecurityInterceptor(oauthSecConfig.getObject(), Authenticators.CAS_OAUTH_CLIENT, JEEHttpActionAdapter.INSTANCE);
+        interceptor.setAuthorizers("none");
+        return interceptor;
+    }
+
+    @Bean
+    public SecurityInterceptor requiresAuthenticationAccessTokenInterceptor() {
+        val secConfig = oauthSecConfig.getObject();
+        val clients =
+                Objects.requireNonNull(secConfig).getClients().findAllClients().stream().filter(client -> client instanceof DirectClient).map(Client::getName)
+                        .collect(Collectors.joining(","));
+        val interceptor = new SecurityInterceptor(oauthSecConfig.getObject(), clients, JEEHttpActionAdapter.INSTANCE);
+        interceptor.setAuthorizers("none");
+        return interceptor;
+    }
+
+    @Bean
+    public HandlerInterceptor oauthHandlerInterceptorAdapter() {
+        return new OAuth20HandlerInterceptorAdapter(requiresAuthenticationAccessTokenInterceptor(), requiresAuthenticationAuthorizeInterceptor(),
+                accessTokenGrantRequestExtractors);
+    }
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
