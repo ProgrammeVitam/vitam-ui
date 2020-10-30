@@ -308,7 +308,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
                     profile.setDescription(CastUtils.toString(entry.getValue()));
                     break;
                 case "enabled" :
-                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.getDescription(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.isEnabled(), entry.getValue()));
                     profile.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "level" :
