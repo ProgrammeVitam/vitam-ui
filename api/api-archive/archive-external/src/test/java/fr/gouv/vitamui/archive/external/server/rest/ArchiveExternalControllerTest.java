@@ -94,7 +94,6 @@ public class ArchiveExternalControllerTest extends ApiArchiveExternalControllerT
 
     @Test
     public void testArchiveController() {
-
         Assert.assertNotNull(archiveExternalService);
 
     }
