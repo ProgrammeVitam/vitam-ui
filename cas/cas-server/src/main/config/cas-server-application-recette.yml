@@ -158,3 +158,10 @@ logging:
     # org.springframework.context.annotation: 'OFF'
     # org.springframework.boot.devtools: 'OFF'
     # org.apereo.inspektr.audit.support: 'OFF'
+
+# Cas CORS (necessary for mobile app)
+cas.httpWebRequest.cors.enabled: true
+cas.httpWebRequest.cors.allowCredentials: false
+cas.httpWebRequest.cors.allowOrigins: [ '*' ]
+cas.httpWebRequest.cors.allowMethods: [ '*' ]
+cas.httpWebRequest.cors.allowHeaders: [ '*' ]
