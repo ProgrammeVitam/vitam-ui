@@ -29,7 +29,6 @@ package fr.gouv.vitamui.archive.external.server.rest;
 
 
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
-import fr.gouv.vitamui.archive.common.rest.RestApi;
 import fr.gouv.vitamui.archive.external.client.ArchiveExternalRestClient;
 import fr.gouv.vitamui.archive.external.server.service.ArchiveExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -95,6 +94,8 @@ public class ArchiveExternalControllerTest extends ApiArchiveExternalControllerT
 
     @Test
     public void testArchiveController() {
+
         Assert.assertNotNull(archiveExternalService);
+
     }
 }
