@@ -46,7 +46,6 @@ import { NavbarModule } from '../components/navbar/navbar.module';
 import { SlideToggleModule } from '../components/slide-toggle/slide-toggle.module';
 import { VitamUIFieldErrorModule } from '../components/vitamui-field-error/vitamui-field-error.module';
 import { AccountApplicationTabComponent } from './account-application-tab/account-application-tab.component';
-import { AccountHistoryTabComponent } from './account-history-tab/account-history-tab.component';
 import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
 import { AccountComponent } from './account.component';
 
@@ -66,7 +65,6 @@ import { AccountComponent } from './account.component';
     AccountComponent,
     AccountInformationTabComponent,
     AccountApplicationTabComponent,
-    AccountHistoryTabComponent,
   ]
 })
 export class AccountModule { }
