@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { MatTooltipModule, MatDialogModule, MatMenuModule, MatSidenavModule, MatDatepickerModule,
    MatNativeDateModule,
-   MatButtonToggleModule} from '@angular/material';
+   MatButtonToggleModule,
+   MatFormFieldModule,
+   MatInputModule,
+   MatSelectModule} from '@angular/material';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,7 +28,11 @@ import { HoldingSchemaComponent } from './holding-schema/holding-schema.componen
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+     MatSelectModule,
   ],
   declarations: [
     ArchiveComponent,

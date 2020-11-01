@@ -1,103 +1,152 @@
 <p>archive-search works!</p>
+<div class="archive-search-section">
 <div class="row">
-
         <div class="btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
             <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
-                <button type="button" [ngClass]="isFirst ? 'left-arround':'left-not-arround'"   class="criteria-btn button-content right-not-arround btn">{{criteria.value.label}} : {{criteriaValue.value}}</button>
-                <button type="button" [ngClass]="isLast ? 'right-arround':'right-not-arround' "  class="criteria-btn button-remove left-not-arround btn " (click)="removeCriteria(criteria.key, criteriaValue.value)"> X</button>
-                <button type="button" *ngIf="!isLast" class="criteria-btn button-or left-not-arround  right-not-arround btn">OU</button>
+                <button type="button" [vitamuiCommonTooltip]="criteria.value.label + ' : ' + criteriaValue.value"   [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="  button-content right-not-arround btn"  >{{getButtonLabel(criteria.value.label + ' : ' + criteriaValue.value)}}</button>
+                <button type="button" *ngIf="criteriaValue.status !== 'IN_PROGRESS'" [vitamuiCommonTooltip]="criteria.value.label +  ' : ' + criteriaValue.value"  [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn" (click)="removeCriteria(criteria.key, criteriaValue.value)"> X </button>
+                <button type="button" *ngIf="criteriaValue.status === 'IN_PROGRESS'" [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn"> YY </button>
+                <button type="button" *ngIf="!isLast"  [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]" class="button-or left-not-arround  right-not-arround btn">OU</button>
             </ng-container>
 
         </div>
 
 </div>
-<div class="row float-right">
-    <button type="button" class="btn secondary">Rechercher</button>
-</div>
-
-
 <div class="row">
- <div class="col-11">
-   <form [formGroup]="form" onsubmit="submit()">
-     <h3 i18n="Group searchFilter@@hierarchysearchFilter">Filtre de recherche</h3>
-    <div class="row">
+<div class="col-11">
+<div class="row d-flex flex-row-reverse">
+   <div class="p-2">
+    <button type="button" class="btn secondary" [disabled]="searchCriterias.size === 0" (click)="submit()">Rechercher</button>
+  </div>
+  </div>
+</div>
+ </div>
+
+<div class="card-criteria" *ngIf="showCriteriaPanel">
+  <div class="row">
+    <div class="col-11">
+   <form [formGroup]="form">
+     <div class="row justify-content-around">
+      <div class="col-11 form-control">
+        <h3 i18n="Group searchFilter@@hierarchysearchFilter">Filtre de recherche</h3>
+       </div>
+     </div>
+    <div class="row justify-content-around">
         <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="title" [validator]="form?.get('title')?.validator" label="Title"
+          <vitamui-common-editable-input formControlName="title"  [validator]="form?.get('title')?.validator" label="Title"
             i18n-label="user info tab title@@UserInfoTabtitle">
           </vitamui-common-editable-input>
         </div>
-        <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="beginDt" [validator]="form?.get('beginDt')?.validator" label="Date de début"
+        <div class="col-4 form-control">
+          <vitamui-common-editable-input formControlName="beginDt"   [validator]="form?.get('beginDt')?.validator" label="Date de début"
             i18n-label="user info tab beginDt@@UserInfoTabeginDt">
           </vitamui-common-editable-input>
         </div>
       </div>
 
-    <div class="row">
+      <div class="row justify-content-around">
         <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="description" [validator]="form?.get('description')?.validator" label="Description"
+          <vitamui-common-editable-input formControlName="description"   [validator]="form?.get('description')?.validator" label="Description"
             i18n-label="user info tab description@@UserInfoTabDescription">
           </vitamui-common-editable-input>
         </div>
-        <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="endDt" [validator]="form?.get('endDt')?.validator" label="Date de fin"
+        <div class="col-4 form-control">
+          <vitamui-common-editable-input formControlName="endDt"   [validator]="form?.get('endDt')?.validator" label="Date de fin"
             i18n-label="user info tab endDt@@UserInfoTabendDt">
           </vitamui-common-editable-input>
         </div>
       </div>
-      <div class="row">
+      <div class="row justify-content-around">
         <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="guid" [validator]="form?.get('guid')?.validator" label="Guid du versement"
+          <vitamui-common-editable-input formControlName="guid"   [validator]="form?.get('guid')?.validator" label="Guid du versement"
             i18n-label="user info tab guid@@UserInfoTabguid">
           </vitamui-common-editable-input>
         </div>
+
+        <div class="col-4 form-control"></div>
       </div>
 
-
-
-      <div class="row">
+      <div class="row justify-content-around">
         <div class="col-6 form-control">
-          <h3 i18n="Group productorService@@hierarchyproductorService">Service producteur: </h3>
-          <vitamui-common-editable-input formControlName="serviceProdCode" [validator]="form?.get('serviceProdCode')?.validator" label="Code"
-            i18n-label="user info tab serviceProdCode@@UserInfoTabserviceProdCode">
-          </vitamui-common-editable-input>
+        <h3 i18n="Group productorService@@hierarchyproductorService">Service producteur: </h3>
+      </div>
+      <div class="col-4 form-control">
+        <h3 i18n="Group Communicability@@hierarchyCommunicability">Communicabilité: </h3>
+      </div>
+    </div>
+
+    <div class="row justify-content-around">
+      <div class="col-6 form-control">
+        <vitamui-common-editable-input formControlName="serviceProdLabel"   [validator]="form?.get('serviceProdLabel')?.validator" label="Libellé"
+          i18n-label="user info tab serviceProdLabel@@UserInfoTabserviceProdLabel">
+        </vitamui-common-editable-input>
         </div>
-        <div class="col-6 form-control">
+
+        <div class="col-4 form-control">
             <div class="form-group">
-                <h2 i18n="Group Communicability@@hierarchyCommunicability">Communicabilité: </h2>
-                <mat-button-toggle-group   formControlName="serviceProdCommunicability"  #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+                <mat-button-toggle-group   formControlName="serviceProdCommunicability"  #group="matButtonToggleGroup" class=" vitamui-button-toggle-group">
                   <mat-button-toggle   value="YES" i18n=" userType nominative button@@userCreateTypeNominativeButton">OUI</mat-button-toggle>
                   <mat-button-toggle value="NO" i18n="userType generic button@@userCreateTypeGenericButton">NON</mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
           </div>
       </div>
-      <div class="row">
-        <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="serviceProdLabel" [validator]="form?.get('serviceProdLabel')?.validator" label="Libellé"
-            i18n-label="user info tab serviceProdLabel@@UserInfoTabserviceProdLabel">
-          </vitamui-common-editable-input>
+      <div class="row justify-content-around">
+        <div class="col-3 form-control">
+          <vitamui-common-editable-input formControlName="serviceProdCode" [validator]="form?.get('serviceProdCode')?.validator" label="Code"   class=" "
+          i18n-label="user info tab serviceProdCode@@UserInfoTabserviceProdCode">
+        </vitamui-common-editable-input>
         </div>
-        <div class="col-6 form-control">
-            <vitamui-common-editable-input formControlName="serviceProdCommunicabilityDt" [validator]="form?.get('serviceProdCommunicabilityDt')?.validator" label="serviceProdCommunicabilityDt"
+        <div class="col-2 form-control">
+        </div>
+        <div class="col-4 form-control">
+            <vitamui-common-editable-input formControlName="serviceProdCommunicabilityDt"  [validator]="form?.get('serviceProdCommunicabilityDt')?.validator" label="serviceProdCommunicabilityDt"
               i18n-label="user info tab serviceProdCommunicabilityDt@@UserInfoTabserviceProdCommunicabilityDt">
             </vitamui-common-editable-input>
           </div>
+
       </div>
-      <h3 i18n="Group otherCriteria@@hierarchyotherCriteria">Autre critère: </h3>
-      <div class="row">
+
+      <div class="row justify-content-center">
         <div class="col-6 form-control">
-          <vitamui-common-editable-input formControlName="serviceProdLabel" [validator]="form?.get('serviceProdLabel')?.validator" label="Libellé"
-            i18n-label="user info tab serviceProdLabel@@UserInfoTabserviceProdLabel">
-          </vitamui-common-editable-input>
+          <h3 i18n="Group otherCriteria@@hierarchyotherCriteria">Autre critère: </h3>
         </div>
+        <div class="col-4 form-control">
+          <a (click)="showHidePanel()">Masquer les filtres de recherche</a>
+        </div>
+       </div>
+
+      <div class="row justify-content-around">
+       <div class="col-3 form-control">
+        <mat-form-field class="vitamui-mat-select ">
+          <mat-select
+            formControlName="otherCriteria"
+            required
+            placeholder="otherCriteria"
+            panelClass="vitamui-mat-select" (valueChange)="onSelectOtherCriteria()">
+            <mat-option value="">Sélection d'un autre critère</mat-option>
+            <mat-option value="1">CHOISE 1</mat-option>
+            <mat-option value="2">CHOISE 2</mat-option>
+            <mat-option value="3">CHOISE 3</mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
       </div>
-
-
-
+      <div class="col-2 form-control">
+      </div>
+      <div class="col-4 form-control">
+        <vitamui-common-editable-input formControlName="otherCriteriaValue"    *ngIf="otherCriteriaValueEnabled"  [validator]="form?.get('otherCriteriaValue')?.validator" label="otherCriteriaValue"
+              i18n-label="user info tab otherCriteriaValue@@UserInfoTabotherCriteriaValue">
+        </vitamui-common-editable-input>
+      </div>
+    </div>
 
   </form>
-
+</div>
+</div>
 
 
   </div>

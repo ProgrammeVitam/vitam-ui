@@ -1,4 +1,22 @@
-.criteria-btn {
+.archive-search-section{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.card-criteria {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #4b4c4d;
+    padding-left: 70px;
+}
+.before-search-launched-button{
+    color: rgb(0, 0, 0);
+    border-color: #002a57;
+}
+.after-search-launched-button{
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
@@ -7,8 +25,8 @@
     padding: 10px
 }
 .left-arround {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .left-not-arround {
@@ -18,8 +36,8 @@
 
 
 .right-arround {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .right-not-arround {
@@ -33,17 +51,24 @@
     padding-right: 10px;
     border-right-width: 0px;
     border-left-width: 0px;
+    height: 60px;
+    font-weight: bold;
 }
 
 .button-content {
     padding-left: 10px;
     padding-right: 10px;
     border-right-width: 0px;
+    max-width: 400px;
+    font-weight: bold;
+    height: 60px;
 }
 
 
 .button-remove {
     padding-left: 10px;
     padding-right: 10px;
-    border-left-width: 0px;
+    border-left-width: 1px;
+    height: 60px;
+    font-weight: bold;
 }
