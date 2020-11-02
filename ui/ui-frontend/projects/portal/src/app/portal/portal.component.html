@@ -1,4 +1,5 @@
 <div class="content">
     <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
     <app-application-list [appMap]="applications" (applicationClick)="openApplication($event)"></app-application-list>
+    <mat-spinner diameter="100" [strokeWidth]="5" *ngIf="loading" color="accent"></mat-spinner>
 </div>

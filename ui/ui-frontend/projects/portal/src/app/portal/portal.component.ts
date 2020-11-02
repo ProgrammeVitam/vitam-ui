@@ -56,6 +56,8 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   public customerLogoUrl: string;
 
+  public loading = true;
+
   private sub: Subscription;
 
   constructor(
@@ -65,8 +67,9 @@ export class PortalComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
-    this.sub = this.applicationService.getAppsGroupByCategories().subscribe((appMap) => {
-      this.applications = appMap;
+    this.sub = this.applicationService.getActiveTenantAppsMap().subscribe((appMap) => {
+        this.applications = appMap;
+        this.loading = false;
     });
     this.welcomeTitle = this.startupService.getWelcomeTitle();
     this.welcomeMessage = this.startupService.getWelcomeMessage();
@@ -84,13 +87,13 @@ export class PortalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openApplication(app: Application): void {
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
-  }
-
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  public openApplication(app: Application): void {
+    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }
