@@ -87,13 +87,13 @@ export class PortalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openApplication(app: Application): void {
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
-  }
-
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  public openApplication(app: Application): void {
+    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }

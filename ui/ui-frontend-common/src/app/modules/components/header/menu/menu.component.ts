@@ -181,9 +181,10 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
+  public updateApps(tenant: Tenant) {
+    if (tenant) {
+      this.selectedTenant = tenant;
+      this.appMap = this.applicationService.getTenantAppMap(tenant);
     }
   }
 }
