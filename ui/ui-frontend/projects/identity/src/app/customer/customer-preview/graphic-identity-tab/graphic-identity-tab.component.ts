@@ -34,19 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import {Customer, ThemeService} from 'ui-frontend-common';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Customer, Theme, ThemeService } from 'ui-frontend-common';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
+
+export interface LogosSafeResourceUrl {
+  headerUrl?: SafeResourceUrl;
+  footerUrl?: SafeResourceUrl;
+  portalUrl?: SafeResourceUrl;
+}
 
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss']
 })
-export class GraphicIdentityTabComponent implements OnInit {
+export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
 
   @Input()
   set customer(customer: Customer) {
@@ -62,57 +70,80 @@ export class GraphicIdentityTabComponent implements OnInit {
     this._readonly = readOnly;
   }
   get readonly(): boolean { return this._readonly; }
+
   // tslint:disable-next-line:variable-name
   private _readonly: boolean;
+  private destroy = new Subject();
+  public isLoading = false;
+  public customerLogos: LogosSafeResourceUrl = {};
+  public defaultTheme: Theme;
 
-  logo: any;
-  trustedUrlInline: SafeUrl;
+  public theme: Theme;
+  public COLOR_NAME = { // to switch with ngx-translate
+    'vitamui-primary': 'Couleur principale',
+    'vitamui-secondary': 'Couleur secondaire',
+  };
 
-  themeColors: {[key: string]: string};
-
-  constructor(private customerService: CustomerService, private sanitizer: DomSanitizer, private dialog: MatDialog,
+  constructor(private customerService: CustomerService, private dialog: MatDialog,
               private themeService: ThemeService) {
+  }
+  ngOnDestroy(): void {
+    this.destroy.next();
   }
 
   ngOnInit() {
-    this.resetTab(this._customer);
   }
 
+  private majTheme(colors: {[colorId: string]: string}, portalMessage: string, portalTitle: string): Theme {
+    return {
+      colors,
+      portalMessage,
+      portalTitle,
+    };
+  }
 
-  resetTab(customer: Customer) {
+  private resetTab(customer: Customer): void {
     if (customer.hasCustomGraphicIdentity) {
-        this.customerService.getCustomerLogo(customer.id).subscribe((data: any) => {
-        const logo = data;
-        this.trustedUrlInline = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(logo.body));
-      });
+      const colors = this.themeService.getThemeColors(customer.themeColors);
+      this.theme = this.majTheme(colors, customer.portalMessage, customer.portalTitle);
+    } else {
+      this.theme = this.majTheme(
+        this.themeService.getThemeColors(this.themeService.defaultTheme.colors),
+        this.themeService.defaultTheme.portalMessage,
+        this.themeService.defaultTheme.portalTitle
+      );
+      this.theme.headerUrl = this.themeService.defaultTheme.headerUrl;
+      this.theme.portalUrl = this.themeService.defaultTheme.portalUrl;
+      this.theme.footerUrl = this.themeService.defaultTheme.footerUrl;
     }
-
-    this.themeColors = this.themeService.getThemeColors(customer.themeColors);
-    this.overloadLocalTheme();
-  }
-
-  overloadLocalTheme() {
-    const selector: HTMLElement = document.querySelector('div.vitamui-sidepanel');
-    for (const key in this.themeColors) {
-      if (this.themeColors.hasOwnProperty(key) && selector != null) {
-        selector.style.setProperty('--' + key, this.themeColors[key]);
+    if (customer.hasCustomGraphicIdentity) {
+      this.isLoading = true;
+    }
+    // customer logos mandatory for graphic-identity
+    this.customerService.getLogos(customer.id)
+    .pipe(takeUntil(this.destroy))
+    .subscribe((logos: LogosSafeResourceUrl[]) => {
+      this.customerLogos = {
+        headerUrl: logos[0],
+        footerUrl: logos[1],
+        portalUrl: logos[2],
+      };
+      if (customer.hasCustomGraphicIdentity) {
+        this.theme.headerUrl = this.customerLogos.headerUrl;
+        this.theme.footerUrl = this.customerLogos.footerUrl;
+        this.theme.portalUrl = this.customerLogos.portalUrl;
       }
-    }
+      this.isLoading = false;
+    });
+    this.themeService.overloadLocalTheme(this.theme.colors, 'div.vitamui-sidepanel');
   }
 
   openUpdateCustomerLogo() {
     const dialogRef = this.dialog.open(GraphicIdentityUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: { customer: this.customer, logo: this.trustedUrlInline }
+      data: { customer: this.customer, logos: this.customerLogos }
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) { this.refreshTab(); }
-    });
+    dialogRef.afterClosed().subscribe();
   }
-
-  refreshTab() {
-
-  }
-
 }

@@ -1,7 +1,43 @@
-<div [formGroup]="colorForm">
-  <app-input-color *ngFor="let color of baseColorsNames"
-                   [colorVariationsClassNames]="this.variations[color]"
-                   [formControlName]="color"
-                   [placeholder]="baseColors[color]">
+<ng-container [formGroup]="formGroup">
+  <div *ngFor="let color of ['vitamui-primary', 'vitamui-secondary']" class="pb-4">
+    <app-input-color 
+      [disabled]="disabled"
+      [colorInput]="formGroup.get(color)"
+      [placeholder]="baseColors[color]">
+    </app-input-color>
+    <div *ngIf="!isColor500(formGroup.get(color).value)" class="text-error pt-2 pl-2">Warning</div>
+  </div>
+
+  <ng-container *ngIf="!displayTertiary; else closeTertiary">
+    <small class="pb-2" (click)="displayTertiary=!displayTertiary" i18n="colorsInput@@labelDisplayColorTertiary">Afficher la couleur tertiare</small>
+  </ng-container>
+  <ng-template #closeTertiary>
+    <small class="pb-2" (click)="displayTertiary=!displayTertiary" i18n="colorsInput@@labelNotDisplayColorTertiary">Ne pas afficher la couleur tertiare</small>
+  </ng-template>
+
+  <app-input-color
+    [style.visibility]="!displayTertiary ? 'hidden' : 'visible'"
+    [disabled]="disabled"
+    class="pb-4"
+    [colorInput]="formGroup.get('vitamui-tertiary')"
+    [placeholder]="baseColors['vitamui-tertiary']">
   </app-input-color>
-</div>
+
+  <app-input-color
+    class="pb-4"
+    [colorInput]="formGroup.get('vitamui-header-footer')"
+    [disabled]="disabled"
+    [placeholder]="baseColors['vitamui-header-footer']">
+  </app-input-color>
+
+  <vitamui-common-select 
+    [disabled]="disabled" 
+    [data]="backgroundColors"
+    [messages]="{'unselected': baseColors['vitamui-background'], 'selected': baseColors['vitamui-background']}"
+    [selected]="formGroup.get('vitamui-background').value"
+    (selectedChange)="formGroup.get('vitamui-background').setValue($event)">
+  </vitamui-common-select>
+
+</ng-container>
+
+

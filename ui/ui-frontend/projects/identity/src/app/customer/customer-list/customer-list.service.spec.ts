@@ -94,6 +94,8 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         },
       ],
       internalCode: '1',
+      portalMessage: 'message portail',
+      portalTitle: 'titre portail',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
@@ -150,6 +152,8 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
+      portalMessage: 'message portail',
+      portalTitle: 'titre portail',
       internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
@@ -215,6 +219,8 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
+      portalMessage: 'message portail',
+      portalTitle: 'titre portail',
       internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
@@ -272,6 +278,8 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
+      portalMessage: 'message portail',
+      portalTitle: 'titre portail',
       internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',

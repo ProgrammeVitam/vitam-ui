@@ -38,8 +38,10 @@ package fr.gouv.vitamui.ui.commons.rest;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,18 +99,16 @@ public class ApplicationController extends AbstractUiRestController {
     }
 
     /**
-     * Return asset file as base64 data
-     * @param fileName the file to get from assets
-     * @return the file as base64 string
+     * Return assets files as base64 data
+     * @param assets the AttachmentType to get from assets
+     * @return the assets as base64 string
      */
     @ApiOperation(value = "Get Asset File")
     @GetMapping
     @RequestMapping(method = RequestMethod.GET, value = "/asset")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Object> getAsset(@RequestParam() final String fileName) {
-        LOGGER.info("Get Asset {}", fileName);
-        Map<String, Object> file = new HashMap<>();
-        file.put(fileName, service.getBase64Asset(fileName));
-        return file;
+    public Map<String, Object> getAsset(@RequestParam() final List<AttachmentType> assets) {
+        LOGGER.info("Get Assets {}", assets);
+        return service.getBase64Assets(assets);
     }
 }

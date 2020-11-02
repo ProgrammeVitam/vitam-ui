@@ -39,6 +39,7 @@ package fr.gouv.vitamui.identity.service;
 import java.util.Collection;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -132,5 +133,9 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
 
     public ResponseEntity<Resource> getCustomerLogo(final ExternalHttpContext context, final String id) {
         return getClient().getCustomerLogo(context, id);
+    }
+
+    public ResponseEntity<Resource> getLogo(final ExternalHttpContext context, final String id, final AttachmentType type) {
+        return getClient().getLogo(context, id, type);
     }
 }

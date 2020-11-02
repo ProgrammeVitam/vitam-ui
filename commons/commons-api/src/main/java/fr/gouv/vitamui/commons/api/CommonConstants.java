@@ -195,11 +195,9 @@ public class CommonConstants {
 
     public static final String THEME_COLORS = "THEME_COLORS";
 
-    public static final String APP_LOGO = "APP_LOGO";
+    public static final String PORTAL_MESSAGE = "PORTAL_MESSAGE";
 
-    public static final String WELCOME_TITLE = "WELCOME_TITLE";
-
-    public static final String WELCOME_DESCRIPTION = "WELCOME_DESCRIPTION";
+    public static final String PORTAL_TITLE = "PORTAL_TITLE";
 
     public static final String CUSTOMER = "CUSTOMER";
 

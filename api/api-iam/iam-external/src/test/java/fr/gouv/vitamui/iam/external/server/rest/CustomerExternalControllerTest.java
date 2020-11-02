@@ -35,7 +35,10 @@ public class CustomerExternalControllerTest extends ApiIamControllerTest<Custome
         // TODO correct multipart problem (empty customerDto)
         final CustomerCreationFormData creationFormData = new CustomerCreationFormData();
         creationFormData.setCustomerDto(buildDto());
-        creationFormData.setLogo(Optional.empty());
+        creationFormData.setHeader(Optional.empty());
+        creationFormData.setFooter(Optional.empty());
+        creationFormData.setPortal(Optional.empty());
+
         final MockMultipartFile customer = new MockMultipartFile("customerData", "", "application/json", asJsonString(creationFormData).getBytes());
         final ResultActions result = performPostMultipart(StringUtils.EMPTY, Arrays.asList(customer));
 

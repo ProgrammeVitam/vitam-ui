@@ -50,17 +50,21 @@ public interface UIProperties {
 
     public Integer getLimitPagination();
 
-    public String getThemeLogo();
+    public String getPortalLogo();
+
+    public String getFooterLogo();
+
+    public String getHeaderLogo();
 
     public Map<String, String> getThemeColors();
+
+    public String getPortalMessage();
+
+    public String getPortalTitle();
 
     public String getAssets();
 
     public String getPlatformName();
-
-    public String getWelcomeTitle();
-
-    public String getWelcomeDescription();
 
     public Map<String, String> getCustomer();
 
