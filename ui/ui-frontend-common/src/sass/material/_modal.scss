@@ -1,6 +1,7 @@
 .vitamui-modal .mat-dialog-container {
     border-radius: 20px;
     padding: 0;
-    width: 800px;
-    max-width: 100%;
+    min-width: 800px;
+    max-width: fit-content;
+    max-height: 90vh;
 }
