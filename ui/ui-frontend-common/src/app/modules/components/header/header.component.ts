@@ -62,6 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.tenants = this.tenantService.getTenants();
     this.portalUrl = this.startupService.getPortalUrl();
+
     if (this.authService.user) {
       this.currentUser = this.authService.user;
       this.hasAccountProfile = this.authService.user.profileGroup.profiles.some(
