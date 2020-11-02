@@ -7,7 +7,7 @@ $field-spacing: 15px;
 }
 
 .content {
-    padding: 0px 60px 60px 60px;
+    padding: 0px 60px 30px 60px;
 }
 
 h2 {
@@ -120,7 +120,7 @@ button.primary {
 }
 
 button.back {
-    margin-top: 60px;
+    margin-top: 30px;
 }
 
 button > small {
@@ -132,84 +132,6 @@ button > small {
 .hint {
     color: #a5a5a5;
     font-size: 15px;
-}
-
-.drag-and-drop-area {
-    margin-left: 10%;
-    width: 300px;
-    height: 120px;
-    border: 2px dashed var(--vitamui-secondary);
-    border-radius: 6px;
-    box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
-    background: $white;
-    margin-bottom: 60px;
-
-    p {
-        padding-top: 20px;
-    }
-}
-
-.on-over {
-    border: 2px solid var(--vitamui-secondary);
-
-    p {
-        color: $white;
-    }
-
-    .drop-area {
-        background: $dark-grey;
-        opacity: 0.9;
-        color: $white;
-    }
-}
-
-.image-container {
-    position: absolute;
-    width: 300px;
-    height: 120px;
-    vertical-align: middle;
-}
-
-.logo-image {
-    max-height: 100%;
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
-
-.drop-area {
-    position: absolute;
-    width: 296px;
-    height: 116px;
-}
-
-.upload-text {
-    padding-top: 5%;
-    font-size: 15px;
-    line-height: 18px;
-    color: #a5a5a5;
-
-    .upload {
-        color: var(--vitamui-secondary);
-    }
-
-}
-
-.logo-drop {
-    font-size: 14px;
-    line-height: 20px;
-    color: $charcoal-grey;
-    text-align: center;
-
-    small {
-        color: #a5a5a5;
-    }
 }
 
 .error-message {
