@@ -1,9 +1,9 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {IngestService} from '../ingest.service';
 
 describe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
@@ -15,7 +15,7 @@ describe('IngestPreviewComponent', () => {
       imports: [
         MatMenuModule
       ],
-      providers: [ { provide: LogbookService, useValue: {} } ],
+      providers: [ { provide: IngestService, useValue: {} } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
