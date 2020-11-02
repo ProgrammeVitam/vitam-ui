@@ -1,37 +1,40 @@
 {
-    "FOOTER": {
-        "HELP": "Help",
-        "LEGAL_NOTICE": "Legal notice",
-        "TECHNICAL_REFERENT": "Technical referent"
-    },
-    "HEADER": {
-        "LOGOUT": "Logout",
-        "NAVIGATE_AS": "Activate subrogation mode",
-        "MY_ACCOUNT": "My account"
-    },
-    "MENU" : {
-        "GRAB_APPLICATION": "Grab application name", 
-        "MY_APPLICATIONS": "My applications",
-        "RESULT": "Result",
-        "Utilisateur": "User",
-		"Management": "Management",
-        "Paramétrage": "Setting",
-        "Dernières utilisées": "Lastly used"
-    },
-    "MENU-APPLICATION-TILE": {
-        "ENTER_APPLICATION": "Enter to launch the application"
-    },
-    "SELECT-TENANT": {
-        "SELECTED": "Selected tenant",
-        "SELECT" : "Select a tenant",
-        "DIALOG_TITLE" : "Welcome to VitamUI",
-        "DIALOG_SUBTITLE" : "The archiving applications portal",
-        "DIALOG_INSTRUCTIONS" : "Please select your default safe",
-        "DIALOG_MESSAGE" : "Your default safe can be modified from your account",
-        "DIALOG_BUTTON_LABEL" : "Access to VitamUI"
-    },
-    "SELECT-CUSTOMER": {
-        "SELECTED": "Selected customer",
-        "SELECT" : "Select a customer"
-    }
+  "FOOTER": {
+    "HELP": "Help",
+    "LEGAL_NOTICE": "Legal notice",
+    "TECHNICAL_REFERENT": "Technical referent"
+  },
+  "HEADER": {
+    "LOGOUT": "Logout",
+    "NAVIGATE_AS": "Activate subrogation mode",
+    "MY_ACCOUNT": "My account"
+  },
+  "MENU" : {
+    "GRAB_APPLICATION": "Grab application name",
+    "MY_APPLICATIONS": "My applications",
+    "RESULT": "Result",
+    "settings": "Settings",
+    "administrators": "Management",
+    "users": "User",
+    "referential": "Referential",
+    "opaudit": "Audits & operations",
+    "techadmin": "Technical administration",
+    "lastusedapps": "Lastly used"
+  },
+  "MENU-APPLICATION-TILE": {
+    "ENTER_APPLICATION": "Enter to launch the application"
+  },
+  "SELECT-TENANT": {
+    "SELECTED": "Selected tenant",
+    "SELECT" : "Select a tenant",
+    "DIALOG_TITLE" : "Welcome to VitamUI",
+    "DIALOG_SUBTITLE" : "The archiving applications portal",
+    "DIALOG_INSTRUCTIONS" : "Please select your default safe",
+    "DIALOG_MESSAGE" : "Your default safe can be modified from your account",
+    "DIALOG_BUTTON_LABEL" : "Access to VitamUI"
+  },
+  "SELECT-CUSTOMER": {
+    "SELECTED": "Selected customer",
+    "SELECT" : "Select a customer"
+  }
 }

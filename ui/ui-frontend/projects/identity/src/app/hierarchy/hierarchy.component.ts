@@ -38,6 +38,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { Subject } from 'rxjs';
 import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
@@ -53,6 +54,8 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, 
   profiles: Profile[];
   search: string;
 
+  private destroyer$ = new Subject();
+
   @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService) {
@@ -63,6 +66,10 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, 
     this.route.paramMap.subscribe((paramMap) => {
       this.tenantIdentifier = +paramMap.get('tenantIdentifier');
     });
+  }
+
+  ngOnDestroy() {
+    this.destroyer$.next();
   }
 
   changeTenant(tenantIdentifier: number) {
