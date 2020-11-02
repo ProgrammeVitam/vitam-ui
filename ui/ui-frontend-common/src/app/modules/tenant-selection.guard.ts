@@ -1,3 +1,4 @@
+import { TenantSelectionService } from './tenant-selection.service';
 
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
@@ -37,7 +38,7 @@
  */
 import { Inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild } from '@angular/router';
 
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -53,6 +54,7 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
+    private tenantService: TenantSelectionService,
     @Inject(WINDOW_LOCATION) private location: any) {
   }
 
@@ -61,6 +63,9 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
   ): boolean {
     if (route.params.tenantIdentifier) {
       return true;
+    } else if (this.tenantService.getSelectedTenant()) {
+      const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
+      this.location.href = application.url + '/tenant/' + this.tenantService.getSelectedTenant().identifier;
     }
 
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);

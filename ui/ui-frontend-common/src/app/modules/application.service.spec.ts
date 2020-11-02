@@ -112,7 +112,7 @@ describe('ApplicationService', () => {
   });
 
   it('should return a map', () => {
-    const appMap = appService.getAppsGroupByCategories();
+    const appMap = appService.getAppsMap();
     appService.applications = [];
     expect(appMap).toBeTruthy();
   });

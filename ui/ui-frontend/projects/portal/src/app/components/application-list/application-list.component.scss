@@ -59,6 +59,10 @@ mat-card-subtitle {
     .mat-ink-bar {
         background-color: var(--vitamui-primary)!important;
     }
+
+    .mat-tab-header-pagination.mat-tab-header-pagination-disabled, .mat-tab-header-pagination-after {
+        display: none!important;
+    }
 }
 
 .appIcon {

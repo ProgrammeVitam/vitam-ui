@@ -1,15 +1,20 @@
 <mat-toolbar color="primary" class="header">
   <a href="{{portalUrl}}" >
-    <img class="header-logo" alt="header logo" src="../../assets/logo.svg">
+    <img class="header-logo" alt="header logo" src="../../../../assets/logo.svg">
   </a>
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
 
   <vitamui-common-select-language class="mx-3"></vitamui-common-select-language>
 
-  <vitamui-common-select-tenant class="d-flex mx-3"></vitamui-common-select-tenant>
+  <vitamui-common-select-tenant class="d-flex mx-3"
+    *ngIf="displayTenantSelection"
+    [tenants]="tenants"
+    [selectedTenant]="selectedTenant"
+    (tenantSelected)="updateTenant($event)"
+  ></vitamui-common-select-tenant>
 
-  <div class="separator"></div>
+    <div class="separator"></div>
 
   <div class="mx-3 d-flex account" [matMenuTriggerFor]="accountMenu">
     <div class="person-icon">
