@@ -63,8 +63,10 @@ mat-card-subtitle {
 
 .appIcon {
     overflow: hidden;
-    height: 200px;
-    max-width: 280px;
+    min-height: 200px;
+    max-height: 200px;
+    width: 100%;
+    max-width: 325px;
     margin: 0 auto 17px auto;
 }
 

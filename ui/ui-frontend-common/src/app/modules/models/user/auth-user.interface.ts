@@ -40,7 +40,6 @@ import { Group } from '../group/group.interface';
 import { User } from './user.interface';
 
 export interface AuthUser extends User {
-
   accountNonExpired: boolean;
   accountNonLocked: boolean;
   authorities: Array<{ authority: string }>;
@@ -57,4 +56,5 @@ export interface AuthUser extends User {
   customerIdentifier: string;
   basicCustomer: BasicCustomer;
   siteCode: string;
+  photo?: string;
 }

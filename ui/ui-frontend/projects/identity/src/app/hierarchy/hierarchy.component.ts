@@ -38,7 +38,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
+import { takeUntil } from 'rxjs/operators';
+import { GlobalEventService, Profile, SidenavPage, Tenant, TenantSelectionService } from 'ui-frontend-common';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
 
@@ -49,27 +50,39 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, OnDestroy {
 
-  tenantIdentifier: number;
-  profiles: Profile[];
-  search: string;
+  public profiles: Profile[];
+  public search: string;
+  private tenantIdentifier: number;
+  private destroyer$ = new Subject();
 
   @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router,
+              public globalEventService: GlobalEventService, private tenantService: TenantSelectionService) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
       this.tenantIdentifier = +paramMap.get('tenantIdentifier');
+      this.tenantService.setSelectedTenantByIdentifier(this.tenantIdentifier);
+
+      this.tenantService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
+        this.changeTenant(tenant.identifier);
+      });
     });
   }
 
-  changeTenant(tenantIdentifier: number) {
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  public changeTenant(tenantIdentifier: number): void {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
-  openHierarchyDuplicateDialog() {
+  public openHierarchyDuplicateDialog(): void {
     const dialogRef = this.dialog.open(HierarchyCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
@@ -82,14 +95,14 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, 
     });
   }
 
-  onSearchSubmit(search: string) {
+  public onSearchSubmit(search: string): void {
     this.search = search;
   }
 
-  private refreshList() {
-    if (!this.hierarchyListComponent) { return; }
-
-    this.hierarchyListComponent.search();
+  private refreshList(): void {
+    if (this.hierarchyListComponent) {
+      this.hierarchyListComponent.search();
+    }
   }
 
 }

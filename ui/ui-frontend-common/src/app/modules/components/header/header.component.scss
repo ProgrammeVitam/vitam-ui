@@ -11,7 +11,7 @@ mat-toolbar {
   background-color: var(--vitamui-header-footer);
   position: fixed;
   top: 0;
-  height: 65px !important;
+  height: 72px;
 }
 
 .header-logo {
@@ -31,6 +31,11 @@ mat-toolbar {
   align-items: center;
 }
 
+.tenantSelection {
+  display: flex;
+  align-items: center;
+}
+
 .separator::before {
   content: "|";
   margin: 0 1rem;
@@ -46,12 +51,13 @@ mat-toolbar {
   cursor: pointer;
 }
 
+.user-photo {
+  display: flex;
+}
 
-.person-icon mat-icon {
-  margin-left: -10px;
-  height: 100%;
-  width: 100%;
-  font-size: xxx-large;
+.user-photo img {
+  width: 40px;
+  border-radius: 30px;
 }
 
 .apps-button {
