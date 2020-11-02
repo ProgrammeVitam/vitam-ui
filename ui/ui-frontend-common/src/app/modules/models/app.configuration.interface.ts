@@ -42,11 +42,13 @@ export interface AppConfiguration {
     LOGOUT_REDIRECT_UI_URL: string;
     SEARCH_URL?: string;
     THEME_COLORS: any;
-    APP_LOGO: string;
+    PORTAL_MESSAGE: string;
+    PORTAL_TITLE: string;
+    PORTAL_LOGO: string;
+    HEADER_LOGO: string;
+    FOOTER_LOGO: string;
     LOGO: string;
     [key: string]: string;
     PLATFORM_NAME: string;
-    WELCOME_TITLE: string;
-    WELCOME_DESCRIPTION: string;
     CUSTOMER: string;
 }

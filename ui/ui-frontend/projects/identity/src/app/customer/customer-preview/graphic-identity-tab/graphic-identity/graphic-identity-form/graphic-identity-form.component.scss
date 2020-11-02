@@ -1,0 +1,17 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+  label {
+    font-size: 13px;
+    color: $greyish-two;
+    font-weight: normal;
+  }
+
+  ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
+    background-color: var(--vitamui-header-footer);
+  }
+
+  ::ng-deep .color-background > * > .drag-and-drop-area { 
+    background-color: var(--vitamui-background);
+  }
+}

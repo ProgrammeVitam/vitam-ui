@@ -34,13 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Criterion, Customer, Operators, SearchQuery } from 'ui-frontend-common';
+import { Observable, Subject, zip } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Criterion, Customer, Logo, Operators, SearchQuery, ThemeService } from 'ui-frontend-common';
 
 import { Injectable } from '@angular/core';
 
 import { HttpResponse } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AttachementType } from '../customer/attachment.enum';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { CustomerApiService } from './api/customer-api.service';
 
@@ -53,7 +55,12 @@ export class CustomerService {
 
   updated = new Subject<Customer>();
 
-  constructor(private customerApi: CustomerApiService, private snackBar: VitamUISnackBar) {}
+  constructor(
+    private customerApi: CustomerApiService,
+    private snackBar: VitamUISnackBar,
+    private sanitizer: DomSanitizer,
+    private themeService: ThemeService,
+  ) {}
 
   get(id: string): Observable<Customer> {
     return this.customerApi.getOne(id);
@@ -79,8 +86,8 @@ export class CustomerService {
     return this.customerApi.checkExistsByParam(params);
   }
 
-  create(customer: Customer, logo?: File): Observable<Customer> {
-    return this.customerApi.createCustomer(customer, logo)
+  create(customer: Customer, logos?: Logo[]): Observable<Customer> {
+    return this.customerApi.createCustomer(customer, logos)
       .pipe(
         tap(
           (response: Customer) => {
@@ -101,8 +108,8 @@ export class CustomerService {
       );
   }
 
-  patch(partialCustomer: { id: string, [key: string]: any }, logo?: File): Observable<Customer> {
-    return this.customerApi.patchCustomer(partialCustomer, logo)
+  patch(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[]): Observable<Customer> {
+    return this.customerApi.patchCustomer(partialCustomer, logos)
       .pipe(
         tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
         tap(
@@ -123,8 +130,27 @@ export class CustomerService {
       );
   }
 
-  getCustomerLogo(id: string): Observable<HttpResponse<Blob>> {
-    return this.customerApi.getCustomerLogo(id);
+  public getLogoUrl(id: string, type: AttachementType): Observable<SafeResourceUrl> {
+    return this.customerApi.getLogo(id, type).pipe(
+      map((res: HttpResponse<Blob>) => {
+          if (res.status === 204) {
+            switch (type) {
+              case AttachementType.Header: return this.themeService.defaultTheme.headerUrl; break;
+              case AttachementType.Footer: return this.themeService.defaultTheme.footerUrl; break;
+              case AttachementType.Portal: return this.themeService.defaultTheme.portalUrl; break;
+            }
+            return null;
+          }
+          return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
+        }
+      )
+    );
   }
 
+  public getLogos(customerId: string): Observable<SafeResourceUrl[]> {
+    const headerLogo$ = this.getLogoUrl(customerId, AttachementType.Header);
+    const footerLogo$ = this.getLogoUrl(customerId, AttachementType.Footer);
+    const portalLogo$ = this.getLogoUrl(customerId, AttachementType.Portal);
+    return zip(headerLogo$, footerLogo$, portalLogo$);
+  }
 }

@@ -43,14 +43,17 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.common.utils.CustomerDtoEditor;
+import fr.gouv.vitamui.iam.common.utils.MapEditor;
 import fr.gouv.vitamui.iam.external.server.service.CustomerExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,10 +80,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -114,6 +115,7 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @InitBinder
     public void initBinder(final WebDataBinder binder) {
         binder.registerCustomEditor(CustomerDto.class, new CustomerDtoEditor());
+        binder.registerCustomEditor(Map.class, new MapEditor());
     }
 
     @Override
@@ -187,12 +189,11 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     public CustomerDto patch(final @PathVariable("id") String id,
-            @RequestPart(value = "partialCustomerDto", required = true) @Valid final Map<String, Object> partialCustomer,
-            @RequestParam(value = "logo") final Optional<MultipartFile> logo) {
-        LOGGER.debug("Patch customer with {} and logo {}", partialCustomer.get("id"), logo);
+                             @ModelAttribute final CustomerPatchFormData customerData) {
+        LOGGER.debug("Patch customer with {}", customerData.getPartialCustomerDto().get("id"));
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.check(id);
-        return customerExternalService.patch(partialCustomer, logo);
+        return customerExternalService.patch(customerData);
     }
 
     @GetMapping("/{id}/history")
@@ -215,13 +216,12 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getCustomerLogo(final @PathVariable String id) {
-        LOGGER.debug("get logo for customer with id :{}", id);
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
+        LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.check(id);
-        final ResponseEntity<Resource> response = customerExternalService.getCustomerLogo(id);
+        final ResponseEntity<Resource> response = customerExternalService.getLogo(id, type);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
-
     }
 
 }

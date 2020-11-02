@@ -1,13 +1,16 @@
+@import '~ui-frontend-common/sass/variables/colors';
 
-p {
-  height: 80px;
+:host {
+  small {
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--vitamui-primary);
+  }
+
+  .text-error {
+    font-size: 12px;
+    font-weight: 400;
+    color: $red;
+    font-family: 'Roboto';
 }
-
-div {
-  margin-bottom: 30px;
 }
-
-input {
-  display: none;
-}
-

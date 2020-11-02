@@ -1,54 +1,43 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
-.image-container {
-   margin-top: 5%;
-   margin-left: 5%
-}
+:host {
+  .image-area {
+    border: 2px dashed $greyish-two;
+    border-radius: 6px;
+    height: 100px;
+    max-width: 200px;
+  }
 
-p {
-  height: 50px;
-}
+  img {
+    max-width: 180px;
+    max-height: 120px;
+  }
 
-p.color {
-  width: 120px;
-  span.label {
+  .label-color {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-size: 13px;
+    color: $greyish-two;
+    font-weight: normal;
+  }
+
+  label+* {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .field-color-preview {
+    padding: 0;
+    margin: 0 5px 0 0;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
     position: relative;
-    top: 0;
-    left: 0;
-    font-size: 0.8em;
-    color: gray;
-  }
-}
-
-.field-color-preview {
-  padding: 0;
-  margin: 0 5px 0 0;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  position: relative;
-  top: 10px;
-
-  &.primary {
-    background-color: var(--vitamui-primary);
-  }
-  &.primary-light {
-    background-color: var(--vitamui-primary-light);
-  }
-  &.primary-light-20 {
-    background-color: var(--vitamui-primary-light-20);
-  }
-  &.secondary {
-    background-color: var(--vitamui-secondary);
-  }
-  &.secondary-light {
-    background-color: var(--vitamui-secondary-light);
-  }
-  &.secondary-light-8 {
-    background-color: var(--vitamui-secondary-light-8);
-  }
-  &.secondary-dark-5 {
-    background-color: var(--vitamui-secondary-dark-5);
+    top: 10px;
   }
 }

@@ -36,10 +36,13 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,13 +52,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ui.commons.service.ApplicationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import java.util.Map;
 
 @Api(tags = "applications")
 @ResponseBody
@@ -97,18 +95,16 @@ public class ApplicationController extends AbstractUiRestController {
     }
 
     /**
-     * Return asset file as base64 data
-     * @param fileName the file to get from assets
-     * @return the file as base64 string
+     * Return assets files as base64 data
+     * @param assets the AttachmentType to get from assets
+     * @return the assets as base64 string
      */
     @ApiOperation(value = "Get Asset File")
     @GetMapping
     @RequestMapping(method = RequestMethod.GET, value = "/asset")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Object> getAsset(@RequestParam() final String fileName) {
-        LOGGER.debug("Get Asset {}", fileName);
-        Map<String, Object> file = new HashMap<>();
-        file.put(fileName, service.getBase64Asset(fileName));
-        return file;
+    public Map<String, Object> getAsset(@RequestParam() final List<AttachmentType> assets) {
+        LOGGER.debug("Get Assets {}", assets);
+        return service.getBase64Assets(assets);
     }
 }

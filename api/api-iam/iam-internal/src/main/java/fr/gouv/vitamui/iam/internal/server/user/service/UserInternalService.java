@@ -768,8 +768,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         if (customer.getGraphicIdentity() != null) {
             final GraphicIdentityDto graphicIdentity = new GraphicIdentityDto();
             graphicIdentity.setHasCustomGraphicIdentity(customer.getGraphicIdentity().isHasCustomGraphicIdentity());
-            graphicIdentity.setLogoDataBase64(customer.getGraphicIdentity().getLogoDataBase64());
+            graphicIdentity.setHeaderDataBase64(customer.getGraphicIdentity().getLogoHeaderBase64());
+            graphicIdentity.setFooterDataBase64(customer.getGraphicIdentity().getLogoFooterBase64());
+            graphicIdentity.setPortalDataBase64(customer.getGraphicIdentity().getLogoPortalBase64());
             graphicIdentity.setThemeColors(customer.getGraphicIdentity().getThemeColors());
+            graphicIdentity.setPortalMessage(customer.getGraphicIdentity().getPortalMessage());
+            graphicIdentity.setPortalTitle(customer.getGraphicIdentity().getPortalTitle());
             basicCustomerDto.setGraphicIdentity(graphicIdentity);
         }
         userDto.setBasicCustomer(basicCustomerDto);

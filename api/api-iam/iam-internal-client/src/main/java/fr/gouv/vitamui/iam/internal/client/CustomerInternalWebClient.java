@@ -39,10 +39,12 @@ package fr.gouv.vitamui.iam.internal.client;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -77,24 +79,18 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
      * @param customerCreationFormData
      * @return
      */
-    public CustomerDto create(final InternalHttpContext context, final CustomerCreationFormData customerData) {
-        LOGGER.debug("Create {}", customerData);
-        if (customerData == null) {
+    public CustomerDto create(final InternalHttpContext context, final CustomerCreationFormData customerCreationFormData) {
+        LOGGER.debug("Create {}", customerCreationFormData);
+        if (customerCreationFormData == null) {
             throw new BadRequestException("Customer data not found.");
         }
 
-        final Map data = new HashMap();
-        data.put("customerDto", customerData.getCustomerDto());
-        data.put("tenantName", customerData.getTenantName());
-
-        if (customerData.getLogo().isPresent()) {
-            return multipartData(getUrl(), HttpMethod.POST, context, data,
-                    Optional.of(new AbstractMap.SimpleEntry<>("logo", customerData.getLogo().get())), CustomerDto.class);
-        }
-        else {
-            return multipartData(getUrl(), HttpMethod.POST, context, data, Optional.empty(),
-                    CustomerDto.class);
-        }
+        return multiparts(getUrl(), HttpMethod.POST, context,
+                Map.of("customerDto", customerCreationFormData.getCustomerDto(), "tenantName", customerCreationFormData.getTenantName()),
+                customerCreationFormData.getHeader().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("header", customerCreationFormData.getHeader().get())) : Optional.empty(),
+                customerCreationFormData.getFooter().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("footer", customerCreationFormData.getFooter().get())) : Optional.empty(),
+                customerCreationFormData.getPortal().isPresent() ?  Optional.of(new AbstractMap.SimpleEntry<>("portal", customerCreationFormData.getPortal().get())) : Optional.empty(),
+                CustomerDto.class);
 
     }
 
@@ -118,21 +114,17 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
     /**
      * Patch a customer using a {@link Map<String, Object>} object and a Path to a image file is there's a graphical identity for this customer.
      * @param context
-     * @param dto
-     * @param multipartFile
+     * @param customerPatchFormData
      * @return
      */
-    public CustomerDto patch(final InternalHttpContext context, final Map<String, Object> partialCustomer, final Optional<MultipartFile> logo) {
-        LOGGER.debug("Patch {} {}", partialCustomer, logo);
-        if (logo.isPresent()) {
-            return multipartData(getUrl() + '/' + partialCustomer.get("id"), HttpMethod.PATCH, context,
-                    Collections.singletonMap("partialCustomerDto", partialCustomer), Optional.of(new AbstractMap.SimpleEntry<>("logo", logo.get())),
-                    CustomerDto.class);
-        }
-        else {
-            return multipartData(getUrl() + '/' + partialCustomer.get("id"), HttpMethod.PATCH, context,
-                    Collections.singletonMap("partialCustomerDto", partialCustomer), Optional.empty(), CustomerDto.class);
-        }
+    public CustomerDto patch(final InternalHttpContext context, CustomerPatchFormData customerPatchFormData) {
+        LOGGER.debug("Patch {}", customerPatchFormData);
+        return multiparts(getUrl() + '/' + customerPatchFormData.getPartialCustomerDto().get("id"), HttpMethod.PATCH, context,
+            Collections.singletonMap("partialCustomerDto", customerPatchFormData.getPartialCustomerDto()),
+            customerPatchFormData.getHeader().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("header", customerPatchFormData.getHeader().get())) : Optional.empty(),
+            customerPatchFormData.getFooter().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("footer", customerPatchFormData.getFooter().get())) : Optional.empty(),
+            customerPatchFormData.getPortal().isPresent() ?  Optional.of(new AbstractMap.SimpleEntry<>("portal", customerPatchFormData.getPortal().get())) : Optional.empty(),
+            CustomerDto.class);
     }
 
     @Override

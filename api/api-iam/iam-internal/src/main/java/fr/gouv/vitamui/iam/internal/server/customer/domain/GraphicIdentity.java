@@ -38,6 +38,8 @@ package fr.gouv.vitamui.iam.internal.server.customer.domain;
 
 import java.util.Map;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,7 +49,14 @@ public class GraphicIdentity {
 
     boolean hasCustomGraphicIdentity;
 
-    String logoDataBase64;
+    String logoHeaderBase64;
+    String logoFooterBase64;
+    String logoPortalBase64;
+
+    private String portalTitle;
+
+    @Length(max = 500)
+    private String portalMessage;
 
     // Theme based Graphical identity
     Map<String, String> themeColors;

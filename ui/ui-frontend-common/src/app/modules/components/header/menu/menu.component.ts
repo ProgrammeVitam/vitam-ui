@@ -53,7 +53,7 @@ import { MenuOverlayRef } from './menu-overlay-ref';
     ])
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MenuComponent implements OnInit, AfterViewInit {
 
   public state = '';
 
@@ -172,13 +172,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onClose();
     this.applicationService.
       openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
-  }
-
-  public updateApps(tenant: Tenant) {
-    if (tenant) {
-      this.selectedTenant = tenant;
-      this.appMap = this.applicationService.getTenantAppMap(tenant);
-    }
   }
 
   public updateApps(tenant: Tenant) {

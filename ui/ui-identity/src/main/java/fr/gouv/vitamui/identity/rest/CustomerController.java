@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -191,10 +192,14 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getCustomerLogo(final @PathVariable String id) {
-        LOGGER.debug("Get customer logo={}", id);
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
+        LOGGER.debug("Get customer logos={}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        final ResponseEntity<Resource> response = service.getCustomerLogo(buildUiHttpContext(), id);
-        return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+        final ResponseEntity<Resource> response = service.getLogo(buildUiHttpContext(), id, type);
+        if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
+            return response;
+        } else {
+            return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+        }
     }
 }
