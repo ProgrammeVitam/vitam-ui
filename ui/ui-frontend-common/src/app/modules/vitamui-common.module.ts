@@ -50,6 +50,7 @@ import { ApplicationSelectContentModule } from './components/application-select-
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { CollapseModule } from './components/collapse/collapse.module';
+import {CommonProgressBarModule} from './components/common-progress-bar/common-progress-bar.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CountryModule } from './components/country/country.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
@@ -150,6 +151,7 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
+    CommonProgressBarModule,
     VitamuiCommonSelectModule,
     VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,
@@ -213,6 +215,8 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiCommonBannerModule,
     VitamuiCommonMoreButtonModule,
     UserPhotoModule,
+    CommonProgressBarModule,
+
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

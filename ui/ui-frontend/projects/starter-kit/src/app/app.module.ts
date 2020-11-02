@@ -50,6 +50,7 @@ import { AppComponent } from './app.component';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ButtonsModule } from './components/buttons/buttons.module';
 import { InputsModule } from './components/inputs/inputs.module';
+import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { SwitchModule } from './components/switch/switch.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
 
@@ -75,6 +76,7 @@ registerLocaleData(localeFr, 'fr');
     BreadcrumbModule,
     SwitchModule,
     InputsModule,
+    ProgressBarModule,
     MatCardModule,
     MatSidenavModule,
     MatListModule,

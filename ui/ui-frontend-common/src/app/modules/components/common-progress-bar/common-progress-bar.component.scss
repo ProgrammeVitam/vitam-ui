@@ -1,0 +1,25 @@
+.transition {
+  transition: width 250ms ease;
+  }
+.tooltip-custom{
+  display: inline-flex;
+    padding: 8px;
+    background-color: var(--vitamui-secondary-900);
+    color: var(--vitamui-secondary-900-font);
+    border-radius: 5px;
+    position: relative;
+    margin-bottom: 14px;
+    margin-left: -18px;
+    margin-right: -37px;
+
+    &:before {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 0 10px;
+        border-color: var(--vitamui-secondary-900) transparent transparent transparent;
+    }
+}

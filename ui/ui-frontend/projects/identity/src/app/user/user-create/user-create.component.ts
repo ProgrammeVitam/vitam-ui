@@ -50,7 +50,6 @@ import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 const LAST_STEP_INDEX = 2;
 // tslint:disable-next-line:max-line-length
 const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -87,11 +86,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   public creating = false;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
+  public stepCount = 4;
 
   private keyPressSubscription: Subscription;
 
@@ -242,10 +237,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   formInvalid(): boolean {
     return this.form.pending || this.form.invalid;
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
   updateGroupe(groupId: string, groupName: string) {

@@ -40,6 +40,7 @@ import { QuicklinkStrategy } from 'ngx-quicklink';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { InputsComponent } from './components/inputs/inputs.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { SwitchComponent } from './components/switch/switch.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
@@ -53,6 +54,7 @@ const routes: Routes = [
   { path: 'breadcrumbs', component: BreadcrumbComponent },
   { path: 'buttons', component: ButtonsComponent },
   { path: 'switchs', component: SwitchComponent },
+  { path: 'progress-bar', component: ProgressBarComponent },
   { path: '**', redirectTo: '' },
 ];
 

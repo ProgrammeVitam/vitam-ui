@@ -34,37 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../../shared/shared.module';
-import { GroupAttributionModule } from '../group-attribution/group-attribution.module';
-import { UserCreateComponent } from './user-create.component';
-import { UserCreateValidators } from './user-create.validators';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    GroupAttributionModule,
-    VitamUICommonModule,
-  ],
-  declarations: [
-    UserCreateComponent,
-  ],
-  entryComponents: [UserCreateComponent],
-  providers: [UserCreateValidators]
+import { Component, Input, OnInit } from '@angular/core';
+const PROGRESS_BAR_MULTIPLICATOR = 100;
+
+@Component({
+  selector: 'vitamui-common-progress-bar',
+  templateUrl: './common-progress-bar.component.html',
+  styleUrls: ['./common-progress-bar.component.scss'],
 })
-export class UserCreateModule { }
+export class CommonProgressBarComponent implements OnInit {
+
+  // tslint:disable-next-line: variable-name
+  private _count: number;
+  // tslint:disable-next-line: variable-name
+  private _index: number;
+
+  @Input() set index(val: number) {
+    this._index = val;
+    this.progressValue = this.getProgressValue(this._index, this._count);
+  }
+
+  @Input() set count(val: number) {
+    this._count = val;
+    this.progressValue = this.getProgressValue(this._index, this._count);
+  }
+
+  public progressValue: number;
+
+  constructor() {}
+
+  ngOnInit() {}
+
+  getProgressValue(index: number, count: number): number {
+    return ((index + 1) / count) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+}
