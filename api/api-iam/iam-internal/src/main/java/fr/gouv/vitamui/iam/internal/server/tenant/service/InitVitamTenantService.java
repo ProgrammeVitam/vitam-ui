@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.tenant.service;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -98,6 +99,9 @@ public class InitVitamTenantService {
     @Value("classpath:data/tenant/ingest-contract/holding.json")
     private Resource holdingIngestContract;
 
+    @Value("classpath:data/tenant/ingest-contract/items.json")
+    private Resource itemsIngestContract;
+
     @Value("classpath:data/tenant/access-contract/full-access.json")
     private Resource fullAccessAccessContract;
 
@@ -110,9 +114,13 @@ public class InitVitamTenantService {
     @Value("${vitam.tenant.init.mandatory:true}")
     private Boolean mandatory;
 
+    private Map<String, Resource> contractResources;
+
     public static final String HOLDING_ACCESS_CONTRACT_NAME = "Contrat Acces Arbre";
 
-    public static final String INGEST_CONTRACT_NAME = "Contrat Entree Arbre";
+    public static final String HOLDING_INGEST_CONTRACT_NAME = "Contrat Entree Arbre";
+
+    public static final String ITEMS_INGEST_CONTRACT_NAME = "Contrat Entree Bordereaux";
 
     public static final String LOGBOOK_ACCESS_CONTRACT_NAME = "Contrat Acces Logbook";
 
@@ -142,6 +150,11 @@ public class InitVitamTenantService {
     @PostConstruct
     public void postConstruct() {
         LOGGER.info("init vitam tenant is mandatory : {}", mandatory);
+        this.contractResources = Map.of(HOLDING_ACCESS_CONTRACT_NAME, holdingAccessContract,
+                HOLDING_INGEST_CONTRACT_NAME, holdingIngestContract,
+                LOGBOOK_ACCESS_CONTRACT_NAME, logbookAccessContract,
+                ITEMS_INGEST_CONTRACT_NAME, itemsIngestContract,
+                FULL_ACCESS_CONTRACT_NAME, fullAccessAccessContract);
     }
 
     public void init(final TenantDto tenantDto) {
@@ -151,8 +164,8 @@ public class InitVitamTenantService {
         final VitamContext vitamContext = new VitamContext(tenantDto.getIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
         try {
-            initAccessContract(tenantDto, vitamContext);
-            initIngestContract(tenantDto, vitamContext);
+            initAccessContracts(tenantDto, vitamContext);
+            initIngestContracts(tenantDto, vitamContext);
 
         }
         catch (IOException | InvalidParseOperationException | AccessExternalClientException e) {
@@ -161,32 +174,35 @@ public class InitVitamTenantService {
         }
     }
 
-    private void initIngestContract(final TenantDto tenantDto, final VitamContext vitamContext)
+    private void initIngestContracts(final TenantDto tenantDto, final VitamContext vitamContext)
+            throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        tenantDto.setIngestContractHoldingIdentifier(initIngestContract(HOLDING_INGEST_CONTRACT_NAME, tenantDto, vitamContext));
+        tenantDto.setItemIngestContractIdentifier(initIngestContract(ITEMS_INGEST_CONTRACT_NAME, tenantDto, vitamContext));
+    }
+
+    private String initIngestContract(final String ingestContractName, final TenantDto tenantDto, final VitamContext vitamContext)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
 
         try {
             Optional<IngestContractDto> optIngestContract = retrieveIngestContractByName(vitamContext,
-                    INGEST_CONTRACT_NAME);
+                    ingestContractName);
 
             // If no ingestContract already exist so we create an ingest contract
             if (!optIngestContract.isPresent() || !StringUtils.equals(optIngestContract.get().getStatus(), STATUS)) {
                 final RequestResponse<?> responseIngestContract = ingestContractService
-                        .createIngestContracts(vitamContext, holdingIngestContract.getInputStream());
+                        .createIngestContracts(vitamContext, contractResources.get(ingestContractName).getInputStream());
                 VitamRestUtils.checkResponse(responseIngestContract, HttpServletResponse.SC_OK);
-                optIngestContract = retrieveIngestContractByName(vitamContext, INGEST_CONTRACT_NAME);
+                optIngestContract = retrieveIngestContractByName(vitamContext, ingestContractName);
             }
 
             checkOptionalIsPresent(optIngestContract,
-                    "Unable to find ingest contract with name " + INGEST_CONTRACT_NAME);
-            tenantDto.setIngestContractHoldingIdentifier(optIngestContract.get().getIdentifier());
-
-        }
-        catch (final VitamClientException e) {
+                    "Unable to find ingest contract with name " + ingestContractName);
+            return optIngestContract.get().getIdentifier();
+        } catch (final VitamClientException e) {
             LOGGER.error("Exception during ingest contracts initialization for tenant {}", tenantDto.getIdentifier(),
                     e);
             throw new ApplicationServerException(e);
         }
-
     }
 
     private Optional<IngestContractDto> retrieveIngestContractByName(final VitamContext vitamContext, final String Name)
@@ -200,62 +216,37 @@ public class InitVitamTenantService {
                 .findFirst();
     }
 
-    private void initAccessContract(final TenantDto tenantDto, final VitamContext vitamContext)
+    private void initAccessContracts(final TenantDto tenantDto, final VitamContext vitamContext)
+            throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        tenantDto.setAccessContractHoldingIdentifier(initAccessContract(HOLDING_ACCESS_CONTRACT_NAME, tenantDto, vitamContext));
+        tenantDto.setAccessContractLogbookIdentifier(initAccessContract(LOGBOOK_ACCESS_CONTRACT_NAME, tenantDto, vitamContext));
+        initAccessContract(FULL_ACCESS_CONTRACT_NAME, tenantDto, vitamContext);
+    }
+
+    private String initAccessContract(final String accessContractName, final TenantDto tenantDto, final VitamContext vitamContext)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
 
         try {
-            Optional<AccessContractModelDto> optHoldingAccessContract = retrieveAccessContractByName(vitamContext,
-                    HOLDING_ACCESS_CONTRACT_NAME);
+            Optional<AccessContractModelDto> accessContract = retrieveAccessContractByName(vitamContext,
+                    accessContractName);
 
-            if (!optHoldingAccessContract.isPresent()
-                    || !StringUtils.equals(optHoldingAccessContract.get().getStatus(), STATUS)) {
+            if (!accessContract.isPresent()
+                    || !StringUtils.equals(accessContract.get().getStatus(), STATUS)) {
                 final RequestResponse<?> responseAccessContract = accessContractService
-                        .createAccessContracts(vitamContext, holdingAccessContract.getInputStream());
+                        .createAccessContracts(vitamContext, contractResources.get(accessContractName).getInputStream());
                 VitamRestUtils.checkResponse(responseAccessContract, HttpServletResponse.SC_OK);
-                optHoldingAccessContract = retrieveAccessContractByName(vitamContext, HOLDING_ACCESS_CONTRACT_NAME);
+                accessContract = retrieveAccessContractByName(vitamContext, accessContractName);
             }
 
-            checkOptionalIsPresent(optHoldingAccessContract,
-                    "Unable to find access contract with name " + HOLDING_ACCESS_CONTRACT_NAME);
-            tenantDto.setAccessContractHoldingIdentifier(optHoldingAccessContract.get().getIdentifier());
+            checkOptionalIsPresent(accessContract,
+                    "Unable to find access contract with name " + accessContractName);
 
-            Optional<AccessContractModelDto> optFullAccessAccessContract = retrieveAccessContractByName(vitamContext,
-                    FULL_ACCESS_CONTRACT_NAME);
-            if (!optFullAccessAccessContract.isPresent()
-                    || !StringUtils.equals(optFullAccessAccessContract.get().getStatus(), STATUS)) {
-                final RequestResponse<?> responseAccessContract = accessContractService
-                        .createAccessContracts(vitamContext, fullAccessAccessContract.getInputStream());
-                VitamRestUtils.checkResponse(responseAccessContract, HttpServletResponse.SC_OK);
-                optFullAccessAccessContract = retrieveAccessContractByName(vitamContext, FULL_ACCESS_CONTRACT_NAME);
-            }
-
-            checkOptionalIsPresent(optFullAccessAccessContract,
-                    "Unable to find access contract with name " + FULL_ACCESS_CONTRACT_NAME);
-
-            if (tenantDto.isProof()) {
-                Optional<AccessContractModelDto> optLogbookAccessContract = retrieveAccessContractByName(vitamContext,
-                        LOGBOOK_ACCESS_CONTRACT_NAME);
-
-                if (!optLogbookAccessContract.isPresent()
-                        || !StringUtils.equals(optLogbookAccessContract.get().getStatus(), STATUS)) {
-                    final RequestResponse<?> responseAccessContract = accessContractService
-                            .createAccessContracts(vitamContext, logbookAccessContract.getInputStream());
-                    VitamRestUtils.checkResponse(responseAccessContract, HttpServletResponse.SC_OK);
-                    optLogbookAccessContract = retrieveAccessContractByName(vitamContext, LOGBOOK_ACCESS_CONTRACT_NAME);
-                }
-
-                checkOptionalIsPresent(optLogbookAccessContract,
-                        "Unable to find access contract with name " + LOGBOOK_ACCESS_CONTRACT_NAME);
-                tenantDto.setAccessContractLogbookIdentifier(optLogbookAccessContract.get().getIdentifier());
-            }
-
-        }
-        catch (final VitamClientException e) {
+            return accessContract.get().getIdentifier();
+        } catch (final VitamClientException e) {
             LOGGER.error("Exception during access contracts initialization for tenant {}", tenantDto.getIdentifier(),
                     e);
             throw new ApplicationServerException(e);
         }
-
     }
 
     private Optional<AccessContractModelDto> retrieveAccessContractByName(final VitamContext vitamContext,

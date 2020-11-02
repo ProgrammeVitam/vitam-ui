@@ -1,8 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server.tenant.service;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,11 +56,13 @@ public class InitVitamTenantServiceTest {
 
     private final Resource ingestContractHolding = new ClassPathResource("data/tenant/ingest-contract/holding.json");
 
+    private final Resource itemsIngestContract = new ClassPathResource("data/tenant/ingest-contract/items.json");
+
     private final Resource fullAccessAccessContract = new ClassPathResource(
             "data/tenant/access-contract/full-access.json");
 
     private final Resource logbookAccessContract = new ClassPathResource(
-            "data/tenant/access-contract/full-access.json");
+            "data/tenant/access-contract/logbook.json");
 
     private final Resource holdingAccessContract = new ClassPathResource("data/tenant/access-contract/holding.json");
 
@@ -71,6 +73,8 @@ public class InitVitamTenantServiceTest {
     private AccessContractModelDto holdingAccessContractDto;
 
     private IngestContractDto ingestContractHoldingDto;
+
+    private IngestContractDto itemsIngestContractDto;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -93,7 +97,15 @@ public class InitVitamTenantServiceTest {
                 AccessContractModelDto.class);
         ingestContractHoldingDto = JsonHandler.getFromInputStream(ingestContractHolding.getInputStream(),
                 IngestContractDto.class);
+        itemsIngestContractDto = JsonHandler.getFromInputStream(itemsIngestContract.getInputStream(),
+                IngestContractDto.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
+        initVitamTenantService.setContractResources(Map.of(InitVitamTenantService.HOLDING_ACCESS_CONTRACT_NAME, holdingAccessContract,
+                InitVitamTenantService.HOLDING_INGEST_CONTRACT_NAME, ingestContractHolding,
+                InitVitamTenantService.LOGBOOK_ACCESS_CONTRACT_NAME, logbookAccessContract,
+                InitVitamTenantService.ITEMS_INGEST_CONTRACT_NAME, itemsIngestContract,
+                InitVitamTenantService.FULL_ACCESS_CONTRACT_NAME, fullAccessAccessContract));
 
     }
 
@@ -111,7 +123,7 @@ public class InitVitamTenantServiceTest {
         RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
         Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(requestResponse);
-        List<AccessContractModelDto> results = Arrays.asList(holdingAccessContractDto, logbookAccessContractDto,
+        List<AccessContractModelDto> results = List.of(holdingAccessContractDto, logbookAccessContractDto,
                 fullAccessAccessContractDto);
         JsonHandler.toJsonNode(results);
         AccessContractResponseDto response = new AccessContractResponseDto();
@@ -122,7 +134,7 @@ public class InitVitamTenantServiceTest {
         RequestResponse<IngestContractModel> requestResponseIngest = Mockito.mock(RequestResponse.class);
         Mockito.when(ingestContractService.findIngestContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(requestResponseIngest);
-        List<IngestContractDto> ingestsContract = Arrays.asList(ingestContractHoldingDto);
+        List<IngestContractDto> ingestsContract = List.of(ingestContractHoldingDto, itemsIngestContractDto);
         JsonHandler.toJsonNode(results);
         IngestContractResponseDto responseIngest = new IngestContractResponseDto();
         responseIngest.setResults(ingestsContract);
