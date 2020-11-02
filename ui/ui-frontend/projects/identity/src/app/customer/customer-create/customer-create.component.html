@@ -2,11 +2,10 @@
   <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer" class="content">
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
 
     <cdk-step>
-      <div class="content">
         <h2 i18n="Create customer title@@customerCreateTitle1">Création d'un client</h2>
         <div>
           <vitamui-common-input class="field-code" formControlName="code" required placeholder="Code client"
@@ -111,11 +110,9 @@
           <button type="button" class="btn cancel" (click)="onCancel()"
             i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>
-      </div>
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
         <h2 i18n="Customer access title@@customerCreateTitle2">Accès client</h2>
 
         <div class="d-flex">
@@ -178,11 +175,10 @@
           <i class="material-icons">arrow_back</i>
           <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
         </button>
-      </div>
     </cdk-step>
 
     <cdk-step>
-      <div id="toOverride" class="content mt-4">
+      <div *ngIf="stepIndex===2" id="toOverride" class="mt-4">
         <app-graphic-identity
           (formToSend)="customerForm = $event.form; logos = $event.logos">
         </app-graphic-identity>
@@ -203,7 +199,6 @@
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
         <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création d'un propriétaire pour "{{ customerInfo?.name }}"
         </h2>
         <div class="form-group">
@@ -221,7 +216,6 @@
           <i class="material-icons">arrow_back</i>
           <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
         </button>
-      </div>
     </cdk-step>
 
     <cdk-step>
