@@ -5,6 +5,7 @@ import { merge } from 'rxjs';
 
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
+import { HttpClient } from '@angular/common/http';
 
 
 const UPDATE_DEBOUNCE_TIME = 200;
@@ -21,6 +22,7 @@ export class ArchiveSearchComponent implements OnInit {
   searchCriterias: Map<string, SearchCriteria>;
   otherCriteriaValueEnabled: boolean = false;
   showCriteriaPanel: boolean = true;
+  ontologies: any;
   previousValue: {
     title: '',
     identifier: '',
@@ -49,7 +51,13 @@ emptyForm = {
   otherCriteria: '',
   otherCriteriaValue: ''}
 
-  constructor(private formBuilder: FormBuilder,) {
+  constructor(private formBuilder: FormBuilder,private httpClient: HttpClient) {
+
+    this.httpClient.get("assets/ontologies/ontologies.json").subscribe(data =>{
+      let ontologiesContent = data;
+      this.ontologies = ontologiesContent.$results;
+      console.log(this.ontologies)
+    })
     this.previousValue = {
       title: "",
     identifier: "",
