@@ -4,11 +4,14 @@
         <div class="btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
             <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
                 <button type="button" [vitamuiCommonTooltip]="criteria.value.label + ' : ' + criteriaValue.value"   [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="  button-content right-not-arround btn"  >{{getButtonLabel(criteria.value.label + ' : ' + criteriaValue.value)}}</button>
-                <button type="button" *ngIf="criteriaValue.status !== 'IN_PROGRESS'" [vitamuiCommonTooltip]="criteria.value.label +  ' : ' + criteriaValue.value"  [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn" (click)="removeCriteria(criteria.key, criteriaValue.value)"> X </button>
-                <button type="button" *ngIf="criteriaValue.status === 'IN_PROGRESS'" [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn"> YY </button>
+                <button type="button" *ngIf="criteriaValue.status !== 'IN_PROGRESS'" [vitamuiCommonTooltip]="criteria.value.label +  ' : ' + criteriaValue.value"  [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn" (click)="removeCriteria(criteria.key, criteriaValue.value)">
+                  <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+                </button>
+                <button type="button" *ngIf="criteriaValue.status === 'IN_PROGRESS'" [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"  class="before-search-launched-button button-remove left-not-arround btn">
+                  <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
+                </button>
                 <button type="button" *ngIf="!isLast"  [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]" class="button-or left-not-arround  right-not-arround btn">OU</button>
             </ng-container>
-
         </div>
 
 </div>
@@ -128,8 +131,12 @@
             <mat-option value="1">CHOISE 1</mat-option>
             <mat-option value="2">CHOISE 2</mat-option>
             <mat-option value="3">CHOISE 3</mat-option>
+            <div class="select-arrow">
+              <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
+            </div>
           </mat-select>
           <div class="select-arrow">
+            <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
             <i class="material-icons">keyboard_arrow_up</i>
             <i class="material-icons">keyboard_arrow_down</i>
           </div>
