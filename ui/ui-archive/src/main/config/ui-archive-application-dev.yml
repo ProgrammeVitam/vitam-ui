@@ -64,7 +64,7 @@ ui-archive:
     portal: "https://dev.vitamui.com:4200"
 
   portal-categories:
-    archives:
+    ingests:
       title: "Recherches et consultation"
       displayTitle: true
       order: 4
