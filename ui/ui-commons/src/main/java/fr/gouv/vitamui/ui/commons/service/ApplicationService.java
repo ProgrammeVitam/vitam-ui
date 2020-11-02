@@ -51,6 +51,7 @@ import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -161,6 +162,11 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     }
 
     public String getBase64File(final String fileName, final String basePath) {
+        if (StringUtils.isBlank(fileName) || StringUtils.isBlank(basePath)) {
+            LOGGER.warn(String.format("Logo information missing : cannot load logo with name \"%s\" in path \"%s\"", fileName, basePath));
+            return null;
+        }
+
         final Path assetFile = Paths.get(basePath, Paths.get(fileName).getFileName().toString());
         String base64Asset = null;
         try {
