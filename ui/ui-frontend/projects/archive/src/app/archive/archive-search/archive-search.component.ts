@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SearchCriteria, SearchCriteriaValue, SearchCriteriaStatusEnum } from '../../core/search.criteria';
+import { SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.criteria';
 import { merge } from 'rxjs';
 
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -202,7 +202,6 @@ emptyForm = {
     setTimeout(() =>
     {
       console.log("pass to Progress")
-
         this.searchCriterias.forEach((value: SearchCriteria, key: string) => {
           value.values.forEach((elt)=> {
             if(elt.status === SearchCriteriaStatusEnum.NOT_INCLUDED){
@@ -217,7 +216,7 @@ emptyForm = {
     setTimeout(() =>
     {
       console.log("pass to progress")
-      this.searchCriterias.forEach((value: SearchCriteria, key: string) => {
+      this.searchCriterias.forEach((value: SearchCriteria) => {
         value.values.forEach((elt)=> {
           if(elt.status === SearchCriteriaStatusEnum.IN_PROGRESS){
             elt.status = SearchCriteriaStatusEnum.INCLUDED;
