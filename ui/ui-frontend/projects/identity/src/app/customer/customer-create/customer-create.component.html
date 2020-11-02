@@ -182,50 +182,17 @@
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
-
-        <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity"
-            i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique
-            personnalisée</vitamui-common-slide-toggle>
-        </div>
-
-        <div class="d-flex">
-          <div class="upload-text">
-            <div class="upload" i18n="Customer graphical identity upload label@@customerGraphicalIdentityUploadLabel">
-              <span class="underline" (click)="addLogo()">Sélectionner</span> le logo du client</div>
-            <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max
-              280px * 100px)</div>
-          </div>
-          <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
-            (fileToUploadEmitter)="onImageDropped($event)" (fileDragOverEmitter)="onImageDragOver($event)"
-            (fileDragLeaveEmitter)="onImageDragLeave($event)">
-            <div *ngIf="imageUrl" class="image-container">
-              <img class="logo-image" [src]="imageUrl" />
-            </div>
-            <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)">
-            <div class="drop-area">
-              <p *ngIf="!imageUrl" class="logo-drop">
-                ou faire glisser le logo<br>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="customer-colors-input">
-          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity"
-            themeOverloadSelector="form#formCreateCustomer"></app-customer-colors-input>
-        </div>
-        <div class="error-message" *ngIf="hasError">
-          {{ message }}
-        </div>
+      <div id="toOverride" class="content mt-4">
+        <app-graphic-identity
+          (formToSend)="customerForm = $event.form; logos = $event.logos">
+        </app-graphic-identity>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()"
-            i18n="@@customerCreateNextButton">Suivant</button>
-          <button type="button" class="btn cancel" (click)="onCancel()"
-            i18n="@@customerCreateCancelButton">Annuler</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
+            Créer le propriétaire
+            <small> des éléments de preuves</small>
+          </button>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>

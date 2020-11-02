@@ -99,6 +99,8 @@ export class CustomerListService extends SearchService<Customer> {
       emailDomains: customer.emailDomains,
       defaultEmailDomain: customer.defaultEmailDomain,
       owners: this.filteredOwners(customer),
+      portalMessage: customer.portalMessage,
+      portalTitle: customer.portalTitle,
       readonly: customer.readonly,
       hasCustomGraphicIdentity: customer.hasCustomGraphicIdentity,
       themeColors: customer.themeColors

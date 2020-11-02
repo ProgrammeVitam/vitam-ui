@@ -39,7 +39,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration, Application } from '../models';
+import { AppConfiguration, Application, AttachementType } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -60,8 +60,8 @@ export class ApplicationApiService {
     return this.http.get<AppConfiguration>(this.apiUrl + '/conf');
   }
 
-  getAsset(fileName: string): Observable<AppConfiguration> {
-    return this.http.get<AppConfiguration>(`${this.apiUrl}/asset?fileName=${fileName}`);
+  getAsset(assets: AttachementType[]): Observable<AppConfiguration> {
+    return this.http.get<AppConfiguration>(`${this.apiUrl}/asset?assets=${assets}`);
   }
 
 }

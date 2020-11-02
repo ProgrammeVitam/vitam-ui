@@ -55,6 +55,8 @@ export interface Customer extends Id {
   defaultEmailDomain: string;
   owners: Owner[];
   readonly: boolean;
+  portalMessage?: string;
+  portalTitle?: string;
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
 }

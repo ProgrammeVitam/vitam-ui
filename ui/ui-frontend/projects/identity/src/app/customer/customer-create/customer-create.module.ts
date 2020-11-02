@@ -46,6 +46,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
+import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { CustomerColorsInputModule } from './customer-colors-input/customer-colors-input.module';
 import { CustomerCreateComponent } from './customer-create.component';
@@ -64,10 +65,11 @@ import { CustomerCreateValidators } from './customer-create.validators';
     MatSnackBarModule,
     ReactiveFormsModule,
     OwnerFormModule,
-    VitamUICommonModule
+    VitamUICommonModule,
+    CustomerPreviewModule
   ],
   declarations: [
-    CustomerCreateComponent
+    CustomerCreateComponent,
   ],
   entryComponents: [CustomerCreateComponent],
   providers: [CustomerCreateValidators]

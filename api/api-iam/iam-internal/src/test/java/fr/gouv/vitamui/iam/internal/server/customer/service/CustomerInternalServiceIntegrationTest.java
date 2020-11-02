@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -202,44 +203,47 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @Test
     public void testPatch() {
         final CustomerDto customer = createCustomer();
+        final CustomerPatchFormData customerPatchFormData = new CustomerPatchFormData();
+        final Map<String, Object> partialDtoInit = new HashMap<>();
+        customerPatchFormData.setPartialCustomerDto(partialDtoInit);
 
-        final Map<String, Object> partialDto = new HashMap<>();
+        final Map<String, Object> partialDto = customerPatchFormData.getPartialCustomerDto();
         partialDto.put("id", customer.getId());
 
         partialDto.put("name", "nameTest");
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("name");
 
         partialDto.put("enabled", false);
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("enabled");
 
         partialDto.put("companyName", "company Name test");
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("companyName");
 
         partialDto.put("language", LanguageDto.FRENCH.toString());
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("language");
 
         partialDto.put("passwordRevocationDelay", 1);
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("passwordRevocationDelay");
 
         partialDto.put("otp", OtpEnum.OPTIONAL.toString());
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("otp");
 
         partialDto.put("emailDomains", Arrays.asList("vitamui.com", "test.com"));
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("emailDomains");
 
         partialDto.put("defaultEmailDomain", "vitamui.com");
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("defaultEmailDomain");
 
         partialDto.put("subrogeable", true);
-        service.patch(partialDto, Optional.empty());
+        service.patch(customerPatchFormData);
         partialDto.remove("subrogeable");
 
         final Criteria criteria = Criteria.where("obId").is(customer.getIdentifier()).and("obIdReq").is(MongoDbCollections.CUSTOMERS).and("evType")

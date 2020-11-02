@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SafeUrl } from '@angular/platform-browser';
+import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -8,9 +8,10 @@ import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { AuthUser } from '../../models';
+import { AuthUser, ThemeDataType } from '../../models';
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
+import { ThemeService } from '../../theme.service';
 import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 import { ApplicationId } from './../../application-id.enum';
 import { SubrogationService } from './../../subrogation/subrogation.service';
@@ -48,12 +49,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public tenants: Tenant[];
 
+  public headerLogoUrl: SafeResourceUrl;
+
   constructor(private subrogationService: SubrogationService,
               private startupService: StartupService,
               private menuOverlayService: MenuOverlayService,
               private authService: AuthService,
               private tenantService: TenantSelectionService,
               private customerSelectionService: CustomerSelectionService,
+              private themeService: ThemeService,
               private matDialog: MatDialog,
               private router: Router,
               private applicationService: ApplicationService,
@@ -69,6 +73,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         (profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP
       );
     }
+
+    this.headerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.HEADER_LOGO);
 
     // Open the select default tenant dialog if no default tenant identifier defined
     const dialogConfig = SelectTenantDialogComponent.SELECT_TENANT_DIALOG_CONFIG;

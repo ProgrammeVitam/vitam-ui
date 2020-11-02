@@ -2,15 +2,15 @@
 
   <div class="vitamui-sidepanel-header">
     <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
+      <button class="btn-popup pointer" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
     </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <button class="btn-close pointer" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-bank"></i>
       <h2>{{customer?.name}} <small>({{customer?.code}})</small></h2>
       <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
+        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="m-0 material-icons">more_horiz</i></button>
         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
           <button mat-menu-item i18n="Coming soon@@customerPreviewComingSoon">Bientôt</button>
         </mat-menu>
