@@ -45,6 +45,7 @@ export * from './api/subrogation-api.service';
 export * from './app.guard';
 export * from './application.service';
 export * from './tenant-selection.service';
+export * from './customer-selection.service';
 export * from './app-root-component.class';
 export * from './application-id.enum';
 export * from './auth.guard';

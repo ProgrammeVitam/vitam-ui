@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Tenant } from '../../..';
+import { Tenant } from '../../../models/customer/tenant.interface';
 
 @Component({
   selector: 'vitamui-common-select-tenant',
@@ -25,6 +25,7 @@ export class SelectTenantComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroyer$.next();
+    this.destroyer$.complete();
   }
 
   public selectTenant(tenant: Tenant): void {

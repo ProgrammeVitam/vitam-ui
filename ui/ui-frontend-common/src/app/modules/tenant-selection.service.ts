@@ -11,31 +11,24 @@ import { Tenant } from './models/customer/tenant.interface';
 })
 export class TenantSelectionService {
 
+    /** Keyword in url that indicate the selected tenant identifier */
+    private readonly TENANT_SELECTION_URL_CONDITION = '/tenant/';
+
     public currentAppId$ = new BehaviorSubject(undefined);
 
-    /**
-     * Contain data about the current selected tenant
-     */
+    /** Contain data about the current selected tenant */
     private selectedTenant: Tenant;
 
-    /**
-     * Provide selected tenant subscriptions
-     */
-    private selectedTenant$ = new BehaviorSubject(this.selectedTenant);
+    /** Provide selected tenant subscriptions */
+    private selectedTenant$ = new BehaviorSubject(undefined);
 
-    /**
-     * Contain the last persisted tenant identifier in DB
-     */
+    /** Contain the last persisted tenant identifier in DB */
     private lastTenantIdentifier: number;
 
-    /**
-     * Provide last tenant identifier subscriptions
-     */
+    /** Provide last tenant identifier subscriptions */
     private lastTenantIdentifier$ = new Subject();
 
-    /**
-     * Contain a list of all existing tenant for the current user
-     */
+    /** Contain a list of all existing tenant for the current logged in user */
     private tenants: Tenant[];
 
     constructor(private authService: AuthService, private userApiService: UserApiService) { }
@@ -48,6 +41,15 @@ export class TenantSelectionService {
         if (!this.selectedTenant || this.selectedTenant.identifier !== tenant.identifier) {
             this.selectedTenant = tenant;
             this.selectedTenant$.next(tenant);
+        }
+    }
+
+    public setSelectedTenantByIdentifier(tenantIdentifier: number): void {
+        if (tenantIdentifier) {
+            const tenant: Tenant = this.getTenants().find(value => value.identifier === tenantIdentifier);
+            if (tenant) {
+              this.setSelectedTenant(tenant);
+            }
         }
     }
 
@@ -130,8 +132,8 @@ export class TenantSelectionService {
 
     public saveTenantIdentifier(identifier?: number): Observable<number> {
         return new Observable((observer) => {
-            if (!identifier) {
-            identifier = this.lastTenantIdentifier;
+            if (!identifier && this.selectedTenant) {
+                identifier = this.selectedTenant.identifier;
             }
 
             this.userApiService.analytics({lastTenantIdentifier: identifier})
@@ -142,16 +144,10 @@ export class TenantSelectionService {
         });
     }
 
-    /**
-     * Tenant selection should be displayed only if we require tenant identifier data
-     * in an application or the current application identifier is PORTAL_APP
-     */
-    public isTenantSelection(): Observable<boolean> {
-        return new Observable((observer) => {
-            this.currentAppId$.subscribe((currentAppId: ApplicationId) => {
-                const url = window.location.href;
-                observer.next(url.includes('/tenant/') || currentAppId === ApplicationId.PORTAL_APP);
-            });
-        });
+    public hasTenantSelection(url: string): boolean {
+        if (!url) {
+            url = window.location.href;
+        }
+        return (url.includes(this.TENANT_SELECTION_URL_CONDITION) || this.currentAppId$.value === ApplicationId.PORTAL_APP);
     }
 }
