@@ -29,5 +29,9 @@
         "DIALOG_INSTRUCTIONS" : "Veuillez sélectionner votre coffre par défaut",
         "DIALOG_MESSAGE" : "Votre coffre par défaut pourra être modifié depuis votre compte",
         "DIALOG_BUTTON_LABEL" : "Accéder à VitamUI"
+    },
+    "SELECT-CUSTOMER": {
+        "SELECTED": "Client sélectioné",
+        "SELECT" : "Sélectionner un client"
     }
 }

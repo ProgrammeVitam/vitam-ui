@@ -38,9 +38,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
+import { CustomerSelectionService } from '../../../customer-selection.service';
 
 import { CustomerMenuComponent } from './customer-menu.component';
-import { CustomerMenuService } from './customer-menu.service';
 
 describe('CustomerMenuComponent', () => {
   let component: CustomerMenuComponent;
@@ -52,7 +52,7 @@ describe('CustomerMenuComponent', () => {
       declarations: [ CustomerMenuComponent ],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
-        { provide: CustomerMenuService, useValue: { getSelectedCustomer: () => EMPTY } },
+        { provide: CustomerSelectionService, useValue: { getSelectedCustomerId$: () => EMPTY } },
       ]
     })
     .compileComponents();

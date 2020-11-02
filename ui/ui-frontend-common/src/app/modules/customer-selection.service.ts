@@ -34,50 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { CustomerSelectionService } from '../../customer-selection.service';
-import { MenuOption } from '../navbar';
-import { CustomerMenuService } from '../navbar/customer-menu/customer-menu.service';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { MenuOption } from './components/navbar/customer-menu/menu-option.interface';
 
-@Component({
-  selector: 'vitamui-common-customer-select-content',
-  templateUrl: './customer-select-content.component.html',
-  styleUrls: ['./customer-select-content.component.scss']
+@Injectable({
+  providedIn: 'root'
 })
-export class CustomerSelectContentComponent implements OnInit, OnDestroy {
+export class CustomerSelectionService {
 
-  @Input() customers: MenuOption[];
-  @Input() isModalMenu: boolean;
+  private selectedCustomer$ = new BehaviorSubject(undefined);
+  private customers$ = new BehaviorSubject(undefined);
 
-  @Output() customerSelected: EventEmitter<string> = new EventEmitter<string>();
+  constructor() {}
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private customerMenuService: CustomerMenuService,
-    private customerSelectionService: CustomerSelectionService) { }
-
-  ngOnInit(): void {
-    if (this.customers) {
-      this.customers.sort((c1, c2) => c1.label.localeCompare(c2.label));
-      this.customerSelectionService.setCustomers(this.customers);
+  public setCustomerId(customerId: string): void {
+    if (customerId && customerId !== this.selectedCustomer$.getValue()) {
+      this.selectedCustomer$.next(customerId);
     }
   }
 
-  ngOnDestroy(): void {}
-
-  public selectCustomerId(customerId: string): void {
-    if (customerId) {
-      if (this.isModalMenu) {
-        this.customerMenuService.sendSelectedCustomerId(customerId);
-        this.customerSelectionService.setCustomerId(customerId);
-        this.customerSelected.emit(customerId);
-      } else {
-        this.router.navigate(['./' + customerId], { relativeTo: this.route });
-      }
-    }
+  public getSelectedCustomerId$(): Observable<string> {
+    return this.selectedCustomer$.asObservable();
   }
 
+  public getSelectedCustomerId(): string {
+    return this.selectedCustomer$.getValue();
+  }
+
+  public getCustomers$(): Observable<MenuOption[]> {
+    return this.customers$.asObservable();
+  }
+
+  public getCustomers(): MenuOption[] {
+    return this.customers$.getValue();
+  }
+
+  public setCustomers(customers: MenuOption[]): void {
+    // Set only if there is no value yet
+    if (!this.customers$.getValue()) {
+      this.customers$.next(customers);
+    }
+  }
 }
