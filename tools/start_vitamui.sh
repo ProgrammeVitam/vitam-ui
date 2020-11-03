@@ -19,7 +19,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 SPRINGBOOT="mvn spring-boot:run -Dspring-boot.run.noverify"
-#SPRINGBOOT='mvn -Pvitam --batch-mode spring-boot:run -Dspring-boot.run.noverify -Dspring-boot.run.jvmArguments='\''-XX:+UseG1GC' '-Xmx512m'\'
 NPMSTART="sh -c 'npm install; npm run start'"
 
 function launch() {
