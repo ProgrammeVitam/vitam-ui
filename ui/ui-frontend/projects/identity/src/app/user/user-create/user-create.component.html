@@ -198,6 +198,12 @@
           </div>
         </ng-container>
 
+        <div>
+          <vitamui-common-input class="field-site-code" formControlName="siteCode" placeholder="Code du site"
+                                i18n-placeholder="user create siteCode@@userCreateSiteCode">
+          </vitamui-common-input>
+        </div>
+
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="form.get('address').pending || form.get('address').invalid"
             i18n="user create next step otp@@userCreateNextStepOtpButton">

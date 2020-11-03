@@ -167,6 +167,8 @@ public class CommonConstants {
 
     public static final String TENANTS_BY_APP_ATTRIBUTE = "tenantsByApp";
 
+    public static final String SITE_CODE = "siteCode";
+
     public static final String CUSTOMER_ID_ATTRIBUTE = "customerId";
 
     public static final String CUSTOMER_IDENTIFIER_ATTRIBUTE = "customerIdentifier";

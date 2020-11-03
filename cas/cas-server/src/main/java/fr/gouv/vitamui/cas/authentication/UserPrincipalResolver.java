@@ -66,6 +66,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
 
@@ -217,6 +218,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
             attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
             attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp())));
+            attributes.put(SITE_CODE, Collections.singletonList(user.getSiteCode()));
             final Set<String> roles = new HashSet<>();
             final List<ProfileDto> profiles = authUser.getProfileGroup().getProfiles();
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
