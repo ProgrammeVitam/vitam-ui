@@ -15,14 +15,4 @@ export interface SearchCriteria {
     label: string;
     values?: SearchCriteriaValue[];
 };
-
-export interface OntologySubModel{
-    Identifier: string;
-    ApiField: string;
-    Description: string; 
-    Type: string;
-    Origin: string;
-    CreationDate: any ;
-    ShortName: string;
-}
  

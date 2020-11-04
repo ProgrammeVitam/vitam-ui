@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { OntologySubModel, SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.criteria';
+import { SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.criteria';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
