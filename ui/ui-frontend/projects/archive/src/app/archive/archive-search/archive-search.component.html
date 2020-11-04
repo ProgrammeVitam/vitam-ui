@@ -1,5 +1,20 @@
-<p>archive-search works!</p>
 <div class="archive-search-section">
+  <form [formGroup]="form">
+  <div class="row">
+    <h2 i18n="Recherche @@hierarchyRecherche">Recherche: </h2>
+  </div>
+  <div class="row justify-content-around">
+    <div class="col-9 form-control">
+      <vitamui-common-input formControlName="archiveCriteria"  maxlength="200"
+        class="search-input-criteria"  i18n-placeholder="Rechercher une archive"
+        placeholder="Rechercher une archive">
+      </vitamui-common-input>
+    </div>
+    <div class="col-3 form-control">
+      <button type="button" class="btn secondary launch-search-btn" [disabled]="searchCriterias.size === 0" (click)="submit()">Lancer une recherche</button>
+    </div>
+  </div>
+
 <div class="row">
         <div class="btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
             <ng-container *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
@@ -15,20 +30,20 @@
         </div>
 
 </div>
-<div class="row">
-<div class="col-11">
-<div class="row d-flex flex-row-reverse">
-   <div class="p-2">
-    <button type="button" class="btn secondary" [disabled]="searchCriterias.size === 0" (click)="submit()">Rechercher</button>
-  </div>
-  </div>
+
+<div class="row justify-content-around" >
+    <div class="col-6">
+      <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">Afficher les filtres de recherche</a>
+    </div>
+    <div class="col-6 text-right">
+      <a class="hide-ink" >Afficher à l’historique des recherches</a>
+    </div>
 </div>
- </div>
 
 <div class="card-criteria" *ngIf="showCriteriaPanel">
   <div class="row">
     <div class="col-11">
-   <form [formGroup]="form">
+
      <div class="row justify-content-around">
       <div class="col-11 form-control">
         <h3 i18n="Group searchFilter@@hierarchysearchFilter">Filtre de recherche</h3>
@@ -74,7 +89,7 @@
         <h3 i18n="Group productorService@@hierarchyproductorService">Service producteur: </h3>
       </div>
       <div class="col-4 form-control">
-        <h3 i18n="Group Communicability@@hierarchyCommunicability">Communicabilité: </h3>
+        <h3 i18n="Group otherCriteria@@hierarchyotherCriteria">Autre critère: </h3>
       </div>
     </div>
 
@@ -86,13 +101,23 @@
         </div>
 
         <div class="col-4 form-control">
-            <div class="form-group">
-                <mat-button-toggle-group   formControlName="serviceProdCommunicability"  #group="matButtonToggleGroup" class=" vitamui-button-toggle-group">
-                  <mat-button-toggle   value="YES" i18n=" userType nominative button@@userCreateTypeNominativeButton">OUI</mat-button-toggle>
-                  <mat-button-toggle value="NO" i18n="userType generic button@@userCreateTypeGenericButton">NON</mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-          </div>
+          <mat-form-field class="vitamui-mat-select">
+            <mat-select
+              formControlName="otherCriteria"
+              panelClass="vitamui-mat-select"
+              placeholder="otherCriteria"   (valueChange)="onSelectOtherCriteria()">
+              <mat-option value="">Sélection d'un autre critère</mat-option>
+              <mat-option value="{{ontology.Identifier}}" *ngFor="let ontology of this.ontologies">{{ontology.ShortName}}</mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
+            </div>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
       </div>
       <div class="row justify-content-around">
         <div class="col-3 form-control">
@@ -103,59 +128,31 @@
         <div class="col-2 form-control">
         </div>
         <div class="col-4 form-control">
-            <vitamui-common-editable-input formControlName="serviceProdCommunicabilityDt"  [validator]="form?.get('serviceProdCommunicabilityDt')?.validator" label="serviceProdCommunicabilityDt"
-              i18n-label="user info tab serviceProdCommunicabilityDt@@UserInfoTabserviceProdCommunicabilityDt">
-            </vitamui-common-editable-input>
-          </div>
+          <vitamui-common-editable-input formControlName="otherCriteriaValue"    *ngIf="otherCriteriaValueEnabled"  [validator]="form?.get('otherCriteriaValue')?.validator"
+          label="Valeur du critère : {{selectedValueOntolonogy}}"
+              i18n-label="user info tab otherCriteriaValue@@UserInfoTabotherCriteriaValue">
+          </vitamui-common-editable-input>
+        </div>
 
       </div>
 
       <div class="row justify-content-center">
-        <div class="col-6 form-control">
-          <h3 i18n="Group otherCriteria@@hierarchyotherCriteria">Autre critère: </h3>
+        <div class="col-7 form-control">
+
         </div>
         <div class="col-4 form-control">
-          <a (click)="showHidePanel()">Masquer les filtres de recherche</a>
+          <a class="hide-ink" (click)="showHidePanel()">Masquer les filtres de recherche</a>
         </div>
        </div>
 
-      <div class="row justify-content-around">
-       <div class="col-3 form-control">
-        <mat-form-field class="vitamui-mat-select ">
-          <mat-select
-            formControlName="otherCriteria"
-            required
-            placeholder="otherCriteria"
-            panelClass="vitamui-mat-select" (valueChange)="onSelectOtherCriteria()">
-            <mat-option value="">Sélection d'un autre critère</mat-option>
-            <mat-option value="1">CHOISE 1</mat-option>
-            <mat-option value="2">CHOISE 2</mat-option>
-            <mat-option value="3">CHOISE 3</mat-option>
-            <div class="select-arrow">
-              <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
-            </div>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
-      </div>
-      <div class="col-2 form-control">
-      </div>
-      <div class="col-4 form-control">
-        <vitamui-common-editable-input formControlName="otherCriteriaValue"    *ngIf="otherCriteriaValueEnabled"  [validator]="form?.get('otherCriteriaValue')?.validator" label="otherCriteriaValue"
-              i18n-label="user info tab otherCriteriaValue@@UserInfoTabotherCriteriaValue">
-        </vitamui-common-editable-input>
-      </div>
-    </div>
+       <div class="row justify-content-center">
 
-  </form>
+       </div>
+
 </div>
 </div>
 
 
   </div>
-
+</form>
 </div>

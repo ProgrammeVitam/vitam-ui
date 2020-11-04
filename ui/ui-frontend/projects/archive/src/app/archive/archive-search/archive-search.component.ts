@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.criteria';
+import { OntologySubModel, SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.criteria';
 import { merge } from 'rxjs';
-
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { HttpClient } from '@angular/common/http';
@@ -22,8 +21,10 @@ export class ArchiveSearchComponent implements OnInit {
   searchCriterias: Map<string, SearchCriteria>;
   otherCriteriaValueEnabled: boolean = false;
   showCriteriaPanel: boolean = true;
+  selectedValueOntolonogy: any;
   ontologies: any;
   previousValue: {
+    archiveCriteria: '',
     title: '',
     identifier: '',
     description: '',
@@ -38,6 +39,7 @@ export class ArchiveSearchComponent implements OnInit {
     otherCriteriaValue: ''
   };
 emptyForm = {
+  archiveCriteria: '',
   title: '',
   identifier: '',
   description: '',
@@ -52,14 +54,13 @@ emptyForm = {
   otherCriteriaValue: ''}
 
   constructor(private formBuilder: FormBuilder,private httpClient: HttpClient) {
-
-    this.httpClient.get("assets/ontologies/ontologies.json").subscribe(data =>{
-      let ontologiesContent = data;
-      this.ontologies = ontologiesContent.$results;
+    this.getOntologiesFromJson().subscribe((data:any) =>{
+      this.ontologies= data;
       console.log(this.ontologies)
     })
     this.previousValue = {
-      title: "",
+    archiveCriteria: "",
+    title: "",
     identifier: "",
     description: "",
     guid: "",
@@ -70,10 +71,11 @@ emptyForm = {
     serviceProdCommunicability: "",
     serviceProdCommunicabilityDt: "",
     otherCriteria: "",
-    otherCriteriaValue: ""}
-    ;
+    otherCriteriaValue: ""};
+
 
     this.form = this.formBuilder.group({
+      archiveCriteria: ['', []],
       title: ['', []],
       description: ['', []],
       guid: ['', []],
@@ -99,6 +101,11 @@ emptyForm = {
     }
     );
    }
+
+   getOntologiesFromJson() {
+    return this.httpClient.get("assets/ontologies/ontologies.json")
+    .pipe(map(resp => resp));
+  }
 
    isEmpty(formData: any): boolean{
       if(formData.title){
@@ -129,7 +136,8 @@ emptyForm = {
       this.addCriteria("serviceProdCommunicabilityDt", "Service Prod Comm DT",  formData.serviceProdCommunicabilityDt);
        return true;
      }else if(formData.otherCriteriaValue){
-      this.addCriteria(formData.otherCriteria, formData.otherCriteria ,formData.otherCriteriaValue);
+         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Identifier === formData.otherCriteria);
+         this.addCriteria(formData.otherCriteria, ontologyElt.ShortName ,formData.otherCriteriaValue);
        return true;
      }else{
       return false;
@@ -174,9 +182,15 @@ emptyForm = {
     .subscribe(selectedcriteria => {
         if (selectedcriteria === '') {
             this.otherCriteriaValueEnabled = false;
+            this.selectedValueOntolonogy = null;
         }
         else {
           this.otherCriteriaValueEnabled = true;
+          let selectedValueOntolonogyValue = this.form.get('otherCriteria').value;
+          const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Identifier === selectedValueOntolonogyValue);
+          if(selectedValueOntolonogyElt){
+            this.selectedValueOntolonogy =  selectedValueOntolonogyElt.ShortName;
+          }
         }
     });
 }
@@ -210,7 +224,8 @@ emptyForm = {
     setTimeout(() =>
     {
       console.log("pass to Progress")
-        this.searchCriterias.forEach((value: SearchCriteria, key: string) => {
+
+        this.searchCriterias.forEach((value: SearchCriteria) => {
           value.values.forEach((elt)=> {
             if(elt.status === SearchCriteriaStatusEnum.NOT_INCLUDED){
               elt.status = SearchCriteriaStatusEnum.IN_PROGRESS;
