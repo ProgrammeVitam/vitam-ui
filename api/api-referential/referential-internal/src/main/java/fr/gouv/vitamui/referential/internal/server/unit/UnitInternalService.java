@@ -83,7 +83,7 @@ public class UnitInternalService {
     }
     
     public JsonNode findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-        RequestResponse<JsonNode> response = unitService.findObjectMetadataById(unitId, vitamContext);
+        RequestResponse<JsonNode> response = unitService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         return response.toJsonNode();
     }
 }

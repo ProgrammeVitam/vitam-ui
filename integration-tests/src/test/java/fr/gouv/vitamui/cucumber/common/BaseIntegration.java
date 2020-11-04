@@ -60,16 +60,13 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
-import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.utils.TestConstants;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -90,7 +87,7 @@ public abstract class BaseIntegration {
     protected static final String TEST_USER_EMAIL = "testuser@test.com";
 
     public static final String ACCESS_CONTRACT = "AC-000001";
-    
+
     public static final String UNIT_CONTRACT = "ContratTNR";
 
     public static final String ADMIN_USER = "admin_user";
@@ -100,9 +97,11 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-    
+
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
     
+    private ReferentialExternalWebClientFactory webReferentialClientFactory;
+
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
@@ -113,6 +112,12 @@ public abstract class BaseIntegration {
     
     private OntologyExternalWebClient ontologyWebClient;
     
+    private FileFormatExternalWebClient fileFormatWebClient;
+
+    private AgencyExternalWebClient agencyWebClient;
+
+    private OntologyExternalWebClient ontologyWebClient;
+
     private FileFormatExternalWebClient fileFormatWebClient;
 
     private IdentityProviderExternalRestClient identityProviderRestClient;
@@ -135,7 +140,7 @@ public abstract class BaseIntegration {
     
     private ContextExternalRestClient contextRestClient;
 
-    private ContextExternalRestClient contextRestClient;
+    private UnitExternalRestClient unitRestClient;
 
     private RuleExternalRestClient ruleRestClient;
 
@@ -276,7 +281,7 @@ public abstract class BaseIntegration {
         buildSystemTenantUserAdminContext();
         return new ExternalHttpContext(tenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", ACCESS_CONTRACT);
     }
-    
+
     protected ExternalHttpContext getUnitAdminContext() {
         buildSystemTenantUserAdminContext();
         return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", UNIT_CONTRACT);
@@ -652,6 +657,13 @@ public abstract class BaseIntegration {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
         }
         return contextRestClient;
+    }
+
+    protected UnitExternalRestClient getUnitRestClient() {
+        if (unitRestClient == null) {
+            unitRestClient = getReferentialRestClientFactory().getUnitExternalRestClient();
+        }
+        return unitRestClient;
     }
 
     protected RuleExternalRestClient getRuleRestClient() {

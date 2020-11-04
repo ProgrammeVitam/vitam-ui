@@ -73,7 +73,6 @@ import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
-import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
 

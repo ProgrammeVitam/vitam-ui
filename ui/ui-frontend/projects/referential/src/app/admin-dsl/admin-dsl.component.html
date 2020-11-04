@@ -11,6 +11,7 @@
         </h2>
       </div>
     </div>
+
     <form [formGroup]="form" (ngSubmit)="search()" (keydown.enter)="$event.preventDefault()">
       <div class="row">
         <mat-form-field class="vitamui-mat-select">
@@ -100,7 +101,7 @@
           </div>
         </div>
       </div>
-    </form>  
+    </form>
   </mat-sidenav-content>
 
 </mat-sidenav-container>
