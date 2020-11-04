@@ -1,12 +1,4 @@
-{
-    "httpCode": 200,
-    "$hits": {
-        "total": 275,
-        "offset": 0,
-        "limit": 10000,
-        "size": 275
-    },
-    "$results": [
+[
         {
             "#id": "aeiaaaaaaehjsbe3abqlyalvrdv5i2yaaaaq",
             "#tenant": 1,
@@ -4573,28 +4565,4 @@
                 "Unit"
             ]
         }
-    ],
-    "$facetResults": [],
-    "$context": {
-        "$query": {
-            "$and": [
-                {
-                    "$or": [
-                        {
-                            "$exists": "ApiField"
-                        },
-                        {
-                            "$exists": "SedaField"
-                        }
-                    ]
-                }
-            ]
-        },
-        "$filter": {
-            "$orderby": {
-                "ApiField": 1
-            }
-        },
-        "$projection": {}
-    }
-}
+    ]
