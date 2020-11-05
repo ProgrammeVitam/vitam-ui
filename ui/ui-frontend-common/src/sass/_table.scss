@@ -234,6 +234,7 @@ table.vitamui-table {
 /******* NEW TABLE CSS *********/
 /*********** CLASS *************/
 
+// table css
 .vitamui-table {
     background-color: $white;
     border: 1px solid var(--vitamui-grey-200);
@@ -249,21 +250,6 @@ table.vitamui-table {
     color: var(--vitamui-grey-700);
 }
 
-.vitamui-table-row {
-    padding: 0.8rem;
-    align-items: center;
-    color: var(--vitamui-grey-900);
-    font-size: 15px;
-}
-
-.vitamui-table-row:hover {
-    background-color: var(--vitamui-background);
-}
-
-.vitamui-table-row {
-    border-top: 1px solid var(--vitamui-grey-100); 
-}
-
 .vitamui-min-content {
     min-height: 100px;
     display: flex;
@@ -274,4 +260,70 @@ table.vitamui-table {
 .vitamui-table-message {
     font-weight: 600;
     color: var(--vitamui-grey-700);
+}
+
+.vitamui-table-rows {
+    border-top: 1px solid var(--vitamui-grey-100); 
+    color: var(--vitamui-grey-900);
+    align-items: center;
+    font-size: 15px;
+
+    .vitamui-row {
+        padding: 0.8rem;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .actions > div {
+        width: 100%;
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        visibility: inherit;
+        align-content: flex-end;
+        opacity: 0;
+        transform: translateX(-20%);
+        transition-timing-function: ease-out;
+    }
+
+    &:hover {
+        background-color: var(--vitamui-background);
+
+        .actions > div {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 150ms ease-in;
+        }
+    }
+}
+
+// Subtable css
+.vitamui-subtable {
+    background-color: var(--vitamui-background);
+    border-top: 1px solid var(--vitamui-grey-100); 
+
+    .footer-action {
+        padding: 1.5rem 9rem 1rem;
+    }
+
+    .footer-action > span {
+        color: var(--vitamui-primary-600);
+        text-decoration: underline;
+        font-weight: 500;
+    }
+
+    .sub-actions > div {
+        width: 100%;
+        text-align: right;
+    }
+
+    .vitamui-row {
+        &:hover {
+            background-color: var(--vitamui-grey-50);
+        }
+    }
 }

@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
+import { ApplicationService, BreadCrumbData, Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 
@@ -49,17 +49,32 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
 
-  customers: Customer[];
-  previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
-  owner: Owner;
+  public breadCrumbData: BreadCrumbData[];
+  public customers: Customer[];
+  public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
+  public owner: Owner;
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(private dialog: MatDialog,
+              private applicationService: ApplicationService,
+              public route: ActivatedRoute,
+              public globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    const appId = this.route.snapshot.data.appId;
+    this.breadCrumbData = [
+      {
+        label: 'Portail'
+      },
+      {
+        label: this.applicationService.getAppById(appId).name,
+        identifier: appId
+      }
+    ];
+  }
 
   openCreateCustomerDialog() {
     const dialogRef = this.dialog.open(CustomerCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });

@@ -41,11 +41,11 @@ import { TranslateVitamModule } from '../translate/translate-vitam.module';
 import { SlideToggleComponent } from './slide-toggle.component';
 
 @NgModule({
+  declarations: [SlideToggleComponent],
   imports: [
     CommonModule,
     TranslateVitamModule,
   ],
-  declarations: [SlideToggleComponent],
   exports: [SlideToggleComponent]
 })
 export class SlideToggleModule { }

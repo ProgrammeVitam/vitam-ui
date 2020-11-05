@@ -3,25 +3,29 @@
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-gestion-de-profil" [style.fontSize.px]="30"></i></div>
       <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
-      <div class="col-4" i18n="Description@@profileListHeaderDescription">Description</div>
+      <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
+      <div class="col-2" i18n="Description@@profileListHeaderDescription">Description</div>
       <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
       <div class="col-2" i18n="Users count@@profileListHeaderUsersCount">Nombre d'utilisateurs</div>
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-row d-flex clickable" *ngFor="let profile of dataSource" (click)="profileClick.emit(profile)">
-      <div class="col-1">
-        <i class="vitamui-icon vitamui-icon-gestion-de-profil"
-          [ngClass]=" profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
-          [style.fontSize.px]="30"
-        ></i>
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="profileClick.emit(profile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-gestion-de-profil"
+              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"
+              [style.fontSize.px]="25"
+            ></i>
+          </div>
+          <div class="col-3">{{ profile.name }}</div>
+          <div class="col-2">{{ profile.identifier }}</div>
+          <div class="col-2">{{ profile.description | truncate:50 }}</div>
+          <div class="col-2">{{ profile.level }}</div>
+          <div class="col-2">{{ profile.usersCount }}</div>
+        </div>
       </div>
-      <div class="col-3">{{ profile.name }}</div>
-      <div class="col-4">{{ profile.description | truncate:50 }}</div>
-      <div class="col-2">{{ profile.level }}</div>
-      <div class="col-2">{{ profile.usersCount }}</div>
     </div>
-  </div>
   </div>
 
   <div *ngIf="!dataSource || pending then loadingSpinner"></div>

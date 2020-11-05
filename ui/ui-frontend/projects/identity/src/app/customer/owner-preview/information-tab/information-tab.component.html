@@ -92,11 +92,12 @@
 <form *ngIf="tenant" [formGroup]="tenantForm">
   <div class="row">
     <div class="col-6">
-      <div class="read-only-field">
+      <div class="read-only-field disabled-input">
         <label i18n="Tenant code@@ownerPreviewLabelTenantCode">Code coffre</label>
         <div>{{tenant?.identifier}}</div>
       </div>
     </div>
+    
     <div class="col-6">
       <vitamui-common-editable-input formControlName="name" maxlength="100" label="Nom du coffre"
         i18n-label="Tenant name@@ownerPreviewLabelTenantName" [validator]="tenantForm?.get('name')?.validator"

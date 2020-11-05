@@ -1,47 +1,25 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end">
-    <app-customer-preview *ngIf="openedItem && previewType==='CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem"></app-customer-preview>
-    <app-owner-preview *ngIf="openedItem && previewType==='OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
-    <app-owner-preview *ngIf="openedItem && previewType==='TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
+    <app-customer-preview *ngIf="previewType === 'CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem"></app-customer-preview>
+    <app-owner-preview *ngIf="previewType === 'OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
+    <app-owner-preview *ngIf="previewType === 'TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none vitamui-body">
+  <mat-sidenav-content class="vitamui-body">
+    <vitamui-common-title-breadcrumb [data]="breadCrumbData">
+      Paramétrer les organisations
+    </vitamui-common-title-breadcrumb>
 
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <h2 i18n="Search a customer, owner or tenant@@CustomerSearchHeader">
-          <img src="assets/bg-fingerprint.svg">Rechercher <strong>un Client, un Propriétaire</strong>
-        </h2>
-
-        <div class="controls">
-
-          <div class="search disabled">
-            <input type="text" placeholder="Nom, Raison sociale, Code client, Adresse, ..." i18n-placeholder="@@customerSearchPlaceholder" disabled>
-            <button disabled type="submit" class="btn btn-circle secondary btn-search small"><i class="material-icons">search</i></button>
-          </div>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateCustomerDialog()">
-              <i class="vitamui-icon vitamui-icon-bank-plus btn-create"></i> <span i18n="Create customer button label@@customerListCreateButton">Créer un client</span>
-            </button>
-            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-              <i class="material-icons">more_horiz</i>&nbsp;<span i18n="More actions button label@@customerListMoreActionsButton">Autres actions</span>
-            </button>
-            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <button mat-menu-item i18n="Coming soon@@customerComingSoon">Bientôt</button>
-            </mat-menu>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'" [disableSearchBar]="true">
+      <button class="btn secondary ml-5" (click)="openCreateCustomerDialog()">
+        <span>Créer un client</span>
+      </button>
+    </vitamui-common-banner>
 
     <app-customer-list
       (customerClick)="openCustomerPanel($event)"
       (ownerClick)="openOwnerPanel($event)"
-      (tenantClick)="openTenantPanel($event)"
-    ></app-customer-list>
+      (tenantClick)="openTenantPanel($event)">
+    </app-customer-list>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

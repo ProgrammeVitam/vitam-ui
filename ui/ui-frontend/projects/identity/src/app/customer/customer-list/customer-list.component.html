@@ -1,69 +1,64 @@
-<table
-  class="vitamui-table"
-  vitamuiCommonInfiniteScroll
-  (vitamuiScroll)="onScroll()"
->
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i></th>
-      <th i18n="Customer code column header@@customerListCustomerCodeHeader">Code Client</th>
-      <th i18n="Customer name column header@@customerListNameHeader">Client</th>
-      <th i18n="Customer company name column header@@customerListCompanyNameHeader">Raison Sociale</th>
-      <th i18n="SSO column header@@customerListSSOHeader">SSO</th>
-      <th i18n="Two steps validation column header@@customerListTwoStepsValidationHeader">Validation en deux étapes</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody vitamuiCommonCollapseContainer>
-    <ng-container *ngFor="let customer of dataSource; let index = index">
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1"><i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i></div>
+      <div class="col-2" i18n="Customer code@@customerListCustomerCodeHeader">Code client</div>
+      <div class="col-2" i18n="Customer name@@customerListNameHeader">Client</div>
+      <div class="col-3" i18n="Compagny name@@customerListCompanyNameHeader">Raison sociale</div>
+      <div class="col-2" i18n="SSO@@customerListSSOHeader">SSO</div>
+      <div class="col-2" i18n="Two factor validation@@customerListTwoStepsValidationHeader">Validation en deux étapes</div>
+    </div>
 
-      <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'">
-        <td [vitamuiCommonCollapseTriggerFor]="row">
-          <i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i>
-          <i class="material-icons caret" [@arrow]="row.state">keyboard_arrow_up</i>
-        </td>
-        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.code }}</td>
-        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.name }}</td>
-        <td class="clickable" (click)="customerClick.emit(customer)">{{ customer?.companyName }}</td>
-        <td class="clickable" (click)="customerClick.emit(customer)">
-          <ng-container *ngIf="customer?.idp" i18n="OTP active@@customerListIDPActiveYes">Oui</ng-container>
-          <ng-container *ngIf="!customer?.idp" i18n="OTP not active@@customerListIDPActiveNo">Non</ng-container>
-        </td>
-        <td class="clickable" (click)="customerClick.emit(customer)" i18n="OTP not active@@customerListOTPState">
-          {customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire}}
-        </td>
-        <td>
-          <div class="actions">
-            <button class="btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
-              <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
-            </button>
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let customer of dataSource">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1 d-flex" [vitamuiCommonCollapseTriggerFor]="row2">
+            <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
+            <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row2.state">keyboard_arrow_up</i>
           </div>
-        </td>
-      </tr>
+          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.code }}</div>
+          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.name }}</div>
+          <div class="col-3"(click)="customerClick.emit(customer)">{{ customer?.companyName }}</div>
+          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+          <div class="col-2 actions">
+            <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
+            <div>
+              <button class="btn btn-circle secondary" (click)="openCreateOwnerDialog(customer, tenants)">
+                <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
 
-      <tr class="customer-sub-table no-hover">
-        <td></td>
-        <td colspan="7">
-          <app-owner-list
-            class="collapsable"
-            [customer]="customer"
-            (ownerClick)="ownerClick.emit($event)"
-            (tenantClick)="tenantClick.emit($event)"
-            [vitamuiCommonCollapse]
-            #row="vitamuiCommonCollapse"
-            [@expansion]="row.state"
-          ></app-owner-list>
-        </td>
-      </tr>
+        <app-owner-list
+          [vitamuiCommonCollapse]
+          #row2="vitamuiCommonCollapse"
+          [@expansion]="row2.state"
+          [customer]="customer"
+          (ownerClick)="ownerClick.emit($event)"
+          (tenantClick)="tenantClick.emit($event)">
+        </app-owner-list>
+      </div>
+    </div>
+  </div>
 
-    </ng-container>
-  </tbody>
-</table>
-
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && customerListService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
-    Afficher plus de résultats...
-  </button>
-  <!-- <span *ngIf="!pending && !customerListService.canLoadMore">Fin des résultats</span> -->
+  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && customerListService.canLoadMore && !pending then loadMore"></div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+ </ng-template>
+
+ <ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
+    <span class="clickable">Afficher plus de résultats...</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
+  </div>
+</ng-template>

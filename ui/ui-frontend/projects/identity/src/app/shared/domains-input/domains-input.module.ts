@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DomainsInputComponent } from './domains-input.component';
@@ -46,6 +47,8 @@ import { DomainsInputComponent } from './domains-input.component';
     CommonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [DomainsInputComponent],
   exports: [DomainsInputComponent]

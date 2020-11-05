@@ -53,9 +53,9 @@ import { CustomerListService } from './customer-list.service';
   styleUrls: ['./customer-list.component.scss'],
   animations: [
     trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
+      state('collapsed', style({height: '0px', visibility: 'hidden', opacity: '0'})),
+      state('expanded', style({height: '*', visibility: 'visible',  opacity: '1'})),
+      transition('expanded <=> collapsed', animate('150ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
 
     trigger('arrow', [

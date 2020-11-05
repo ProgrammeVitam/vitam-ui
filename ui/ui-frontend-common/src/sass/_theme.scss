@@ -47,3 +47,18 @@ body {
 .clickable {
     cursor: pointer;
 }
+.text-primary {
+    color: var(--vitamui-primary);
+}
+
+.text-secondary {
+    color: var(--vitamui-secondary);
+}
+
+.bg-primary {
+    background-color: var(--vitamui-primary);
+}
+
+.bg-secondary {
+    background-color: var(--vitamui-secondary);
+}
