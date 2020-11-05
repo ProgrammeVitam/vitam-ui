@@ -51,7 +51,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 
 @Configuration
-@Import(value = { AutoConfigurationRestController.class, AutoConfigurationService.class, RestExceptionHandler.class })
+@Import(value = { AutoConfigurationVitam.class, AutoConfigurationRestController.class, AutoConfigurationService.class, RestExceptionHandler.class })
 @AutoConfigureAfter
 @EnableScheduling
 public class UICommonsAutoConfiguration {

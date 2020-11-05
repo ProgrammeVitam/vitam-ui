@@ -36,29 +36,10 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.DatatypeConverter;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import fr.gouv.vitamui.ui.commons.utils.conf.FunctionalAdministration;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -66,9 +47,11 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.config.AutoConfigurationVitam;
 import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -80,11 +63,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,7 +75,6 @@ import java.util.stream.Stream;
 public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
-    public static final String FUNCTIONAL_ADMINISTRATION_CONF_PATH = "/vitam/conf/functional-administration/functional-administration.conf";
 
     private static final String DELIMITER = ".";
 
@@ -111,6 +89,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private final CasLogoutUrl casLogoutUrl;
 
     private final BuildProperties buildProperties;
+
+    @Autowired
+    AutoConfigurationVitam autoConfigurationVitam;
 
     @Value("${cas.external-url}")
     @NotNull
@@ -128,8 +109,12 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
+    private Map<String, List<String>> listEnableExternalIdentifiers;
+
+    private static String PLATFORM_NAME = "PLATFORM_NAME";
+
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
-            final BuildProperties buildProperties) {
+    final BuildProperties buildProperties) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         this.buildProperties = buildProperties;
@@ -156,20 +141,25 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return portalConfig;
     }
 
+    private Map<String, List<String>> getListEnableExternalIdentifiers() {
+        if(listEnableExternalIdentifiers == null) {
+            listEnableExternalIdentifiers = autoConfigurationVitam.getTenants();
+        }
+        return listEnableExternalIdentifiers;
+    }
+
     public Boolean isApplicationExternalIdentifierEnabled(final ExternalHttpContext context, final String identifier) {
-        final Integer tenantId = context.getTenantIdentifier();
+        final String tenantId = context.getTenantIdentifier().toString();
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-        try {
-            final FunctionalAdministration conf = mapper.readValue(new File(FUNCTIONAL_ADMINISTRATION_CONF_PATH), FunctionalAdministration.class);
-            final Map<Integer, List<String>> listEnableExternalIdentifiers = conf.getListEnableExternalIdentifiers();
+        final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
+        LOGGER.info(externalIdentifiers == null ? "null" : externalIdentifiers.toString());
 
+        if(externalIdentifiers != null) {
             if(listEnableExternalIdentifiers.containsKey(tenantId)) {
                 final List<String> enabledApplications = listEnableExternalIdentifiers.get(tenantId);
                 return(enabledApplications.contains(identifier));
             }
-        } catch (IOException e) {
-            LOGGER.error("Failed to read file '{}', application is in master mode", FUNCTIONAL_ADMINISTRATION_CONF_PATH, e);
         }
 
         return false;
