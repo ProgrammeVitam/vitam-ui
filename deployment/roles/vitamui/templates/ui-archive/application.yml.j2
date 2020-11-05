@@ -91,7 +91,7 @@ ui-archive:
     portal: "{{ url_prefix }}"
 {% endif %}
 {% if vitamui.archive.base_url is defined %}
-    archive: "{{ vitamui.referential.base_url }}"
+    archive: "{{ vitamui.archive.base_url }}"
 {% else %}
     archive: "{{ url_prefix }}/archive"
 {% endif %}
