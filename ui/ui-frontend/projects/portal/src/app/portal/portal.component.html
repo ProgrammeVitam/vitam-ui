@@ -1,5 +1,5 @@
 <div class="vitamui-body">
     <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
     <app-application-list [appMap]="applications" (applicationClick)="openApplication($event)"></app-application-list>
-    <mat-spinner diameter="100" [strokeWidth]="5" *ngIf="loading" color="accent"></mat-spinner>
+    <mat-spinner class="vitamui-spinner large" *ngIf="loading"></mat-spinner>
 </div>

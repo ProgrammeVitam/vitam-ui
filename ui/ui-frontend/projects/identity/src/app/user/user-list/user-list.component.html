@@ -152,7 +152,7 @@
 </table>
 
 <div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+  <mat-spinner *ngIf="pending" class="vitamui-spinner medium"></mat-spinner>
   <button *ngIf="!pending && infiniteScrollDisabled && userService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
     Afficher plus de résultats...
   </button>

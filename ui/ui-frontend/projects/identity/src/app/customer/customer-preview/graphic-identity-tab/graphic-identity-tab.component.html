@@ -11,7 +11,7 @@
     <div class="image-area d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"
     >
-      <div *ngIf="isLoading" class="loading-spinner"><mat-spinner diameter="50" color="accent"></mat-spinner></div>
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
       <img *ngIf="!isLoading" [src]="theme?.portalUrl">
     </div>
   </div>
@@ -23,7 +23,7 @@
     <div class="image-area d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
-      <div *ngIf="isLoading" class="loading-spinner"><mat-spinner diameter="50" color="accent"></mat-spinner></div>
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
       <img *ngIf="!isLoading" [src]="theme?.headerUrl">
     </div>
   </div>
@@ -33,7 +33,7 @@
     <div class="image-area d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
-      <div *ngIf="isLoading" class="loading-spinner"><mat-spinner diameter="50" color="accent"></mat-spinner></div>
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
       <img *ngIf="!isLoading" [src]="theme?.footerUrl">
     </div>
   </div>
