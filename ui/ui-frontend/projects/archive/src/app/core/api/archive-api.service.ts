@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASE_URL, BaseHttpClient } from 'ui-frontend-common';
 import { Observable } from 'rxjs';
 
@@ -25,5 +25,10 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
   getMessageFromArchive(): Observable<any> {
     return this.http.get(`${this.apiUrl}/test`, { responseType: 'text' });
+  }
+
+  searchArchiveUnitsByDsl(dsl: any, headers?: HttpHeaders): Observable<any> {
+    console.log(dsl);
+    return this.http.post<any>(`${this.apiUrl}/dsl`, dsl, {headers});
   }
 }

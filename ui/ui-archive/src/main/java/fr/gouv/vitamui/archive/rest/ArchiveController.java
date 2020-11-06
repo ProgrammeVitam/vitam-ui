@@ -37,13 +37,21 @@
 
 package fr.gouv.vitamui.archive.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.archive.common.rest.RestApi;
 import fr.gouv.vitamui.archive.service.ArchiveService;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,12 +67,13 @@ import javax.ws.rs.Produces;
 @Produces("application/json")
 public class ArchiveController extends AbstractUiRestController {
 
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
 
-    private final ArchiveService service;
+    private final ArchiveService archiveService;
 
     @Autowired
     public ArchiveController(final ArchiveService service) {
-        this.service = service;
+        this.archiveService = service;
     }
 
     String test = "test test";
@@ -73,7 +82,7 @@ public class ArchiveController extends AbstractUiRestController {
     @GetMapping("/message")
     @ResponseStatus(HttpStatus.OK)
     public String showMessae() {
-        return service.sendMessage(buildUiHttpContext());
+        return archiveService.sendMessage(buildUiHttpContext());
     }
 
     @ApiOperation(value = "send message")
@@ -81,5 +90,14 @@ public class ArchiveController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String showMessage() {
         return this.test;
+    }
+
+    @ApiOperation(value = "find units by custom dsl")
+    @PostMapping("/dsl")
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public JsonNode findByDsl(@RequestBody final JsonNode dsl) {
+        LOGGER.debug("searchUnits by dsl = {}", dsl);
+        return archiveService.findByDsl(dsl, buildUiHttpContext());
     }
 }

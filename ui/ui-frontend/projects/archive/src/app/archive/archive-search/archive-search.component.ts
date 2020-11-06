@@ -4,7 +4,8 @@ import { SearchCriteria, SearchCriteriaStatusEnum } from '../../core/search.crit
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ArchiveApiService } from '../../core/api/archive-api.service';
 
 
 const UPDATE_DEBOUNCE_TIME = 200;
@@ -22,6 +23,7 @@ export class ArchiveSearchComponent implements OnInit {
   otherCriteriaValueEnabled: boolean = false;
   showCriteriaPanel: boolean = true;
   selectedValueOntolonogy: any;
+  archiveUnits: any[];
   ontologies: any;
   previousValue: {
     archiveCriteria: '',
@@ -53,7 +55,7 @@ emptyForm = {
   otherCriteria: '',
   otherCriteriaValue: ''}
 
-  constructor(private formBuilder: FormBuilder,private httpClient: HttpClient) {
+  constructor(private formBuilder: FormBuilder,private httpClient: HttpClient, private archiveApiService: ArchiveApiService) {
     this.getOntologiesFromJson().subscribe((data:any) =>{
       this.ontologies= data;
       console.log(this.ontologies)
@@ -221,8 +223,6 @@ emptyForm = {
   submit(){
     console.log("Submited")
     if(this.searchCriterias){
-    setTimeout(() =>
-    {
       console.log("pass to Progress")
 
         this.searchCriterias.forEach((value: SearchCriteria) => {
@@ -233,24 +233,69 @@ emptyForm = {
           });
       });
 
+
+   /*
+      setTimeout(() =>
+    {
+
     },
     5000);
 
     setTimeout(() =>
     {
-      console.log("pass to progress")
-      this.searchCriterias.forEach((value: SearchCriteria) => {
-        value.values.forEach((elt)=> {
-          if(elt.status === SearchCriteriaStatusEnum.IN_PROGRESS){
-            elt.status = SearchCriteriaStatusEnum.INCLUDED;
-          }
-        });
-    });
+
     },
     7000);
+ */
 
-  }
+      let headers = new HttpHeaders().append('Content-Type', 'application/json');
+      //headers = headers.append('X-Access-Contract-Id', event.value);
+      this.archiveApiService.searchArchiveUnitsByDsl(this.getDslForRootNodes(), headers).subscribe(
+        (response) => {
+         if (response.httpCode === 200) {
+            this.archiveUnits = response.$results;
+            console.log("pass to finished")
+            this.searchCriterias.forEach((value: SearchCriteria) => {
+              value.values.forEach((elt)=> {
+                if(elt.status === SearchCriteriaStatusEnum.IN_PROGRESS){
+                  elt.status = SearchCriteriaStatusEnum.INCLUDED;
+                }
+              });
+          });
+         }
+        }
+      );
+    }
 }
+
+  getDslForRootNodes(): any {
+    //const excludedRoots: string[] = this.accessContract.excludedRootUnits ? this.accessContract.excludedRootUnits : [];
+    //const rootUnits: string[] = this.accessContract.rootUnits ? this.accessContract.rootUnits : [];
+    return {
+      $roots: [],
+      $query: [
+        {
+ /*         $and: [
+            {
+              $in: {
+                '#id': [...rootUnits, ...excludedRoots]
+              }
+            }
+          ]*/
+        }
+
+      ],
+      $projection: {
+        $fields: {
+          '#id': 1,
+          Title: 1,
+          StartDate: '2020-08-10T22:00:00.000Z',
+          EndDate: '2020-11-05T23:00:00.000Z',
+          isAdvancedSearchFlag: 'Yes'
+        }
+      }
+    };
+  }
 
 
 

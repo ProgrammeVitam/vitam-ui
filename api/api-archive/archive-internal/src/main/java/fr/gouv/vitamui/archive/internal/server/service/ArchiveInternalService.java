@@ -37,11 +37,16 @@
 
 package fr.gouv.vitamui.archive.internal.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archive.internal.server.rest.ArchiveInternalController;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,16 +66,24 @@ public class ArchiveInternalService {
 
     private ObjectMapper objectMapper;
 
+    final private  UnitService unitService;
+
     @Autowired
     public ArchiveInternalService(final InternalSecurityService internalSecurityService,
-                                  final LogbookService logbookService, final ObjectMapper objectMapper) {
+                                  final LogbookService logbookService, final ObjectMapper objectMapper, final UnitService unitService) {
         this.internalSecurityService = internalSecurityService;
-
+        this.unitService = unitService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
     }
 
     public String sendMessage() {
         return "Message From Archive Internal";
+    }
+
+
+    public JsonNode searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
+        RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
+        return response.toJsonNode();
     }
 }
