@@ -267,6 +267,10 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                             maximumAuthenticationLifeTime));
                     entity.setMaximumAuthenticationLifetime(maximumAuthenticationLifeTime);
                     break;
+                case "mailAttribute" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setMailAttribute(CastUtils.toString(entry.getValue()));
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");
             }
