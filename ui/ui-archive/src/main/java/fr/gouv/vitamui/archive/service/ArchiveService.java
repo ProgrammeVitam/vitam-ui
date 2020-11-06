@@ -37,6 +37,8 @@
 package fr.gouv.vitamui.archive.service;
 
 import fr.gouv.vitamui.archive.common.dto.UnitDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.archive.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.archive.external.client.ArchiveExternalRestClient;
 import fr.gouv.vitamui.archive.external.client.ArchiveExternalWebClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -81,4 +83,7 @@ public class ArchiveService extends AbstractPaginateService<UnitDto> {
         return archiveExternalRestClient;
     }
 
+    public JsonNode findByDsl(final JsonNode dsl, final ExternalHttpContext context) {
+        return getClient().findUnitByDsl(context, dsl);
+    }
 }

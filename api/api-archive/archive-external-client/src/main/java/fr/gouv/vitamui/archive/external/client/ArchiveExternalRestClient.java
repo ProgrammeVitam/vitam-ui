@@ -37,14 +37,17 @@
 
 package fr.gouv.vitamui.archive.external.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.archive.common.dto.UnitDto;
 import fr.gouv.vitamui.archive.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -52,6 +55,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -89,5 +93,35 @@ public class ArchiveExternalRestClient extends BasePaginatingAndSortingRestClien
     @Override
     public String getPathUrl() {
         return RestApi.ARCHIVE;
+    }
+
+    protected Class<JsonNode> getJsonNodeClass() {
+        return JsonNode.class;
+    }
+
+    public JsonNode findUnitByDsl(ExternalHttpContext context, JsonNode dsl) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+
+        final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
+        LOGGER.info("Url to call {} ", getUrl() + RestApi.DSL_PATH);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(getUrl() + RestApi.DSL_PATH, HttpMethod.POST,
+            request, getJsonNodeClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    // TODO: Mutualize me in an abstract class ?
+    private MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        String accessContract = null;
+        if (context instanceof ExternalHttpContext) {
+            final ExternalHttpContext externalCallContext = context;
+            accessContract = externalCallContext.getAccessContract();
+        }
+
+        if (accessContract != null) {
+            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
+        }
+        return headers;
     }
 }

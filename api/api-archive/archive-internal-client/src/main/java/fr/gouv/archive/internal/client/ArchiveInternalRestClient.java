@@ -37,9 +37,11 @@
 
 package fr.gouv.archive.internal.client;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.archive.common.dto.UnitDto;
 import fr.gouv.vitamui.archive.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -52,11 +54,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ArchiveInternalRestClient extends BasePaginatingAndSortingRestClient<UnitDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveInternalRestClient.class);
+
+    protected Class<JsonNode> getJsonNodeClass() {
+        return JsonNode.class;
+    }
 
     public ArchiveInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -86,5 +93,32 @@ public class ArchiveInternalRestClient extends BasePaginatingAndSortingRestClien
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/message");
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.GET, request, String.class);
+    }
+
+    public JsonNode findUnitByDsl(InternalHttpContext context, JsonNode dsl) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+
+        final HttpEntity<JsonNode> request = new HttpEntity<>(dsl, headers);
+        final ResponseEntity<JsonNode> response = restTemplate.exchange(getUrl() + RestApi.DSL_PATH, HttpMethod.POST,
+            request, getJsonNodeClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    /*TODO
+     * Mutualize me in an abstract class ?
+    */
+    private MultiValueMap<String, String> buildSearchHeaders(final InternalHttpContext context) {
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        String accessContract = null;
+        if (context instanceof InternalHttpContext) {
+            final InternalHttpContext externalCallContext = context;
+            accessContract = externalCallContext.getAccessContract();
+        }
+
+        if (accessContract != null) {
+            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
+        }
+        return headers;
     }
 }

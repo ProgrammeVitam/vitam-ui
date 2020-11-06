@@ -37,12 +37,19 @@
 
 package fr.gouv.vitamui.archive.internal.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
@@ -69,14 +76,26 @@ public class ArchiveInternalController {
         this.archiveInternalService = archiveInternalService;
     }
 
-    @Autowired
-    public ArchiveInternalController(final ArchiveInternalService archiveInternalService) {
+    private InternalSecurityService securityService;
 
+
+    @Autowired
+    public ArchiveInternalController(final ArchiveInternalService archiveInternalService, final  InternalSecurityService securityService) {
         this.archiveInternalService = archiveInternalService;
+        this.securityService = securityService;
     }
 
     @GetMapping("/message")
     public String getMessagefromInternal() {
         return archiveInternalService.sendMessage();
+    }
+
+    @PostMapping(RestApi.DSL_PATH)
+    public JsonNode findByDsl(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final JsonNode dsl) throws VitamClientException {
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        return archiveInternalService.searchUnits(dsl, vitamContext);
     }
 }

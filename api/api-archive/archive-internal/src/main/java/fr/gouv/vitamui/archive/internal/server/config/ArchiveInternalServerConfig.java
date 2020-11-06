@@ -38,6 +38,7 @@
 package fr.gouv.vitamui.archive.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitamui.archive.internal.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -45,6 +46,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
@@ -100,10 +102,16 @@ public class ArchiveInternalServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public UnitService unitService(final AccessExternalClient client) {
+        return new UnitService(client);
+    }
+
+    @Bean
     public ArchiveInternalService archiveInternalService(
         final InternalSecurityService securityService,
         LogbookService logbookService,
-        ObjectMapper objectMapper) {
-        return new ArchiveInternalService(securityService, logbookService, objectMapper);
+        ObjectMapper objectMapper,
+           UnitService unitService) {
+        return new ArchiveInternalService(securityService, logbookService, objectMapper, unitService);
     }
 }

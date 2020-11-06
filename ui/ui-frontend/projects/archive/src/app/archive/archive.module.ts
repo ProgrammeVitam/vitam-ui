@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ArchiveComponent } from './archive.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { HoldingSchemaComponent } from './holding-schema/holding-schema.component';
-
+import { ArchiveApiService } from '../core/api/archive-api.service';
 
 @NgModule({
   imports: [
@@ -34,6 +34,7 @@ import { HoldingSchemaComponent } from './holding-schema/holding-schema.componen
     MatInputModule,
      MatSelectModule,
   ],
+  providers: [ArchiveApiService] ,
   declarations: [
     ArchiveComponent,
     ArchiveSearchComponent,
