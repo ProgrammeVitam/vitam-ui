@@ -49,6 +49,7 @@ export interface IdentityProvider extends Id {
   enabled: boolean;
   idpMetadataUrl?: string;
   readonly: boolean;
+  mailAttribute?: string;
 }
 
 /**

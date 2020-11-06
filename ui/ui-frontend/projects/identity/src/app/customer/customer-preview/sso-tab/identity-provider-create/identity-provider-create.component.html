@@ -56,6 +56,15 @@
       <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)">
     </div>
 
+
+    <div class="form-group-flex">
+      <vitamui-common-input
+        formControlName="mailAttribute"
+        placeholder="Attribut mail" i18n-placeholder="Mail attribute@@idpCreateMailAttributePlaceholder"
+      >
+      </vitamui-common-input>
+    </div>
+
     <div class="form-group">
       <label for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</label>
       <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>

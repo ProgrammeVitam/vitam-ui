@@ -100,4 +100,6 @@ public class IdentityProviderDto extends CustomerIdDto {
     private Integer maximumAuthenticationLifetime;
 
     private boolean readonly;
+
+    private String mailAttribute;
 }
