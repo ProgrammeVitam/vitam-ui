@@ -86,7 +86,7 @@ import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
         TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
-    private static final String TOKEN_VALUE = "TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu";
+    private static final String TOKEN_VALUE = "TOK1234567890";
 
     private static final String USER_ID = "userId";
 
@@ -311,7 +311,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
-        user.setSiteCode("001");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -344,6 +343,8 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Subrogeable\":\"false\","
                 + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
+                + "\"desactivationDate\":\"\","
+                + "\"removingDate\":\"\","
                 + "\"Code du site\":\"001\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
@@ -407,13 +408,9 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("otp");
 
-        partialDto.put("siteCode", "001");
-        internalUserService.patch(partialDto);
-        partialDto.remove("siteCode");
-
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
-        assertThat(events).hasSize(12);
+        assertThat(events).hasSize(11);
 
     }
 
@@ -579,7 +576,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("customerId", user.getCustomerId());
         map.put("address", TestUtils.getMapFromObject(newAddress));
 
-        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
+        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
 
         internalUserService.patch(map);
 
@@ -591,10 +588,10 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo(
                 "{\"diff\":{"
-                + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
-                + "\"-Pays\":\"-\",\"+Pays\":\"-\","
-                + "\"-Ville\":\"-\",\"+Ville\":\"-\","
-                + "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\""
+                + "\"-Code postal\":\"75009\",\"+Code postal\":\"newZipCode\","
+                + "\"-Pays\":\"france\",\"+Pays\":\"newCountry\","
+                + "\"-Ville\":\"paris\",\"+Ville\":\"newCity\","
+                + "\"-Nom de la rue\":\"rue faubourg poissoniére\",\"+Nom de la rue\":\"newStreet\""
                 + "}}");
         //@formatter:on
     }

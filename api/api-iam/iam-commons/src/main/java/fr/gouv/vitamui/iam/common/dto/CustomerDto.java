@@ -119,4 +119,8 @@ public class CustomerDto extends IdDto {
     private boolean hasCustomGraphicIdentity = false;
 
     private Map<String, String> themeColors = new HashMap<>();
+
+    private boolean alerte = false;
+
+    private int alerteDuration;
 }

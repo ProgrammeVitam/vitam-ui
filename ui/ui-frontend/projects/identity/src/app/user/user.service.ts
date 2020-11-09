@@ -119,6 +119,30 @@ export class UserService extends SearchService<User> {
     );
   }
 
+
+  deleteUser(partialUser: { id: string, [key: string]: any }) : Observable<User>{
+    return this.userApi.patch(partialUser).pipe(
+      tap((response) => this.userUpdated.next(response)),
+      tap(
+        (user: User) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: { type: 'userDelete', firstname: user.firstname, lastname: user.lastname },
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
+        }
+      )
+    );
+
+
+  }
+
   getUserProfileInfo(connectedUser: AuthUser): AdminUserProfile | null {
     let userInfo = null;
     connectedUser.profileGroup.profiles.forEach((profile: Profile) => {
@@ -136,4 +160,5 @@ export class UserService extends SearchService<User> {
         map((levels) => levels.filter((l) => !!l))
       );
   }
+
 }

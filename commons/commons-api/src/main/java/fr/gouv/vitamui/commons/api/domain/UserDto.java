@@ -119,4 +119,8 @@ public class UserDto extends CustomerIdDto {
     private AnalyticsDto analytics;
 
     private String siteCode;
+
+    private OffsetDateTime desactivationDate;
+
+    private OffsetDateTime removingDate;
 }

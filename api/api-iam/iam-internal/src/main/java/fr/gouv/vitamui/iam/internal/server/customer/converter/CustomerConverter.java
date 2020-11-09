@@ -92,6 +92,10 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String CUSTOM_GRAPHIC_IDENTITY_KEY = "Identité graphique personnalisée";
 
+    public static final String ALERTEDURATION_KEY = "alerteDuration";
+
+    public static final String ALERTE_KEY = "alerte";
+
     public CustomerConverter(final AddressConverter addressConverter, final OwnerRepository ownerRepository, final OwnerConverter ownerConverter) {
         this.ownerRepository = ownerRepository;
         this.ownerConverter = ownerConverter;
@@ -103,6 +107,8 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         final Map<String, String> logbookData = new LinkedHashMap<>();
         logbookData.put(CODE_KEY, LogbookUtils.getValue(customer.getCode()));
         logbookData.put(NAME_KEY, LogbookUtils.getValue(customer.getName()));
+        logbookData.put(ALERTEDURATION_KEY, LogbookUtils.getValue(customer.getAlerteDuration()));
+        logbookData.put(ALERTE_KEY, LogbookUtils.getValue(customer.isAlerte()));
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(customer.isEnabled()));
         logbookData.put(COMPANY_NAME_KEY, LogbookUtils.getValue(customer.getCompanyName()));
         final AddressDto address = customer.getAddress() != null ? customer.getAddress() : new AddressDto();

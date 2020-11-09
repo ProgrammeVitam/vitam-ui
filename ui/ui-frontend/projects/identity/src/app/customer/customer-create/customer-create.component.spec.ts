@@ -123,6 +123,8 @@ const expectedCustomer = {
   }],
   themeColors: {},
   tenantName: 'tenantName'
+  alerte : false,
+  alerteDuration : 72
 };
 
 let component: CustomerCreateComponent;

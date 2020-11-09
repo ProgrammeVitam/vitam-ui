@@ -75,7 +75,8 @@ let expectedUser: User = {
       city: 'paris',
       country: 'france'
   },
-  siteCode: '001'
+  siteCode: '001',
+  desactivationDate : null
 };
 
 let expectedCustomer: Customer = {
@@ -116,7 +117,9 @@ let expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly : false
   }],
-  themeColors: {}
+  themeColors: {},
+  alerte : false,
+  alerteDuration : 72
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -184,7 +187,8 @@ describe('UserInfoTabComponent', () => {
           city: 'paris',
           country: 'france'
       },
-      siteCode: '001'
+      siteCode: '001',
+      desactivationDate : null
     };
     expectedCustomer = {
       id: 'idCustomer',
@@ -224,7 +228,9 @@ describe('UserInfoTabComponent', () => {
         customerId: 'idCustomer',
         readonly : false
       }],
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     };
     expectedUserInfo = {
       multifactorAllowed: true,

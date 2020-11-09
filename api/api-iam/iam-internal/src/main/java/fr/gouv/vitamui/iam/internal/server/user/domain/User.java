@@ -132,6 +132,10 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
 
     private String internalCode;
 
+    private OffsetDateTime desactivationDate;
+
+    private OffsetDateTime removingDate;
+
     private String siteCode;
 
     private Analytics analytics = new Analytics();

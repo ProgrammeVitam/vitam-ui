@@ -104,6 +104,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      alerte : false,
+      alerteDuration : [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -275,7 +277,16 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.handleImage(files);
   }
 
+  isDurationValid() : boolean {
+    if(this.form.get('alerte').value) {
+      return this.form.get('alerteDuration').invalid || this.form.get('alerteDuration').pending
+    }
+    return false;
+  }
+
   firstStepInvalid(): boolean {
+
+
     return this.form.get('code').invalid || this.form.get('code').pending ||
       this.form.get('name').invalid || this.form.get('name').pending ||
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
@@ -283,7 +294,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
       this.form.get('address.city').invalid || this.form.get('address.city').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending ||
-      this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
+      this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
+      this.form.get('address.country').invalid || this.form.get('address.country').pending || this.isDurationValid();
+
+
   }
 
   secondStepInvalid(): boolean {

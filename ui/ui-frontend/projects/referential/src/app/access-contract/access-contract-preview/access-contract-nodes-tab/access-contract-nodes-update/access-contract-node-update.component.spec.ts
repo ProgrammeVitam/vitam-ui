@@ -84,7 +84,9 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: {}
+  themeColors: {},
+  alerte: false,
+  alerteDuration : 72
 };
 
 // TODO fix tests with filling plan

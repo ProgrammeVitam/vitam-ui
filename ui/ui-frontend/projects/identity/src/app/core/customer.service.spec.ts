@@ -193,5 +193,7 @@ const expectedCustomer: Customer = {
     },
     readonly: false
   }],
-  themeColors: {}
+  themeColors: {},
+  alerte : false,
+  alerteDuration : 72
 };

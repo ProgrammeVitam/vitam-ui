@@ -87,7 +87,9 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: {}
+  themeColors: {},
+  alerte : false,
+  alerteDuration : 72
 };
 
 @Component({
