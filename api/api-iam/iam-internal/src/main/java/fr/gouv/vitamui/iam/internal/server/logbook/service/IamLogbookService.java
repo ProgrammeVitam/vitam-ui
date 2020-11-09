@@ -157,7 +157,7 @@ public class IamLogbookService {
      */
     public void createProfileEvent(final ProfileDto sourceEvent) {
         LOGGER.info("Create Profile {}", sourceEvent.toString());
-        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
+        create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
                 converters.getProfileConverter().convertToLogbook(sourceEvent));
     }
 
@@ -265,7 +265,7 @@ public class IamLogbookService {
      */
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Profile {}", profile.toString());
-        update(getCurrentProofTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
+        update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
     }
 
     /**
