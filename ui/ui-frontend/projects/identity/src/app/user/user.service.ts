@@ -52,7 +52,7 @@ import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-sna
 export class UserService extends SearchService<User> {
 
   userUpdated = new Subject<User>();
-  
+
   constructor(
     private userApi: UserApiService,
     private snackBar: VitamUISnackBar,
@@ -139,7 +139,7 @@ export class UserService extends SearchService<User> {
         }
       )
     );
-    
+
 
   }
 
@@ -160,6 +160,4 @@ export class UserService extends SearchService<User> {
         map((levels) => levels.filter((l) => !!l))
       );
   }
-
-
 }

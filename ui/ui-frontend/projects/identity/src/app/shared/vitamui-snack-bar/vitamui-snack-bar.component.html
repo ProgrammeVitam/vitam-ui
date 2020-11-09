@@ -58,6 +58,9 @@
       <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur {{ data?.firstname }} {{ data?.lastname }} a bien été modifié
     </ng-container>
 
+    <ng-container *ngSwitchCase="'userDelete'" i18n="@@notificationUserDelete">
+      <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur {{ data?.firstname }} {{ data?.lastname }} a bien été supprimé
+    </ng-container>
 
     <ng-container *ngSwitchCase="'profileUpdate'" i18n="@@notificationProfileUpdate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil "{{ data?.name }}" a bien été modifié
