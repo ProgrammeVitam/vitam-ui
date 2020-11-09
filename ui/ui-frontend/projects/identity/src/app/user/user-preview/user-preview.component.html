@@ -15,7 +15,8 @@
         <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
           <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
-          <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>
+          <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED' || user?.status === 'REMOVED' ">Désactiver</button>
+          <button mat-menu-item i18n="@@userPreviewDisabled" (click)="deleteUser(user)" [disabled]="user?.status === 'REMOVED'">Supprimer les données personnelles</button>
         </mat-menu>
       </ng-container>
     </div>

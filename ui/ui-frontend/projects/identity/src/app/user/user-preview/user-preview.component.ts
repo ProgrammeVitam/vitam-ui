@@ -128,4 +128,10 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     );
   }
 
+  deleteUser(user : User) {
+
+    console.log("user details, id :" +user.id);
+    console.log("user details, identifier :" +user.identifier);
+  }
+
 }
