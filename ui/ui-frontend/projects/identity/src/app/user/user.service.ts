@@ -136,4 +136,14 @@ export class UserService extends SearchService<User> {
         map((levels) => levels.filter((l) => !!l))
       );
   }
+
+  deleteUser(user : User) {
+
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      duration: 10000,
+      data: { type: 'userDelete', firstname: user.firstname, lastname: user.lastname },
+    });
+
+  }
 }

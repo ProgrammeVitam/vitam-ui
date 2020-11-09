@@ -59,6 +59,8 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
+  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
+
 
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
@@ -128,10 +130,15 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     );
   }
 
-  deleteUser(user : User) {
+  deleteUser(user: User) {
 
-    console.log("user details, id :" +user.id);
-    console.log("user details, identifier :" +user.identifier);
+    const dialogRef = this.matDialog.open(this.confirmdeleteUserDialog, { panelClass: 'vitamui-dialog' });
+    dialogRef.afterClosed().subscribe(() => {
+      this.userService.deleteUser(user);
+    }
+    );
+    console.log("user details, id :" + user.id);
+    console.log("user details, identifier :" + user.identifier);
   }
 
 }

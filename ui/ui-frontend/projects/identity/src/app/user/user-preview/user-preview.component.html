@@ -58,3 +58,15 @@
     <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>
+
+<ng-template #confirmdeleteUserDialog>
+  <mat-dialog-content>
+    <p i18n="@@disabledUserConfirm">Êtes vous sur de vouloir supprimer l'utilisateur {{user?.firstname}} {{user?.lastname}} ?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
+    <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Annuler</button>
+  </mat-dialog-actions>
+</ng-template>
+
+
