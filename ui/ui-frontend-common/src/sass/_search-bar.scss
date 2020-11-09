@@ -26,6 +26,11 @@
             @include vitamui-input-placeholder;
             font-weight: normal;
         }
+
+        &:disabled {
+            background-color: var(--vitamui-grey-200);
+            cursor: not-allowed;
+        }
     }
 
     > button[type=submit].btn-search, > button[type=button].btn-search {

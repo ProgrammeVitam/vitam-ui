@@ -16,10 +16,12 @@
             <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
             <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row2.state">keyboard_arrow_up</i>
           </div>
-          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.code }}</div>
-          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.name }}</div>
-          <div class="col-3"(click)="customerClick.emit(customer)">{{ customer?.companyName }}</div>
-          <div class="col-2"(click)="customerClick.emit(customer)">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+          <div (click)="customerClick.emit(customer)" [style.display]="'contents'">
+            <div class="col-2">{{ customer?.code }}</div>
+            <div class="col-2">{{ customer?.name }}</div>
+            <div class="col-3">{{ customer?.companyName }}</div>
+            <div class="col-2">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+          </div>
           <div class="col-2 actions">
             <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
             <div>
