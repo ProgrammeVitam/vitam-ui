@@ -76,6 +76,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
 
   ngOnInit() {
+
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
       this.user = updatedUser;
@@ -168,5 +169,11 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   }
 
+
+  deleteUser(user : User) {
+
+    console.log("user details, id :" +user.id);
+    console.log("user details, identifier :" +user.identifier);
+  }
 
 }
