@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -56,6 +57,7 @@ import org.springframework.webflow.execution.RequestContext;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -163,5 +165,17 @@ public class Utils {
             LOGGER.error(ex.getMessage(), ex);
         }
         return false;
+    }
+
+    public String getIdpValue(final HttpServletRequest request) {
+        String idp = request.getParameter(CommonConstants.IDP_PARAMETER);
+        if (StringUtils.isNotBlank(idp)) {
+            return idp;
+        }
+        val cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
+        if (cookie != null) {
+            return cookie.getValue();
+        }
+        return null;
     }
 }
