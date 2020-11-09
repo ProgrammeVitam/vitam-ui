@@ -79,14 +79,12 @@ import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.principal.ClientCredential;
-import org.apereo.cas.authentication.principal.Principal;
-import org.apereo.cas.authentication.principal.PrincipalFactory;
-import org.apereo.cas.authentication.principal.PrincipalResolver;
+import org.apereo.cas.authentication.principal.*;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.util.CommonHelper;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import fr.gouv.vitamui.cas.util.Constants;
@@ -128,9 +126,10 @@ public class UserPrincipalResolver implements PrincipalResolver {
     private final ProvidersService providersService;
 
     @Override
-    public Principal resolve(final Credential credential, final Optional<Principal> principal, final Optional<AuthenticationHandler> handler) {
+    public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
-        val userId = principal.get().getId();
+        val principal = optPrincipal.get();
+        String userId = principal.getId();
         val requestContext = RequestContextHolder.getRequestContext();
 
         boolean surrogationCall;
@@ -149,6 +148,25 @@ public class UserPrincipalResolver implements PrincipalResolver {
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             val webContext = new JEEContext(request, response, sessionStore);
+            String providerName = (String) sessionStore.get(webContext, Constants.PROVIDER_TECHNICAL_NAME).orElse(null);
+            // no provider name in session, we didn't go through DispatcherAction
+            // it means we have an idp parameter in request or cookie
+            if (providerName == null) {
+                providerName = utils.getIdpValue(request);
+            }
+            val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
+            val mailAttribute = provider.getMailAttribute();
+            if (CommonHelper.isNotBlank(mailAttribute)) {
+                val mails = principal.getAttributes().get(mailAttribute);
+                if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
+                    LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value", providerName, mailAttribute);
+                    return NullPrincipal.getInstance();
+                } else {
+                    val mail = (String) mails.get(0);
+                    LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
+                    userId = mail;
+                }
+            }
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
             if (surrogateInSession != null) {
                 username = (String) surrogateInSession;
