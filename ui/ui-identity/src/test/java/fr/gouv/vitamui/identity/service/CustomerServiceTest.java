@@ -123,7 +123,6 @@ public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
         customer.setDefaultEmailDomain("@vitamui.com");
         customer.setPasswordRevocationDelay(1);
         customer.setEmailDomains(Arrays.asList("@com"));
-        customer.setTenantName("tenantName");
         return customer;
     }
 
