@@ -87,6 +87,10 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String GROUP_IDENTIFIER_KEY = "Groupe de profils";
 
+    public static final String DESACTIVATION_DATE = "desactivationDate";
+
+    public static final String REMOVING_DATE = "removingDate";
+
     public static final String INTERNAL_CODE_KEY = "Code interne";
 
     /**
@@ -119,6 +123,8 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
         userLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(user.getInternalCode()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
+        userLogbookData.put(DESACTIVATION_DATE, LogbookUtils.getValue(user.getDesactivationDate()));
+        userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
         AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
         addressConverter.addAddress(address, userLogbookData);

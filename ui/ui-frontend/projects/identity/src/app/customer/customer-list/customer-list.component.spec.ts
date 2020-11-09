@@ -114,7 +114,9 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: {}
+        themeColors: {},
+        alerte : false,
+        alerteDuration : 72
       },
       {
         id: '12',
@@ -140,7 +142,9 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: {}
+        themeColors: {},
+        alerte : false,
+        alerteDuration : 72
       },
       {
         id: '13',
@@ -166,7 +170,9 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: {}
+        themeColors: {},
+        alerte : false,
+        alerteDuration : 72
       },
       {
         id: '14',
@@ -192,7 +198,9 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: {}
+        themeColors: {},
+        alerte : false,
+        alerteDuration : 72
       },
       {
         id: '15',
@@ -218,7 +226,9 @@ describe('CustomerListComponent', () => {
           country: 'france'
         },
         owners: [],
-        themeColors: {}
+        themeColors: {},
+        alerte : false,
+        alerteDuration : 72
       },
     ];
 

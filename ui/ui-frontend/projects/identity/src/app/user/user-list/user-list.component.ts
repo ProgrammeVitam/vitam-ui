@@ -51,6 +51,9 @@ import {
 import { GroupApiService } from '../../core/api/group-api.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { CustomerService } from '../../core/customer.service';
+
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -92,7 +95,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   loaded = false;
   statusFilter: string[] = [];
   filterMap: { [key: string]: any[] } = {
-    status: ['ENABLED', 'BLOCKED'],
+    status: [],
     level: null,
     group: null,
   };
@@ -101,6 +104,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  nombreMois: Number;
 
   private groups: Array<{ id: string, group: any }> = [];
   private updatedUserSub: Subscription;
@@ -125,6 +129,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
+    private customerService: CustomerService,
+    private snackBar: VitamUISnackBar,
     public userService: UserService,
     private groupApiService: GroupApiService,
     @Inject(LOCALE_ID) private locale: string,
@@ -181,6 +187,10 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
           // we change the pending after groups load
           this.pending = false;
         });
+
+        this.checkInactifUsers();
+
+
       } else {
         // we load everything before displaying data
         this.loaded = true;
@@ -236,6 +246,45 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  showUser(user: User) {
+    if (user.status === "REMOVED") {
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+        data: { type: 'useralreadyDeleted' },
+      });
+    }
+    else {
+
+      this.userClick.emit(user);
+    }
+  }
+
+  checkInactifUsers() {
+
+    this.customerService.getMyCustomer().subscribe((customer) => {
+      if (customer.alerte) {
+        this.dataSource.filter((user: User) => user.status === "DISABLED").forEach((u: User) => {
+
+          if (u.desactivationDate !== null) {
+            this.nombreMois = ((new Date().getFullYear()) - (new Date(u.desactivationDate)).getFullYear()) * 12 - (new Date(u.desactivationDate)).getMonth() - 1 + (new Date().getMonth()) + 1;
+
+          }
+          if (this.nombreMois > customer.alerteDuration && u.email.split('@')[1] === customer.defaultEmailDomain) {
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 60000,
+              data: { type: 'usersToDelete' },
+            });
+
+          }
+        })
+
+      }
+    });
+
   }
 
 }

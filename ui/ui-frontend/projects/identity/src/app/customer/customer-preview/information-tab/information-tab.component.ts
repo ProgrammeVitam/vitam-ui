@@ -1,4 +1,3 @@
-import { OnDestroy } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -56,6 +55,26 @@ const UPDATE_DEBOUNCE_TIME = 200;
 export class InformationTabComponent implements OnInit, OnDestroy {
   public readonly form: FormGroup;
 
+  previousValue: {
+    code: string,
+    identifier: string,
+    name: string,
+    companyName: string,
+    passwordRevocationDelay: number,
+    otp: OtpState,
+    address: {
+        street: string,
+        zipCode: string,
+        city: string,
+        country: string,
+      },
+    language: string,
+    emailDomains: string[],
+    defaultEmailDomain: string
+    alerte : boolean,
+    alerteDuration : number,
+  };
+
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
@@ -76,24 +95,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  private previousValue: {
-    code: string,
-    identifier: string,
-    name: string,
-    companyName: string,
-    passwordRevocationDelay: number,
-    otp: OtpState,
-    address: {
-        street: string,
-        zipCode: string,
-        city: string,
-        country: string,
-    },
-    internalCode: string,
-    language: string,
-    emailDomains: string[],
-    defaultEmailDomain: string
-  };
 
   private sub: Subscription;
 

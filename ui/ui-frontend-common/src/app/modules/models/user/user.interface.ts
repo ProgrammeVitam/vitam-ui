@@ -58,6 +58,7 @@ export interface User extends Id {
   lastConnection: string;
   readonly: boolean;
   address: Address;
+  desactivationDate : string;
   internalCode?: string;
   analytics?: Analytics;
   siteCode: string;
