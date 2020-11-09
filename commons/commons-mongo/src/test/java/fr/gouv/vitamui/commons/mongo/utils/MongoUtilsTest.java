@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import com.mongodb.BasicDBList;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import org.bson.Document;
+
 import org.junit.Test;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
@@ -151,6 +155,26 @@ public class MongoUtilsTest {
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
         assertThat(crit.getCriteriaObject().toJson()).contains(val);
 
+    }
+
+
+    @Test
+    public void getCriteria_with_elemMatch() {
+        QueryDto queryDto = QueryDto.criteria("country", "France", CriterionOperator.EQUALS);
+        fr.gouv.vitamui.commons.api.domain.Criterion criterion =
+            new fr.gouv.vitamui.commons.api.domain.Criterion("addressList", queryDto, CriterionOperator.ELEMMATCH);
+        Criteria criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(criterion, Person.class);
+
+        assertThat(criteria.getKey()).isEqualTo("addressList");
+
+        Document addressCriteria = (Document)criteria.getCriteriaObject().get("addressList");
+        assertThat(addressCriteria).isNotNull();
+
+        Document elemMatch = (Document)addressCriteria.get("$elemMatch");
+        assertThat(elemMatch).isNotNull();
+
+        Document elemMatchInternalQuery = (Document)((BasicDBList)elemMatch.get("$and")).get(0);
+        assertThat(elemMatchInternalQuery.getString("country")).isEqualTo("France");
     }
 
 }

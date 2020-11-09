@@ -52,7 +52,9 @@
                   "replace": "projects/identity/src/environments/environment.ts",
                   "with": "projects/identity/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/identity/ngsw-config.json"
             },
             "en": {
               "aot": true,
@@ -170,7 +172,9 @@
                   "replace": "projects/portal/src/environments/environment.ts",
                   "with": "projects/portal/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/portal/ngsw-config.json"
             },
             "en": {
               "aot": true,

@@ -385,4 +385,9 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     public UpdateResult updateFirst(final Query query, final Update update, final Class<T> clazz) {
         return mongoOperations.updateFirst(query, update, clazz);
     }
+
+    @Override
+    public UpdateResult upsert(final Query query, final Update update) {
+        return mongoOperations.upsert(query, update, entityInformation.getJavaType());
+    }
 }

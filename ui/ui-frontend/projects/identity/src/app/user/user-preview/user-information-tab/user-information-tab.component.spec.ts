@@ -74,7 +74,8 @@ let expectedUser: User = {
       zipCode: '75009',
       city: 'paris',
       country: 'france'
-  }
+  },
+  siteCode: '001'
 };
 
 let expectedCustomer: Customer = {
@@ -182,7 +183,8 @@ describe('UserInfoTabComponent', () => {
           zipCode: '75009',
           city: 'paris',
           country: 'france'
-      }
+      },
+      siteCode: '001'
     };
     expectedCustomer = {
       id: 'idCustomer',

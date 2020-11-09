@@ -107,7 +107,8 @@ class TestHostComponent {
     enabled: true,
     keystore: null,
     idpMetadata: null,
-    readonly : false
+    readonly : false,
+    mailAttribute: 'mailAttribute'
   };
   domains = [
     { value: 'test1.com', disabled: true },
@@ -162,7 +163,8 @@ describe('IdentityProviderDetailsComponent', () => {
         internal: testhost.provider.internal,
         enabled: testhost.provider.enabled,
         name: testhost.provider.name,
-        patterns: testhost.provider.patterns
+        patterns: testhost.provider.patterns,
+        mailAttribute: testhost.provider.mailAttribute
       });
     });
 
@@ -183,6 +185,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('name')).not.toBeNull();
       expect(testhost.component.form.get('internal')).not.toBeNull();
       expect(testhost.component.form.get('patterns')).not.toBeNull();
+      expect(testhost.component.form.get('mailAttribute')).not.toBeNull();
     });
 
     it('should have the required validator', () => {
@@ -192,7 +195,8 @@ describe('IdentityProviderDetailsComponent', () => {
         enabled: null,
         name: null,
         internal: null,
-        patterns: null
+        patterns: null,
+        mailAttribute: null
       });
       expect(testhost.component.form.get('id').valid).toBeFalsy('id');
       expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
@@ -200,6 +204,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('name').valid).toBeFalsy('name');
       expect(testhost.component.form.get('internal').valid).toBeFalsy('internal');
       expect(testhost.component.form.get('patterns').valid).toBeFalsy('patterns');
+      expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
     });
 
     it('should be valid and call update()', async(() => {
@@ -211,7 +216,8 @@ describe('IdentityProviderDetailsComponent', () => {
         enabled: false,
         name: testhost.provider.name,
         internal: testhost.provider.internal,
-        patterns: testhost.provider.patterns
+        patterns: testhost.provider.patterns,
+        mailAttribute: testhost.provider.mailAttribute
       });
       expect(testhost.component.form.valid).toBeTruthy();
 

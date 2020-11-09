@@ -75,6 +75,12 @@ import lombok.Setter;
 @Service
 public class GroupExternalService extends AbstractResourceClientService<GroupDto, GroupDto> {
 
+    private static final String IDENTIFIER_KEY = "identifier";
+    private static final String ID_KEY = "id";
+    private static final String NAME_KEY = "name";
+    private static final String ENABLED_KEY = "enabled";
+    private static final String DESCRIPTION_KEY = "description";
+
     private final GroupInternalRestClient groupInternalRestClient;
 
     @Autowired
@@ -128,7 +134,7 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
 
     @Override
     public Collection<String> getAllowedKeys() {
-        return Arrays.asList("id", "name", "enabled", "description", LEVEL_KEY, CUSTOMER_ID_KEY);
+        return Arrays.asList(ID_KEY, IDENTIFIER_KEY, NAME_KEY, ENABLED_KEY, DESCRIPTION_KEY, LEVEL_KEY, CUSTOMER_ID_KEY);
     }
 
     @Override

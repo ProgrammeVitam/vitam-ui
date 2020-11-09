@@ -39,6 +39,7 @@ package fr.gouv.vitamui.commons.mongo.utils;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
@@ -185,6 +189,8 @@ public final class MongoUtils {
                 mapValue.put(BETWEEN_OPERATOR_KEY_START, convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPERATOR_KEY_START)));
                 mapValue.put(BETWEEN_OPEARTOR_KEY_END, convertValue(parametrizedClazz, mapValue.get(BETWEEN_OPEARTOR_KEY_END)));
                 return mapValue;
+            case ELEMMATCH:
+                return convertValue(QueryDto.class, value);
             default :
                 return convertValue(parametrizedClazz, value);
         }
@@ -209,6 +215,14 @@ public final class MongoUtils {
             return Boolean.parseBoolean(value.toString());
         } else if (VitamUIUtils.canBeCastByClass(value, List.class)) {
             return value;
+        } else if (clazz.equals(QueryDto.class)) {
+            try {
+                // we convert the linked hash map to json to re-convert it properly to query dto
+                return QueryDto.fromJson(JsonUtils.toJson(value));
+            }
+            catch (Exception e) {
+                throw new InvalidFormatException(e.getMessage(), e);
+            }
         }
 
         return CastUtils.castValue(value, clazz);
@@ -275,11 +289,50 @@ public final class MongoUtils {
                 final Criteria endCriteria = Criteria.where(key).lte(mapVal.get(BETWEEN_OPEARTOR_KEY_END));
                 criteria = buildAndOperator(startCriteria, endCriteria);
                 break;
+            case ELEMMATCH :
+                criteria = Criteria.where(key).elemMatch(queryDtoToCriteria((QueryDto)val));
+                break;
             default :
                 throw new IllegalArgumentException("Operator " + operator + " is not supported");
         }
         return criteria;
     }
+
+    /**
+     * convert QueryDto to mongodb criteria
+     * @param queryDto the QueryDto to convert
+     * @return mongodb criteria
+     */
+    public static Criteria queryDtoToCriteria(QueryDto queryDto) {
+        Collection<CriteriaDefinition> criteria = new ArrayList<>();
+        queryDto.getCriterionList().forEach(criterion -> {
+            criteria.add(MongoUtils.getCriteria(criterion.getKey(), criterion.getValue(), criterion.getOperator()));
+        });
+
+        // if the criteria contains subQueries, a recursive call is made for each subQuery
+        queryDto.getSubQueries().forEach(queryDtoItem -> {
+            criteria.add(queryDtoToCriteria(queryDtoItem));
+        });
+
+        final Criteria commonCustomCriteria = new Criteria();
+        Criteria[] criteriaList = criteria.stream().map(c -> (Criteria) c).toArray(Criteria[]::new);
+        switch (queryDto.getQueryOperator()){
+            case AND:
+                commonCustomCriteria.andOperator(criteriaList);
+                break;
+            case OR:
+                commonCustomCriteria.orOperator(criteriaList);
+                break;
+            case NOR:
+                commonCustomCriteria.norOperator(criteriaList);
+                break;
+            default:
+                throw new NotImplementedException("Method is not implemented => " + queryDto.getQueryOperator().name());
+        }
+
+        return commonCustomCriteria;
+    }
+
 
     public static Type getTypeOfField(final Class<?> entityClass, final String fieldName) {
         try {

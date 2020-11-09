@@ -405,6 +405,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         try {
             LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
+
+            // replacing the email with the lowercase version during update
+            String email = CastUtils.toString(partialDto.get("email"));
+            if (email != null) {
+                partialDto.put("email", email.toLowerCase());
+            }
             final User entity = beforePatch(partialDto);
             final UserStatusEnum existingStatus = entity.getStatus();
             processPatch(entity, partialDto);
@@ -558,6 +564,14 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                         user.setAddress(new Address());
                     }
                     addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks);
+                    break;
+                case "internalCode" :
+                    logbooks.add(new EventDiffDto(UserConverter.INTERNAL_CODE_KEY, user.getInternalCode(), entry.getValue()));
+                    user.setInternalCode(CastUtils.toString(entry.getValue()));
+                    break;
+                case "siteCode" :
+                    logbooks.add(new EventDiffDto(UserConverter.SITE_CODE, user.getSiteCode(), entry.getValue()));
+                    user.setSiteCode(CastUtils.toString(entry.getValue()));
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch group " + user.getId() + ": key " + entry.getKey() + " is not allowed");

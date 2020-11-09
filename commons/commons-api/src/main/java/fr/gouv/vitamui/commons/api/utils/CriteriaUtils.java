@@ -48,9 +48,9 @@ import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
@@ -62,7 +62,7 @@ public final class CriteriaUtils {
     }
 
     public static void checkFormat(final String criteriaJson) {
-        QueryDto criteriaDto = fromJson(criteriaJson);
+        final QueryDto criteriaDto = fromJson(criteriaJson);
         checkFormat(criteriaDto);
     }
 
@@ -73,7 +73,7 @@ public final class CriteriaUtils {
         }
     }
 
-    private static void checkCriterionList(Collection<Criterion> criteria) {
+    private static void checkCriterionList(final Collection<Criterion> criteria) {
         if (!CollectionUtils.isEmpty(criteria)) {
             final Set<String> keys = criteria.stream().map(Criterion::getKey).collect(Collectors.toSet());
             if (criteria.size() != keys.size()) {
@@ -85,33 +85,31 @@ public final class CriteriaUtils {
 
 
     private static void checkCriterion(final Criterion criterion) {
-        CriterionOperator operator = criterion.getOperator();
+        final CriterionOperator operator = criterion.getOperator();
         if (operator == null) {
             throw new BadRequestException("Operator not defined for criterion : " + criterion.getKey());
         }
         if (criterion.getKey() == null) {
             throw new BadRequestException("Key not defined for criterion : " + criterion.toString());
         }
-        if (criterion.getValue() == null) {
+        if (criterion.getValue() == null && !CriterionOperator.EQUALS.equals(criterion.getOperator())) {
             throw new BadRequestException("Value not defined for criterion : " + criterion.getKey());
         }
         switch (operator) {
             case BETWEEN :
                 try {
-                    Map<String, Object> c = (Map<String, Object>) criterion.getValue();
+                    final Map<String, Object> c = (Map<String, Object>) criterion.getValue();
                     if (!(c.containsKey("start") && c.containsKey("end"))) {
                         throw new BadRequestException("Can't determine start or end value for operator BETWEEN for criterion : " + criterion.getKey());
                     }
-                }
-                catch (ClassCastException e) {
+                } catch (final ClassCastException e) {
                     throw new BadRequestException("Value is not defined as a map with operator BETWEEN for criterion : " + criterion.getKey(), e);
                 }
                 break;
             case IN :
                 try {
-                    List<Object> c = (List<Object>) criterion.getValue();
-                }
-                catch (ClassCastException e) {
+                    final List<Object> c = (List<Object>) criterion.getValue();
+                } catch (final ClassCastException e) {
                     throw new BadRequestException("Value is not defined as an array with operator IN for criterion : " + criterion.getKey(), e);
                 }
                 break;
@@ -122,15 +120,36 @@ public final class CriteriaUtils {
 
     /**
      * Check if criteria contains only allowed keys
-     * @param criteriaDto
+     * @param queryDto
      * @param allowedKeys
      */
-    public static void checkContainsAuthorizedKeys(final QueryDto criteriaDto, final Collection<String> allowedKeys) {
-        criteriaDto.getCriterionList().forEach(criterion -> {
-            if (!allowedKeys.contains(criterion.getKey())) {
-                throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
+    public static void checkContainsAuthorizedKeys(final QueryDto queryDto, final Collection<String> allowedKeys) {
+        queryDto.getCriterionList().forEach(criterion -> {
+            if (allowedKeys.contains(criterion.getKey())) {
+                return;
             }
+
+            // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
+            // field.childField
+            final String keyWithPoint = criterion.getKey() + ".";
+            if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
+                allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))) {
+                // we recurse on children's to check the allowed key
+                try {
+                    final QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
+                    final List<String> elemAllowedKeys =
+                            allowedKeys.stream().filter(key -> key.startsWith(keyWithPoint)).map(key -> key.replaceFirst(keyWithPoint, ""))
+                                    .collect(Collectors.toList());
+                    checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
+                } catch (final JsonProcessingException e) {
+                    throw new InvalidFormatException(e.getMessage(), e);
+                }
+                return;
+            }
+
+            throw new ForbiddenException("Criterion with key : " + criterion.getKey() + " is not allowed");
         });
+        queryDto.getSubQueries().forEach(queryDtoItem -> checkContainsAuthorizedKeys(queryDtoItem, allowedKeys));
     }
 
     public static QueryDto fromJson(final String criteriaJson) {
@@ -148,8 +167,7 @@ public final class CriteriaUtils {
     public static String toJson(final QueryDto criteria) {
         try {
             return JsonUtils.toJson(criteria);
-        }
-        catch (JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new InvalidFormatException(e.getMessage(), e);
 
         }

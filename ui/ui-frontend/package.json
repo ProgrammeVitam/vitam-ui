@@ -1,6 +1,6 @@
 {
   "name": "vitamui-ui",
-  "version": "1.0.2",
+  "version": "1.1.0-SNAPSHOT",
   "license": "MIT",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
@@ -55,7 +55,9 @@
     "@angular/material": "^8.2.3",
     "@angular/platform-browser": "8.2.14",
     "@angular/platform-browser-dynamic": "8.2.14",
+    "@angular/pwa": "^0.1001.3",
     "@angular/router": "8.2.14",
+    "@angular/service-worker": "8.2.14",
     "bootstrap": "^4.5.0",
     "bufferutil": "^4.0.1",
     "classlist.js": "^1.1.20150312",
@@ -68,7 +70,7 @@
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
     "tslib": "^1.13.0",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-1.0.3.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-1.0.60.tgz",
     "underscore": "^1.10.2",
     "utf-8-validate": "^5.0.2",
     "web-animations-js": "^2.3.2",

@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>fr.gouv.vitamui</groupId>
 		<artifactId>api-iam</artifactId>
-		<version>1.0.2</version>
+		<version>1.1.0-RC2</version>
 	</parent>
 
 	<properties>
@@ -168,6 +168,52 @@
 			<artifactId>common-private</artifactId>
 		</dependency>
 
+		<!-- Apereo CAS Server Core Api Ticket -->
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-api-ticket</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-commons</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-actuator</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apereo.cas</groupId>
+			<artifactId>cas-server-core-tickets-api</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-commons</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-actuator</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<!-- Documentation -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -235,8 +281,7 @@
 					<executable>true</executable>
 					<attach>false</attach> <!-- Need to use the original jar for integration-tests -->
 					<mainClass>fr.gouv.vitamui.iam.internal.server.ApiIamServerApplication</mainClass>
-                   	<jvmArguments> -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam
-					</jvmArguments>
+                   	<jvmArguments>-Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam</jvmArguments>
 					<arguments>
 						<!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
 						<!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->

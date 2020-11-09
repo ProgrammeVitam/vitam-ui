@@ -46,15 +46,15 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -150,8 +150,14 @@ public class BaseWebClientFactory implements WebClientFactory {
             SslContextBuilder sslContextBuilder = SslContextBuilder.forClient();
             sslContextBuilder = sslContextBuilder.clientAuth(ClientAuth.NONE);
 
-            if (ks != null) {
-                sslContextBuilder = sslContextBuilder.keyManager(createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
+            if (restClientConfig.isNoClientAuthentication()) {
+                LOGGER.warn("By deactivating the authentication client we deprive ourselves of two-way authentication.");
+
+            } else {
+                if (ks != null) {
+                    sslContextBuilder = sslContextBuilder.keyManager(createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
+                }
+
             }
 
             if (restClientConfig.getSslConfiguration().isHostnameVerification()) {

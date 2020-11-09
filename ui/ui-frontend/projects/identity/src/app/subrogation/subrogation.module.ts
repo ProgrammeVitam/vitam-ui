@@ -47,7 +47,6 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../shared/shared.module';
 import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list/subrogate-user-list.component';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
-import { UserSearchComponent } from './subrogate-user/user-search/user-search.component';
 import { SubrogationResolver } from './subrogation-resolver.service';
 import { SubrogationRoutingModule } from './subrogation-routing.module';
 import { SubrogationService } from './subrogation.service';
@@ -67,8 +66,7 @@ import { SubrogationService } from './subrogation.service';
   ],
   declarations: [
     SubrogateUserListComponent,
-    SubrogateUserComponent,
-    UserSearchComponent,
+    SubrogateUserComponent
   ],
   providers: [
     SubrogationResolver,

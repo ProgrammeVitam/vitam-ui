@@ -61,6 +61,7 @@ public class SamlIdentityProviderDto extends IdentityProviderDto {
         setSpMetadata(dto.getSpMetadata());
         setPatterns(dto.getPatterns());
         setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
+        setMailAttribute(dto.getMailAttribute());
         this.saml2Client = saml2Client;
     }
 

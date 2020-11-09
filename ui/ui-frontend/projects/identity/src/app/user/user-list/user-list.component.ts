@@ -139,7 +139,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   }
 
   ngOnInit() {
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT));
     this.refreshLevelOptions();
 
     this.updatedUserSub = this.userService.userUpdated.subscribe((updatedUser: User) => {

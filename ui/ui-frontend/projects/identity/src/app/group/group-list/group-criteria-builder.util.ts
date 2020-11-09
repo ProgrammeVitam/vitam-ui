@@ -34,28 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { buildCriteriaFromFilters, Criterion, Operators, SearchQuery } from 'ui-frontend-common';
 
-import { UserSearchComponent } from './user-search.component';
+const GROUP_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | SearchQuery> }> = {
 
-describe('UserSearchComponent', () => {
-  // let component: UserSearchComponent;
-  let fixture: ComponentFixture<UserSearchComponent>;
+  status: (statusList: string[]): Criterion[] => {
+    if (statusList.length === 0) {
+      return [];
+    }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ UserSearchComponent ]
-    })
-    .compileComponents();
-  }));
+    const mappedList: boolean[] = [];
+    statusList.forEach((status) => {
+      switch (status) {
+        case 'ENABLED':
+          mappedList.push(true);
+          break;
+        case 'DISABLED':
+          mappedList.push(false);
+          break;
+      }
+    });
+    return [{ key: 'enabled', value: mappedList, operator: Operators.in }];
+  },
+  level: (levelList: string[]): Criterion[] => {
+    if (levelList.length === 0) {
+      return [];
+    }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserSearchComponent);
-    // component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    if (levelList.some((level) => level === null)) {
+      levelList.push('');
+    }
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-});
+    return [{ key: 'level', value: levelList, operator: Operators.in }];
+  }
+};
+
+export function buildCriteriaFromGroupFilters(filterMap: { [key: string]: any[] }): Array<Criterion | SearchQuery> {
+  return buildCriteriaFromFilters(filterMap, GROUP_FILTER_CONVERTER);
+}

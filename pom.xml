@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-RC2</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
@@ -151,7 +151,7 @@
         <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
-        <maven.jaxb2.plugin.version>2.2</maven.jaxb2.plugin.version>
+        <maven.jaxb2.plugin.version>2.5.0</maven.jaxb2.plugin.version>
         <maven.lombok.plugin.version>1.18.0.0</maven.lombok.plugin.version>
         <maven.pmd.plugin.version>3.10.0</maven.pmd.plugin.version>
         <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
@@ -432,6 +432,30 @@
                 <artifactId>spring-security-test</artifactId>
                 <version>${spring.security.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- Apereo CAS Server Core Api Ticket -->
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-core-api-ticket</artifactId>
+                <version>${cas.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apereo.cas</groupId>
+                <artifactId>cas-server-core-tickets-api</artifactId>
+                <version>${cas.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Web -->
@@ -1084,7 +1108,7 @@
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>${maven.project.info.reports.plugin.version}</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
@@ -1171,6 +1195,7 @@
                     <version>${spring.boot.version}</version>
                     <configuration>
                         <addResources>false</addResources>
+                        <jvmArguments>-Xmx512m</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>

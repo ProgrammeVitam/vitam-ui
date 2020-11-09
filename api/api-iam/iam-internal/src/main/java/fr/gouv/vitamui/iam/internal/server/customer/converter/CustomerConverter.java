@@ -84,6 +84,8 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String EMAIL_DOMAINS_KEY = "Domaines";
 
+    public static final String INTERNAL_CODE_KEY = "Code interne";
+
     public static final String DEFAULT_EMAIL_DOMAIN_KEY = "Domaine par défaut";
 
     public static final String SUBROGEABLE_KEY = "Subrogeable";
@@ -111,6 +113,7 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         logbookData.put(EMAIL_DOMAINS_KEY, customer.getEmailDomains().toString());
         logbookData.put(DEFAULT_EMAIL_DOMAIN_KEY, LogbookUtils.getValue(customer.getDefaultEmailDomain()));
         logbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(customer.isSubrogeable()));
+        logbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(customer.getInternalCode()));
         logbookData.put(CUSTOM_GRAPHIC_IDENTITY_KEY, LogbookUtils.getValue(customer.isHasCustomGraphicIdentity()));
         return ApiUtils.toJson(logbookData);
     }
@@ -153,6 +156,7 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         if (customer.getAddress() != null) {
             dto.setAddress(VitamUIUtils.copyProperties(customer.getAddress(), new AddressDto()));
         }
+
         if (customer.getGraphicIdentity() != null) {
             GraphicIdentity graphicalIdentity = customer.getGraphicIdentity();
             dto.setHasCustomGraphicIdentity(graphicalIdentity.isHasCustomGraphicIdentity());

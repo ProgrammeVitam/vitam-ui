@@ -43,6 +43,7 @@ export interface Owner extends Id {
   name: string;
   companyName: string;
   address: Address;
+  internalCode?: string;
   customerId: string;
   readonly: boolean;
 }
