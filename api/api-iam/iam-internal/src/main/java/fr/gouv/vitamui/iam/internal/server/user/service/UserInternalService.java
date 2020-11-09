@@ -405,6 +405,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         try {
             LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
+
+            // replacing the email with the lowercase version during update
+            String email = CastUtils.toString(partialDto.get("email"));
+            if (email != null) {
+                partialDto.put("email", email.toLowerCase());
+            }
             final User entity = beforePatch(partialDto);
             final UserStatusEnum existingStatus = entity.getStatus();
             processPatch(entity, partialDto);

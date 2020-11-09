@@ -1,13 +1,13 @@
 <form [formGroup]="ownerForm">
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="code" maxlength="25" label="Code propriétaire"
+      <vitamui-common-editable-input formControlName="code" maxlength="20" label="Code propriétaire"
         i18n-label="Owner code@@ownerPreviewLabelOwnerCode" [validator]="ownerForm?.get('code')?.validator"
         [asyncValidator]="ownerForm?.get('code')?.asyncValidator">
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
           requis</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="pattern"
-          i18n="Wrong format (4 digits minimum) error hint@@formError6DigitsField">Format incorrect (4 chiffres minimum)
+          i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)
         </vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà
           existant</vitamui-common-field-error>
@@ -67,8 +67,8 @@
       <div class="col-6 form-control">
         <vitamui-common-editable-select formControlName="country" label="Pays"
           i18n-label="Owner country@@ownerPreviewLabelCountry">
-          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="DK" content="Danemark"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="ES" content="Espagne"></vitamui-common-editable-option>

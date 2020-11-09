@@ -71,7 +71,8 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       internal: [{ value: false, disabled: true }, Validators.required],
       keystorePassword: [null, Validators.required],
-      patterns: [null, Validators.required]
+      patterns: [null, Validators.required],
+      mailAttribute: [null]
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }

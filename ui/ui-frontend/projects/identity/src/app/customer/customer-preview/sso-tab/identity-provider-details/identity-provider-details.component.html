@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row pattern-row">
     <div class="col-12">
       <app-editable-patterns
         formControlName="patterns"
@@ -79,6 +79,17 @@
           <label>Identifiant SSO</label>
           <div>{{identityProvider.technicalName}}</div>
         </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input
+        formControlName="mailAttribute"
+        maxlength="100"
+        label="Attribut mail" i18n-label="Mail attribute@@idpFormLabelMailAttribute"
+      >
+      </vitamui-common-editable-input>
     </div>
   </div>
 

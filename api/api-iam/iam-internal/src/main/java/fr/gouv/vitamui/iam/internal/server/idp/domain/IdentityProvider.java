@@ -99,4 +99,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private Integer maximumAuthenticationLifetime;
 
     private boolean readonly;
+
+    private String mailAttribute;
 }
