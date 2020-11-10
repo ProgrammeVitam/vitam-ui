@@ -31,15 +31,6 @@
         font-size: 14px;
       }
     }
-
-    &.active {
-      color: var(--vitamui-secondary);
-      border-color: var(--vitamui-secondary);
-
-      .vitamui-remove-chip {
-        border-color: var(--vitamui-secondary);
-      }
-    }
   }
 }
 

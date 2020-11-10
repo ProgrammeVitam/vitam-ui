@@ -5,7 +5,7 @@
 }
 
 .vitamui-sidepanel-header {
-    padding: 30px 40px 0px 40px;
+    padding: 10px;
     height: 200px;
     background-color: var(--vitamui-secondary);
 
@@ -14,7 +14,7 @@
         background: none;
         border: none;
         padding: 0;
-        color: $white;
+        color: white;
     }
 
     .btn-close {
@@ -23,7 +23,7 @@
         padding: 0;
         float: right;
         opacity: 0.5;
-        color: $white;
+        color: white;
         text-decoration: none;
 
         i {
@@ -38,10 +38,11 @@
         align-items: center;
         margin-top: 30px;
         margin-bottom: 20px;
+        padding: 0 30px;
 
         i {
-            color: $white;
-            margin-right: 10px;
+            color: white;
+            margin-right: 20px;
             font-size: 38px;
         }
 
@@ -59,7 +60,7 @@
         }
 
         h2 {
-            color: $white;
+            color: white;
             font-size: 24px;
             line-height: 24px;
             font-weight: 700;
@@ -98,7 +99,7 @@
 
 .vitamui-sidepanel-body {
     font-size: 15px;
-    color: $charcoal-grey-two;
+    color: var(--vitamui-grey-900);
     position: absolute;
     bottom: 0;
     right: 0;

@@ -2,7 +2,7 @@
     display: inline-block;
     min-height: 50px;
     width: 100%;
-    padding: 7px;
+    padding: 5px;
     vertical-align: top;
     margin-bottom: 20px;
 
@@ -24,6 +24,7 @@
     font-weight: 400;
     color: $red;
     font-family: 'Roboto';
+    min-height: 22px;
 }
 
 input[type=text].vitamui-input,

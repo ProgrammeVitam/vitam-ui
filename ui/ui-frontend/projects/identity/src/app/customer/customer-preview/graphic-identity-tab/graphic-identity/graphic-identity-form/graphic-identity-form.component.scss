@@ -1,6 +1,10 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
+  h2 {
+    margin-top: 0;
+  }
+  
   label {
     font-size: 13px;
     color: $greyish-two;

@@ -1,11 +1,9 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    // Trick to cancel out the padding of the parent element
-    margin: -30px -105px 0 -40px;
+    .vitamui-panel-content  {
+        padding: 0!important;
+    }
 }
 
 button.back {
@@ -13,24 +11,8 @@ button.back {
 }
 
 .vitamui-panel {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-    display: block;
-    overflow: hidden;
-
-    &.active {
-        position: relative;
-        overflow-x: hidden;
-        overflow-y: auto;
-        z-index: 1;
-        flex-grow: 1;
-    }
-
     .vitamui-panel-content {
-        padding: 30px 105px 0 40px;
+        padding: 30px 60px 0 40px;
         overflow: visible;
         height: 100%;
         width: 100%;
@@ -42,49 +24,25 @@ button.btn {
     margin-bottom: 20px;
 }
 
-ul.provider-list {
-
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-width: 465px;
-
-    > li {
-        display: flex;
-        align-items: center;
-    }
-
-    > li:not(:last-child) {
-        margin-bottom: 15px;
-    }
+.provider-list {
+    width: 100%;
+    font-size: 14px;
 
     .provider-item-content {
-        border-radius: 3px;
-        background-color: #f8f8f8;
-        flex-grow: 1;
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 20px;
+        border-radius: 5px;
+        background-color: var(--vitamui-grey-100);
+        color: var(--vitamui-grey-900);
         min-height: 60px;
+        width: 90%;
         cursor: pointer;
 
-        label {
+        div {
             font-weight: 500;
         }
 
-        .provider-item-column {
-            display: flex;
-            flex-direction: column;
+        label {
+            font-weight: normal;
         }
-
-        .provider-item-name {
-            min-width: 90px;
-        }
-
-        .provider-item-type {
-            min-width: 60px;
-        }
-
     }
 
     .provider-item-centered {
@@ -96,14 +54,11 @@ ul.provider-list {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 54px;
         height: 60px;
         border-radius: 3px;
-        background-color: $white;
         border: solid 1px var(--vitamui-secondary);
         margin-left: 10px;
         color: var(--vitamui-secondary);
-        font-weight: normal;
         font-size: 9px;
         text-align: center;
         text-decoration: none;
@@ -112,18 +67,17 @@ ul.provider-list {
             opacity: 0.4;
             pointer-events: none;
         }
-
     }
 
     .provider-status {
-        font-weight: bold;
         font-size: 13px;
-        color: $greyish-two;
-        justify-self: center;
+        font-weight: bold;
+        color: var(--vitamui-grey-600);
+        width: 100%;
+        text-align: right;
 
         &.active {
-            color: #74c41c;
+            color: $green;
         }
     }
-
 }

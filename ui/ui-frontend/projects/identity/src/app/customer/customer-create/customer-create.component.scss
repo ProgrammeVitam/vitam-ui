@@ -1,37 +1,17 @@
-@import '~ui-frontend-common/sass/variables/colors';
-
-$field-spacing: 15px;
-
 .header {
-    padding: 30px 60px 0 60px;
+    padding: 20px 50px 0;
 }
 
 .content {
-    padding: 0px 60px 30px 60px;
+    padding: 0px 40px 30px 40px;
 }
 
 h2 {
-    font-size: 26px;
-    line-height: 46px;
-    margin-top: 23px;
-    margin-bottom: 37px;
-}
-
-.actions {
-    margin-top: 20px;
-    display: flex;
-}
-
-.actions > button:not(:last-child) {
-    margin-right: 20px;
-}
-
-.form-group {
-    padding-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 label {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-800);
     font-size: 15px;
     line-height: normal;
     margin-bottom: 10px;
@@ -42,97 +22,15 @@ label {
     }
 
     small {
-        color: #a5a5a5;
+        color: var(--vitamui-grey-300);
         font-size: inherit;
     }
 }
 
-.underline {
-    text-decoration: underline;
-    cursor: pointer;
+.vitamui-mat-select {
+    width: 240px;
 }
 
-.input-file {
-    display: none;
-}
-
-.inline-label {
-    padding-top: 5px;
-}
-
-// STEP 1
-.field-code {
-    width: 300px + $field-spacing / 2;
-}
-
-.field-name {
-    width: 300px + $field-spacing / 2;
-    margin-right: $field-spacing;
-}
-
-.field-company-name {
-    width: 300px + $field-spacing / 2;
-}
-
-.field-street {
-    width: 615px + $field-spacing;
-}
-
-.field-zip-code {
-    width: 160px;
-    margin-right: $field-spacing;
-}
-
-.field-city {
-    width: 260px;
-    margin-right: $field-spacing;
-}
-
-.field-country {
-    width: 180px;
-    margin-right: $field-spacing;
-}
-
-.label-language {
-    width: 215px;
-}
-
-.field-language {
-    width: 180px;
-}
-
-// STEP 2
-.label-password-revocation-delay {
-    width: 255px;
-    margin-right: 40px;
-}
-
-.field-password-revocation-delay {
-    width: 180px;
-}
-
-.field-domains {
-    max-width: 460px;
-}
-
-button > small {
-    display: block;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.hint {
-    color: #a5a5a5;
-    font-size: 15px;
-}
-
-.error-message {
-    color: $red;
-    font-size: 14px;
-    margin-bottom: 30px;
-}
-
-.selected {
-    background-color: var(--vitamui-secondary);
-    color: $white;
+.font-weight-bold {
+    font-weight: bold;
 }

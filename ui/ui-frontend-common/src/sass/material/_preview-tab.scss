@@ -11,18 +11,16 @@
         opacity: 1;
         min-width: auto;
         height: 37px;
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: var(--vitamui-secondary-900);
         margin: 0 1px;
         padding: 0 14px;
         font-size: 14px;
-        font-weight: normal;
-        color: $white;
-        text-transform: uppercase;
+        font-weight: 500;
+        color: white;
         transition: background-color 200ms ease-out, color 200ms ease-out;
 
         &:hover {
-            color: var(--vitamui-secondary);
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color:var(--vitamui-secondary-700);
         }
 
         &:first-child {
@@ -34,14 +32,14 @@
         }
 
         &:not(.mat-tab-disabled):focus {
-            background-color: rgba(255, 255, 255, 0.56);
+            background-color: var(--vitamui-grey-300);
         }
 
         &.mat-tab-label-active,
         &.mat-tab-label-active:not(.mat-tab-disabled):focus {
             background-color: $white;
             font-weight: bold;
-            color: #5e5d5d;
+            color: var(--vitamui-grey-800);
         }
     }
 
@@ -50,7 +48,7 @@
     }
 
     .mat-tab-body-content {
-        padding: 30px 85px 30px 40px;
+        padding: 30px 55px 30px 40px;
         overflow: visible;
     }
 }
