@@ -84,6 +84,17 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
       themeColors: partialCustomer.themeColors,
       portalTitle: partialCustomer.portalTitle,
       portalMessage: partialCustomer.portalMessage,
+      identifier: partialCustomer.identifier,
+      code: partialCustomer.code,
+      name: partialCustomer.name,
+      companyName: partialCustomer.companyName,
+      passwordRevocationDelay: partialCustomer.passwordRevocationDelay,
+      otp: partialCustomer.otp,
+      address: partialCustomer.address,
+      internalCode: partialCustomer.internalCode,
+      language: partialCustomer.language,
+      emailDomains: partialCustomer.emailDomains,
+      defaultEmailDomain: partialCustomer.defaultEmailDomain,
     }));
 
     if (logos) {
