@@ -12,7 +12,7 @@
       <div *ngIf="user?.status === 'ANONYM'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
       <h2>{{ user?.lastname | uppercase }} {{ user?.firstname }} <small>({{user?.identifier}})</small></h2>
       <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
+        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons ml-2">more_horiz</i></button>
         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
           <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
           <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>

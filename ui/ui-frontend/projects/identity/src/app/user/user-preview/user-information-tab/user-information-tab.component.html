@@ -53,6 +53,25 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="mobile" [validator]="form?.get('mobile')?.validator"
+        label="Numéro de mobile" i18n-label="user info tab mobile@@UserInfoTabMobile">
+        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
+          requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern" i18n="Mobile format error hint@@mobileFormatError">Format
+          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator"
+        label="Numéro de fixe" i18n-label="user info tab phone@@UserInfoTabPhone">
+        <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format
+          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
   <ng-container formGroupName="address">
     <div class="row">
       <div class="col-12 form-control">
@@ -117,10 +136,6 @@
 
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="level" label="Niveau du groupe"
-        i18n-label="user info tab userGroupTag@@UserInfoTabUserGroupTag"></vitamui-common-editable-input>
-    </div>
-    <div class="col-6 form-control">
       <vitamui-common-editable-select formControlName="language" label="Langue de l'interface"
         i18n-label="user info tab language@@UserInfoTabLanguage">
         <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish">
@@ -128,39 +143,22 @@
         <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench">
         </vitamui-common-editable-option>
       </vitamui-common-editable-select>
-
+    </div>
+    <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="level" label="Niveau du groupe"
+        i18n-label="user info tab userGroupTag@@UserInfoTabUserGroupTag"></vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="mobile" [validator]="form?.get('mobile')?.validator"
-        label="Numéro de mobile" i18n-label="user info tab mobile@@UserInfoTabMobile">
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-          requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern" i18n="Mobile format error hint@@mobileFormatError">Format
-          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
-      </vitamui-common-editable-input>
+      <vitamui-common-editable-select formControlName="type" label="Type"  i18n="userType label@@userCreateTypeInputLabel">
+        <vitamui-common-editable-option value="NOMINATIVE" content="Nominative" i18n-content="@@nominative">
+        </vitamui-common-editable-option>
+        <vitamui-common-editable-option value="GENERIC" content="Generic" i18n-content="@@generic">
+        </vitamui-common-editable-option>
+      </vitamui-common-editable-select>
     </div>
-    <div class="col-6 form-control">
-      <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator"
-        label="Numéro de fixe" i18n-label="user info tab phone@@UserInfoTabPhone">
-        <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format
-          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
-      </vitamui-common-editable-input>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="type" i18n="userType label@@userCreateTypeInputLabel">
-      Type
-    </label>
-    <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
-      <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">
-        Nominatif</mat-button-toggle>
-      <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique
-      </mat-button-toggle>
-    </mat-button-toggle-group>
   </div>
 
   <div class="row">
