@@ -352,11 +352,11 @@ vitamui_platform_informations:
     portal_message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
     portal_title: "Portail des applications de l'archivage"
     theme_colors:
-      vitamui_primary: "#604379"
-      vitamui_secondary: "#65B2E4"
-      vitamui_tertiary: "#E7304D"
-      vitamui_header_footer: "#604379"
-      vitamui_background: "#F5F5F5"
+      vitamui_primary: "#702382"
+      vitamui_secondary: "#2563A9"
+      vitamui_tertiary: "#C22A40"
+      vitamui_header_footer: "#1C0920"
+      vitamui_background: "#F5F9FC"
   platform_name: VITAM-UI
   customer:
     technical_referent_email: contact@programmevitam.fr

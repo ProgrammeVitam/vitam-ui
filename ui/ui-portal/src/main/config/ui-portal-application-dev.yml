@@ -38,11 +38,11 @@ ui-portal:
   portal-message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
   portal-title: "Portail des applications de l'archivage"
   theme-colors:
-    vitamui-primary: "#604379"
-    vitamui-secondary: "#65B2E4"
-    vitamui-tertiary: "#E7304D"
-    vitamui-header-footer: "#604379"
-    vitamui-background: "#F5F5F5"
+    vitamui-primary: "#702382"
+    vitamui-secondary: "#2563A9"
+    vitamui-tertiary: "#C22A40"
+    vitamui-header-footer: "#1C0920"
+    vitamui-background: "#F5F9FC"
   assets: src/main/resources/assets
   iam-external-client:
     server-host: localhost

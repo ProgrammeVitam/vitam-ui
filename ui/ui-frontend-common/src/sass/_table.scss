@@ -248,6 +248,10 @@ table.vitamui-table {
     font-size: 15px;
     font-weight: 700;
     color: var(--vitamui-grey-700);
+
+    i {
+        color: var(--vitamui-grey-600); 
+    }
 }
 
 .vitamui-min-content {
@@ -267,6 +271,10 @@ table.vitamui-table {
     color: var(--vitamui-grey-900);
     align-items: center;
     font-size: 15px;
+
+    i {
+        color: var(--vitamui-grey-700); 
+    }
 
     .vitamui-row {
         padding: 0.8rem;
@@ -290,7 +298,7 @@ table.vitamui-table {
     }
 
     &:hover {
-        background-color: var(--vitamui-background);
+        background-color: var(--vitamui-grey-100);
 
         .actions > div {
             visibility: visible;
