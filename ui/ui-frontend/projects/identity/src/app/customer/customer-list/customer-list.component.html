@@ -25,7 +25,7 @@
           <div class="col-2 actions">
             <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
             <div>
-              <button class="btn btn-circle secondary" (click)="openCreateOwnerDialog(customer, tenants)">
+              <button class="btn btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
                 <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
               </button>
             </div>

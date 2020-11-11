@@ -1,25 +1,21 @@
-<div class="pattern-select display-flex" [class.pattern-mini]="vitamuiMiniMode">
-  <mat-form-field class="vitamui-mat-select" [class.vitamui-mat-select-mini]="vitamuiMiniMode">
-    <mat-select
-      [formControl]="control"
-      required
-      placeholder="Pattern"
-      i18n-placeholder="Pattern select placeholder@@patternSelectPlaceholder"
-      panelClass="vitamui-mat-select"
-      class="pattern-select"
-      #select
-    >
+<div class="d-flex mt-1 justify-content-between" [class.pattern-mini]="vitamuiMiniMode">
+  <mat-form-field class="vitamui-mat-select d-flex align-items-center" [class.vitamui-mat-select-mini]="vitamuiMiniMode" [style.width.%]="50">
+    <mat-select [formControl]="control" required placeholder="Pattern"
+      i18n-placeholder="Pattern select placeholder@@patternSelectPlaceholder" panelClass="vitamui-mat-select" #select>
       <mat-option *ngFor="let option of availableOptions" [value]="option.value" [disabled]="option.disabled">
         {{ option.value }} <span *ngIf="option?.disabled" i18n="Already in use@@patternOptionAlreadyInUse">(déjà utilisé)</span>
       </mat-option>
     </mat-select>
+    
     <div class="select-arrow">
       <i class="material-icons">keyboard_arrow_up</i>
       <i class="material-icons">keyboard_arrow_down</i>
     </div>
   </mat-form-field>
 
-  <button type="button" class="btn secondary" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()" i18n="Pattern add button@@patternAddButton">Ajouter</button>
+  <button  class="btn btn-circle secondary" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
+    <i class="vitamui-icon vitamui-icon-add"></i>
+  </button>
 </div>
 
 <div class="vitamui-chip-list">

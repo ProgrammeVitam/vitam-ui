@@ -1,42 +1,21 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end">
     <app-group-preview *ngIf="openedItem" (previewClose)="closePanel()" [group]="openedItem"></app-group-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none vitamui-body">
-
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <h2 i18n="Search for Group of profiles@@profileGroupSearchTitle">
-          <img src="assets/bg-fingerprint.svg">Rechercher <strong>un Groupe de profils</strong>
-        </h2>
-        <div class="controls">
-
-          <vitamui-common-search-bar
-            name="group-search"
-            (search)="onSearchSubmit($event)"
-            placeholder="Nom du groupe" i18n-placeholder="Group name@@profileGroupSearchInputPlaceholder"
-          ></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateGroupDialog()">
-              <i class="vitamui-icon vitamui-icon-keys-plus"></i> <span i18n="Create a group@@profileGroupCreateButton">Créer un groupe</span>
-            </button>
-            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-              <i class="material-icons">more_horiz</i> <span i18n="More actions button label@@userListMoreActionsButton">Autres actions</span>
-            </button>
-            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <button mat-menu-item i18n="Coming soon@@userComingSoon">Bientôt</button>
-            </mat-menu>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
+  <mat-sidenav-content class="vitamui-body">
+    <vitamui-common-title-breadcrumb [data]="breadCrumbData">
+      Paramétrer les groupes de profils
+    </vitamui-common-title-breadcrumb>
+    
+    <vitamui-common-banner
+      [searchbarPlaceholder]="'Nom de Profil Administrateur'"
+      (search)="onSearchSubmit($event)">
+      <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
+        <span>Créer un Groupe</span>
+      </button>
+    </vitamui-common-banner>
+    
     <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
-
   </mat-sidenav-content>
-
 </mat-sidenav-container>

@@ -1,18 +1,17 @@
-.pattern-select {
-    button {
-        margin-left: 15px;
+:host::ng-deep {
+    mat-form-field {
+        width: 50%;
     }
-}
+    
+    .mat-form-field-wrapper {
+        width: 100%;
+    }
 
-.btn-small {
-    height: 34px;
-    border-radius: 17px;
-}
+    .mat-form-field-flex {
+        height: 100%;
+    }
 
-.pattern-mini {
-    margin-bottom: 20px;
-}
-
-.display-flex {
-    display: flex;
+    .mat-form-field-infix {
+        padding: 0.5rem 0rem!important;
+    }
 }

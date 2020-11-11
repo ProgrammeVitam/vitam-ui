@@ -11,7 +11,7 @@
         opacity: 1;
         min-width: auto;
         height: 37px;
-        background-color: var(--vitamui-secondary-900);
+        background-color: var(--vitamui-primary-700);
         margin: 0 1px;
         padding: 0 14px;
         font-size: 14px;
@@ -20,7 +20,7 @@
         transition: background-color 200ms ease-out, color 200ms ease-out;
 
         &:hover {
-            background-color:var(--vitamui-secondary-700);
+            background-color:var(--vitamui-primary-400);
         }
 
         &:first-child {

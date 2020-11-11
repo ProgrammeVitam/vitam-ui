@@ -322,8 +322,10 @@ table.vitamui-table {
     }
 
     .vitamui-row {
+        height: 55px;
+
         &:hover {
-            background-color: var(--vitamui-grey-50);
+            background-color: var(--vitamui-grey-300);
         }
     }
 }

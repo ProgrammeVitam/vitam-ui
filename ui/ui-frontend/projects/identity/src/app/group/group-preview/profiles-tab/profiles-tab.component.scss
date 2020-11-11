@@ -1,47 +1,13 @@
-@import '~ui-frontend-common/sass/variables/colors';
-
-button {
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px 0 rgba(171, 169, 169, 0.5);
+.profile-list {
+    background-color: var(--vitamui-grey-100);
 }
 
-ul.profile-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+.label {
+    font-size: 12px;
+    color: var(--vitamui-grey-600);
+}
 
-    > li {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        border-radius: 3px;
-        background-color: #f8f8f8;
-        flex-grow: 1;
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 14px;
-        min-height: 60px;
-    }
-
-    > li:not(:last-child) {
-        margin-bottom: 15px;
-    }
-
-    .app-name {
-        font-size: 13px;
-        color: $greyish-two;
-    }
-
-    .profile-details {
-        > span {
-            vertical-align: middle;
-            font-weight: 500;
-        }
-
-        > i {
-            margin-left: 10px;
-            color: var(--vitamui-secondary);
-        }
-    }
-
+.value {
+    font-size: 16px;
+    color: var(--vitamui-grey-900);
 }

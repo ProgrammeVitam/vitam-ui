@@ -1,49 +1,47 @@
 <ng-container [formGroup]="form">
-
-
-  <vitamui-common-input class="field-code" maxlength="20" required formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
+  <vitamui-common-input class="col-6" maxlength="20" required formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
     <ng-container *ngIf="form.get('code')?.touched">
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-input-error>
     </ng-container>
   </vitamui-common-input>
+
   <div class="d-flex">
-    <vitamui-common-input class="field-name" formControlName="name" maxlength="100" required placeholder="Nom du propriétaire" i18n-placeholder="Owner name input placeholder@@ownerFormNameInputPlaceholder">
+    <vitamui-common-input class="col-6" formControlName="name" maxlength="100" required placeholder="Nom du propriétaire" i18n-placeholder="Owner name input placeholder@@ownerFormNameInputPlaceholder">
       <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
     </vitamui-common-input>
-    <vitamui-common-input class="field-company-name" formControlName="companyName" maxlength="250" required placeholder="Raison sociale" i18n-placeholder="Owner company name input placeholder@@ownerFormCompanyNameInputPlaceholder">
+
+    <vitamui-common-input class="col-6" formControlName="companyName" maxlength="250" required placeholder="Raison sociale" i18n-placeholder="Owner company name input placeholder@@ownerFormCompanyNameInputPlaceholder">
       <vitamui-common-input-error *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
     </vitamui-common-input>
   </div>
 
   <ng-container formGroupName="address">
-    <div>
-      <vitamui-common-input class="field-street" formControlName="street" maxlength="250" placeholder="N° et nom de la rue" i18n-placeholder="Owner street input placeholder@@ownerFormStreetInputPlaceholder"></vitamui-common-input>
+    <vitamui-common-input class="col-12" formControlName="street" maxlength="250" placeholder="N° et nom de la rue" i18n-placeholder="Owner street input placeholder@@ownerFormStreetInputPlaceholder"></vitamui-common-input>
+
+    <div class="d-flex">
+      <vitamui-common-input class="col-4" formControlName="zipCode" maxlength="10" placeholder="Code postal" i18n-placeholder="Owner zip code input placeholder@@ownerFormZipCodeInputPlaceholder"></vitamui-common-input>
+      <vitamui-common-input class="col-4" formControlName="city" maxlength="100" placeholder="Ville" i18n-placeholder="Owner city input placeholder@@ownerFormCityInputPlaceholder"></vitamui-common-input>
+      <mat-form-field class="vitamui-mat-select col-4">
+        <mat-select formControlName="country" placeholder="Pays"
+          i18n-placeholder="Owner country select placeholder@@ownerFormCountrySelectPlaceholder" panelClass="vitamui-mat-select">
+          <!-- TODO Fetch those values from a referential -->
+          <mat-option value="GB">Royaume Uni</mat-option>
+          <mat-option value="FR">France</mat-option>
+          <mat-option value="DE">Allemagne</mat-option>
+          <mat-option value="DK">Danemark</mat-option>
+          <mat-option value="ES">Espagne</mat-option>
+          <mat-option value="IT">Italie</mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
     </div>
-    <vitamui-common-input class="field-zip-code" formControlName="zipCode" maxlength="10" placeholder="Code postal" i18n-placeholder="Owner zip code input placeholder@@ownerFormZipCodeInputPlaceholder"></vitamui-common-input>
-    <vitamui-common-input class="field-city" formControlName="city" maxlength="100" placeholder="Ville" i18n-placeholder="Owner city input placeholder@@ownerFormCityInputPlaceholder"></vitamui-common-input>
-    <mat-form-field class="field-country vitamui-mat-select">
-      <mat-select
-        formControlName="country"
-        placeholder="Pays" i18n-placeholder="Owner country select placeholder@@ownerFormCountrySelectPlaceholder"
-        panelClass="vitamui-mat-select">
-        <!-- TODO Fetch those values from a referential -->
-        <mat-option value="FR">France</mat-option>
-        <mat-option value="GB">Royaume Uni</mat-option>
-        <mat-option value="DE">Allemagne</mat-option>
-        <mat-option value="DK">Danemark</mat-option>
-        <mat-option value="ES">Espagne</mat-option>
-        <mat-option value="IT">Italie</mat-option>
-      </mat-select>
-      <div class="select-arrow">
-        <i class="material-icons">keyboard_arrow_up</i>
-        <i class="material-icons">keyboard_arrow_down</i>
-      </div>
-    </mat-form-field>
   </ng-container>
 
-  <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20" placeholder="Code interne"
+  <vitamui-common-input class="col-12" formControlName="internalCode" maxlength="20" placeholder="Code interne"
   i18n-placeholder="Internal code@@OwnerInternalCodePlaceholder"></vitamui-common-input>
-
 </ng-container>

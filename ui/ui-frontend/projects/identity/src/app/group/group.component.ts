@@ -38,7 +38,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { GlobalEventService, Group, SidenavPage } from 'ui-frontend-common';
+import { ApplicationService, BreadCrumbData, GlobalEventService, Group, SidenavPage } from 'ui-frontend-common';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 
@@ -49,33 +49,45 @@ import { GroupListComponent } from './group-list/group-list.component';
 })
 export class GroupComponent extends SidenavPage<Group> implements OnInit {
 
-  groups: Group[];
-
-  search: string;
+  public breadCrumbData: BreadCrumbData[];
+  public groups: Group[];
+  public search: string;
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public route: ActivatedRoute,
+              public globalEventService: GlobalEventService,
+              private dialog: MatDialog,
+              private applicationService: ApplicationService) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
+    const appId = this.route.snapshot.data.appId;
+    this.breadCrumbData = [
+      {
+        label: 'Portail'
+      },
+      {
+        label: this.applicationService.getAppById(appId).name,
+        identifier: appId
+      }
+    ];
   }
 
-  openCreateGroupDialog() {
+  public openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) { this.refreshList(); }
     });
   }
 
-  private refreshList() {
-    if (!this.groupListComponent) { return; }
-    this.groupListComponent.search();
+  public onSearchSubmit(search: string): void {
+      this.search = search;
   }
 
-  onSearchSubmit(search: string) {
-      this.search = search;
-
+  private refreshList(): void {
+    if (!this.groupListComponent) { return; }
+    this.groupListComponent.search();
   }
 }

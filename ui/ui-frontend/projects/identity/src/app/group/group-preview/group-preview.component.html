@@ -1,9 +1,9 @@
 <div class="vitamui-sidepanel">
   <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <div class="d-flex justify-content-between">
+      <button *ngIf="!isPopup" class="btn btn-circle primary large" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
+      <button class="btn btn-circle primary large" (click)="emitClose()"><i class="material-icons">close</i></button>
+    </div>
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon status-badge"
@@ -11,14 +11,9 @@
           [class.status-badge-red]="!group?.enabled"
         ></i>
       <h2>{{ group?.name }}</h2>
-      <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
-        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
-          <button mat-menu-item i18n="Coming soon@@profileGroupPreviewComingSoon">Bientôt</button>
-        </mat-menu>
-      </ng-container>
     </div>
   </div>
+
   <div class="vitamui-sidepanel-body">
     <mat-tab-group class="preview-tab-group">
       <mat-tab label="Informations" i18n-label="Information tab@@profileGroupPreviewTabInformation">

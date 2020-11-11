@@ -61,7 +61,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
 
   @Output() previewClose = new EventEmitter();
 
-  groupUpdateSub: Subscription;
+  private groupUpdateSub: Subscription;
 
   constructor(
     private groupService: GroupService, private authService: AuthService,
@@ -102,5 +102,4 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
       event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP')
     );
   }
-
 }

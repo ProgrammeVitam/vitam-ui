@@ -5,6 +5,7 @@
       Groupe de profils <span *ngIf="!form.get('enabled').value">in</span>actif
     </vitamui-common-slide-toggle>
   </div>
+
   <div class="row">
       <div class="col-8 form-control">
         <vitamui-common-editable-input formControlName="identifier" label="Identifiant" i18n-label="Identifier@@profileGroupFormLabelIdentifier"
@@ -33,9 +34,9 @@
   </div>
 
   <div class="row d-flex">
-      <div class="col-5">
+    <div class="col-5">
       <div class="read-only-field">
-          <label>Niveau du groupe</label>
+          <label>Niveau</label>
           <div>{{authService.user.level}}</div>
       </div>
     </div>
@@ -45,12 +46,10 @@
         maxlength="250"
         [prefix]="authService.user.level"
         label="Sous Niveau" i18n-label="Name@@profileDetailLabelLevel"
-        [validator]="form?.get('level')?.validator"
-      >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques séparés par le caractères .)</vitamui-common-field-error>
+        [validator]="form?.get('level')?.validator">
+          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques séparés par le caractères .)</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
   </div>
-
 </form>
