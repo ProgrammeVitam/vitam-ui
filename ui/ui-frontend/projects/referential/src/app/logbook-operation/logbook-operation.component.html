@@ -10,19 +10,19 @@
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true" (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
+        <h2 i18n="@@apiSupervisionPageTitle">
+          <img src="assets/vitamui-logo-small.png"><strong>Journal des Opérations</strong>
+        </h2>
+        
         <div class="controls">
-          <h2 i18n="@@apiSupervisionPageTitle">
-            <img src="assets/mini-logo-vitam.png"> Journal des Opérations
-          </h2>
 
+          <vitamui-common-search-bar name="logbook-operation-search" (search)="onSearchSubmit($event)"
+                        placeholder="Nom, ID" i18n-placeholder="@@logbookOperationSearchPlaceholder">
+                    </vitamui-common-search-bar>
           <div class="actions">
 
             <button class="btn secondary" (click)="refreshList()">
               <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
-            </button>
-
-            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-              <i class="material-icons">more_horiz</i> <span i18n="@@apiSupervisionMoreActionsButton">Autres actions</span>
             </button>
 
             <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
