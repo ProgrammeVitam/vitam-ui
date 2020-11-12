@@ -227,7 +227,7 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
                     else {
                         address = owner.getAddress();
                     }
-                    addressService.processPatch(address, CastUtils.toMap(entry.getValue()), logbooks);
+                    addressService.processPatch(address, CastUtils.toMap(entry.getValue()), logbooks, false);
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch owner " + owner.getId() + ": key " + entry.getKey() + " is not allowed");

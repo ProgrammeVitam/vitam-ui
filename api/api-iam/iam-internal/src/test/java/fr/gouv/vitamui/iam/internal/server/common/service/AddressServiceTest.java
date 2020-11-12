@@ -27,7 +27,7 @@ public class AddressServiceTest {
         final Address other = IamServerUtilsTest.buildAddress();
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);
 
-        service.processPatch(entity, partialDto, new ArrayList<>());
+        service.processPatch(entity, partialDto, new ArrayList<>(), false);
         assertThat(entity).isEqualToComparingFieldByField(other);
     }
 }
