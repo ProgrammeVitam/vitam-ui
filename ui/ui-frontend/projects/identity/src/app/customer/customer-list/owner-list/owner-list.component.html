@@ -8,8 +8,8 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let tenant of myTenants" >
-        <div class="vitamui-row d-flex align-items-center clickable" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))">
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center clickable" *ngFor="let tenant of myTenants" (click)="clickTenant(tenant, getOwner(tenant?.ownerId))">
           <div class="col-3 d-flex justify-content-center align-items-end">
             <div *ngIf="tenant.proof then proofIcons else notProofIcons"></div>
           </div>

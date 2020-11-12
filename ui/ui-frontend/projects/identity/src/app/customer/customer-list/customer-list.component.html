@@ -10,36 +10,38 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let customer of dataSource">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-1 d-flex" [vitamuiCommonCollapseTriggerFor]="row2">
-            <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
-            <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row2.state">keyboard_arrow_up</i>
-          </div>
-          <div (click)="customerClick.emit(customer)" [style.display]="'contents'">
-            <div class="col-2">{{ customer?.code }}</div>
-            <div class="col-2">{{ customer?.name }}</div>
-            <div class="col-3">{{ customer?.companyName }}</div>
-            <div class="col-2">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
-          </div>
-          <div class="col-2 actions">
-            <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
-            <div>
-              <button class="btn btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
-                <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
-              </button>
+      <div class="vitamui-table-rows">
+        <ng-container *ngFor="let customer of dataSource">
+          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
+            <div class="d-flex align-items-center clickable" (click)="row.toggle()">
+              <div class="col-1 d-flex">
+                <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
+                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row.state">keyboard_arrow_up</i>
+              </div>
+              <div (click)="customerClick.emit(customer)" [style.display]="'contents'">
+                <div class="col-2">{{ customer?.code }}</div>
+                <div class="col-2">{{ customer?.name }}</div>
+                <div class="col-3">{{ customer?.companyName }}</div>
+                <div class="col-2">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+              </div>
+              <div class="col-2 actions">
+                <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
+                <div>
+                  <button class="btn btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
+                    <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <app-owner-list
-          [vitamuiCommonCollapse]
-          #row2="vitamuiCommonCollapse"
-          [@expansion]="row2.state"
-          [customer]="customer"
-          (ownerClick)="ownerClick.emit($event)"
-          (tenantClick)="tenantClick.emit($event)">
-        </app-owner-list>
+          <app-owner-list
+            [@expansion]="row.state"
+            [customer]="customer"
+            (ownerClick)="ownerClick.emit($event)"
+            (tenantClick)="tenantClick.emit($event)">
+          </app-owner-list>
+        </ng-container>
       </div>
     </div>
   </div>

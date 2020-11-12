@@ -234,6 +234,8 @@ table.vitamui-table {
 /******* NEW TABLE CSS *********/
 /*********** CLASS *************/
 
+$row-padding: 0.8rem;
+
 // table css
 .vitamui-table {
     background-color: $white;
@@ -244,7 +246,7 @@ table.vitamui-table {
 .vitamui-table-head {
     display: flex;
     align-items: center;
-    padding: 0.8rem;
+    padding: $row-padding;
     font-size: 15px;
     font-weight: 700;
     color: var(--vitamui-grey-700);
@@ -277,7 +279,24 @@ table.vitamui-table {
     }
 
     .vitamui-row {
-        padding: 0.8rem;
+        padding: $row-padding;
+
+        &:hover {
+            background-color: var(--vitamui-grey-100);
+    
+            .actions > div {
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(0);
+                transition: all 150ms ease-in;
+            }
+        }
+
+        &.no-hover {
+            &:hover {
+                background-color: transparent!important;
+            }
+        }
     }
 
     .actions {
@@ -296,26 +315,22 @@ table.vitamui-table {
         transform: translateX(-20%);
         transition-timing-function: ease-out;
     }
-
-    &:hover {
-        background-color: var(--vitamui-grey-100);
-
-        .actions > div {
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(0);
-            transition: all 150ms ease-in;
-        }
-    }
 }
 
 // Subtable css
 .vitamui-subtable {
     background-color: var(--vitamui-background);
-    border-top: 1px solid var(--vitamui-grey-100); 
+    border-top: 1px solid var(--vitamui-grey-200);
+
+    .vitamui-table-head {
+        height: 55px;       
+    }
 
     .footer-action {
-        padding: 1.5rem 9rem 1rem;
+        padding-left: 12rem;
+        height: 55px;
+        align-items: center;
+        display: flex;
     }
 
     .footer-action > span {
@@ -331,9 +346,14 @@ table.vitamui-table {
 
     .vitamui-row {
         height: 55px;
+        border-top: 1px solid var(--vitamui-grey-200);
 
         &:hover {
             background-color: var(--vitamui-grey-300);
+        }
+
+        &:last-of-type {
+            border-bottom: 1px solid var(--vitamui-grey-200);
         }
     }
 }
