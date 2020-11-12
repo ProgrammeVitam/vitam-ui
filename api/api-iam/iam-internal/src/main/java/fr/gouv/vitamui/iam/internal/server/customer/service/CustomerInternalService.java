@@ -310,7 +310,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     if (address == null) {
                         customer.setAddress(new Address());
                     }
-                    addressService.processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks);
+                    addressService.processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, false);
                     break;
                 case "subrogeable" :
                     logbooks.add(new EventDiffDto(CustomerConverter.SUBROGEABLE_KEY, customer.isSubrogeable(), entry.getValue()));

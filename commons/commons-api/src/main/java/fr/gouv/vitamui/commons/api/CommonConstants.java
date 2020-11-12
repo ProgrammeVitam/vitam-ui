@@ -275,11 +275,12 @@ public class CommonConstants {
 
     public static final Integer INPUT_STREAM_BUFFER_SIZE = 4096;
 
+    public static final String GPDR_DEFAULT_VALUE = "-";
+
     /**
      * Constants of ingest operations
      */
-
-    public static final String MULTIPART_FILE_PARAM_NAME = "file";
+    public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
     public static final String INGEST_UPLOAD = "/upload";
     public static final String X_ACTION = "X-Action";
     public static final String X_CONTEXT_ID = "X-Context-Id";
