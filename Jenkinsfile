@@ -95,9 +95,6 @@ pipeline {
                 http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
                 https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
             }
-            when {
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
                 sh 'npmrc internet'
                 dir('cots/') {
@@ -109,10 +106,6 @@ pipeline {
         }
 
         stage("Get publishing scripts") {
-            when {
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
                 checkout([$class: 'GitSCM',
                     branches: [[name: 'oshimae']],
@@ -125,10 +118,6 @@ pipeline {
         }
 
         stage("Publish rpm") {
-            when {
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
                     sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL'
@@ -137,57 +126,9 @@ pipeline {
         }
 
         stage("Update symlink") {
-            when {
-                anyOf {
-                    branch "develop*"
-                    branch "master_*"
-                    branch "rebase_fin*"
-                    tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]*+-?[0-9]*\$", comparator: "REGEXP"
-                }
-                environment(name: 'DO_PUBLISH', value: 'true')
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
                     sh 'vitam-build.git/push_symlink_repo.sh contrib $SERVICE_REPO_SSHURL'
-                }
-            }
-        }
-
-        stage("Checkmarx analysis") {
-            when {
-                anyOf {
-                    branch "develop*"
-                    branch "master_*"
-                    branch "master"
-                    tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
-                }
-                environment(name: 'DO_CHECKMARX', value: 'true')
-            }
-            environment {
-                JAVA_TOOL_OPTIONS = ""
-            }
-            steps {
-                dir('vitam-build.git') {
-                    deleteDir()
-                }
-                sh 'mkdir -p target'
-                sh 'mkdir -p logs'
-                // KWA : Visibly, backslash escape hell. \\ => \ in groovy string.
-                sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/"  -Preset "Default 2014" -LocationPathExclude "cots,deployment,deploymentByVitam,docs,integration-tests,tools,node,node_modules,dist,target" -LocationFilesExclude "*.rpm,*.pdf" -ForceScan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
-            }
-            post {
-                success {
-                    archiveArtifacts (
-                        artifacts: 'target/checkmarx-report.pdf',
-                        fingerprint: true
-                    )
-                }
-                failure {
-                    archiveArtifacts (
-                        artifacts: 'logs/cxconsole.log',
-                        fingerprint: true
-                    )
                 }
             }
         }
