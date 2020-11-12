@@ -141,6 +141,7 @@ pipeline {
                 anyOf {
                     branch "develop*"
                     branch "master_*"
+                    branch "rebase_fin*"
                     tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]*+-?[0-9]*\$", comparator: "REGEXP"
                 }
                 environment(name: 'DO_PUBLISH', value: 'true')
