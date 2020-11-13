@@ -175,6 +175,10 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public ExternalParametersExternalRestClient externalParametersExternalRestClient(final IamExternalRestClientFactory factory) {
         return factory.getExternalParametersExternalRestClient();
+
+    @Bean
+    public RuleExternalWebClient ruleExternalWebClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getRuleExternalWebClient();
     }
 
     @Bean

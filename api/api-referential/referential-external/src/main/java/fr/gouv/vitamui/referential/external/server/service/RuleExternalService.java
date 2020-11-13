@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -58,7 +59,9 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,11 +71,14 @@ import lombok.Setter;
 public class RuleExternalService extends AbstractResourceClientService<RuleDto, RuleDto> {
 
     private RuleInternalRestClient ruleInternalRestClient;
+    
+    private RuleInternalWebClient ruleInternalWebClient;
 
     @Autowired
-    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient) {
+    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient, RuleInternalWebClient ruleInternalWebClient) {
         super(externalSecurityService);
         this.ruleInternalRestClient = ruleInternalRestClient;
+        this.ruleInternalWebClient = ruleInternalWebClient;
     }
 
     public List<RuleDto> getAll(final Optional<String> criteria) {
@@ -123,6 +129,10 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
 
     public ResponseEntity<Resource> export() {
         return ruleInternalRestClient.export(getInternalHttpContext());
+    }
+    
+    public JsonNode importRules(String fileName, MultipartFile file) {
+        return ruleInternalWebClient.importRules(getInternalHttpContext(), fileName, file);
     }
 
 }

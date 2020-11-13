@@ -60,6 +60,10 @@ public class ReferentialExternalWebClientFactory extends BaseWebClientFactory  {
     public OntologyExternalWebClient getOntologyExternalWebClient() {
         return new OntologyExternalWebClient(getWebClient(), getBaseUrl());
     }
+    
+    public RuleExternalWebClient getRuleExternalWebClient() {
+        return new RuleExternalWebClient(getWebClient(), getBaseUrl());
+    }
 
     @Override
     public String getBaseUrl() {

@@ -43,9 +43,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -58,6 +60,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -163,6 +168,19 @@ public class RuleController extends AbstractUiRestController {
     public ResponseEntity<Resource> export() {
         LOGGER.debug("export rules");
         return service.export(buildUiHttpContext());
+    }
+    
+    /***
+     * Import rules from a csv file
+     * @param request HTTP request
+     * @param input the rule csv file
+     * @return the Vitam response
+     */
+    @ApiOperation(value = "import a rule file")
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importRules(@Context HttpServletRequest request, MultipartFile file) {
+        LOGGER.debug("Import rule file {}", file != null ? file.getOriginalFilename() : null);
+        return service.importRules(buildUiHttpContext(), file);
     }
 
 }

@@ -110,8 +110,6 @@ public class ApiReferentialExternalFileFormatCreationSteps extends CommonSteps {
 
     @Then("^l'import des formats de fichier a réussi$")
     public void l_import_des_formats_de_fichier_à_réussi() {
-    	LOGGER.debug("############ file formats import response : {}", response);
-
         assertThat(response).isNotNull();
         assertThat(response.get("httpCode").asInt()).isEqualTo(200);
     }

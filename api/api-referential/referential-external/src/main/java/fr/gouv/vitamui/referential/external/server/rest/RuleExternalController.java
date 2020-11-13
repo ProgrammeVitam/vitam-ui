@@ -52,6 +52,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -152,5 +153,18 @@ public class RuleExternalController {
     @GetMapping("/export")
     public ResponseEntity<Resource> export() {
         return ruleExternalService.export();
+    }
+    
+    /***
+     * Import agencies from a csv file
+     * @param fileName the file name
+     * @param file the agency csv file to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_IMPORT_RULES)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importRules(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("Import agency file {}", fileName);
+        return ruleExternalService.importRules(fileName, file);
     }
 }
