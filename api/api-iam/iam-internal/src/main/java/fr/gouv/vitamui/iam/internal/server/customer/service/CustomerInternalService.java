@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -305,6 +306,16 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     logbooks.add(new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(), entry.getValue()));
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
+
+                case "alerteDuration" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTEDURATION_KEY, customer.getAlerteDuration(), entry.getValue()));
+                    customer.setAlerteDuration(CastUtils.toInteger(entry.getValue()));
+                    break;
+                case "alerte" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTE_KEY, customer.isAlerte(), entry.getValue()));
+                    customer.setAlerte(CastUtils.toBoolean(entry.getValue()));
+                    break;
+
                 case "address" :
                     final Address address = customer.getAddress();
                     if (address == null) {

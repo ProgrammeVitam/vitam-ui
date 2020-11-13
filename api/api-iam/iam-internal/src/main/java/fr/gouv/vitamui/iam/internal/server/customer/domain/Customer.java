@@ -113,4 +113,9 @@ public class Customer extends IdDocument {
 
     @NotNull
     private GraphicIdentity graphicIdentity;
+
+    @Getter
+    private boolean alerte = false;
+
+    private int alerteDuration;
 }
