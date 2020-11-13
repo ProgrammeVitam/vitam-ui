@@ -57,4 +57,6 @@ export interface Customer extends Id {
   readonly: boolean;
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
+  alerte : boolean;
+  alerteDuration : number;
 }

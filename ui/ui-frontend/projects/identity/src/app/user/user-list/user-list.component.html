@@ -35,12 +35,16 @@
                   <span class="badge-state">Désactivé</span>
                 </div>
               </vitamui-common-table-filter-option>
+
+
               <vitamui-common-table-filter-option value="REMOVED">
-                <div class="table-filter-icon" i18n="@@userStatusRemoved">
-                  <i class="vitamui-icon vitamui-icon-user parent"><span class="status-badge-anonym">x</span></i>
+                <div class="table-filter-icon" i18n="@@userStatusDeleted">
+                  <i class="vitamui-icon vitamui-icon-user status-badge status-badge-red close"></i>
                   <span class="badge-state">Effacé</span>
                 </div>
               </vitamui-common-table-filter-option>
+
+
               <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC" [separator]="true">
                 <div class="table-filter-icon" i18n="@@userTypeGeneric">
                   <i class="vitamui-icon vitamui-icon-user parent"></i>
@@ -134,19 +138,20 @@
           <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="user?.status === 'ENABLED'"></i>
           <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="user?.status === 'BLOCKED'"></i>
           <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey" *ngIf="user?.status === 'DISABLED'"></i>
-          <div *ngIf="user?.status === 'REMOVED'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
+          <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-red" *ngIf="user?.status === 'REMOVED'"></i>
+          
         </ng-container>
         <ng-template #genericUserIcon>
           <i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
         </ng-template>
       </td>
-      <td class="clickable" (click)="userClick.emit(user)">
+      <td class="clickable" (click)="showUser(user)">
         {{ user?.lastname | uppercase }} {{ user?.firstname }} <br> <span class="email"> {{ user?.email }} </span>
       </td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.identifier }}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.lastConnection|date:'dd/MM/yyyy'}}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ user?.level }}</td>
-      <td class="clickable" (click)="userClick.emit(user)">{{ getGroup(user)?.name }}</td>
+      <td class="clickable" (click)="showUser(user)">{{ user?.identifier }}</td>
+      <td class="clickable" (click)="showUser(user)">{{ user?.lastConnection|date:'dd/MM/yyyy'}}</td>
+      <td class="clickable" (click)="showUser(user)">{{ user?.level }}</td>
+      <td class="clickable" (click)="showUser(user)">{{ getGroup(user)?.name }}</td>
     </tr>
   </tbody>
 </table>
