@@ -258,7 +258,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   isDurationNotValid(): boolean {
-    
+
     if (this.form.get('alerte').value) {
       return this.form.get('alerteDuration').invalid || this.form.get('alerteDuration').pending
     }
