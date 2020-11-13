@@ -58,5 +58,7 @@ export interface User extends Id {
   readonly: boolean;
   address: Address;
   desactivationDate : string;
+  alerte : boolean;
+  alerteDuration : number;
 
 }

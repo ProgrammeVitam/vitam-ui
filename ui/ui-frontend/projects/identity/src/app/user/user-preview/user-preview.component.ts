@@ -64,7 +64,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
 
-
   constructor(
     private matDialog: MatDialog,
     private userService: UserService,
@@ -75,8 +74,9 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
 
 
-  ngOnInit() {
 
+
+  refreshList() {
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
       this.user = updatedUser;
@@ -161,24 +161,10 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
         this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname })
           .subscribe((user) => {
             this.user = user;
-            this.emitClose();
           });
 
       });
 
-
-  }
-
-
-  deleteUser(user: User) {
-
-    const dialogRef = this.matDialog.open(this.confirmdeleteUserDialog, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed().subscribe(() => {
-      this.userService.deleteUser(user);
-    }
-    );
-    console.log("user details, id :" + user.id);
-    console.log("user details, identifier :" + user.identifier);
   }
 
 }
