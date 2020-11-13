@@ -123,12 +123,12 @@
               <i [style.fontSize.px]="30" class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i>
             </ng-template>
           </div>
-          <div class="col-3">
+          <div class="col-2">
             <div> {{ user?.lastname | uppercase }} {{ user?.firstname }} </div> <span class="email"> {{ user?.email }}
             </span>
           </div>
-          <div class="col-1 text-right">{{ user?.identifier }}</div>
-          <div class="col-2 text-right">{{ user?.lastConnection|date:'dd/MM/yyyy'|empty}}</div>
+          <div class="col-2">{{ user?.identifier }}</div>
+          <div class="col-2">{{ user?.lastConnection|date:'dd/MM/yyyy'|empty}}</div>
           <div class="row col-2">{{ user?.level }}{{ user?.level }}</div>
           <div class="row col-2">{{ getGroup(user)?.name }}</div>
 

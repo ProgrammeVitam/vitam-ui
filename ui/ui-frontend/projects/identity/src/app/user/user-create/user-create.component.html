@@ -1,5 +1,5 @@
 <div class="header">
-<vitamui-common-progress-bar [index]= "stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -7,7 +7,8 @@
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="user create title@@userCreateTitle">Création d'un utilisateur</h2>
+        <div i18n="user create title@@userCreateTitle" class="text-secondary-grey-600">Création d'un utilisateur</div>
+        <div i18n="user create informationTitle@@userCreateTitle" class="text-secondary-grey-900">Information</div>
 
         <div class="form-group">
           <vitamui-common-slide-toggle formControlName="enabled" i18n="user create labelEnabled@@labelEnabled">Compte
@@ -15,7 +16,7 @@
         </div>
 
         <div class="d-flex">
-          <vitamui-common-input class="field-firstname" formControlName="firstname" minlength="2" maxlength="50"
+          <vitamui-common-input class="pr-2" formControlName="firstname" minlength="2" maxlength="50"
             required placeholder="Prénom" i18n-placeholder="user create firstname@@userCreateFirstname">
             <vitamui-common-input-error
               *ngIf="form.get('firstname')?.touched && form.get('firstname')?.hasError('required')"
@@ -45,7 +46,7 @@
                 </vitamui-common-input-error>
               </ng-container>
             </vitamui-common-input>
-            <span class="layer">@</span>
+            <span class="d-flex mx-2 mt-1 layer">@</span>
 
             <mat-form-field class="field-domain vitamui-mat-select">
               <mat-select formControlName="domain" required panelClass="vitamui-mat-select">
@@ -63,15 +64,17 @@
 
         <div class="form-group">
           <label for="type" i18n="userType label@@userCreateTypeInputLabel">
-            Type
+            Groupes de profils attribuables
           </label>
-          <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup"
-            class="vitamui-button-toggle-group">
-            <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">
-              Nominatif</mat-button-toggle>
-            <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique
-            </mat-button-toggle>
-          </mat-button-toggle-group>
+          <div class="mt-1">
+            <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup"
+              class="vitamui-button-toggle-group">
+              <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">
+                Nominatif</mat-button-toggle>
+              <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
         </div>
 
         <div class="form-group">
@@ -83,8 +86,8 @@
         <div class="row actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
             *ngIf="connectedUserInfo.type !== 'NONE';else noGroup"
-            i18n="user create next step group@@userCreateNextStepGroupButton">
-            Continuer en attribuant un groupe
+            i18n="user create next step suivant@@userCreateNextStepGroupButton">
+            Suivant
           </button>
           <ng-template #noGroup>
             <button type="button" class="btn primary" [disabled]="firstStepInvalid()" (click)="passGroupStep()"
@@ -92,7 +95,7 @@
               Continuer en gérant l'authentification
             </button>
           </ng-template>
-          <button type="button" class="btn cancel" (click)="onCancel()"
+          <button type="button" class="btn cancel link" (click)="onCancel()"
             i18n="user create cancel@@userCreateCancelButton">
             Annuler
           </button>
@@ -102,77 +105,55 @@
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="user create group attribution@@userGroupAttribution">Attribution de groupe</h2>
+        <div i18n="user create title@@userCreateTitle" class="text-secondary-grey-600">Création d'un utilisateur</div>
+        <div i18n="user create autorisationsTitle@@userCreateTitle" class="text-secondary-grey-900">Autorisations</div>
 
-        <div class="header-informations">
-          <div class="controls">
-            <div class="search disabled">
-              <input type="search" placeholder="Filtrer par «nom», «id» ..." disabled
-                i18n-placeholder="user create search group@@userCreateSearchGroup">
-              <i class="material-icons">search</i>
-            </div>
-          </div>
+        <vitamui-common-search-bar class="mb-3" i18n-placeholder="user create search group@@userCreateSearchGroup"
+          [placeholder]="'Filtrer par «nom», «id» ...'" disabled></vitamui-common-search-bar>
 
-          <div class="actions" *ngIf="groupName">
-            <div>Groupe attribué : </div>&nbsp;{{ groupName }}
-          </div>
+        <div class="actions mb-2" *ngIf="groupName">
+          <div>Groupe attribué : </div>&nbsp;{{ groupName }}
         </div>
 
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th i18n="user create group header@@userCreateGroupHeader">Groupes</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody vitamuiCommonCollapseContainer>
-              <ng-container *ngFor="let group of groups; let index = index">
+        <div class="vitamui-table">
+          <div class="vitamui-table-head p-0 py-3 d-flex align-items-center">
+            <div class="pl-4">Groupe de profil</div>
+          </div>
 
-                <tr class="group-row" *ngIf="!group?.selected" [vitamuiCommonCollapseTriggerFor]="row">
-                  <td class="clickable" (click)="updateGroupe(group?.id,group?.name, row)">
-                    {{ group?.name }}
-                  </td>
-                  <td class="clickable">
-                    <span class="btn-link" *ngIf="row.state === 'collapsed';else hideDetail"
-                      i18n="Profile group showDetails@@profileGroupShowDetails">Voir détail</span>
-                    <ng-template #hideDetail><span class="btn-link"
-                        i18n="Profile group hideDetails@@profileGroupHideDetails">Masquer détail</span></ng-template>
-                  </td>
-                </tr>
-
-                <tr class="sub-table">
-                  <td>
-                    <app-group-detail [group]="group" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse"
-                      [@expansion]="row.state" class="collapsable"></app-group-detail>
-                  </td>
-                  <td></td>
-                </tr>
-
+          <div class="vitamui-table-body">
+            <div class="vitamui-table-rows">
+              <ng-container *ngFor="let group of groups">
+                <div class="vitamui-row p-0 px-4" [class.no-hover]="row.state === 'expanded'" *ngIf="!group?.selected" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse">
+                  <div class="d-flex justify-content-between align-items-center clickable">
+                    <div class="row-label d-flex align-items-center" (click)="updateGroupe(group?.id,group?.name, row)">{{group?.name}}</div>
+                    <button class="btn tertiary link underline text-secondary" (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
+                  </div>
+                  <app-group-detail *ngIf="row.state === 'expanded'" [group]="findGroup(group.id)" [@expansionAnimation]></app-group-detail>
+                </div>
               </ng-container>
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!groupName"
             i18n="user create next step otp@@userCreateNextStepAddressButton">
-            Continuer en saisissant les coordonnées
+           Suivant
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()"
+          <button type="button" class="btn cancel link" (click)="onCancel()"
             i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span>Retour</span></ng-container>
         </button>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="@@userCreateAddressTitle">Coordonnées</h2>
-        <ng-container formGroupName="address">
+        <div i18n="user create title@@userCreateTitle" class="text-secondary-grey-600">Création d'un utilisateur</div>
+        <div i18n="user create autorisationsTitle@@userCreateTitle" class="text-secondary-grey-900">Coordonnées</div>        <ng-container formGroupName="address">
           <div class="row">
             <vitamui-common-input class="col-12" [required]="!addressEmpty" formControlName="street" maxlength="250"
               placeholder="N° et nom de rue" i18n-placeholder="@@userCreateStreetInputPlaceholder">
@@ -226,33 +207,33 @@
           </vitamui-common-input>
         </div>
 
-        <div class="mt-3">
+        <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()"
             i18n="user create next step otp@@userCreateNextStepOtpButton">
-            Continuer en gérant l'authentification
+            Suivant
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()"
+          <button type="button" class="btn cancel link" (click)="onCancel()"
             i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span>Retour</span></ng-container>
         </button>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="user create title@@userCreateTitle">Création d'un utilisateur</h2>
-
+        <div i18n="user create title@@userCreateTitle" class="text-secondary-grey-600">Création d'un utilisateur</div>
+        <div i18n="user create autorisationsTitle@@userCreateTitle" class="text-secondary-grey-900">Sécurité</div>
         <div class="form-group">
           <vitamui-common-slide-toggle formControlName="otp" i18n="user create otp@@userCreateOtp">Validation en deux
             étapes</vitamui-common-slide-toggle>
         </div>
 
         <div class="d-flex">
-          <vitamui-common-input class="field-mobile" formControlName="mobile" placeholder="Numéro de mobile"
+          <vitamui-common-input class="pr-2" formControlName="mobile" placeholder="Numéro de mobile"
             i18n-placeholder="user create mobile@@userCreateMobile"
             [class.ng-invalid]="form?.hasError('missingPhoneNumber')">
             <vitamui-common-input-error *ngIf="form?.get('mobile')?.hasError('pattern')"
@@ -269,14 +250,15 @@
               obligatoire</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
-
+        <div class="actions">
         <button type="submit" class="btn primary" [disabled]="formInvalid() || creating"
-          i18n="user create validation@@userCreateValidationButton">Valider la création</button>
-        <button type="button" class="btn cancel" (click)="onCancel()"
+          i18n="user create validation@@userCreateValidationButton">Terminer</button>
+        <button type="button" class="btn cancel link" (click)="onCancel()"
           i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+          </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span>Retour</span></ng-container>
         </button>
       </div>
     </cdk-step>

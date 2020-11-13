@@ -52,10 +52,12 @@ export class GroupDetailComponent implements OnInit {
   constructor(private groupService: GroupService) { }
 
   ngOnInit() {
-    this.groupService.get(this.group.id).subscribe((data: Group) => {
-      this.displayedGroup = data;
-    });
-
+    if (this.group && this.group.identifier) {
+      this.displayedGroup = this.group;
+    } else {
+      this.groupService.get(this.group.id).subscribe((data: Group) => {
+        this.displayedGroup = data;
+      });
+    }
   }
-
 }

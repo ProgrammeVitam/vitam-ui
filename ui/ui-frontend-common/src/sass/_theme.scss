@@ -49,17 +49,27 @@ body {
     cursor: pointer;
 }
 .text-primary {
-    color: var(--vitamui-primary);
+    color: var(--vitamui-primary)!important;
 }
 
 .text-secondary {
-    color: var(--vitamui-secondary);
+    color: var(--vitamui-secondary)!important;
 }
 
 .bg-primary {
-    background-color: var(--vitamui-primary);
+    background-color: var(--vitamui-primary)!important;
 }
 
 .bg-secondary {
-    background-color: var(--vitamui-secondary);
+    background-color: var(--vitamui-secondary)!important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.no-hover {
+    &:hover {
+      background-color: transparent!important;
+    }
 }

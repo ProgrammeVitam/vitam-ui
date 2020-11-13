@@ -41,7 +41,9 @@
     line-height: 36px!important;
     padding: 0 16px!important;
 }
-
+.mat-button-toggle-button {
+    padding: 1px 0 0 0;
+}
 .vitamui-button-toggle-group-big {
     &.mat-button-toggle-group-appearance-standard,
     &.mat-button-toggle-standalone.mat-button-toggle-appearance-standard {

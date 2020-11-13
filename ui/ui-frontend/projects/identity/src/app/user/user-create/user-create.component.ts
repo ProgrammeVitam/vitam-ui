@@ -36,7 +36,7 @@
  */
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, Customer, isRootLevel, OtpState, ProfileSelection
+  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState, ProfileSelection
 } from 'ui-frontend-common';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -64,30 +64,37 @@ const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?
       state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
     ]),
+    trigger('expansion2', [
+      transition(':enter', [
+          style({ height: 0, opacity: 0 }),
+          animate('1s ease-out', style({ height: 300, opacity: 1 }))
+      ]),
+      transition(':leave', [
+          style({ height: 300, opacity: 1 }),
+          animate('1s ease-in', style({ height: 0, opacity: 0 }))
+      ])
+    ]),
+    trigger('expansionAnimation', [
+      state('true', style({ height: '*', visibility: 'visible' })),
+      state('void', style({ height: '0px', visibility: 'hidden' })),
+      transition(':enter', animate('150ms')),
+      transition(':leave', animate('150ms')),
+    ]),
   ]
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
-
   public formEmail: FormGroup;
-
   public customer: Customer;
-
   public groups: ProfileSelection[] = [];
-
+  public fullGroup: Group[];
   public groupName: string;
-
   public stepIndex = 0;
-
   public connectedUserInfo: AdminUserProfile;
-
   public addressEmpty = true;
-
   public creating = false;
-
   public stepCount = 4;
-
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -104,6 +111,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupService.getAll(true).subscribe((groups) => {
       this.groups = groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+      this.fullGroup = groups;
       if (!isRootLevel(this.authService.user)) {
         this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
       }
@@ -257,4 +265,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     this.groups.forEach((group) => group.selected = false);
   }
 
+  public findGroup(id: string): Group {
+    return this.fullGroup.find(value => value.id === id);
+  }
 }
