@@ -66,6 +66,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
@@ -290,5 +291,10 @@ public class VitamRuleService {
 
         return adminExternalClient.downloadRulesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
-
+    
+    public RequestResponse<?> importRules(VitamContext vitamContext, String fileName, MultipartFile file) 
+    		throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Import rule file {}", fileName);
+        return this.adminExternalClient.createRules(vitamContext, file.getInputStream(), fileName);
+    }	
 }

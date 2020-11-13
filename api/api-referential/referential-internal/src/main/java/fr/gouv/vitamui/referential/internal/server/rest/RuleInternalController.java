@@ -56,6 +56,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -161,5 +162,12 @@ public class RuleInternalController {
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;
+    }
+    
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("import rule file {}", fileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        return ruleInternalService.importRules(vitamContext, fileName, file);
     }
 }

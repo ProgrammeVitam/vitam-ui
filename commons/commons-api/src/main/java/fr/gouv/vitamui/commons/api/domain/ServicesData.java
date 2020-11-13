@@ -303,6 +303,8 @@ public class ServicesData {
 
     public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
 
+    public static final String ROLE_IMPORT_RULES = IMPORT_ROLE_PREFIX + SERVICE_RULES;
+    
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";

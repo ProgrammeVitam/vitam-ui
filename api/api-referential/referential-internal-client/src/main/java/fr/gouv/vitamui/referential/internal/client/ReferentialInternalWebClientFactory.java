@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
-
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -61,6 +59,10 @@ public class ReferentialInternalWebClientFactory extends BaseWebClientFactory  {
     
     public OntologyInternalWebClient getOntologyInternalWebClient() {
         return new OntologyInternalWebClient(getWebClient(), getBaseUrl());
+    }
+    
+    public RuleInternalWebClient getRuleInternalWebClient() {
+        return new RuleInternalWebClient(getWebClient(), getBaseUrl());
     }
 
     @Override

@@ -44,6 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -52,8 +55,10 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.RuleExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 
@@ -62,13 +67,16 @@ public class RuleService extends AbstractPaginateService<RuleDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleService.class);
 
     private RuleExternalRestClient client;
+    
+    private RuleExternalWebClient webClient;
 
     private CommonService commonService;
 
     @Autowired
-    public RuleService(final CommonService commonService, final RuleExternalRestClient client) {
+    public RuleService(final CommonService commonService, final RuleExternalRestClient client, final RuleExternalWebClient webClient) {
         this.commonService = commonService;
         this.client = client;
+        this.webClient = webClient;
     }
 
     @Override
@@ -98,4 +106,7 @@ public class RuleService extends AbstractPaginateService<RuleDto> {
         return client.export(context);
     }
 
+    public JsonNode importRules(ExternalHttpContext context, MultipartFile file) {
+        return webClient.importRules(context, file);
+    }
 }
