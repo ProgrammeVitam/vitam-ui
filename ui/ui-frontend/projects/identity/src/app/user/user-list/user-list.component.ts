@@ -55,7 +55,6 @@ import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { CustomerService } from '../../core/customer.service';
 
 
-import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -79,6 +78,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
+
+
 
   // tslint:disable-next-line:no-input-rename
   @Input('search')
@@ -149,13 +150,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     };
   }
 
-  ngOnInit() {
 
-    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      duration: 10000,
-      data: { type: 'usersToDelete' },
-    });
+  ngOnInit() {
 
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
     this.refreshLevelOptions();
@@ -165,6 +161,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       if (userIndex > -1) {
         this.userService.get(updatedUser.id).subscribe((user: User) => {
           this.dataSource[userIndex] = user;
+
         });
       }
     });
@@ -226,10 +223,12 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       this.search(pageRequest);
     });
 
+
     this.groupApiService.getAllByParams(new HttpParams()).subscribe((groups) => {
       this.groupFilterOptions = groups.map((group) => ({ value: group.id, label: group.name }));
       this.groupFilterOptions.sort(sortByLabel(this.locale));
     });
+
 
   }
 
