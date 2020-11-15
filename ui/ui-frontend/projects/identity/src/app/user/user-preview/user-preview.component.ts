@@ -100,6 +100,9 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   }
 
   updateStatus( status: string) {
+
+  updateStatus(status: string) {
+
     let dialogToOpen;
     if (status === 'ENABLED') {
       dialogToOpen = this.confirmEnabledUserDialog;
@@ -161,10 +164,13 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
         this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname })
           .subscribe((user) => {
             this.user = user;
+            this.emitClose();
           });
 
       });
 
+
   }
+
 
 }
