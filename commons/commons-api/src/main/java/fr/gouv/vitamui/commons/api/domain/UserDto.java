@@ -112,4 +112,8 @@ public class UserDto extends CustomerIdDto {
     private AddressDto address = new AddressDto();
 
     private String siteCode;
+
+    private OffsetDateTime desactivationDate;
+
+    private OffsetDateTime removingDate;
 }

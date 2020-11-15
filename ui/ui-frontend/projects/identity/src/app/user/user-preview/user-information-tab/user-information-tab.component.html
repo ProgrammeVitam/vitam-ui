@@ -24,7 +24,7 @@
   </div>
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-input [disabled]="true" formControlName="lastname" [validator]="form?.get('lastname')?.validator" label="Nom"
+      <vitamui-common-editable-input formControlName="lastname" [validator]="form?.get('lastname')?.validator" label="Nom"
         i18n-label="user info tab lastname@@UserInfoTabLastname">
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
           requis</vitamui-common-field-error>
