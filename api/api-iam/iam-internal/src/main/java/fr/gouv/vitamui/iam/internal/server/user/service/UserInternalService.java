@@ -534,6 +534,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
+
                 case "groupId" :
                     final GroupDto oldGroup = groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
                     final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
@@ -545,6 +546,23 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     final String status = CastUtils.toString(entry.getValue());
                     logbooks.add(new EventDiffDto(UserConverter.STATUS_KEY, user.getStatus(), status));
                     user.setStatus(EnumUtils.stringToEnum(UserStatusEnum.class, status));
+
+                    if(user.getStatus()== UserStatusEnum.DISABLED) {
+                        logbooks.add(new EventDiffDto(UserConverter.DESACTIVATION_DATE, user.getDesactivationDate(),
+                            OffsetDateTime.now()));
+                        user.setDesactivationDate(OffsetDateTime.now());
+                    }
+                    if(user.getStatus() == UserStatusEnum.REMOVED) {
+                        logbooks.add(new EventDiffDto(UserConverter.REMOVING_DATE, user.getRemovingDate(),
+                            OffsetDateTime.now()));
+                        user.setRemovingDate(OffsetDateTime.now());
+                        user.setDesactivationDate(null);
+                    }
+                    if(user.getStatus() == UserStatusEnum.ENABLED) {
+                        user.setDesactivationDate(null);
+                        user.setRemovingDate(null);
+                    }
+
                     break;
                 case "subrogeable" :
                     logbooks.add(new EventDiffDto(UserConverter.SUBROGEABLE_KEY, user.isSubrogeable(), entry.getValue()));

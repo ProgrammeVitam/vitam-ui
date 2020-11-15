@@ -131,4 +131,8 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
     private Address address = new Address();
 
     private String siteCode;
+
+    private OffsetDateTime desactivationDate;
+
+    private OffsetDateTime removingDate;
 }
