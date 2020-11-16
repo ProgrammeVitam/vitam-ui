@@ -307,7 +307,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
-        user.setSiteCode("001");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -340,10 +339,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Subrogeable\":\"false\","
                 + "\"OTP\":\"true\","
                 + "\"Code du site\":\"001\","
-                + "\"Nom de la rue\":\"-\","
-                + "\"Code postal\":\"-\","
-                + "\"Ville\":\"-\","
-                + "\"Pays\":\"-\""
+                + "\"desactivationDate\":\"\","
+                + "\"removingDate\":\"\","
+                + "\"Nom de la rue\":\"rue faubourg poissoniére\","
+                + "\"Code postal\":\"75009\","
+                + "\"Ville\":\"paris\","
+                + "\"Pays\":\"france\""
                 + "}");
         //@formatter:on
     }

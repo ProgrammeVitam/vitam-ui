@@ -119,7 +119,9 @@ const expectedCustomer = {
       country: 'FR',
     }
   }],
-  themeColors: {}
+  themeColors: {},
+  alerte : false,
+  alerteDuration : 72
 };
 
 let component: CustomerCreateComponent;

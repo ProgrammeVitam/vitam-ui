@@ -209,7 +209,7 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid() && !isDurationValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
               Créer le propriétaire
               <small> des éléments de preuves</small>
             </button>
