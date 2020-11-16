@@ -63,7 +63,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   lastImageUploaded: File = null;
   imageUrl: any;
   lastUploadedImageUrl: any;
-  lastColors: { [key: string]: string };
+  lastColors: {[key: string]: string};
   hasError = true;
   message: string;
   creating = false;
@@ -161,14 +161,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('name').valueChanges,
       this.form.get('companyName').valueChanges
     )
-      .subscribe(() => {
-        // reset object to trigger customerInfo input update in child component
-        this.customerInfo = {
-          code: this.form.get('code').value,
-          name: this.form.get('name').value,
-          companyName: this.form.get('companyName').value
-        };
-      });
+    .subscribe(() => {
+      // reset object to trigger customerInfo input update in child component
+      this.customerInfo = {
+        code: this.form.get('code').value,
+        name: this.form.get('name').value,
+        companyName: this.form.get('companyName').value
+      };
+    });
   }
 
   onCancel() {
@@ -197,7 +197,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   updateForCustomerModel(formValue: any): Customer {
     const { themeColors, ...customer } = formValue;
-    const customerTheme = {
+    const customerTheme =  {
       'vitamui-primary': themeColors.primary,
       'vitamui-secondary': themeColors.secondary
     };
@@ -294,10 +294,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   thirdStepValid(): boolean {
     return this.form.get('themeColors').value.primary.match(this.hexPattern) &&
-      this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
-      (this.form.get('hasCustomGraphicIdentity').value === false ||
-        (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
-      );
+       this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
+       (this.form.get('hasCustomGraphicIdentity').value === false ||
+             (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
+       );
   }
 
   get stepProgress() {
