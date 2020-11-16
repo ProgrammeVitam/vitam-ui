@@ -104,7 +104,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
-  nombreMois: Number;
+  totalMonth: number;
+  isInactifUsers = false;
 
   private groups: Array<{ id: string, group: any }> = [];
   private updatedUserSub: Subscription;
@@ -190,7 +191,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
         this.checkInactifUsers();
 
-
       } else {
         // we load everything before displaying data
         this.loaded = true;
@@ -218,7 +218,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       this.groupFilterOptions = groups.map((group) => ({ value: group.id, label: group.name }));
       this.groupFilterOptions.sort(sortByLabel(this.locale));
     });
-
   }
 
   refreshLevelOptions(query?: SearchQuery) {
@@ -262,28 +261,33 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
+
   checkInactifUsers() {
 
     this.customerService.getMyCustomer().subscribe((customer) => {
       if (customer.alerte) {
-        this.dataSource.filter((user: User) => user.status === "DISABLED").forEach((u: User) => {
+        this.dataSource.filter((user: User) => user.status === "DISABLED" && user.desactivationDate !== null).forEach((u: User) => {
 
-          if (u.desactivationDate !== null) {
-            this.nombreMois = ((new Date().getFullYear()) - (new Date(u.desactivationDate)).getFullYear()) * 12 - (new Date(u.desactivationDate)).getMonth() - 1 + (new Date().getMonth()) + 1;
+          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.desactivationDate)).getFullYear()) * 12 - (new Date(u.desactivationDate)).getMonth() + (new Date().getMonth());
 
-          }
-          if (this.nombreMois > customer.alerteDuration && u.email.split('@')[1] === customer.defaultEmailDomain) {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 60000,
-              data: { type: 'usersToDelete' },
-            });
+          if (this.totalMonth > customer.alertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
 
+            this.isInactifUsers = true;
           }
         })
 
+        if (this.isInactifUsers) {
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 60000,
+            data: { type: 'usersToDelete' },
+          });
+        }
       }
     });
+
+
 
   }
 

@@ -94,7 +94,7 @@ class TestHostComponent {
     owners: [],
     themeColors: {}, 
     alerte : false,
-    alerteDuration : 72
+    alertDelay : 72
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

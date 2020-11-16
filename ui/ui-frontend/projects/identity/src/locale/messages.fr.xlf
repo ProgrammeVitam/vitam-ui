@@ -3001,5 +3001,41 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
       <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy.component.html</context><context context-type="linenumber">27</context></context-group></trans-unit></body>
 
 
+
+<trans-unit id="notificationUserDelete" datatype="html">
+        <source>
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur "<x id="INTERPOLATION" equiv-text="{{ data?.firstname }}"/>"  "<x id="INTERPOLATION" equiv-text="{{ data?.lastname }}"/>"  a bien été supprimé
+    </source>
+
+        <target state="final">
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur "<x id="INTERPOLATION" equiv-text="{{ data?.firstname }}"/>"  "<x id="INTERPOLATION" equiv-text="{{ data?.lastname }}"/>"  a bien été supprimé
+    </target>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">88</context></context-group></trans-unit>
+    
+
+    <trans-unit id="notificationUserAlreadyDelete" datatype="html">
+        <source>
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur que vous cherchez est déja supprimé
+    </source>
+
+        <target state="final">
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur que vous cherchez est déja supprimé
+    </target>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">92</context></context-group></trans-unit>
+    
+
+<trans-unit id="notificationUsersToDelete" datatype="html">
+        <source>
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles
+    </source>
+
+        <target state="final">
+      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles
+    </target>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">96</context></context-group></trans-unit>
+    
+
+
+
   </file>
 </xliff>

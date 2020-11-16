@@ -123,8 +123,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group(
       {
-        alerte : false,
-        alerteDuration : 13,
+
         enabled: true,
         email: [null, [
           Validators.required,

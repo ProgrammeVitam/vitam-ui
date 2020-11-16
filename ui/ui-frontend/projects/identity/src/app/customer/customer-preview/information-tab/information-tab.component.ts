@@ -72,7 +72,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     emailDomains: string[],
     defaultEmailDomain: string
     alerte : boolean,
-    alerteDuration : number,
+    alertDelay : number,
   };
 
   @Input()

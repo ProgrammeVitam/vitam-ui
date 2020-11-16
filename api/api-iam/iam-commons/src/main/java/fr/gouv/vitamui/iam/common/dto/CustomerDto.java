@@ -122,5 +122,5 @@ public class CustomerDto extends IdDto {
 
     private boolean alerte = false;
 
-    private int alerteDuration;
+    private int alertDelay;
 }
