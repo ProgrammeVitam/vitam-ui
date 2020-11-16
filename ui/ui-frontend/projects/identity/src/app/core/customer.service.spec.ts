@@ -195,5 +195,5 @@ const expectedCustomer: Customer = {
   }],
   themeColors: {},
   alerte : false,
-  alerteDuration : 72
+  alertDelay : 72
 };

@@ -119,7 +119,7 @@ let expectedCustomer: Customer = {
   }],
   themeColors: {},
   alerte : false,
-  alerteDuration : 72
+  alertDelay : 72
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -230,7 +230,7 @@ describe('UserInfoTabComponent', () => {
       }],
       themeColors: {},
       alerte : false,
-      alerteDuration : 72
+      alertDelay : 72
     };
     expectedUserInfo = {
       multifactorAllowed: true,

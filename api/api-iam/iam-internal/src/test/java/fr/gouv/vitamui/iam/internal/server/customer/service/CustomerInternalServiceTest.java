@@ -302,6 +302,8 @@ public class CustomerInternalServiceTest {
         owners.add(owner);
         dto.setOwners(owners);
         dto.setHasCustomGraphicIdentity(false);
+        dto.setAlerte(false);
+        dto.setAlertDelay(72);
         return dto;
     }
 }

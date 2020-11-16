@@ -2,15 +2,15 @@
   <div class="vitamui-sidepanel-header">
     <ng-container *ngIf="!isPopup">
       <button class="btn-popup" role="button" (click)="openPopup()"><i
-        class="vitamui-icon vitamui-icon-pin"></i></button>
+          class="vitamui-icon vitamui-icon-pin"></i></button>
     </ng-container>
     <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close"
-         *ngIf="user?.status === 'ENABLED'"></i>
+        *ngIf="user?.status === 'ENABLED'"></i>
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey"
-         *ngIf="user?.status === 'DISABLED'"></i>
+        *ngIf="user?.status === 'DISABLED'"></i>
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-red"
          *ngIf="user?.status === 'REMOVED'"></i>
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange"
@@ -42,7 +42,7 @@
 
       <mat-tab label="Groupe" i18n-label="Groupe tab@@userPreviewTabGroupe" class="no-padding">
         <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()"
-                            [userInfo]="connectedUserInfo"></app-user-group-tab>
+          [userInfo]="connectedUserInfo"></app-user-group-tab>
       </mat-tab>
 
       <mat-tab label="Historique" i18n-label="History tab@@userPreviewTabHistory">
@@ -72,7 +72,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog"
-            i18n="@@confirmDialogConfirmButton">Confirmer</button>
+      i18n="@@confirmDialogConfirmButton">Confirmer</button>
     <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>

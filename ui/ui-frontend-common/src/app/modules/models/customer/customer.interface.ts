@@ -60,5 +60,5 @@ export interface Customer extends Id {
   themeColors: {[key: string]: string};
   tenantName?: string;
   alerte : boolean;
-  alerteDuration : number;
+  alertDelay : number;
 }

@@ -86,7 +86,7 @@ const expectedCustomer: Customer = {
   }],
   themeColors: {},
   alerte: false,
-  alerteDuration : 72
+  alertDelay : 72
 };
 
 // TODO fix tests with filling plan
