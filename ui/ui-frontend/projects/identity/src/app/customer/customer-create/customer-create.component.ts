@@ -63,7 +63,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   lastImageUploaded: File = null;
   imageUrl: any;
   lastUploadedImageUrl: any;
-  lastColors: {[key: string]: string};
+  lastColors: { [key: string]: string };
   hasError = true;
   message: string;
   creating = false;
@@ -92,8 +92,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      alerte : false,
-      alerteDuration : [72, Validators.min(72)],
+      alerte: false,
+      alerteDuration: [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -161,14 +161,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('name').valueChanges,
       this.form.get('companyName').valueChanges
     )
-    .subscribe(() => {
-      // reset object to trigger customerInfo input update in child component
-      this.customerInfo = {
-        code: this.form.get('code').value,
-        name: this.form.get('name').value,
-        companyName: this.form.get('companyName').value
-      };
-    });
+      .subscribe(() => {
+        // reset object to trigger customerInfo input update in child component
+        this.customerInfo = {
+          code: this.form.get('code').value,
+          name: this.form.get('name').value,
+          companyName: this.form.get('companyName').value
+        };
+      });
   }
 
   onCancel() {
@@ -197,7 +197,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   updateForCustomerModel(formValue: any): Customer {
     const { themeColors, ...customer } = formValue;
-    const customerTheme =  {
+    const customerTheme = {
       'vitamui-primary': themeColors.primary,
       'vitamui-secondary': themeColors.secondary
     };
@@ -257,23 +257,31 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.handleImage(files);
   }
 
-  isDurationValid() : boolean {
-    if(this.form.get('alerte').value) {
+  isDurationNotValid(): boolean {
+    
+    if (this.form.get('alerte').value) {
       return this.form.get('alerteDuration').invalid || this.form.get('alerteDuration').pending
     }
-    return false;
+    else {
+
+      this.form.get('alerte').valueChanges.subscribe(() =>
+        this.form.get('alerteDuration').setValue(72)
+      );
+
+      return false;
+    }
   }
 
   firstStepInvalid(): boolean {
 
-     
+
     return this.form.get('code').invalid || this.form.get('code').pending ||
       this.form.get('name').invalid || this.form.get('name').pending ||
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
       this.form.get('address.city').invalid || this.form.get('address.city').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending || this.isDurationValid();
+      this.form.get('address.country').invalid || this.form.get('address.country').pending || this.isDurationNotValid();
 
 
   }
@@ -287,10 +295,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   thirdStepValid(): boolean {
     return this.form.get('themeColors').value.primary.match(this.hexPattern) &&
-        this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
-        (this.form.get('hasCustomGraphicIdentity').value === false ||
-              (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
-        );
+      this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
+      (this.form.get('hasCustomGraphicIdentity').value === false ||
+        (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
+      );
   }
 
   get stepProgress() {
