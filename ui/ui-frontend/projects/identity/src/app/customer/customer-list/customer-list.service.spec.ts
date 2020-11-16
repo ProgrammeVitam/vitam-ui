@@ -75,7 +75,8 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             city: 'Paris',
             country: 'France'
           },
-          readonly: false
+          readonly: false,
+      
         },
         {
           id: '2',
@@ -99,7 +100,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -155,7 +158,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     },
   ],
   pageNum: 0,
@@ -219,7 +224,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -275,7 +282,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     },
   ],
   pageNum: 0,

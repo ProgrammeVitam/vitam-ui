@@ -71,7 +71,9 @@ let expectedCustomer: Customer = {
         country: 'france'
     },
     owners: [],
-    themeColors: {}
+    themeColors: {},
+    alerte : false,
+    alerteDuration : 72
 };
 
 @Component({
@@ -148,7 +150,9 @@ describe('Customer InformationTabComponent', () => {
         country: 'france'
       },
       owners: [],
-      themeColors: {}
+      themeColors: {},
+      alerte : false,
+      alerteDuration : 72
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
