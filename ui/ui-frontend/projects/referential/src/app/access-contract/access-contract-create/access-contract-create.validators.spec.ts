@@ -54,38 +54,38 @@ function toObservable(r: any): Observable<any> {
 
 describe('AccessContract Create Validators', () => {
 
-  describe('nameExists', () => {
-    it('should return null', fakeAsync(() => {
-      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      accessContractServiceSpy.exists.and.returnValue(of(false));
+  describe('uniqueName', () => {
+    it('uniqueName should return null', fakeAsync(() => {
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(false));
       const accessContractCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(accessContractCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(accessContractServiceSpy.exists).toHaveBeenCalledWith('123456');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(customerCreateValidators.uniqueName()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('111111');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
     }));
   });
 
@@ -116,36 +116,36 @@ describe('AccessContract Create Validators', () => {
     });
 
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(null));
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
     }));
 
     it('should return { nameExists: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('123456');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new AccessContractCreateValidators(customerServiceSpy);
+      const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', ['existsProperties']);
+      accessContractServiceSpy.existsProperties.and.returnValue(of(true));
+      const customerCreateValidators = new AccessContractCreateValidators(accessContractServiceSpy);
       toObservable(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith('111111');
+      expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
     }));
   });
 

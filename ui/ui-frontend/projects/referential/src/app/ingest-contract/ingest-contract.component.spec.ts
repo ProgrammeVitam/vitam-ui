@@ -4,9 +4,10 @@ import {MatDialog} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
-import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {BASE_URL, GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {IngestContractComponent} from './ingest-contract.component';
 
 describe('IngestContractComponent', () => {
@@ -22,6 +23,7 @@ describe('IngestContractComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         VitamUICommonTestModule,
         RouterTestingModule,
         InjectorModule,
@@ -32,7 +34,8 @@ describe('IngestContractComponent', () => {
         GlobalEventService,
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: Router, useValue: {}},
-        {provide: MatDialog, useValue: {}}
+        {provide: MatDialog, useValue: {}},
+        {provide: BASE_URL, useValue: ''},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

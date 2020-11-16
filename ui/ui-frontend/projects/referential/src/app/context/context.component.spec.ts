@@ -3,9 +3,11 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {MatDialogModule, MatSidenavModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {ApplicationService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
 import {ContextComponent} from './context.component';
 
 @Component({selector: 'app-agency-preview', template: ''})
@@ -24,6 +26,11 @@ describe('ContextComponent', () => {
   let component: ContextComponent;
   let fixture: ComponentFixture<ContextComponent>;
 
+  const applicationServiceMock = {
+    applications: new Array<any>(),
+    isApplicationExternalIdentifierEnabled: () => of(true)
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -32,6 +39,7 @@ describe('ContextComponent', () => {
         ContextPreviewStub
       ],
       imports: [
+        HttpClientTestingModule,
         VitamUICommonTestModule,
         RouterTestingModule,
         InjectorModule,
@@ -39,6 +47,9 @@ describe('ContextComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule
+      ],
+      providers: [
+        {provide: ApplicationService, useValue: applicationServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

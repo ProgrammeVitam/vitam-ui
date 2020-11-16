@@ -18,9 +18,13 @@ describe('IngestContractCreateComponent', () => {
   let fixture: ComponentFixture<IngestContractCreateComponent>;
 
   beforeEach(async(() => {
-    const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
-      uniqueName: () => of(null)
-    });
+    const ingestContractCreateValidatorsSpy = jasmine.createSpyObj(
+      'IngestContractCreateValidators',
+      {
+        uniqueName: () => of(null),
+        uniqueIdentifier: () => of(null), identifierToIgnore: ''
+      }
+    );
 
     const accessContractServiceMock = {
       getAll: () => of([])
