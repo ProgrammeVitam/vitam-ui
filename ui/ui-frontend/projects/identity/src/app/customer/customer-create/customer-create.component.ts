@@ -257,9 +257,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.handleImage(files);
   }
 
-  isDurationNotValid(): boolean {
-
-    if (this.form.get('alerte').value) {
+  isDurationValid() : boolean {
+    if(this.form.get('alerte').value) {
       return this.form.get('alerteDuration').invalid || this.form.get('alerteDuration').pending
     }
     else {
