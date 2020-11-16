@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,6 @@ import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
-import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;

@@ -76,10 +76,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     ]),
   ]
 })
-
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
-
-
 
   // tslint:disable-next-line:no-input-rename
   @Input('search')
@@ -108,7 +105,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
-  nombreMois: Number;
+  nombreMois: number;
 
   private groups: Array<{ id: string, group: any }> = [];
   private updatedUserSub: Subscription;
@@ -129,8 +126,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-
-
   // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
@@ -150,9 +145,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     };
   }
 
-
   ngOnInit() {
-
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
     this.refreshLevelOptions();
 
@@ -199,7 +192,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
         this.checkInactifUsers();
 
-
       } else {
         // we load everything before displaying data
         this.loaded = true;
@@ -223,13 +215,10 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       this.search(pageRequest);
     });
 
-
     this.groupApiService.getAllByParams(new HttpParams()).subscribe((groups) => {
       this.groupFilterOptions = groups.map((group) => ({ value: group.id, label: group.name }));
       this.groupFilterOptions.sort(sortByLabel(this.locale));
     });
-
-
   }
 
   refreshLevelOptions(query?: SearchQuery) {
