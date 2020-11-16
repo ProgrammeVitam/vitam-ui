@@ -2,9 +2,9 @@
 @ApiReferential
 @ApiReferentialContexts
 @ApiReferentialContextsDelete
-Feature: API contextes : suppression d'une règle
+Feature: API contextes : suppression d'une regle
 
- Scenario: suppression d'une règle
-    Given la règle RuleTest existe
-    When un utilisateur avec le rôle ROLE_GET_RULES une règle en utilisant un certificat full access avec le rôle ROLE_GET_RULES
-    Then la règle n'est pas
+ Scenario: suppression d'une regle
+    Given la regle RuleTest existe
+    When un utilisateur avec le role ROLE_GET_RULES une regle en utilisant un certificat full access avec le role ROLE_GET_RULES
+    Then la regle n'est pas
