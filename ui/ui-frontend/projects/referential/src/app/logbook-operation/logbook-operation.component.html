@@ -9,16 +9,19 @@
 
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true" (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true"
+          (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
         <h2 i18n="@@apiSupervisionPageTitle">
           <img src="assets/vitamui-logo-small.png"><strong>Journal des Opérations</strong>
         </h2>
-        
-        <div class="controls">
 
-          <vitamui-common-search-bar name="logbook-operation-search" (search)="onSearchSubmit($event)"
-                        placeholder="Nom, ID" i18n-placeholder="@@logbookOperationSearchPlaceholder">
-                    </vitamui-common-search-bar>
+        <div class="controls">
+          <div class="search-bar-filters">
+            <vitamui-common-search-bar name="logbook-operation-search" (search)="onSearchSubmit($event)"
+              placeholder="Nom, ID" i18n-placeholder="@@logbookOperationSearchPlaceholder">
+            </vitamui-common-search-bar>
+            <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
+          </div>
           <div class="actions">
 
             <button class="btn secondary" (click)="refreshList()">
@@ -39,48 +42,36 @@
           <form [formGroup]="dateRangeFilterForm" class="date-filter-container">
             <div class="date-filter-container">
               <div class="date-filter">
-                <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate" (click)="pickerStart.open()"
-                  i18n="@@apiSupervisionStartDate">Date de début</span>
+                <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate"
+                  (click)="pickerStart.open()" i18n="@@apiSupervisionStartDate">Date de début</span>
                 <ng-template #showStartDate>
                   <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | date:'dd/MM/yyyy'
                     }}</span>
                   <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
                 </ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate" [max]="dateRangeFilterForm.get('endDate').value">
+                <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate"
+                  [max]="dateRangeFilterForm.get('endDate').value">
                 <mat-datepicker #pickerStart></mat-datepicker>
               </div>
               <div class="date-filter">
                 <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()"
                   i18n="@@apiSupervisionEndDate">Date de fin</span>
                 <ng-template #showEndDate><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value
-                    | date:'dd/MM/yyyy' }} </span> <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i></ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate" [min]="dateRangeFilterForm.get('startDate').value">
+                    | date:'dd/MM/yyyy' }} </span> <i class="material-icons clear-date-icon clickable"
+                    (click)="clearDate('endDate')">clear</i></ng-template>
+                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate"
+                  [min]="dateRangeFilterForm.get('startDate').value">
                 <mat-datepicker #pickerEnd></mat-datepicker>
               </div>
             </div>
           </form>
         </div>
-
-        <div class="custom-flex-controls">
-
-          <button class="btn" (click)="toggleTypeFilter('INGEST')" [class.active]="filters?.type === 'INGEST'">
-            <i class="vitamui-icon" i18n="@@apiSupervisionFilterIngest"></i> <span>Entrées</span>
-          </button>
-
-          <button class="btn" (click)="toggleTypeFilter('ELIMINATION')" [class.active]="filters?.type === 'ELIMINATION'">
-            <i class="vitamui-icon" i18n="@@apiSupervisionFilterElimination"></i> <span>Eliminations</span>
-          </button>
-
-          <button class="btn" (click)="toggleTypeFilter('MASTERDATA')" [class.active]="filters?.type === 'MASTERDATA'">
-            <i class="vitamui-icon" i18n="@@apiSupervisionFilterMasterData"></i> <span>Données de base</span>
-          </button>
-        </div>
-
       </div>
     </div>
 
     <div class="vitamui-body vitamui-container">
-      <app-logbook-operation-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" (eventClick)="openPanel($event)"></app-logbook-operation-list>
+      <app-logbook-operation-list [filters]="filters" [tenantIdentifier]="tenantIdentifier" [search]="search"
+        (eventClick)="openPanel($event)"></app-logbook-operation-list>
     </div>
 
   </mat-sidenav-content>

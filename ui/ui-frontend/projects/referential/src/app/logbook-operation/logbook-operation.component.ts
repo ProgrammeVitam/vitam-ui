@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import {MatDialog} from '@angular/material/dialog';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 
@@ -50,15 +51,19 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
 
+  search = '';
   dateRangeFilterForm: FormGroup;
   tenantIdentifier: number;
   filters: Readonly<EventFilter> = {};
 
+
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog,
     private formBuilder: FormBuilder,
     globalEventService: GlobalEventService
   ) {
@@ -90,6 +95,10 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
+  onSearchSubmit(search: string) {
+    this.search = search || '';
+  }
+
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
       this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
@@ -108,20 +117,10 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
     this.list.refreshList();
   }
 
-  toggleTypeFilter(type: 'INGEST' | 'ELIMINATION' | 'MASTERDATA') {
-    this.filters = {
-      type: (!this.filters.type || this.filters.type !== type) ? type : null,
-      status: this.filters.status,
-      dateRange: this.filters.dateRange
-    };
+  resetFilters() {
+    this.clearDate('startDate');
+    this.clearDate('endDate');
+    this.searchBar.reset();
+    this.list.resetFilters();
   }
-
-  toggleStatusFilter(status: 'RUNNING' | 'ERROR' | 'DONE') {
-    this.filters = {
-      type: this.filters.type,
-      status: (!this.filters.status || this.filters.status !== status) ? status : null,
-      dateRange: this.filters.dateRange
-    };
-  }
-
 }
