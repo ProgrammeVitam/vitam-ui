@@ -67,6 +67,6 @@ export class CommonProgressBarComponent implements OnInit {
   ngOnInit() {}
 
   getProgressValue(index: number, count: number): number {
-    return ((index + 1) / count) * PROGRESS_BAR_MULTIPLICATOR;
+    return ((index) / count) * PROGRESS_BAR_MULTIPLICATOR;
   }
 }
