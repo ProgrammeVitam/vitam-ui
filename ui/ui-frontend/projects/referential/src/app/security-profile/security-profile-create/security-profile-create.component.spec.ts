@@ -76,6 +76,7 @@ class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor
 
 const expectedSecurityProfile = {
   name: 'Name',
+  identifier: 'identifier',
   fullAccess: true,
   permissions: ['']
 };
@@ -97,14 +98,17 @@ class Page {
 
 let page: Page;
 
-describe('CustomerCreateComponent', () => {
+describe('SecurityProfileCreateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', {create: of({})});
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
       'SecurityProfileCreateValidators',
-      {uniqueName: () => of(null)}
+      {
+        uniqueName: () => of(null),
+        uniqueIdentifier: () => of(null), identifierToIgnore: ''
+      }
     );
     TestBed.configureTestingModule({
       imports: [

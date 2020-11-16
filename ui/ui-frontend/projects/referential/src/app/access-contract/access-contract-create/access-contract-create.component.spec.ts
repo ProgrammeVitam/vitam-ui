@@ -95,8 +95,11 @@ describe('AccessContractCreateComponent', () => {
     const agencyServiceSpy = jasmine.createSpyObj('AgencyService', {getAll: of([])});
     const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', {create: of({}), getAll: of([])});
     const accessContractCreateValidatorsSpy = jasmine.createSpyObj(
-      'AccessContractCreateValidators',
-      {uniqueName: () => of(null), uniqueNameWhileEdit: of(null)}
+      'AccessContractCreateValidators', 
+      {
+        uniqueName: () => of(null), uniqueNameWhileEdit: of(null),
+        uniqueIdentifier: () => of(null), identifierToIgnore: ''
+      }
     );
     TestBed.configureTestingModule({
       imports: [

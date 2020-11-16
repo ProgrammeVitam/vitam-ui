@@ -3,10 +3,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {ApplicationService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {of} from 'rxjs';
 import {AccessContractComponent} from './access-contract.component';
 
 @Component({selector: 'app-access-contract-preview', template: ''})
@@ -26,6 +27,11 @@ describe('AccessContractComponent', () => {
   let component: AccessContractComponent;
   let fixture: ComponentFixture<AccessContractComponent>;
 
+  const applicationServiceMock = {
+    applications: new Array<any>(),
+    isApplicationExternalIdentifierEnabled: () => of(true)
+  };
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -41,6 +47,9 @@ describe('AccessContractComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule
+      ],
+      providers: [
+        {provide: ApplicationService, useValue: applicationServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
