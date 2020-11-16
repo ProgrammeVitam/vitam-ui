@@ -2,9 +2,9 @@
 @ApiReferential
 @ApiReferentialRules
 @ApiReferentialRulesCreation
-Feature: API Rules : création d'une nouvelle règle
+Feature: API Rules : creation d'une nouvelle regle
 
   Scenario: Cas normal
-    Given la règle RuleTest n'existe pas
-    When un utilisateur avec le rôle ROLE_CREATE_RULES ajoute une nouvelle règle en utilisant un certificat full access avec le rôle ROLE_CREATE_RULES
-    Then le serveur retourne la règle créée
+    Given la regle RuleTest n'existe pas
+    When un utilisateur avec le role ROLE_CREATE_RULES ajoute une nouvelle regle en utilisant un certificat full access avec le role ROLE_CREATE_RULES
+    Then le serveur retourne la regle creee
