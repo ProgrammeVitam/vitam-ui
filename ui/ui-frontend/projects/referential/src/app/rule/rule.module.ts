@@ -40,21 +40,21 @@ import {
   MatDialogModule,
   MatMenuModule,
   MatProgressSpinnerModule,
-  MatSidenavModule,
   MatSelectModule,
+  MatSidenavModule,
   MatSnackBarModule
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
 
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {SharedModule} from '../shared/shared.module';
+import {RuleCreateModule} from './rule-create/rule-create.module';
+import {RuleListComponent} from './rule-list/rule-list.component';
+import {RulePreviewModule} from './rule-preview/rule-preview.module';
 import {RuleRoutingModule} from './rule-routing.module';
 import {RuleComponent} from './rule.component';
-import {RuleListComponent} from './rule-list/rule-list.component';
-import {RuleCreateModule} from './rule-create/rule-create.module';
-import {RulePreviewModule} from './rule-preview/rule-preview.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [

@@ -53,12 +53,10 @@ describe('RuleInformationTabComponent', () => {
   };
 
   const ruleValue = {
-    puid: 'EXTERNAL_puid',
-    name: 'Name',
-    mimeType: 'application/puid',
-    version: 1,
-    versionPronom: '3.0',
-    extensions: ['.puid']
+    ruleType: 'AppraisalRule',
+    ruleDescription: 'Règle de gestion XXXX',
+    ruleDuration: '20',
+    ruleMeasurement: 'Day'
   };
 
   const previousValue: Rule = {

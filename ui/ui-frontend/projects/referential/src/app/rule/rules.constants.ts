@@ -1,4 +1,4 @@
-import {Option} from 'ui-frontend-common'
+import {Option} from 'ui-frontend-common';
 
 export const RULE_TYPES: Option[] = [
     {key: 'StorageRule', label: 'Durée d’utilité courante', info: ''},

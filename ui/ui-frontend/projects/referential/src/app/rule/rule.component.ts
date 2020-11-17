@@ -76,22 +76,21 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
 
     this.route.params.subscribe(params => {
-      console.log(params);
       if (params.tenantIdentifier) {
         this.tenantId = params.tenantIdentifier;
       }
     });
 
-    this.typeFilterForm
-      = this.formBuilder.group({
-        ruleTypes: null
-      });
+    this.typeFilterForm = this.formBuilder.group({
+      ruleTypes: null
+    });
 
     this.typeFilterForm
       .controls.ruleTypes.valueChanges.subscribe(value => {
         this.filters = value;
         this.ruleListComponentListComponent.filters = this.filters;
       });
+
   }
 
   openCreateRuleDialog() {

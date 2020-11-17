@@ -39,7 +39,7 @@ import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -50,15 +50,17 @@ import {ConfirmDialogService} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {RuleService} from '../rule.service';
+import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
 import {RuleCreateComponent} from './rule-create.component';
 import {RuleCreateValidators} from './rule-create.validators';
 
 const expectedRule = {
-  puid: '424242',
-  version: '1.0',
-  name: 'Test',
-  mimeType: 'application/test',
-  extensions: ['.test', '.tst'],
+  ruleId: '424242',
+  ruleType: RULE_TYPES[0].key,
+  ruleValue: '111',
+  ruleDescription: 'DESC',
+  ruleDuration: '10',
+  ruleMeasurement: RULE_MEASUREMENTS[0].key
 };
 
 let component: RuleCreateComponent;
@@ -82,31 +84,39 @@ describe('RuleCreateComponent', () => {
 
   beforeEach(async(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {create: of({})});
+    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
+      create: of({}),
+      existsProperties: of(false)
+    });
+    const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
     const ruleCreateValidatorsSpy = jasmine.createSpyObj(
-      'RuleCreateValidators',
-      {uniquePuid: () => of(null), uniqueName: () => of(null)}
+      'RuleCreateValidators', {
+        uniqueRuleId: () => of(null),
+        ruleIdPattern: ruleCreateValidators.ruleIdPattern()
+      }
     );
+
     TestBed.configureTestingModule({
+      declarations: [
+        RuleCreateComponent
+      ],
       imports: [
         ReactiveFormsModule,
+        NoopAnimationsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
+        MatDialogModule,
         VitamUICommonTestModule,
       ],
-      declarations: [
-        RuleCreateComponent
-      ],
       providers: [
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: RuleService, useValue: ruleServiceSpy},
         {provide: RuleCreateValidators, useValue: ruleCreateValidatorsSpy},
         {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
+        {provide: MAT_DIALOG_DATA, useValue: {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -126,11 +136,12 @@ describe('RuleCreateComponent', () => {
 
   describe('Template', () => {
     it('should have the right inputs', () => {
-      expect(page.control('puid')).toBeTruthy();
-      expect(page.control('name')).toBeTruthy();
-      expect(page.control('version')).toBeTruthy();
-      expect(page.control('mimeType')).toBeTruthy();
-      expect(page.control('extensions')).toBeTruthy();
+      expect(page.control('ruleId')).toBeTruthy();
+      expect(page.control('ruleType')).toBeTruthy();
+      expect(page.control('ruleValue')).toBeTruthy();
+      expect(page.control('ruleDescription')).toBeTruthy();
+      expect(page.control('ruleDuration')).toBeTruthy();
+      expect(page.control('ruleMeasurement')).toBeTruthy();
     });
 
     it('should have a submit button', () => {
@@ -138,6 +149,10 @@ describe('RuleCreateComponent', () => {
       expect(page.submit.attributes.disabled).toBeTruthy();
       component.form.setValue(expectedRule);
       fixture.detectChanges();
+
+      console.log('ATTRIBUTES : ', page.submit.attributes);
+      console.log('DISABLED : ', page.submit.attributes.disabled);
+
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
   });
@@ -156,16 +171,21 @@ describe('RuleCreateComponent', () => {
 
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('empty name invalid');
-          expect(setControlValue('name', 'n').invalid).toBeTruthy('minlength name invalid');
-          expect(setControlValue('name', 'name').valid).toBeTruthy('name valid');
+          expect(setControlValue('ruleId', '').invalid).toBeTruthy('empty ruleId invalid');
+          expect(setControlValue('ruleId', 'ÀÖØöøÿ ').invalid).toBeTruthy('ruleId pattern invalid');
+          expect(setControlValue('ruleId', 'azerty').valid).toBeTruthy('ruleId valid');
 
-          expect(setControlValue('puid', '').invalid).toBeTruthy('empty puid invalid');
-          expect(setControlValue('puid', 'p').invalid).toBeTruthy('minlength puid invalid');
-          expect(setControlValue('puid', 'puid').valid).toBeTruthy('puid valid');
+          expect(setControlValue('ruleType', '').invalid).toBeTruthy('empty ruleType invalid');
+          expect(setControlValue('ruleType', RULE_TYPES[0].key).valid).toBeTruthy('ruleType valid');
 
-          expect(setControlValue('version', '').invalid).toBeTruthy('empty version invalid');
-          expect(setControlValue('version', 'v').valid).toBeTruthy('version valid');
+          expect(setControlValue('ruleValue', '').invalid).toBeTruthy('empty ruleValue invalid');
+          expect(setControlValue('ruleValue', '111').valid).toBeTruthy('ruleValue valid');
+
+          expect(setControlValue('ruleDuration', '').invalid).toBeTruthy('empty ruleDuration invalid');
+          expect(setControlValue('ruleDuration', '10').valid).toBeTruthy('ruleDuration valid');
+
+          expect(setControlValue('ruleMeasurement', '').invalid).toBeTruthy('empty ruleMeasurement invalid');
+          expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).toBeTruthy('ruleMeasurement valid');
         });
       });
 
