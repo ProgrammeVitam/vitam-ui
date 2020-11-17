@@ -1,9 +1,6 @@
 :host  {
     div {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-        margin-left: 5rem;
-        margin-right: 5rem;
+        margin: 3rem 5rem;;
     }
     
     mat-list-item {
@@ -19,8 +16,14 @@
     
     }
     
-    ::ng-deep .mat-list-item-content {
-        justify-content: center;
+    ::ng-deep {
+        .mat-sidenav-content {
+            overflow: hidden;
+        }
+         
+        .mat-list-item-content {
+            justify-content: center;
+        }
     }
 }
     

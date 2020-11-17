@@ -47,11 +47,12 @@ import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModul
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ArraysModule } from './components/arrays/arrays.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ButtonsModule } from './components/buttons/buttons.module';
 import { InputsModule } from './components/inputs/inputs.module';
+import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
-import { SwitchModule } from './components/switch/switch.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
 registerLocaleData(localeFr, 'fr');
@@ -72,8 +73,9 @@ registerLocaleData(localeFr, 'fr');
     LoggerModule.forRoot(),
     QuicklinkModule,
     ButtonsModule,
+    MiscellaneousModule,
+    ArraysModule,
     BreadcrumbModule,
-    SwitchModule,
     InputsModule,
     ProgressBarModule,
     TooltipModule,
@@ -90,5 +92,4 @@ registerLocaleData(localeFr, 'fr');
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }

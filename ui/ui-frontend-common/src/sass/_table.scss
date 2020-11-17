@@ -269,7 +269,6 @@ $row-padding: 0.8rem;
 }
 
 .vitamui-table-rows {
-    border-top: 1px solid var(--vitamui-grey-100); 
     color: var(--vitamui-grey-900);
     align-items: center;
     font-size: 15px;
@@ -279,6 +278,7 @@ $row-padding: 0.8rem;
     }
 
     .vitamui-row {
+        border-top: 1px solid var(--vitamui-grey-100); 
         padding: $row-padding;
 
         &:hover {

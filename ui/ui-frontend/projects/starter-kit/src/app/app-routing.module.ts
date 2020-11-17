@@ -37,11 +37,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
+import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { InputsComponent } from './components/inputs/inputs.component';
+import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { SwitchComponent } from './components/switch/switch.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
@@ -51,12 +52,13 @@ const routes: Routes = [
     component: StarterKitComponent,
   },
   { path: 'buttons', component: ButtonsComponent },
+  { path: 'arrays', component: ArraysComponent },
   { path: 'inputs', component: InputsComponent },
   { path: 'breadcrumbs', component: BreadcrumbComponent },
   { path: 'buttons', component: ButtonsComponent },
-  { path: 'switchs', component: SwitchComponent },
   { path: 'progress-bar', component: ProgressBarComponent },
   { path: 'tooltip', component: TooltipComponent },
+  { path: 'miscellaneous', component: MiscellaneousComponent },
 
   { path: '**', redirectTo: '' },
 ];
