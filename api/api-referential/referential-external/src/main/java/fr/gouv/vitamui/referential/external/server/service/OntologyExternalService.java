@@ -65,14 +65,18 @@ import java.util.stream.Collectors;
 @Service
 public class OntologyExternalService extends AbstractResourceClientService<OntologyDto, OntologyDto> {
 
-    @Autowired
     private OntologyInternalRestClient ontologyInternalRestClient;
     
-    @Autowired
     private OntologyInternalWebClient ontologyInternalWebClient;
 
-    public OntologyExternalService(@Autowired ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public OntologyExternalService(
+    	ExternalSecurityService externalSecurityService, 
+    	OntologyInternalRestClient ontologyInternalRestClient,
+    	OntologyInternalWebClient ontologyInternalWebClient) {
         super(externalSecurityService);
+        this.ontologyInternalRestClient = ontologyInternalRestClient;
+        this.ontologyInternalWebClient = ontologyInternalWebClient;
     }
 
     public List<OntologyDto> getAll(final Optional<String> criteria) {

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,53 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+package fr.gouv.vitamui.referential;
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-// tslint:disable-next-line: max-line-length
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatMenuModule, MatOptionModule, MatSidenavModule, MatSnackBarModule } from '@angular/material';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BASE_URL, LoggerModule, VitamUICommonModule } from 'ui-frontend-common';
-import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
+import static org.assertj.core.api.Assertions.assertThat;
 
-describe('VitamUIImportDialogComponent', () => {
-  let component: VitamUIImportDialogComponent;
-  let fixture: ComponentFixture<VitamUIImportDialogComponent>;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        VitamUIImportDialogComponent
-      ],
-      imports: [
-        LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        VitamUICommonModule,
-        MatSidenavModule,
-        MatSnackBarModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatOptionModule
-      ],
-      providers: [
-        {provide: MatDialogRef, useValue: ''},
-        {provide: MAT_DIALOG_DATA, value: ''},
-        {provide: BASE_URL, useValue: ''}
-      ]
-    })
-    .compileComponents();
-  }));
+import fr.gouv.vitamui.referential.config.ReferentialApplicationProperties;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUIImportDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = { "spring.config.name=ui-referential-application" })
+public class ReferentialApplicationTest {
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    @Autowired
+    private Environment env;
+
+    @Autowired
+    ReferentialApplicationProperties referentialProperties;
+
+    @Test
+    public void testContextLoads() {
+        assertThat(env).isNotNull();
+        assertThat(env.getProperty("spring.config.name") ).isEqualTo("ui-referential-application");
+
+        assertThat(referentialProperties).isNotNull();
+        assertThat(referentialProperties.getIamExternalClient()).isNotNull();
+        assertThat(referentialProperties.getReferentialExternalClient()).isNotNull();
+        
+    }
+
+}

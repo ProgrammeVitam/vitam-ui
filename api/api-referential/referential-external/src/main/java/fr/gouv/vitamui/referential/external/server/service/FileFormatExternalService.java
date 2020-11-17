@@ -69,15 +69,18 @@ import lombok.Setter;
 @Setter
 @Service
 public class FileFormatExternalService extends AbstractResourceClientService<FileFormatDto, FileFormatDto> {
-
-    @Autowired
     private FileFormatInternalRestClient fileFormatInternalRestClient;
+   
+    private FileFormatInternalWebClient fileFormatInternalWebClient;
     
     @Autowired
-    private FileFormatInternalWebClient fileFormatInternalWebClient;
-
-    public FileFormatExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    public FileFormatExternalService(
+    	ExternalSecurityService externalSecurityService, 
+    	FileFormatInternalRestClient fileFormatInternalRestClient, 
+    	FileFormatInternalWebClient fileFormatInternalWebClient) {
         super(externalSecurityService);
+        this.fileFormatInternalRestClient = fileFormatInternalRestClient;
+        this.fileFormatInternalWebClient = fileFormatInternalWebClient;
     }
 
     public List<FileFormatDto> getAll(final Optional<String> criteria) {

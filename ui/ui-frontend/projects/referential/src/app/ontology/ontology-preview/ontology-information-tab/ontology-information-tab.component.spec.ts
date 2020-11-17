@@ -7,6 +7,7 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {Ontology} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {TenantApiService} from '../../../core/api/tenant-api.service';
 import {OntologyService} from '../../ontology.service';
 import {OntologyInformationTabComponent} from './ontology-information-tab.component';
 
@@ -17,6 +18,10 @@ describe('OntologyInformationTabComponent', () => {
   const ontologyServiceMock = {
     // tslint:disable-next-line:variable-name
     patch: (_data: any) => of(null)
+  };
+
+  const tenantApiServiceMock = {
+    getAll: () => of(null)
   };
 
   const ontologyValue: Ontology = {
@@ -46,7 +51,8 @@ describe('OntologyInformationTabComponent', () => {
       declarations: [OntologyInformationTabComponent],
       providers: [
         FormBuilder,
-        {provide: OntologyService, useValue: ontologyServiceMock}
+        {provide: OntologyService, useValue: ontologyServiceMock},
+        {provide: TenantApiService, useValue: tenantApiServiceMock}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

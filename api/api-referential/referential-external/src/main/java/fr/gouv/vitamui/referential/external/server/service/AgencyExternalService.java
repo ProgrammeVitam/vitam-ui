@@ -69,14 +69,15 @@ import lombok.Setter;
 @Service
 public class AgencyExternalService extends AbstractResourceClientService<AgencyDto, AgencyDto> {
 
-    @Autowired
     private AgencyInternalRestClient agencyInternalRestClient;
     
-    @Autowired
     private AgencyInternalWebClient agencyInternalWebClient;
 
-    public AgencyExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public AgencyExternalService(ExternalSecurityService externalSecurityService, AgencyInternalRestClient agencyInternalRestClient, AgencyInternalWebClient agencyInternalWebClient) {
         super(externalSecurityService);
+        this.agencyInternalRestClient = agencyInternalRestClient;
+        this.agencyInternalWebClient = agencyInternalWebClient;
     }
 
     public List<AgencyDto> getAll(final Optional<String> criteria) {
