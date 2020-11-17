@@ -153,7 +153,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
         final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
-        LOGGER.info(externalIdentifiers == null ? "null" : externalIdentifiers.toString());
+        LOGGER.info("Reading list of external identifiers {}", externalIdentifiers == null ? "null" : externalIdentifiers.toString());
 
         if(externalIdentifiers != null) {
             if(listEnableExternalIdentifiers.containsKey(tenantId)) {
