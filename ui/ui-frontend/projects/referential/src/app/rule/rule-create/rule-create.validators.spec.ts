@@ -52,34 +52,34 @@ function toObservable(r: any): Observable<any> {
 
 describe('Rule Create Validators', () => {
 
-  describe('uniqueName', () => {
+  describe('uniqueRuleId', () => {
     it('should return null', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      toObservable(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '123456'});
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { ruleIdExists: true }', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({nameExists: true});
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      toObservable(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
+        expect(result).toEqual({ruleIdExists: true});
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '123456'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '123456'});
     }));
 
     it('should not call the service', fakeAsync(() => {
       const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       ruleServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
+      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
+      toObservable(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
       tick(400);
@@ -89,58 +89,26 @@ describe('Rule Create Validators', () => {
     it('should call the service', fakeAsync(() => {
       const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
       customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({nameExists: true});
+      const ruleCreateValidators = new RuleCreateValidators(customerServiceSpy);
+      toObservable(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
+        expect(result).toEqual({ruleIdExists: true});
       });
       tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({name: '111111'});
+      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ruleId: '111111'});
     }));
   });
 
-  describe('uniquePuid', () => {
+  describe('ruleIdPattern', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-      tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({puid: '123456'});
-    }));
-
-    it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({puidExists: true});
-      });
-      tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({puid: '123456'});
-    }));
-
-    it('should not call the service', fakeAsync(() => {
       const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      ruleServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(ruleServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
-      tick(400);
-      expect(ruleServiceSpy.existsProperties).not.toHaveBeenCalled();
+      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
+      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('azerty'))).toEqual(null);
     }));
 
-    it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new RuleCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({puidExists: true});
-      });
-      tick(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({puid: '111111'});
+    it('should return { ruleIdPattern: true }', fakeAsync(() => {
+      const ruleServiceSpy = jasmine.createSpyObj('RuleService', ['existsProperties']);
+      const ruleCreateValidators = new RuleCreateValidators(ruleServiceSpy);
+      expect(ruleCreateValidators.ruleIdPattern()(new FormControl('ÀÖØöøÿ '))).toEqual({ruleIdPattern: true});
     }));
   });
 
