@@ -147,9 +147,10 @@ public class LogbookService {
      */
     public RequestResponse<LogbookOperation> findEventsByIdentifierAndCollectionNames(final String identifier, final String collectionNames,
             final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.debug("findEventsByIdentifierAndCollectionNames for : identifier {}, collection, tenant {}", identifier, collectionNames,
-                vitamContext.getTenantId());
+        LOGGER.debug("findEventsByIdentifierAndCollectionNames for : identifier {}, collection {}, vitamContext {}", identifier, collectionNames,
+                vitamContext);
         final ObjectNode select = buildOperationQuery(identifier, collectionNames);
+        LOGGER.debug("selectOperations : select query {}, vitamContext {}", select, vitamContext);
         final RequestResponse<LogbookOperation> response = accessExternalClient.selectOperations(vitamContext, select);
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return response;

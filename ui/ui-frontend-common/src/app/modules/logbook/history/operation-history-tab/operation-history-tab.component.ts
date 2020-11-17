@@ -34,7 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../auth.service';
 import { Event } from '../../../models';
@@ -48,7 +51,7 @@ const EVENT_LIMIT = 100;
   styleUrls: ['./operation-history-tab.component.scss']
 })
 
-export class OperationHistoryTabComponent implements OnChanges {
+export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
 
   @Input() id: string;
   @Input() identifier: string;
@@ -59,7 +62,9 @@ export class OperationHistoryTabComponent implements OnChanges {
   events: Event[] = [];
   loading = false;
 
-  constructor(private authService: AuthService, private logbookService: LogbookService) { }
+  private isDestroyed$ = new Subject();
+
+  constructor(private authService: AuthService, private logbookService: LogbookService, private route: ActivatedRoute) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('identifier') || changes.hasOwnProperty('collectionName')) {
@@ -69,22 +74,33 @@ export class OperationHistoryTabComponent implements OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    this.isDestroyed$.next();
+  }
+
   initEvent() {
     this.loading = true;
     this.events = [];
+    this.route.paramMap
+      .pipe(
+        filter((paramMap) => !!paramMap.get('tenantIdentifier')),
+        map((paramMap) => +paramMap.get('tenantIdentifier')),
+        switchMap((tenantIdentifier) => {
+          return this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier);
+        }),
+        takeUntil(this.isDestroyed$)
+      )
+      .subscribe(
+        (results) => {
+          this.events = results.filter((event) => {
+            return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
+          })
+          .slice(0, EVENT_LIMIT);
+          this.loading = false;
+        },
+        () => (this.loading = false)
+      );
 
-    const tenantIdentifier = Number(this.authService.user.proofTenantIdentifier);
-    this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier)
-    .subscribe(
-      (results: Event[]) => {
-        this.loading = false;
-        this.events = results.filter((event) => {
-          return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
-        })
-        .slice(0, EVENT_LIMIT);
-      },
-      () => this.loading = false
-    );
   }
 
   filterByIdentifier(event: any): boolean {
