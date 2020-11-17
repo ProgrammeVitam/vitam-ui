@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { uniqueId } from 'lodash-es';
-import * as moment_ from 'moment-mini';
+import * as moment_ from 'moment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
 

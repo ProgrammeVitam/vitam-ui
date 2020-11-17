@@ -33,8 +33,7 @@
     "whitelistedNonPeerDependencies": [
       "@angular/material-moment-adapter",
       "lodash-es",
-      "moment",
-      "moment-mini"
+      "moment"
     ]
   },
   "private": false,
@@ -67,8 +66,7 @@
   "dependencies": {
     "@angular/material-moment-adapter": "^8.2.3",
     "lodash-es": "^4.17.15",
-    "moment": "^2.26.0",
-    "moment-mini": "^2.24.0"
+    "moment": "^2.26.0"
   },
   "devDependencies": {
     "@angular/animations": "8.2.14",

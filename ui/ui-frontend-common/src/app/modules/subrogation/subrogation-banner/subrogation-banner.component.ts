@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import * as moment_ from 'moment-mini';
+import * as moment_ from 'moment';
 import { filter } from 'rxjs/operators';
 
 import { Component, OnInit } from '@angular/core';

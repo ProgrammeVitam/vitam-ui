@@ -37,7 +37,7 @@
 /* tslint:disable: no-use-before-declare */
 import { Component, ElementRef, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment_ from 'moment-mini';
+import * as moment_ from 'moment';
 import { EditableFieldComponent } from '../editable-field.component';
 
 const moment = moment_;

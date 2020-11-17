@@ -38,7 +38,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment_ from 'moment-mini';
+import * as moment_ from 'moment';
 
 const moment = moment_;
 
