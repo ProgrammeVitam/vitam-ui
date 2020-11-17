@@ -37,6 +37,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../auth.service';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
@@ -51,6 +52,7 @@ describe('OperationHistoryTabComponent', () => {
       providers: [
         { provide: AuthService, useValue: {}},
         { provide: LogbookService, useValue: {}},
+        { provide: ActivatedRoute, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })

@@ -493,8 +493,10 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     }
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
-        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-                .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
+        LOGGER.debug("findHistoryById for id" + id);
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
+                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Group> group = getRepository().findById(id);
