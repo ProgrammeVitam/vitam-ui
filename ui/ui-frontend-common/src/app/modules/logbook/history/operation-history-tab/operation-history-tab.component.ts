@@ -83,8 +83,9 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
     this.events = [];
     this.route.paramMap
       .pipe(
-        filter((paramMap) => !!paramMap.get('tenantIdentifier')),
-        map((paramMap) => +paramMap.get('tenantIdentifier')),
+        map((paramMap) =>
+          paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier)
+        ),
         switchMap((tenantIdentifier) => {
           return this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier);
         }),
