@@ -149,7 +149,7 @@ public class InitVitamTenantService {
 
     @PostConstruct
     public void postConstruct() {
-        LOGGER.info("init vitam tenant is mandatory : {}", mandatory);
+        LOGGER.debug("init vitam tenant is mandatory : {}", mandatory);
         this.contractResources = Map.of(HOLDING_ACCESS_CONTRACT_NAME, holdingAccessContract,
                 HOLDING_INGEST_CONTRACT_NAME, holdingIngestContract,
                 LOGBOOK_ACCESS_CONTRACT_NAME, logbookAccessContract,
@@ -203,6 +203,7 @@ public class InitVitamTenantService {
                     e);
             throw new ApplicationServerException(e);
         }
+
     }
 
     private Optional<IngestContractDto> retrieveIngestContractByName(final VitamContext vitamContext, final String Name)
@@ -247,6 +248,7 @@ public class InitVitamTenantService {
                     e);
             throw new ApplicationServerException(e);
         }
+
     }
 
     private Optional<AccessContractModelDto> retrieveAccessContractByName(final VitamContext vitamContext,

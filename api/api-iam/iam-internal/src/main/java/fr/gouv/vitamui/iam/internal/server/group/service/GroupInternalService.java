@@ -331,7 +331,7 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         });
 
         profiles.stream().forEach(p -> {
-            LOGGER.info("Veryfing profile : {}", p.getId());
+            LOGGER.debug("Veryfing profile : {}", p.getId());
             LOGGER.debug("Profile : {}", p);
             Assert.isTrue(StringUtils.equals(p.getCustomerId(), customerId), message + ": profile and group customerId must be equals");
         });

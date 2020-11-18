@@ -69,7 +69,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = { "password", "oldPasswords" })
 public class User extends CustomerIdDocument implements BaseIdentifierDocument {
 
     @Length(max = 100)
