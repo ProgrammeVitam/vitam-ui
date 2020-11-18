@@ -323,7 +323,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            LOGGER.info("Update {} {}", getObjectName(), dto);
+            LOGGER.debug("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);
             final String entityId = entity.getId();
