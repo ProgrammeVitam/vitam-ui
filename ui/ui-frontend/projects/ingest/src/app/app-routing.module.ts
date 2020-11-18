@@ -75,13 +75,6 @@ const routes: Routes = [
     canActivate: [AuthGuard, AppGuard],
     data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
   },
-
- {
-    path: 'holding-filling-scheme',
-    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
-  },
   // =====================================================
   //                      unknown path
   // =====================================================

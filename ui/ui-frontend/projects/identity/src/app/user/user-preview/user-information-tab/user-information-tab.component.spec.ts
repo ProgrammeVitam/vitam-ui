@@ -76,7 +76,9 @@ let expectedUser: User = {
       country: 'france'
   },
   siteCode: '001',
-  desactivationDate : null
+  desactivationDate : null,
+  alerte : false,
+  alerteDuration : 72
 };
 
 let expectedCustomer: Customer = {
@@ -119,7 +121,7 @@ let expectedCustomer: Customer = {
   }],
   themeColors: {},
   alerte : false,
-  alerteDuration : 72
+  alertDelay : 72
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -188,7 +190,9 @@ describe('UserInfoTabComponent', () => {
           country: 'france'
       },
       desactivationDate : null,
-      siteCode: '001'
+      siteCode: '001',
+      alerteDuration: 0 ,
+      alerte: false
     };
     expectedCustomer = {
       id: 'idCustomer',
@@ -230,7 +234,7 @@ describe('UserInfoTabComponent', () => {
       }],
       themeColors: {},
       alerte : false,
-      alerteDuration : 72
+      alertDelay : 72
     };
     expectedUserInfo = {
       multifactorAllowed: true,

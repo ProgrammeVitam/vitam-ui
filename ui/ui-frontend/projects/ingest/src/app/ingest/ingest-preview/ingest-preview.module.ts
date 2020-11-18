@@ -40,13 +40,26 @@ import { IngestPreviewComponent } from './ingest-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule, MatSnackBarModule, MatDialogModule,
-  MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
+import {
+  MatMenuModule, MatSnackBarModule, MatDialogModule,
+  MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule
+} from '@angular/material';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
+import { IngestPopupComponent } from './ingest-popup.component';
+import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
+import { EventDisplayHelperService } from './event-display-helper.service';
+import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
+
 
 
 @NgModule({
-  declarations: [IngestPreviewComponent, IngestInformationTabComponent],
+  declarations: [
+    IngestPreviewComponent,
+    IngestInformationTabComponent,
+    EventDisplayComponent,
+    IngestPopupComponent,
+    IngestEventDetailComponent],
+
   imports: [
     CommonModule,
     RouterModule,
@@ -63,8 +76,14 @@ import { IngestInformationTabComponent } from './ingest-information-tab/ingest-i
     MatTabsModule
   ],
   exports: [
+    IngestPopupComponent,
     IngestPreviewComponent,
-    IngestInformationTabComponent
+    IngestInformationTabComponent,
+    IngestEventDetailComponent,
+    EventDisplayComponent
+  ],
+  providers: [
+    EventDisplayHelperService
   ]
 })
 export class IngestPreviewModule { }

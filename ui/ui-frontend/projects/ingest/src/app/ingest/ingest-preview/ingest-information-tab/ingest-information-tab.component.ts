@@ -34,32 +34,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { IngestService } from '../../ingest.service';
 
 @Component({
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
   styleUrls: ['./ingest-information-tab.component.scss']
 })
-export class IngestInformationTabComponent implements OnInit {
-
+export class IngestInformationTabComponent implements OnInit, OnChanges {
   @Input()
   ingest: any;
 
-  constructor() { }
+  ingestDetails: any;
+  constructor(private ingestService: IngestService) { }
 
   ngOnInit() {
+    this.getIngestDetails(this.ingest);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.ingest) {
+      this.getIngestDetails(changes.ingest.currentValue);
+    }
+  }
+
+  getIngestDetails(ingest: any) {
+    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
+      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
+        this.ingestDetails = data;
+      });
+    } else {
+      this.ingestDetails = null;
+    }
   }
 
   ingestMessage(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessg :
-      ingest.outMessg;
+      ingest.events[ingest.events.length - 1].outMessage :
+      ingest.outMessage;
   }
 
   ingestEndDate(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].evDateTime :
-      ingest.evDateTime;
+      ingest.events[ingest.events.length - 1].dateTime :
+      ingest.dateTime;
+  }
+
+  ingestStatus(ingest: any): string {
+    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
   }
 }

@@ -197,7 +197,9 @@
                 <configuration>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                    <mainClass>fr.gouv.vitamui.archive.external.server.ApiArchiveExternalServerApplication</mainClass>
+                    <mainClass>
+                        fr.gouv.vitamui.archives.search.external.server.ApiArchivesSearchExternalServerApplication
+                    </mainClass>
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
                         <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->

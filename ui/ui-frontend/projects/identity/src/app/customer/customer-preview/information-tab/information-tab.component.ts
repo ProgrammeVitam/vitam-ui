@@ -71,7 +71,7 @@ export class InformationTabComponent implements OnInit {
     emailDomains: string[],
     defaultEmailDomain: string
     alerte : boolean,
-    alerteDuration : number,
+    alertDelay : number,
   };
 
   @Input()

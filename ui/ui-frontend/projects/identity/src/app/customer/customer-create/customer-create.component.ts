@@ -93,7 +93,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.form = this.formBuilder.group({
       alerte: false,
-      alerteDuration: [72, Validators.min(72)],
+      alertDelay: [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -257,14 +257,15 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.handleImage(files);
   }
 
-  isDurationValid() : boolean {
-    if(this.form.get('alerte').value) {
-      return this.form.get('alerteDuration').invalid || this.form.get('alerteDuration').pending
+  isDurationNotValid(): boolean {
+
+    if (this.form.get('alerte').value) {
+      return this.form.get('alertDelay').invalid || this.form.get('alertDelay').pending
     }
     else {
 
       this.form.get('alerte').valueChanges.subscribe(() =>
-        this.form.get('alerteDuration').setValue(72)
+        this.form.get('alertDelay').setValue(72)
       );
 
       return false;

@@ -117,5 +117,5 @@ public class Customer extends IdDocument {
     @Getter
     private boolean alerte = false;
 
-    private int alerteDuration;
+    private int alertDelay;
 }

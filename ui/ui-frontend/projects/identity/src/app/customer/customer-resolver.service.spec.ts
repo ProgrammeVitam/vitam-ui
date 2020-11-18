@@ -70,7 +70,7 @@ const expectedCustomer: Customer = {
   owners: [],
   themeColors: {},
   alerte : false,
-  alerteDuration : 72
+  alertDelay : 72
 };
 
 describe('CustomerResolver', () => {

@@ -76,12 +76,12 @@
         Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br>
              </label> 
          <vitamui-common-slide-toggle formControlName="alerte" i18n="client create alerte account@@AlertedAccount"></vitamui-common-slide-toggle>
-         <label for="duréealerte" class="inline-label label-alerteduration" >
+         <label for="duréealerte" class="inline-label label-alertDelay" >
         Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
          </label> 
-      <vitamui-common-input [disabled]="!form.get('alerte').value" formControlName="alerteDuration" maxlength="250" required placeholder="Durée d'alerte"  >
-          <vitamui-common-input-error *ngIf="form.get('alerte').value && form.get('alerteDuration')?.touched && !!form.get('alerteDuration')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="form.get('alerte').value && !!form.get('alerteDuration')?.errors?.min" i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)</vitamui-common-input-error>
+      <vitamui-common-input [disabled]="!form.get('alerte').value" formControlName="alertDelay" maxlength="250" required placeholder="Durée d'alerte"  >
+          <vitamui-common-input-error *ngIf="form.get('alerte').value && form.get('alertDelay')?.touched && !!form.get('alertDelay')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="form.get('alerte').value && !!form.get('alertDelay')?.errors?.min" i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)</vitamui-common-input-error>
      </vitamui-common-input>
      </div>
   

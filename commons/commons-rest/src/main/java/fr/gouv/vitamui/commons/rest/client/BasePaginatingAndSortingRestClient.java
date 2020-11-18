@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -49,14 +50,14 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.Optional;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier.
- *
- *
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString
@@ -94,4 +95,30 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
 
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
 
+    protected MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        String accessContract = null;
+        if (context instanceof ExternalHttpContext) {
+            final ExternalHttpContext externalCallContext = context;
+            accessContract = externalCallContext.getAccessContract();
+        }
+        if (accessContract != null) {
+            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
+        }
+        return headers;
+    }
+
+    protected MultiValueMap<String, String> buildSearchHeaders(final InternalHttpContext context) {
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        String accessContract = null;
+        if (context instanceof InternalHttpContext) {
+            final InternalHttpContext externalCallContext = context;
+            accessContract = externalCallContext.getAccessContract();
+        }
+
+        if (accessContract != null) {
+            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContract));
+        }
+        return headers;
+    }
 }

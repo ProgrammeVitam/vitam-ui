@@ -128,8 +128,6 @@ customer-init:
 
     - name: Profil pour le dépôt et suivi des versements
       description: Gestion des applications de dépôt et suivi des versements
-    - name: PROFIL_INGEST_TENANT
-      description: Gestion des applications de dépot et suivi des versements
       app-name: INGEST_MANAGEMENT_APP
       level:
       roles:
@@ -153,6 +151,15 @@ customer-init:
         - ROLE_CREATE_HOLDING_FILLING_SCHEME
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE
+        - ROLE_GET_ARCHIVE
+        - ROLE_GET_ALL_ARCHIVE
 
     - name: Profil pour l'accès et la recherche d'archives
       description: Gestion d'accès et de recherche des archives dans Vitam

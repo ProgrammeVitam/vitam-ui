@@ -103,7 +103,7 @@ export class CustomerListService extends SearchService<Customer> {
       hasCustomGraphicIdentity: customer.hasCustomGraphicIdentity,
       themeColors: customer.themeColors,
       alerte : customer.alerte,
-      alerteDuration : customer.alerteDuration,
+      alertDelay : customer.alertDelay,
       
     };
   }

@@ -301,3 +301,6 @@ i.vitamui-icon {
 .vitamui-icon-loop2:before {
   content: "\ea2e";
 }
+.vitamui-icon-target:before {
+  content: "\e9b3";
+}

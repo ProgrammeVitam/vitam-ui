@@ -1,6 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2019)
- *
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -30,32 +29,32 @@ package fr.gouv.vitamui.archive.internal.server.doc;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitamui.archive.internal.server.service.AccessContractTempInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 
 /**
  * Swagger JSON Generation.
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
- *
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=archive-internal-application" })
+@Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class})
+@TestPropertySource(properties = {"spring.config.name=archive-internal-application"})
 @ActiveProfiles("test, swagger")
-public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest{
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;
@@ -73,6 +72,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private AuthenticationProvider authenticationProvider;
 
     @MockBean
-    private ArchiveInternalService ingestInternalService;
+    private ArchiveInternalService archiveInternalService;
 
+    @MockBean
+    private AccessContractTempInternalService accessContractTempInternalService;
 }

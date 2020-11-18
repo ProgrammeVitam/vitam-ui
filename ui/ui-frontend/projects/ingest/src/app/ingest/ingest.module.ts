@@ -44,7 +44,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
+
 import { IngestComponent } from './ingest.component';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { IngestListModule } from './ingest-list/ingest-list.module';
@@ -54,12 +54,6 @@ import { UploadModule } from '../core/common/upload.module';
 import { UploadTrackingModule } from './upload-tracking/upload-tracking.module';
 import { IngestResolverService } from './ingest-resolver.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-
-import { UploadModule } from '../core/common/upload.module';
-import { UploadSipComponent } from './upload-sip/upload-sip.component';
-import { MatProgressBarModule } from '@angular/material';
-
 
 @NgModule({
   imports: [
@@ -77,12 +71,10 @@ import { MatProgressBarModule } from '@angular/material';
     IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-    MatProgressBarModule
+    MatNativeDateModule
   ],
   declarations: [
-    IngestComponent,
-    UploadSipComponent
+    IngestComponent
   ],
   providers: [
     IngestResolverService,
