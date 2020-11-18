@@ -62,7 +62,7 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
     }
 
     private void logRequest(final HttpRequest request, final byte[] body) throws IOException {
-        LOGGER.info("Request URI : {}, Method : {}, Headers : {}, Request body : {}", request.getURI(),
+        LOGGER.debug("Request URI : {}, Method : {}, Headers : {}, Request body : {}", request.getURI(),
                 request.getMethod(), request.getHeaders(), new String(body, "UTF-8"));
 
     }
@@ -99,11 +99,11 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
                 // on HEAD requests, we don't have a body
                 if (request.getMethod() != HttpMethod.HEAD) {
                     error = mapper.readValue(res, VitamUIError.class);
-                    LOGGER.info("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
+                    LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
                             response.getStatusCode(), response.getStatusText(), response.getHeaders(),
                             builder.toString(), error);
                 } else {
-                    LOGGER.info("Response Status code : {}, Status text : {}, Headers : {}", response.getStatusCode(),
+                    LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}", response.getStatusCode(),
                             response.getStatusText(), response.getHeaders());
                 }
             }
@@ -113,7 +113,7 @@ public class RegisterRestQueryInterceptor implements ClientHttpRequestIntercepto
                         StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()), ex);
             }
         } else {
-            LOGGER.info("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
+            LOGGER.debug("Response Status code : {}, Status text : {}, Headers : {}, Response body: {} !!! {}",
                     response.getStatusCode(), response.getStatusText(), response.getHeaders(), builder.toString(), res);
         }
     }
