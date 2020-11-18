@@ -187,7 +187,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
         // if we are in the login webflow, compute the logout URLs
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
-            logger.info("Computing front channel logout URLs");
+            logger.debug("Computing front channel logout URLs");
             frontChannelLogoutAction.doExecute(context);
         }
 

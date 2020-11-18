@@ -149,7 +149,7 @@ public class SendEventToVitamTasks {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("sendEventToVitamTasks is running with a delay of {} ms ", delay);
+        LOGGER.debug("sendEventToVitamTasks is running with a delay of {} ms ", delay);
     }
 
     @Scheduled(fixedDelayString = "${logbook.scheduling.sendEventToVitamTasks.delay}")

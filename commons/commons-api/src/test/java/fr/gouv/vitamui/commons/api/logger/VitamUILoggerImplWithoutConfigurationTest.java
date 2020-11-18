@@ -33,7 +33,7 @@ public class VitamUILoggerImplWithoutConfigurationTest {
 
         PowerMock.replayAll();
 
-        vitamuiLogger.info("Message.");
+        vitamuiLogger.debug("Message.");
         PowerMock.verifyAll();
     }
 
