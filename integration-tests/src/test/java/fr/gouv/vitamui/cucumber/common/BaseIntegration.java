@@ -60,12 +60,8 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
-import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.utils.TestConstants;
 
@@ -102,8 +98,6 @@ public abstract class BaseIntegration {
     
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
 
-    private ReferentialExternalWebClientFactory webReferentialClientFactory;
-
     private CustomerExternalRestClient customerClient;
 
     private CustomerExternalWebClient customerWebClient;
@@ -112,12 +106,6 @@ public abstract class BaseIntegration {
     
     private OntologyExternalWebClient ontologyWebClient;
     
-    private FileFormatExternalWebClient fileFormatWebClient;
-
-    private AgencyExternalWebClient agencyWebClient;
-
-    private OntologyExternalWebClient ontologyWebClient;
-
     private FileFormatExternalWebClient fileFormatWebClient;
 
     private IdentityProviderExternalRestClient identityProviderRestClient;
@@ -141,8 +129,6 @@ public abstract class BaseIntegration {
     private ContextExternalRestClient contextRestClient;
 
     private UnitExternalRestClient unitRestClient;
-
-    private RuleExternalRestClient ruleRestClient;
 
     private static MongoClient mongoClientIam;
 
@@ -664,13 +650,6 @@ public abstract class BaseIntegration {
             unitRestClient = getReferentialRestClientFactory().getUnitExternalRestClient();
         }
         return unitRestClient;
-    }
-
-    protected RuleExternalRestClient getRuleRestClient() {
-        if (ruleRestClient == null) {
-            ruleRestClient = getReferentialRestClientFactory().getRuleExternalRestClient();
-        }
-        return ruleRestClient;
     }
 
     protected MongoCollection<Document> getProfilesCollection() {

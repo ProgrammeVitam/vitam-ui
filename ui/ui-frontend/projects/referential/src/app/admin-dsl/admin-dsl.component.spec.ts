@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
 import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {DslQueryType} from '../../../../vitamui-library/src/lib/models/dsl-query-type.enum';
 import {AccessContractService} from '../access-contract/access-contract.service';
 import {AdminDslComponent} from './admin-dsl.component';
 import {AdminDslService} from './admin-dsl.service';
@@ -19,6 +20,7 @@ describe('AdminDslComponent', () => {
   const adminDslValue = {
     id: 'id',
     accessContract: 'AC-000001',
+    dslQueryType: DslQueryType.ARCHIVE_UNIT,
     dsl: {},
     response: {}
   };
