@@ -121,8 +121,9 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
         userLogbookData.put(DESACTIVATION_DATE, LogbookUtils.getValue(user.getDesactivationDate()));
         userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
-        AddressDto address = user.getAddress() != null ? user.getAddress() : new AddressDto();
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
+        AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
+        addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());
         group.ifPresent(g -> userLogbookData.put(GROUP_IDENTIFIER_KEY, g.getIdentifier()));
         return ApiUtils.toJson(userLogbookData);

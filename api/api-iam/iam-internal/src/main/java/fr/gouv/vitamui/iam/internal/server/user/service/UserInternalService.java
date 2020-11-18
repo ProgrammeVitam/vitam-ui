@@ -534,7 +534,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
-
                 case "groupId" :
                     final GroupDto oldGroup = groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
                     final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());

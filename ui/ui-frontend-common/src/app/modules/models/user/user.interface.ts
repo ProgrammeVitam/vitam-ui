@@ -57,8 +57,8 @@ export interface User extends Id {
   lastConnection: string;
   readonly: boolean;
   address: Address;
+  siteCode: string;
   desactivationDate : string;
   alerte : boolean;
   alerteDuration : number;
-
 }

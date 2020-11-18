@@ -38,6 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -55,5 +56,37 @@ export class IngestService extends SearchService<any> {
 
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
+  }
+
+  downloadManifest(id: string) {
+    this.ingestApiService.downloadManifest(id).subscribe((blob) => {
+      const element = document.createElement('a');
+      element.href = window.URL.createObjectURL(blob);
+      element.download = id + '-manifest.xml';
+      element.style.visibility = 'hidden';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
+  }
+
+  get(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+  downloadATR(id: string) {
+    this.ingestApiService.downloadATR(id).subscribe((blob) => {
+      const element = document.createElement('a');
+      element.href = window.URL.createObjectURL(blob);
+      element.download = id + '-atr.xml';
+      element.style.visibility = 'hidden';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
+  }
+
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
   }
 }

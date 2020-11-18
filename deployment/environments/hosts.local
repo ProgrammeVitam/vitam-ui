@@ -173,7 +173,6 @@ localhost
 [hosts_ingest_external]
 localhost
 
-
 [hosts_access_external]
 localhost
 

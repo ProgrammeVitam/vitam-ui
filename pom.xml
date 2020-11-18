@@ -106,7 +106,7 @@
         <junit.version>4.13</junit.version>
         <junit.jupiter.version>5.5.0</junit.jupiter.version>
         <junit.jupiter.platform.version>1.5.0</junit.jupiter.platform.version>
-        <jruby.complete.version>1.7.26</jruby.complete.version>
+        <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.3</logback.version>
         <lombok.version>1.18.12</lombok.version>

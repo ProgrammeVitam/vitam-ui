@@ -121,7 +121,7 @@ const expectedCustomer = {
   }],
   themeColors: {},
   alerte : false,
-  alerteDuration : 72
+  alertDelay : 72
 };
 
 let component: CustomerCreateComponent;

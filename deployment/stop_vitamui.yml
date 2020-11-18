@@ -61,8 +61,7 @@
   tags:
     - dlab
 
-
-- hosts: hosts_ui_referential
+- hosts: hosts_archive_internal
   gather_facts: no
   roles:
     - service_state
@@ -243,7 +242,7 @@
 - hosts: hosts_vitamui_mongod
   gather_facts: no
   roles:
-    - { role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true") }
+    - {role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true")}
     # - check_port
   vars:
     service_name: "{{ mongo_express_conf.service_name }}"

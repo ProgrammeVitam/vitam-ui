@@ -305,9 +305,9 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
 
-                case "alerteDuration" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTEDURATION_KEY, customer.getAlerteDuration(), entry.getValue()));
-                    customer.setAlerteDuration(CastUtils.toInteger(entry.getValue()));
+                case "alertDelay" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTDELAY_KEY, customer.getAlertDelay(), entry.getValue()));
+                    customer.setAlertDelay(CastUtils.toInteger(entry.getValue()));
                     break;
                 case "alerte" :
                     logbooks.add(new EventDiffDto(CustomerConverter.ALERTE_KEY, customer.isAlerte(), entry.getValue()));

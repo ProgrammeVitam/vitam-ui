@@ -2,6 +2,9 @@
 
 * Franck BEBEL
 * Ludovic BLANCHET
+* Nabil EL HAJJIOUI
+* Benaissa BENARBIA
+* Oussama ZEROUALI
 * Aurelien BONNAFONT
 * Emmannuel CASTRO
 * Julien CORNILLE

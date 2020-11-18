@@ -175,7 +175,7 @@
                 <configuration>
                     <executable>true</executable>
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                    <mainClass>fr.gouv.vitamui.archive.ArchiveApplication</mainClass>
+                    <mainClass>fr.gouv.vitamui.archives.search.ArchivesSearchApplication</mainClass>
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
                         <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
@@ -217,6 +217,18 @@
                             <arguments>install --loglevel warn</arguments>
                         </configuration>
                     </execution>
+                    <!-- copy scss from vitamui-library to other projects -->
+                    <execution>
+                        <id>copy scss</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <skip>${skipAllFrontend}</skip>
+                            <arguments>run copy-scss:vitamui-library</arguments>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>npm run build</id>
                         <goals>
@@ -225,7 +237,8 @@
                         <phase>process-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>run build -- --project=archive --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}
+                            <arguments>run build -- --project=archive --output-path=${project.basedir}/target/www
+                                --base-href=${angular.base.href} --deploy-url=${angular.base.href}
                             </arguments>
                         </configuration>
                     </execution>

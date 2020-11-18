@@ -64,6 +64,9 @@ public class ResultsDto {
     @JsonProperty("Title")
     private String title;
 
+    @JsonProperty("Title_")
+    private TitleDto title_;
+
     @JsonProperty("DescriptionLevel")
     private String descriptionLevel;
 

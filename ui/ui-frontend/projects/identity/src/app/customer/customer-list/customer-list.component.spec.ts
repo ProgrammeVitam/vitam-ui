@@ -116,7 +116,7 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         alerte : false,
-        alerteDuration : 72
+        alertDelay : 72
       },
       {
         id: '12',
@@ -144,7 +144,7 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         alerte : false,
-        alerteDuration : 72
+        alertDelay : 72
       },
       {
         id: '13',
@@ -172,7 +172,7 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         alerte : false,
-        alerteDuration : 72
+        alertDelay : 72
       },
       {
         id: '14',
@@ -200,7 +200,7 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         alerte : false,
-        alerteDuration : 72
+        alertDelay : 72
       },
       {
         id: '15',
@@ -228,7 +228,7 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         alerte : false,
-        alerteDuration : 72
+        alertDelay : 72
       },
     ];
 

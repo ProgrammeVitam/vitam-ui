@@ -38,7 +38,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { IngestComponent } from './ingest.component';
+
 import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
+import {IngestResolverService} from './ingest-resolver.service'
+import { IngestPopupComponent } from './ingest-preview/ingest-popup.component';
+//import { IngestPreviewComponent } from './ingest-preview/ingest-preview.component';
+
 
 const routes: Route[] = [
   {
@@ -54,7 +59,18 @@ const routes: Route[] = [
     path: 'tenant/:tenantIdentifier',
     component: IngestComponent,
     canActivate: [ActiveTenantGuard]
+  },
+
+  {
+    path: ':id',
+    //component : IngestPreviewComponent,
+    component: IngestPopupComponent,
+    resolve : {ingest : IngestResolverService}
+
   }
+
+
+
 ];
 
 
