@@ -74,4 +74,9 @@ export class IngestPreviewComponent implements OnInit {
   downloadATR() {
     this.logbookService.downloadATR(this.ingest.id);
   }
+
+  generateDocX() {
+    console.log("generation DocX");
+    this.ingestService.getMessage(this.ingest.id);
+  }
 }

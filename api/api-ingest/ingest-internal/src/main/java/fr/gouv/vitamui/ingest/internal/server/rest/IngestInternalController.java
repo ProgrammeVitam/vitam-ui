@@ -43,9 +43,11 @@ import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,15 +60,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.ws.rs.core.Response;
+
+import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.V1_INGEST)
 @Getter
 @Setter
-@Api(tags = "ingest", value = "Ingest a SIP", description = "Ingest an SIP")
+@Api(tags = "ingest", value = "Ingest an SIP", description = "Ingest an SIP")
 public class IngestInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
@@ -90,6 +96,13 @@ public class IngestInternalController {
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
+    @GetMapping(CommonConstants.PATH_ID)
+    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
+        LOGGER.debug("get Ingest Entities for id={} ", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestInternalService.getOne(vitamContext, id);
+    }
+
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RequestResponseOK upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
@@ -100,4 +113,52 @@ public class IngestInternalController {
         SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }
+
+    @GetMapping("/manifest" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> exportManifest(
+            final @PathVariable("id") String id /*,
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+        LOGGER.debug("export manifest for operation with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        Response response = ingestInternalService.exportManifest(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    @GetMapping("/atr" + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> exportATR(
+            final @PathVariable("id") String id /*,
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+        LOGGER.debug("export atr for operation with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        Response response = ingestInternalService.exportATR(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    @GetMapping("/message" + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> getMessage(final @PathVariable("id") String id)
+        throws IOException {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+
+  try {
+       byte[] response =  this.ingestInternalService.generateDocX(vitamContext, id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    catch(Exception e) {
+        throw new IOException(e.getMessage());
+    }
+
+    }
+
 }

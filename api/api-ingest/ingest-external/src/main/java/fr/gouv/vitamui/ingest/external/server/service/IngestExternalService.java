@@ -40,13 +40,16 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +97,23 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
                 result.getPageNum(),
                 result.getPageSize(),
                 result.isHasMore());
+    }
+
+    public LogbookOperationDto getOne(final String id) {
+        return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
+
+    }
+
+    public ResponseEntity<Resource> downloadManifest(String id) {
+        return ingestInternalRestClient.downloadManifest(getInternalHttpContext(), id);
+    }
+
+    public ResponseEntity<Resource> downloadATR(String id) {
+        return ingestInternalRestClient.downloadATR(getInternalHttpContext(), id);
+    }
+
+    public ResponseEntity<byte[]> generateDocX(String id) {
+        return ingestInternalRestClient.generateDocX(getInternalHttpContext(), id);
     }
 
     @Override
