@@ -38,7 +38,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
-
+import { Observable } from 'rxjs';
+import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -56,4 +57,38 @@ export class IngestService extends SearchService<any> {
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
   }
+
+
+  get(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+
+
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+getMessage(id : string)  {
+  return this.ingestApiService.getmessage(id).subscribe(file => {
+
+    FileSaver.saveAs(file, 'output.docx');
+  })
+
+  // {
+
+  //   FileSaver.saveAs(file, 'output.docx');
+  //   // const element = document.createElement('a');
+  //   // element.href = window.URL.createObjectURL(file);
+  //   // element.download = 'fichier.docx';
+  //   // element.style.visibility = 'hidden';
+  //   // document.body.appendChild(element);
+  //   // element.click();
+  //   // document.body.removeChild(element);
+
+  //   // let data = new Blob([file], { type: 'text/plain;charset=utf-8' });
+  //   // FileSaver.saveAs(data, 'text.docx');
+
+  // })
+}
 }
