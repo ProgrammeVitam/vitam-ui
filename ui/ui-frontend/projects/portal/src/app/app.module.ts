@@ -45,20 +45,21 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  TranslateVitamModule,
-  VitamUICommonModule,
-  WINDOW_LOCATION } from 'ui-frontend-common';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PortalModule } from './portal';
 
 registerLocaleData(localeFr, 'fr');
+
+function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+    return new MultiTranslateHttpLoader(httpClient,  [
+    {prefix: './assets/shared-i18n/', suffix: '.json'},
+    {prefix: './assets/i18n/', suffix: '.json'}
+  ]);
+}
 
 @NgModule({
   declarations: [
@@ -73,17 +74,17 @@ registerLocaleData(localeFr, 'fr');
     MatSnackBarModule,
     MatDialogModule,
     AppRoutingModule,
+    QuicklinkModule,
     LoggerModule.forRoot(),
-    TranslateModule.forChild({
+    TranslateModule.forRoot({
+      defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
-        useFactory: TranslateVitamModule.httpLoaderChildFactory,
+        useFactory: httpLoaderFactory,
         deps: [HttpClient]
-      },
-      isolate: false,
+      }
     }),
-    QuicklinkModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Title,
@@ -91,7 +92,6 @@ registerLocaleData(localeFr, 'fr');
     { provide: BASE_URL, useValue: '/portal-api' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location }
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
   bootstrap: [AppComponent]
 })

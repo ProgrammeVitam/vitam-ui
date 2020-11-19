@@ -21,15 +21,12 @@ export class SelectLanguageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.translateService.setDefaultLang('fr');
-
-    // when bootstraping another apps after switching language, need to have the true language (cf. CAS Auth service caching)
-    if (this.authService.user) {
+    if (this.authService.user.language) {
       this.translateService.use(this.getInitLanguage(this.translateConverter(this.authService.user.language)));
+      this.currentLang = this.translateService.currentLang;
     } else {
-      this.translateService.use('fr');
+      this.currentLang = this.translateService.defaultLang;
     }
-    this.currentLang = this.translateService.currentLang;
     this.translateService.onLangChange.subscribe((lang: LangChangeEvent) => this.currentLang = lang.lang);
   }
 

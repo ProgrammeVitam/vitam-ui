@@ -43,7 +43,7 @@ import { RouterModule } from '@angular/router';
 
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ApplicationSelectContentModule, TranslateVitamModule } from 'ui-frontend-common';
+import { ApplicationSelectContentModule } from 'ui-frontend-common';
 import { ApplicationListModule } from '../components/application-list/application-list.module';
 import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
 import { PortalComponent } from './portal.component';
@@ -59,7 +59,6 @@ import { PortalComponent } from './portal.component';
     WelcomeMessageModule,
     ApplicationListModule,
     MatProgressSpinnerModule,
-    TranslateVitamModule,
   ],
   declarations: [PortalComponent]
 })

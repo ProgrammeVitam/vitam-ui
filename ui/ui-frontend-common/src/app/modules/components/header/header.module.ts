@@ -7,8 +7,9 @@ import { HeaderComponent } from './header.component';
 import { SelectTenantModule } from './select-tenant/select-tenant.module';
 
 import { MatIconModule, MatToolbarModule } from '@angular/material';
-import { TranslateVitamModule } from '../translate/translate-vitam.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { MenuModule } from './menu/menu.module';
+import { SelectLanguageModule } from './select-language/select-language.module';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -20,8 +21,9 @@ import { MenuModule } from './menu/menu.module';
     MatToolbarModule,
     MatButtonModule,
     SelectTenantModule,
+    SelectLanguageModule,
     MenuModule.forRoot(),
-    TranslateVitamModule
+    TranslateModule
   ],
   exports : [
     HeaderComponent
