@@ -5,9 +5,9 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatListModule } from '@angular/material';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { SearchBarModule } from '../../search-bar/search-bar.module';
-import { TranslateVitamModule } from '../../translate/translate-vitam.module';
 import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
@@ -29,7 +29,7 @@ import { MenuComponent } from './menu.component';
     A11yModule,
     SearchBarModule,
     PipesModule,
-    TranslateVitamModule
+    TranslateModule
   ],
   entryComponents: [
     MenuComponent

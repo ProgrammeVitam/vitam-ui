@@ -44,6 +44,7 @@ import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
+import { TranslateModule } from '@ngx-translate/core';
 import { AccountModule } from './account/account.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
@@ -64,7 +65,6 @@ import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
-import { TranslateVitamModule } from './components/translate/translate-vitam.module';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
 import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
@@ -104,7 +104,6 @@ export function startupServiceFactory(startupService: StartupService) {
   imports: [
     CommonModule,
     HttpClientModule,
-    TranslateVitamModule,
     MatDialogModule,
     MatSnackBarModule,
     AccountModule,
@@ -152,8 +151,8 @@ export function startupServiceFactory(startupService: StartupService) {
     ErrorDialogComponent
   ],
   exports: [
-    TranslateVitamModule,
     AccountModule,
+    TranslateModule,
     ApplicationSelectContentModule,
     BlankComponent,
     ConfirmDialogModule,
