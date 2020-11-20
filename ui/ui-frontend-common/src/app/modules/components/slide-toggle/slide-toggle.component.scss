@@ -37,7 +37,7 @@ label {
     }
 
     &.slide-toggle-off:not(.slide-toggle-disabled) {
-        background-color: var(--vitamui-grey-600);
+        background-color: var(--vitamui-grey-800);
         &:hover {
             background-color: var(--vitamui-grey-800);
         }
@@ -85,12 +85,6 @@ label {
 
     &.slide-toggle-disabled {
         cursor: no-drop;
-        &.slide-toggle-on {
-            background-color: var(--vitamui-primary-100);
-        }
-        &.slide-toggle-off {
-            background-color: var(--vitamui-grey-400);
-        }
+        background-color: var(--vitamui-grey-600);
     }
-
 }
