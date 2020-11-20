@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.service.IngestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -106,26 +106,6 @@ public class IngestController extends AbstractUiRestController {
             @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
-    }
-
-    @ApiOperation(value = "download manifest for ingest operation")
-    @GetMapping(value = "/manifest" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadManifest(final @PathVariable("id") String id) {
-        LOGGER.debug("download manifest for ingest with id :{}", id);
-        Resource body = service.downloadManifest(buildUiHttpContext(), id).getBody();
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
-                .body(body);
-    }
-
-    @ApiOperation(value = "download Archive Transfer Report for ingest operation")
-    @GetMapping(value = "/atr" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadATR(final @PathVariable("id") String id) {
-        LOGGER.debug("download ATR for ingest with id :{}", id);
-        Resource body = service.downloadATR(buildUiHttpContext(), id).getBody();
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
-                .body(body);
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)

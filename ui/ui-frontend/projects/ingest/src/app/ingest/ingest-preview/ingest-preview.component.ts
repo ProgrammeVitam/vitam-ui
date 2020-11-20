@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IngestService } from '../ingest.service';
+import { LogbookService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-ingest-preview',
@@ -47,7 +47,7 @@ export class IngestPreviewComponent implements OnInit {
   @Input() ingest: any; // Make a type ?
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  constructor(private ingestService: IngestService) { }
+  constructor(private logbookService: LogbookService) { }
 
   ngOnInit() {
   }
@@ -68,10 +68,10 @@ export class IngestPreviewComponent implements OnInit {
   }
 
   downloadManifest() {
-    this.ingestService.downloadManifest(this.ingest.id);
+    this.logbookService.downloadManifest(this.ingest.id);
   }
 
   downloadATR() {
-    this.ingestService.downloadATR(this.ingest.id);
+    this.logbookService.downloadATR(this.ingest.id);
   }
 }

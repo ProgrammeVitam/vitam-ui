@@ -41,12 +41,4 @@ export class IngestApiService extends BaseHttpClient<any> {
       tap(ev => ev.parsedData = (ev.data != null) ? JSON.parse(ev.data) : null)
     );
   }
-
-  downloadManifest(id: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/manifest/${id}`, { responseType: 'blob' });
-  }
-
-  downloadATR(id: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/atr/${id}`, { responseType: 'blob' });
-  }
 }

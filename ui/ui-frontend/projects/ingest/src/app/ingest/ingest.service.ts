@@ -56,28 +56,4 @@ export class IngestService extends SearchService<any> {
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
   }
-
-  downloadManifest(id: string) {
-    this.ingestApiService.downloadManifest(id).subscribe((blob) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(blob);
-      element.download = id + '-manifest.xml';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    });
-  }
-
-  downloadATR(id: string) {
-    this.ingestApiService.downloadATR(id).subscribe((blob) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(blob);
-      element.download = id + '-atr.xml';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    });
-  }
 }

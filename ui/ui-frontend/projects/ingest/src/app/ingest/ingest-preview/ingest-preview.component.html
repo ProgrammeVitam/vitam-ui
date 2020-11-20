@@ -3,7 +3,7 @@
         <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
 
         <div class="title">
-            <h2>{{ ingest?.data?.EvDetailReq ? ingest?.data?.EvDetailReq : ingest?.id }}</h2>
+            <h2>{{ ingest?.evDetData?.EvDetailReq ? ingest?.evDetData?.EvDetailReq : ingest?.id }}</h2>
         </div>
       <ng-container *ngIf="ingestStatus(ingest) !== 'FATAL'">
         <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>

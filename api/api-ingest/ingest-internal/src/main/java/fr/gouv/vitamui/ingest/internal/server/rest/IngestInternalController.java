@@ -37,7 +37,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import io.swagger.annotations.Api;
@@ -100,37 +100,4 @@ public class IngestInternalController {
         SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }
-
-    @GetMapping("/manifest" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> exportManifest(
-            final @PathVariable("id") String id /*,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
-        LOGGER.debug("export manifest for operation with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        Response response = ingestInternalService.exportManifest(vitamContext, id);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
-            return new ResponseEntity<>(resource, HttpStatus.OK);
-        }
-        return null;
-    }
-
-    @GetMapping("/atr" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> exportATR(
-            final @PathVariable("id") String id /*,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
-        LOGGER.debug("export atr for operation with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        Response response = ingestInternalService.exportATR(vitamContext, id);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
-            return new ResponseEntity<>(resource, HttpStatus.OK);
-        }
-        return null;
-    }
-
 }

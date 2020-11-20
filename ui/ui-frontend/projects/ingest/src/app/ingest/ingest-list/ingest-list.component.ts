@@ -93,8 +93,8 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
         JSON.stringify(this.buildIngestCriteriaFromSearch()))
     ).subscribe((data: any[]) => {
       data.map((element: any) => {
-        if (element.data && element.data.length >= 2) {
-          element.data = JSON.parse(element.data);
+        if (element.evDetData && element.evDetData.length >= 2) {
+          element.evDetData = JSON.parse(element.evDetData);
         }
         if (element.agIdExt && element.agIdExt.length >= 2) {
           element.agIdExt = JSON.parse(element.agIdExt);
@@ -157,6 +157,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
   }
 
   ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].dateTime : ingest.dateTime;
+    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].evDateTime : ingest.evDateTime;
   }
 }

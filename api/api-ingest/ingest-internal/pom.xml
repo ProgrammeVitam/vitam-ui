@@ -106,18 +106,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
-        <!-- PAC4J -->
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-saml-opensamlv3</artifactId>
-        </dependency>
-
-        <!-- Hibernate -->
-        <!-- dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency> -->
-
         <!-- UTIL -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -148,10 +136,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>

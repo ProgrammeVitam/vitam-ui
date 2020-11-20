@@ -37,7 +37,7 @@
       </td>
       <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.obIdIn }}</td>
       <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.name }}</td>
-      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.dateTime | date: 'dd/MM/yyyy'  }}</td>
+      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }}</td>
       <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy'  }}</td>
       <td class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
         <span *ngSwitchCase="'OK'" class="text-green">Succès</span>

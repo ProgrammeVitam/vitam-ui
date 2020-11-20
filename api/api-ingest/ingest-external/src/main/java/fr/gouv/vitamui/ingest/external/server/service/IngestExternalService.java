@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import lombok.Getter;
@@ -94,14 +94,6 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
                 result.getPageNum(),
                 result.getPageSize(),
                 result.isHasMore());
-    }
-
-    public ResponseEntity<Resource> downloadManifest(String id) {
-        return ingestInternalRestClient.downloadManifest(getInternalHttpContext(), id);
-    }
-
-    public ResponseEntity<Resource> downloadATR(String id) {
-        return ingestInternalRestClient.downloadATR(getInternalHttpContext(), id);
     }
 
     @Override

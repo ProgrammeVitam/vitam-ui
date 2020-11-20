@@ -39,25 +39,20 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.ingest.common.dto.LogbookEventDto;
-import fr.gouv.vitamui.ingest.common.dto.LogbookEventModel;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationModel;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 
 public class IngestConverter {
 
-    public static LogbookEventDto convertVitamToDto(LogbookEventModel logbookEventModel) {
-        return VitamUIUtils.copyProperties(logbookEventModel, new LogbookOperationDto());
+    public static LogbookOperationDto convertVitamToDto(LogbookOperationDto logbookOperationModel) {
+        logbookOperationModel.setId(logbookOperationModel.getEvId());
+        logbookOperationModel.setEvents(
+                logbookOperationModel.getEvents().stream()
+                        .map( x -> { x.setId(x.getEvId()); return x; })
+                        .collect(Collectors.toList()));
+        return logbookOperationModel;
     }
 
-    public static LogbookOperationDto convertVitamToDto(final LogbookOperationModel logbookOperationModel) {
-        LogbookOperationDto dto = (LogbookOperationDto) IngestConverter.convertVitamToDto((LogbookEventModel) logbookOperationModel);
-        dto.setEvents(logbookOperationModel.getEvents().stream().map(IngestConverter::convertVitamToDto).collect(Collectors.toList()));
-        return dto;
-    }
-
-    public static List<LogbookOperationDto> convertVitamsToDtos(final List<LogbookOperationModel> logbookOperationModels) {
+    public static List<LogbookOperationDto> convertVitamsToDtos(final List<LogbookOperationDto> logbookOperationModels) {
         return logbookOperationModels.stream().map(IngestConverter::convertVitamToDto).collect(Collectors.toList());
     }
 }

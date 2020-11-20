@@ -49,8 +49,8 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,7 +71,6 @@ public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
     private final InternalSecurityService internalSecurityService;
-    private final IngestExternalClient ingestExternalClient;
 
     private final IngestService ingestService;
 
@@ -81,10 +80,8 @@ public class IngestInternalService {
 
     @Autowired
     public IngestInternalService(final InternalSecurityService internalSecurityService,
-            final LogbookService logbookService, final ObjectMapper objectMapper,
-            IngestExternalClient ingestExternalClient, final IngestService ingestService) {
+            final LogbookService logbookService, final ObjectMapper objectMapper, final IngestService ingestService) {
         this.internalSecurityService = internalSecurityService;
-        this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
         this.ingestService = ingestService;
@@ -156,22 +153,6 @@ public class IngestInternalService {
             return logbookOperationsResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find LogbookOperations", e);
-        }
-    }
-
-    public Response exportManifest(VitamContext context, String id) {
-        try {
-            return ingestExternalClient.downloadObjectAsync(context, id, IngestCollection.MANIFESTS);
-        } catch (VitamClientException e) {
-            throw new InternalServerException("Unable to find Manifest", e);
-        }
-    }
-
-    public Response exportATR(VitamContext context, String id) {
-        try {
-            return ingestExternalClient.downloadObjectAsync(context, id, IngestCollection.ARCHIVETRANSFERREPLY);
-        } catch (VitamClientException e) {
-            throw new InternalServerException("Unable to find ATR", e);
         }
     }
 }

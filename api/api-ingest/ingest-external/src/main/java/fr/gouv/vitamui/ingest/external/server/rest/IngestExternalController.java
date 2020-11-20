@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
@@ -114,17 +114,5 @@ public class IngestExternalController {
         }
 
         return ingestExternalService.upload(in, action, contextId);
-    }
-
-    @GetMapping("/manifest" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadManifest(final @PathVariable("id") String id) {
-        LOGGER.debug("export manifest for ingest with id :{}", id);
-        return ingestExternalService.downloadManifest(id);
-    }
-
-    @GetMapping("/atr" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadATR(final @PathVariable("id") String id) {
-        LOGGER.debug("export atr for ingest with id :{}", id);
-        return ingestExternalService.downloadATR(id);
     }
 }

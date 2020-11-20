@@ -43,7 +43,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -81,17 +81,5 @@ public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient
 
     @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
-    }
-
-    public ResponseEntity<Resource> downloadManifest(ExternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/manifest" + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
-    }
-
-    public ResponseEntity<Resource> downloadATR(ExternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/atr" + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 }

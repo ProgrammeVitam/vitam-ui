@@ -14,9 +14,9 @@ server:
   port: 9008
   scheme: https
   ssl:
-    key-store: src/main/config/ui-ingest.jks
-    key-store-password: jkspasswd
-    key-password: jkspasswd
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+    key-store-password: changeme
+    key-password: changeme
 management:
   server:
     address: localhost

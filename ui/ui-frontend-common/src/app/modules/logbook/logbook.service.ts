@@ -149,7 +149,30 @@ export class LogbookService {
     );
   }
 
+  downloadManifest(id: string) {
+    this.logbookApi.downloadManifest(id).subscribe((response) => {
+      const element = document.createElement('a');
+      element.href = window.URL.createObjectURL(response.body);
+      element.download = id + '-manifest.xml';
+      element.style.visibility = 'hidden';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
+  }
 
+  downloadATR(id: string) {
+    this.logbookApi.downloadAtr(id).subscribe((response) => {
+
+      const element = document.createElement('a');
+      element.href = window.URL.createObjectURL(response.body);
+      element.download = id + '-atr.xml';
+      element.style.visibility = 'hidden';
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    });
+  }
 }
 
 function flattenChildEvents(acc: Event[], current: Event): Event[] {

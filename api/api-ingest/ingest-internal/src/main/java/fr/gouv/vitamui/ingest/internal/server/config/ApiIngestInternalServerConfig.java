@@ -104,8 +104,7 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
             final InternalSecurityService internalSecurityService,
             LogbookService logbookService,
             ObjectMapper objectMapper,
-            IngestExternalClient ingestExternalClient,
             IngestService ingestService) {
-        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService);
+        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestService);
     }
 }
