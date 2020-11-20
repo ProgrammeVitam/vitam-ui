@@ -41,7 +41,6 @@ import java.util.Map;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
-import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,5 +82,5 @@ public class UIPropertiesImpl implements UIProperties {
     /**
      * Map of application categories (key: category ID, value: category properties)
      */
-    private Map<String, PortalCategoryConfig> portalCategories;
+    private Map<String, Map<String,Object>> portalCategories;
 }

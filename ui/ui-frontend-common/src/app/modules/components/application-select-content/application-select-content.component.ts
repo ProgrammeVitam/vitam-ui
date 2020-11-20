@@ -119,10 +119,10 @@ export class ApplicationSelectContentComponent {
     }
 
     this.categoryList.forEach(category => {
-      if (category.id === 'default') {
+      if (category.identifier === 'default') {
         category.applications = sortedApps.filter((app) => !identifiers.includes(app.category));
       } else {
-        category.applications = sortedApps.filter((app) => app.category === category.id);
+        category.applications = sortedApps.filter((app) => app.category === category.identifier);
       }
     });
 

@@ -29,7 +29,7 @@
     }
 }
 
-.user-app {
+.category-app {
     i {
         color: var(--vitamui-primary);
 
@@ -42,39 +42,6 @@
     &.highlight {
         border: 1px solid var(--vitamui-primary);
     }
-}
-
-.admin-app {
-    i {
-        color: var(--vitamui-primary-light);
-
-        &.chevron-icon {
-            font-size: 24px;
-            margin-left: auto;
-        }
-    }
-
-    &.highlight {
-        border: 1px solid var(--vitamui-primary-light);
-    }
-
-}
-
-.settings-app {
-    i {
-    color: var(--vitamui-secondary);
-
-        &.chevron-icon {
-            font-size: 24px;
-            margin-left: auto;
-        }
-    }
-
-    &.highlight {
-        border: 1px solid var(--vitamui-secondary);
-
-    }
-
 }
 
 .chevron-icon {
