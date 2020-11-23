@@ -46,7 +46,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-group-create',
@@ -72,11 +71,7 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   stepIndex = 0;
   subLevelIsRequired: boolean;
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 2;
+  public stepCount = 2;
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -130,10 +125,6 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
 
   formValid(): boolean {
     return this.form.pending || this.form.invalid;
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
 }
