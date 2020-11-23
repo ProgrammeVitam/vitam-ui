@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitam.common.model.administration.OntologyOrigin;
 import fr.gouv.vitam.common.model.administration.OntologyType;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -51,7 +52,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class RuleDto extends RuleCSVDto implements Serializable {
+public class RuleDto extends IdDto implements Serializable {
 
     private Integer tenant;
 
@@ -60,4 +61,16 @@ public class RuleDto extends RuleCSVDto implements Serializable {
     private String creationDate;
 
     private String updateDate;
+
+    private String ruleId;
+
+    private String ruleType;
+
+    private String ruleValue;
+
+    private String ruleDescription;
+
+    private String ruleDuration;
+
+    private String ruleMeasurement;
 }
