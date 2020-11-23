@@ -52,7 +52,7 @@ vitamui_defaults:
       displayTitle: true
       order: 3
     users:
-      title: ""
+      title: "Utilisateur"
       displayTitle: false
       order: 1
 

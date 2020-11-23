@@ -113,7 +113,9 @@ export class ApplicationService {
 
   private fillCategoriesWithApps(categories: Category[], applications: Application[]) {
     categories.forEach((category: Category) => {
-      this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      if (applications.some(app =>  app.category === category.identifier)) {
+        this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      }
     });
   }
 
