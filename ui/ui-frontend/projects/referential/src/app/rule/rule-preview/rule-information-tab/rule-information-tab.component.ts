@@ -147,4 +147,15 @@ export class RuleInformationTabComponent {
   resetForm(rule: Rule) {
     this.form.reset(rule, {emitEvent: false});
   }
+
+  getRuleTypeLabel(): string {
+    const formControl = this.form.get('ruleType');
+    if (formControl) {
+      const ruleType = this.ruleTypes.find(item => item.key === formControl.value);
+      if (ruleType) {
+        return ruleType.label;
+      }
+    }
+    return '';
+  }
 }

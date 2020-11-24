@@ -3,9 +3,8 @@
   <div class="form-group">
     <div class="col-12 form-control">
       <mat-form-field class="vitamui-mat-select">
-        <mat-select formControlName="ruleType" placeholder="Type de règle" panelclass="vitamui-mat-select"
-          required="required" i18n-placeholder="Identifier@@rulePreviewRuleTypePlaceholder">
-          <mat-option *ngFor='let ruleType of ruleTypes' [value]="ruleType.key">{{ruleType.label}}</mat-option>
+        <mat-select formControlName="ruleType" placeholder="{{ getRuleTypeLabel() }}" panelclass="vitamui-mat-select"
+          required="required" [disabled]="true">
         </mat-select>
         <div class="select-arrow">
           <i class="material-icons">keyboard_arrow_up</i>
