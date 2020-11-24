@@ -1,0 +1,62 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <div class="col-10 form-control">
+      <vitamui-common-input formControlName="name" placeholder="Nom" disabled="disabled" i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+      </vitamui-common-input>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <vitamui-common-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
+      Contexte applicatif  <span *ngIf="form.controls.status.value === 'INACTIVE'">in</span>actif
+    </vitamui-common-slide-toggle>
+  </div>
+
+  <div class="form-group">
+    <mat-form-field class="vitamui-mat-select">
+      <mat-select formControlName="securityProfile" placeholder="Profil de sécurité"
+                  i18n-placeholder="Application@@securityProfileFormApplicationPlaceholder" panelclass="vitamui-mat-select">
+        <mat-option *ngFor='let profile of securityProfiles' [value]="profile.key">{{profile.label}}</mat-option>
+      </mat-select>
+      <div class="select-arrow">
+        <i class="material-icons">keyboard_arrow_down</i>
+      </div>
+    </mat-form-field>
+
+  </div>
+
+  <div class="form-group">
+    <vitamui-common-slide-toggle formControlName="enableControl">
+      Contrôle sur les tenants
+    </vitamui-common-slide-toggle>
+  </div>
+
+  <div class="row">
+    <div class="col-10">
+      <span>Date de création</span> : {{context?.creationDate | date: 'dd/MM/yyyy'}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10">
+      <span>Date de dernière modification</span> : {{context?.lastUpdate | date: 'dd/MM/yyyy'}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10">
+      <span>Date d'activation</span> : {{context?.activationDate | date: 'dd/MM/yyyy'}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10">
+      <span>Date de désactivation</span> : {{context?.deactivationDate | date: 'dd/MM/yyyy'}}
+    </div>
+  </div>
+
+    <div class="form-group bottom">
+        <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+    </div>
+</form>

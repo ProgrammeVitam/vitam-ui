@@ -1,0 +1,15 @@
+<ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
+<mat-form-field class="vitamui-mat-select">
+  <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="updateAccessContractId($event)">
+    <mat-option *ngFor='let accessContract of accessContracts'
+                [value]="accessContract.identifier">{{accessContract.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<button mat-button class="btn btn-secondary button-maring" (click)="checkTraceability()" [disabled]="!accessContractId || (events && events.length > 0)">Vérifier la sécurisation</button>
+
+<vitamui-common-collapse *ngIf="display && events && events.length > 0" collapseTitle="Etapes de vérification" i18n-collapseTitle="@@historySectionTitleUnit">
+  <vitamui-common-history-events [events]="events" ></vitamui-common-history-events>
+</vitamui-common-collapse>
+</ng-container>

@@ -1,0 +1,102 @@
+<div class="vitamui-snack-bar-container">
+
+  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
+
+    <ng-container *ngSwitchCase="'accessContractCreate'" i18n="@@notificationAccessContractCreate">
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'accessContractUpdate'" i18n="@@notificationAccessContractUpdate">
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été mis à
+      jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ingestContractCreate'" i18n="@@notificationIngestContractCreate">
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'entrée {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ingestContractUpdate'" i18n="@@notificationIngestContractUpdate">
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'entrée {{ data?.name }} a bien été mis à
+      jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyCreate'" i18n="@@notificationAgencyCreate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyUpdate'" i18n="@@notificationAgencyUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été mis à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyDelete'" i18n="@@notificationAgencyDelete">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été supprimé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyExportAll'" i18n="@@notificationAgencyExport">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Export des services agent en cours...
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileFormatCreate'" i18n="@@notificationFileFormatCreate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileFormatUpdate'" i18n="@@notificationFileFormatUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le formet de fichier {{ data?.name }} a bien été mis à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileFormatDelete'" i18n="@@notificationFileFormatDelete">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été supprimé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileFormatDeleteStart'" i18n="@@notificationFileFormatDeleteStart">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Suppression du format de fichier {{ data?.name }} en cours...
+    </ng-container>
+
+
+    <ng-container *ngSwitchCase="'contextCreate'" i18n="@@notificationContextCreate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le contexte applicatif {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'contextUpdate'" i18n="@@notificationContextUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le contexte applicatif {{ data?.name }} a bien été mis à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'securityProfileCreate'" i18n="@@notificationContextCreate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil de sécurité {{ data?.name }} a bien été créé
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'securityProfileUpdate'" i18n="@@notificationContextUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil de sécurité {{ data?.name }} a bien été mis à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'securityProfileDelete'" i18n="@@notificationContextUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil de sécurité {{ data?.name }} a bien été mis à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ontologyCreate'" i18n="@@notificationOntologyCreate">
+      <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été créé
+    </ng-container>
+
+
+    <ng-container *ngSwitchCase="'ontologyUpdate'" i18n="@@notificationOntologyCreate">
+      <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été mise à jour
+    </ng-container>
+
+
+    <ng-container *ngSwitchCase="'ontologyDelete'" i18n="@@notificationOntologyDelete">
+      <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été supprimé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'auditRun'" i18n="@@notificationAuditRun">
+      <i class="vitamui-icon vitamui-icon-audit"></i> L'audit {{data?.id}} a bien été lancé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'probativeValueRun'" i18n="@@notificationProbativeValueRun">
+      Le relevé de valeur probante a bien été lancé
+    </ng-container>
+
+  </span>
+
+  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+
+</div>

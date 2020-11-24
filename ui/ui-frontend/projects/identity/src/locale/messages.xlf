@@ -2,44 +2,12 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="fr" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="notificationAccountUpdate" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Les informations ont été mises à jour
-    </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
-          <context context-type="linenumber">83</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="notificationSubrogationFinish" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Le mode subrogation est arrêté
-    </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="notificationSubrogationActivated" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu&apos;à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: &apos;H&apos;}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: &apos;mm&apos;}}"/>. Veuillez ne pas changer d&apos;application.
-    </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="MyAccountTitle" datatype="html">
         <source>
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Mon Compte
     </source>
         <context-group purpose="location">
-          <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/account/account.component.html</context>
+          <context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/account/account.component.d.ts</context>
           <context context-type="linenumber">5</context>
         </context-group>
         <note priority="1" from="description">MyAccount</note>
@@ -1984,7 +1952,7 @@
       <trans-unit id="customerCreateCreateOwnerButton" datatype="html">
         <source>
               Créer le propriétaire
-              <x id="START_SMALL_TEXT" ctype="x-small" equiv-text="&lt;small&gt;"/>des éléments de preuves<x id="CLOSE_SMALL_TEXT" ctype="x-small" equiv-text="&lt;/small&gt;"/>
+              <x id="START_SMALL_TEXT" ctype="x-small" equiv-text="&lt;small&gt;"/> des éléments de preuves<x id="CLOSE_SMALL_TEXT" ctype="x-small" equiv-text="&lt;/small&gt;"/>
             </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
@@ -2056,6 +2024,34 @@
           <context context-type="linenumber">35</context>
         </context-group>
         <note priority="1" from="description">Coming soon</note>
+      </trans-unit>
+      <trans-unit id="customerUpdatePrimaryColorThemeInputPlaceholder" datatype="html">
+        <source>Couleur principale</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-colors-input/customer-colors-input.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Customer primary theme color input placeholder</note>
+      </trans-unit>
+      <trans-unit id="customerUpdateSecondaryColorThemeInputPlaceholder" datatype="html">
+        <source>Couleur secondaire</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-colors-input/customer-colors-input.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Customer secondary theme color input placeholder</note>
+      </trans-unit>
+      <trans-unit id="colorInputErrorFormat" datatype="html">
+        <source>Format couleur primaire incorrect</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-colors-input/customer-colors-input.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-colors-input/customer-colors-input.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <note priority="1" from="description">Wrong format (primarycolor)</note>
       </trans-unit>
       <trans-unit id="ownerFormCodeInputPlaceholder" datatype="html">
         <source>Code propriétaire</source>
@@ -2540,6 +2536,14 @@
           <context context-type="linenumber">16</context>
         </context-group>
         <note priority="1" from="description">customer graphic identity tab no logo</note>
+      </trans-unit>
+      <trans-unit id="customerGraphicIdentityTabColorTheme" datatype="html">
+        <source>Couleurs de l&apos;organisation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-preview/graphic-identity-tab/graphic-identity-tab.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">Organisation color theme</note>
       </trans-unit>
       <trans-unit id="ownerPreviewLabelOwnerCode" datatype="html">
         <source>Code propriétaire</source>

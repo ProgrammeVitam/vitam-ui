@@ -71,7 +71,9 @@ import lombok.Setter;
 /**
  * Class for ExternalVitamUICrudService
  *
- * @param <T>
+ *
+ * @param <E> External DTO type
+ * @param <I> Internal DTO Type
  */
 @Getter
 @Setter
@@ -101,6 +103,10 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     protected E patch(final Map<String, Object> partialDto) {
         return converterToExternalDto(getClient().patch(getInternalHttpContext(), partialDto));
+    }
+
+    protected E patchWithDto(final I partialDto) {
+        return converterToExternalDto(getClient().patchWithDto(getInternalHttpContext(), partialDto));
     }
 
     protected E getOne(final String id) {

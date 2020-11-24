@@ -1,11 +1,16 @@
 package fr.gouv.vitamui.cas.authentication;
 
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
-import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.services.ServicesManager;
@@ -16,19 +21,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.val;
 
 import lombok.val;
 
 /**
  * Tests {@link IamSurrogateAuthenticationService}.
- *
- *
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
@@ -36,7 +40,9 @@ import lombok.val;
 public final class IamSurrogateAuthenticationServiceTest {
 
     private static final String SURROGATE = "surrogate";
+
     private static final String SU_ID = "id";
+
     private static final String SU_EMAIL = "superUser";
 
     private IamSurrogateAuthenticationService service;
@@ -62,8 +68,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateCannotSurrogate() {
         val subrogation = surrogation();
         subrogation.setSurrogate("anotherUser");
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
-            .thenReturn(Arrays.asList(subrogation));
+        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(Arrays.asList(subrogation));
 
         assertFalse(service.canAuthenticateAsInternal(SURROGATE, principal(), null));
     }
@@ -72,16 +77,14 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateNotAccepted() {
         val subrogation = surrogation();
         subrogation.setStatus(SubrogationStatusEnum.CREATED);
-        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID)))
-            .thenReturn(Arrays.asList(subrogation));
+        when(casExternalRestClient.getSubrogationsBySuperUserId(any(ExternalHttpContext.class), eq(SU_ID))).thenReturn(Arrays.asList(subrogation));
 
         assertFalse(service.canAuthenticateAsInternal(SURROGATE, principal(), null));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAccounts() {
-        when(casExternalRestClient.getSubrogationsBySuperUserEmail(any(ExternalHttpContext.class), eq(SU_EMAIL)))
-            .thenReturn(Arrays.asList(surrogation()));
+        when(casExternalRestClient.getSubrogationsBySuperUserEmail(any(ExternalHttpContext.class), eq(SU_EMAIL))).thenReturn(Arrays.asList(surrogation()));
 
         service.getEligibleAccountsForSurrogateToProxy(SU_EMAIL);
     }

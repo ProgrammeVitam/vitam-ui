@@ -1,0 +1,140 @@
+@import '~ui-frontend-common/sass/variables/colors';
+@import '~ui-frontend-common/sass/mixins/elevation';
+@import '../../../sass/icons/vitamui-icons.css';
+
+.app-box {
+    @include elevation-1;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    font-style: medium;
+    font-weight: 500;
+    background: $white;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding-top: 25px;
+    padding-bottom: 26px;
+    padding-left: 23px;
+    margin-bottom: 24px;
+    color: #474747;
+    transition: box-shadow 240ms ease-out;
+
+    &:hover {
+        @include elevation-2;
+    }
+
+    i {
+        font-size: 42px;
+        margin-right: 15px;
+    }
+}
+
+.user-app {
+    i {
+        color: var(--vitamui-primary);
+
+        &.chevron-icon {
+            font-size: 24px;
+            margin-left: auto;
+        }
+    }
+
+    &.highlight {
+        border: 1px solid var(--vitamui-primary);
+    }
+}
+
+.admin-app {
+    i {
+        color: var(--vitamui-primary-light);
+
+        &.chevron-icon {
+            font-size: 24px;
+            margin-left: auto;
+        }
+    }
+
+    &.highlight {
+        border: 1px solid var(--vitamui-primary-light);
+    }
+
+}
+
+.referential-app {
+  i {
+    color: var(--vitamui-primary-light);
+
+    &.chevron-icon {
+      font-size: 24px;
+      margin-left: auto;
+    }
+  }
+
+  &.highlight {
+    border: 1px solid var(--vitamui-primary-light);
+  }
+}
+
+.opaudit-app {
+  i {
+    color: var(--vitamui-primary-light);
+
+    &.chevron-icon {
+      font-size: 24px;
+      margin-left: auto;
+    }
+  }
+
+  &.highlight {
+    border: 1px solid var(--vitamui-primary-light);
+  }
+}
+
+.settings-app {
+    i {
+    color: var(--vitamui-secondary);
+
+        &.chevron-icon {
+            font-size: 24px;
+            margin-left: auto;
+        }
+    }
+
+    &.highlight {
+        border: 1px solid var(--vitamui-secondary);
+
+    }
+
+}
+
+.chevron-icon {
+    font-size: 24px;
+    margin-left: auto;
+}
+
+.archive-tile {
+    background-color: var(--vitamui-primary);
+    color: $white;
+
+    i {
+        color: $white;
+    }
+}
+
+.modal-app-box {
+    height: 60px;
+    font-size: 14px;
+
+    i {
+        font-size: 30px;
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}

@@ -93,7 +93,6 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String SITE_CODE = "Code du site";
 
-
     private final GroupRepository groupRepository;
 
     private final AddressConverter addressConverter;

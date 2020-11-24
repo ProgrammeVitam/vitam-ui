@@ -37,14 +37,5 @@
                 <exclude>environments/keystores/**</exclude>
             </excludes>
         </fileSet>
-
-        <fileSet>
-            <directory>../tools/docker/mongo/database_scripts/</directory>
-            <useDefaultExcludes>true</useDefaultExcludes>
-            <includes>
-                <include>**/*</include>
-            </includes>
-             <outputDirectory>deployment/scripts/mongod/</outputDirectory>
-        </fileSet>
     </fileSets>
 </assembly>

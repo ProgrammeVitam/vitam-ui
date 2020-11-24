@@ -10,7 +10,7 @@ Install :
 
 Ajouter dans votre fichier /etc/hosts la ligne suivante :
 
-	 localhost dev-identity.vitamui.com dev-portal.vitamui.com dev.vitamui.com
+	dev.vitamui.com
 
 Pour démarrer l'application en mode développement lancer les commandes suivantes dans des consoles différentes
 

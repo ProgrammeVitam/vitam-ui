@@ -336,7 +336,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                         Map<String, String> themeColors = (Map) themeColorsValue;
                         customer.getGraphicIdentity().setThemeColors(themeColors);
                     } else {
-                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>. Ignore it");
+                        LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>.");
+                        throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() + " is not allowed");
                     }
                     break;
                 default :

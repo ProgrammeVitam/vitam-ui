@@ -1,0 +1,51 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.clickable-icon {
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.field-tooltip {
+  cursor: default;
+  margin-left: 10px;
+  color: var(--vitamui-secondary);
+}
+
+.select-tooltip {
+  top: 15px;
+  position: relative;
+}
+
+.radio-tooltip {
+  top: -10px;
+  position: relative;
+}
+
+.selectorPosition {
+  position: relative;
+  top: 13px;
+}
+
+.contractsSelect {
+  max-width: 190px;
+}
+.tenants {
+  max-width: 150px;
+}
+
+.editMode {
+  max-width: 100px;
+  margin-left: 5px;
+}
+
+.editContract {
+  margin-left: 25px;
+}
+
+.editTd {
+  padding-left: 0;
+  padding-right: 0;
+}

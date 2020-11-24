@@ -8,7 +8,7 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  host: dev-identity.vitamui.com
+  host: dev.vitamui.com
   port: 8081
   scheme: http
   error.whitelabel.enabled: false
@@ -31,8 +31,8 @@ ui:
   redirect-url: ${ui.url}/${ui.prefix}
 
 cas:
-  internal-url: https://dev-cas.vitamui.com:8080
-  external-url: https://dev-cas.vitamui.com:8080
+  internal-url: https://dev.vitamui.com:8080
+  external-url: https://dev.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
     trust-store: src/test/resources/truststore.jks

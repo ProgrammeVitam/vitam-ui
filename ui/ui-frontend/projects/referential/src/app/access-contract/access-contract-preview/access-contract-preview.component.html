@@ -1,0 +1,49 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <ng-container *ngIf="!isPopup">
+            <button class="btn-popup" role="button" (click)="openPopup()"><i
+                    class="vitamui-icon vitamui-icon-pin"></i></button>
+        </ng-container>
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{accessContract?.name}} <small>({{accessContract?.identifier}})</small></h2>
+        </div>
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group" #tabs>
+
+            <mat-tab label="Informations" i18n-label="Information tab@@accessContractPreviewTabInformation">
+                <app-access-contract-information-tab [accessContract]="accessContract" #infoTab
+                    [readOnly]="isPopup" (updated)="updatedChange($event, 0)"></app-access-contract-information-tab>
+            </mat-tab>
+
+            <mat-tab label="Usage et Services" i18n-label="Usage and Services tab@@accessContractPreviewTabGroupe"
+                class="no-padding">
+
+                <app-access-contract-usage-and-services-tab [accessContract]="accessContract" #usageTab
+                    [readOnly]="isPopup" (updated)="updatedChange($event, 1)">
+                </app-access-contract-usage-and-services-tab>
+            </mat-tab>
+
+            <mat-tab label="Droits d'écritures" i18n-label="Write Access tab@@accessContractPreviewTabWrite"
+                   class="no-padding">
+                <app-access-contract-write-access-tab [accessContract]="accessContract" #writeTab
+                                                        [readOnly]="isPopup" (updated)="updatedChange($event, 2)">
+                </app-access-contract-write-access-tab>
+            </mat-tab>
+
+            <mat-tab label="Noeuds" i18n-label="Nodes tab@@accessContractPreviewTabNode" class="no-padding">
+                <app-access-contract-nodes-tab [accessContract]="accessContract" [tenantIdentifier]="tenantIdentifier"
+                    [readOnly]="isPopup">
+                </app-access-contract-nodes-tab>
+            </mat-tab>
+
+            <mat-tab label="Historique" i18n-label="History tab@@accessContractPreviewTabHistory">
+                <vitamui-common-operation-history-tab [id]="accessContract?.id"
+                    [identifier]="accessContract?.identifier" collectionName="accesscontract" [filter]="filterEvents" [filteringByIdentifier]="false">
+                </vitamui-common-operation-history-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

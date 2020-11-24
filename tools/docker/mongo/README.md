@@ -55,16 +55,16 @@ connecting to: admin
 
 Afin de mutualiser le code et les scripts Mongo exploités en developpement ou lors du déploiement sur un environnement, l'intelligence a été répartie de la manière suivante:
 
-- Les scripts Mongo figurent à l'emplacement suivant: **~/tools/docker/mongo/database_scripts**
+- Les scripts Mongo figurent à l'emplacement suivant: **~/deployment/scripts/mongod**
 - Le role Ansible d'initialisation figure à l'emplacement suivant: **~/deployment/roles/mongo_init**
 
 Le role d'initialisation de la base de données a plusieurs fonctionnalités: ordonnancement des scripts, templatage et versioning.
 
 ## Templatage des scripts de DB
 
-La structure du dossier **database_scripts** est simple:
+La structure du dossier **mongod** est simple:
 ```txt
-> database_scripts
+> mongod
   > 0.0.0
      > 01_script.js
      > 02_script.js
@@ -78,7 +78,7 @@ Deux niveaux de répertoires sont pris en compte:
 
 - 1er niveau: la version de l'application
 
-  Lors du templatage, un premier tri par version est exécutée afin de trier ces dernières par ordre croissante.
+  Lors du templatage, un premier tri par version est exécuté afin de trier ces dernières par ordre croissant.
 
 - 2ème niveau: les scripts à exécuter par version
 
@@ -114,15 +114,15 @@ Changelog {
 ```
 
 Avant l'exécution de chaque script, on effectue une recherche d'exécution (sur les champs filename et checksum):
-- si le script a déjà été exécutée, aucun action n'est effectuée
+- si le script a déjà été exécuté, aucun action n'est effectuée
 - si le script n'a pas été exécuté, ce dernier est exécuté et une entrée est rajoutée dans la collection *changelog*
 
 Toute erreur lors du processus entraine l'arrêt de l'initialisation de la base Mongo
 
-Dans le cas d'une migration d'une version de VitamUI précédent le versioning, il suffit de définir la variable Ansible **mock_insert_data**. Dans le cas présent, l'ensemble des scripts seront joués mais non exécutées, seules les entrées dans la collection **changelog** seront ajoutées.
+Dans le cas d'une migration d'une version de VitamUI précédent le versioning, il suffit de définir la variable Ansible **mock_insert_data**. Dans le cas présent, l'ensemble des scripts sera joué mais non exécutés, seules les entrées dans la collection **changelog** seront ajoutées.
 
 ## Coloration syntaxique intellij
 
-Si vous utilisez un IDE intellij, le plugin suivant vous offrera la coloration syntaxique adequate ainsi que quelques
-fonctionnalité de
+Si vous utilisez un IDE intellij, le plugin suivant vous offrera la coloration syntaxique adéquate ainsi que quelques
+fonctionnalités utiles pour le YAML, Ansible et les templates jinja2 :
 https://plugins.jetbrains.com/plugin/7792-yaml-ansible-support

@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-12 mb-3">
+        <label>Type d'opération</label>
+        <div>Opérations</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 mb-3">
+        <label>Date de lancement</label>
+        <div>{{securisation?.dateTime | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Statut</label>
+        <div>{{securisation.events[securisation.events.length - 1].outcome}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Date de début</label>
+        <div>{{securisation?.parsedData?.StartDate | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Date de fin</label>
+        <div>{{securisation?.parsedData?.EndDate | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Nombre d'opérations</label>
+        <div>{{securisation?.parsedData?.NumberOfElements}}</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6 mb-3">
+        <label>Nom du fichier</label>
+        <div>{{securisation?.parsedData?.FileName}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Taille du fichier</label>
+        <div>{{securisation?.parsedData?.Size | filesize }}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Algorithme de hashage</label>
+        <div>{{securisation?.parsedData?.DigestAlgorithm }}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Date tampon</label>
+        <div>{{timestamp?.genTime | date: 'dd/MM/yyyy' }}</div>
+    </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label>Certificat de signature</label>
+    <div>{{timestamp?.signerCertIssuer}}</div>
+  </div>
+    <div class="col-12 mb-3">
+        <label>Hash de l'arbre de Merkle</label>
+        <div>{{securisation?.parsedData?.Hash }}</div>
+    </div>
+</div>

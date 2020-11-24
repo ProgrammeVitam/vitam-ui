@@ -1,4 +1,10 @@
 {
+  "/referential-api": {
+    "target": "https://dev.vitamui.com:9002/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
+  },
   "/identity-api": {
     "target": "https://dev.vitamui.com:9001/",
     "secure": false,

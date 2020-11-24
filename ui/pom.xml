@@ -18,6 +18,7 @@
         <module>ui-commons</module>
         <module>ui-portal</module>
         <module>ui-identity</module>
+        <module>ui-referential</module>
     </modules>
 
 </project>

@@ -1,0 +1,57 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+
+    <table class="vitamui-table">
+        <thead>
+            <tr>
+                <th><i class="vitamui-icon vitamui-icon-operation vitamui-row-icon"></i></th>
+              <th>
+                <div class="vitamui-table-header">
+                  <span i18n="traceability id column header@@traceabilityListIdHeader">Identifiant</span>
+                  <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
+                                                  (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+                </div>
+                </th>
+
+                <th>Catégorie</th>
+
+                <th>
+                <div class="vitamui-table-header">
+                  <span i18n="traceability date column header@@traceabilityListDateHeader">Date de création</span>
+                  <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+                                                  (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+                </div>
+                </th>
+                <th>Statut</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let securisation of dataSource; let index = index">
+                <tr class="vitamui-table-row">
+                    <td>
+                        <i class="vitamui-icon vitamui-icon-operation vitamui-row-icon status-badge"
+                            [ngClass]="{'status-badge-green': securisationStatus(securisation) == 'OK', 'status-badge-grey':securisationStatus(securisation) == 'STARTED',
+                        'status-badge-orange': securisationStatus(securisation) == 'WARNING', 'status-badge-red': securisationStatus(securisation) == 'KO' || securisationStatus(securisation) == 'FATAL' }"></i>
+                    </td>
+                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.id }}</td>
+                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.type }}</td>
+                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.dateTime | date: 'dd/MM/yyyy'  }}
+                    </td>
+                    <td class="clickable" (click)="securisationClick.emit(securisation)"
+                        [ngClass]="{'text-green': securisationStatus(securisation) == 'OK', 'text-grey':securisationStatus(securisation) == 'STARTED',
+                                             'text-orange': securisationStatus(securisation) == 'WARNING', 'text-red': securisationStatus(securisation) == 'KO' || securisationStatus(securisation) == 'FATAL' }">
+                        {{ securisationStatus(securisation) }}</td>
+                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisationMessage(securisation)  }}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+
+    <div class="vitamui-table-footer">
+        <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+        <button *ngIf="!pending && infiniteScrollDisabled && securisationService.canLoadMore" (click)="loadMore()" class="btn"
+            i18n="Show more results@@tableMoreResultButton">
+            Afficher plus de résultats...
+        </button>
+        <span *ngIf="!pending && !securisationService.canLoadMore">Fin des résultats</span>
+    </div>

@@ -59,7 +59,7 @@ public class VitamAccessConfig extends VitamClientConfig {
 
     @Bean
     public LogbookService getLogbookService() {
-        return new LogbookService(accessExternalClient(), ingestExternalClient());
+        return new LogbookService(accessExternalClient(), ingestExternalClient(), adminExternalClient());
     }
 
     @Bean

@@ -40,6 +40,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -371,7 +372,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         final Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new IllegalArgumentException("no customer found for " + customerId));
         List<String> availablesDomains = customer.getEmailDomains();
-        if (idp != null && idp.size() > 0) {
+        if (CollectionUtils.isNotEmpty(idp)) {
             availablesDomains = availablesDomains.stream().filter(s -> !filterDomains.contains(s)).collect(Collectors.toList());
         }
         return availablesDomains;

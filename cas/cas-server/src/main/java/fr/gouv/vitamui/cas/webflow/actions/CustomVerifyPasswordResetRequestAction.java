@@ -61,7 +61,7 @@ public class CustomVerifyPasswordResetRequestAction extends AbstractAction {
             val questions = BasePasswordManagementService
                 .canonicalizeSecurityQuestions(passwordManagementService.getSecurityQuestions(username));
             if (questions.isEmpty()) {
-                LOGGER.warn("No security questions could be found for [{}]", username);
+                LOGGER.error("No security questions could be found for [{}]", username);
                 return error();
             }
             PasswordManagementWebflowUtils.putPasswordResetSecurityQuestions(requestContext, questions);

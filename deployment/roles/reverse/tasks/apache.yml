@@ -37,6 +37,16 @@
   delay: "{{ packages_install_retries_delay }}"
   when: ansible_os_family == "RedHat"
 
+# FIXME: remove when mod_substitute.so with SubstituteMaxLineLength will be integrated in next httpd version
+- name: Install mod_substitute from newer httpd version
+  copy:
+    src: "apache/mod_substitute.so"
+    dest: "/etc/{{ apache_service }}/modules/mod_substitute.so"
+    owner: "root"
+    mode: 0644
+  notify:
+        - reload apache
+
 # TODO: We could use apache2_module of ansible but it is currently flagged as preview
 - name: Enable mod_ssl & mod_proxy (Debian)
   file:
@@ -92,17 +102,6 @@
     - "key"
   when: (vitam_reverse_external_protocol is defined) and (vitam_reverse_external_protocol == 'https')
 
-#OMA: if problem with apache2 restart due to absent pem, manually remove on reverse the above p12 file and relaunch playbook
-- name: copy certificate
-  copy:
-    src: "{{ inventory_dir }}/keystores/client-iam/keystore_reverse.p12"
-    dest: "/etc/{{ apache_service }}/certs/keystore_client_{{ vitam_site_name }}.p12"
-    owner: "root"
-    mode: 0400
-  notify:
-    - extract certificate
-    - set certificate attributes
-
 - name: Copy the CA
   copy:
     src: "{{ item }}"
@@ -110,7 +109,7 @@
     owner: "root"
     mode: 0400
   with_fileglob:
-    - "{{ inventory_dir }}/certs/client-iam/ca/*.crt"
+    - "{{ inventory_dir }}/certs/server/ca/*.crt"
 
 - name: copy httpd configuration template
   template:

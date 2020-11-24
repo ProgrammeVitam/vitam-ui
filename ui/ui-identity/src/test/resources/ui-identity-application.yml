@@ -46,11 +46,11 @@ server:
   compression:
     enabled: true
     mime-types: text/html,text/css,application/javascript,application/json
-  host: dev-identity.vitamui.com
+  host: dev.vitamui.com
   port: 8081
   scheme: https
   ssl:
-    key-store: src/main/config/keystore_ui-identity.jks
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-identity.jks
     key-store-password: changeme
     key-password: changeme
 
@@ -65,11 +65,11 @@ ui:
   redirect-url: ${ui.url}
 
 cas:
-  internal-url: https://dev-cas.vitamui.com:8080
-  external-url: https://dev-cas.vitamui.com:8080
+  internal-url: https://dev.vitamui.com:8080
+  external-url: https://dev.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: src/main/config/truststore_server.jks
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
 debug: false

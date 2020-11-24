@@ -115,6 +115,8 @@ public class CommonConstants {
 
     public static final String UPLOAD_ROLE_PREFIX = ROLE_PREFIX + "UPLOAD_";
 
+    public static final String EXPORT_ROLE_PREFIX = ROLE_PREFIX + "EXPORT_";
+
     public static final String PATH_CHECK = "/check";
 
     public static final String PATH_LEVELS = "/levels";

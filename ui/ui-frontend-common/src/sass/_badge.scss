@@ -41,8 +41,8 @@
     @include status-badge;
 
     &:after {
-        background-color: #dadada;
-        border: solid 2px #ffffff;
+        background-color: $light-grey;
+        border: solid 2px $white;
     }
 
     &.status-badge-mini {

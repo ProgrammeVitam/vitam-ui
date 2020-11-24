@@ -37,7 +37,7 @@ workspace:
 
 # Front configuration
 ui-portal:
-  base-url: https://dev-portal.vitamui.com:4200
+  base-url: https://dev.vitamui.com:4200
 
 environnement: dev
 

@@ -1,0 +1,66 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 0,
+    "size": 1
+  },
+  "$results": [
+    {
+      "DescriptionLevel": "Item",
+      "Title": "Pereire.txt",
+      "Description": "Cette ArchiveUnit ne déclare aucune règle. Elle hérite de Réaumur un NeedAuthorization à true, une StorageRule avec Copy comme FinalAction, une AppraisalRule avec Keep comme FinalAction, une DisseminationRule avec DIS-00001 comme Rule et 01/01/2000 comme StartDate (venant de Réaumur), une AccessRule avec ACC-00001 comme Rule et 01/01/2000 comme FinalAction (venant de Réaumur) et une ClassificationRule avec CLASS-00001 comme Rule et 03/06/2015 comme StartDate, Confidentiel Défense pour ClassificationLevel, ClassificationOwner0 pour ClassificationOwner, ClassificationAudience0 pour ClassificationAudience, 03/06/2016 comme ClassificationReassasingDate et un NeedReassessingAuthorization à true",
+      "TransactedDate": "2017-04-04T08:07:27",
+      "#id": "aeaqaaaaaahl2zz5ab23malq4gw2eqqaaaba",
+      "#tenant": 0,
+      "#object": "aebaaaaaaahl2zz5ab23malq4gw2cnqaaaba",
+      "#unitups": [
+        "aeaqaaaaaahifyagaavjialq6exbzoaaaaba"
+      ],
+      "#min": 1,
+      "#max": 6,
+      "#allunitups": [
+        "aeaqaaaaaahifyagaavjialq6exbzsiaaabq",
+        "aeaqaaaaaahifyagaavjialq6exbzsaaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbzmyaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbznyaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbzoaaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbznaaaaca",
+        "aeaqaaaaaahifyagaavjialq6exbzoqaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbzsyaaaba",
+        "aeaqaaaaaahifyagaavjialq6exbznaaaaaq"
+      ],
+      "#management": {},
+      "#unitType": "INGEST",
+      "#operations": [
+        "aeeaaaaaace5zejuabxxcalq6exbnviaaaaq"
+      ],
+      "#opi": "aeeaaaaaace5zejuabxxcalq6exbnviaaaaq",
+      "#originating_agency": "RATP",
+      "#originating_agencies": [
+        "RATP"
+      ],
+      "#storage": {
+        "strategyId": "default"
+      },
+      "#version": 0,
+      "#sedaVersion": "2.1",
+      "#implementationVersion": "3.0.1-SNAPSHOT"
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$roots": [],
+    "$query": [
+      {
+        "$in": {
+          "#id": [
+            "aeaqaaaaaahifyagaavjialq6exbzoiaaaaq"
+          ]
+        }
+      }
+    ],
+    "$projection": {}
+  }
+}

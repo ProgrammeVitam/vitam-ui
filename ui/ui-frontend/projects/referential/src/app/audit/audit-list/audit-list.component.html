@@ -1,0 +1,55 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+
+  <table class="vitamui-table">
+    <thead>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-audit vitamui-row-icon"></i></th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="audit identifier column header@@auditListIdentifierHeader">Identifiant</span>
+          <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>Catégorie</th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="audit createdDate column header@@auditListCreatedDateHeader">Date de création</span>
+          <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>Statut</th>
+      <th>Message</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let audit of dataSource; let index = index">
+      <tr class="vitamui-table-row">
+        <td>
+          <i class="vitamui-icon vitamui-icon-audit vitamui-row-icon status-badge"
+             [ngClass]="{'status-badge-green': auditStatus(audit) == 'OK', 'status-badge-grey':auditStatus(audit) == 'STARTED',
+                        'status-badge-orange': auditStatus(audit) == 'WARNING', 'status-badge-red': auditStatus(audit) == 'KO' || auditStatus(audit) == 'FATAL' }"></i>
+        </td>
+        <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.id }}</td>
+        <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.type }}</td>
+        <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.dateTime | date: 'dd/MM/yyyy'  }}
+        </td>
+        <td class="clickable" (click)="auditClick.emit(audit)"
+            [ngClass]="{'text-green': auditStatus(audit) == 'OK', 'text-grey':auditStatus(audit) == 'STARTED',
+                                             'text-orange': auditStatus(audit) == 'WARNING', 'text-red': auditStatus(audit) == 'KO' || auditStatus(audit) == 'FATAL' }">
+          {{ auditStatus(audit) }}</td>
+        <td class="clickable" (click)="auditClick.emit(audit)">{{ auditMessage(audit)  }}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+
+  <div class="vitamui-table-footer">
+    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+    <button *ngIf="!pending && infiniteScrollDisabled && auditService.canLoadMore" (click)="loadMore()" class="btn"
+            i18n="Show more results@@tableMoreResultButton">
+      Afficher plus de résultats...
+    </button>
+    <span *ngIf="!pending && !auditService.canLoadMore">Fin des résultats</span>
+  </div>

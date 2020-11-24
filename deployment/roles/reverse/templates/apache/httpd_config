@@ -25,8 +25,6 @@
 
     # Enable SSL for the Reverse proxy
     SSLProxyEngine on
-    # Client certificate path
-    # SSLProxyMachineCertificateFile /etc/{{apache_service}}/certs/keystore_client_{{ vitam_site_name }}.pem
     # Client CA path
     SSLProxyCACertificatePath /etc/{{apache_service}}/ca/{{ vitam_site_name }}
     # Don't check the CN of the server's certificate
@@ -38,6 +36,9 @@
     # Filter to change url inside  html and js files
     AddOutputFilterByType SUBSTITUTE text/html
     AddOutputFilterByType SUBSTITUTE text/javascript
+    AddOutputFilterByType SUBSTITUTE application/javascript
+    SubstituteMaxLineLength 12M
+
 
     # CONSUL
 
@@ -88,6 +89,14 @@
 
 {% endfor %}
 
+    # UI REFERENTIAL
+
+{% for host in groups['hosts_ui_referential'] %}
+    ProxyPassMatch ^/referential(/.*)$ {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential$1
+    ProxyPassReverse /referential {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential
+
+{% endfor %}
+
     # CAS SERVER
 
 {% for host in groups['hosts_cas_server'] %}
@@ -101,6 +110,9 @@
 
     ProxyPass /cas/css {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/css {{reverse_connection_params}}
     ProxyPassReverse  /cas/css {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/css
+
+    ProxyPass /cas/js {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/js {{reverse_connection_params}}
+    ProxyPassReverse  /cas/js {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/js
 
     ProxyPass /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout {{reverse_connection_params}}
     ProxyPassReverse  /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout

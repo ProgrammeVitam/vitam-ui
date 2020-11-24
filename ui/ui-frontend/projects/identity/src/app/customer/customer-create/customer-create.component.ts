@@ -155,6 +155,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       }
     });
 
+
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 

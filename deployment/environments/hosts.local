@@ -65,12 +65,20 @@ localhost
 [zone_vitamui_app:children]
 hosts_vitamui_iam_internal
 hosts_vitamui_iam_external
+hosts_vitamui_referential_internal
+hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 
 [hosts_vitamui_iam_internal]
 localhost
 
 [hosts_vitamui_iam_external]
+localhost
+
+[hosts_vitamui_referential_internal]
+localhost
+
+[hosts_vitamui_referential_external]
 localhost
 
 [hosts_vitamui_security_internal]
@@ -84,6 +92,7 @@ localhost
 hosts_ui_identity
 hosts_ui_portal
 hosts_ui_search
+hosts_ui_referential
 
 [hosts_ui_identity]
 localhost
@@ -92,6 +101,9 @@ localhost
 localhost
 
 [hosts_ui_search]
+localhost
+
+[hosts_ui_referential]
 localhost
 
 ########################################################

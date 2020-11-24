@@ -171,6 +171,20 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         return response.getBody();
     }
 
+    public D patchWithDto(final C context, final D partialDto) {
+        LOGGER.debug("Patch {}", partialDto);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
+        uriBuilder.path(CommonConstants.PATH_ID);
+        final String id = partialDto.getId();
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+
+        final HttpEntity<D> request = new HttpEntity<>(partialDto, headers);
+        final ResponseEntity<D> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request,
+                getDtoClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
     public void delete(final C context, final String id) {
         LOGGER.debug("Delete {}", id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));

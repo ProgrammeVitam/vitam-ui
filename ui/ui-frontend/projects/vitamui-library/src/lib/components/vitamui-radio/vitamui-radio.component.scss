@@ -1,0 +1,27 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+input[type="radio"] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
+}
+
+.radio-label {
+  color: var(--vitamui-secondary);
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 20px;
+
+  span {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
+
+.radio-label.checked {
+  color: $white;
+  background: var(--vitamui-secondary);
+}

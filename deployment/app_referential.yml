@@ -1,0 +1,42 @@
+# Referential internal calls VITAM
+- hosts: hosts_vitamui_referential_internal
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.referential_internal }}"
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_referential_internal }}"
+    password_truststore: "{{ truststores_server }}"
+    vitam_cert: "{{ vitam_certs.vitamui }}"
+    consul_tags: "referential-internal, api, internal"
+
+# Referential internal calls referential internal
+- hosts: hosts_vitamui_referential_external
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.referential_external }}"
+    vitamui_certificate_type: "external"
+    password_keystore: "{{ keystores_server_referential_external }}"
+    password_truststore: "{{ truststores_client_external }}"
+    consul_tags: "referential-external, api, external"
+
+# UI referential calls referential external
+- hosts: hosts_ui_referential
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.referential }}"
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_ui_referential }}"
+    password_truststore: "{{ truststores_server }}"
+    consul_tags: "ui-referential, ui"

@@ -1,0 +1,15 @@
+- name: "Copy vitam certificates"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ vitamui_folder_conf }}/{{ item | basename }}"
+    owner: "{{ vitamui_defaults.users.vitamui }}"
+    group: "{{ vitamui_defaults.users.group }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+  with_fileglob:
+    - "{{ inventory_dir }}/keystores/client-vitam/*.*"
+  when:
+    - vitam_cert is defined
+  tags:
+    - update_vitam_configuration
+  notify:
+    - restart service

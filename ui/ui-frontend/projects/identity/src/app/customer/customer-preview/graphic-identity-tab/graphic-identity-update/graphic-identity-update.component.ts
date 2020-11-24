@@ -63,6 +63,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
   hasError = true;
   message: string;
 
+  hexPattern = /#([0-9A-Fa-f]{6})/;
+
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(

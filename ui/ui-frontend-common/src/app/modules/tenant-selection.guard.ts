@@ -53,11 +53,12 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
-    @Inject(WINDOW_LOCATION) private location: any) {
+    private router: Router
+  ) {
   }
 
   canActivate(
-    route: ActivatedRouteSnapshot,
+    route: ActivatedRouteSnapshot
   ): boolean {
     if (route.params.tenantIdentifier) {
       return true;
@@ -69,7 +70,8 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
       if (tenants.length === 1) {
         // redirect user to the unique tenant page of the app
         const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-        this.location.href = application.url + '/tenant/' + tenants[0].identifier;
+        this.router.navigate(route.pathFromRoot.map(r => r.url.toString()).concat([tenants[0].identifier.toString()]));
+        return true;
       } else {
         return true;
       }

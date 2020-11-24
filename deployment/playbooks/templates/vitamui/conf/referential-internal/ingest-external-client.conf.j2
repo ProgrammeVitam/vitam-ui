@@ -1,0 +1,11 @@
+serverHost: {{ vitam_ingest_external_host }}
+serverPort: {{ vitam_ingest_external_port }}
+secure: true
+sslConfiguration :
+ keystore :
+  - keyPath: {{ service.dirs.config }}/vitamui-vitam-external.p12
+    keyPassword: jkspasswd
+ truststore :
+  - keyPath: {{ service.dirs.config }}/truststore_vitamui-vitam-external.jks
+    keyPassword: jkspasswd
+hostnameVerification: true

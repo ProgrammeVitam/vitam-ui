@@ -1,0 +1,34 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <!--ng-container *ngIf="!isPopup">
+            <button class="btn-popup" role="button" (click)="openPopup()"><i
+                    class="vitamui-icon vitamui-icon-pin"></i></button>
+        </ng-container-->
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{securityProfile?.name}} <small>({{securityProfile?.identifier}})</small></h2>
+        </div>
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group" #tabs>
+
+            <mat-tab label="Informations" i18n-label="Information tab@@securityProfilePreviewTabInformation">
+              <app-security-profile-information-tab [securityProfile]="securityProfile" (updated)="updatedChange($event, 0)" #infoTab
+                                                    (fullAccessUpdated)="updateFullAccess($event)">
+              </app-security-profile-information-tab>
+            </mat-tab>
+
+          <mat-tab label="Permissions" i18n-label="Permissions tab@@securityProfilePreviewTabPermissions">
+            <app-security-profile-permissions-tab [SecurityProfile]="securityProfile" (updated)="updatedChange($event, 1)" #permsTab>
+            </app-security-profile-permissions-tab>
+          </mat-tab>
+
+            <mat-tab label="Historique" i18n-label="History tab@@securityProfilePreviewTabHistory">
+                <vitamui-common-operation-history-tab [id]="securityProfile?.identifier"
+                                                      [identifier]="securityProfile?.identifier" collectionName="security-profile" [filter]="filterEvents">
+                </vitamui-common-operation-history-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

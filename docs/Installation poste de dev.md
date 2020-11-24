@@ -238,7 +238,5 @@ ping 10.0.0.116
 Pour accéder aux UI sur la machine de Dev, il faut compléter le fichier hosts avec les éléments suivants :
 
 ```text
-127.0.0.1       app1.vitamui.test app2.vitamui.test cas.vitamui.test management.vitamui.test idp.vitamui.test providers.vitamui.test directory.vitamui.test
-127.0.0.1       local-portal.vitamui.com local-identity.vitamui.com dev-identity.vitamui.com dev-portal.vitamui.com dev-cas.vitamui.com
-127.0.0.1       local-portal.vitamui.com local-identity.vitamui.com dev-identity.vitamui.com dev.vitamui.com dev-cas.vitamui.com
+127.0.0.1       dev.vitamui.com
 ```

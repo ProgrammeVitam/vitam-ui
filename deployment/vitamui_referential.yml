@@ -1,0 +1,24 @@
+---
+
+- hosts: localhost
+  connection: local
+  become: false
+  roles:
+    - bootstrap_ansible
+
+- hosts: hosts_vitamui
+  roles:
+    - checks
+    - normalize
+    - users
+# TODO VITAM : decide if referential should be always installed, if not adapt mongo database script verisonning for additional modules
+#
+#- import_playbook: stop_vitamui.yml
+#
+#- import_playbook: mongo_update_scripts.yml
+#
+#- import_playbook: start_vitamui.yml
+
+- import_playbook: app_referential.yml
+
+- import_playbook: reverse_proxy.yml

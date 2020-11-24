@@ -1,5 +1,90 @@
 ---
 
+
+- hosts: hosts_ui_flow_admin
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ui_flow_admin.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_ui_flow
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ui_flow.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_ui_archive
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.ui_archive.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_flow_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.flow_external.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_flow_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.flow_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_archive_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - dlab
+
+- hosts: hosts_ui_referential
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - referential_app
+
 - hosts: hosts_ui_identity_admin
   gather_facts: no
   roles:
@@ -41,6 +126,30 @@
     verbe: "Stopping"
     etat: "stopped"
 
+- hosts: hosts_vitamui_referential_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential_external.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - referential_app
+
+- hosts: hosts_vitamui_referential_internal
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+  tags:
+    - referential_app
+
+
 - hosts: hosts_vitamui_iam_external
   gather_facts: no
   roles:
@@ -81,6 +190,8 @@
     service_name: "{{ mongo_express_conf.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui_mongod
   gather_facts: no
@@ -91,6 +202,8 @@
     service_name: "{{ mongodb.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui_logstash
   gather_facts: no
@@ -101,6 +214,8 @@
     service_name: "{{ logstash.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui
   gather_facts: no
@@ -110,3 +225,5 @@
     service_name: "{{ consul.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
+  tags:
+    - cots

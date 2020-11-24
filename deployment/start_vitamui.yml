@@ -16,6 +16,8 @@
     service_name: "{{ consul.service_name }}"
     verbe: "Starting"
     etat: "started"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui_logstash
   gather_facts: no
@@ -26,6 +28,8 @@
     service_name: "{{ logstash.service_name }}"
     verbe: "Starting"
     etat: "started"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui_mongod
   gather_facts: no
@@ -36,6 +40,8 @@
     service_name: "{{ mongodb.service_name }}"
     verbe: "Starting"
     etat: "started"
+  tags:
+    - cots
 
 - hosts: hosts_vitamui_mongod
   gather_facts: no
@@ -46,6 +52,9 @@
     service_name: "{{ mongo_express_conf.service_name }}"
     verbe: "Starting"
     etat: "started"
+  tags:
+    - cots
+
 
 - hosts: hosts_vitamui_iam_internal
   gather_facts: no
@@ -117,6 +126,43 @@
     verbe: "Starting"
     etat: "started"
 
+### Order ?
+
+- hosts: hosts_vitamui_referential_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential_internal.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+  tags:
+    - referential_app
+
+- hosts: hosts_vitamui_referential_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential_external.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+  tags:
+    - referential_app
+
+- hosts: hosts_ui_referential
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.referential.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+  tags:
+    - referential_app
 
 # ########################################################
 # # ZONE Data

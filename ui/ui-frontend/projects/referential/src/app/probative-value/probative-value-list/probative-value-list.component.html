@@ -1,0 +1,55 @@
+<table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+
+  <table class="vitamui-table">
+    <thead>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-probativeValue vitamui-row-icon"></i></th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="probativeValue Identifier column header@@probativeValueListIdentifierHeader">Identifiant</span>
+          <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="probativeValue CreatedDate column header@@probativeValueListCreatedDateHeader">Date de création</span>
+          <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
+                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+        </div>
+      </th>
+
+      <th>Statut</th>
+      <th>Message</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let probativeValue of dataSource; let index = index">
+      <tr class="vitamui-table-row">
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">
+          <i class="vitamui-icon vitamui-icon-probativeValue vitamui-row-icon status-badge"
+             [ngClass]="{'status-badge-green': probativeValueStatus(probativeValue) == 'OK', 'status-badge-grey':probativeValueStatus(probativeValue) == 'STARTED',
+                        'status-badge-orange': probativeValueStatus(probativeValue) == 'WARNING', 'status-badge-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL' }"></i>
+        </td>
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.id }}</td>
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValue?.dateTime | date: 'dd/MM/yyyy'  }}
+        </td>
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)"
+          [ngClass]="{'text-green': probativeValueStatus(probativeValue) == 'OK', 'text-grey':probativeValueStatus(probativeValue) == 'STARTED',
+                                             'text-orange': probativeValueStatus(probativeValue) == 'WARNING', 'text-red': probativeValueStatus(probativeValue) == 'KO' || probativeValueStatus(probativeValue) == 'FATAL' }">
+          {{ probativeValueStatus(probativeValue) }}</td>
+        <td class="clickable" (click)="probativeValueClick.emit(probativeValue)">{{ probativeValueMessage(probativeValue)  }}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+
+  <div class="vitamui-table-footer">
+    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+    <button *ngIf="!pending && infiniteScrollDisabled && probativeValueService.canLoadMore" (click)="loadMore()" class="btn"
+            i18n="Show more results@@tableMoreResultButton">
+      Afficher plus de résultats...
+    </button>
+    <span *ngIf="!pending && !probativeValueService.canLoadMore">Fin des résultats</span>
+  </div>
+</table>

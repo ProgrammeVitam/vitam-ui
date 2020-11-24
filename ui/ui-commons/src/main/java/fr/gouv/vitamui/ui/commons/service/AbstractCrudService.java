@@ -97,6 +97,10 @@ public abstract class AbstractCrudService<T extends IdDto> {
         return getClient().patch(c, partialDto);
     }
 
+    public T patchWithDto(final ExternalHttpContext c, final T partialDto, final String id) {
+        return getClient().patchWithDto(c, partialDto);
+    }
+
     protected void beforePatch(final Map<String, Object> updates, final String id) {
         Assert.isTrue(StringUtils.equals(id, (String) updates.get("id")), "The DTO identifier must match the path identifier for patch.");
     }

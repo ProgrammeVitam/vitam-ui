@@ -67,11 +67,23 @@ public class AccessContractModelDto {
 
     private Boolean writingPermission;
 
+    private Boolean writingRestrictedDesc;
+
     private Boolean everyOriginatingAgency;
 
     private Boolean everyDataObjectVersion;
 
+    private String accessLog;
+
+    private Set<String> ruleCategoryToFilter;
+
+    private Set<String> originatingAgencies;
+
+    private Set<String> dataObjectVersion;
+
     private Set<String> rootUnits;
+
+    private Set<String> excludedRootUnits;
 
     @JsonProperty("#id")
     public void setId(String id) {
@@ -138,9 +150,39 @@ public class AccessContractModelDto {
         this.everyDataObjectVersion = everyDataObjectVersion;
     }
 
+    @JsonProperty("AccessLog")
+    public void setAccessLog(String accessLog) {
+        this.accessLog = accessLog;
+    }
+
     @JsonProperty("RootUnits")
     public void setRootUnits(Set<String> rootUnits) {
         this.rootUnits = rootUnits;
+    }
+
+    @JsonProperty("ExcludedRootUnits")
+    public void setExcludedRootUnits(Set<String> excludedRootUnits) {
+        this.excludedRootUnits = excludedRootUnits;
+    }
+
+    @JsonProperty("RuleCategoryToFilter")
+    public void setRuleCategoryToFilter(Set<String> ruleCategoryToFilter) {
+        this.ruleCategoryToFilter = ruleCategoryToFilter;
+    }
+
+    @JsonProperty("OriginatingAgencies")
+    public void setOriginatingAgencies(Set<String> originatingAgencies) {
+        this.originatingAgencies = originatingAgencies;
+    }
+
+    @JsonProperty("DataObjectVersion")
+    public void setDataObjectVersion(Set<String> dataObjectVersion) {
+        this.dataObjectVersion = dataObjectVersion;
+    }
+
+    @JsonProperty("WritingRestrictedDesc")
+    public void setWritingRestrictedDesc(Boolean writingRestrictedDesc) {
+        this.writingRestrictedDesc = writingRestrictedDesc;
     }
 
     @JsonProperty("id")
@@ -208,9 +250,38 @@ public class AccessContractModelDto {
         return everyDataObjectVersion;
     }
 
+    @JsonProperty("accessLog")
+    public String getAccessLog() {
+        return accessLog;
+    }
+
     @JsonProperty("rootUnits")
     public Set<String> getRootUnits() {
         return rootUnits;
     }
 
+    @JsonProperty("excludedRootUnits")
+    public Set<String> getExcludedRootUnits() {
+        return excludedRootUnits;
+    }
+
+    @JsonProperty("ruleCategoryToFilter")
+    public Set<String> getRuleCategoryToFilter() {
+        return ruleCategoryToFilter;
+    }
+
+    @JsonProperty("originatingAgencies")
+    public Set<String> getOriginatingAgencies() {
+        return originatingAgencies;
+    }
+
+    @JsonProperty("dataObjectVersion")
+    public Set<String> getDataObjectVersion() {
+        return dataObjectVersion;
+    }
+
+    @JsonProperty("writingRestrictedDesc")
+    public Boolean getWritingRestrictedDesc() {
+        return writingRestrictedDesc;
+    }
 }

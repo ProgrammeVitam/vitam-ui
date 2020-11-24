@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-12 mb-3">
+        <label>Catégorie d'opération</label>
+        <div>Intégrité</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 mb-3">
+        <label>Identifiant des agents externes</label>
+        <div>{{audit?.agIdExt}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Contrat associé</label>
+        <div>{{associatedContract(audit)}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Identifiant de l’application</label>
+        <div>{{audit?.agIdApp}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Numéro de transaction</label>
+        <div>Intégrité</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Date d’affectation</label>
+        <div>{{audit?.dateTime | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Affectation</label>
+        <div>Unknown</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Identification de l’opération</label>
+        <div>Unknown</div>
+    </div>
+    <div class="col-6 mb-3">
+        <label>Identification de l’object</label>
+        <div>{{audit?.objectId }}</div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <label>Rapport</label>
+        <div>{{ auditReport(audit) }}</div>
+    </div>
+    <div class="col-12 mb-3">
+        <label>Informations complémentaires sur l’opération</label>
+        <div>Intégrité</div>
+    </div>
+    <div class="col-12 mb-3">
+        <label>Message</label>
+        <div>{{ auditMessage(audit) }}</div>
+    </div>
+</div>

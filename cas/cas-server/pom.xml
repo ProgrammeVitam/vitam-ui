@@ -60,7 +60,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-commons</artifactId>
             <version>${spring.cloud.consul.version}</version>
-            <scope>runtime</scope>
+		</dependency>
+         <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-context</artifactId>
+            <version>${spring.cloud.consul.version}</version>
 		</dependency>
 
         <!-- CAS server -->

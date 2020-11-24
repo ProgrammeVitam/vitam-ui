@@ -1,0 +1,29 @@
+<div class="vitamui-sidepanel">
+    <div class="vitamui-sidepanel-header">
+        <!--ng-container *ngIf="!isPopup">
+            <button class="btn-popup" role="button" (click)="openPopup()"><i
+                    class="vitamui-icon vitamui-icon-pin"></i></button>
+        </ng-container-->
+        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+
+        <div class="title">
+            <h2>{{fileFormat?.name}} <small>({{fileFormat?.puid}})</small></h2>
+        </div>
+    </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group" #tabs>
+
+            <mat-tab label="Informations" i18n-label="Information tab@@fileFormatPreviewTabInformation">
+                <!--app-file-format-information-tab [fileFormat]="fileFormat"
+                    [readOnly]="isPopup || fileFormat?.readonly"></app-file-format-information-tab-->
+              <app-file-format-information-tab [fileFormat]="fileFormat" (updated)="updatedChange($event, 0)" #infoTab></app-file-format-information-tab>
+            </mat-tab>
+
+            <mat-tab label="Historique" i18n-label="History tab@@fileFormatPreviewTabHistory">
+                <vitamui-common-operation-history-tab [id]="fileFormat?.puid"
+                                                      [identifier]="fileFormat?.puid" collectionName="fileFormat" [filter]="filterEvents">
+                </vitamui-common-operation-history-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

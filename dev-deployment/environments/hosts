@@ -29,11 +29,15 @@ localhost
 [zone_vitamui_ui:children]
 hosts_ui_identity
 hosts_ui_portal
+hosts_ui_referential
 
 [hosts_ui_identity]
 # We deploy only ui_identity_admin on dev - same certificat is used for these apps.
 
 [hosts_ui_portal]
+localhost
+
+[hosts_ui_referential]
 localhost
 
 ########################################################

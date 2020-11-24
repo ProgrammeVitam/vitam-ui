@@ -51,12 +51,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import javax.ws.rs.core.Response;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.CompareQuery;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.exception.AccessUnauthorizedException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.external.client.IngestCollection;
@@ -69,6 +72,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 
 public class LogbookService {
@@ -82,10 +86,13 @@ public class LogbookService {
 
     private final IngestExternalClient ingestExternalClient;
 
+    private final AdminExternalClient adminExternalClient;
+
     @Autowired
-    public LogbookService(final AccessExternalClient accessExternalClient, final IngestExternalClient ingestExternalClient) {
+    public LogbookService(final AccessExternalClient accessExternalClient, final IngestExternalClient ingestExternalClient, final AdminExternalClient adminExternalClient) {
         this.accessExternalClient = accessExternalClient;
         this.ingestExternalClient = ingestExternalClient;
+        this.adminExternalClient = adminExternalClient;
     }
 
     /**
@@ -172,6 +179,10 @@ public class LogbookService {
         }
 
         return select.getFinalSelect();
+    }
+
+    public RequestResponse checkTraceability(final VitamContext context, final JsonNode query) throws AccessExternalClientServerException, InvalidParseOperationException, AccessUnauthorizedException {
+        return adminExternalClient.checkTraceabilityOperation(context, query);
     }
 
     /**

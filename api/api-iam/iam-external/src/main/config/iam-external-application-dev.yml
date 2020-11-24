@@ -23,10 +23,10 @@ server:
   host:
   port: 8083
   ssl:
-    key-store: src/main/config/keystore_iam-external.jks
+    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: src/main/config/truststore_server.jks
+    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
 management:

@@ -1,0 +1,73 @@
+:host {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    .hover-btn {
+        transform: translateX(20%);
+        transition: transform 100ms ease-out, opacity 100ms ease-out;
+        opacity: 0;
+    }
+
+    &:hover {
+        .hover-btn {
+            transform: translateX(0);
+            opacity: 1;
+        }   
+    }
+}
+
+.node-label {
+    flex-grow: 1;
+    padding: 10px 0;
+}
+
+.hover-btn {
+    margin-right: 8px;
+}
+
+@import '~ui-frontend-common/sass/variables/colors';
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    input[type=file] {
+        display: none;
+    }    
+}
+
+.dlab-file-upload-button-circle {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    background-color: var(--vitamui-secondary);
+    border: 1px solid var(--vitamui-secondary);
+    color: white;
+    border-radius: 25px;
+    height: 50px;
+    padding: 0px 30px;
+    cursor: pointer;
+    transition: box-shadow 200ms ease-out, opacity 200ms ease-out, background-color 200ms ease-out;
+    white-space: nowrap;
+    font-weight: 600;
+    outline: none;
+
+    &:not([disabled]) {
+        &:hover, &:focus, &:active {
+            background-color : #78d2c1;
+        }
+    }
+
+    > i.opendlab-icon {
+        font-size: 24px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    input[type=file] {
+        display: none;
+    }
+
+}

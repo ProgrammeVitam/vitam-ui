@@ -1,0 +1,84 @@
+spring:
+  profiles:
+    active: dev,swagger
+
+  cloud:
+    consul:  #disable for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+server:
+  host: dev.vitamui.com
+  port: 9002
+  scheme: https
+  ssl:
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+    key-store-password: changeme
+    key-password: changeme
+  servlet.session.cookie.path: /referential-api
+management:
+  server:
+    address: localhost
+    port: 9102
+    ssl:
+      enabled: false
+
+ui-referential:
+  #theme-logo: /path/to/logo.png
+  platform-name: VITAM-UI
+  theme-colors:
+    vitamui-primary: "#ff4a54"
+    vitamui-secondary: "#241f63"
+  assets: src/main/config
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
+  referential-external-client:
+    server-host: localhost
+    server-port: 8087
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
+  base-url:
+    portal: "https://dev.vitamui.com:4200"
+
+ui:
+  url: "https://dev.vitamui.com:4202"
+  redirect-url: https://dev.vitamui.com:9002/${ui-prefix}
+
+cas:
+  internal-url: https://dev.vitamui.com:8080/cas
+  external-url: https://dev.vitamui.com:8080/cas
+  callback-url: ${ui.url}/referential-api/callback
+  ssl:
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    org.springframework.web: INFO
+
+management.endpoints.web.exposure.include: "*"
+# Uncomment if you want to use you specific logback config.
+#logging:
+#  config: src/main/config/logback.xml

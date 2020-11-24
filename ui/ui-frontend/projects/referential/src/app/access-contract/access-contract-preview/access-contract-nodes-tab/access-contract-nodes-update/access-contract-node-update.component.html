@@ -1,0 +1,23 @@
+<form [formGroup]="selectNodesForm">
+  <div class="content">
+    <h2 i18n="Create accessContract title@@accessContractCreateTitle5">Modification des Noeuds de consultation</h2>
+
+    <!--<div class="form-group">
+      <vitamui-common-slide-toggle [formControl]="allNodes">Tous les noeuds</vitamui-common-slide-toggle>
+      <i class="material-icons" matTooltip="Choix des noeuds auquel on souhaite donner accès en consultation" matTooltipClass="vitamui-tooltip">info</i>
+    </div> -->
+
+    <!--<div class="form-group" *ngIf="allNodes.value === false"> -->
+    <vitamui-library-filing-plan [formControl]="selectedRootsControl"
+                                 [tenantIdentifier]="tenantIdentifier"
+                                 [accessContract]="searchAccessContractId"
+                                 [mode]="FILLING_PLAN_MODE_BOTH"
+    ></vitamui-library-filing-plan>
+    <!--    </div> -->
+
+    <div class="actions">
+      <button type="button" class="btn primary" i18n="Update accessContract nodes@@updateAccessContractNodesButton" (click)="updateAccessContractNodes()">Valider</button>
+      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+    </div>
+  </div>
+</form>
