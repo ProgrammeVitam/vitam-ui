@@ -51,7 +51,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 
-function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient,  [
   {prefix: './assets/shared-i18n/', suffix: '.json'},
   {prefix: './assets/i18n/', suffix: '.json'}

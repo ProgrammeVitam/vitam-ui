@@ -54,7 +54,7 @@ import { PortalModule } from './portal';
 
 registerLocaleData(localeFr, 'fr');
 
-function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
     return new MultiTranslateHttpLoader(httpClient,  [
     {prefix: './assets/shared-i18n/', suffix: '.json'},
     {prefix: './assets/i18n/', suffix: '.json'}
