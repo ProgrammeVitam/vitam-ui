@@ -29,7 +29,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    if (this.authService.user.language) {
+    if (this.authService.user && this.authService.user.language) {
       this.translateService.use(this.getInitLanguage(this.translateConverter(this.authService.user.language)));
       this.currentLang = this.translateService.currentLang;
     } else {
