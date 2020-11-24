@@ -45,7 +45,7 @@ import { MenuType } from '../menu-type.enum';
 interface ModalData {
   menuType: MenuType;
   items: MenuOption[];
-  applicationConfig: {applications: Application[], categories: { [categoryId: string]: Category} };
+  applicationConfig: {applications: Application[], categories: Category[] };
 }
 
 @Component({
@@ -58,7 +58,7 @@ export class CommonMenuComponent implements OnInit {
   title: string;
   menuType: MenuType;
   items: MenuOption[];
-  applicationConfig?: {applications: Application[], categories: { [categoryId: string]: Category} };
+  applicationConfig?: {applications: Application[], categories: Category[] };
 
   constructor(
     public dialogRef: MatDialogRef<CommonMenuComponent>,

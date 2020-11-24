@@ -114,15 +114,16 @@ describe('ApplicationService', () => {
   it('should return an empty list if the API returns an error', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response).toEqual({APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}});
+        expect(response).toEqual({APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: []});
       },
       fail
     );
   });
 
   it('should return a map', () => {
-    const appMap = appService.getAppsGroupByCategories();
     appService.applications = [];
+    appService.categories = [];
+    const appMap = appService.getAppsGroupByCategories();
     expect(appMap).toBeTruthy();
     expect(appMap.keys.length).toBeDefined();
     expect(appMap.values).toBeDefined();

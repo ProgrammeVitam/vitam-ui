@@ -99,24 +99,26 @@ export class ApplicationSelectContentComponent {
 
     const defaultCategory = {
       identifier: 'default',
-      title: 'Autres',
+      title: 'Autres', // FIXME : MDI - handle this property when translating categories
       displayTitle: true,
       order: 99,
       applications: []
     };
     this.categoryList.push(defaultCategory);
 
-    for (const identifier in this._categories) {
-      if (!this._categories.hasOwnProperty(identifier) || identifier === 'default') {
-        continue;
+    // recreate categories list before assembling applications by categories
+    // add a default category in order to view applications linked to a non existent category
+    this.categories.forEach(category => {
+      if (category.identifier === 'default') {
+        // do not compute category when identifier is the default ;
+      } else {
+        const categoryTmp: any = this._categories.find(tmp => tmp.identifier === category.identifier);
+        categoryTmp.identifier = category.identifier;
+        categoryTmp.applications = [];
+        this.categoryList.push(categoryTmp);
+        identifiers.push(category.identifier);
       }
-
-      const category: any = this._categories[identifier];
-      category.identifier = identifier;
-      category.applications = [];
-      this.categoryList.push(category);
-      identifiers.push(identifier);
-    }
+    });
 
     this.categoryList.forEach(category => {
       if (category.identifier === 'default') {
