@@ -1,0 +1,28 @@
+db = db.getSiblingDB('cas')
+
+
+print("START 218_cas_services_collect_ref.js");
+
+var nbInsert = db.services.insert({
+   "_id" : NumberInt(6),
+   "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.collect.base_url is defined %}
+	"serviceId": "^{{ vitamui.collect.base_url }}/.*",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/collect/.*",
+{% endif %}
+   "name": "Archive Collect Application",
+   "logoutType" : "FRONT_CHANNEL",
+{% if vitamui.collect.base_url is defined %}
+	"logoutUrl": "{{ vitamui.collect.base_url }}/logout",
+{% else %}
+	"logoutUrl": "{{ url_prefix }}/collect/logout",
+{% endif %}
+   "attributeReleasePolicy": {
+      "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+   }
+});
+
+print("inserted: " + nbInsert);
+
+print("END 218_cas_services_collect_ref.js");

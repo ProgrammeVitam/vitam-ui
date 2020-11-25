@@ -16,7 +16,7 @@
         <module>api-security</module>
         <module>api-iam</module>
         <module>api-referential</module>
-        <module>api-archive</module>
+        <module>api-collect</module>
     </modules>
 
 </project>

@@ -68,8 +68,8 @@ hosts_vitamui_iam_external
 hosts_vitamui_referential_internal
 hosts_vitamui_referential_external
 hosts_vitamui_security_internal
-hosts_vitamui_archive_internal
-hosts_vitamui_archive_external
+hosts_vitamui_collect_internal
+hosts_vitamui_collect_external
 
 [hosts_vitamui_iam_internal]
 localhost
@@ -83,10 +83,10 @@ localhost
 [hosts_vitamui_referential_external]
 localhost
 
-[hosts_vitamui_archive_internal]
+[hosts_vitamui_collect_internal]
 localhost
 
-[hosts_vitamui_archive_external]
+[hosts_vitamui_collect_external]
 localhost
 
 [hosts_vitamui_security_internal]
@@ -101,7 +101,7 @@ hosts_ui_identity
 hosts_ui_portal
 hosts_ui_search
 hosts_ui_referential
-hosts_ui_archive
+hosts_ui_collect
 
 [hosts_ui_identity]
 localhost
@@ -109,7 +109,7 @@ localhost
 [hosts_ui_portal]
 localhost
 
-[hosts_ui_archive]
+[hosts_ui_collect]
 localhost
 
 [hosts_ui_search]

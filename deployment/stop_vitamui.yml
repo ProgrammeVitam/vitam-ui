@@ -25,13 +25,13 @@
   tags:
     - dlab
 
-- hosts: hosts_ui_archive
+- hosts: hosts_ui_collect
   gather_facts: no
   roles:
     - service_state
     # - check_port
   vars:
-    service_name: "{{ vitamui.ui_archive.service_name }}"
+    service_name: "{{ vitamui.ui_collect.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
   tags:
@@ -61,13 +61,13 @@
   tags:
     - dlab
 
-- hosts: hosts_archive_internal
+- hosts: hosts_collect_internal
   gather_facts: no
   roles:
     - service_state
     # - check_port
   vars:
-    service_name: "{{ vitamui.archive_internal.service_name }}"
+    service_name: "{{ vitamui.collect_internal.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
   tags:
@@ -149,22 +149,22 @@
   tags:
     - referential_app
 
-- hosts: hosts_vitamui_archive_external
+- hosts: hosts_vitamui_collect_external
   gather_facts: no
   roles:
     - service_state
     # - check_port
   vars:
-    service_name: "{{ vitamui.archive_external.service_name }}"
+    service_name: "{{ vitamui.collect_external.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
 
-- hosts: hosts_vitamui_archive_internal
+- hosts: hosts_vitamui_collect_internal
   roles:
     - service_state
     # - check_port
   vars:
-    service_name: "{{ vitamui.archive_internal.service_name }}"
+    service_name: "{{ vitamui.collect_internal.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
 

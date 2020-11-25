@@ -1,0 +1,36 @@
+spring:
+  api:
+    name: API Collect External
+    description: This API is used to collect and package archives for Vitam
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+collect-external:
+  security-client:
+    server-host: localhost
+    server-port: 8089
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  collect-internal-client:
+    server-host: localhost
+    server-port: 7089
+    secure: false
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+swagger:
+  layer: api-external

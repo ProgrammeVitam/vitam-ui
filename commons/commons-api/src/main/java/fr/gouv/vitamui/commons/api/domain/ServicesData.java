@@ -326,13 +326,13 @@ public class ServicesData {
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
 
-    //------------------------------------ ARCHIVES -----------------------------------------
+    //------------------------------------ COLLECT -----------------------------------------
 
-    public static final String SERVICE_ARCHIVE = "ARCHIVE";
+    public static final String SERVICE_COLLECT = "COLLECT";
 
-    public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
-    public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
-    public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
+    public static final String ROLE_CREATE_COLLECT = CREATE_ROLE_PREFIX + SERVICE_COLLECT;
+    public static final String ROLE_GET_COLLECT = GET_ROLE_PREFIX + SERVICE_COLLECT;
+    public static final String ROLE_GET_ALL_COLLECT = GET_ROLE_PREFIX + "ALL_" + SERVICE_COLLECT;
     //@formatter:off
 
     /**
@@ -413,9 +413,9 @@ public class ServicesData {
             ROLE_GET_OPERATIONS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_GET_ALL_ARCHIVE,
-            ROLE_GET_ARCHIVE,
-            ROLE_CREATE_ARCHIVE
+            ROLE_GET_ALL_COLLECT,
+            ROLE_GET_COLLECT,
+            ROLE_CREATE_COLLECT
 
         );
 
@@ -520,9 +520,9 @@ public class ServicesData {
             ROLE_RUN_AUDITS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-            ROLE_GET_ALL_ARCHIVE,
-            ROLE_GET_ARCHIVE,
-            ROLE_CREATE_ARCHIVE
+            ROLE_GET_ALL_COLLECT,
+            ROLE_GET_COLLECT,
+            ROLE_CREATE_COLLECT
 
         );
     //@formatter:on

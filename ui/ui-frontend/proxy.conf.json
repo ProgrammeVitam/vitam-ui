@@ -17,8 +17,8 @@
     "pathRewrite": {},
     "logLevel": "debug"
   },
-  "/archive-api": {
-    "target": "https://dev.vitamui.com:9009/",
+  "/collect-api": {
+    "target": "https://dev.vitamui.com:9020/",
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"

@@ -1,0 +1,174 @@
+print("START 01_collect.js");
+
+// +++++++++++++++++++++++++++++++++++++++ IAM DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_collect.js : START iam database update");
+
+db = db.getSiblingDB('{{ mongodb.iam.db }}')
+
+// ========================================= PROFILES =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.profiles.update(
+    { "_id" : "system_collect_profile" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(22),
+              "name": "Collect Profile",
+              "description": "Collect Profile",
+              "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+              "applicationName": "COLLECT_APP",
+              "level": "",
+              "enabled": true,
+              "readonly": false,
+              "customerId": "system_customer",
+              "roles": [
+              {"name": "ROLE_CREATE_COLLECT"},
+              {"name": "ROLE_GET_COLLECT"},
+              {"name": "ROLE_GET_ALL_COLLECT"}
+               ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_collect_profile"
+        }
+    },
+    { "upsert":true }
+);
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_collect_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_collect_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "super_admin_group",
+		"profileIds": { $nin: ["system_collect_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_collect_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+// ====================================== APPLICATIONS ======================================
+
+
+db.applications.update(
+    { "identifier" : "COLLECT_APP" },
+    {
+        "$set" : {
+{% if vitamui.collect.base_url is defined %}
+        	"url": "{{ vitamui.collect.base_url }}/collect",
+{% else %}
+            "url" : "{{ url_prefix }}/collect/collect",
+{% endif %}
+            "icon": "vitamui-icon vitamui-icon-collect",
+             "name": "Collecte, tri et empaquetage d'archives",
+             "category": "referential",
+             "position": NumberInt(1),
+             "hasCustomerList": false,
+             "hasTenantList": false,
+             "hasHighlight": false,
+             "tooltip": "Collecter, trier et empaqueter des archives",
+             "target": "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "COLLECT_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_collect.js : END iam database update");
+
+// +++++++++++++++++++++++++++++++++++++++ SECURITY DATABASE ++++++++++++++++++++++++++++++++++
+
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("INFO 01_collect.js : START security update");
+
+db.contexts.update(
+    { "_id" : "ui_collect_context" },
+    {
+        "$set" : {
+            "name": "Contexte UI Collect",
+             "fullAccess" : true,
+             "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+             "roleNames" : [
+                 "ROLE_CREATE_COLLECT", "ROLE_GET_COLLECT", "ROLE_GET_ALL_COLLECT"
+                ]
+        },
+        "$setOnInsert": {
+            "_id" : "ui_collect_context"
+        }
+    },
+    { "upsert":true }
+);
+
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_collect"]|first }}/ui-collect.pem', 'ui_collect_context') }}
+
+print("INFO 01_collect.js : END security update");
+
+// +++++++++++++++++++++++++++++++++++++++ CAS DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_collect.js : START cas database update");
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+
+db.services.update(
+    { "_id" :  NumberInt(4) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.RegexRegisteredService",
+        	"serviceId": "^{{ vitamui.collect.base_url | default(url_prefix) }}/collect/.*",
+            "name": "Archive Collect Application",
+            "logoutType" : "FRONT_CHANNEL",
+            "logoutUrl": "{{ vitamui.collect.base_url | default(url_prefix) }}/collect/logout",
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+            }
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(4)
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_collect.js : END cas database update");
+
+
+print("END 01_collect.js");

@@ -97,11 +97,11 @@
 
 {% endfor %}
 
-# UI ARCHIVE
+    # UI COLLECT
 
-{% for host in groups['hosts_ui_archive'] %}
-    ProxyPassMatch ^/archive(/.*)$ {% if vitamui.archive.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive.port_service }}/archive$1
-    ProxyPassReverse /archive {% if vitamui.archive.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive.port_service }}/archive
+{% for host in groups['hosts_ui_collect'] %}
+    ProxyPassMatch ^/collect(/.*)$ {% if vitamui.collect.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.collect.port_service }}/collect$1
+    ProxyPassReverse /collect {% if vitamui.collect.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.collect.port_service }}/collect
 {% endfor %}
 
     # CAS SERVER

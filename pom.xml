@@ -268,27 +268,27 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-commons</artifactId>
+                <artifactId>collect-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-internal</artifactId>
+                <artifactId>collect-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-internal-client</artifactId>
+                <artifactId>collect-internal-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-external</artifactId>
+                <artifactId>collect-external</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-external-client</artifactId>
+                <artifactId>collect-external-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

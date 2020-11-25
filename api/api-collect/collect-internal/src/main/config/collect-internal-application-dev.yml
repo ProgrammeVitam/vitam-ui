@@ -1,0 +1,50 @@
+debug: false
+
+spring:
+  profiles:
+    active: swagger
+
+  cloud:
+    consul:  #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+multipart:
+  enabled: true
+
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: collect-internal
+  identityServerId: 1
+
+server:
+  host:
+  port: 7089
+
+management:
+  server:
+    address: localhost
+    port: 7189
+
+clients:
+  iam-internal:
+    server-host: localhost
+    server-port: 7083
+
+swagger:
+  file-path: file:../../../tools/swagger/docs/api-internal/collect-internal/swagger.json
+
+logging:
+  level:
+    fr.gouv.vitamui.collect: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+    fr.gouv.vitam.collect: DEBUG
+    fr.gouv.vitam.collect.*: DEBUG
+    reactor.netty.*: DEBUG
+#    org.springframework.core.env: DEBUG
+

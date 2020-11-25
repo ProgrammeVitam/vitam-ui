@@ -19,7 +19,7 @@
         <module>ui-portal</module>
         <module>ui-identity</module>
         <module>ui-referential</module>
-        <module>ui-archive</module>
+        <module>ui-collect</module>
     </modules>
 
 </project>

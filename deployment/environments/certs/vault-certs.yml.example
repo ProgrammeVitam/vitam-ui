@@ -12,6 +12,6 @@ server_ui_identity_key: changeme
 server_ui_identity_admin_key: changeme
 server_ui_referential_key: changeme
 server_reverse_key: changeme
-server_archive_internal_key: changeme
-server_archive_external_key: changeme
-server_ui_archive_key: changeme
+server_collect_internal_key: changeme
+server_collect_external_key: changeme
+server_ui_collect_key: changeme
