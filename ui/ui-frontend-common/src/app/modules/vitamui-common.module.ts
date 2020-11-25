@@ -71,7 +71,6 @@ import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module
 import { StepperModule } from './components/stepper/stepper.module';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
 import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
-import { VitamuiCommonMoreButtonModule } from './components/vitamui-common-more-button/vitamui-common-more-button.module';
 import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
 import { VitamuiContentBreadcrumbModule } from './components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
@@ -80,6 +79,7 @@ import { VitamUIDurationInputModule } from './components/vitamui-duration-input/
 import { VitamUIFieldErrorModule } from './components/vitamui-field-error/vitamui-field-error.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
+import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
@@ -161,8 +161,8 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiBodyModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
-    VitamuiCommonMoreButtonModule,
     UserPhotoModule,
+    VitamuiMenuButtonModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -212,11 +212,10 @@ export function startupServiceFactory(startupService: StartupService) {
     PipesModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
-    VitamuiCommonMoreButtonModule,
     UserPhotoModule,
     CommonProgressBarModule,
     CommonTooltipModule,
-
+    VitamuiMenuButtonModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

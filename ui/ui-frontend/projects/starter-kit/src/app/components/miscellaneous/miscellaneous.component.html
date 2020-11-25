@@ -1,6 +1,7 @@
 <div>
   <h1>Banner with searchbar & button</h1>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'" [disableSearchBar]="true">
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
+    [disableSearchBar]="true">
     <button class="btn primary ml-5">
       <span>Action1</span>
     </button>
@@ -9,7 +10,8 @@
 
 <div>
   <h1>Banner with searchbar & buttons</h1>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'" [disableSearchBar]="true">
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
+    [disableSearchBar]="true">
     <button class="btn primary ml-5">
       <span>Action1</span>
     </button>
@@ -24,10 +26,54 @@
 
 <div>
   <h1>Banner with searchbar only</h1>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'" [disableSearchBar]="true"></vitamui-common-banner>
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
+    [disableSearchBar]="true"></vitamui-common-banner>
 </div>
 
 <div>
   <h1>User photo with default picture</h1>
   <vitamui-common-user-photo></vitamui-common-user-photo>
+</div>
+
+<div>
+  <h1>Action button menu with overlay</h1>
+  
+  <div class="d-flex">
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Activer</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'start'" [label]="'With text only'">
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div>
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'" [label]="'With text & icon'">
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+  </div>
 </div>

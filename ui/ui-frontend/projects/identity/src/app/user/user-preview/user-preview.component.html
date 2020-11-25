@@ -1,9 +1,9 @@
 <div class="vitamui-sidepanel">
   <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <div class="d-flex justify-content-between">
+      <button *ngIf="!isPopup" class="btn btn-circle primary large" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
+      <button class="btn btn-circle primary large" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    </div>
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="user?.status === 'ENABLED'"></i>
@@ -11,12 +11,12 @@
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="user?.status === 'BLOCKED'"></i>
       <div *ngIf="user?.status === 'ANONYM'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
       <h2>{{ user?.lastname | uppercase }} {{ user?.firstname }} <small>({{user?.identifier}})</small></h2>
+      
       <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons ml-2">more_horiz</i></button>
-        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
           <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
           <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>
-        </mat-menu>
+        </vitamui-common-menu-button>
       </ng-container>
     </div>
   </div>
@@ -42,9 +42,9 @@
   <mat-dialog-content>
     <p i18n="@@disabledUserConfirm">Êtes vous sur de vouloir désactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
+  <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
-    <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Retour</button>
+    <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>
 
@@ -52,8 +52,8 @@
   <mat-dialog-content>
     <p i18n="@@EnabledUserConfirm">Êtes vous sur de vouloir réactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
-  <mat-dialog-actions align="end">
+  <mat-dialog-actions>
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
-    <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Retour</button>
+    <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>

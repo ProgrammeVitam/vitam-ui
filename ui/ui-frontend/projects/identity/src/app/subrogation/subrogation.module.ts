@@ -38,7 +38,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -57,7 +56,6 @@ import { SubrogationService } from './subrogation.service';
     VitamUICommonModule,
     SharedModule,
     MatDialogModule,
-    MatMenuModule,
     MatSelectModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,

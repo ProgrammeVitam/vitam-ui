@@ -39,7 +39,7 @@
         margin-top: 30px;
         padding: 0 30px;
 
-        i {
+        > i {
             color: white;
             margin-right: 20px;
             font-size: 38px;
@@ -82,12 +82,6 @@
             height: 50px;
             line-height: 50px;
             margin-left: 40px;
-            border: none;
-
-            i {
-                color: var(--vitamui-primary);
-                font-size: 28px;
-            }
         }
     }
 

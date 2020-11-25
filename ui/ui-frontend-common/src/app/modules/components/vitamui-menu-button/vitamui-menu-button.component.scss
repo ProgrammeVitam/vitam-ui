@@ -1,0 +1,72 @@
+button {
+    .hidden {
+        visibility: hidden;
+    }
+
+    > i {
+        font-weight: bold;
+    }
+}
+
+::ng-deep {
+    .more-action-menu.mat-menu-panel {
+        background: none;
+        box-shadow: none;
+
+        .mat-menu-content {
+            align-items: flex-end;
+            border-top: none;
+            min-width: 152px;
+        }
+
+        &.start {
+            .mat-menu-content {
+                align-items: flex-start;
+            }
+
+            .mat-menu-item:nth-of-type(2) {
+                border-radius: 0 5px 0 0;
+            }
+        }
+
+        .mat-menu-item.menu-cancel-button {
+            border-radius: 5px 5px 0 0;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            > i {
+                font-size: 18px;
+                font-weight: bold;
+                color: var(--vitamui-primary);
+            }
+        }
+
+        .mat-menu-item {
+            border: 1px solid var(--vitamui-primary);
+            border-bottom: none;
+            background-color: white;
+            color: var(--vitamui-grey-900);
+            font-size: 16px;
+
+            &:nth-of-type(2) {
+                border-radius: 5px 0 0 0;
+            }
+
+            &:last-of-type {
+                border-bottom: 1px solid var(--vitamui-primary);
+                border-radius: 0 0 5px 5px;
+            }
+        }
+
+        .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
+            background-color: var(--vitamui-grey-300);
+        }
+
+        .mat-menu-item[disabled] {
+            background-color: var(--vitamui-grey-400);
+        }
+    }
+}
