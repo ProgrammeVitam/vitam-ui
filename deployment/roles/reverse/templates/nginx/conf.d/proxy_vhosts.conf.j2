@@ -71,10 +71,6 @@ server {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
 
-    location = /favicon.ico {
-        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
-    }
-
     location / {
         proxy_pass https://ui_identity_admin;
 
@@ -131,10 +127,6 @@ server {
 
     server_name {{ vitamui.identity.server_name }};
     
-    location = /favicon.ico {
-        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
-    }
-
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
@@ -275,10 +267,6 @@ server {
 
     server_name "{{ vitamui.portal.server_name }}";
     
-    location = /favicon.ico {
-        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
-    }
-
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
