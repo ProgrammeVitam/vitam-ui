@@ -40,7 +40,6 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -55,6 +54,13 @@ import fr.gouv.vitamui.ingest.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 /*import fr.opensagres.xdocreport.core.XDocReportException;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;*/
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.Borders;
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -62,30 +68,41 @@ import java.io.File;
 import java.io.ByteArrayOutputStream;
 
 import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.apache.tomcat.util.json.JSONParser;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabStop;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import org.xml.sax.InputSource;
 
 import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UncheckedIOException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -225,79 +242,239 @@ public class IngestInternalService {
         }
     }
 
+/*    public  String asString(Resource resource) {
+        try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
+            return FileCopyUtils.copyToString(reader);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }*/
+
+ /*   public String test(VitamContext vitamContext, final String id) {
+         String s = "";
+        Response response = this.exportATR( vitamContext,  id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+         //  s = s + asString(resource);
+
+            return s;
+        }
+        return null;
+    }*/
+
+
+    public String getManifestAsString(VitamContext vitamContext, final String id) {
+        String manifest = "";
+        Response response = exportManifest(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            manifest = manifest + IngestDocxGenerator.resourceAsString(resource);
+
+            return manifest;
+        }
+        return null;
+    }
+
+    public String getAtrAsString(VitamContext vitamContext, final String id) {
+        String atr = "";
+        Response response = exportATR( vitamContext,  id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            atr = atr + IngestDocxGenerator.resourceAsString(resource);
+
+            return atr;
+        }
+        return null;
+    }
+
+
     public byte[] generateDocX(VitamContext vitamContext, final String id) throws IOException, JSONException {
 
         LogbookOperationDto selectedIngest = this.getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
-
-        Resource resourcee = null;
-        Response response = this.exportATR(vitamContext, id);
-        Object entitye = response.getEntity();
-        if (entitye instanceof InputStream) {
-             resourcee = new InputStreamResource((InputStream) entitye);
-         
+        String service = "";
+        if(jsonObject.toString().contains("submissionAgency")) {
+            service = jsonObject.get("submissionAgency").toString();
         }
+        else {service = jsonObject.get("originatingAgency").toString();}
+
      try {
 
+
+         //==================================
+    /*     XWPFDocument documente = new XWPFDocument(OPCPackage.open("template.docx"));
+         for (XWPFParagraph paragraph : documente.getParagraphs()) {
+             for (XWPFRun run : paragraph.getRuns()) {
+                 String text = run.getText(0);
+                 text = text.replace("${name}", "oussama");
+                 run.setText(text,0);
+                 System.out.println(text);
+             }
+         }
+         documente.write(new FileOutputStream("output.docx"));*/
+         //===================================
+         Document doc = IngestDocxGenerator.convertStringToXMLDocument( getAtrAsString(vitamContext, id) );
+         Document manifest = IngestDocxGenerator.convertStringToXMLDocument( getManifestAsString(vitamContext, id) );
          //Blank Document
          XWPFDocument document = new XWPFDocument();
 
          //Write the Document in file system
          FileOutputStream out = new FileOutputStream(new File("template.docx"));
 
+
+         //Generate the header
+         IngestDocxGenerator.generateDocHeader(document);
+
+
+
+
+
+         //create paragraph
+         XWPFParagraph heey = document.createParagraph();
+
+         //Set Bold an Italic
+         XWPFRun paragraphOneRunOne = heey.createRun();
+
+         paragraphOneRunOne.setText("Bordereau de versement d'archives");
+         paragraphOneRunOne.setItalic(true);
+         paragraphOneRunOne.setBold(true);
+         paragraphOneRunOne.setFontSize(22);
+        //  paragraphOneRunOne.setVerticalAlignment(VerticalAlignment.CENTER.toString());
+         heey.setAlignment(ParagraphAlignment.CENTER);
+         //paragraphOneRunOne.addBreak();
+
+
          //create table
-         XWPFTable table = document.createTable();
+         XWPFTable tableOne = document.createTable();
 
          //create first row
-         XWPFTableRow tableRowOne = table.getRow(0);
-         tableRowOne.getCell(0).setText("col one, row one");
-         tableRowOne.addNewTableCell().setText("col two, row one");
-         tableRowOne.addNewTableCell().setText("col three, row one");
+
+             XWPFTableRow tableOneRowOne = tableOne.getRow(0);
+         tableOneRowOne.getCell(0).setText("Service producteur :");
+         tableOneRowOne.getCell(0).setWidth("3000");
+         tableOneRowOne.addNewTableCell().setText(IngestDocxGenerator.getServiceProducteur(manifest));
+         tableOneRowOne.getCell(1).setWidth("7000");
+
+         //create second row
+         XWPFTableRow tableOneRowTwo = tableOne.createRow();
+         tableOneRowTwo.getCell(0).setText("Service versant : ");
+         tableOneRowTwo.getCell(1).setText(IngestDocxGenerator.getServiceVersant(jsonObject));
+
+         XWPFParagraph paragraph1 = document.createParagraph();
+         XWPFRun run1 = paragraph1.createRun();
+         run1.addBreak();
+
+         //table 2
+         XWPFTable tableTwo = document.createTable();
+
+         //row 1
+         XWPFTableRow tableTwoRowOne = tableTwo.getRow(0);
+
+         tableTwoRowOne.getCell(0).setText("Numéro du versement :");
+         tableTwoRowOne.getCell(0).setWidth("3000");
+         tableTwoRowOne.addNewTableCell().setText(IngestDocxGenerator.getNumVersement(manifest));
+         tableTwoRowOne.getCell(1).setWidth("7000");
+
+         //row 2
+         XWPFTableRow tableTwoRowTwo = tableTwo.createRow();
+         tableTwoRowTwo.getCell(0).setText("Présentation du contenu :");
+         tableTwoRowTwo.getCell(1).setText(IngestDocxGenerator.getComment(manifest));
+         //row 3
+         XWPFTableRow tableTwoRowThree = tableTwo.createRow();
+         tableTwoRowThree.getCell(0).setText("Dates extremes :");
+         tableTwoRowThree.getCell(1).setText("Date de début :" + selectedIngest.getDateTime() + "\n" +" Date fin :" + selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getDateTime());
+         //row 4
+         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
+         tableTwoRowFour.getCell(0).setText("Historique des conservations :");
+         tableTwoRowFour.getCell(1).setText(IngestDocxGenerator.getCustodialHistory(manifest));
+
+         XWPFParagraph paragraph2 = document.createParagraph();
+         XWPFRun run2 = paragraph2.createRun();
+         run2.addBreak();
+
+
+         //table 3
+         XWPFTable tableThree = document.createTable();
+         //row 1
+         XWPFTableRow tableThreeRowOne = tableThree.getRow(0);
+
+         tableThreeRowOne.getCell(0).setText("Nombre de fichiers binaires:");
+         tableThreeRowOne.getCell(0).setWidth("3000");
+         tableThreeRowOne.addNewTableCell().setText(IngestDocxGenerator.getBinaryFileNumber(manifest) + " fichiers");
+         tableThreeRowOne.getCell(1).setWidth("7000");
+         //row 2
+         XWPFTableRow tableThreeRowTwo = tableThree.createRow();
+         tableThreeRowTwo.getCell(0).setText("Poids :");
+         tableThreeRowTwo.getCell(1).setText("Information indisponible");
+         //row 3
+         XWPFTableRow tableThreeRowThree = tableThree.createRow();
+         tableThreeRowThree.getCell(0).setText("Empreinte du fichier émis :");
+         tableThreeRowThree.getCell(1).setText("Information indisponible");
+         //row 4
+         XWPFTableRow tableThreeRowFour = tableThree.createRow();
+         tableThreeRowFour.getCell(0).setText("Identifiant de l’opération d’entrée :");
+         tableThreeRowFour.getCell(1).setText("GUID : " + id);
+
+         XWPFParagraph paragraph3 = document.createParagraph();
+         XWPFRun run3 = paragraph3.createRun();
+         run3.addBreak();
+
+         //table 4
+         XWPFTable tableFour = document.createTable();
+         //row 1
+         XWPFTableRow tableFourRowOne = tableFour.getRow(0);
+         tableFourRowOne.getCell(0).setText("Date de signature :");
+         tableFourRowOne.getCell(0).setWidth("5000");
+         tableFourRowOne.addNewTableCell().setText("Date de signature :");
+         tableFourRowOne.getCell(1).setWidth("5000");
+         tableFourRowOne.setHeight(700);
+         //row 2
+         XWPFTableRow tableFourRowTwo = tableFour.createRow();
+         tableFourRowTwo.getCell(0).setText("Le responsable du versement : ");
+
+         tableFourRowTwo.getCell(1).setText("Le responsable du service d'archives : ");
+         tableFourRowTwo.setHeight(700);
+        // tableFourRowTwo.setHeight(15);
+
+       /*  //create second table
+         XWPFTableRow tableRowthree = tableTwo.getRow(0);
+         tableRowOne.getCell(0).setText("Service Producteur");
+         tableRowOne.addNewTableCell().setText(jsonObject.get("originatingAgency").toString());
+
+         XWPFTableRow tableRowFour = tableTwo.getRow(0);
+         tableRowOne.getCell(0).setText("Service versant");
+         tableRowOne.addNewTableCell().setText(service);
+
+         tableRowOne.getCell(0).setText("Service Producteur");
+         tableRowOne.addNewTableCell().setText(jsonObject.get("originatingAgency").toString());
+         XWPFTableRow tableRowFour = tableTwo.getRow(0);
+         tableRowOne.getCell(0).setText("Service versant");
+         tableRowOne.addNewTableCell().setText(service);*/
+         XWPFParagraph paragraph4 = document.createParagraph();
+         XWPFRun run4 = paragraph4.createRun();
+
+         run4.addBreak(BreakType.PAGE);
+
+         XWPFParagraph paragraph1page2 = document.createParagraph();
+         XWPFRun runheey = paragraph1page2.createRun();
+         runheey.setBold(true);
+         runheey.setItalic(true);
+         runheey.setText("Détail des unités archivistiques de type répertoire et dossiers :");
+         paragraph1page2.setAlignment(ParagraphAlignment.CENTER);
+         XWPFParagraph paragraph12 = document.createParagraph();
+         XWPFRun run12 = paragraph12.createRun();
+         run12.addBreak();
+
 
          XWPFParagraph paragraph = document.createParagraph();
          XWPFRun run = paragraph.createRun();
-         String service = "";
-if(jsonObject.toString().contains("submissionAgency")) {
-    service = jsonObject.get("submissionAgency").toString();
-}
-else {service = "pas de service";}
-
-         Response x = this.exportManifest(vitamContext, id);
-        // x.getMetadata();
-
-         /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-         DocumentBuilder db = dbf.newDocumentBuilder();
-         Document doc = db.parse(new URL("/atr" + CommonConstants.PATH_ID).openStream());*/
-         Object entity = x.getEntity();
-         if (entity instanceof InputStream) {
-             Resource resource = new InputStreamResource((InputStream) entity);
-
-            // File input = resource.getFile();
-  /*           DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-             Document doc = dBuilder.parse(input);
-             doc.getDocumentElement().normalize();
-
-             NodeList nodes = doc.getElementsByTagName("ArchiveUnit");
-
-             System.out.println("==========================");
-
-             for (int i = 0; i < nodes.getLength(); i++) {
-                 Node node = nodes.item(i);
-
-                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-                     Element element = (Element) node;
-                     System.out.println("Port number: " + getValue("SystemId", element));
-                     System.out.println("Protocol: " + getValue("SystemId", element));
-                     System.out.println("Description: " + getValue("SystemId", element));
-
-                 }
-
-             }*/
 
              run.setText("Service producteur " + jsonObject.get("originatingAgency") +
                  " \n\n service versant " + service +
+                 "\n" +
                  "\n\n num du versement " + selectedIngest.getObIdIn() +
                  "\n\n présentation du contenu " + new JSONObject(selectedIngest.getData()).get("EvDetailReq") +
                  "\n\n date de début " + selectedIngest.getDateTime() +
@@ -305,13 +482,44 @@ else {service = "pas de service";}
                  " \n\n Nombre des fichiers binaire "  + selectedIngest.getEvents().size() +
                  "\n\n poids "+
                  "GUID " + id  +
-                 " dfdf   sdf sdfdsfds  " + resourcee.toString()//+ input.length()
+                 " dfdf   sdf sdfdsfds  " +  doc.getFirstChild().getNodeName() // resourcee.toString()//+ input.length()
+                 + "les valeurs ID " + getthevalue(doc)
 
 
              );
 
 
-         }
+         List<Sea> list;
+         list = getValueforTable(vitamContext, id);
+         //create dynamique table
+         XWPFTable tableDyn2 = document.createTable();
+         //create first row
+         XWPFTableRow tableDyn2Row1 = tableDyn2.getRow(0);
+         tableDyn2Row1.getCell(0).setText("Identifiant SAE VAS ");
+         tableDyn2Row1.getCell(0).setWidth("2000");
+         tableDyn2Row1.getCell(0).setColor("909399");
+         tableDyn2Row1.addNewTableCell().setText("Titre ");
+         tableDyn2Row1.getCell(1).setWidth("5000");
+         tableDyn2Row1.getCell(1).setColor("909399");
+         tableDyn2Row1.addNewTableCell().setText("Date de début ");
+         tableDyn2Row1.getCell(2).setWidth("1500");
+         tableDyn2Row1.getCell(2).setColor("909399");
+         tableDyn2Row1.addNewTableCell().setText("Date de fin");
+         tableDyn2Row1.getCell(3).setWidth("1500");
+         tableDyn2Row1.getCell(3).setColor("909399");
+
+         list.stream().forEach(x -> {
+             XWPFTableRow tableDynRowX = tableDyn2.createRow();
+             tableDynRowX.getCell(0).setText(x.getSystemId());
+             tableDynRowX.getCell(1).setText(x.getTiltle());
+             tableDynRowX.getCell(2).setText(x.getStartDate());
+             tableDynRowX.getCell(3).setText(x.getEndDate());
+
+         });
+
+         XWPFParagraph mparagraph = document.createParagraph();
+        // XWPFRun mrun = mparagraph.createRun();
+        // mparagraph = document.createParagraph();
 
  document.write(out);
          out.close();
@@ -320,17 +528,98 @@ else {service = "pas de service";}
               document.write(ff);
              return ff.toByteArray();
 
-     } catch (IOException  e) {
+     } catch (IOException | InvalidFormatException e) {
          throw new IOException("Unable to generate the report ", e);
      }
 
     }
 
-    private static String getValue(String tag, Element element) {
+int x = 0;
+    List<String> tab = new ArrayList<>() ;
+    Map<String,String> map = new HashMap<>();
+    public String getthevalue(Document doc) {
 
-        NodeList nodes = element.getElementsByTagName(tag).item(0).getChildNodes();
-        Node node = (Node) nodes.item(0);
-        return node.getNodeValue();
+
+        String s = "";
+        doc.getDocumentElement().normalize();
+        NodeList nList = doc.getElementsByTagName("ArchiveUnit");
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+
+            Node nNode = nList.item(temp);
+
+            System.out.println("\nCurrent Element :" + nNode.getNodeName());
+
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                Element eElement = (Element) nNode;
+s = s + eElement.getElementsByTagName("SystemId").item(0).getTextContent();
+                System.out.println("Staff id : " + eElement.getAttribute("id"));
+                System.out.println("First Name : " + eElement.getElementsByTagName("SystemId").item(0).getTextContent());
+                map.put(eElement.getAttribute("id"),eElement.getElementsByTagName("SystemId").item(0).getTextContent());
+tab.add(eElement.getAttribute("id"));
+ x+=1;
+            }
+        }
+
+        return s;
 
     }
+
+    public List<Sea> getValueforTable(VitamContext vitamContext, final String id) {
+        List<Sea> list = new ArrayList<Sea>();
+        Document manifest = IngestDocxGenerator.convertStringToXMLDocument( getManifestAsString(vitamContext, id) );
+        manifest.getDocumentElement().normalize();
+        NodeList nList = manifest.getElementsByTagName("ArchiveUnit");
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Sea sea = new Sea();
+                Element eElement = (Element) nNode;
+                System.out.println("hada id " + eElement.getAttribute("id"));
+     /*           System.out.println("hada title " + eElement.getElementsByTagName("Title").item(0).getTextContent());
+                System.out.println("hada startdate " + eElement.getElementsByTagName("StartDate").item(0).getTextContent());
+                System.out.println("hada endDate " + eElement.getElementsByTagName("EndDate").item(0).getTextContent());*/
+                System.out.println("hada system Id " + map.get(eElement.getAttribute("id")));
+                if(map.get(eElement.getAttribute("id")) != null) {
+
+                    sea.setId(eElement.getAttribute("id"));
+                    sea.setTiltle(eElement.getElementsByTagName("Title").getLength() == 0 ?
+                        "---" :
+                        eElement.getElementsByTagName("Title").item(0).getTextContent());
+                    sea.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
+                        "---" :
+                        eElement.getElementsByTagName("EndDate").item(0).getTextContent());
+                    sea.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
+                        "---" :
+                        eElement.getElementsByTagName("StartDate").item(0).getTextContent());
+                    sea.setSystemId(map.get(eElement.getAttribute("id")));
+                    list.add(sea);
+                }
+            }
+        }
+        return list;
+    }
+
+/*    private static Document convertStringToXMLDocument(String xmlString)
+    {
+        //Parser that produces DOM object trees from XML content
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        //API to obtain DOM Document instance
+        DocumentBuilder builder = null;
+        try
+        {
+            //Create DocumentBuilder with default configuration
+            builder = factory.newDocumentBuilder();
+
+            //Parse the content to Document object
+            Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
+            return doc;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }*/
 }

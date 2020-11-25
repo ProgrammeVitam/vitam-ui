@@ -50,6 +50,7 @@ import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 
 
 
+
 public class DocxDocumentMergerAndConverter {
     */
 /**
@@ -58,6 +59,7 @@ public class DocxDocumentMergerAndConverter {
      * @return
      * @throws IOException
      *//*
+
 
     public InputStream loadDocumentAsStream(String filePath) throws IOException{
         //URL url =new File(filePath).toURL();
