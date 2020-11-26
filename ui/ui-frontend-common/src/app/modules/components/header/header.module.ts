@@ -12,7 +12,6 @@ import { MenuModule } from './menu/menu.module';
 import { SelectCustomerModule } from './select-customer/select-customer.module';
 import { SelectLanguageModule } from './select-language/select-language.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
-import { SelectTenantModule } from './select-tenant/select-tenant.module';
 
 @NgModule({
   declarations: [HeaderComponent],
