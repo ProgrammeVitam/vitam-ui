@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AttachementType, Logo, ThemeService } from 'ui-frontend-common';
+import { AttachmentType, Logo, ThemeService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-graphic-identity-form',
@@ -18,7 +18,7 @@ export class GraphicIdentityFormComponent implements OnInit {
   @Output()
   public formChange = new EventEmitter<{form: FormGroup, logos: Logo[]}>();
 
-  public ATTACHMENT_TYPE = AttachementType;
+  public ATTACHMENT_TYPE = AttachmentType;
   public logosSize = {width: 280, height: 100};
 
   private logos: Logo[] = [];
@@ -45,7 +45,7 @@ export class GraphicIdentityFormComponent implements OnInit {
     this.themeService.overloadLocalTheme(colors, '#toOverride');
   }
 
-  public addOrReplaceLogo(type: AttachementType, data: File): void {
+  public addOrReplaceLogo(type: AttachmentType, data: File): void {
     const logo: Logo = { attr: type, file: data };
     const index = this.logos.findIndex((e: Logo) => e.attr === logo.attr);
     if (index === -1) {
