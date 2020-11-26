@@ -41,6 +41,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -55,14 +56,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -137,6 +131,16 @@ public class LogbookExternalController {
         LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadAtr(id);
+        return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+    }
+
+    @ApiOperation(value = "Download the report file for a given operation")
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType) {
+        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        final ResponseEntity<Resource> response = logbookExternalService.downloadReport(id, downloadType);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
 

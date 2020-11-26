@@ -36,20 +36,8 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapping;
-
-import java.util.Arrays;
-
-import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
@@ -72,8 +60,16 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+
+import javax.ws.rs.core.Response;
+import java.util.Arrays;
+
+import static fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils.responseMapping;
 
 public class LogbookService {
 
@@ -232,6 +228,31 @@ public class LogbookService {
             LOGGER.error("Download {} id={}", collection, id, exception);
             throw new ApplicationServerException(exception.getMessage(), exception);
         }
+    }
+
+    public Response downloadReport(final String id, final String downloadType, final VitamContext vitamContext) throws VitamClientException {
+        Response response;
+        switch (downloadType) {
+            case "transfersip":
+                response = accessExternalClient.getTransferById(vitamContext, id);
+                break;
+            case "dip":
+                response = accessExternalClient.getDIPById(vitamContext, id);
+                break;
+            case "batchreport":
+                response = adminExternalClient.downloadBatchReport(vitamContext, id);
+                break;
+            case "report":
+                response = adminExternalClient.downloadRulesReport(vitamContext, id);
+                break;
+            case "object":
+                response = downloadAtr(id, vitamContext);
+                break;
+            default:
+                response = null;
+        }
+
+        return response;
     }
 
 }

@@ -90,12 +90,6 @@ export class LogbookSearchService extends SearchService<Event> {
   private static buildQueryOperators(criteria: any): VitamSelectOperator[] {
     const operators: VitamSelectOperator[] = [];
 
-    // if (criteria.types) {
-    //   criteria.types.forEach((type: string) => {
-    //     operators.push({ $eq: { evTypeProc: type } });
-    //   });
-    // }
-
     if (criteria.types && criteria.types.length > 0) {
       operators.push({ $in: { evTypeProc: criteria.types } });
     }

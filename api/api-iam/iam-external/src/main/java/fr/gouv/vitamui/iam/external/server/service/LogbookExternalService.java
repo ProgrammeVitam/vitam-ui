@@ -146,6 +146,16 @@ public class LogbookExternalService extends AbstractInternalClientService {
         return logbookRestClient.downloadAtr(getInternalHttpContext(), id);
     }
 
+    /**
+     * Download an operation report
+     *
+     * @param id
+     * @return
+     */
+    public ResponseEntity<Resource> downloadReport(final String id, final String downloadType) {
+        return logbookRestClient.downloadReport(getInternalHttpContext(), id, downloadType);
+    }
+
     @Override
     protected BaseRestClient<InternalHttpContext> getClient() {
         return logbookRestClient;

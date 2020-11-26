@@ -52,16 +52,11 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Response;
@@ -151,6 +146,27 @@ public class LogbookInternalController {
         LOGGER.debug("Download the ATR file for the following Vitam operation : {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantIdentifier);
         final Response vitamResponse = logbookService.downloadAtr(id, vitamContext);
+        VitamRestUtils.writeFileResponse(vitamResponse, response);
+    }
+
+    @ApiOperation(value = "Download the report file for a given operation")
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public void downloadReport(
+            @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+            @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+            @PathVariable final String id,
+            @PathVariable final String downloadType,
+            final HttpServletResponse response) throws VitamClientException, IOException {
+        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        final VitamContext vitamContext;
+        if(accessContractId != null) {
+            vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        } else {
+            vitamContext = securityService.buildVitamContext(tenantId);
+        }
+        final Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext);
         VitamRestUtils.writeFileResponse(vitamResponse, response);
     }
 

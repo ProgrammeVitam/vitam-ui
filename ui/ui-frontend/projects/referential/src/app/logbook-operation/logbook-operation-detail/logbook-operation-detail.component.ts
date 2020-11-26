@@ -37,6 +37,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, Event, fadeInOutAnimation, LogbookService } from 'ui-frontend-common';
+import {LogbookDownloadService} from '../logbook-download.service';
 
 
 @Component({
@@ -58,8 +59,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
 
   event: Event;
   loading: boolean;
+  reportFileName: string;
+  hideDownload: boolean;
+  canDownload: boolean;
+  couldDownload: boolean;
 
-  constructor(private logbookService: LogbookService, private authService: AuthService, private route: ActivatedRoute) {
+  // tslint:disable-next-line: max-line-length
+  constructor(private logbookService: LogbookService, private authService: AuthService, private route: ActivatedRoute, private logbookDownloadService: LogbookDownloadService) {
   }
 
   ngOnInit() {
@@ -85,6 +91,26 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     this.closePanel.emit();
   }
 
+
+  downloadReports() {
+    console.log('download report');
+    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier);
+  }
+
+  updateCanDownload(event: Event) {
+    const canDownloadReports = this.logbookDownloadService.canDownloadReports(event);
+    console.log("BONJOUR");
+    console.log(canDownloadReports);
+    this.hideDownload = canDownloadReports.length < 1;
+    if (!this.hideDownload) {
+      this.canDownload = canDownloadReports.includes('download');
+      this.couldDownload = canDownloadReports.includes('in-progress');
+    } else {
+      this.canDownload = false;
+      this.couldDownload = false;
+    }
+  }
+
   private refreshEvents() {
     if (!this.tenantIdentifier || !this.eventId) {
       return;
@@ -103,6 +129,17 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
       .subscribe((event) => {
         this.event = event;
         this.loading = false;
+        this.updateCanDownload(event);
+        if (event.events.length > 0 && event.events[0].data != null) {
+          const data = JSON.parse(this.event.events[0].data);
+          if (data != null && data.FileName != null) {
+            this.reportFileName = data.FileName;
+          } else {
+            this.reportFileName = null;
+          }
+        } else {
+          this.reportFileName = null;
+        }
       });
   }
 

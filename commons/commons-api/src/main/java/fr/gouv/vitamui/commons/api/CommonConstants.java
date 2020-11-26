@@ -69,6 +69,8 @@ public class CommonConstants {
 
     public static final String PATH_ANALYTICS = "/analytics";
 
+    public static final String PATH_OBJECTS = "/objects";
+
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 
     public static final String X_XSRF_TOKEN_HEADER = "X-XSRF-Token";
@@ -286,6 +288,8 @@ public class CommonConstants {
     public static final String LOGBOOK_DOWNLOAD_ATR_PATH = LOGBOOK_DOWNLOAD_PATH + "/atr";
 
     public static final String LOGBOOK_DOWNLOAD_MANIFEST_PATH = LOGBOOK_DOWNLOAD_PATH + "/manifest";
+
+    public static final String LOGBOOK_DOWNLOAD_REPORT_PATH = LOGBOOK_DOWNLOAD_PATH + "/{downloadType}";
 
     public static final String STATUS_API_DOCUMENTATION_TAGS = "status";
 
