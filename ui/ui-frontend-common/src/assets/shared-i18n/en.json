@@ -26,6 +26,15 @@
     },
     "SELECT-TENANT": {
         "SELECTED": "Selected tenant",
-        "SELECT" : "Select a tenant"
+        "SELECT" : "Select a tenant",
+        "DIALOG_TITLE" : "Welcome to VitamUI",
+        "DIALOG_SUBTITLE" : "The archiving applications portal",
+        "DIALOG_INSTRUCTIONS" : "Please select your default safe",
+        "DIALOG_MESSAGE" : "Your default safe can be modified from your account",
+        "DIALOG_BUTTON_LABEL" : "Access to VitamUI"
+    },
+    "SELECT-CUSTOMER": {
+        "SELECTED": "Selected customer",
+        "SELECT" : "Select a customer"
     }
 }

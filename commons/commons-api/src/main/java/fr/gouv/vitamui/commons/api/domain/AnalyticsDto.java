@@ -8,4 +8,7 @@ import lombok.Data;
 @Data
 public class AnalyticsDto implements Serializable {
     private List<ApplicationAnalyticsDto> applications;
+
+    private Integer lastTenantIdentifier;
+
 }

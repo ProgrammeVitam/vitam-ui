@@ -123,7 +123,7 @@ describe('ApplicationService', () => {
   it('should return a map', () => {
     appService.applications = [];
     appService.categories = [];
-    const appMap = appService.getAppsGroupByCategories();
+    const appMap = appService.getAppsMap();
     expect(appMap).toBeTruthy();
   });
 });

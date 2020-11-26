@@ -892,6 +892,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                 case "applicationId":
                     patchApplicationAnalytics(user, CastUtils.toString(value));
                     break;
+                case "lastTenantIdentifier":
+                    patchLastTenantIdentifier(user, CastUtils.toInteger(value));
+                    break;
             }
         });
 
@@ -903,7 +906,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        Set<String> analyticsPatchAllowedFields = Set.of("applicationId");
+        Set<String> analyticsPatchAllowedFields = Set.of("applicationId", "lastTenantIdentifier");
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");
@@ -919,6 +922,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private void patchApplicationAnalytics(final User user, String applicationId) {
         checkApplicationAccessPermission(applicationId);
         user.getAnalytics().tagApplicationAsLastUsed(applicationId);
+    }
+
+    private void patchLastTenantIdentifier(final User user, Integer tenantIdentifier) {
+        user.getAnalytics().setLastTenantIdentifier(tenantIdentifier);
     }
 
     private void checkApplicationAccessPermission(String applicationId) {

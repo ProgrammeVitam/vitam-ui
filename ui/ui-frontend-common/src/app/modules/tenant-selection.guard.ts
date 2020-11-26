@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -38,11 +37,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router } from '@angular/router';
-
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
+import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,8 +52,9 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
     private authService: AuthService,
     private snackBar: MatSnackBar,
     private appService: ApplicationService,
-    private router: Router
-  ) {
+    private router: Router,
+    private tenantService: TenantSelectionService,
+    @Inject(WINDOW_LOCATION) private location: any) {
   }
 
   canActivate(
@@ -62,6 +62,9 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
   ): boolean {
     if (route.params.tenantIdentifier) {
       return true;
+    } else if (this.tenantService.getSelectedTenant()) {
+      const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
+      this.location.href = application.url + '/tenant/' + this.tenantService.getSelectedTenant().identifier;
     }
 
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);

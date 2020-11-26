@@ -39,13 +39,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { AuthService } from './auth.service';
 import { ApplicationInfo } from './models/application/application.interface';
 import { Application } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
+import { Tenant } from './models/customer/tenant.interface';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
+import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -91,14 +93,14 @@ export class ApplicationService {
 
   private appMap$ = new BehaviorSubject(this.appMap);
 
-  constructor(private applicationApi: ApplicationApiService, private authService: AuthService) { }
+  constructor(private applicationApi: ApplicationApiService, private authService: AuthService,
+              private tenantService: TenantSelectionService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
    */
   list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
-
     return this.applicationApi.getAllByParams(params).pipe(
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
@@ -112,14 +114,15 @@ export class ApplicationService {
   /**
    * Get Applications list grouped by categories in a hashMap.
    */
-  public getAppsGroupByCategories(): Observable<Map<Category, Application[]>> {
+  public getAppsMap(): Observable<Map<Category, Application[]>> {
     if (!this.appMap) {
-      this.appMap = this.fillCategoriesWithApps(this.categories, this.applications);
+      const stringMap = this.fillCategoriesWithApps(this.categories, this.applications);
       this.analyticsUpdated$.subscribe(() => {
         const lastUsedApps = this.getLastUsedApps(this.categories, this.applications);
         if (lastUsedApps) {
           this.appMap.set(lastUsedApps.category, lastUsedApps.apps);
-          this.appMap = this.sortMapByCategory(this.appMap);
+          const convertedMap = this.convertToCategoryMap(stringMap);
+          this.appMap = this.sortMapByCategory(convertedMap);
         }
         this.appMap$.next(this.appMap);
       });
@@ -127,27 +130,89 @@ export class ApplicationService {
     return this.appMap$;
   }
 
-  public openApplication(app: Application, router: Router, uiUrl: string): void {
-    // If called app is in the same server...
-    if (app.url.includes(uiUrl)) {
-      router.navigate([app.url.replace(uiUrl, '')]);
-    } else {
-      window.location.href = app.url;
+  /**
+   * Get Applications list grouped by categories in a hashMap of the active tenant.
+   */
+  public getActiveTenantAppsMap(): Observable<Map<Category, Application[]>> {
+      this.tenantService.getSelectedTenant$().subscribe((tenant: Tenant) => {
+        this.appMap$.next(this.getTenantAppMap(tenant));
+      });
+      return this.appMap$;
+  }
+
+  /**
+   * Returns the provided tenant application map as Map<Category, Application[]>
+   * @param tenant - tenant whitch we want applications
+   */
+  public getTenantAppMap(tenant: Tenant): Map<Category, Application[]> {
+    const apps: Application[] = [];
+    const tenantsByApp = this.authService.user.tenantsByApp;
+    if (tenantsByApp && tenant) {
+      tenantsByApp.forEach((element: { name: string, tenants: Tenant[] }) => {
+        const index = element.tenants.findIndex(value => value.identifier === tenant.identifier);
+        const items = this.applications.find(value => value.identifier === element.name);
+        if (index !== -1) {
+          apps.push(items);
+        } else if (!items.hasTenantList) {
+            apps.push(items);
+        }
+      });
+      const resultMap = this.fillCategoriesWithApps(this.categories, apps);
+      const lastUsedApps = this.getLastUsedApps(this.categories, apps);
+      if (lastUsedApps) {
+          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
+      }
+      const convertedMap = this.convertToCategoryMap(resultMap);
+      return this.sortMapByCategory(convertedMap);
     }
+  }
+
+  public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
+    this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
+       // If called app is in the same server...
+      if (app.url.includes(uiUrl)) {
+        // If application requires a tenant identifier, then provide the current active tenant
+        if (app.hasTenantList) {
+          router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
+        } else {
+          router.navigate([app.url.replace(uiUrl, '')]);
+        }
+      } else {
+        // If application on other domain requires a tenant identifier, then provide the current active tenant
+        if (app.hasTenantList) {
+          window.location.href = app.url + '/tenant/' + identifier;
+        } else {
+          window.location.href = app.url;
+        }
+      }
+    });
+  }
+
+  /**
+   * Convert a map using a string category identifier as key to a map using a Category object instead
+   * @param stringMap - the map to convert as Map<string, Application[]>
+   */
+  private convertToCategoryMap(stringMap: Map<string, Application[]>): Map<Category, Application[]> {
+    const categMap = new Map<Category, Application[]>();
+    stringMap.forEach((val, key) => {
+      const categ = this.categories.find(value => value.identifier === key);
+      categMap.set(categ, val);
+    });
+    return categMap;
   }
 
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
   }
 
-  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<Category, Application[]> {
-    const resultMap = new Map<Category, Application[]>();
+  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<string, Application[]> {
+    const resultMap = new Map<string, Application[]>();
     categories.forEach((category: Category) => {
       if (applications.some(app =>  app.category === category.identifier)) {
-        resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
+        resultMap.set(category.identifier, this.getSortedAppsOfCategory(category, applications));
       }
     });
-    return this.sortMapByCategory(resultMap);
+    return resultMap;
   }
 
   private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {

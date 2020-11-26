@@ -58,6 +58,7 @@ import { EditableFieldModule } from './components/editable-field/editable-field.
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
+import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -132,6 +133,7 @@ export function startupServiceFactory(startupService: StartupService) {
     NavbarModule,
     HeaderModule,
     SelectTenantModule,
+    SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -175,6 +177,7 @@ export function startupServiceFactory(startupService: StartupService) {
     NavbarModule,
     HeaderModule,
     SelectTenantModule,
+    SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,

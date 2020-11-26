@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
+import { Analytics } from '../models/user/analytics.interface';
 import { User } from '../models/user/user.interface';
 
 @Injectable({
@@ -51,7 +53,8 @@ export class UserApiService {
     this.apiUrl = baseUrl + '/users';
   }
 
-  public create(data: { applicationId?: string }): Observable<User> {
+  public analytics(data: { applicationId?: string, lastTenantIdentifier?: number }): Observable<User> {
     return this.http.post<User>(this.apiUrl + '/analytics', data);
   }
+
 }
