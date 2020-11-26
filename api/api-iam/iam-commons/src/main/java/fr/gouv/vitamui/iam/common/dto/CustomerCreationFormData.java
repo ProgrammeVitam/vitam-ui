@@ -59,23 +59,21 @@ public class CustomerCreationFormData {
     @NotNull
     private CustomerDto customerDto;
 
-    private Optional<MultipartFile> logo;
+    private Optional<MultipartFile> header;
+    private Optional<MultipartFile> footer;
+    private Optional<MultipartFile> portal;
+
 
     /**
      * Default Constructor for ModelAttribute creation.
      */
     public CustomerCreationFormData() {
-        logo = Optional.empty();
-    }
-
-    public CustomerCreationFormData(final CustomerDto customerDto, final Optional<MultipartFile> logo) {
-        this.customerDto = customerDto;
-        this.logo = logo;
+        header = Optional.empty();
+        footer = Optional.empty();
+        portal = Optional.empty();
     }
 
     public CustomerCreationFormData(final CustomerDto customerDto) {
         this.customerDto = customerDto;
-        logo = Optional.empty();
     }
-
 }

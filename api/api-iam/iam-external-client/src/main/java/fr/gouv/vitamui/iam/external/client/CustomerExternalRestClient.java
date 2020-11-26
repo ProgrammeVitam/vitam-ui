@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.external.client;
 
 import java.util.List;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -115,6 +116,14 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
         final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
         checkResponse(response);
         return response;
+    }
 
+    public ResponseEntity<Resource> getLogo(final ExternalHttpContext context, final String id, final AttachmentType type) {
+        LOGGER.debug("Get logo for customer with id {}, type {}", id, type);
+        final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo?type=" + type);
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        checkResponse(response, 200, 204);
+        return response;
     }
 }

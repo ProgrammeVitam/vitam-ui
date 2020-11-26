@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -256,7 +257,7 @@ public class CustomerInternalServiceTest {
         final List<String> fieldNotModifiable = Arrays.asList("id", "readonly");
         fieldNotModifiable.forEach(key -> partialDto.remove(key));
 
-        internalCustomerService.processPatch(entity, partialDto, Optional.empty());
+        internalCustomerService.processPatch(entity, new CustomerPatchFormData());
         entity.setId(other.getId());
         assertThat(entity).isEqualToComparingFieldByField(other);
     }

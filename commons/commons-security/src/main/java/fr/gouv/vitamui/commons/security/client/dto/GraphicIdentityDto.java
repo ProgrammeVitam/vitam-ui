@@ -46,9 +46,14 @@ import lombok.Setter;
 @Setter
 public class GraphicIdentityDto implements Serializable {
 
-    boolean hasCustomGraphicIdentity;
+    boolean hasCustomGraphicIdentity = false;
 
-    String logoDataBase64;
+    String headerDataBase64;
+    String footerDataBase64;
+    String portalDataBase64;
+
+    String portalMessage;
+    String portalTitle;
 
     Map<String, String> themeColors;
 

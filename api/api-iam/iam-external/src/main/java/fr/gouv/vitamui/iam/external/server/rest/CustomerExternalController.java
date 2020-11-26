@@ -37,11 +37,15 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
+import fr.gouv.vitamui.iam.common.utils.MapEditor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +119,7 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @InitBinder
     public void initBinder(final WebDataBinder binder) {
         binder.registerCustomEditor(CustomerDto.class, new CustomerDtoEditor());
+        binder.registerCustomEditor(Map.class, new MapEditor());
     }
 
     @Override
@@ -185,10 +190,9 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     public CustomerDto patch(final @PathVariable("id") String id,
-            @RequestPart(value = "partialCustomerDto", required = true) @Valid final Map<String, Object> partialCustomer,
-            @RequestParam(value = "logo") final Optional<MultipartFile> logo) {
-        LOGGER.debug("Patch customer with {} and logo {}", partialCustomer.get("id"), logo);
-        return customerExternalService.patch(partialCustomer, logo);
+                             @ModelAttribute final CustomerPatchFormData customerData) {
+        LOGGER.debug("Patch customer with {}", customerData.getPartialCustomerDto().get("id"));
+        return customerExternalService.patch(customerData);
     }
 
     @GetMapping("/{id}/history")
@@ -210,11 +214,9 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getCustomerLogo(final @PathVariable String id) {
-        LOGGER.debug("get logo for customer with id :{}", id);
-        final ResponseEntity<Resource> response = customerExternalService.getCustomerLogo(id);
-        return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
+        LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
+        return customerExternalService.getLogo(id, type);
 
     }
-
 }

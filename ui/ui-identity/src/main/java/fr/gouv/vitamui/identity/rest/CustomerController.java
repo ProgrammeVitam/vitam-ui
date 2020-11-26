@@ -43,6 +43,7 @@ import java.util.Optional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -188,9 +189,13 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getCustomerLogo(final @PathVariable String id) {
-        LOGGER.debug("Get customer logo={}", id);
-        final ResponseEntity<Resource> response = service.getCustomerLogo(buildUiHttpContext(), id);
-        return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
+        LOGGER.debug("Get customer logos={}", id);
+        final ResponseEntity<Resource> response = service.getLogo(buildUiHttpContext(), id, type);
+        if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
+            return response;
+        } else {
+            return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+        }
     }
 }

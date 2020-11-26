@@ -67,7 +67,9 @@ import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
+import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
+import { VitamuiDragDropFileModule } from './components/vitamui-drag-drop-file/vitamui-drag-drop-file.module';
 import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
 import { VitamUIFieldErrorModule } from './components/vitamui-field-error/vitamui-field-error.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
@@ -144,6 +146,8 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
+    VitamuiCommonSelectModule,
+    VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
@@ -188,6 +192,8 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
+    VitamuiCommonSelectModule,
+    VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,

@@ -3,6 +3,7 @@ package fr.gouv.vitamui.cucumber.back.steps.iam.customer;
 import static fr.gouv.vitamui.utils.TestConstants.UPDATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,7 +31,11 @@ public class ApiIamExternalCustomerPatchSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_UPDATE_CUSTOMERS_met_à_jour_partiellement_un_client_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_CUSTOMERS() {
         final Map<String, Object> dto = buildCustomerToPatch();
         final CustomerPatchFormData patchFormData = new CustomerPatchFormData();
-        patchFormData.setLogo(Optional.empty());
+
+        patchFormData.setHeader(Optional.empty());
+        patchFormData.setFooter(Optional.empty());
+        patchFormData.setPortal(Optional.empty());
+
         patchFormData.setPartialCustomerDto(dto);
         try {
             testContext.basicCustomerDto = getCustomerWebClient().patch(getSystemTenantUserAdminContext(), dto.get("id").toString(), patchFormData);

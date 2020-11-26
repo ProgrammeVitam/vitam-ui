@@ -37,7 +37,8 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL, BaseHttpClient, Customer, Logger, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { AttachementType } from '../../customer/attachment.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -64,40 +65,45 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.checkExistsByParam(params, headers);
   }
 
-  createCustomer(customer: Customer, logo?: File, headers?: HttpHeaders): Observable<Customer> {
+  createCustomer(customer: Customer, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
-    formData.append('customerDto', JSON.stringify({
-      id: customer.id,
-      enabled: customer.enabled,
-      code: customer.code,
-      identifier: customer.identifier,
-      name: customer.name,
-      companyName: customer.companyName,
-      passwordRevocationDelay: customer.passwordRevocationDelay,
-      otp: customer.otp,
-      idp: customer.idp,
-      address: customer.address,
-      internalCode: customer.internalCode,
-      language: customer.language,
-      emailDomains: customer.emailDomains,
-      defaultEmailDomain: customer.defaultEmailDomain,
-      owners: customer.owners,
-      readonly: customer.readonly,
-      themeColors: customer.themeColors
-    }));
-    if (logo) {
-      formData.append('logo', logo);
+    formData.append('customerDto', JSON.stringify(customer));
+    if (logos) {
+      logos.forEach(logo => {
+        formData.append(logo.attr.toLowerCase(), logo.file);
+      });
     }
     return super.getHttp().post<any>(super.getApiUrl(), formData, { headers });
   }
 
-  patchCustomer(partialCustomer: { id: string, [key: string]: any }, logo?: File, headers?: HttpHeaders): Observable<Customer> {
+  patchCustomer(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
-    formData.append('partialCustomerDto', JSON.stringify(partialCustomer));
-    if (logo) {
-      formData.append('logo', logo);
+    formData.append('partialCustomerDto', JSON.stringify({ // to not send header/footer/portal -url
+      id: partialCustomer.id,
+      hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
+      themeColors: partialCustomer.themeColors,
+      portalTitle: partialCustomer.portalTitle,
+      portalMessage: partialCustomer.portalMessage,
+      identifier: partialCustomer.identifier,
+      code: partialCustomer.code,
+      name: partialCustomer.name,
+      companyName: partialCustomer.companyName,
+      passwordRevocationDelay: partialCustomer.passwordRevocationDelay,
+      otp: partialCustomer.otp,
+      address: partialCustomer.address,
+      internalCode: partialCustomer.internalCode,
+      language: partialCustomer.language,
+      emailDomains: partialCustomer.emailDomains,
+      defaultEmailDomain: partialCustomer.defaultEmailDomain,
+    }));
+
+    if (logos) {
+      logos.forEach(logo => {
+        formData.append(logo.attr.toLowerCase(), logo.file);
+      });
     }
     this.logger.log(this, 'Form data => ', formData);
+
     return super.getHttp().patch<any>(super.getApiUrl() + '/' + partialCustomer.id, formData, { headers });
   }
 
@@ -105,8 +111,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getHttp().get<any>(super.getApiUrl() + '/me');
   }
 
-  getCustomerLogo(id: string): Observable<HttpResponse<Blob>> {
-    return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo', { observe: 'response', responseType: 'blob' });
+  public getLogo(id: string, type: AttachementType): Observable<HttpResponse<Blob>> {
+    return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo?type=' + type, { observe: 'response', responseType: 'blob' });
   }
-
 }

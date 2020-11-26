@@ -1,25 +1,25 @@
 /**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
- *
+ * <p>
  * contact@programmevitam.fr
- *
+ * <p>
  * This software is a computer program whose purpose is to implement
  * implement a digital archiving front-office system for the secure and
  * efficient high volumetry VITAM solution.
- *
+ * <p>
  * This software is governed by the CeCILL-C license under French law and
  * abiding by the rules of distribution of free software.  You can  use,
  * modify and/ or redistribute the software under the terms of the CeCILL-C
  * license as circulated by CEA, CNRS and INRIA at the following URL
  * "http://www.cecill.info".
- *
+ * <p>
  * As a counterpart to the access to the source code and  rights to copy,
  * modify and redistribute granted by the license, users are provided only
  * with a limited warranty  and the software's author,  the holder of the
  * economic rights,  and the successive licensors  have only  limited
  * liability.
- *
+ * <p>
  * In this respect, the user's attention is drawn to the risks associated
  * with loading,  using,  modifying and/or developing or reproducing the
  * software by the user in light of its specific status of free software,
@@ -30,7 +30,7 @@
  * requirements in conditions enabling the security of their systems and/or
  * data to be ensured and,  more generally, to use and operate it in the
  * same conditions as regards security.
- *
+ * <p>
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
@@ -64,6 +64,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -77,6 +78,7 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -85,7 +87,6 @@ import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
-import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
@@ -95,12 +96,12 @@ import lombok.Setter;
 
 /**
  * The service to read, create, update and delete the customers.
- *
- *
  */
 @Getter
 @Setter
 public class CustomerInternalService extends VitamUICrudService<CustomerDto, Customer> {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerInternalService.class);
 
     private final CustomerRepository customerRepository;
 
@@ -120,13 +121,11 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     private LogbookService logbookService;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerInternalService.class);
-
     @Autowired
     public CustomerInternalService(final CustomSequenceRepository sequenceRepository, final CustomerRepository customerRepository,
-            final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
-            final InternalSecurityService internalSecurityService, final AddressService addressService, final InitCustomerService initCustomerService,
-            final IamLogbookService iamLogbookService, final CustomerConverter customerConverter, final LogbookService logbookService) {
+                                   final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
+                                   final InternalSecurityService internalSecurityService, final AddressService addressService, final InitCustomerService initCustomerService,
+                                   final IamLogbookService iamLogbookService, final CustomerConverter customerConverter, final LogbookService logbookService) {
         super(sequenceRepository);
         this.customerRepository = customerRepository;
         this.internalOwnerService = internalOwnerService;
@@ -176,16 +175,12 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         dto.setId(generateSuperId());
         final Customer entity = convertFromDtoToEntity(dto);
 
-        if (customerData.getLogo().isPresent()) {
-            try {
-                entity.getGraphicIdentity().setHasCustomGraphicIdentity(true);
-                dto.setHasCustomGraphicIdentity(true);
-                entity.getGraphicIdentity().setLogoDataBase64(VitamUIUtils.getBase64(customerData.getLogo().get()));
-            }
-            catch (final IOException e) {
-                throw new InvalidFormatException("Cannot store logo", e);
-            }
-        }
+        final CustomerPatchFormData patchFormCustomer = new CustomerPatchFormData();
+        patchFormCustomer.setHeader(customerData.getHeader());
+        patchFormCustomer.setFooter(customerData.getFooter());
+        patchFormCustomer.setPortal(customerData.getPortal());
+
+        processGraphicIdentity(dto.isHasCustomGraphicIdentity(), entity, patchFormCustomer);
 
         beforeCreate(entity);
         createdCustomerDto = convertFromEntityToDto(getRepository().save(entity));
@@ -256,56 +251,56 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     /**
      * {@inheritDoc}
      */
-    protected void processPatch(final Customer customer, final Map<String, Object> partialDto, final Optional<MultipartFile> logo) {
+    protected void processPatch(final Customer customer, final CustomerPatchFormData customerFormData) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        for (final Entry<String, Object> entry : partialDto.entrySet()) {
+        for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
-                case "readonly" :
-                case "identifier" :
+                case "id":
+                case "readonly":
+                case "identifier":
                     break;
-                case "code" :
+                case "code":
                     logbooks.add(new EventDiffDto(CustomerConverter.CODE_KEY, customer.getCode(), entry.getValue()));
                     customer.setCode(CastUtils.toString(entry.getValue()));
                     break;
-                case "name" :
+                case "name":
                     logbooks.add(new EventDiffDto(CustomerConverter.NAME_KEY, customer.getName(), entry.getValue()));
                     customer.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "companyName" :
+                case "companyName":
                     logbooks.add(new EventDiffDto(CustomerConverter.COMPANY_NAME_KEY, customer.getCompanyName(), entry.getValue()));
                     customer.setCompanyName(CastUtils.toString(entry.getValue()));
                     break;
-                case "enabled" :
+                case "enabled":
                     logbooks.add(new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
                     customer.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "language" :
+                case "language":
                     logbooks.add(new EventDiffDto(CustomerConverter.LANGUAGE_KEY, customer.getLanguage(), entry.getValue()));
                     customer.setLanguage(CastUtils.toString(entry.getValue()));
                     break;
-                case "passwordRevocationDelay" :
+                case "passwordRevocationDelay":
                     logbooks.add(new EventDiffDto(CustomerConverter.PASSWORD_RECOVATION_KEY, customer.getPasswordRevocationDelay(), entry.getValue()));
                     customer.setPasswordRevocationDelay(CastUtils.toInteger(entry.getValue()));
                     break;
-                case "otp" :
+                case "otp":
                     final String otpAsString = CastUtils.toString(entry.getValue());
                     final OtpEnum newOtp = EnumUtils.stringToEnum(OtpEnum.class, otpAsString);
                     logbooks.add(new EventDiffDto(CustomerConverter.OTP_KEY, customer.getOtp(), newOtp));
                     updateOtpforUsers(customer.getOtp(), newOtp, customer.getId());
                     customer.setOtp(newOtp);
                     break;
-                case "emailDomains" :
+                case "emailDomains":
                     final List<String> emailDomains = CastUtils.toList(entry.getValue());
                     logbooks.add(new EventDiffDto(CustomerConverter.EMAIL_DOMAINS_KEY, customer.getEmailDomains(), emailDomains));
                     customer.setEmailDomains(emailDomains);
                     break;
-                case "defaultEmailDomain" :
+                case "defaultEmailDomain":
                     final String defaultEmailDomain = CastUtils.toString(entry.getValue());
                     logbooks.add(new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(), entry.getValue()));
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
-                case "address" :
+                case "address":
                     final Address address = customer.getAddress();
                     if (address == null) {
                         customer.setAddress(new Address());
@@ -320,64 +315,93 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     logbooks.add(new EventDiffDto(CustomerConverter.SUBROGEABLE_KEY, customer.isSubrogeable(), entry.getValue()));
                     customer.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "hasCustomGraphicIdentity" :
+                case "hasCustomGraphicIdentity":
                     LOGGER.debug("Update GraphicalIdentity");
                     final boolean newCustomGraphicIdentityValue = CastUtils.toBoolean(entry.getValue());
                     logbooks.add(new EventDiffDto(CustomerConverter.CUSTOM_GRAPHIC_IDENTITY_KEY, customer.getGraphicIdentity().isHasCustomGraphicIdentity(),
-                            newCustomGraphicIdentityValue));
-                    processGraphicIdentityPatch(newCustomGraphicIdentityValue, customer, logo);
+                        newCustomGraphicIdentityValue));
+                    processGraphicIdentity(newCustomGraphicIdentityValue, customer, customerFormData);
                     break;
                 case "themeColors":
-                    Object themeColorsValue = entry.getValue();
+                    final Object themeColorsValue = entry.getValue();
 
                     LOGGER.debug("Update theme colors");
 
                     if (themeColorsValue instanceof Map) {
-                        Map<String, String> themeColors = (Map) themeColorsValue;
+                        final Map<String, String> themeColors = (Map) themeColorsValue;
                         customer.getGraphicIdentity().setThemeColors(themeColors);
                     } else {
                         LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>.");
                         throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() + " is not allowed");
                     }
                     break;
-                default :
+                case "portalTitle":
+                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_TITLE, customer.getGraphicIdentity().getPortalTitle(), entry.getValue()));
+                    customer.getGraphicIdentity().setPortalTitle(CastUtils.toString(entry.getValue()));
+                    break;
+                case "portalMessage":
+                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_MESSAGE, customer.getGraphicIdentity().getPortalMessage(), entry.getValue()));
+                    customer.getGraphicIdentity().setPortalMessage(CastUtils.toString(entry.getValue()));
+                    break;
+                default:
                     throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateCustomerEvent(customer, logbooks);
     }
 
-    private void processGraphicIdentityPatch(final boolean newCustomGraphicIdentityValue, final Customer customer, final Optional<MultipartFile> logo) {
-
-
-        String base64logo = null;
-        if(logo.isPresent()) {
-            try {
-
-                customer.getGraphicIdentity().setHasCustomGraphicIdentity(true);
-
-                base64logo = VitamUIUtils.getBase64(logo.get());
-
-                customer.getGraphicIdentity().setLogoDataBase64(base64logo);
-
-            } catch (IOException e) {
-                throw new InvalidFormatException("Cannot store logo", e);
+    private void patchLogos(final Customer customer, final MultipartFile file, final AttachmentType attachmentType) {
+        try {
+            final String base64 = VitamUIUtils.getBase64(file);
+            switch (attachmentType) {
+                case HEADER:
+                    customer.getGraphicIdentity().setLogoHeaderBase64(base64);
+                    break;
+                case FOOTER:
+                    customer.getGraphicIdentity().setLogoFooterBase64(base64);
+                    break;
+                case PORTAL:
+                    customer.getGraphicIdentity().setLogoPortalBase64(base64);
+                    break;
+                default:
+                    break;
             }
-
-        } else {
-            if(newCustomGraphicIdentityValue && customer.getGraphicIdentity().getLogoDataBase64().isEmpty()) {
-                throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": Custom graphic identity activated without providing a logo.");
-            } else {
-                customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
-            }
+            ;
+        } catch (final IOException e) {
+            throw new InvalidFormatException("Cannot store logo", e);
         }
     }
 
+    private void processGraphicIdentity(final boolean newCustomGraphicIdentityValue, final Customer customer, final CustomerPatchFormData customerFormData) {
+
+        final Optional<MultipartFile> header = customerFormData.getHeader();
+        final Optional<MultipartFile> footer = customerFormData.getFooter();
+        final Optional<MultipartFile> portal = customerFormData.getPortal();
+
+        if ((header != null && header.isPresent()) || (footer != null && footer.isPresent()) || (portal != null && portal.isPresent())) {
+            if (header != null && header.isPresent()) {
+                patchLogos(customer, header.get(), AttachmentType.HEADER);
+            }
+            if (footer != null && footer.isPresent()) {
+                patchLogos(customer, footer.get(), AttachmentType.FOOTER);
+            }
+            if (portal != null && portal.isPresent()) {
+                patchLogos(customer, portal.get(), AttachmentType.PORTAL);
+            }
+        }
+        customer.getGraphicIdentity().setHasCustomGraphicIdentity(newCustomGraphicIdentityValue);
+    }
+
+    @Override
+    protected void processPatch(final Customer entity, final Map<String, Object> partialDto) {
+        super.processPatch(entity, partialDto);
+    }
+
     @Transactional
-    public CustomerDto patch(final Map<String, Object> partialDto, final Optional<MultipartFile> logo) {
-        LOGGER.debug("Patch customer {} with {}", partialDto, logo);
-        final Customer customer = beforePatch(partialDto);
-        processPatch(customer, partialDto, logo);
+    public CustomerDto patch(final CustomerPatchFormData customerData) {
+        LOGGER.debug("Patch customer {}", customerData);
+        final Customer customer = beforePatch(customerData.getPartialCustomerDto());
+        processPatch(customer, customerData);
         Assert.isTrue(getRepository().existsById(customer.getId()), "Unable to patch customer : no entity found with id: " + customer.getId());
         final Customer savedCustomer = getRepository().save(customer);
         return convertFromEntityToDto(savedCustomer);
@@ -401,7 +425,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Optional<Customer> optCustomer = customerRepository.findByCode(customerCode);
         if (optCustomer.isPresent() && (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))) {
             throw new IllegalArgumentException(String.format(
-                    "Integrity constraint error on the customer %s : the new code is already used by another customer.", customerId.orElse("[Undefined]")));
+                "Integrity constraint error on the customer %s : the new code is already used by another customer.", customerId.orElse("[Undefined]")));
         }
     }
 
@@ -441,8 +465,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
         final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-                .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
+            .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
+            .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);
         customer.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
@@ -502,15 +526,25 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         return "customer";
     }
 
-    public ResponseEntity<Resource> getCustomerLogo(final String id) {
+    public ResponseEntity<Resource> getLogo(final String id, final AttachmentType type) {
         final Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isPresent()) {
-            LOGGER.debug("get customer logo => " + customer.get().getGraphicIdentity().getLogoDataBase64());
-            final String logoBase64 = customer.get().getGraphicIdentity().getLogoDataBase64();
-            final byte[] decodedLogo = Base64.getDecoder().decode(logoBase64);
+            final String logo;
+            switch (type) {
+                case HEADER: logo = customer.get().getGraphicIdentity().getLogoHeaderBase64(); break;
+                case FOOTER: logo = customer.get().getGraphicIdentity().getLogoFooterBase64(); break;
+                case PORTAL: logo = customer.get().getGraphicIdentity().getLogoPortalBase64(); break;
+                default: logo = null; break;
+            }
+            LOGGER.debug("get customer logo => " + logo);
+            final byte[] decodedLogo;
             final HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;");
-
+            if (logo == null) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } else {
+                decodedLogo = Base64.getDecoder().decode(logo);
+            }
             return new ResponseEntity<>(new ByteArrayResource(decodedLogo), headers, HttpStatus.OK);
         }
         return null;
