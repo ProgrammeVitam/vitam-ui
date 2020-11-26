@@ -1,6 +1,6 @@
-import { AttachementType } from './attachementType.enum';
+import { AttachmentType } from './attachmentType.enum';
 
 export interface Logo {
-    attr: AttachementType;
+    attr: AttachmentType;
     file: File;
 }

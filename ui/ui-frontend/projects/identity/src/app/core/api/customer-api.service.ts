@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { AttachementType } from '../../customer/attachment.enum';
+import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({
   providedIn: 'root'
