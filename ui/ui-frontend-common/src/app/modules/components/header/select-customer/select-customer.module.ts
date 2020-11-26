@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material';
-import { TranslateVitamModule } from '../../translate/translate-vitam.module';
+import { TranslateModule } from '@ngx-translate/core';
 import { SelectCustomerComponent } from './select-customer.component';
 
 @NgModule({
@@ -11,7 +11,7 @@ import { SelectCustomerComponent } from './select-customer.component';
     CommonModule,
     MatSelectModule,
     FormsModule,
-    TranslateVitamModule
+    TranslateModule
   ],
   exports: [SelectCustomerComponent]
 })
