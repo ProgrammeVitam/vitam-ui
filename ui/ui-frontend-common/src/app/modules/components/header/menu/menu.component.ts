@@ -1,7 +1,8 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
@@ -49,7 +50,7 @@ import { MenuOverlayRef } from './menu-overlay-ref';
     ])
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public state = '';
 
@@ -66,6 +67,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
   private firstResult: any;
 
   private firstResultFocused = false;
+
+  private sub: Subscription;
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
@@ -98,7 +101,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.appMap = this.applicationService.getAppsGroupByCategories();
+    this.sub = this.applicationService.getAppsGroupByCategories().subscribe((appMap: Map<Category, Application[]>) => {
+      this.appMap = appMap;
+    });
     this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
   }
 
@@ -106,8 +111,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
     if (value) {
       this.criteria = value;
       this.firstResultFocused = false;
+      const flattenApps: Application[] = Array.from(new Set([].concat.apply([], Array.from(this.appMap.values()))));
 
-      const flattenApps = [].concat.apply([], Array.from(this.appMap.values()));
       this.filteredApplications = flattenApps.filter((application: Application) => {
         return application.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
           .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
@@ -149,5 +154,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public openApplication(app: Application) {
     this.onClose();
     this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

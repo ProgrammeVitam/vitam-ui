@@ -30,7 +30,7 @@
         </ng-container>
         <ng-template #displayMats>
                 <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
-                    <mat-tab *ngFor="let category of appMap | keyvalue" [label]="'MENU.' + category.key.title | translate">
+                    <mat-tab *ngFor="let category of appMap | keyvalue" [label]="'MENU.' + category.key.identifier | translate">
                         <mat-selection-list
                             class="py-3"
                             (selectionChange)="openApplication($event.option.value);">

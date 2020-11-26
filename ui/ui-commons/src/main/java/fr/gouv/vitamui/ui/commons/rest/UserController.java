@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,40 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
-import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'ui-frontend-common';
-import { PortalComponent } from './portal';
+package fr.gouv.vitamui.ui.commons.rest;
 
+import java.util.Map;
 
-const routes: Routes = [
-  {
-    path: '',
-    component: PortalComponent,
-    canActivate: [AuthGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.PORTAL_APP }
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.ACCOUNTS_APP }
-  },
-  { path: '**', redirectTo: '' },
-];
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
-  ],
-  exports: [RouterModule],
-  providers: [
-    AuthGuard,
-  ]
-})
-export class AppRoutingModule { }
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "users")
+@RequestMapping("${ui-prefix}/users")
+@ResponseBody
+public class UserController extends AbstractUiRestController {
+
+    protected final UserService service;
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserController.class);
+
+    @Autowired
+    public UserController(final UserService service) {
+        this.service = service;
+    }
+
+    /**
+     * Create/refresh current user analytics
+     * @param partialDto analytics to create or refresh
+     * @return current user with updated analytics
+     */
+    @ApiOperation(value = "Create analytics")
+    @PostMapping(CommonConstants.PATH_ANALYTICS)
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch analytics with {}", partialDto);
+        return service.patchAnalytics(buildUiHttpContext(), partialDto);
+    }
+}

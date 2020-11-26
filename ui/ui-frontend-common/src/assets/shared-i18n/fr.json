@@ -13,15 +13,19 @@
         "GRAB_APPLICATION": "Saisir le nom de l'application", 
         "MY_APPLICATIONS": "Mes applications",
         "RESULT": "Résultat(s)",
-        "Utilisateur": "Utilisateur",
-        "Management": "Management",
-        "Paramétrage": "Paramétrage"
+		"settings": "Paramétrage",
+		"administrators": "Management",
+		"users": "Utilisateur",
+		"referential": "Référentiels",
+		"opaudit": "Audits et opérations",
+		"techadmin": "Administration technique",
+		"lastusedapps": "Dernières utilisées"
     },
     "MENU-APPLICATION-TILE": {
         "ENTER_APPLICATION": "Entrée pour lancer l'application"
     },
     "SELECT-TENANT": {
-        "SELECTED": "Coffre sélectioné",
+        "SELECTED": "Coffre sélectionné",
         "SELECT" : "Sélectionner un coffre"
     }
 }

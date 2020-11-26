@@ -44,6 +44,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
@@ -142,6 +143,9 @@ public class UserConverter implements Converter<UserDto, User> {
         VitamUIUtils.copyProperties(user, userDto);
         if (user.getAddress() != null) {
             userDto.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        }
+        if (user.getAnalytics() != null) {
+            userDto.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
         }
         return userDto;
     }

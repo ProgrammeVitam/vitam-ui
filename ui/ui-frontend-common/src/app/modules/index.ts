@@ -47,6 +47,8 @@ export * from './application.service';
 export * from './app-root-component.class';
 export * from './application-id.enum';
 export * from './auth.guard';
+export * from './api/user-api.service';
+export * from './analytics-resolver.service';
 export * from './auth.service';
 export * from './base-http-client';
 export * from './vitamui-global-error-handler';

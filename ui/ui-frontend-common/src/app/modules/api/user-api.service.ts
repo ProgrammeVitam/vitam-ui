@@ -34,40 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
-import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'ui-frontend-common';
-import { PortalComponent } from './portal';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BASE_URL } from '../injection-tokens';
+import { User } from '../models/user/user.interface';
 
-
-const routes: Routes = [
-  {
-    path: '',
-    component: PortalComponent,
-    canActivate: [AuthGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.PORTAL_APP }
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: ApplicationId.ACCOUNTS_APP }
-  },
-  { path: '**', redirectTo: '' },
-];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
-  ],
-  exports: [RouterModule],
-  providers: [
-    AuthGuard,
-  ]
+@Injectable({
+  providedIn: 'root'
 })
-export class AppRoutingModule { }
+export class UserApiService {
+
+  private readonly apiUrl: string;
+
+  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    this.apiUrl = baseUrl + '/users';
+  }
+
+  public create(data: { applicationId?: string }): Observable<User> {
+    return this.http.post<User>(this.apiUrl + '/analytics', data);
+  }
+}

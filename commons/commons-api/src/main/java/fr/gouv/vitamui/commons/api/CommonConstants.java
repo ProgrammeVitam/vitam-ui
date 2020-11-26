@@ -63,6 +63,8 @@ public class CommonConstants {
 
     public static final String PATH_ME = "/me";
 
+    public static final String PATH_ANALYTICS = "/analytics";
+
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 
     public static final String X_XSRF_TOKEN_HEADER = "X-XSRF-Token";
@@ -160,6 +162,8 @@ public class CommonConstants {
     public static final String PASSWORD_EXPIRATION_DATE_ATTRIBUTE = "passwordExpirationDate";
 
     public static final String GROUP_ID_ATTRIBUTE = "groupId";
+
+    public static final String ANALYTICS_ATTRIBUTE = "analytics";
 
     public static final String PROFILE_GROUP_ATTRIBUTE = "profileGroup";
 

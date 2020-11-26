@@ -45,11 +45,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -92,6 +95,7 @@ import fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
+import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -148,11 +152,15 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private final String ADMIN_EMAIL_PATTERN = "admin@";
 
+    private final String PORTAL_APP_IDENTIFIER = "PORTAL_APP";
+
     private MongoTransactionManager mongoTransactionManager;
 
     private LogbookService logbookService;
 
     private AddressService addressService;
+
+    private final ApplicationInternalService applicationInternalService;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalService.class);
 
@@ -162,7 +170,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final UserEmailInternalService userEmailInternalService, final TenantRepository tenantRepository,
             final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository, final ProfileRepository profilRepository,
             final GroupRepository groupRepository, final IamLogbookService iamLogbookService, final UserConverter userConverter,
-            final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService, final AddressService addressService) {
+            final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService, final AddressService addressService,
+            ApplicationInternalService applicationInternalService) {
         super(sequenceRepository);
         this.userRepository = userRepository;
         this.groupInternalService = groupInternalService;
@@ -178,6 +187,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         this.mongoTransactionManager = mongoTransactionManager;
         this.logbookService = logbookService;
         this.addressService = addressService;
+        this.applicationInternalService = applicationInternalService;
     }
 
     /**
@@ -870,6 +880,55 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
         return (List<String>) document.get(CommonConstants.LEVEL_ATTRIBUTE);
     }
+
+    public UserDto patchAnalytics(final Map<String, Object> partialDto) {
+        checkAnalyticsAllowedFields(partialDto);
+
+        AuthUserDto loggedUser = getMe();
+        User user = getUserById(loggedUser.getId());
+
+        partialDto.forEach((key, value) -> {
+            switch (key) {
+                case "applicationId":
+                    patchApplicationAnalytics(user, CastUtils.toString(value));
+                    break;
+            }
+        });
+
+        return convertFromEntityToDto(getRepository().save(user));
+    }
+
+    private User getUserById(final String id) {
+        return getRepository().findById(id).orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
+    }
+
+    private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
+        Set<String> analyticsPatchAllowedFields = Set.of("applicationId");
+
+        if (MapUtils.isEmpty(partialDto)) {
+            throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");
+        }
+
+        partialDto.keySet().forEach(key -> {
+            if (!analyticsPatchAllowedFields.contains(key)) {
+                throw new IllegalArgumentException(String.format("Unable to patch user analytics key : %s is not allowed", key));
+            }
+        });
+    }
+
+    private void patchApplicationAnalytics(final User user, String applicationId) {
+        checkApplicationAccessPermission(applicationId);
+        user.getAnalytics().tagApplicationAsLastUsed(applicationId);
+    }
+
+    private void checkApplicationAccessPermission(String applicationId) {
+        List<ApplicationDto> loggedUserApplications = applicationInternalService.getAll(Optional.empty(), Optional.empty());
+        boolean userHasPermission = loggedUserApplications.stream().anyMatch(application -> Objects.equals(application.getIdentifier(), applicationId));
+        if (!userHasPermission && !applicationId.equals(PORTAL_APP_IDENTIFIER)) {
+            throw new IllegalArgumentException(String.format("User has no permission to access to the application : %s", applicationId));
+        }
+    }
+
 
     @Override
     protected Document groupFields(final Optional<String> criteriaJsonString, final String... fields) {

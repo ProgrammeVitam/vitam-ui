@@ -13,9 +13,13 @@
         "GRAB_APPLICATION": "Grab application name", 
         "MY_APPLICATIONS": "My applications",
         "RESULT": "Result",
-        "Utilisateur": "User",
-		"Management": "Management",
-		"Paramétrage": "Setting"
+		"settings": "Settings",
+		"administrators": "Management",
+		"users": "User",
+		"referential": "Referential",
+		"opaudit": "Audits & operations",
+		"techadmin": "Technical administration",
+		"lastusedapps": "Lastly used"
     },
     "MENU-APPLICATION-TILE": {
         "ENTER_APPLICATION": "Enter to launch the application"
