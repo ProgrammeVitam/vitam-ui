@@ -61,7 +61,7 @@ export class AuditCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       auditActions: [null, Validators.required],
       auditType: ['tenant', Validators.required],
-      evidenceAudit: [null, Validators.required, this.auditCreateValidator.checkEvidenceAuditId()],
+      evidenceAudit: [null, null, this.auditCreateValidator.checkEvidenceAuditId()],
       objectId: [this.startupService.getTenantIdentifier(), Validators.required],
       query: [this.getRootQuery(null)]
     });
@@ -69,9 +69,12 @@ export class AuditCreateComponent implements OnInit {
     this.form.controls.auditActions.valueChanges.subscribe(auditActions => {
       if (auditActions === 'AUDIT_FILE_RECTIFICATION') {
         this.allServices.setValue(false);
+        this.form.get('evidenceAudit').setValidators(Validators.required);
       } else {
         this.allServices.setValue(true);
+        this.form.get('evidenceAudit').clearValidators();
       }
+      this.form.updateValueAndValidity();
     });
 
     this.accessContractSelect.valueChanges.subscribe(accessContractId => {
@@ -151,7 +154,7 @@ export class AuditCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form valid ? ', this.form.invalid);
+    console.log('Form invalid ? ', this.form.invalid);
     if (this.form.invalid) {
       return;
     }
