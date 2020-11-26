@@ -212,6 +212,10 @@ server {
         proxy_set_header  X-Forwarded-Proto $scheme;
 
     }
+
+    location = /favicon.ico {
+        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
+    }
 }
 
 
