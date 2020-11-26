@@ -202,16 +202,7 @@
           "configurations": {
             "production": {
               "browserTarget": "portal:build:production"
-            },
-            "en": {
-              "browserTarget": "portal:build:en"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "portal:build"
           }
         },
         "test": {

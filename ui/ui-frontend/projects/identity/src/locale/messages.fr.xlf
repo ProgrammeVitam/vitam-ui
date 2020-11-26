@@ -2,9 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="fr" datatype="plaintext" original="ng2.template" target-language="fr">
     <body>
-
-
-
       <trans-unit id="customerListCustomerCodeHeader" datatype="html">
         <source>Code Client</source>
 

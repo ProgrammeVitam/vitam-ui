@@ -44,6 +44,7 @@ import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
+import { TranslateModule } from '@ngx-translate/core';
 import { AccountModule } from './account/account.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
@@ -144,13 +145,14 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
-    VitamuiBodyModule
+    VitamuiBodyModule,
   ],
   entryComponents: [
     ErrorDialogComponent
   ],
   exports: [
     AccountModule,
+    TranslateModule,
     ApplicationSelectContentModule,
     BlankComponent,
     ConfirmDialogModule,
@@ -187,7 +189,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
-    PipesModule
+    PipesModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

@@ -42,7 +42,11 @@ import { AccountComponent, AppGuard, ApplicationId, AuthGuard } from 'ui-fronten
 import { PortalComponent } from './portal';
 
 const routes: Routes = [
-  { path: '', component: PortalComponent, canActivate: [AuthGuard] },
+  { path: '',
+    component: PortalComponent,
+    canActivate: [AuthGuard],
+    data: { appId: ApplicationId.PORTAL_APP }
+  },
   {
     path: 'account',
     component: AccountComponent,
