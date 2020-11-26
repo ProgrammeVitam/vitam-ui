@@ -39,10 +39,10 @@ vitamui_defaults:
   reconstruction:
       log_level: INFO
   portal_categories:
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 4
+    users:
+      title: "Utilisateur"
+      displayTitle: false
+      order: 1
     administrators:
       title: "Management"
       displayTitle: true
@@ -51,10 +51,22 @@ vitamui_defaults:
       title: "Paramétrage"
       displayTitle: true
       order: 3
-    users:
-      title: "Utilisateur"
-      displayTitle: false
-      order: 1
+    referential:
+      title: "Référentiels"
+      displayTitle: true
+      order: 4
+    opaudit:
+      title: "Audits et opérations"
+      displayTitle: true
+      order: 5
+    techadmin:
+      title: "Administration technique"
+      displayTitle: true
+      order: 6
+    ingests:
+      title: "Suivi des Versements"
+      displayTitle: true
+      order: 7
 
 
 vitamui:
