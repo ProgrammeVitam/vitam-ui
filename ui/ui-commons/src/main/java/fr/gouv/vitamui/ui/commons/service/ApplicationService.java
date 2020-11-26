@@ -41,6 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -97,7 +98,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @Value("${ui.redirect-url}")
     @NotNull
     private String uiRedirectUrl;
-    
+
     private static String PLATFORM_NAME = "PLATFORM_NAME";
 
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
@@ -112,10 +113,25 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         client = factory.getApplicationExternalRestClient();
     }
 
-    public Collection<ApplicationDto> getApplications(final ExternalHttpContext context, final boolean filterApp) {
+    public Map<String, Object> getApplications(final ExternalHttpContext context, final boolean filterApp) {
         final QueryDto query = new QueryDto(QueryOperator.AND);
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
-        return client.getAll(context, Optional.of(query.toJson()));
+
+        Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
+        Map<String, Map<String,Object>> categories = properties.getPortalCategories();
+        Collection<Map<String,Object>> listCategories = new ArrayList<>();
+        categories.keySet().stream().forEach(category -> {
+            Map<String,Object> categoryProperties = new HashMap<>();
+            categoryProperties.putAll(categories.get(category));
+            categoryProperties.put("identifier", category);
+            listCategories.add(categoryProperties);
+        });
+
+        Map<String, Object> portalConfig = new HashMap<>();
+        portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
+        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, listCategories);
+
+        return portalConfig;
     }
 
     public String getBaseUrlPortal() {
@@ -130,6 +146,10 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
+        configurationData.put(CommonConstants.WELCOME_TITLE, properties.getWelcomeTitle());
+        configurationData.put(CommonConstants.WELCOME_DESCRIPTION, properties.getWelcomeDescription());
+        configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
+
         if(properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
         } else {

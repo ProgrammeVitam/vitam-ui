@@ -1,13 +1,4 @@
-<img src="assets/bg-fingerprint.svg" class="bg-fingerprint" />
-
-<div class="vitamui-header">
-    <div class="vitamui-container">
-        <vitamui-common-navbar [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
-    </div>
-</div>
-
-<div class="vitamui-body">
-    <div class="vitamui-container">
-        <vitamui-common-application-select-content-updated [applications]="applications" [isModalMenu]="false"></vitamui-common-application-select-content-updated>
-    </div>
+<div class="content">
+    <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
+    <app-application-list [appMap]="applications" (applicationClick)="openApplication($event)"></app-application-list>
 </div>

@@ -1,0 +1,72 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.content {
+    margin-bottom: 5rem;
+}
+
+.category {
+    margin: 0.5rem auto;
+}
+
+mat-card {
+    cursor: pointer;
+    box-shadow: none!important;
+    background-color: transparent;
+}
+
+mat-card > img, .appIcon {
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.75);
+    border-radius: 5px;
+}
+
+mat-card-header {
+    background-color: transparent;
+}
+
+mat-card-title {
+    color: $charcoal-grey;
+    font-weight: 600;
+}
+
+mat-card-subtitle {
+    color: $warm-grey;
+    font-size: 14px;
+    margin-top: 1rem!important;
+}
+
+:host::ng-deep {
+
+    .mat-tab-header{
+        margin: 3rem 0;
+    }
+
+    .mat-card-header-text {
+        margin: 0!important;
+    }
+
+    .mat-tab-label.mat-tab-label-active {
+        color: var(--vitamui-primary);
+        opacity: 1;
+        font-weight: bold;
+    }
+
+    .mat-tab-labels {
+        justify-content: center;
+    }
+
+    .mat-ink-bar {
+        background-color: var(--vitamui-primary)!important;
+    }
+}
+
+.appIcon {
+    overflow: hidden;
+    min-height: 200px;
+    max-height: 200px;
+}
+
+.appIcon i {
+    font-size: 13rem;
+}

@@ -72,13 +72,13 @@ public class ApplicationController extends AbstractUiRestController {
     }
 
     /**
-     * Return all applications of VITAMUI
+     * Return all applications and categories of VITAMUI
      *
-     * @return Collection Application
+     * @return Map
      */
-    @ApiOperation(value = "Return list of application")
+    @ApiOperation(value = "Return config about applications and categories")
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<ApplicationDto> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) {
+    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) {
         LOGGER.debug("getApplications");
         return service.getApplications(buildUiHttpContext(), filterApp);
     }

@@ -39,6 +39,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
+import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
@@ -53,9 +55,12 @@ import { CustomerSelectContentModule } from './components/customer-select-conten
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
+import { FooterModule } from './components/footer/footer.module';
+import { HeaderModule } from './components/header/header.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
+import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
@@ -76,9 +81,7 @@ import { TooltipModule } from './directives/tooltip/tooltip.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
-import { BytesPipe } from './pipes/bytes.pipe';
-import { StrongifyPipe } from './pipes/strongify.pipe';
-import { TruncatePipe } from './pipes/truncate.pipe';
+import { PipesModule } from './pipes/pipes.module';
 import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
@@ -93,6 +96,10 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
+  declarations: [
+    BlankComponent,
+    ErrorDialogComponent,
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -104,6 +111,7 @@ export function startupServiceFactory(startupService: StartupService) {
     CollapseDirectiveModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
+    PipesModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
     VitamUIDurationInputModule,
@@ -121,6 +129,8 @@ export function startupServiceFactory(startupService: StartupService) {
     LogbookModule,
     LoggerModule,
     NavbarModule,
+    HeaderModule,
+    SelectTenantModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -131,14 +141,10 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
-    VitamUIAutocompleteModule
-  ],
-  declarations: [
-    BlankComponent,
-    BytesPipe,
-    ErrorDialogComponent,
-    StrongifyPipe,
-    TruncatePipe
+    VitamUIAutocompleteModule,
+    ScrollTopModule,
+    FooterModule,
+    VitamuiBodyModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -147,7 +153,6 @@ export function startupServiceFactory(startupService: StartupService) {
     AccountModule,
     ApplicationSelectContentModule,
     BlankComponent,
-    BytesPipe,
     ConfirmDialogModule,
     CollapseModule,
     CollapseDirectiveModule,
@@ -166,6 +171,8 @@ export function startupServiceFactory(startupService: StartupService) {
     LogbookModule,
     LoggerModule,
     NavbarModule,
+    HeaderModule,
+    SelectTenantModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -173,12 +180,14 @@ export function startupServiceFactory(startupService: StartupService) {
     SecurityModule,
     SlideToggleModule,
     StepperModule,
-    StrongifyPipe,
     SubrogationModule,
     TooltipModule,
-    TruncatePipe,
     CountryModule,
-    VitamUIAutocompleteModule
+    VitamUIAutocompleteModule,
+    ScrollTopModule,
+    FooterModule,
+    VitamuiBodyModule,
+    PipesModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

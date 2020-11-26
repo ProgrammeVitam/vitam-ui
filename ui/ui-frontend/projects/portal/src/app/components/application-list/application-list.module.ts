@@ -34,50 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:max-classes-per-file component-selector */
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatTabsModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { ApplicationsListComponent } from './application-list.component';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatMenuModule } from '@angular/material/menu';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { of } from 'rxjs';
-
-import { ApplicationService } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { PortalComponent } from './portal.component';
-
-describe('PortalComponent', () => {
-  // let component: PortalComponent;
-  let fixture: ComponentFixture<PortalComponent>;
-
-  beforeEach(async(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const applicationServiceSpy = jasmine.createSpyObj('ApplicationService', { applications: of([]) });
-
-    TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        RouterModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        PortalComponent,
-      ],
-      providers: [
-        { provide: Router, useValue: routerSpy },
-        { provide: ActivatedRoute, useValue: { params: of('11') } },
-        { provide: ApplicationService, useValue: { applicationServiceSpy } },
-      ]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(PortalComponent);
-    // component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
-});
+@NgModule({
+  declarations: [ApplicationsListComponent],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatTabsModule
+  ],
+  exports: [ApplicationsListComponent]
+})
+export class ApplicationListModule { }

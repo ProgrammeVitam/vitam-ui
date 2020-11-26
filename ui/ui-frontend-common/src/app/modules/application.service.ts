@@ -36,10 +36,12 @@
  */
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
-import { Application } from './models/application/application.interface';
+import { Application, ApplicationInfo } from './models/application/application.interface';
+import { Category } from './models/application/category.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,25 +52,91 @@ export class ApplicationService {
    * Applications list of the authenticated user.
    */
   set applications(apps: Application[]) { this._applications = apps; }
+
   get applications(): Application[] { return this._applications; }
+
   // tslint:disable-next-line:variable-name
   _applications: Application[];
+
+  /**
+   * Map that will contain applications grouped by categories
+   */
+  private appMap: Map<Category, Application[]>;
+
+  /*
+   * Categories of the application.
+   */
+  set categories(categories: Category[]) { this._categories = categories; }
+
+  get categories(): Category[] { return this._categories; }
+
+  // tslint:disable-next-line:variable-name
+  _categories: Category[];
 
   constructor(private applicationApi: ApplicationApiService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
    */
-  list(): Observable<Application[]> {
+  list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
 
     return this.applicationApi.getAllByParams(params).pipe(
-      catchError(() => of([])),
-      map((apps: Application[]) => {
-        this._applications = apps;
-        return apps;
+      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
+      map((applicationInfo: ApplicationInfo) => {
+        this._applications = applicationInfo.APPLICATION_CONFIGURATION;
+        this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
+        return applicationInfo;
       })
     );
+  }
 
+  /**
+   * Get Applications list grouped by categories in a hashMap.
+   */
+  public getAppsGroupByCategories(): Map<Category, Application[]> {
+    if (!this.appMap) {
+      this.appMap = new Map<Category, Application[]>();
+      this.fillCategoriesWithApps(this.categories, this.applications);
+    }
+    return this.appMap;
+  }
+
+  public openApplication(app: Application, router: Router, uiUrl: string): void {
+    // If called app is in the same server...
+    if (app.url.includes(uiUrl)) {
+      router.navigate([app.url.replace(uiUrl, '')]);
+    } else {
+      window.location.href = app.url;
+    }
+  }
+
+  private fillCategoriesWithApps(categories: Category[], applications: Application[]) {
+    categories.forEach((category: Category) => {
+      if (applications.some(app =>  app.category === category.identifier)) {
+        this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      }
+    });
+  }
+
+  private getSortedAppsOfCategory(category: Category, applications: Application[]): Application[] {
+    if (applications) {
+      const apps = applications.filter(application => application.category === category.identifier) as Application[];
+      return this.sortApplications(apps);
+    }
+  }
+
+  private sortApplications(applications: Application[]): Application[] {
+    // Sort apps inside categories
+    return applications.sort((a, b) => {
+      return a.position < b.position ? -1 : 1;
+    });
+  }
+
+  private sortCategories(categories: Category[]): Category[] {
+    // Sort apps inside categories
+    return categories.sort((a, b) => {
+      return a.order > b.order ? 1 : -1;
+    });
   }
 }

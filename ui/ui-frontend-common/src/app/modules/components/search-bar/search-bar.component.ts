@@ -44,16 +44,20 @@ import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@a
 export class SearchBarComponent implements OnInit {
 
   @Input() placeholder: string;
+
   @Input() name: string;
 
   @Output() search = new EventEmitter<string>();
+
+  @Output() searchChanged = new EventEmitter<string>();
+
+  @Output() clear = new EventEmitter<string>();
 
   searchValue: string;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   @HostListener('keydown.enter')
   onSearch() {
@@ -63,6 +67,7 @@ export class SearchBarComponent implements OnInit {
   @HostListener('keydown.escape')
   reset() {
     this.searchValue = null;
+    this.clear.emit();
     this.search.emit(this.searchValue);
   }
 

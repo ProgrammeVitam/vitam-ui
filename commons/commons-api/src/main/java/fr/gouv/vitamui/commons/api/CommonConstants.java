@@ -193,6 +193,22 @@ public class CommonConstants {
 
     public static final String APP_LOGO = "APP_LOGO";
 
+    public static final String WELCOME_TITLE = "WELCOME_TITLE";
+
+    public static final String WELCOME_DESCRIPTION = "WELCOME_DESCRIPTION";
+
+    public static final String CUSTOMER = "CUSTOMER";
+
+
+    /**
+     * Constant contains application list for portal/header applications display
+     */
+    public static final String APPLICATION_CONFIGURATION = "APPLICATION_CONFIGURATION";
+
+    /**
+     * Constant contains category list for portal/header applications display
+     */
+    public static final String CATEGORY_CONFIGURATION = "CATEGORY_CONFIGURATION";
 
     /**
      * Constant contains redirect URL for cas after logout

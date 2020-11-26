@@ -36,20 +36,22 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ApplicationService } from './application.service';
 
 import { Inject, Injectable } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
-import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { AppConfiguration, AuthUser } from './models';
-import {ThemeService} from './theme.service';
+import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
+const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
+const CUSTOMER_WEBSITE_URL_KEY = 'website-url';
 
 @Injectable({
   providedIn: 'root'
@@ -68,10 +70,10 @@ export class StartupService {
   constructor(
     private logger: Logger,
     private authService: AuthService,
-    private applicationService: ApplicationService,
     private securityApi: SecurityApiService,
     private applicationApi: ApplicationApiService,
     private themeService: ThemeService,
+    private applicationService: ApplicationService,
     @Inject(WINDOW_LOCATION) private location: any
   ) { }
 
@@ -100,8 +102,6 @@ export class StartupService {
         }
 
         this.themeService.overrideTheme(customerColorMap);
-
-
       })
       .then(() => this.applicationService.list().toPromise());
   }
@@ -229,6 +229,22 @@ export class StartupService {
     return +this.getConfigStringValue(key);
   }
 
+  getWelcomeTitle(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.WELCOME_TITLE;
+    }
+
+    return null;
+  }
+
+  getWelcomeMessage(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.WELCOME_DESCRIPTION;
+    }
+
+    return null;
+  }
+
   /**
    * Navigate to given url or to the portal otherwise.
    * @param url URL to be redirected to.
@@ -243,6 +259,26 @@ export class StartupService {
     }
 
     return null;
+  }
+
+  public getCustomer(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.CUSTOMER;
+    }
+  }
+
+  public getCustomerTechnicalReferentEmail(): string {
+    const customer = this.getCustomer();
+    if (customer) {
+      return customer[CUSTOMER_TECHNICAL_REFERENT_KEY];
+    }
+  }
+
+  public getCustomerWebsiteUrl(): string {
+    const customer = this.getCustomer();
+    if (customer) {
+      return customer[CUSTOMER_WEBSITE_URL_KEY];
+    }
   }
 
 }

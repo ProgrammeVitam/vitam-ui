@@ -36,3 +36,4 @@
  */
 export * from './strongify.pipe';
 export * from './bytes.pipe';
+export * from './highlight.pipe';

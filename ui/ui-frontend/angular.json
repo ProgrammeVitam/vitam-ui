@@ -130,6 +130,7 @@
       "root": "projects/portal/",
       "sourceRoot": "projects/portal/src",
       "projectType": "application",
+      "prefix": "portal",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -513,14 +514,5 @@
       }
     }
   },
-  "defaultProject": "portal",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  }
+  "defaultProject": "portal"
 }

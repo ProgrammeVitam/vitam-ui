@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,11 +69,22 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
     public void testGetApplications() {
         final List<ApplicationDto> applicationsMock = buildCollectionDto("USERS", "CUSTOMERS");
         Mockito.when(client.getAll(isNull(), any(Optional.class))).thenReturn(applicationsMock);
+        Map<String, Map<String, Object>> categoriesConfig = new HashMap<>();
+        categoriesConfig.put("users", new HashMap<>());
+        categoriesConfig.put("management", new HashMap<>());
+        Mockito.when(properties.getPortalCategories()).thenReturn(categoriesConfig);
 
-        final Collection<ApplicationDto> applications = service.getApplications(null, true);
+        Map<String, Object> config = service.getApplications(null, true);
+        Assert.assertNotNull(config);
+
+        final Collection<ApplicationDto> applications = (Collection<ApplicationDto>) config.get(CommonConstants.APPLICATION_CONFIGURATION);
         Assert.assertNotNull(applications);
         final Collection<String> applicationsId = applications.stream().map(a -> a.getId()).collect(Collectors.toList());
         assertThat(applicationsId).containsExactly("USERS", "CUSTOMERS");
+
+        final Collection<Map<String, Object>> categories = (Collection<Map<String, Object>>) config.get(CommonConstants.CATEGORY_CONFIGURATION);
+        Assert.assertNotNull(categories);
+        assertThat(categories.size()).isEqualTo(2);
     }
 
     @Test
