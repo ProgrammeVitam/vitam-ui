@@ -11,7 +11,7 @@
     <parent>
 		<groupId>fr.gouv.vitamui</groupId>
 		<artifactId>commons-parent</artifactId>
-		<version>3.14.3-SNAPSHOT</version>
+		<version>3.14.2</version>
 	</parent>
 
 	<dependencies>
