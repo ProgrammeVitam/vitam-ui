@@ -1,18 +1,37 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { Component, Input } from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 // tslint:disable-next-line: max-line-length
 import {MatDialogModule, MatDialogRef, MatFormFieldModule, MatMenuModule, MatOptionModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule, MatTabsModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {of, EMPTY} from 'rxjs';
+import {EMPTY, of} from 'rxjs';
 // tslint:disable-next-line: max-line-length
-import {BASE_URL, ENVIRONMENT, GlobalEventService, HistoryModule, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBar, AuthService, ApplicationService} from 'ui-frontend-common';
+import {ApplicationService, AuthService, BASE_URL, ENVIRONMENT, GlobalEventService, HistoryModule, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBar} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {Rule} from '../../../../vitamui-library/src/lib/models/rule';
 import {environment} from '../../environments/environment';
 import {RuleComponent} from './rule.component';
-import {RuleModule} from './rule.module';
+
+@Component({selector: 'app-rule-preview', template: ''})
+// tslint:disable-next-line:component-class-suffix
+class RulePreviewStub {
+  @Input()
+  rule: Rule;
+}
+
+@Component({selector: 'app-rule-list', template: ''})
+// tslint:disable-next-line:component-class-suffix
+class RuleListStub {
+  @Input()
+  search: string;
+
+  @Input()
+  filters: string;
+}
 
 describe('RuleComponent', () => {
   let component: RuleComponent;
@@ -40,6 +59,7 @@ describe('RuleComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
+        HttpClientTestingModule,
         RouterTestingModule,
         VitamUICommonTestModule,
         ReactiveFormsModule,
@@ -55,8 +75,12 @@ describe('RuleComponent', () => {
         SearchBarModule,
         HistoryModule,
         InjectorModule,
-        LoggerModule.forRoot(),
-        RuleModule
+        LoggerModule.forRoot()
+      ],
+      declarations: [
+        RuleComponent,
+        RuleListStub,
+        RulePreviewStub
       ],
       providers: [
         GlobalEventService,
