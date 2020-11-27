@@ -11,6 +11,10 @@ server:
   host: {{ vitamui.referential.host }}
   port: {{ vitamui.referential.port_service }}
 {% if vitamui.referential.base_url is defined %}
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
   servlet.context-path: /
   servlet.session.cookie.path: /
 {% else %}
@@ -37,8 +41,6 @@ management:
     ssl:
       enabled: false
 
-management.endpoints.web.exposure.include: "*"
-
 logging:
     config: {{ vitamui_folder_conf }}/logback.xml
 
@@ -50,6 +52,9 @@ server-identity:
 
 ui-referential:
   platform-name: "{{ vitamui_platform_informations.platform_name }}"
+  customer:
+    technical-referent-email: "{{ vitamui_platform_informations.customer.technical_referent_email }}"
+    website-url: "{{ vitamui_platform_informations.customer.website_url }}"
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
@@ -66,9 +71,24 @@ ui-referential:
       hostname-verification: false
 {%endif %}
   assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+  portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
+  header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
+  footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
+  portal-message: "{{ vitamui_platform_informations.theme.portal_message }}"
+  portal-title: "{{ vitamui_platform_informations.theme.portal_title }}"
   theme-colors:
-    vitamui-primary: "{{ vitamui_platform_informations.theme_colors.vitamui_primary }}"
-    vitamui-secondary: "{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}"
+    vitamui-primary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_primary }}"
+    vitamui-secondary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_secondary }}"
+    vitamui-tertiary: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_tertiary }}"
+    vitamui-header-footer: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_header_footer }}"
+    vitamui-background: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
+  portal-categories:
+{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+    {{ id }}:
+      title: "{{ category.title }}"
+      displayTitle: {{ category.displayTitle }}
+      order: {{ category.order }}
+{% endfor %}
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
@@ -124,7 +144,7 @@ cas:
   internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
   callback-url: ${ui.url}/referential-api/callback
-{% if vitamui.iam_external.secure|lower == "true" %}
+{% if vitamui.cas_server.secure|lower == "true" %}
   ssl:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
