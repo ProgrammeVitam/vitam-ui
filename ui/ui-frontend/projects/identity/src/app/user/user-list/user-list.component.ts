@@ -264,6 +264,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     }
   }
 
+ 
   checkInactifUsers() {
 
     this.customerService.getMyCustomer().subscribe((customer) => {
