@@ -15,17 +15,13 @@ export class SelectTenantDialogComponent implements OnInit {
     maxWidth: 550,
     disableClose: true,
   };
-
   public selectedTenant: MenuOption;
-
   public tenants: MenuOption[];
 
   constructor(private dialogRef: MatDialogRef<SelectTenantDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) { }
 
   ngOnInit() {
-    this.tenants = this.data.tenants.getTenants().map((tenant: Tenant) => {
-      return {value: tenant, label: tenant.name};
-    });
+    this.tenants = this.data.tenants;
   }
 
   public closeDialog(): void {
