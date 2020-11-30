@@ -1,5 +1,5 @@
 <ng-container *ngIf="!disabled">
-  <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
+  <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
         <span class="editable-field-label">{{label}}</span>
@@ -25,10 +25,9 @@
   </ng-template>
 </ng-container>
 
-<div *ngIf="disabled" class="read-only-field">
+<div *ngIf="disabled" class="read-only-field disabled-input">
   <div>
     <label i18n="Admin profile level@@subLevel">Sous niveau</label>
     <div> <span>{{control.value | subLevel:prefix }}</span></div>
-
   </div>
 </div>

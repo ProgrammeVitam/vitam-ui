@@ -42,6 +42,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // import { FlowValidators } from '../../../flow/flow.validators';
 import { EmailsInputModule } from '../emails-input/emails-input.module';
@@ -79,6 +80,7 @@ describe('MultipleEmailInputComponent', () => {
         ReactiveFormsModule,
         MatProgressSpinnerModule,
         EmailsInputModule,
+        BrowserAnimationsModule
       ],
       declarations: [
         TesthostComponent,

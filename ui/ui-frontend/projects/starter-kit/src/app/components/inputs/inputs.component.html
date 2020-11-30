@@ -9,3 +9,43 @@
 <vitamui-common-input disabled [formControl]="street"
     placeholder="N° et nom de rue"
 ></vitamui-common-input>
+
+<vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'"></vitamui-common-editable-input>
+
+<vitamui-common-editable-input [formControl]="street" [label]="'Editable input disabled'" [disabled]="true"></vitamui-common-editable-input>
+
+<vitamui-common-editable-email-input [formControl]="email" [label]="'Editable email'" [domains]="['test.fr', 'test.com', 'test.de']"></vitamui-common-editable-email-input>
+
+<vitamui-common-editable-email-input [formControl]="email" [label]="'Editable email disabled'" [domains]="['test.fr', 'test.com', 'test.de']" [disabled]="true"></vitamui-common-editable-email-input>
+
+<vitamui-common-editable-select [formControl]="country" [label]="'County select'">
+<vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
+<vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+<vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
+</vitamui-common-editable-select>
+
+<vitamui-common-editable-select [formControl]="country" [label]="'County select disabled'" [disabled]="true">
+<vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
+<vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+<vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
+</vitamui-common-editable-select>
+
+<vitamui-common-editable-textarea [formControl]="street" [label]="'Textarea'"></vitamui-common-editable-textarea>
+
+<vitamui-common-editable-textarea [formControl]="streetEmpty" [label]="'Textarea disabled'" [disabled]="true"></vitamui-common-editable-textarea>
+
+<vitamui-common-multiple-email-input [label]="'Multiple email'"></vitamui-common-multiple-email-input>
+
+<vitamui-common-editable-level-input [label]="'Editable level input'"></vitamui-common-editable-level-input>
+
+<vitamui-common-editable-level-input [label]="'Disabled level input'" [disabled]="true"></vitamui-common-editable-level-input>
+
+<vitamui-common-editable-toggle-group [label]="'Toggle Group'">
+<vitamui-common-editable-button-toggle value="Value 1" content="Label 1"></vitamui-common-editable-button-toggle>
+<vitamui-common-editable-button-toggle value="Value 2" content="Label 2"></vitamui-common-editable-button-toggle>
+<vitamui-common-editable-button-toggle value="Value 3" content="Label 3"></vitamui-common-editable-button-toggle>
+</vitamui-common-editable-toggle-group>
+
+<vitamui-common-editable-duration-input [label]="'Duration input'"></vitamui-common-editable-duration-input>
+
+<vitamui-common-editable-file [label]="'File upload'"></vitamui-common-editable-file>

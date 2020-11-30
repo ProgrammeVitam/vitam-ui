@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatInputModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailsInputComponent } from './emails-input.component';
 
@@ -45,6 +46,8 @@ import { EmailsInputComponent } from './emails-input.component';
     CommonModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    MatButtonModule,
+    MatInputModule
   ],
   declarations: [EmailsInputComponent],
   exports: [EmailsInputComponent]

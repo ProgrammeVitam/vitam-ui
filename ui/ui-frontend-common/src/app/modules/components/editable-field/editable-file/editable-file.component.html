@@ -1,5 +1,4 @@
 <div class="editable-field-wrapper" *ngIf="!disabled">
-
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
@@ -30,14 +29,12 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
     [cdkConnectedOverlayOrigin]="origin"
-    [cdkConnectedOverlayPositions]="positions"
-  >
+    [cdkConnectedOverlayPositions]="positions">
     <div class="editable-field-actions">
       <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div *ngIf="disabled" class="read-only-field">

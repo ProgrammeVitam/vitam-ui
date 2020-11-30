@@ -23,7 +23,8 @@
     .vitamui-remove-chip {
       display: flex;
       align-items: center;
-      border-left: 1px solid $greyish-two;
+      color: var(--vitamui-secondary);
+      border-left: 1px solid var(--vitamui-secondary);
       padding: 6px;
 
       i {
@@ -44,8 +45,16 @@
 
 .vitamui-chip {
   background-color: white;
-  border: 1px solid $greyish-two;
-  border-radius: 2px;
-  color: $greyish-two;
+  border: 1px solid var(--vitamui-secondary);
+  border-radius: 5px;
+  color: var(--vitamui-grey-900);
   font-weight: 500;
+
+  &:hover {
+    @include elevation-1;
+  }
+
+  &:disabled {
+    border: 1px solid var(--vitamui-grey-500);
+  }
 }

@@ -1,4 +1,6 @@
 .read-only-field {
+    border: 1px solid var(--vitamui-grey-300);
+    border-radius: $input-height / 2;
     display: inline-block;
     min-height: 50px;
     width: 100%;
@@ -8,7 +10,7 @@
 
     label {
         font-size: 13px;
-        color: $greyish-two;
+        color: var(--vitamui-grey-800);
         font-weight: normal;
     }
 }

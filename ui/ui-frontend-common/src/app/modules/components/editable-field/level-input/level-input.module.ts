@@ -43,7 +43,7 @@ import { LevelInputComponent } from './level-input.component';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    FormsModule
   ],
   declarations: [LevelInputComponent],
   exports: [LevelInputComponent]

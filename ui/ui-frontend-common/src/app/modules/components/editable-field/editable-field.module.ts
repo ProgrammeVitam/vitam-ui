@@ -38,6 +38,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -73,6 +74,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     ConfirmDialogModule,
     EmailsInputModule,
     LevelInputModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   declarations: [
     EditableButtonToggleComponent,

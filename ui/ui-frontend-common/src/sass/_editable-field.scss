@@ -24,14 +24,13 @@ $anim-timing: 150ms ease-out;
     min-height: $input-height;
     width: 100%;
     border-radius: $input-height / 2;
-    border: solid 1px #f0f0f0;
+    border: 1px solid var(--vitamui-grey-300);
     background-color: $white;
     padding: 7px 45px 7px 25px;
     transition: border-color $anim-timing;
     vertical-align: top;
     cursor: pointer;
     outline: none;
-    @include elevation-1;
 
     &.squarish {
         border-radius: 10px;
@@ -40,7 +39,6 @@ $anim-timing: 150ms ease-out;
     i.edit-icon {
         color: var(--vitamui-secondary);
         opacity: 0;
-        // margin-left: 18px;
         transition: opacity $anim-timing;
         position: absolute;
         right: 20px;
@@ -48,7 +46,7 @@ $anim-timing: 150ms ease-out;
     }
 
     &:hover:not(.edit-mode), &:focus:not(.edit-mode) {
-        border-color: var(--vitamui-secondary);
+        @include elevation-1;
 
         i.edit-icon {
             opacity: 1;
@@ -60,43 +58,57 @@ $anim-timing: 150ms ease-out;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    align-self: stretch;
     flex-grow: 1;
     position: relative;
     max-width: 100%;
 
     .editable-field-label {
         position: absolute;
-        font-size: 13px;
-        color: $greyish-two;
-        font-weight: normal;
+        font-size: 14px;
+        color: var(--vitamui-grey-700);
         transform-origin: left;
         transition: transform $anim-timing;
         white-space: nowrap;
     }
 
     .editable-field-text-content {
-        margin-top: 16px;
+        margin-top: 17px;
         width: 100%;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        font-weight: 500;
     }
 
     .editable-field-control {
         display: none;
         height: 100%;
     }
+
+    .editable-field-control > input {
+        border: none!important;
+        margin-top: 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .editable-field-control > textarea {
+        border: none!important;
+
+        &:focus {
+            outline: none;
+        }
+    }
 }
 
 .editable-field.edit-mode {
     border-color: var(--vitamui-secondary);
-    padding-right: 25px;
+    padding: 15px 10px 5px 20px;
 
     .editable-field-content {
         .editable-field-label {
-            transform: scale((11 / 13)) translateY(-30px);
+            transform: scale((11 / 13)) translateY(-14px);
         }
 
         .editable-field-text-content {
@@ -160,4 +172,12 @@ $anim-timing: 150ms ease-out;
 
 .editable-field-square .editable-field {
     border-radius: 10px;
+}
+
+.disabled-input {
+    background-color: var(--vitamui-grey-300);
+}
+
+.squarish {
+    border-radius: 10px!important;
 }

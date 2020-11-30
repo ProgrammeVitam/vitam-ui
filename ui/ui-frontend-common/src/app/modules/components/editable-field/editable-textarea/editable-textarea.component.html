@@ -1,5 +1,4 @@
 <div class="editable-field-wrapper" *ngIf="!disabled">
-
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
@@ -34,7 +33,7 @@
 
 </div>
 
-<div *ngIf="disabled" class="read-only-field">
+<div *ngIf="disabled" class="read-only-field disabled-input squarish">
   <label>{{label}}</label>
   <div>{{control?.value}}</div>
 </div>

@@ -50,6 +50,7 @@ export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
 @Component({
   selector: 'vitamui-common-editable-toggle-group',
   templateUrl: './editable-toggle-group.component.html',
+  styleUrls: ['./editable-toggle-group.component.scss'],
   providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR]
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {

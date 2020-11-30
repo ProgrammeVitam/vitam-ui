@@ -3,77 +3,61 @@
 :host {
     width: 100%;
     display: block;
+
+    &::ng-deep {
+        .mat-button-wrapper {
+            padding: 0!important;
+        }
+    }
 }
 
-mat-chip i,
-mat-chip span {
-    vertical-align: middle;
+button {
+    background-color: var(--vitamui-secondary)!important;
+    width: 35px;
+    height: 35px;
+
+    i {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    &:disabled {
+        background-color: var(--vitamui-grey-300)!important;
+        
+        > i {
+            color: var(--vitamui-grey-800);;
+        }
+    }
 }
 
 .domain-input-control {
-    // margin-bottom: 20px;
     display: flex;
-    align-items: center;
-    justify-content: stretch;
-
-    > span {
-        font-size: 26px;
-        margin-right: 10px;
-    }
+    height: 60px;
 
     .domain-input-wrapper {
-        position: relative;
-        margin-right: 15px;
-        flex-grow: 1;
-
-        mat-spinner {
-            position: absolute;
-            right: 12px;
-            top: 12px;
-        }
-    }
-}
-
-input.vitamui-input {
-    width: 100%;
-    max-width: 300px;
-}
-
-.vitamui-chip-list {
-    padding-left: 34px;
-}
-
-:host.domains-input-mini {
-    .domain-input-control {
-        button, input {
-            height: 34px;
-            border-radius: 17px;
-        }
-
-        > span {
-            font-size: 18px;
-        }
-
-        mat-spinner {
-            right: 8px;
-            top: 8px;
-        }
+        display: flex;
+        align-items: center;
     }
 
-    .vitamui-chip-list {
-        padding-left: 27px;
+    .actions {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
 
+    mat-spinner {
+        margin-left: 1rem;;
+    }
 }
 
 .vitamui-input-errors {
-    min-height: 20px;
+    padding: 0;
+    position: relative;
+    top: -8px;
 }
 
-input[type=text].vitamui-input.ng-invalid {
-    border-color: $greyish-two;
-
-    &.ng-dirty:focus {
-        border-color: $red;
-    }
+.vitamui-chip-list {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }

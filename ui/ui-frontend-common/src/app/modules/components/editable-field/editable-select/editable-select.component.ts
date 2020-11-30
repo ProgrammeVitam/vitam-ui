@@ -123,4 +123,9 @@ export class EditableSelectComponent extends EditableFieldComponent {
     this.control.reset(this.originValue);
   }
 
+  enterEditMode() {
+    super.enterEditMode();
+    setTimeout(() => this.select.open(), 0);
+  }
+
 }
