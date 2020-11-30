@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>3.14.2</version>
+    <version>3.0.10</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
