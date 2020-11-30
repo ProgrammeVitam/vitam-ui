@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { Tenant } from '../../../models/customer/tenant.interface';
 import { MenuOption } from '../../navbar';
 
 @Component({

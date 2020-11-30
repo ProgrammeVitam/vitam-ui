@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-customer-preview *ngIf="previewType === 'CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem"></app-customer-preview>
     <app-owner-preview *ngIf="previewType === 'OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
     <app-owner-preview *ngIf="previewType === 'TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
@@ -10,10 +10,12 @@
       Paramétrer les organisations
     </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'" [disableSearchBar]="true">
-      <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
-        <span>Créer un Client</span>
-      </button>
+    <vitamui-common-banner
+      [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
+      [disableSearchBar]="true">
+        <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
+          <span>Créer un Client</span>
+        </button>
     </vitamui-common-banner>
 
     <app-customer-list

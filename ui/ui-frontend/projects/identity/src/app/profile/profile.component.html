@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-profile-detail (profileClose)="closePanel()" [profile]="openedItem"></app-profile-detail>
   </mat-sidenav>
 
@@ -11,9 +11,9 @@
     <vitamui-common-banner
       [searchbarPlaceholder]="'Nom de Profil Administrateur'"
       (search)="onSearchSubmit($event)">
-      <button class="btn primary ml-5" (click)="openProfilAdminCreateDialog()">
-        <span>Créer un Profil Administrateur</span>
-      </button>
+        <button class="btn primary ml-5" (click)="openProfilAdminCreateDialog()">
+          <span>Créer un Profil Administrateur</span>
+        </button>
     </vitamui-common-banner>
 
     <app-profile-list [search]="search" (profileClick)="openPanel($event)"></app-profile-list>

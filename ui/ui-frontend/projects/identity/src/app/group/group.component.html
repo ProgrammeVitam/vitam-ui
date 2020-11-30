@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-group-preview *ngIf="openedItem" (previewClose)="closePanel()" [group]="openedItem"></app-group-preview>
   </mat-sidenav>
 
@@ -11,9 +11,9 @@
     <vitamui-common-banner
       [searchbarPlaceholder]="'Nom de Profil Administrateur'"
       (search)="onSearchSubmit($event)">
-      <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
-        <span>Créer un Groupe</span>
-      </button>
+        <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
+          <span>Créer un Groupe</span>
+        </button>
     </vitamui-common-banner>
     
     <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>

@@ -1,6 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
-  <mat-sidenav #panel mode="side" position="end">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"></app-user-preview>
   </mat-sidenav>
 
@@ -11,8 +10,7 @@
       </span>
     </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner [searchbarPlaceholder]="'Nom,  Prénom, N° d \'identifiant, groupe'"
-                           i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
+    <vitamui-common-banner [searchbarPlaceholder]="'Nom,  Prénom, N° d \'identifiant, groupe'" i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
       <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
         <span>Créer un Utilisateur</span>
       </button>
