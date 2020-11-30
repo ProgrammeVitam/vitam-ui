@@ -52,8 +52,8 @@ import { ButtonsModule } from './components/buttons/buttons.module';
 import { InputsModule } from './components/inputs/inputs.module';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { SwitchModule } from './components/switch/switch.module';
+import { TooltipModule } from './components/tooltip/tooltip.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
-
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -71,16 +71,15 @@ registerLocaleData(localeFr, 'fr');
     StarterKitModule,
     LoggerModule.forRoot(),
     QuicklinkModule,
-
     ButtonsModule,
     BreadcrumbModule,
     SwitchModule,
     InputsModule,
     ProgressBarModule,
+    TooltipModule,
     MatCardModule,
     MatSidenavModule,
     MatListModule,
-    VitamUICommonModule
   ],
   providers: [
     Title,

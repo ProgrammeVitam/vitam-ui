@@ -39,6 +39,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
@@ -158,7 +159,6 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
-    TranslateVitamModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
     VitamuiCommonMoreButtonModule,
@@ -210,12 +210,12 @@ export function startupServiceFactory(startupService: StartupService) {
     FooterModule,
     VitamuiBodyModule,
     PipesModule,
-    TranslateVitamModule,
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
     VitamuiCommonMoreButtonModule,
     UserPhotoModule,
     CommonProgressBarModule,
+    CommonTooltipModule,
 
   ],
   providers: [

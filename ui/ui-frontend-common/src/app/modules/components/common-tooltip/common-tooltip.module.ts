@@ -1,3 +1,4 @@
+import { CommonTooltipDirective } from './common-tooltip.directive';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,41 +35,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { ButtonsComponent } from './components/buttons/buttons.component';
-import { InputsComponent } from './components/inputs/inputs.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { SwitchComponent } from './components/switch/switch.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { StarterKitComponent } from './starter-kit/starter-kit.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: StarterKitComponent,
-  },
-  { path: 'buttons', component: ButtonsComponent },
-  { path: 'inputs', component: InputsComponent },
-  { path: 'breadcrumbs', component: BreadcrumbComponent },
-  { path: 'buttons', component: ButtonsComponent },
-  { path: 'switchs', component: SwitchComponent },
-  { path: 'progress-bar', component: ProgressBarComponent },
-  { path: 'tooltip', component: TooltipComponent },
-
-  { path: '**', redirectTo: '' },
-];
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonProgressBarComponent } from './../common-progress-bar/common-progress-bar.component';
+import { CommonTooltipComponent } from './common-tooltip.component';
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
-  ],
-  exports: [RouterModule],
-  providers: [
-  ]
+  imports: [CommonModule, MatTooltipModule],
+  declarations: [CommonTooltipComponent, CommonTooltipDirective],
+  exports: [CommonTooltipComponent, CommonTooltipDirective, MatTooltipModule],
+  entryComponents: [CommonTooltipComponent],
 })
-export class AppRoutingModule { }
+export class CommonTooltipModule {}

@@ -34,41 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkStrategy } from 'ngx-quicklink';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
-import { ButtonsComponent } from './components/buttons/buttons.component';
-import { InputsComponent } from './components/inputs/inputs.component';
-import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
-import { SwitchComponent } from './components/switch/switch.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { StarterKitComponent } from './starter-kit/starter-kit.component';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: StarterKitComponent,
-  },
-  { path: 'buttons', component: ButtonsComponent },
-  { path: 'inputs', component: InputsComponent },
-  { path: 'breadcrumbs', component: BreadcrumbComponent },
-  { path: 'buttons', component: ButtonsComponent },
-  { path: 'switchs', component: SwitchComponent },
-  { path: 'progress-bar', component: ProgressBarComponent },
-  { path: 'tooltip', component: TooltipComponent },
-
-  { path: '**', redirectTo: '' },
-];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy
-    })
+@Component({
+  selector: 'vitamui-common-tooltip',
+  templateUrl: './common-tooltip.component.html',
+  styleUrls: ['./common-tooltip.component.scss'],
+  animations: [
+    trigger('tooltip', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate(300, style({ opacity: 0 })),
+      ]),
+    ]),
   ],
-  exports: [RouterModule],
-  providers: [
-  ]
 })
-export class AppRoutingModule { }
+export class CommonTooltipComponent implements OnInit {
+
+  constructor() { }
+
+ public text = '';
+ public className: string;
+public outline: boolean;
+
+  ngOnInit() {
+  }
+
+
+
+}
