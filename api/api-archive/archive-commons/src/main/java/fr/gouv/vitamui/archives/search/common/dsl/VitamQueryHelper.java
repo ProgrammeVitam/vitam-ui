@@ -31,6 +31,7 @@ import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -38,6 +39,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,6 +49,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gte;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
@@ -86,10 +89,9 @@ public class VitamQueryHelper {
     private static final String PUID = "PUID";
     private static final String EV_TYPE_PROC = "evTypeProc";
     private static final String STATUS = "Status";
-    private static final String EV_TYPE = "evType";
+    private static final String EV_TYPE ="evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
-
     /**
      * create a valid VITAM DSL Query from a map of criteria
      *
@@ -233,5 +235,91 @@ public class VitamQueryHelper {
         }
         return criteriaSubQuery;
     }
+
+    /**
+     * create a valid VITAM DSL Query from a map of criteria
+     *
+     * @param searchCriteriaMap the input criteria. Should match pattern Map(FieldName, SearchValue)
+     * @return The JsonNode required by VITAM external API for a DSL query
+     * @throws InvalidParseOperationException
+     * @throws InvalidCreateOperationException
+     */
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber, final Integer size,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+
+        final Select select = new Select();
+        final BooleanQuery query = and();
+        BooleanQuery queryOr = or();
+        boolean isEmpty = true;
+        boolean haveOrParameters = false;
+
+        // Manage Filters
+        if (orderBy.isPresent()) {
+            if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
+                select.addOrderByDescFilter(orderBy.get());
+            } else {
+                select.addOrderByAscFilter(orderBy.get());
+            }
+        }
+        select.setLimitFilter(pageNumber * size, size);
+
+        // Manage Query
+        if (!searchCriteriaMap.isEmpty()) {
+            isEmpty = false;
+            Set<Map.Entry<String, Object>> entrySet = searchCriteriaMap.entrySet();
+
+            for (final Map.Entry<String, Object> entry : entrySet) {
+                final String searchKey = entry.getKey();
+
+                switch (searchKey) {
+                    case NAME:
+                    case SHORT_NAME:
+                    case IDENTIFIER:
+                    case ID:
+                    case PUID:
+                    case EV_TYPE_PROC:
+                        // string equals operation
+                        final String stringValue = (String) entry.getValue();
+                        queryOr.add(eq(searchKey, stringValue));
+                        haveOrParameters = true;
+                        break;
+                    case EV_TYPE:
+                        // Special case EvType can be String or String[]
+                        if (entry.getValue() instanceof String) {
+                            final String evType = (String) entry.getValue();
+                            query.add(eq(searchKey, evType));
+                            break;
+                        }
+                    case STATUS:
+                        // in list of string operation
+                        final List<String> stringValues = (ArrayList<String>) entry.getValue();
+                        query.add(in(searchKey, stringValues.toArray(new String[] {})));
+                        break;
+                    case EV_DATE_TIME_START:
+                        query.add(gt("evDateTime", (String) entry.getValue()));
+                        break;
+                    case EV_DATE_TIME_END:
+                        query.add(lt("evDateTime", (String) entry.getValue()));
+                        break;
+                    default:
+                        LOGGER.error("Can not find binding for key: {}", searchKey);
+                        break;
+                }
+            }
+        }
+
+        if (!isEmpty) {
+            if (haveOrParameters) {
+                query.add(queryOr);
+            }
+
+            select.setQuery(query);
+        }
+
+        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+        return select.getFinalSelect();
+    }
+
 }
 

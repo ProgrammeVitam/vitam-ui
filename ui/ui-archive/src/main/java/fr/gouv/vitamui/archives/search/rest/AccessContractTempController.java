@@ -28,6 +28,8 @@ package fr.gouv.vitamui.archives.search.rest;
 
 import fr.gouv.vitamui.archives.search.common.dto.AccessContractDto;
 import fr.gouv.vitamui.archives.search.service.AccessContractTempService;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -38,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,5 +73,14 @@ public class AccessContractTempController extends AbstractUiRestController {
         LOGGER.debug("Get all with criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         return accessContractTempService.getAll(buildUiHttpContext(), criteria);
+    }
+
+    @ApiOperation(value = "Get entities paginated")
+    @GetMapping(params = { "page", "size" })
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        return accessContractTempService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 }
