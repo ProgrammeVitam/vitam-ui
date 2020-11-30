@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { SearchBarModule } from '../../search-bar/search-bar.module';
-import { SelectTenantModule } from '../select-tenant/select-tenant.module';
+import { ItemSelectModule } from '../item-select/item-select.module';
 import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
 import { MenuOverlayService } from './menu-overlay.service';
 import { MenuComponent } from './menu.component';
@@ -33,7 +33,7 @@ import { MenuComponent } from './menu.component';
     SearchBarModule,
     PipesModule,
     TranslateModule,
-    SelectTenantModule
+    ItemSelectModule
   ],
   entryComponents: [
     MenuComponent

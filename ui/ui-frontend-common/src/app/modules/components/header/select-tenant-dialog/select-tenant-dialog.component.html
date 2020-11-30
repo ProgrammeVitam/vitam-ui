@@ -3,7 +3,13 @@
     <h2 class="col-12">{{ 'SELECT-TENANT.DIALOG_SUBTITLE' | translate }}</h2>
     <p class="col-12">{{ 'SELECT-TENANT.DIALOG_INSTRUCTIONS' | translate }} <span class="asterix">*</span></p>
 
-    <vitamui-common-select-tenant class="col-12" (tenantSelected)="selectedTenant = $event" [tenants]="tenants"></vitamui-common-select-tenant>
+    <vitamui-common-item-select
+        class="col-12"
+        [label]="'SELECT-TENANT.SELECT' | translate"
+        [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
+        (itemSelected)="selectedTenant = $event"
+        [items]="tenants">
+    </vitamui-common-item-select>
 
     <button class="col-12 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT-TENANT.DIALOG_BUTTON_LABEL' | translate }}</button>
     <p><span class="asterix">*</span> {{ 'SELECT-TENANT.DIALOG_MESSAGE' | translate }}</p>

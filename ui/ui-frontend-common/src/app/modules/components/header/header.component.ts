@@ -41,13 +41,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroyer$ = new Subject();
 
-  public selectedTenant: Tenant;
+  public selectedTenant: MenuOption;
 
   public selectedCustomer: MenuOption;
 
   public customers: MenuOption[];
 
-  public tenants: Tenant[];
+  public tenants: MenuOption[];
 
   public headerLogoUrl: SafeResourceUrl;
 
@@ -64,8 +64,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private globalEventService: GlobalEventService) { }
 
   ngOnInit() {
-    this.tenants = this.tenantService.getTenants();
     this.portalUrl = this.startupService.getPortalUrl();
+    this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
+      return {value: tenant, label: tenant.name};
+    });
 
     if (this.authService.user) {
       this.currentUser = this.authService.user;
@@ -103,10 +105,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyer$))
       .subscribe((tenant: Tenant) => {
         if (!this.selectedTenant) {
-          this.selectedTenant = tenant;
+          this.selectedTenant = {value: tenant, label: tenant.name};
         } else {
-          if (this.selectedTenant.identifier !== tenant.identifier) {
-            this.selectedTenant = tenant;
+          if (this.selectedTenant.value.identifier !== tenant.identifier) {
+            this.selectedTenant = {value: tenant, label: tenant.name};
             this.tenantService.saveSelectedTenant(tenant).toPromise();
           }
         }
@@ -117,9 +119,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tenantService.getLastTenantIdentifier$()
       .pipe(takeUntil(this.tenantService.getSelectedTenant$()), takeUntil(this.destroyer$))
       .subscribe((identifier: number) => {
-        const lastTenant = this.tenants.find(value => value.identifier === identifier);
+        const lastTenant = this.tenants.find((option: MenuOption) => option.value.identifier === identifier);
         if (!this.selectedTenant && lastTenant) {
-          this.tenantService.setSelectedTenant(lastTenant);
+          this.tenantService.setSelectedTenant(lastTenant.value);
         }
     });
 
@@ -132,8 +134,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroyer$.complete();
   }
 
-  public updateTenant(tenant: Tenant): void {
-    this.tenantService.setSelectedTenant(tenant);
+  public updateTenant(tenant: MenuOption): void {
+    this.tenantService.setSelectedTenant(tenant.value);
   }
 
   public updateCustomer(customer: MenuOption): void {

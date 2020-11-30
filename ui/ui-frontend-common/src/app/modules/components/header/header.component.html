@@ -8,21 +8,27 @@
   <vitamui-common-select-language></vitamui-common-select-language>
 
   <div class="selection-component">
-    <vitamui-common-select-tenant
+    <!-- tenant selection -->
+    <vitamui-common-item-select
       *ngIf="hasTenantSelection"
       class="mx-4"
-      [tenants]="tenants"
-      [selectedTenant]="selectedTenant"
-      (tenantSelected)="updateTenant($event)">
-    </vitamui-common-select-tenant>
+      [label]="'SELECT-TENANT.SELECT' | translate"
+      [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
+      [items]="tenants"
+      [selectedItem]="selectedTenant"
+      (itemSelected)="updateTenant($event)">
+    </vitamui-common-item-select>
 
-    <vitamui-common-select-customer
+    <!-- customer selection -->
+    <vitamui-common-item-select
       *ngIf="hasCustomerSelection"
       class="mx-4"
-      [customers]="customers"
-      [selectedCustomer]="selectedCustomer"
-      (customerSelected)="updateCustomer($event)">
-    </vitamui-common-select-customer>
+      [label]="'SELECT-CUSTOMER.SELECT' | translate"
+      [selectedLabel]="'SELECT-CUSTOMER.SELECTED' | translate"
+      [items]="customers"
+      [selectedItem]="selectedCustomer"
+      (itemSelected)="updateCustomer($event)">
+    </vitamui-common-item-select>
 
     <div class="separator"></div>
   </div>

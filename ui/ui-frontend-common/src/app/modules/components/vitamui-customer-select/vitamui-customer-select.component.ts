@@ -34,10 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ApplicationId } from '../../application-id.enum';
+import { GlobalEventService } from '../../global-event.service';
 import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
 
 @Component({
@@ -45,21 +48,33 @@ import { MenuOption } from '../navbar/customer-menu/menu-option.interface';
   templateUrl: './vitamui-customer-select.component.html',
   styleUrls: ['./vitamui-customer-select.component.scss']
 })
-export class VitamUICustomerSelectComponent {
+export class VitamUICustomerSelectComponent implements OnInit, OnDestroy {
 
-  appId: ApplicationId;
-  hideTenantMenu = true;
-  hideCustomerMenu = false;
-  customers: MenuOption[];
+  public customers: MenuOption[];
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-  this.route.data.subscribe((data) => {
-    this.customers = data.customers;
-    this.appId = data.appId;
+  private destroyer$ = new Subject();
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private globalEventService: GlobalEventService) { }
+
+  ngOnInit() {
+    this.route.data.pipe(takeUntil(this.destroyer$))
+      .subscribe((data) => {
+        this.customers = data.customers;
     });
+
+    this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$))
+      .subscribe((customerId: string) => this.selectCustomer(customerId));
   }
 
-  selectCustomerInNavbar(customerId: Event) {
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  selectCustomer(customerId: string): void {
     this.router.navigate(['./' + customerId], { relativeTo: this.route });
   }
 

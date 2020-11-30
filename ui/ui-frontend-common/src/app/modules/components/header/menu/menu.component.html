@@ -4,18 +4,21 @@
     >
     <div class="row header">
         <vitamui-common-search-bar
-            class="col-5"
+            class="col-5 mr-2"
             name="category-search"
             (searchChanged)="onSearch($event)"
             (clear)="resetSearch()"
             placeholder="{{'MENU.GRAB_APPLICATION' | translate}}"
         ></vitamui-common-search-bar>
 
-        <vitamui-common-select-tenant class="col-3 p-0 ml-5"
-            [tenants]="tenants"
-            [selectedTenant]="selectedTenant"
-            (tenantSelected)="updateApps($event)"
-        ></vitamui-common-select-tenant>
+        <vitamui-common-item-select
+            class="col-3 p-0 ml-5"
+            [label]="'SELECT-TENANT.SELECT' | translate"
+            [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
+            [items]="tenants"
+            [selectedItem]="selectedTenant"
+            (itemSelected)="updateApps($event)"
+        ></vitamui-common-item-select>
 
         <div class="apps-container col-3 ml-auto" (click)="onClose()">
             <span class="pr-2">{{'MENU.MY_APPLICATIONS' | translate}}</span>

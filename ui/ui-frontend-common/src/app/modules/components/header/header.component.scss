@@ -1,5 +1,3 @@
-@import '../../../../sass/variables/colors';
-
 mat-toolbar {
   z-index: 10;
 }
@@ -49,11 +47,11 @@ mat-toolbar {
 }
 
 .apps-button {
-  background-color: $white;
+  background-color: white;
 }
 
 .apps-button mat-icon {
-  color: $charcoal-grey;
+  color: var(--vitamui-grey-700);
 }
 
 .vitamui-icon-apps-colored {

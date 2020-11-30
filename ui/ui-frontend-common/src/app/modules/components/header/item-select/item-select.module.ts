@@ -3,16 +3,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
-import { SelectCustomerComponent } from './select-customer.component';
+import { ItemSelectComponent } from './item-select.component';
 
 @NgModule({
-  declarations: [SelectCustomerComponent],
   imports: [
     CommonModule,
-    MatSelectModule,
     FormsModule,
+    MatSelectModule,
     TranslateModule
   ],
-  exports: [SelectCustomerComponent]
+  declarations: [ItemSelectComponent],
+  exports: [ItemSelectComponent]
 })
-export class SelectCustomerModule { }
+export class ItemSelectModule { }

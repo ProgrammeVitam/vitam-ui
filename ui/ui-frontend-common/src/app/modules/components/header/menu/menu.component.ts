@@ -9,6 +9,7 @@ import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
 import { TenantSelectionService } from '../../../tenant-selection.service';
+import { MenuOption } from '../../navbar';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
@@ -72,9 +73,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   private firstResultFocused = false;
 
-  public selectedTenant: Tenant;
+  public selectedTenant: MenuOption;
 
-  public tenants: Tenant[];
+  public tenants: MenuOption[];
 
   private destroyer$ = new Subject();
 
@@ -107,16 +108,18 @@ export class MenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
-    this.tenants = this.tenantService.getTenants();
+    this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
+      return {value: tenant, label: tenant.name};
+    });
 
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
-    this.selectedTenant = this.tenantService.getSelectedTenant();
+    this.selectedTenant = {value: this.tenantService.getSelectedTenant(), label: this.tenantService.getSelectedTenant().name};
     if (this.selectedTenant) {
       this.updateApps(this.selectedTenant);
     } else {
       this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
-        this.updateApps(this.tenants.find(value => value.identifier === identifier));
+        this.updateApps(this.tenants.find(option => option.value.identifier === identifier));
       });
     }
   }
@@ -172,13 +175,13 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public openApplication(app: Application) {
     this.onClose();
     this.applicationService.
-      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
+      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.value.identifier);
   }
 
-  public updateApps(tenant: Tenant) {
+  public updateApps(tenant: MenuOption) {
     if (tenant) {
       this.selectedTenant = tenant;
-      this.appMap = this.applicationService.getTenantAppMap(tenant);
+      this.appMap = this.applicationService.getTenantAppMap(tenant.value);
     }
   }
 }

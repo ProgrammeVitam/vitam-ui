@@ -40,7 +40,6 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
-import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
@@ -140,7 +139,6 @@ export function startupServiceFactory(startupService: StartupService) {
     LoggerModule,
     NavbarModule,
     HeaderModule,
-    SelectTenantModule,
     SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
@@ -191,7 +189,6 @@ export function startupServiceFactory(startupService: StartupService) {
     LoggerModule,
     NavbarModule,
     HeaderModule,
-    SelectTenantModule,
     SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
