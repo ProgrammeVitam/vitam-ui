@@ -1,3 +1,5 @@
+@import '../../../../../sass/variables/colors';
+
 :host::ng-deep .mat-form-field {
     padding: 0.5rem 2rem;
 }
@@ -24,6 +26,6 @@ vitamui-common-select-tenant {
 }
 
 .asterix {
-    color: red;
+    color: $red;
     font-weight: bold;
 }

@@ -1,13 +1,14 @@
 .vitamui-sidepanel {
     background: white;
+    margin-top: 72px; // header height
     width: 584px;
     height: 100vh;
 }
 
 .vitamui-sidepanel-header {
     background-color: white;
-    padding: 10px 15px 10px 10px;
-    height: 204px;
+    padding: 5px 15px 10px 10px;
+    height: 142px;
 
     .title {
         display: flex;
@@ -66,7 +67,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    top: 165px;
+    top: 214px;
 }
 
 .mat-drawer-content {

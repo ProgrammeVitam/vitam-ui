@@ -1,7 +1,9 @@
 .preview-tab-group.mat-tab-group {
     .mat-tab-label {
+        min-width: 130px;
         height: 37px;
-        color: var(--vitamui-grey-900);
+        opacity: 1;
+        color: var(--vitamui-grey-600);
 
         &:hover {
             background-color: var(--vitamui-grey-300);
@@ -12,9 +14,23 @@
         }
     }
 
+    .mat-tab-label-active {
+        .mat-tab-label-content {
+            color: var(--vitamui-primary);
+        }
+    }
+
     .mat-tab-header {
         border-top: 1px solid var(--vitamui-grey-400);
         border-bottom: 1px solid var(--vitamui-grey-400);
+
+        .mat-tab-header-pagination {
+            display: none;
+        }
+    }
+
+    .mat-tab-labels {
+        padding: 0 30px;
     }
 
     .mat-tab-body-content {
