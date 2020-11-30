@@ -36,8 +36,10 @@
  */
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputModule } from '../level-input/level-input.module';
 import { EditableLevelInputComponent } from './editable-level-input.component';
 import { SubLevelPipe } from './sub-level.pipe';
@@ -52,10 +54,18 @@ describe('EditableLevelInputComponent', () => {
         ReactiveFormsModule,
         OverlayModule,
         LevelInputModule,
+        HttpClientTestingModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [ EditableLevelInputComponent, SubLevelPipe ]
+      declarations: [
+        EditableLevelInputComponent,
+        SubLevelPipe],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

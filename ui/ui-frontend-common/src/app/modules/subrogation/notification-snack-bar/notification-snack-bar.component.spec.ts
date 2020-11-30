@@ -36,7 +36,9 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { NotificationSnackBarComponent } from './notification-snack-bar.component';
 
 describe('NotificationSnackBarComponent', () => {
@@ -45,10 +47,15 @@ describe('NotificationSnackBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         NotificationSnackBarComponent,
       ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: {} },
       ]

@@ -38,13 +38,16 @@
 
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 
 // import { FlowValidators } from '../../../flow/flow.validators';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EmailsInputModule } from '../emails-input/emails-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input.component';
 
@@ -80,13 +83,16 @@ describe('MultipleEmailInputComponent', () => {
         ReactiveFormsModule,
         MatProgressSpinnerModule,
         EmailsInputModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [
         TesthostComponent,
         MultipleEmailInputComponent,
       ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
         // { provide: FlowValidators, useValue: flowValidatorsSpy },
       ]
     })

@@ -39,6 +39,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatInputModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 import { EmailsInputComponent } from './emails-input.component';
 
 @NgModule({
@@ -47,7 +48,8 @@ import { EmailsInputComponent } from './emails-input.component';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    TranslateModule
   ],
   declarations: [EmailsInputComponent],
   exports: [EmailsInputComponent]

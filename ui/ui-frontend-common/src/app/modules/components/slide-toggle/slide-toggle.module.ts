@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateVitamModule } from '../translate/translate-vitam.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SlideToggleComponent } from './slide-toggle.component';
 
@@ -44,7 +44,7 @@ import { SlideToggleComponent } from './slide-toggle.component';
   declarations: [SlideToggleComponent],
   imports: [
     CommonModule,
-    TranslateVitamModule,
+    TranslateModule,
   ],
   exports: [SlideToggleComponent]
 })

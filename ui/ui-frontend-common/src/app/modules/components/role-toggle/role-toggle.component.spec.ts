@@ -36,12 +36,13 @@
  */
 // tslint:disable:no-magic-numbers
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SlideToggleComponent } from '../slide-toggle/slide-toggle.component';
 import { RoleToggleComponent } from './role-toggle.component';
 import { RoleComponent } from './role.component';
@@ -69,7 +70,12 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot()],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ],
       declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent]
     })
       .compileComponents();

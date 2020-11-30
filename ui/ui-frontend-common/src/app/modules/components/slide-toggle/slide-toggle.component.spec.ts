@@ -34,11 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SlideToggleComponent } from './slide-toggle.component';
 
 @Component({
@@ -57,7 +60,10 @@ describe('SlideToggleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule, HttpClientTestingModule, TranslateModule.forRoot()],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ],
       declarations: [ TesthostComponent, SlideToggleComponent ],
     })
     .compileComponents();

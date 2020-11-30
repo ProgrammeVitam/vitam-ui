@@ -35,8 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule } from '@angular/forms';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputComponent } from './level-input.component';
 
 describe('LevelInputComponent', () => {
@@ -45,10 +47,17 @@ describe('LevelInputComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [ LevelInputComponent ]
+      imports: [
+        FormsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ],
+      declarations: [LevelInputComponent],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

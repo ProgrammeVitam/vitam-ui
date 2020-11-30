@@ -34,9 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { CancelledSnackBarComponent } from './cancelled-snack-bar.component';
 
 describe('CancelledSnackBarComponent', () => {
@@ -45,12 +48,17 @@ describe('CancelledSnackBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CancelledSnackBarComponent ],
+      declarations: [CancelledSnackBarComponent],
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
       providers: [
-        { provide: MatSnackBarRef, useValue: { close: () => {} } },
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: MatSnackBarRef, useValue: { close: () => { } } },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

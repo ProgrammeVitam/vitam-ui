@@ -41,8 +41,6 @@ import { Component, forwardRef, HostBinding, Input, OnInit } from '@angular/core
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { extractSubLevel } from '../../../utils';
 
-
-
 export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => LevelInputComponent),

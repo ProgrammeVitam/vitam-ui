@@ -36,7 +36,9 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
 describe('VitamUISnackbarComponent', () => {
@@ -45,8 +47,13 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [ VitamUISnackBarComponent ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: { dismiss: () => {} } },
       ]

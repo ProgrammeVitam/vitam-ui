@@ -1,7 +1,7 @@
 <div *ngIf="!isEditableComponent" class="vitamui-input" [class.disabled]="disabled">
-    <label i18n="@@subLevelLevelInputComponent">Sous niveau<span *ngIf="required" class="required-marker">*</span></label>
+    <label>{{'LEVEL-INPUT.SUBLEVEL' | translate }}<span *ngIf="required" class="required-marker">*</span></label>
     <input [disabled]="disabled" [required]="required" [(ngModel)]="subLevel" (ngModelChange)="onValueChange($event)"
-    (blur)="onBlur()" (focus)="onFocus()" maxlength="250" i18n-placeholder="Admin profile level@@adminProfileSubLevel">
+    (blur)="onBlur()" (focus)="onFocus()" maxlength="250">
 </div>
 
 <div *ngIf="!isEditableComponent"  class="vitamui-input-errors">
@@ -10,5 +10,5 @@
 
 <div *ngIf="isEditableComponent">
     <input [disabled]="disabled" [required]="required" [(ngModel)]="subLevel" (ngModelChange)="onValueChange($event)"
-    (blur)="onBlur()" maxlength="250" (focus)="onFocus()" i18n-placeholder="Admin profile level@@adminProfileSubLevel">
+    (blur)="onBlur()" maxlength="250" (focus)="onFocus()">
 </div>

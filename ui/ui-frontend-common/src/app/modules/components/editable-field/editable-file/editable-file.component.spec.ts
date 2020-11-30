@@ -36,14 +36,17 @@
  */
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { newFile } from '../../../models';
 import { VitamUIFieldErrorComponent } from '../../vitamui-field-error/vitamui-field-error.component';
 import { EditableFileComponent } from './editable-file.component';
@@ -87,6 +90,11 @@ describe('EditableFileComponent', () => {
         OverlayModule,
         MatProgressSpinnerModule,
         NoopAnimationsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
       ],
       declarations: [
         TesthostComponent,

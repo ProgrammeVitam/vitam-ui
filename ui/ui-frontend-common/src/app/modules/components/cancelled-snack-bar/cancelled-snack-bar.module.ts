@@ -37,12 +37,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { CancelledSnackBarComponent } from './cancelled-snack-bar.component';
+
 
 @NgModule({
   imports: [
     CommonModule,
     MatDialogModule,
+    TranslateModule,
   ],
   declarations: [
     CancelledSnackBarComponent,

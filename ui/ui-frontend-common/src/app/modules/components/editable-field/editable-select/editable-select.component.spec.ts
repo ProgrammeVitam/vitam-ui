@@ -36,6 +36,7 @@
  */
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -43,7 +44,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EditableOptionComponent } from './editable-option.component';
 import { EditableSelectComponent } from './editable-select.component';
 
@@ -79,6 +81,11 @@ describe('EditableSelectComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         MatDialogModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
       ],
       declarations: [
         TesthostComponent,

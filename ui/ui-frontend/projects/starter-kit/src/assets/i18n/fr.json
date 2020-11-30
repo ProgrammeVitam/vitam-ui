@@ -1,2 +1,17 @@
 {
+    "BUTTON": {
+        "Primary": "Primaire par défaut",
+        "Primary_outline": "Contour Primaire par défaut",
+        "Primary_contrast": "Contraste Primaire par défaut",
+        "Primary_contrast_outline": "Contour contrasté Primaire par défaut",
+        "Secondary": "Secondaire par défaut",
+        "Secondary_outline": "Contour Secondaire par défaut",
+        "Secondary_contrast": "Contraste Secondaire par défaut",
+        "Secondary_contrast_outline": "Contour contrasté secondaire  par défaut",
+        "Tertiary": "Tertiaire par défaut",
+        "Disabled_label": "désactivé",
+        "Disabled_outline": "Contour désactivé",
+        "Disabled_contrast": "Contraste désactivé",
+        "Disabled_contrast_outline": "Contour contrasté désactivé"
+	}
 }

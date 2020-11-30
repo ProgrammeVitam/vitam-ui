@@ -43,7 +43,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 import { EditableDurationInputComponent } from './editable-duration-input/editable-duration-input.component';
 import { HumanizedDurationPipe } from './editable-duration-input/humanized-duration.pipe';
@@ -61,6 +61,7 @@ import { EmailsInputModule } from './emails-input/emails-input.module';
 import { LevelInputModule } from './level-input/level-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input/multiple-email-input.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -75,7 +76,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     EmailsInputModule,
     LevelInputModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    TranslateModule
   ],
   declarations: [
     EditableButtonToggleComponent,
