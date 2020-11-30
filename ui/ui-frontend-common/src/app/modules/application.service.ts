@@ -185,7 +185,7 @@ export class ApplicationService {
       }
     });
   }
-  
+
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
   }
@@ -198,8 +198,9 @@ export class ApplicationService {
     });
 
     categories.forEach((category: Category) => {
-      if (applications.some(app =>  app.category === category.identifier)) {
-        resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      const sortedAppsOfCategory = this.getSortedAppsOfCategory(category, applications);
+      if (sortedAppsOfCategory && sortedAppsOfCategory.length > 0) {
+        resultMap.set(category, sortedAppsOfCategory);
       }
     });
     return resultMap;

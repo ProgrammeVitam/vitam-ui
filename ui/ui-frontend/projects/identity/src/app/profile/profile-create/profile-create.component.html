@@ -18,12 +18,12 @@
         </div>
 
         <div class="d-flex">
-            <vitamui-common-input class="description" formControlName="description" minlength="2" maxlength="250" required placeholder="Description du Profil" i18n-placeholder="Admin profile description@@adminProfileDescription">
+            <vitamui-common-input class="field-name" formControlName="description" minlength="2" maxlength="250" required placeholder="Description du Profil" i18n-placeholder="Admin profile description@@adminProfileDescription">
                 <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
             </vitamui-common-input>
         </div>
 
-        <div class="profil-level d-flex">
+        <div class="d-flex">
             <div class="level-label">
                 <label class="">Niveau du profil</label>
                 <div>{{authService.user.level}}</div>
@@ -46,7 +46,7 @@
         </vitamui-common-role-toggle>
         </div>
 
-        <div class="row actions">
+        <div class="d-flex">
             <button type="submit" class="btn primary" [disabled]="firstStepInvalid()"
                     i18n="Admin profile create finish@@adminProfileCreateFinishButton">
                 Terminer
