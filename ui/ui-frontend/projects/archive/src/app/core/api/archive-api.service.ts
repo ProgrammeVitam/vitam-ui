@@ -42,6 +42,7 @@ import { tap } from 'rxjs/operators';
 import {  SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 
+
 @Injectable({
   providedIn: 'root'
 })

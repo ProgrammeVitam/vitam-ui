@@ -45,7 +45,7 @@ import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.cri
 import { Unit } from './models/unit.interface';
 import { SearchResponse } from './models/search-response.interface';
 
- 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -123,7 +123,7 @@ export class ArchiveService extends SearchService<any> {
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<PagedResult> {
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
-   //   timeout(TIMEOUT_SEC), 
+   //   timeout(TIMEOUT_SEC),
       catchError((error) => {
         if(error instanceof TimeoutError) {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
@@ -138,7 +138,7 @@ export class ArchiveService extends SearchService<any> {
   private buildPagedResults(response: SearchResponse): PagedResult {
     let pagedResult: PagedResult = { results: response.$results, totalResults: response.$hits.total, pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0 };
     let resultFacets: ResultFacet[] = [];
-    if(response.$facetResults && response.$facetResults){     
+    if(response.$facetResults && response.$facetResults){
       for(let facet of response.$facetResults){
         if(facet.name === 'COUNT_BY_NODE'){
           let buckets = facet.buckets;
@@ -152,7 +152,7 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  
+
 }
 
 function idExists(units: Unit[], id: string): boolean {
