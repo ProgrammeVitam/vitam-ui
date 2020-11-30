@@ -5,11 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from './header.component';
 import { ItemSelectModule } from './item-select/item-select.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { MenuModule } from './menu/menu.module';
-import { SelectCustomerModule } from './select-customer/select-customer.module';
+import { SelectLanguageModule } from './select-language/select-language.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
 import { UserPhotoModule } from './user-photo/user-photo.module';
 
@@ -27,7 +27,8 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     ItemSelectModule,
     UserPhotoModule,
     MenuModule.forRoot(),
-    TranslateModule
+    TranslateModule,
+    SelectLanguageModule
   ],
   exports : [
     HeaderComponent
