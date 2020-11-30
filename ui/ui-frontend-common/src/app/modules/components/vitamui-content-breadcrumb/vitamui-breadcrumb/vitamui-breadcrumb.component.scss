@@ -1,0 +1,12 @@
+.breadcrumb {
+    display: inline-flex;
+    align-items: center;
+}
+
+span:not(:last-child) {
+    cursor: pointer;
+}
+
+span:last-child {
+    font-weight: bold;
+}

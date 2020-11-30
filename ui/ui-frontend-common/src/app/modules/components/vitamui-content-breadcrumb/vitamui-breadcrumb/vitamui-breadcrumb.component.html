@@ -1,0 +1,6 @@
+<div class="breadcrumb">
+    <ng-container *ngFor="let d of data; let last = last">
+        <span (click)="onClick(d, !last)">{{d.label}}</span>
+        <i *ngIf="!last" class="material-icons px-2">trending_flat</i>
+    </ng-container>
+</div>

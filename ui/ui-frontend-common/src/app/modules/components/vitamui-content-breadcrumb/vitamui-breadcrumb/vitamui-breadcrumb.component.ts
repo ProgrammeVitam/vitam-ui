@@ -34,20 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './application/index';
-export * from './app.configuration.interface';
-export * from './content-disposition.enum';
-export * from './criteria/criteria.interface';
-export * from './criteria/criterion.interface';
-export * from './customer/index';
-export * from './group/index';
-export * from './id.interface';
-export * from './logbook/index';
-export * from './operation/index';
-export * from './position/index';
-export * from './profile/index';
-export * from './subrogation/index';
-export * from './tree-node.interface';
-export * from './user/index';
-export * from './vitam/index';
-export * from './breadcrumb/breadcrumb.interface';
+
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
+
+@Component({
+  selector: 'vitamui-common-breadcrumb',
+  templateUrl: './vitamui-breadcrumb.component.html',
+  styleUrls: ['./vitamui-breadcrumb.component.scss']
+})
+export class VitamuiBreadcrumbComponent implements OnInit {
+
+  @Input()
+  public data: BreadCrumbData[];
+
+  @Output()
+  public selected = new EventEmitter<string>();
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  public onClick(d: BreadCrumbData, emit: boolean): void {
+    if (emit) {
+      this.selected.emit(d.identifier);
+    }
+  }
+}

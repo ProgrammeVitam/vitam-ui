@@ -1,0 +1,8 @@
+<vitamui-common-breadcrumb
+    *ngIf="data"
+    [data]="data"
+    (selected)="redirectTo($event)">
+</vitamui-common-breadcrumb>
+<h2>
+    <ng-content></ng-content>
+</h2>

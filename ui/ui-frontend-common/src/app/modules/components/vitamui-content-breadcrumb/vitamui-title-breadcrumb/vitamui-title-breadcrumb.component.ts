@@ -34,20 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './application/index';
-export * from './app.configuration.interface';
-export * from './content-disposition.enum';
-export * from './criteria/criteria.interface';
-export * from './criteria/criterion.interface';
-export * from './customer/index';
-export * from './group/index';
-export * from './id.interface';
-export * from './logbook/index';
-export * from './operation/index';
-export * from './position/index';
-export * from './profile/index';
-export * from './subrogation/index';
-export * from './tree-node.interface';
-export * from './user/index';
-export * from './vitam/index';
-export * from './breadcrumb/breadcrumb.interface';
+
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApplicationService } from '../../../application.service';
+import { Logger } from '../../../logger/logger';
+import { Application } from '../../../models/application/application.interface';
+import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
+import { StartupService } from '../../../startup.service';
+import { TenantSelectionService } from '../../../tenant-selection.service';
+
+@Component({
+  selector: 'vitamui-common-title-breadcrumb',
+  templateUrl: './vitamui-title-breadcrumb.component.html',
+  styleUrls: ['./vitamui-title-breadcrumb.component.scss']
+})
+export class VitamuiTitleBreadcrumbComponent implements OnInit {
+
+  @Input()
+  public data?: BreadCrumbData[];
+
+  constructor(
+    private applicationService: ApplicationService,
+    private router: Router,
+    private startupService: StartupService,
+    private logger: Logger,
+    private tenantSelectionService: TenantSelectionService,
+  ) { }
+
+  ngOnInit() {
+  }
+
+  public redirectTo(identifier: string): void {
+    if (!identifier) {
+      this.router.navigate([this.startupService.getPortalUrl()]);
+    } else {
+      const app = this.applicationService.applications.find((application: Application) => application.identifier === identifier);
+      if (app) {
+        this.applicationService.openApplication(
+          app,
+          this.router,
+          this.startupService.getConfigStringValue('UI_URL')
+        );
+      } else {
+        this.logger.error(this, 'No application identifier found for ', identifier);
+      }
+    }
+  }
+}
