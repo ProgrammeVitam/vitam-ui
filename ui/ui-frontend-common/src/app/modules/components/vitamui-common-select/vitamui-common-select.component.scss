@@ -3,6 +3,7 @@
 .selected-label, .unselected-label {
     color: $greyish-two;
     font-size: 14px;
+    font-family: 'Mulish', sans-serif;
 }
 
 :host::ng-deep {

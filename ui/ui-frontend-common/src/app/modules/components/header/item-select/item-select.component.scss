@@ -48,6 +48,21 @@
         font-size: 16px;
     }
 
+    .mat-option-text {
+        font-family: 'Mulish', sans-serif;
+        color: var(--vitamui-grey-900);
+    }
+
+    .mat-option {
+        font-family: 'Mulish', sans-serif;
+        color: var(--vitamui-grey-900);
+    }
+
+    .mat-option.mat-selected:not(.mat-option-disabled)
+    {
+        color: var(--vitamui-primary);
+    }
+
     .mat-form-field-infix {
         padding: 0;
     }

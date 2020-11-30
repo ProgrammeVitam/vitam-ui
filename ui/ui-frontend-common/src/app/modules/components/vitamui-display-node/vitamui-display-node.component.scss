@@ -1,6 +1,7 @@
 @import '../../../../sass/variables/colors';
 
 .parent-label {
+    font-family: 'Mulish', sans-serif;
     font-size: 14px;
     font-weight: normal;
     text-overflow: ellipsis;
@@ -9,6 +10,7 @@
 }
 
 ul, li {
+    font-family: 'Mulish', sans-serif;
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
