@@ -1,20 +1,20 @@
 @import '../../../../../sass/variables/colors';
 
 :host::ng-deep {
-  
+
   .selected-customer-label, .unselected-customer-label {
-    color: $warm-grey;
+    color: var(--vitamui-grey-600);
     font-size: 16px;
   }
 
   .mat-form-field-underline {
     display: none;
   }
-  
+
   .mat-select-value-text {
     font-weight: bold;
   }
-  
+
   .mat-select-arrow {
     color: var(--vitamui-primary);
   }
@@ -24,8 +24,8 @@
   }
 
   mat-form-field {
-    border: 1px solid $light-grey;
-    background-color: $white;
+    border: 1px solid var(--vitamui-grey-300);
+    background-color: white;
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 50px;
@@ -35,12 +35,13 @@
   }
 
   .mat-form-field-flex {
-    background-color: $white;
+    background-color: white;
     padding: 0!important;
   }
 
   mat-select {
-    color: $dark-grey!important;
+    color: var(--vitamui-grey-900);
+    font-size: 16px;
   }
 
   .mat-form-field-infix {

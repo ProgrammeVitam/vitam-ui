@@ -1,5 +1,5 @@
 .vitamui-sidepanel {
-    min-width: 584px;
+    width: 584px;
     height: 100vh;
     background: white;
 }
@@ -37,7 +37,6 @@
         display: flex;
         align-items: center;
         margin-top: 30px;
-        margin-bottom: 20px;
         padding: 0 30px;
 
         i {
@@ -64,9 +63,11 @@
             font-size: 24px;
             line-height: 24px;
             font-weight: 700;
-            margin-top: 32px;
             margin: 0;
-            text-transform: uppercase;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
 
             small {
                 display: block;

@@ -1,4 +1,4 @@
-<div class="domain-input-control d-flex justify-content-between align-items-center">
+<div class="domain-input-control d-flex align-items-center">
   <div class="domain-input-wrapper d-flex align-items-center">
       <span class="mr-2">@</span>
       <input class="vitamui-input" [style.width.px]="300" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
@@ -6,9 +6,8 @@
   </div>
 
   <div class="actions">
-      <button class="btn btn-circle secondary" (click)="add()" [disabled]="buttonAddDisabled()">
-          <i class="vitamui-icon vitamui-icon-add"></i>
-      </button>
+      <button type="button" class="btn primary ml-2" i18n="@@domainInputCreateNextButton"  (click)="add()" [disabled]="buttonAddDisabled()">Ajouter</button>
+
   </div>
 </div>
 
