@@ -80,6 +80,7 @@ import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.mod
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
+import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
@@ -160,7 +161,8 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiContentBreadcrumbModule,
     VitamuiCommonBannerModule,
     UserPhotoModule,
-    VitamuiMenuButtonModule
+    VitamuiMenuButtonModule,
+    VitamuiSidenavHeaderModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -212,6 +214,7 @@ export function startupServiceFactory(startupService: StartupService) {
     UserPhotoModule,
     CommonProgressBarModule,
     CommonTooltipModule,
+    VitamuiSidenavHeaderModule,
     VitamuiMenuButtonModule
   ],
   providers: [

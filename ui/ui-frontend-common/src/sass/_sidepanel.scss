@@ -1,93 +1,60 @@
 .vitamui-sidepanel {
+    background: white;
     width: 584px;
     height: 100vh;
-    background: white;
 }
 
 .vitamui-sidepanel-header {
-    padding: 10px;
-    height: 200px;
-    background-color: var(--vitamui-primary);
-
-    .btn-popup {
-        font-size: 32px;
-        background: none;
-        border: none;
-        padding: 0;
-        color: white;
-    }
-
-    .btn-close {
-        background: none;
-        border: none;
-        padding: 0;
-        float: right;
-        opacity: 0.5;
-        color: white;
-        text-decoration: none;
-
-        i {
-            font-size: 38px;
-            line-height: 22px;
-            width: 30px;
-        }
-    }
+    background-color: white;
+    padding: 10px 15px 10px 10px;
+    height: 204px;
 
     .title {
         display: flex;
         align-items: center;
-        margin-top: 30px;
         padding: 0 30px;
 
         > i {
-            color: white;
-            margin-right: 20px;
-            font-size: 38px;
+            color: var(--vitamui-grey-900);
+            font-size: 45px;
         }
 
-        .vitamui-sidepanel-title-icon {
-            margin-right: 10px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            &:before {
-                color: white;
-            }
-        }
-
-        h2 {
-            color: white;
-            font-size: 24px;
+        // DEPREACTED : REMOVE THIS H2 CSS AT THE END OF THE REDESIGN
+        > h2 {
+            color: var(--vitamui-grey-900);
+            padding-left: 1.5rem;
             line-height: 24px;
-            font-weight: 700;
             margin: 0;
-            display: -webkit-box;
-            overflow: hidden;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            width: 71%;
+        }
 
-            small {
-                display: block;
-                font-weight: 300;
-                font-size: 18px;
-                line-height: 24px;
+        > div:first-of-type {
+            width: 66%;
+            padding-left: 1.5rem;
+
+            > h2 {
+                color: var(--vitamui-grey-900);
+                margin: 0;
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
+
+            > p {
+                color: var(--vitamui-grey-900);
+                margin: 0;
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
             }
         }
 
-        .btn-circle {
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            margin-left: 40px;
-        }
-    }
-
-    .spinner-white {
-        .mat-progress-spinner circle, .mat-spinner circle {
-            stroke: white
+        > .actions {
+            width: 25%;
         }
     }
 }
@@ -99,7 +66,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    top: 163px;
+    top: 165px;
 }
 
 .mat-drawer-content {

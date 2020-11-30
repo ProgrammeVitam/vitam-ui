@@ -164,6 +164,14 @@
         inline-size: initial!important;
     }
 
+    &.xx-large {
+        font-size: xx-large;
+        
+        > i {
+            font-size: xx-large!important;
+        }
+    }
+
     &:hover {
         span {
             text-decoration: underline;

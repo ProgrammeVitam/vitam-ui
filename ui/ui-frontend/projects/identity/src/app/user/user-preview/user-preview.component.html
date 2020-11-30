@@ -1,49 +1,38 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <div class="d-flex justify-content-between">
-      <button *ngIf="!isPopup" class="btn btn-circle primary large" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-      <button class="btn btn-circle primary large" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
-    </div>
+<vitamui-common-sidenav-header
+  [badge]="user?.status === 'ENABLED' ? 'green' : (user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : orange)"
+  [title]="user?.lastname.toUpperCase() + ' ' + user?.firstname"
+  [subtitle]="'(' +  user?.identifier + ')'"
+  [icon]="'vitamui-icon-user'"
+  (onclose)="emitClose()">
+    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
+      <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
+      <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>
+    </vitamui-common-menu-button>
+</vitamui-common-sidenav-header>
 
-    <div class="title">
-      <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="user?.status === 'ENABLED'"></i>
-      <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-gray" *ngIf="user?.status === 'DISABLED'"></i>
-      <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="user?.status === 'BLOCKED'"></i>
-      <div *ngIf="user?.status === 'ANONYM'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
-      <h2>{{ user?.lastname | uppercase }} {{ user?.firstname }} <small>({{user?.identifier}})</small></h2>
-      
-      <ng-container *ngIf="!isPopup">
-        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
-          <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
-          <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>
-        </vitamui-common-menu-button>
-      </ng-container>
-    </div>
-  </div>
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
+      <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-info-tab>
+    </mat-tab>
 
-      <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
-        <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-info-tab>
-      </mat-tab>
+    <mat-tab label="Groupe" i18n-label="Groupe tab@@userPreviewTabGroupe" class="no-padding">
+      <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-group-tab>
+    </mat-tab>
 
-      <mat-tab label="Groupe" i18n-label="Groupe tab@@userPreviewTabGroupe" class="no-padding">
-        <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-group-tab>
-      </mat-tab>
-
-      <mat-tab label="Historique" i18n-label="History tab@@userPreviewTabHistory">
-          <vitamui-common-operation-history-tab [id]="user?.id" [identifier]="user?.identifier" collectionName="users" [filter]="filterAuthenticationEvents"></vitamui-common-operation-history-tab>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+    <mat-tab label="Historique" i18n-label="History tab@@userPreviewTabHistory">
+        <vitamui-common-operation-history-tab [id]="user?.id" [identifier]="user?.identifier" collectionName="users" [filter]="filterAuthenticationEvents"></vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
     <p i18n="@@disabledUserConfirm">Êtes vous sur de vouloir désactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
+
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
+    <button [matDialogClose]="true" class="btn primary mr-2" i18n="@@confirmDialogConfirmButton">Confirmer</button>
     <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>
@@ -52,8 +41,9 @@
   <mat-dialog-content>
     <p i18n="@@EnabledUserConfirm">Êtes vous sur de vouloir réactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
+  
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
+    <button [matDialogClose]="true" class="btn primary mr-2" i18n="@@confirmDialogConfirmButton">Confirmer</button>
     <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
   </mat-dialog-actions>
 </ng-template>
