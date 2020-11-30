@@ -1,10 +1,12 @@
 div {
-    width: 70%;
-    margin: 6rem auto;
-    min-height: calc(100vh - 70px);
+    padding-top: 72px;
+    min-height: calc(100vh - 100px);
     background-color: var(--vitamui-background);
+    /* position: relative; */
+    // width: 70%;
+    // margin: 6rem auto;
 }
-
+/*
 @media screen and (min-width: 1501px) and (max-width: 1750px) {
   div {
     width: 75%;
@@ -28,3 +30,4 @@ div {
     width: 98%;
   }
 }
+*/

@@ -37,6 +37,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SlideToggleComponent } from './slide-toggle.component';
 
@@ -56,8 +57,8 @@ describe('SlideToggleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [ TesthostComponent, SlideToggleComponent ]
+      imports: [FormsModule, TranslateModule.forRoot()],
+      declarations: [ TesthostComponent, SlideToggleComponent ],
     })
     .compileComponents();
   }));

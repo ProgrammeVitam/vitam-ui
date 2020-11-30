@@ -1,17 +1,17 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+  <mat-sidenav #panel mode="side" position="end">
     <app-customer-preview *ngIf="openedItem && previewType==='CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem"></app-customer-preview>
     <app-owner-preview *ngIf="openedItem && previewType==='OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
     <app-owner-preview *ngIf="openedItem && previewType==='TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none">
+  <mat-sidenav-content class="overflow-none vitamui-body">
 
     <div class="vitamui-header">
       <div class="vitamui-container">
         <h2 i18n="Search a customer, owner or tenant@@CustomerSearchHeader">
-          <img src="assets/mini-logo-vitam.png">Rechercher <strong>un Client, un Propriétaire</strong>
+          <img src="assets/bg-fingerprint.svg">Rechercher <strong>un Client, un Propriétaire</strong>
         </h2>
 
         <div class="controls">
@@ -37,13 +37,11 @@
       </div>
     </div>
 
-    <div class="vitamui-body vitamui-container">
-      <app-customer-list
-        (customerClick)="openCustomerPanel($event)"
-        (ownerClick)="openOwnerPanel($event)"
-        (tenantClick)="openTenantPanel($event)"
-      ></app-customer-list>
-    </div>
+    <app-customer-list
+      (customerClick)="openCustomerPanel($event)"
+      (ownerClick)="openOwnerPanel($event)"
+      (tenantClick)="openTenantPanel($event)"
+    ></app-customer-list>
   </mat-sidenav-content>
 
 </mat-sidenav-container>

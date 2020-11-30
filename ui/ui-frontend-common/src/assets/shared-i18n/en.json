@@ -11,20 +11,20 @@
         "PROFILE": "Profile"
     },
     "MENU" : {
-        "GRAB_APPLICATION": "Grab application name",
-        "MY_APPLICATIONS": "My applications",
-        "RESULT": "Result",
-		"settings": "Settings",
-		"administrators": "Management",
-		"users": "User",
-		"referential": "Referential",
-		"opaudit": "Audits & operations",
-		"techadmin": "Technical administration",
-		"lastusedapps": "Lastly used",
-        "ingest_and_consultation": "Ingest & consultation",
-        "supervision_and_audits": "Supervision & Audits",
-        "security_and_application_rights": "Security & application rights",
-        "organization_and_user_rights": "Organization & user rights"
+      "GRAB_APPLICATION": "Grab application name",
+      "MY_APPLICATIONS": "My applications",
+      "RESULT": "Result",
+      "settings": "Settings",
+      "administrators": "Management",
+      "users": "User",
+      "referential": "Referential",
+      "opaudit": "Audits & operations",
+      "techadmin": "Technical administration",
+      "lastusedapps": "Lastly used",
+      "ingest_and_consultation": "Ingest & consultation",
+      "supervision_and_audits": "Supervision & Audits",
+      "security_and_application_rights": "Security & application rights",
+      "organization_and_user_rights": "Organization & user rights"
     },
     "MENU-APPLICATION-TILE": {
         "ENTER_APPLICATION": "Enter to launch the application"

@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+  <mat-sidenav #panel mode="side" position="end">
     <app-profile-detail (profileClose)="closePanel()" [profile]="openedItem"></app-profile-detail>
   </mat-sidenav>
 

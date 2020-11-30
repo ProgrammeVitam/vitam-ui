@@ -1,5 +1,4 @@
 @import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
 
 :host {
     display: inline-block;
@@ -28,14 +27,19 @@ label {
     align-items: center;
     background-color: #8f8f8f;
     transition: background-color 100ms ease-in-out, box-shadow 200ms ease-out;
-    @include elevation-1;
 
-    &.slide-toggle-on {
-        background-color: var(--vitamui-secondary);
+    &.slide-toggle-on:not(.slide-toggle-disabled) {
+        background-color: var(--vitamui-primary);
+        &:hover {
+            background-color: var(--vitamui-primary-700);
+        }
     }
 
-    &:hover {
-        @include elevation-2;
+    &.slide-toggle-off:not(.slide-toggle-disabled) {
+        background-color: var(--vitamui-grey-600);
+        &:hover {
+            background-color: var(--vitamui-grey-800);
+        }
     }
 
     .slide-toggle-inner {
@@ -79,8 +83,13 @@ label {
     }
 
     &.slide-toggle-disabled {
-        opacity: 0.4;
-        @include elevation-0;
+        cursor: no-drop;
+        &.slide-toggle-on {
+            background-color: var(--vitamui-primary-100);
+        }
+        &.slide-toggle-off {
+            background-color: var(--vitamui-grey-400);
+        }
     }
 
 }

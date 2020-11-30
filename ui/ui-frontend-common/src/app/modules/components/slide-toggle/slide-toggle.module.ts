@@ -36,12 +36,14 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TranslateVitamModule } from '../translate/translate-vitam.module';
 
 import { SlideToggleComponent } from './slide-toggle.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    TranslateVitamModule,
   ],
   declarations: [SlideToggleComponent],
   exports: [SlideToggleComponent]

@@ -1,0 +1,291 @@
+<div class="d-flex flex-column">
+    <div class="row m-0">
+        <button class="primary" (click)="onClick()">
+            Primary default
+        </button>
+
+        <button class="primary" (click)="onClick()">
+            <span>Primary default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button class="primary" (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>Primary default</span>
+        </button>
+
+    </div>
+
+    <div class="row m-0">
+        <button class="secondary" (click)="onClick()">
+            Secondary default
+        </button>
+
+        <button class="secondary" (click)="onClick()">
+            <span>Secondary default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button class="secondary" (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>Secondary default</span>
+        </button>
+
+    </div>
+
+    <div class="row m-0">
+        <button disabled 
+        (click)="onClick()">
+            disabled
+        </button>
+
+        <button disabled (click)="onClick()">
+            <span>default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button disabled (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>default</span>
+        </button>
+    </div>
+
+    <div class="row m-0">
+        <button class="tertiary" (click)="onClick()">
+            <span>Tertiary default</span>
+        </button>
+
+        <button class="tertiary" (click)="onClick()">
+            <span>Tertiary default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button class="tertiary" (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>Tertiary default</span>
+        </button>
+
+        <button class="tertiary" disabled (click)="onClick()">
+            Tertiary default
+        </button>
+
+    </div>
+
+    <div class="row m-0">
+        <button class="outline outline-primary" (click)="onClick()">
+            Primary outline default
+        </button>
+
+        <button class="outline outline-primary" (click)="onClick()">
+            <span>Primary outline default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button class="outline outline-primary" (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>Primary outline default</span>
+        </button>
+
+    </div>
+
+    <div class="row m-0">
+        <button class="outline outline-secondary" (click)="onClick()">
+            Secondary outline default
+        </button>
+
+        <button class="outline outline-secondary" (click)="onClick()">
+            <span>Secondary outline default</span>
+            <i class="material-icons">keyboard_arrow_right</i>
+        </button>
+
+        <button class="outline outline-secondary" (click)="onClick()">
+            <i class="material-icons">keyboard_arrow_left</i>
+            <span>Secondary outline default</span>
+        </button>
+
+        <button class="outline outline" disabled (click)="onClick()">
+            Outline disabled
+        </button>
+    </div>
+
+    <div class="d-flex flex-column contrast-container">
+        <div class="row m-0">
+            
+            <button class="contrast contrast-primary" (click)="onClick()">
+                Contrast Primary default
+            </button>
+    
+            <button class="contrast contrast-primary" (click)="onClick()">
+                <span>Contrast Primary default</span>
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+    
+            <button class="contrast contrast-primary" (click)="onClick()">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <span>Contrast Primary default</span>
+            </button>
+        </div>
+        <div class="row m-0">
+            <button class="contrast contrast-secondary" (click)="onClick()">
+                Contrast Secondary default
+            </button>
+    
+            <button class="contrast contrast-secondary" (click)="onClick()">
+                <span>Contrast Secondary default</span>
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+    
+            <button class="contrast contrast-secondary" (click)="onClick()">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <span>Contrast Secondary default</span>
+            </button>
+        </div>
+        <div class="row m-0">
+            <button class="contrast-outline contrast-outline-primary" (click)="onClick()">
+                Contrast primary outline default
+            </button>
+    
+            <button class="contrast-outline contrast-outline-primary" (click)="onClick()">
+                <span>Contrast primary outline default</span>
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+    
+            <button class="contrast-outline contrast-outline-primary" (click)="onClick()">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <span>Contrast primary outline default</span>
+            </button>
+        </div>
+        <div class="row m-0">
+            <button class="contrast-outline contrast-outline-secondary" (click)="onClick()">
+                Contrast secondary outline default
+            </button>
+    
+            <button class="contrast-outline contrast-outline-secondary" (click)="onClick()">
+                <span>Contrast secondary outline default</span>
+                <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+    
+            <button class="contrast-outline contrast-outline-secondary" (click)="onClick()">
+                <i class="material-icons">keyboard_arrow_left</i>
+                <span>Contrast secondary outline default</span>
+            </button>
+        </div>
+        <div class="row m-0">
+            <button class="contrast" disabled (click)="onClick()">
+                Contrast disabled
+            </button>
+            
+            <button class="contrast-outline" disabled (click)="onClick()">
+                Contrast outline disabled
+            </button>
+        </div>
+
+    </div>
+
+    <div class="d-flex flex-column">
+
+        <div class="row m-0">
+            <button class="btn-circle primary small" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle primary" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle primary large" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+    
+            <button class="btn-circle secondary small" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle secondary" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle secondary large" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+    
+            <button class="btn-circle small" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle large" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        </div>
+
+        <div class="row m-0">
+            <button class="btn-circle outline outline-primary small" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline outline-primary" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline outline-primary large" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+    
+            <button class="btn-circle outline outline-secondary small" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline outline-secondary" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline outline-secondary large" (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+    
+            <button class="btn-circle outline small" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        
+            <button class="btn-circle outline large" disabled (click)="onClick()">
+                <i class="material-icons">keyboard_backspace</i>
+            </button>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
+            <mat-button-toggle [value]="'FIRST'">
+                <span>First</span>
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'MIDDLE'">
+                <span>Middle</span>
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'LAST'">
+                <span>Last</span>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+
+
+        <mat-button-toggle-group disabled [formControl]="control" class="vitamui-button-toggle-group disabled">
+            <mat-button-toggle [value]="'FIRST'">
+                <span>First</span>
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'MIDDLE'">
+                <span>Middle</span>
+            </mat-button-toggle>
+            <mat-button-toggle [value]="'LAST'">
+                <span>Last</span>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+</div>

@@ -36,16 +36,9 @@
     }
 }
 
-.vitamui-container {
-    position: relative;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 40px;
-}
-
 .vitamui-body {
-    padding-top: 25px;
-    min-height: 700px;
+    padding: 40px;
+    min-height: calc(100vh - 172px); // header + footer
 }
 
 .bg-fingerprint {

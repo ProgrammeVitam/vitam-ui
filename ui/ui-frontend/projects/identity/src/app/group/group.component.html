@@ -1,10 +1,10 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+  <mat-sidenav #panel mode="side" position="end">
     <app-group-preview *ngIf="openedItem" (previewClose)="closePanel()" [group]="openedItem"></app-group-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none">
+  <mat-sidenav-content class="overflow-none vitamui-body">
 
     <div class="vitamui-header">
       <div class="vitamui-container">
@@ -35,9 +35,7 @@
       </div>
     </div>
 
-    <div class="vitamui-body vitamui-container">
-      <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
-    </div>
+    <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
 
   </mat-sidenav-content>
 

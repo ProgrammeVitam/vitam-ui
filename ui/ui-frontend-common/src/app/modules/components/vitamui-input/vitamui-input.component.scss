@@ -23,11 +23,7 @@ $anim-timing: 150ms ease-out;
         }
     }
 
-    &.ng-valid.ng-touched .vitamui-input {
-        border-color: #43ea2a;
-    }
-
-    &.ng-invalid.ng-touched .vitamui-input {
+    &.ng-invalid .vitamui-input {
         border-color: $red;
     }
 }
@@ -39,12 +35,19 @@ $anim-timing: 150ms ease-out;
     height: $input-height;
     width: 100%;
     border-radius: $input-height / 2;
-    border: solid 1px #f0f0f0;
+    border: solid 1px var(--vitamui-grey-400);;
     background-color: $white;
     padding: 8px 30px;
     transition: border-color $anim-timing;
     vertical-align: top;
-    @include elevation-1;
+
+    &:hover:not(.disabled) {
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        @include elevation-0;
+    }
 
     mat-spinner {
         position: absolute;
@@ -55,7 +58,13 @@ $anim-timing: 150ms ease-out;
 }
 
 .vitamui-input.disabled {
-    opacity: 0.4;
+    background-color: var(--vitamui-grey-300);
+    border: none;
+    color: var(--vitamui-grey-300);
+}
+
+.vitamui-input.disabled, .vitamui-input.disabled > * {
+    cursor: no-drop;
 }
 
 :host.ng-pending {
@@ -69,7 +78,7 @@ $anim-timing: 150ms ease-out;
 }
 
 input {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     font-size: 15px;
     font-weight: 500;
     font-family: 'Roboto';
@@ -81,7 +90,7 @@ input {
 }
 
 label {
-    color: $greyish-two;
+    color: var(--vitamui-grey-600);
     font-size: 15px;
     position: absolute;
     left: 30px;

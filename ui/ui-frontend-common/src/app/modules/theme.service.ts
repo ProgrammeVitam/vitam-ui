@@ -150,6 +150,15 @@ export class ThemeService {
     }
   }
 
+  private calculateFontColor(color: string): string {
+    const rgbColor = hexToRgb(color);
+    if ((rgbColor.r * 0.299 + rgbColor.g * 0.587 + rgbColor.b * 0.114) > 186) {
+      return '#000000';
+    } else {
+      return '#ffffff';
+    }
+  }
+
   private add10Declinations(key: string, colors: {}, customerColors: {[colorId: string]: string}): void {
     // tslint:disable-next-line: variable-name
     const map = {...this.defaultMap, ...this.applicationColorMap, ...customerColors};
@@ -164,6 +173,17 @@ export class ThemeService {
     colors[key + '-200'] = convertLighten(rgbValue, 24);
     colors[key + '-100'] = convertLighten(rgbValue, 32);
     colors[key + '-50'] = convertLighten(rgbValue, 40);
+
+    colors[key + '-900-font'] = this.calculateFontColor(colors[key + '-900']);
+    colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
+    colors[key + '-700-font'] = this.calculateFontColor(colors[key + '-700']);
+    colors[key + '-600-font'] = this.calculateFontColor(colors[key + '-600']);
+    colors[key + '-font'] = this.calculateFontColor(map[key]); // primary/secondary/tertiary
+    colors[key + '-400-font'] = this.calculateFontColor(colors[key + '-400']);
+    colors[key + '-300-font'] = this.calculateFontColor(colors[key + '-300']);
+    colors[key + '-200-font'] = this.calculateFontColor(colors[key + '-200']);
+    colors[key + '-100-font'] = this.calculateFontColor(colors[key + '-100']);
+    colors[key + '-50-font'] = this.calculateFontColor(colors[key + '-50']);
   }
 
   /**

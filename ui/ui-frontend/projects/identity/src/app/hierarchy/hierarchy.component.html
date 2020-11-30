@@ -1,14 +1,14 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
-    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <mat-sidenav #panel mode="side" position="end">
        <app-hierarchy-detail *ngIf="openedItem" (previewClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
     </mat-sidenav>
 
-    <mat-sidenav-content class="overflow-none">
+    <mat-sidenav-content class="overflow-none vitamui-body">
       <div class="vitamui-header">
         <div class="vitamui-container">
             <h2 i18n="Search for an admin profile@@profileSearchTitle">
-              <img src="assets/mini-logo-vitam.png">Paramétrer les <strong>Profils de droits d'accès</strong>
+              <img src="assets/bg-fingerprint.svg">Paramétrer les <strong>Profils de droits d'accès</strong>
             </h2>
             <div class="controls">
 
@@ -34,9 +34,7 @@
 
         </div>
       </div>
-      <div class="vitamui-body vitamui-container">
-        <app-hierarchy-list [search]="search" (profileClick)="openPanel($event)"></app-hierarchy-list>
-      </div>
+      <app-hierarchy-list [search]="search" (profileClick)="openPanel($event)"></app-hierarchy-list>
 
       </mat-sidenav-content>
 

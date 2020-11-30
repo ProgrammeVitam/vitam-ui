@@ -1,39 +1,57 @@
+
+
 @import '../variables/colors';
 
 .vitamui-button-toggle-group.mat-button-toggle-group {
     box-shadow: none;
     border-radius: 5px;
     background-color: $white;
-    border: solid 1px var(--vitamui-secondary);
+    border: solid 1px var(--vitamui-primary);
 
-    .mat-button-toggle {
+    .mat-button-toggle:not(.mat-button-toggle-disabled) {
 
+        border-color: var(--vitamui-primary);
+
+        &:hover {
+            background-color: var(--vitamui-primary-50);
+            color: var(--vitamui-primary-50-font);
+        }
+
+
+        /*
         &.cdk-focused .mat-button-toggle-focus-overlay {
             background-color: rgba(255, 255, 255, 0.2);
         }
-
+        
         .mat-button-toggle-label-content {
-            color: var(--vitamui-secondary);
+            color: var(--vitamui-primary);
             font-size: 15px;
             padding: 0 20px;
             line-height: 32px;
-        }
+        }*/
+    
     }
 
     .mat-button-toggle-checked,
     .mat-button-toggle-disabled.mat-button-toggle-checked {
-        background-color: var(--vitamui-secondary);
-
-        .mat-button-toggle-label-content {
-            color: $white;
+        &:not(.mat-button-toggle-disabled) {
+            background-color: var(--vitamui-primary);
+            color: var(--vitamui-primary-font);
         }
     }
 
+    &.disabled {
+        border-color: var(--vitamui-grey);
+    }
+    
+
     .mat-button-toggle-disabled {
-        background-color: $white;
-        opacity: 0.4;
+        background-color: var(--vitamui-grey-300);
+        color: var(--vitamui-grey);
+        border-color: var(--vitamui-grey);
     }
 }
+
 
 .vitamui-button-toggle-group-big {
     &.mat-button-toggle-group-appearance-standard,
@@ -74,7 +92,7 @@
         .mat-button-toggle-checked {
             background-color: var(--vitamui-secondary);
             border-color: var(--vitamui-secondary);
-            color: white;
+            color: var(--vitamui-secondary-font);
 
             .mat-button-toggle-focus-overlay {
                 border-bottom: none;

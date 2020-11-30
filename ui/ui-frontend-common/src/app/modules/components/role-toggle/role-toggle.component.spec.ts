@@ -40,6 +40,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SlideToggleComponent } from '../slide-toggle/slide-toggle.component';
 import { RoleToggleComponent } from './role-toggle.component';
@@ -68,7 +69,7 @@ describe('RoleToggleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, TranslateModule.forRoot()],
       declarations: [TesthostComponent, RoleToggleComponent, RoleComponent, SlideToggleComponent]
     })
       .compileComponents();

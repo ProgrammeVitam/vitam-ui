@@ -1,0 +1,26 @@
+:host  {
+    div {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+    
+    mat-list-item {
+        cursor: pointer;
+        &:focus {
+            color: white;
+            background-color: var(--vitamui-secondary);
+            outline: none;
+            &:hover {
+                background-color: var(--vitamui-secondary-700);
+            }
+        }
+    
+    }
+    
+    ::ng-deep .mat-list-item-content {
+        justify-content: center;
+    }
+}
+    
