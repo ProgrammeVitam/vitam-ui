@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApplicationService } from '../../../application.service';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 
 @Component({
@@ -51,9 +52,23 @@ export class VitamuiBreadcrumbComponent implements OnInit {
   @Output()
   public selected = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private applicationService: ApplicationService) { }
 
   ngOnInit() {
+    if (!this.data) {
+      const appId = this.route.snapshot.data.appId;
+      if (appId) {
+        this.data = [
+          {
+            label: 'Portail'
+          },
+          {
+            label: this.applicationService.getAppById(appId).name,
+            identifier: appId
+          }
+        ];
+      }
+    }
   }
 
   public onClick(d: BreadCrumbData, emit: boolean): void {

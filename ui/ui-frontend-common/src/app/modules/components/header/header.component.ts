@@ -26,30 +26,20 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenan
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  public portalUrl: string;
-
-  public currentUser: AuthUser;
-
   /** TODO : rooting /account in portal module => move to header module */
   public hasAccountProfile = false;
-
   public trustedInlineLogoUrl: SafeUrl;
-
   public hasTenantSelection = false;
-
   public hasCustomerSelection = false;
+  public portalUrl: string;
+  public currentUser: AuthUser;
+  public selectedTenant: MenuOption;
+  public selectedCustomer: MenuOption;
+  public customers: MenuOption[];
+  public tenants: MenuOption[];
+  public headerLogoUrl: SafeResourceUrl;
 
   private destroyer$ = new Subject();
-
-  public selectedTenant: MenuOption;
-
-  public selectedCustomer: MenuOption;
-
-  public customers: MenuOption[];
-
-  public tenants: MenuOption[];
-
-  public headerLogoUrl: SafeResourceUrl;
 
   constructor(private subrogationService: SubrogationService,
               private startupService: StartupService,

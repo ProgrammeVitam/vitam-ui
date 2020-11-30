@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { ApplicationService, BreadCrumbData, GlobalEventService, Group, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, Group, SidenavPage } from 'ui-frontend-common';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 
@@ -47,32 +47,15 @@ import { GroupListComponent } from './group-list/group-list.component';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent extends SidenavPage<Group> implements OnInit {
+export class GroupComponent extends SidenavPage<Group> {
 
-  public breadCrumbData: BreadCrumbData[];
   public groups: Group[];
   public search: string;
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
-  constructor(public route: ActivatedRoute,
-              public globalEventService: GlobalEventService,
-              private dialog: MatDialog,
-              private applicationService: ApplicationService) {
+  constructor(public route: ActivatedRoute, public globalEventService: GlobalEventService, private dialog: MatDialog) {
     super(route, globalEventService);
-  }
-
-  ngOnInit() {
-    const appId = this.route.snapshot.data.appId;
-    this.breadCrumbData = [
-      {
-        label: 'Portail'
-      },
-      {
-        label: this.applicationService.getAppById(appId).name,
-        identifier: appId
-      }
-    ];
   }
 
   public openCreateGroupDialog(): void {

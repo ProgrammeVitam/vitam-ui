@@ -4,10 +4,8 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="overflow-none  vitamui-body">
-    <vitamui-common-title-breadcrumb [data]="breadCrumbData">
-      <span i18n="Search a user@@administrateUsers">
-        Administrer mes utilisateurs
-      </span>
+    <vitamui-common-title-breadcrumb>
+      Administrer mes utilisateurs
     </vitamui-common-title-breadcrumb>
 
     <vitamui-common-banner [searchbarPlaceholder]="'Nom,  Prénom, N° d \'identifiant, groupe'" i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">

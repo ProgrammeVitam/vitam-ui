@@ -127,24 +127,20 @@
 
     i {
         font-size: medium;
+
+        &.large {
+            font-size: small!important;
+        }
     }
 
     &.large {
         width: 50px;
         height: 50px;
-
-        i {
-            font-size: x-large!important;
-        }
     }
 
     &.small {
         width: 30px;
         height: 30px;
-
-        i {
-            font-size: small!important;
-        }
     }
 }
 

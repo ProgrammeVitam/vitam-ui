@@ -37,11 +37,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { BreadCrumbData } from 'ui-frontend-common';
 
 import { AdminUserProfile, AuthService, Customer, DEFAULT_PAGE_SIZE, Direction, GlobalEventService,
   PageRequest, SidenavPage, User } from 'ui-frontend-common';
-import { ApplicationService } from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -58,7 +56,6 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   connectedUserInfo: AdminUserProfile;
   customer: Customer;
   search: string;
-  public breadCrumbData: BreadCrumbData[];
 
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
@@ -66,12 +63,10 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   constructor(
     public dialog: MatDialog,
     public userService: UserService,
+    public route: ActivatedRoute,
     public customerService: CustomerService,
     public globalEventService: GlobalEventService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private applicationService: ApplicationService,
-
+    private authService: AuthService
   ) {
     super(route, globalEventService);
   }
@@ -79,13 +74,6 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   ngOnInit() {
     this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
-    const appId = this.route.snapshot.data.appId;
-    this.breadCrumbData = [{ label: 'Portail' },
-    {
-      label: this.applicationService.getAppById(appId).name,
-      identifier: appId
-    }];
-
   }
 
   openCreateUserDialog() {
@@ -107,4 +95,5 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     if (!this.userListComponent) { return; }
     this.userListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
   }
+
 }

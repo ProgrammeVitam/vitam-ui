@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { ApplicationService, BreadCrumbData, Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
+import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 
@@ -47,33 +47,16 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
+export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
 
-  public breadCrumbData: BreadCrumbData[];
   public customers: Customer[];
   public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
   public owner: Owner;
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(private dialog: MatDialog,
-              private applicationService: ApplicationService,
-              public route: ActivatedRoute,
-              public globalEventService: GlobalEventService) {
+  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService) {
     super(route, globalEventService);
-  }
-
-  ngOnInit() {
-    const appId = this.route.snapshot.data.appId;
-    this.breadCrumbData = [
-      {
-        label: 'Portail'
-      },
-      {
-        label: this.applicationService.getAppById(appId).name,
-        identifier: appId
-      }
-    ];
   }
 
   openCreateCustomerDialog() {

@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
+import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationService } from '../../../application.service';
@@ -54,6 +55,7 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
   public data?: BreadCrumbData[];
 
   constructor(
+    public location: Location,
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,

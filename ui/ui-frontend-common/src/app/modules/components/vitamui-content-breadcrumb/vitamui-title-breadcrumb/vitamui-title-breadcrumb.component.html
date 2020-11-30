@@ -1,8 +1,14 @@
-<vitamui-common-breadcrumb
-    *ngIf="data"
-    [data]="data"
-    (selected)="redirectTo($event)">
-</vitamui-common-breadcrumb>
-<h2>
+<div class="d-flex align-items-center">
+    <button class="btn btn-circle small primary mr-4" (click)="location.back()">
+        <i class="material-icons">keyboard_backspace</i>
+    </button>
+
+    <vitamui-common-breadcrumb
+        [data]="data"
+        (selected)="redirectTo($event)">
+    </vitamui-common-breadcrumb>
+</div>
+
+<h2 class="mt-2">
     <ng-content></ng-content>
 </h2>

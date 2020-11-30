@@ -1,12 +1,15 @@
 .breadcrumb {
     display: inline-flex;
     align-items: center;
-}
 
-span:not(:last-child) {
-    cursor: pointer;
-}
-
-span:last-child {
-    font-weight: bold;
+    span:not(:last-child) {
+        cursor: pointer;
+        color: var(--vitamui-grey-700);
+        font-weight: 700;
+    }
+    
+    span:last-child {
+        color: var(--vitamui-grey-900);
+        font-weight: 700;
+    }
 }

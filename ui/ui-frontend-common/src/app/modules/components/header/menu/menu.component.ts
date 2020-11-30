@@ -58,25 +58,16 @@ import { MenuOverlayRef } from './menu-overlay-ref';
 export class MenuComponent implements OnInit, AfterViewInit {
 
   public state = '';
-
   public appMap: Map<Category, Application[]>;
-
   public filteredApplications: Application[] = null;
-
   public criteria: string;
-
   public tabSelectedIndex = 0;
-
   public selectedCategory: Category;
-
-  private firstResult: any;
-
-  private firstResultFocused = false;
-
   public selectedTenant: MenuOption;
-
   public tenants: MenuOption[];
 
+  private firstResult: any;
+  private firstResultFocused = false;
   private destroyer$ = new Subject();
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;

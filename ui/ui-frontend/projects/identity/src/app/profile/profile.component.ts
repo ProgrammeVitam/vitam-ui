@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ApplicationService, BreadCrumbData, GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
+import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -48,29 +48,14 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent extends SidenavPage<Profile> implements OnInit {
+export class ProfileComponent extends SidenavPage<Profile> {
 
-  public breadCrumbData: BreadCrumbData[];
   public search: string;
 
   @ViewChild(ProfileListComponent, { static: true }) profileListComponent: ProfileListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, public globalEventService: GlobalEventService,
-              private applicationService: ApplicationService) {
+  constructor(public dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService) {
     super(route, globalEventService);
-  }
-
-  ngOnInit() {
-    const appId = this.route.snapshot.data.appId;
-    this.breadCrumbData = [
-      {
-        label: 'Portail'
-      },
-      {
-        label: this.applicationService.getAppById(appId).name,
-        identifier: appId
-      }
-    ];
   }
 
   openProfilAdminCreateDialog() {
