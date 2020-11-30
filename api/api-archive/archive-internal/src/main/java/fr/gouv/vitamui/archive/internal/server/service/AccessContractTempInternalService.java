@@ -77,6 +77,21 @@ public class AccessContractTempInternalService {
         this.logbookService = logbookService;
     }
 
+    public AccessContractDto getOne(VitamContext vitamContext, String identifier) {
+        try {
+            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
+            final AccessContractResponseDto accessContractResponseDto = objectMapper
+                    .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
+            if (accessContractResponseDto.getResults().size() == 0) {
+                return null;
+            } else {
+                return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
+            }
+        } catch (VitamClientException | JsonProcessingException e) {
+        	throw new InternalServerException("Unable to get Access Contrat", e);
+        }
+    }
+
     public List<AccessContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
