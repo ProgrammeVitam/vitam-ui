@@ -283,6 +283,8 @@ public class CommonConstants {
 
     public static final Integer INPUT_STREAM_BUFFER_SIZE = 4096;
 
+    public static final String GPDR_DEFAULT_VALUE = "-";
+
     public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
 
     public static final String LOGO = "LOGO";

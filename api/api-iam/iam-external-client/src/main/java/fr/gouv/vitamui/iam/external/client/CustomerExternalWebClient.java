@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.external.client;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpMethod;
@@ -82,7 +83,7 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
         }
 
         return multiparts(getUrl(), HttpMethod.POST, context,
-            Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
+            Map.of("customerDto", customerCreationFormData.getCustomerDto(), "tenantName", customerCreationFormData.getTenantName()),
             customerCreationFormData.getHeader().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("header", customerCreationFormData.getHeader().get())) : Optional.empty(),
             customerCreationFormData.getFooter().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("footer", customerCreationFormData.getFooter().get())) : Optional.empty(),
             customerCreationFormData.getPortal().isPresent() ?  Optional.of(new AbstractMap.SimpleEntry<>("portal", customerCreationFormData.getPortal().get())) : Optional.empty(),

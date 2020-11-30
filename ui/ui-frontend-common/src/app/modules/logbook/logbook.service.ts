@@ -96,7 +96,7 @@ export class LogbookService {
 
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, collectionName, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
-      map((response) => response.$results.reduce(flattenChildEvents, []).sort(sortEventByDate))
+      map((response) => response.$results.reduce(flattenChildEvents, []).filter(e => e.obIdReq === collectionName).sort(sortEventByDate))
     );
   }
 

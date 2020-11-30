@@ -56,7 +56,7 @@ logbook:
     sendEventToVitamTasks:
       delay: 10000
 
-vitam.tenant.init.mandatory: false
+vitam.tenant.init.mandatory: true
 
 customer.init.config.file: src/main/config/customer-init.yml
 

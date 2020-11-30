@@ -67,8 +67,8 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });
   }
 
-  patch(identityProvider: IdentityProvider, headers?: HttpHeaders): Observable<IdentityProvider> {
-    return super.patch(identityProvider, headers);
+  patch(partialIDP: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
+    return super.patch(partialIDP, headers);
   }
 
   patchProviderIdpMetadata(identityProviderId: string, idpMetadata: File, headers?: HttpHeaders): Observable<IdentityProvider> {

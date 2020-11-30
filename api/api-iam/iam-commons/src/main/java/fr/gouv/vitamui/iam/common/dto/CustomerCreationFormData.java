@@ -63,6 +63,10 @@ public class CustomerCreationFormData {
     private Optional<MultipartFile> footer;
     private Optional<MultipartFile> portal;
 
+    @NotNull
+    private String tenantName;
+
+    private Optional<MultipartFile> logo;
 
     /**
      * Default Constructor for ModelAttribute creation.

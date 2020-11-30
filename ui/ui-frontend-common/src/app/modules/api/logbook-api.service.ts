@@ -78,6 +78,7 @@ export class LogbookApiService implements PaginatedApi<Event> {
       agId: apiEvent.agId,
       agIdApp: apiEvent.agIdApp,
       agIdExt: apiEvent.agIdExt,
+      obIdReq: apiEvent.obIdReq,
       rightsStatementIdentifier: apiEvent.rightsStatementIdentifier,
       events: (apiEvent.events || []).map(LogbookApiService.toEvent)
     };

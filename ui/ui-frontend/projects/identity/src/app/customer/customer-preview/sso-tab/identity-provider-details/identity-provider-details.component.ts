@@ -37,10 +37,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
-import { IdentityProvider, newFile } from 'ui-frontend-common';
+import { diff, IdentityProvider, newFile } from 'ui-frontend-common';
 import { IdentityProviderService } from '../identity-provider.service';
+
+import { extend, isEmpty } from 'underscore';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -59,6 +61,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       this.idpMetadata.enable({ emitEvent: false });
     }
     this.form.reset(identityProvider, { emitEvent: false });
+    this.previousValue = this.form.value;
   }
   get identityProvider(): IdentityProvider { return this._identityProvider; }
   // tslint:disable-next-line:variable-name
@@ -78,6 +81,15 @@ export class IdentityProviderDetailsComponent implements OnInit {
   get domains(): Array<{ value: string, disabled: boolean }> { return this._domains; }
   // tslint:disable-next-line:variable-name
   private _domains: Array<{ value: string, disabled: boolean }> = [];
+
+  private previousValue: {
+    id: string,
+    identifier?: string,
+    enabled: boolean,
+    name: string,
+    internal: boolean;
+    patterns: string[]
+  };
 
   @Input()
   set readOnly(readOnly: boolean) {
@@ -121,9 +133,14 @@ export class IdentityProviderDetailsComponent implements OnInit {
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         filter(() => this.form.valid),
-        switchMap(() => this.identityProviderService.update(this.form.value))
+        map(() => diff(this.form.value, this.previousValue)),
+        filter((formData) => !isEmpty(formData)),
+        map((formData) => extend({ id: this.identityProvider.id }, formData)),
+        switchMap((formData) => this.identityProviderService.patch(formData)),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.previousValue = this.form.value;
+      });
     this.idpMetadata.valueChanges
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),

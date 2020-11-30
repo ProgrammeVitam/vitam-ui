@@ -74,7 +74,6 @@ public class ProfileConverter implements Converter<ProfileDto, Profile> {
     public String convertToLogbook(final ProfileDto source) {
         final Map<String, String> profileLogbookData = new LinkedHashMap<>();
         profileLogbookData.put(APPLICATION_NAME_KEY, LogbookUtils.getValue(source.getApplicationName()));
-        profileLogbookData.put(TENANT_IDENTIFIER_KEY, LogbookUtils.getValue(source.getTenantIdentifier()));
         profileLogbookData.put(NAME_KEY, LogbookUtils.getValue(source.getName()));
         profileLogbookData.put(DESCRIPTION_KEY, LogbookUtils.getValue(source.getDescription()));
         profileLogbookData.put(LEVEL_KEY, LogbookUtils.getValue(source.getLevel()));

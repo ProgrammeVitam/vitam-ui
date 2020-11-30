@@ -86,7 +86,7 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
         }
 
         return multiparts(getUrl(), HttpMethod.POST, context,
-                Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
+                Map.of("customerDto", customerCreationFormData.getCustomerDto(), "tenantName", customerCreationFormData.getTenantName()),
                 customerCreationFormData.getHeader().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("header", customerCreationFormData.getHeader().get())) : Optional.empty(),
                 customerCreationFormData.getFooter().isPresent() ? Optional.of(new AbstractMap.SimpleEntry<>("footer", customerCreationFormData.getFooter().get())) : Optional.empty(),
                 customerCreationFormData.getPortal().isPresent() ?  Optional.of(new AbstractMap.SimpleEntry<>("portal", customerCreationFormData.getPortal().get())) : Optional.empty(),
@@ -114,8 +114,7 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
     /**
      * Patch a customer using a {@link Map<String, Object>} object and a Path to a image file is there's a graphical identity for this customer.
      * @param context
-     * @param partialCustomer
-     * @param logos
+     * @param customerPatchFormData
      * @return
      */
     public CustomerDto patch(final InternalHttpContext context, CustomerPatchFormData customerPatchFormData) {
