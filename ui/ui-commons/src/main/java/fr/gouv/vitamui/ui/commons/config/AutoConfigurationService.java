@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.ui.commons.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -64,8 +65,8 @@ public class AutoConfigurationService {
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
-    public ApplicationService applicationService(final UIProperties uiProperties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
-        return new ApplicationService(uiProperties, casLogoutUrl, factory);
+    public ApplicationService applicationService(final UIProperties uiProperties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory, final BuildProperties buildProperties) {
+        return new ApplicationService(uiProperties, casLogoutUrl, factory, buildProperties);
     }
 
     @Bean

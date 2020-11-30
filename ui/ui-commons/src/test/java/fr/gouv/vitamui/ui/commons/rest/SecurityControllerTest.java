@@ -15,11 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.Properties;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
@@ -36,6 +39,14 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
+
+        @Bean
+        public BuildProperties buildProperties() {
+            Properties props = new Properties();
+            props.put("version.release", "0.0.0");
+            return new BuildProperties(props);
+        }
+
     }
 
     @Value("${ui-prefix}")

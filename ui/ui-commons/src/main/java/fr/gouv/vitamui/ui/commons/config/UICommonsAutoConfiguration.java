@@ -36,8 +36,11 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import java.util.Properties;
+
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,10 +64,15 @@ public class UICommonsAutoConfiguration {
     public UIProperties uiProperties() {
         throw new InternalServerException("You must define ui properties");
     }
+    @Bean
+    @ConditionalOnMissingBean
+    public BuildProperties buildProperties() {
+        throw new InternalServerException("You must define buildProperties");
+    }
 
     @Bean
     @ConditionalOnMissingBean
-    @DependsOn("uiProperties")
+    @DependsOn(value = { "uiProperties", "buildProperties" })
     public IamExternalRestClientFactory iamRestClientFactory(final UIProperties uiProperties, final RestTemplateBuilder restTemplateBuilder) {
         return new IamExternalRestClientFactory(uiProperties.getIamExternalClient(), restTemplateBuilder);
     }

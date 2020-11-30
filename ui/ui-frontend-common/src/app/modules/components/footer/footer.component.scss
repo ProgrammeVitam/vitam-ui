@@ -1,4 +1,4 @@
-@import '../../../../sass/variables/colors';
+@import "../../../../sass/variables/colors";
 
 $text-color: $white;
 
@@ -7,26 +7,15 @@ $text-color: $white;
   flex-wrap: wrap;
   width: 100%;
   height: 100px;
-  background-color: var(--vitamui-header-footer);
+  background-color: $white;
   align-items: center;
   justify-content: center;
   color: $text-color;
 }
 
-a {
-  color: $text-color;
-}
-
-.logo {
-  padding-right: 4em;
-}
-
-.separator::before {
-  content: "|";
-  margin: 0 1.5em;
-  color: $text-color;
-}
-
-.plain {
-  text-decoration: none;
+.version {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  color: var(--vitamui-primary-300);
 }

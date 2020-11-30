@@ -87,4 +87,6 @@ public class UIPropertiesImpl implements UIProperties {
      * Map of application categories (key: category ID, value: category properties)
      */
     private Map<String, PortalCategoryConfig> portalCategories;
+
+    private String versionRelease;
 }

@@ -58,7 +58,7 @@ public class IdentityContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @DependsOn("uiProperties")
+    @DependsOn(value = { "uiProperties", "buildProperties" })
     public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties, final WebClient.Builder webClientBuilder) {
         return new IamExternalWebClientFactory(uiProperties.getIamExternalClient(), webClientBuilder);
     }

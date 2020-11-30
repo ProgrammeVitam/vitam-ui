@@ -3,11 +3,14 @@ package fr.gouv.vitamui.ui.commons.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
+import java.util.Properties;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,6 +45,15 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
+
+
+        @Bean
+        public BuildProperties buildProperties() {
+            Properties props = new Properties();
+            props.put("version.release", "0.0.0");
+            return new BuildProperties(props);
+        }
+
     }
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationControllerTest.class);

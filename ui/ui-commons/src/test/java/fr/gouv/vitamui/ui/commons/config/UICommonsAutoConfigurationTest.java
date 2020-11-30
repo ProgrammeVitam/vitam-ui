@@ -2,9 +2,12 @@ package fr.gouv.vitamui.ui.commons.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Properties;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +56,14 @@ public class UICommonsAutoConfigurationTest {
             final CasLogoutUrl casBean = new CasLogoutUrl("url");
             return casBean;
         }
+
+        @Bean
+        public BuildProperties buildProperties() {
+            Properties props = new Properties();
+            props.put("version.release", "0.0.0");
+            return new BuildProperties(props);
+        }
+
 
     }
 }

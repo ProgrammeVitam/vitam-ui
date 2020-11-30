@@ -55,6 +55,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.info.BuildProperties;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.DatatypeConverter;
@@ -67,6 +68,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -77,6 +80,10 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
 
+    private static final String DELIMITER = ".";
+
+    private static final String VERSION_RELEASE_KEY = "version.release";
+
     private static String PLATFORM_NAME = "PLATFORM_NAME";
 
     private final UIProperties properties;
@@ -84,6 +91,8 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private final ApplicationExternalRestClient client;
 
     private final CasLogoutUrl casLogoutUrl;
+
+    private final BuildProperties buildProperties;
 
     @Value("${cas.external-url}")
     @NotNull
@@ -101,13 +110,14 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
+    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
+            final BuildProperties buildProperties) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
+        this.buildProperties = buildProperties;
         if (this.properties == null) {
             LOGGER.warn("Properties not provided");
-        }
-        else if (this.properties.getBaseUrl() == null) {
+        } else if (this.properties.getBaseUrl() == null) {
             LOGGER.warn("base-url properties not provided");
         }
         client = factory.getApplicationExternalRestClient();
@@ -143,8 +153,16 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.PORTAL_TITLE, properties.getPortalTitle());
         configurationData.put(CommonConstants.PORTAL_MESSAGE, properties.getPortalMessage());
         configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
+        String versionRelease = properties.getVersionRelease();
+        if (StringUtils.isEmpty(versionRelease)) {
+            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER)).limit(2).map(Object::toString)
+                    .collect(Collectors.joining(DELIMITER));
 
-        if(properties.getPlatformName() != null) {
+        }
+        if (StringUtils.isNotEmpty(versionRelease)) {
+            configurationData.put(CommonConstants.VERSION_RELEASE, versionRelease);
+        }
+        if (properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
         } else {
             configurationData.put(PLATFORM_NAME, "VITAM-UI");
@@ -155,6 +173,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private String getCasLoginUrl() {
         return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
+
 
     @Override
     public ApplicationExternalRestClient getClient() {
@@ -197,4 +216,5 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         });
         return files;
     }
+
 }

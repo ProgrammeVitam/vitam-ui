@@ -207,6 +207,8 @@ public class CommonConstants {
 
     public static final String CUSTOMER = "CUSTOMER";
 
+    public static final String VERSION_RELEASE = "VERSION_RELEASE";
+
 
     /**
      * Constant contains application list for portal/header applications display
