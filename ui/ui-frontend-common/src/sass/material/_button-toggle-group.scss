@@ -9,27 +9,12 @@
     border: solid 1px var(--vitamui-primary);
 
     .mat-button-toggle:not(.mat-button-toggle-disabled) {
-
         border-color: var(--vitamui-primary);
 
         &:hover {
             background-color: var(--vitamui-primary-50);
             color: var(--vitamui-primary-50-font);
         }
-
-
-        /*
-        &.cdk-focused .mat-button-toggle-focus-overlay {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .mat-button-toggle-label-content {
-            color: var(--vitamui-primary);
-            font-size: 15px;
-            padding: 0 20px;
-            line-height: 32px;
-        }*/
-    
     }
 
     .mat-button-toggle-checked,
@@ -52,6 +37,10 @@
     }
 }
 
+.mat-button-toggle-label-content {
+    line-height: 36px!important;
+    padding: 0 16px!important;
+}
 
 .vitamui-button-toggle-group-big {
     &.mat-button-toggle-group-appearance-standard,
@@ -98,6 +87,5 @@
                 border-bottom: none;
             }
         }
-
     }
 }

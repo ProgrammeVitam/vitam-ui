@@ -115,14 +115,6 @@ label {
     max-width: 460px;
 }
 
-button.primary {
-    margin-right: 20px;
-}
-
-button.back {
-    margin-top: 30px;
-}
-
 button > small {
     display: block;
     font-size: 12px;
@@ -143,15 +135,4 @@ button > small {
 .selected {
     background-color: var(--vitamui-secondary);
     color: $white;
-}
-
-:host::ng-deep {
-    .mat-button-toggle-button {
-        min-width: 100px;
-    }
-
-    .mat-button-toggle-label-content {
-        max-height: 40px!important;
-        line-height: 2!important;
-    }
 }

@@ -29,13 +29,3 @@ vitamui-common-select-tenant {
     color: $red;
     font-weight: bold;
 }
-
-button {
-    background-color: var(--vitamui-primary);
-    color: $white;
-    border-radius: 50px;
-}
-
-button:disabled {
-    background-color: var(--vitamui-primary-light)!important;
-}

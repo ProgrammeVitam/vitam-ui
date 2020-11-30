@@ -1,5 +1,3 @@
-@import '~ui-frontend-common/sass/variables/colors';
-
 .category {
     margin: 0.5rem auto;
 }
@@ -22,24 +20,46 @@ mat-card-header {
 }
 
 mat-card-title {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     font-weight: 600;
     font-size: 18px!important;
 }
 
 mat-card-subtitle {
-    color: $warm-grey;
+    color: var(--vitamui-grey-700);
     font-size: 14px;
+}
+
+
+.appIcon {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    max-width: 16.8vw;
+    max-height: 12vw;
+}
+
+.appIcon i {
+    font-size: 12.5vw;
+}
+
+a {
+    text-decoration: none;
 }
 
 :host::ng-deep {
 
-    .mat-tab-header{
-        margin: 3rem 0;
+    .mat-card-image:first-child {
+        margin: 0;
     }
 
     .mat-card-header-text {
-        margin: 0!important;
+        max-width: 16.8vw;
+        margin: 1rem 0;
+    }
+
+    .mat-tab-header {
+        margin: 3rem 0 1.5rem 0;
     }
 
     .mat-tab-label.mat-tab-label-active {
@@ -59,21 +79,4 @@ mat-card-subtitle {
     .mat-tab-header-pagination.mat-tab-header-pagination-disabled, .mat-tab-header-pagination-after {
         display: none!important;
     }
-}
-
-.appIcon {
-    overflow: hidden;
-    min-height: 200px;
-    max-height: 200px;
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto 17px auto;
-}
-
-.appIcon i {
-    font-size: 13rem;
-}
-
-a {
-    text-decoration: none;
 }

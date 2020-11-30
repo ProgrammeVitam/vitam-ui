@@ -1,7 +1,9 @@
 <div class="vitamui-sidepanel">
   <div class="vitamui-sidepanel-header">
-    <button *ngIf="!isPopup" class="btn-popup clickable" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    <button class="btn-close clickable" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <div class="d-flex justify-content-between">
+      <button *ngIf="!isPopup" class="btn btn-circle secondary large" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
+      <button class="btn btn-circle secondary large" (click)="emitClose()"><i class="material-icons">close</i></button>
+    </div>
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-gestion-de-profil"

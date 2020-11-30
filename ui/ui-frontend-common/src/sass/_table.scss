@@ -149,10 +149,6 @@ table.vitamui-table {
       background-color: rgba(var(--vitamui-secondary-rgb), 0.15);
     }
 
-    tr.clickable, td.clickable {
-        cursor: pointer;
-    }
-
     .vitamui-table-row {
         .actions {
             white-space: nowrap;

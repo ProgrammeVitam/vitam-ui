@@ -33,8 +33,9 @@
           <button type="submit" class="btn primary" [disabled]="tenantForm.pending || tenantForm.invalid" i18n="Finish owner creation button@@ownerCreateFinishButton">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel owner creation@@ownerCreateCancelButton">Annuler</button>
         </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+        <button type="button" class="btn link" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
         </button>
       </div>
     </form>

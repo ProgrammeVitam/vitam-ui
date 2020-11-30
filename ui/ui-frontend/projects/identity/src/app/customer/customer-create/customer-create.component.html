@@ -107,8 +107,7 @@
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
             i18n="Next step button label@@customerCreateNextButton">Suivant</button>
-          <button type="button" class="btn cancel" (click)="onCancel()"
-            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
     </cdk-step>
 
@@ -168,13 +167,9 @@
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
             i18n="@@customerCreateNextButton">Suivant</button>
-          <button type="button" class="btn cancel" (click)="onCancel()"
-            i18n="@@customerCreateCancelButton">Annuler</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
-        </button>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
     </cdk-step>
 
     <cdk-step>
@@ -185,15 +180,11 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
-            Créer le propriétaire
-            <small> des éléments de preuves</small>
+            Suivant
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
-        </button>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
       </div>
 
     </cdk-step>

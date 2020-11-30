@@ -37,8 +37,13 @@ body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
     background-color: var(--vitamui-background);
+    color: black;
 }
 
 * {
     box-sizing: border-box;
+}
+
+.clickable {
+    cursor: pointer;
 }

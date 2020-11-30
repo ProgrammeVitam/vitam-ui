@@ -1,4 +1,4 @@
-@mixin disabled($background-color: var(--vitamui-grey-300), $color:var(--vitamui-grey), $border-color: var(--vitamui-grey-300)) {
+@mixin disabled($background-color: var(--vitamui-grey-300), $color:var(--vitamui-grey-700), $border-color: var(--vitamui-grey-300)) {
     cursor: no-drop;
     background-color: $background-color;
     border: 1px solid $border-color;
@@ -18,9 +18,8 @@
             $border-color: transparent, 
             $border-color-hover: transparent,
             $button-color: $white,
-            $button-color-hover: $white
-) {
-
+            $button-color-hover: $white) {
+    
     &:not(:disabled) {
         background-color: $background-color;
         color: $button-color;
@@ -32,7 +31,7 @@
             justify-content: center;
             border-radius: 50%;
             height: 100%;
-            font-size: medium;
+            font-size: large;
             inline-size: 0;
             color: $button-color;
         }
@@ -59,33 +58,33 @@
     }
 }
 
-button span+i, i+span {
-    padding-left: 1rem;
+.btn span+i, i+span {
+    padding-left: 0.5rem;
 }
 
-button {
+.btn {
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
-    font-family: Mulish;
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
     line-height: 20px;
     letter-spacing: .5px;
     border-radius: 50px;
     padding: 0 30px 0 30px;
-    border: 1px solid transparent;
     outline: none;
+    white-space: nowrap;
+    font-family: Roboto;
+    font-size: 15px;
 
     &:disabled {
          @include disabled();
     }
 }
 
-button.contrast {
+.btn.contrast {
     @include btn($white, $white, $white, $white);
 
     &.contrast-primary {
@@ -101,7 +100,7 @@ button.contrast {
     }
 }
 
-button.contrast-outline {
+.btn.contrast-outline {
 
     @include btn(transparent, transparent, $white, $white, $white, $white);
 
@@ -120,7 +119,7 @@ button.contrast-outline {
 
 }
 
-button.btn-circle {
+.btn-circle {
     border-radius: 50%;
     padding: 0!important;
     width: 40px;
@@ -135,7 +134,7 @@ button.btn-circle {
         height: 50px;
 
         i {
-            font-size: x-large;
+            font-size: x-large!important;
         }
     }
 
@@ -144,21 +143,26 @@ button.btn-circle {
         height: 30px;
 
         i {
-            font-size: x-small;
+            font-size: small!important;
         }
     }
 }
 
-button.primary {
+.btn.primary {
     @include btn(var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary-font), var(--vitamui-primary-font));
 }
 
-button.secondary {
+.btn.secondary {
     @include btn(var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-font), var(--vitamui-secondary-font));
 }
 
-button.tertiary {
+.btn.link {
     @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-secondary-300));
+    padding: 0;
+
+    i {
+        inline-size: initial!important;
+    }
 
     &:hover {
         span {
@@ -171,17 +175,17 @@ button.tertiary {
     }
 }
 
-button.outline {
+.btn.outline {
     &:disabled {
         @include disabled(transparent);
     }
 }
 
-button.outline-primary {
+.btn.outline-primary {
     @include btn(transparent, transparent, var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800));
 }
 
-button.outline-secondary {
+.btn.outline-secondary {
     @include btn(transparent, transparent, var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700));
 }
 
