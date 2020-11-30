@@ -1,11 +1,11 @@
 :host {
-  --color: var(--vitamui-secondary-900);
-  --color-font: var(--vitamui-secondary-900-font);
+  --color: var(--vitamui-primary);
+  --color-font: var(--vitamui-primary-font);
 
   .tooltip-custom {
     display: inline-flex;
     padding: 4px;
-    border: 1px solid var(--vitamui-secondary-900);
+    border: 1px solid var(--vitamui-primary);
     background-color: var(--color);
     border-radius: 5px;
     position: relative;
@@ -26,7 +26,7 @@
       width: 8px;
       height: 8px;
       transform: rotate(-45deg);
-      border-color: var(--vitamui-secondary-900);
+      border-color: var(--vitamui-primary);
     }
 
     &.BOTTOM {
@@ -72,6 +72,6 @@
   }
   .tooltip-custom.outline {
     --color: white;
-    --color-font: var(--vitamui-secondary-900);
+    --color-font: var(--vitamui-primary);
   }
 }

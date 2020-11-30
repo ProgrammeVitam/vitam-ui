@@ -2,7 +2,7 @@
 
 .history-event-item {
     padding-left: 12px;
-    font-size: 13px;
+    font-size: 12px;
 
     &.event-error {
         .history-event-date,
@@ -21,21 +21,22 @@
     }
 
     .history-event-date {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
     }
 
     .history-event-outcome {
-        color: #474d4a;
+        color: var(--vitamui-grey-900);
     }
 
     .history-event-details {
-        color: #474d4a;
+        color: var(--vitamui-grey-900);
         word-break: break-word;
         padding-right: 8px;
     }
 
     .history-event-title {
-        color: #474d4a;
+        font-size:16px;
+        color: var(--vitamui-grey-900);;
         font-weight: bold;
     }
 
@@ -50,7 +51,7 @@
     position: relative;
     padding: 0px 4px 24px 35px;
     left: 8px;
-    border-color: #e4e4e4;
+    border-color: var(--vitamui-grey-400);
 
     &::before {
         content: '';
@@ -59,7 +60,7 @@
         top: 9px;
         width: 0px;
         height: 999px;
-        border-color: #e4e4e4;
+        border-color: var(--vitamui-grey-400);
         border-style: solid;
         border-width: 1px 0 0 1px;
     }
@@ -76,7 +77,7 @@
         width: 16px;
         height: 16px;
         background: $white;
-        border: 2px solid #e4e4e4;
+        border: 2px solid var(--vitamui-grey-400);
         border-radius: 50%;
     }
 

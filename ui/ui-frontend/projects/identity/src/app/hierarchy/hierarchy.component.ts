@@ -39,7 +39,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { takeUntil } from 'rxjs/operators';
-import { GlobalEventService, Profile, SidenavPage, Tenant, TenantSelectionService } from 'ui-frontend-common';
+import {
+   GlobalEventService,
+   Profile, SidenavPage,
+   Tenant,
+   TenantSelectionService } from 'ui-frontend-common';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
 
@@ -49,7 +53,6 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
   styleUrls: ['./hierarchy.component.scss']
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, OnDestroy {
-
   public profiles: Profile[];
   public search: string;
   private tenantIdentifier: number;

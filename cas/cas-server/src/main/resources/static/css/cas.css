@@ -30,7 +30,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  */
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+@import url("https://fonts.googleapis.com/css?family=Mulish");
 .mat-menu-panel.nav-menu {
   border-radius: 10px;
   margin-top: 4px; }
@@ -56,27 +56,27 @@
   background-color: #ffffff;
   box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3); }
   .login-box h1 {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 28px;
     font-weight: 300;
     color: #485053; }
   .login-box header p {
     margin-bottom: 0px; }
   .login-box p {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 20px;
     font-weight: 300;
     color: #485053;
     line-height: 30px; }
     .login-box p small {
-      font-family: Roboto;
+      font-family: 'Mulish', sans-serif;
       font-size: 15px;
       color: #a6a6a6;
       font-weight: 400; }
   .login-box strong {
     font-weight: 500; }
   .login-box a {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: var(--vitamui-secondary);
     text-decoration: underline; }
@@ -98,26 +98,26 @@
     .login-box input[type=text].ng-valid.ng-touched,
     .login-box input[type=email].ng-valid.ng-touched,
     .login-box input[type=password].ng-valid.ng-touched {
-      border-color: #50D166; }
+      border-color: #27740A; }
     .login-box input[type=text].ng-invalid.ng-touched,
     .login-box input[type=email].ng-invalid.ng-touched,
     .login-box input[type=password].ng-invalid.ng-touched {
-      border-color: #ff0000; }
+      border-color: #C10000; }
     .login-box input[type=text][disabled],
     .login-box input[type=email][disabled],
     .login-box input[type=password][disabled] {
       opacity: 0.4; }
   .login-box .form-error {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 14px;
     letter-spacing: -0.4px;
-    color: #ff0000; }
+    color: #C10000; }
     .login-box .form-error i {
       font-size: 36px;
       vertical-align: middle;
       margin-right: 10px; }
   .login-box button.vitamui-primary {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     font-weight: 500;
     color: #ffffff;
@@ -136,7 +136,7 @@
     .login-box button.vitamui-primary[disabled] {
       opacity: 0.4; }
   .login-box .helper {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: #aab0b3;
     text-align: right;
@@ -234,7 +234,7 @@
     color: var(--vitamui-secondary);
     font-size: 110px; }
   .password-recovery .cancel-link {
-    font-family: Roboto;
+    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: #aab0b3;
     text-decoration: underline;
@@ -451,7 +451,7 @@
 body {
   margin: 0;
   color: #485053;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Mulish', sans-serif;
   background: #f7f8fb; }
 
 * {

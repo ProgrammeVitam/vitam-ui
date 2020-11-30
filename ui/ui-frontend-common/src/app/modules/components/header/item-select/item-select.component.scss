@@ -1,5 +1,6 @@
 :host::ng-deep {
     .selected-item-label, .unselected-item-label {
+        font-family: 'Mulish', sans-serif;
         color: var(--vitamui-grey-600);
         font-size: 16px;
     }
@@ -16,6 +17,11 @@
         color: var(--vitamui-primary);
     }
 
+    .mat-form-field.mat-focused.mat-primary .mat-select-arrow
+    {
+        color: var(--vitamui-primary);
+    }
+    
     .mat-form-field-wrapper {
         padding-bottom: 0;
     }
@@ -37,6 +43,7 @@
     }
 
     mat-select {
+        font-family: 'Mulish', sans-serif;
         color: var(--vitamui-grey-900);
         font-size: 16px;
     }

@@ -10,11 +10,19 @@
 }
 
 label {
-  font-size: 13px;
-  color: $greyish-two;
+  font-size: 14px;
+  font-family:'Mulish', sans-serif;
+  color:var(--vitamui-grey-600);
   font-weight: normal;
 }
 
+span
+{
+  font-size: 16px;
+  font-family:'Mulish', sans-serif;
+  color:var(--vitamui-grey-900);
+  font-weight: bold;
+}
 .form-pad {
   padding-top: 4.5rem;
   padding-bottom: 6.5rem;

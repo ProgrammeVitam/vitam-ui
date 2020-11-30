@@ -1,6 +1,6 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
   <div class="vitamui-panel-content" *ngIf="!selectedIdentityProvider">
-    <button *ngIf="!readOnly" class="btn secondary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
+    <button *ngIf="!readOnly" class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
       <div [matTooltipDisabled]="domainsAvailable" matTooltip="Plus de domaines disponibles"
         i18n-matTooltip="No more available domains@@idpNoMoreAvailableDomains" matTooltipClass="vitamui-tooltip"
         i18n="Create IDP@@idpCreateButton"> Créer un IDP

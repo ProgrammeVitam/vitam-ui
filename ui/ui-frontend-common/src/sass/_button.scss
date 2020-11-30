@@ -60,6 +60,7 @@
 
 .btn span+i, i+span {
     padding-left: 0.5rem;
+    text-decoration:underline;
 }
 
 .btn {
@@ -70,14 +71,14 @@
     height: 50px;
     font-style: normal;
     font-weight: bold;
+    font-family: 'Mulish', sans-serif;
     line-height: 20px;
     letter-spacing: .5px;
     border-radius: 50px;
     padding: 0 30px 0 30px;
     outline: none;
     white-space: nowrap;
-    font-family: Roboto;
-    font-size: 15px;
+    font-size: 14px;
 
     &:disabled {
          @include disabled();
@@ -152,9 +153,17 @@
     @include btn(var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-font), var(--vitamui-secondary-font));
 }
 
+
 .btn.link {
-    @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-secondary-300));
     padding: 0;
+
+    &:not(.cancel) {
+        @include btn(transparent, transparent, transparent, transparent, var(--vitamui-primary), var(--vitamui-primary));
+    }
+
+    &.cancel {
+        @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-gray-900));
+    }
 
     i {
         inline-size: initial!important;
@@ -168,7 +177,7 @@
         }
     }
 
-    &:hover {
+    &:hover:not(.cancel) {
         span {
             text-decoration: underline;
         }

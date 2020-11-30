@@ -56,9 +56,9 @@ button.btn {
         justify-content: center;
         height: 60px;
         border-radius: 3px;
-        border: solid 1px var(--vitamui-secondary);
+        border: solid 1px var(--vitamui-primary);
         margin-left: 10px;
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
         font-size: 9px;
         text-align: center;
         text-decoration: none;
@@ -70,7 +70,7 @@ button.btn {
     }
 
     .provider-status {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: bold;
         color: var(--vitamui-grey-600);
         width: 100%;

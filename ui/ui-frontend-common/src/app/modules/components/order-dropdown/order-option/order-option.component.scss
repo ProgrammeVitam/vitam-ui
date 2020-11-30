@@ -17,14 +17,14 @@
     align-items: center;
     justify-content: flex-end;
     color: #666666;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
-    font-family: 'Roboto';
+    font-family: 'Mulish', sans-serif;
     white-space: nowrap;
     width: 100%;
 
     &.active > i {
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
     }
 
     &.upside-down > i {

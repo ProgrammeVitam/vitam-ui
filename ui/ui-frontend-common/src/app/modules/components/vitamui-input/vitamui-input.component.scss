@@ -79,9 +79,9 @@ $anim-timing: 150ms ease-out;
 
 input {
     color: var(--vitamui-grey-900);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    font-family: 'Roboto';
+    font-family: 'Mulish', sans-serif;
     background: none;
     border: none;
     transition: margin $anim-timing;
@@ -91,7 +91,7 @@ input {
 
 label {
     color: var(--vitamui-grey-600);
-    font-size: 15px;
+    font-size: 14px;
     position: absolute;
     left: 30px;
     transform-origin: left;
@@ -100,6 +100,6 @@ label {
     white-space: nowrap;
 
     .required-marker {
-        color: var(--vitamui-primary);
+        color: $red;
     }
 }

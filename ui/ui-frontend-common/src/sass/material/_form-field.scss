@@ -1,5 +1,5 @@
 .vitamui-form-field.mat-form-field {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
 
     .mat-form-field-subscript-wrapper {
@@ -26,7 +26,7 @@
         font-weight: 400;
 
         .mat-form-field-required-marker {
-            color: var(--vitamui-primary);
+            color: $red;
         }
     }
 
@@ -69,11 +69,11 @@
         }
 
         .mat-form-field-label {
-            color: var(--vitamui-secondary);
+            color: var(--vitamui-primary);
         }
 
         .mat-form-field-flex {
-            border: 1px solid var(--vitamui-secondary);
+            border: 1px solid var(--vitamui-primary);
             padding-right: 15px;
 
             .mat-form-field-infix {
@@ -84,7 +84,7 @@
             }
 
             .mat-select .mat-select-value {
-                color: var(--vitamui-secondary);
+                color: var(--vitamui-primary);
                 font-weight: 400;
             }
 
@@ -100,7 +100,7 @@
                 i {
                     height: 10px;
                     font-size: 18px;
-                    color: var(--vitamui-secondary);
+                    color: var(--vitamui-primary);
                 }
             }
         }

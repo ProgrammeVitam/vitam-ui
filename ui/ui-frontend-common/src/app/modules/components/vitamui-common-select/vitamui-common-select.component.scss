@@ -2,7 +2,7 @@
 
 .selected-label, .unselected-label {
     color: $greyish-two;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 :host::ng-deep {
@@ -11,9 +11,9 @@
   }
   
   .mat-select-value-text {
-    font-size: 15px;
-    font-weight: 500;
-    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'Mulish', sans-serif;
   }
   
   .mat-select-arrow {

@@ -25,6 +25,7 @@
         &::placeholder {
             @include vitamui-input-placeholder;
             font-weight: normal;
+            
         }
 
         &:disabled {

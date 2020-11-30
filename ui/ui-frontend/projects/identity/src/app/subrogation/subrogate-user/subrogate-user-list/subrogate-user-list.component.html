@@ -44,7 +44,7 @@
 
       <td>{{ getGroup(subrogableUser)?.name }}</td>
       <td>
-        <button *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" type="button" class="btn-subrogation" (click)="openUserSubrogationDialog(subrogableUser)"
+        <button *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" type="button" class="btn outline-primary" (click)="openUserSubrogationDialog(subrogableUser)"
                 [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable"
                 i18n="Subrogate subrogate@@SubrogateButton">
           Subroger

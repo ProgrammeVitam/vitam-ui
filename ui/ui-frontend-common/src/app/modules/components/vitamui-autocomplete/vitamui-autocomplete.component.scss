@@ -1,59 +1,60 @@
-@import '../../../../sass/variables/colors';
-@import '../../../../sass/mixins/elevation';
+@import "../../../../sass/variables/colors";
+@import "../../../../sass/mixins/elevation";
 
 $animation-time: 150ms;
 
 .vitamui-autocomplete {
   position: relative;
 
-> input {
-@include elevation-1;
-  background: white;
-  border-radius: 25px;
-  background-color: $white;
-  border: solid 1px #f0f0f0;
-  height: 50px;
-  width: 100%;
-  padding: 10px 40px 10px 29px;
-  transition: padding $animation-time ease-out;
+  > input {
+    @include elevation-0;
+    background: white;
+    border-radius: 25px;
+    background-color: $white;
+    border: solid 1px #f0f0f0;
+    height: 50px;
+    width: 100%;
+    padding: 10px 40px 10px 29px;
+    transition: padding $animation-time ease-out;
 
-&:focus {
-   outline: none;
- }
-}
+    &:focus {
+      outline: none;
+    }
+  }
 
-&.disabled {
-   opacity: 0.4;
- }
+  &.disabled {
+    opacity: 0.4;
+  }
 
-> i {
-  font-size: 24px;
-  position: absolute;
-  right: 16px;
-  top: 14px;
-  pointer-events: none;
-  color: var(--vitamui-primary);
-}
+  > i {
+    font-size: 24px;
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    pointer-events: none;
+    color: var(--vitamui-primary);
+  }
 
-.input-label {
-  color: $greyish-two;
-  position: absolute;
-  left: 30px;
-  top: 16px;
-  font-size: 15px;
-  pointer-events: none;
-  transform-origin: left;
-  transition: transform $animation-time ease-out, top $animation-time ease-out;
-}
+  .input-label {
+    font-family: "Mulish", sans-serif;
+    color: var(--vitamui-grey-600);
+    font-weight: bold;
+    position: absolute;
+    left: 30px;
+    top: 16px;
+    font-size: 14px;
+    pointer-events: none;
+    transform-origin: left;
+    transition: transform $animation-time ease-out, top $animation-time ease-out;
+  }
 
-&.label-up {
-.input-label {
-  transform: scale(0.7) translateY(-15px);
-}
+  &.label-up {
+    .input-label {
+      transform: scale(0.7) translateY(-15px);
+    }
 
-> input {
-  padding-top: 30px;
-}
-}
-
+    > input {
+      padding-top: 30px;
+    }
+  }
 }

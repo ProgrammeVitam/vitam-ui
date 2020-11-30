@@ -103,7 +103,7 @@ button.primary {
 
     div {
         color: #474d4a;
-        font-size: 15px;
+        font-size: 14px;
         font-weight: bold;
     }
 }
@@ -115,7 +115,7 @@ button.primary {
 
 table {
     color: $charcoal-grey-two;
-    font-size: 15px;
+    font-size: 14px;
     width: 95%;
     border-collapse: collapse;
     margin-bottom: 60px;
@@ -199,7 +199,7 @@ input[type=radio] {
 }
 
 .radio-label {
-    color: var(--vitamui-secondary);
+    color: var(--vitamui-primary);
     display: inline-block;
     cursor: pointer;
     font-weight: bold;
@@ -208,11 +208,11 @@ input[type=radio] {
 
 input[type=radio]:checked + label{
     color: $white;
-    background: var(--vitamui-secondary);
+    background: var(--vitamui-primary);
 }
 
 .radio-group {
-    border: solid 1px var(--vitamui-secondary);
+    border: solid 1px var(--vitamui-primary);
     display: inline-block;
     margin: 20px;
     border-radius: 5px;

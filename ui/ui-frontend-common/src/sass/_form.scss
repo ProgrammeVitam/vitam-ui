@@ -7,7 +7,7 @@
     margin-bottom: 10px;
 
     label {
-        font-size: 13px;
+        font-size: 12px;
         color: var(--vitamui-grey-600);
         font-weight: 500;
     }
@@ -23,7 +23,7 @@
     font-size: 12px;
     font-weight: 400;
     color: $red;
-    font-family: 'Roboto';
+    font-family: 'Mulish', sans-serif;
 }
 
 input[type=text].vitamui-input,
@@ -35,10 +35,10 @@ input[type=email].vitamui-input {
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
-    border: 1px solid transparent;
+    border: 1px solid var(--vitamui-grey-400);
     width: 100%;
     max-width: 300px;
-    @include elevation-1;
+    @include elevation-0;
 
     &:focus {
         border-color: $greyish-two;

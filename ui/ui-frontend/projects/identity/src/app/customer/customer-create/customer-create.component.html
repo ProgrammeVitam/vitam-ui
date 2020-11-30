@@ -88,8 +88,8 @@
       <div class="col-12 d-flex align-items-center">
         <label for="language" class="mr-4 mb-0"
           i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
-          <div>Langue de l'interface <span class="required-marker">*</span></div>
-          <div><small>(par défault pour l'utilisateur)</small></div>
+          <div class="font-weight-bold">Langue de l'interface <span class="required-marker">*</span></div>
+          <div class="font-weight-bold"><small>(par défaut pour l'utilisateur)</small></div>
         </label>
 
         <mat-form-field class="vitamui-mat-select">
@@ -203,14 +203,14 @@
     </cdk-step>
 
     <ng-template #cancel>
-      <button type="button" class="btn link ml-3" (click)="onCancel()"
+      <button type="button" class="btn cancel link ml-3" (click)="onCancel()"
         i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
     </ng-template>
 
     <ng-template #back>
-      <button type="button" class="btn link mt-1 ml-1" cdkStepperPrevious>
+      <button type="button" class="btn link mt-1 ml-1 text-primary" cdkStepperPrevious>
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <span i18n="Previous step button label@@customerCreateBackButton">Retour</span>
+        <span i18n="Previous step button label@@customerCreateBackButton" class="underline">Retour</span>
       </button>
     </ng-template>
   </vitamui-common-stepper>

@@ -28,7 +28,7 @@ button.back {
     display: flex;
     align-items: center;
     background: transparent;
-    color: var(--vitamui-secondary);
+    color: var(--vitamui-primary);
     font-size: 14px;
     font-weight: normal;
     border: none;
@@ -39,7 +39,7 @@ button.back {
     i {
         display: block;
         font-size: 18px;
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
         background-color: #e7f5f2;
         width: 30px;
         height: 30px;

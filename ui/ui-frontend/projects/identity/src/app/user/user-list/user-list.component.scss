@@ -26,8 +26,9 @@
 }
 
 span.email {
-  font-size: 13px;
+  font-size: 14px;
   text-align: left;
+  font-weight: normal;
   color: var(--vitamui-grey-600);
 }
 
@@ -40,8 +41,13 @@ vitamui-common-table-filter-option .vitamui-icon {
 .table-filter-icon {
   display: flex;
   align-items: center;
+  
   span.badge-state {
+    color: var(--vitamui-grey-900);
     margin-left: 18px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.1px;
   }
 }
 

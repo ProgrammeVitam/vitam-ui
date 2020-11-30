@@ -56,7 +56,7 @@
       </div>
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()" i18n="Next@@profileGroupCreateNextButton">Suivant</button>
-          <button type="button" class="btn cancel link"  (click)="onCancel()" i18n="Cancel customer creation@@profileGroupCreateCancelButton">Annuler</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@profileGroupCreateCancelButton">Annuler</button>
         </div>
       </div>
     </cdk-step>
@@ -73,7 +73,7 @@
 
         <div class="actions">
           <button type="submit" class="btn primary" [disabled]="formValid()" i18n="Done@@profileGroupCreateSubmitButton">Terminer</button>
-          <button type="button" class="btn cancel link"  (click)="onCancel()" i18n="Cancel@@profileGroupCreateCancelButton">Annuler</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel@@profileGroupCreateCancelButton">Annuler</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>

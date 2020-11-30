@@ -1,15 +1,16 @@
-
 .vitamui-dialog-subtable {
-    .vitamui-dialog-subtable-header {
-        font-size: 14px;
-        font-weight: bold;
-        height: 30px;
+  .vitamui-dialog-subtable-header {
+    font-size: 14px;
+    font-weight: bold;
+    height: 30px;
+  }
+
+  .vitamui-dialog-subtable-rows {
+    .vitamui-dialog-subtable-row {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 24px;
+      align-items: center;
     }
-  
-    .vitamui-dialog-subtable-rows {
-      .vitamui-dialog-subtable-row {
-        font-size: 14px;
-        font-weight: normal;
-      }
-    }
+  }
 }

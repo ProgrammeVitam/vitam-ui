@@ -20,7 +20,7 @@ $anim-timing: 150ms ease-out;
     min-height: $input-height;
     width: 100%;
     border-radius: $input-height / 2;
-    border: 1px solid var(--vitamui-grey-300);
+    border: 1px solid var(--vitamui-grey-400);
     background-color: $white;
     padding: 7px 45px 7px 25px;
     transition: border-color $anim-timing;
@@ -33,7 +33,7 @@ $anim-timing: 150ms ease-out;
     }
 
     i.edit-icon {
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
         opacity: 0;
         transition: opacity $anim-timing;
         position: absolute;
@@ -60,8 +60,10 @@ $anim-timing: 150ms ease-out;
 
     .editable-field-label {
         position: absolute;
-        font-size: 14px;
-        color: var(--vitamui-grey-700);
+        font-size: 12px;
+        color: var(--vitamui-grey-400);
+        letter-spacing: 0.4px;
+        line-height: 16px;
         transform-origin: left;
         transition: transform $anim-timing;
         white-space: nowrap;
@@ -70,6 +72,8 @@ $anim-timing: 150ms ease-out;
     .editable-field-text-content {
         margin-top: 16px;
         width: 100%;
+        line-height: 24px;
+        color: var(--vitamui-grey-900);
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -99,7 +103,7 @@ $anim-timing: 150ms ease-out;
 }
 
 .editable-field.edit-mode {
-    border-color: var(--vitamui-secondary);
+    border-color: var(--vitamui-primary);
     padding: 15px 10px 5px 20px;
 
     .editable-field-content {

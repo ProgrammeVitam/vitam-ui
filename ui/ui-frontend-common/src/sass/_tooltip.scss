@@ -1,6 +1,6 @@
 .vitamui-tooltip {
     display: flex;
-    background-color: var(--vitamui-secondary);
+    background-color: var(--vitamui-primary);
     color: $white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
@@ -16,8 +16,8 @@
         display: block;
         height: 0px;
         width: 0px;
-        border: 12.5px solid var(--vitamui-secondary);
-        border-color: transparent var(--vitamui-secondary) var(--vitamui-secondary) transparent;
+        border: 12.5px solid var(--vitamui-primary);
+        border-color: transparent var(--vitamui-primary) var(--vitamui-primary) transparent;
     }
 
     &.vitamui-tooltip-bottom {
@@ -27,18 +27,18 @@
         &:before {
             top: 100%;
             left: 24px;
-            border-color: var(--vitamui-secondary) transparent transparent var(--vitamui-secondary);
+            border-color: var(--vitamui-primary) transparent transparent var(--vitamui-primary);
         }
     }
 
     &.vitamui-tooltip-end:before {
         left: auto;
         right: 24px;
-        border-color: var(--vitamui-secondary-dark-5) transparent transparent var(--vitamui-secondary-dark-5);
+        border-color: var(--vitamui-primary-dark-5) transparent transparent var(--vitamui-primary-dark-5);
     }
 
     &.vitamui-tooltip-end.vitamui-tooltip-top:before {
-        border-color: transparent var(--vitamui-secondary-dark-5) var(--vitamui-secondary-dark-5) transparent;
+        border-color: transparent var(--vitamui-primary-dark-5) var(--vitamui-primary-dark-5) transparent;
     }
 
     .vitamui-tooltip-content {
@@ -51,7 +51,7 @@
     .vitamui-tooltip-icon {
         display: flex;
         font-size: 34px;
-        background-color: var(--vitamui-secondary-dark-5);
+        background-color: var(--vitamui-primary-dark-5);
         align-items: center;
         padding: 15px 15px;
         border-radius: 0 10px 10px 0;

@@ -7,10 +7,10 @@
         cursor: pointer;
         &:focus {
             color: white;
-            background-color: var(--vitamui-secondary);
+            background-color: var(--vitamui-primary);
             outline: none;
             &:hover {
-                background-color: var(--vitamui-secondary-700);
+                background-color: var(--vitamui-primary-700);
             }
         }
     

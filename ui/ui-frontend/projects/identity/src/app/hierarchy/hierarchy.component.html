@@ -1,30 +1,29 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end">
-      <app-hierarchy-detail *ngIf="openedItem" (previewClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
+    <app-hierarchy-detail
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [id]="openedItem?.id"
+    ></app-hierarchy-detail>
   </mat-sidenav>
 
-    <mat-sidenav-content class="overflow-none vitamui-body">
-      <div class="vitamui-header">
-        <div class="vitamui-container">
-            <h2 i18n="Search for an admin profile@@profileSearchTitle">
-              <img src="assets/bg-fingerprint.svg">Paramétrer les <strong>Profils de droits d'accès</strong>
-            </h2>
-            <div class="controls">
+  <mat-sidenav-content class="overflow-none vitamui-body">
+    <vitamui-common-title-breadcrumb>
+      Paramétrer les Profils de droits d'accès
+    </vitamui-common-title-breadcrumb>
 
-              <vitamui-common-search-bar
-                name="hierarchy-search"
-                (search)="onSearchSubmit($event)"
-                placeholder="Nom de Profil" i18n-placeholder="@@hierarchySearchPlaceholder"
-              ></vitamui-common-search-bar>
+    <vitamui-common-banner
+      [searchbarPlaceholder]="'Nom de Profil'"
+      (search)="onSearchSubmit($event)"
+    >
+      <button class="btn primary ml-5" (click)="openHierarchyDuplicateDialog()">
+        <span>Dupliquer un Profil</span>
+      </button>
+    </vitamui-common-banner>
 
-            <div class="actions">
-              <button class="btn secondary" (click)="openHierarchyDuplicateDialog()">
-                <i class="vitamui-icon vitamui-icon-admin-key-plus"></i>  <span i18n="Create a profile@@hierarchyCreateButton">Dupliquer un Profil</span>
-              </button>
-            </div>
-          </div>
-      </div>
-    </div>
-    <app-hierarchy-list [search]="search" (profileClick)="openPanel($event)"></app-hierarchy-list>
+    <app-hierarchy-list
+      [search]="search"
+      (profileClick)="openPanel($event)"
+    ></app-hierarchy-list>
   </mat-sidenav-content>
 </mat-sidenav-container>

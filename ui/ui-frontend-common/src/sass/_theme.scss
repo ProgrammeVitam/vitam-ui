@@ -26,17 +26,18 @@ html, body {
     height: 100%;
 }
 
+/* mulish-regular - latin */
 @font-face {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Mulish', sans-serif;
     font-style: normal;
     font-weight: normal;
-    src: local('Roboto'), url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap) format('woff2');
+    src: local('Mulish'), url(https://fonts.googleapis.com/css?family=Mulish&display=swap) format('woff2');
     font-display: optional;
-}
+  }
 
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Mulish', sans-serif;
     background-color: var(--vitamui-background);
     color: black;
 }

@@ -5,15 +5,15 @@
     cursor: pointer;
 
     &:hover, &:active {
-        background: rgba(var(--vitamui-secondary-rgb), 0.15);
+        background: rgba(var(--vitamui-primary-rgb), 0.15);
     }
 
     &.table-filter-option-separator:not(:first-child) {
-        border-top: 1px solid #ECECEC;
+        border-top: 1px solid var(--vitamui-grey-300);
     }
 
     &.table-filter-option-separator:not(:last-child) {
-        border-bottom: 1px solid #ECECEC;
+        border-bottom: 1px solid var(--vitamui-grey-300);
     }
 }
 

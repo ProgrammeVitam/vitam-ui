@@ -6,15 +6,15 @@
     width: 240px;
 
     .drag-and-drop-area {
-        border: 2px dashed $greyish-two;
+        border: 2px dashed var(--vitamui-grey-600);
         border-radius: 6px;
     }
     
     .on-over {
-        border: 2px solid $greyish-two;
+        border: 2px solid var(--vitamui-grey-600);
     
         .drop-area {
-            background: $dark-grey;
+            background: var(--vitamui-grey-900);
             opacity: 0.9;
             color: $white;
         }

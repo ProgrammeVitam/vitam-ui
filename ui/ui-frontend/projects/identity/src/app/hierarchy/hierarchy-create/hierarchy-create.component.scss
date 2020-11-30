@@ -41,8 +41,9 @@ button.back {
     width: 630px;
 }
 label {
-    color: $greyish-two;
-    font-size: 15px;
+    color: var(--vitamui-grey-600);
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .level-label {

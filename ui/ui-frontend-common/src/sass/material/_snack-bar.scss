@@ -1,8 +1,8 @@
 .vitamui-snack-bar.mat-snack-bar-container {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     color: white;
-    background: var(--vitamui-secondary);
+    background: var(--vitamui-primary);
     max-width: none;
     width: 100vw;
     margin: 0;
@@ -32,7 +32,7 @@
 }
 
 .vitamui-snack-bar-content {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     color: white;
     vertical-align: middle;
@@ -56,5 +56,5 @@
     outline: none;
     cursor: pointer;
     padding: 10px;
-    font-size: 15px;
+    font-size: 14px;
 }

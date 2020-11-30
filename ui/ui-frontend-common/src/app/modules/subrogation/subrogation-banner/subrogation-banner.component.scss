@@ -1,7 +1,7 @@
 @import '../../../../sass/variables/colors';
 
 .banner-subrogation {
-    background: var(--vitamui-secondary);
+    background: var(--vitamui-primary);
     border-radius: 0;
     max-width: none;
     width: 100%;
@@ -35,7 +35,7 @@
 
 .hidden-banner-div {
     border-radius: 3px 3px 0 0;
-    background: var(--vitamui-secondary);
+    background: var(--vitamui-primary);
     color: white;
     position: fixed;
     height: 25px;

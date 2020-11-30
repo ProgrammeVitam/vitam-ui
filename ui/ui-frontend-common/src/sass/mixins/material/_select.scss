@@ -1,7 +1,7 @@
 @mixin mat-select-panel {
     border-radius: 5px;
     background-color: white;
-    border: solid 1px var(--vitamui-secondary);
+    border: solid 1px var(--vitamui-grey-400);
     padding: 10px 0;
 
     .mat-select-content {
@@ -9,8 +9,8 @@
     }
 
     .mat-option {
-        color: var(--vitamui-secondary);
-        font-size: 15px;
+        color: var(--vitamui-grey-900);
+        font-size: 14px;
         line-height: 2em;
         height: 2em;
         padding: 0px 30px;
@@ -19,13 +19,13 @@
     .mat-option.mat-active,
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled) {
-        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
-        color: white;
+        background-color: var(--vitamui-grey-300);
+        color:  var(--vitamui-grey-900);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
-        background-color: rgba(var(--vitamui-secondary-rgb), 0.85);
-        color: white;
+        background-color: var(--vitamui-grey-300);
+        color: var(--vitamui-grey-900);
     }
 
     .mat-option.mat-selected:not(.mat-option-multiple):not(.mat-active):not(:hover) {

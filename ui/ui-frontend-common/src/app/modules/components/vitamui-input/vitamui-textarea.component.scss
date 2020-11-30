@@ -69,10 +69,10 @@ $anim-timing: 150ms ease-out;
 }
 
 textarea {
-    color: $charcoal-grey;
-    font-size: 15px;
+    color:  var(--vitamui-grey-700);
+    font-size: 14px;
     font-weight: 500;
-    font-family: 'Roboto';
+    font-family: 'Mulish', sans-serif;
     background: none;
     border: none;
     transition: margin $anim-timing;
@@ -83,7 +83,8 @@ textarea {
 
 label {
     color: var(--vitamui-grey-600);
-    font-size: 15px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
     position: absolute;
     line-height: 48px;
     left: 30px;
@@ -93,6 +94,6 @@ label {
     pointer-events: none;
 
     .required-marker {
-        color: var(--vitamui-primary);
+        color: $red;
     }
 }

@@ -19,14 +19,14 @@
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled),
     .mat-option.mat-active {
-        background: rgba(var(--vitamui-secondary-rgb), 0.85);
+        background: rgba(var(--vitamui-primary-rgb), 0.85);
     }
 
     .mat-option-text {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 15px;
+        font-size: 14px;
         color: #808080;
 
         .vitamui-option-label {
@@ -35,7 +35,7 @@
         }
 
         > i {
-            color: var(--vitamui-secondary);
+            color: var(--vitamui-primary);
             margin-left: 10px;
         }
 

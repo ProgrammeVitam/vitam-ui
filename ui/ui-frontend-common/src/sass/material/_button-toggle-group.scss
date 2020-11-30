@@ -38,8 +38,10 @@
 }
 
 .mat-button-toggle-label-content {
+    font-family: 'Mulish',sans-serif;
+    font-size: 14px;
     line-height: 36px!important;
-    padding: 0 16px!important;
+    padding: 0 14px!important;
 }
 .mat-button-toggle-button {
     padding: 1px 0 0 0;
@@ -59,7 +61,7 @@
 
             .mat-button-toggle-label-content {
                 padding: 15px 20px;
-                font-size: 18px;
+                font-size: 14px;
                 font-weight: bold;
                 line-height: 1;
                 text-align: left;
@@ -76,14 +78,14 @@
             margin-left: 12px;
 
             &.mat-button-toggle-checked {
-                border-color: var(--vitamui-secondary);
+                border-color: var(--vitamui-primary);
             }
         }
 
         .mat-button-toggle-checked {
-            background-color: var(--vitamui-secondary);
-            border-color: var(--vitamui-secondary);
-            color: var(--vitamui-secondary-font);
+            background-color: var(--vitamui-primary);
+            border-color: var(--vitamui-primary);
+            color: var(--vitamui-primary-font);
 
             .mat-button-toggle-focus-overlay {
                 border-bottom: none;
