@@ -39,7 +39,6 @@ import { Id } from '../id.interface';
 import { Analytics } from './analytics.interface';
 
 export interface User extends Id {
-
   identifier?: string;
   email: string;
   firstname: string;
@@ -61,5 +60,5 @@ export interface User extends Id {
   internalCode?: string;
   analytics?: Analytics;
   siteCode: string;
-
+  photo?: string;
 }

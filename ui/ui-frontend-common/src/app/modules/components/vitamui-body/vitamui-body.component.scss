@@ -1,5 +1,30 @@
 div {
-    background: var(--vitamui-background);
-    margin-top: 3rem;
+    width: 70%;
+    margin: 6rem auto;
     min-height: calc(100vh - 70px);
+    background-color: var(--vitamui-background);
+}
+
+@media screen and (min-width: 1501px) and (max-width: 1750px) {
+  div {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 1301px) and (max-width: 1500px) {
+  div {
+    width: 83%;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  div {
+    width: 94%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  div {
+    width: 98%;
+  }
 }

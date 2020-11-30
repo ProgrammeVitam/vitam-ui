@@ -12,8 +12,8 @@ h2 {
 .btn-header {
   margin-right: 20px;
 }
-:host::ng-deep {
 
+:host::ng-deep {
   --radius: 20px;
 
   .mat-tab-body-wrapper {
@@ -21,7 +21,6 @@ h2 {
     border-bottom-right-radius: var(--radius);
     border-bottom-left-radius: var(--radius);
     background-color: $white;
-
     border: 1px solid var(--vitamui-grey-400);
     margin-top: -1px;
   }
@@ -48,7 +47,7 @@ h2 {
   &.mat-tab-label-active, &.mat-tab-label-active:not(.mat-tab-disabled):focus {
     background-color: $white;
     font-weight: bold;
-    color: #5e5d5d;
+    color: var(--vitamui-grey-700);
     opacity: 1;
   }
 
@@ -56,13 +55,4 @@ h2 {
     height: 100%;
     overflow: hidden;
   }
-}
-
-.user-photo {
-  display: flex;
-}
-
-.user-photo img {
-  width: 40px;
-  border-radius: 30px;
 }

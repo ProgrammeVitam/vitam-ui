@@ -13,6 +13,7 @@ import { MenuModule } from './menu/menu.module';
 import { SelectCustomerModule } from './select-customer/select-customer.module';
 import { SelectLanguageModule } from './select-language/select-language.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { UserPhotoModule } from './user-photo/user-photo.module';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenan
     SelectTenantModule,
     SelectLanguageModule,
     SelectCustomerModule,
+    UserPhotoModule,
     MenuModule.forRoot(),
     TranslateModule
   ],

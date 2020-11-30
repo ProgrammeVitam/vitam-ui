@@ -56,5 +56,4 @@ export interface AuthUser extends User {
   customerIdentifier: string;
   basicCustomer: BasicCustomer;
   siteCode: string;
-  photo?: string;
 }

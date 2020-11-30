@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,8 +34,9 @@ import { Location } from '@angular/common';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AppRootComponent } from '../app-root-component.class';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
@@ -47,26 +47,28 @@ import { AccountService } from './account.service';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
 })
-export class AccountComponent extends AppRootComponent implements OnInit {
-  account: Account;
-  // TO HIDE TEMPORARILY THE APPLICATION TAB AND ASK FOR AN EDIT AND CONTACT THE ADMIN BUTTONS
-  displayAppTab = false;
-  displayEditionAndAdminContact = false;
+export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
 
+  // TO HIDE TEMPORARILY THE APPLICATION TAB AND ASK FOR AN EDIT AND CONTACT THE ADMIN BUTTONS
+  public displayAppTab = false;
+  public displayEditionAndAdminContact = false;
+  public account: Account;
   public dataBreadcrumb: BreadCrumbData[];
 
-  constructor(
-    private accountService: AccountService,
-    route: ActivatedRoute,
-    private location: Location
-  ) {
+  private sub: Subscription;
+
+  constructor(private accountService: AccountService, public route: ActivatedRoute) {
     super(route);
   }
 
   ngOnInit() {
-    this.accountService.getMyAccount().subscribe((account) => {
+    this.sub = this.accountService.getMyAccount().subscribe((account) => {
       this.account = account;
     });
-    this.dataBreadcrumb = [{ label: 'Portal' }, { label: 'Mon compte' }];
+    this.dataBreadcrumb = [{ label: 'Portail' }, { label: 'Mon compte' }];
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

@@ -36,7 +36,7 @@ html, body {
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: $pale-grey;
+    background-color: var(--vitamui-background);
 }
 
 * {

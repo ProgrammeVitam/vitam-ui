@@ -1,0 +1,11 @@
+<div class="content" *ngIf="actions">
+  <button class="mx-3" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_horiz</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let action of actions" (click)="actionBtnClick.emit(action.identifier)">
+      <mat-icon>{{action.icon}}</mat-icon>
+      <span>{{action.label}}</span>
+    </button>
+  </mat-menu>
+</div>

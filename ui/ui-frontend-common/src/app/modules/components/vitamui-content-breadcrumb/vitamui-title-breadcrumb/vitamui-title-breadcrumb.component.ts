@@ -42,7 +42,6 @@ import { Logger } from '../../../logger/logger';
 import { Application } from '../../../models/application/application.interface';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 import { StartupService } from '../../../startup.service';
-import { TenantSelectionService } from '../../../tenant-selection.service';
 
 @Component({
   selector: 'vitamui-common-title-breadcrumb',
@@ -58,8 +57,7 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
     private applicationService: ApplicationService,
     private router: Router,
     private startupService: StartupService,
-    private logger: Logger,
-    private tenantSelectionService: TenantSelectionService,
+    private logger: Logger
   ) { }
 
   ngOnInit() {

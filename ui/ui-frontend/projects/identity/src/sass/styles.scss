@@ -15,3 +15,11 @@ $grid-gutter-width: 20px;
 @import 'profile-tag';
 @import 'vitamui-tab-group';
 @import 'tooltip';
+
+.mat-drawer-container {
+    background-color: var(--vitamui-background);
+}
+
+.clickable {
+    cursor: pointer;
+}

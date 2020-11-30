@@ -133,8 +133,12 @@ export class TenantSelectionService {
 
     public saveTenantIdentifier(identifier?: number): Observable<number> {
         return new Observable((observer) => {
-            if (!identifier && this.selectedTenant) {
-                identifier = this.selectedTenant.identifier;
+            if (!identifier) {
+                if (this.selectedTenant) {
+                    identifier = this.selectedTenant.identifier;
+                } else {
+                    identifier = this.lastTenantIdentifier;
+                }
             }
 
             this.userApiService.analytics({lastTenantIdentifier: identifier})

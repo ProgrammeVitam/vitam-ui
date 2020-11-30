@@ -108,6 +108,10 @@
     top: 163px;
 }
 
+.mat-drawer-content {
+    background-color: var(--vitamui-background);
+}
+
 .overflow-none.mat-drawer-content {
-  overflow: visible;
+    overflow: visible;
 }

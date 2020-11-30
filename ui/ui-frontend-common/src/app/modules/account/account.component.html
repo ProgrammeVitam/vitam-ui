@@ -1,34 +1,13 @@
-<div class="pt-5">
-
-  <vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
-    <div class="d-flex align-items-center user-photo">
-      <div *ngIf="account?.photo then userPhoto else defaultUserPhoto"></div><span class="pl-2" i18n="MyAccount@@MyAccountTitle">Mon Compte</span>
-   </div>
-
-  </vitamui-common-title-breadcrumb>
-    <div class="div-btn">
-      <div>
-        <button class="btn secondary btn-header">Changer mon mot de passe</button>
-      </div>
-      <div>
-        <button *ngIf="displayAppTab" class="btn secondary btn-header">Demander une modification</button>
-      </div>
-      <div>
-        <button *ngIf="displayAppTab" class="btn secondary">Contacter l'administrateur</button>
-      </div>
-    </div>
-
-
-   <ng-template #defaultUserPhoto>
-     <img src="../../../assets/user_icon.png">
-   </ng-template>
-
-   <ng-template #userPhoto>
-     <img [src]="account.photo">
-   </ng-template>
-
+<vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
+  <div class="d-flex align-items-center d-flex">
+    <vitamui-common-user-photo class="mr-1" [user]="account"></vitamui-common-user-photo>
+    <span class="pl-2" i18n="MyAccount@@MyAccountTitle">Mon Compte</span>
   </div>
+</vitamui-common-title-breadcrumb>
 
+<button class="btn secondary btn-header">Changer mon mot de passe</button>
+<button class="btn secondary btn-header" *ngIf="displayAppTab">Demander une modification</button>
+<button class="btn secondary" *ngIf="displayAppTab">Contacter l'administrateur</button>
 
 <div class="vitamui-body">
   <mat-tab-group>

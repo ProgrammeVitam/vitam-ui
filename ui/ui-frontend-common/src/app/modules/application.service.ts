@@ -39,7 +39,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { AuthService } from './auth.service';
 import { ApplicationInfo } from './models/application/application.interface';

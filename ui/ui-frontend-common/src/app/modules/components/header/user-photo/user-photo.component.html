@@ -1,0 +1,11 @@
+<div class="d-flex">
+  <div *ngIf="user?.photo then userPhoto else defaultUserPhoto" (click)="photoClicked.emit()"></div>
+</div>
+
+<ng-template #defaultUserPhoto>
+  <img class="user-photo" src="../../../../../assets/user_icon.png" [style.width.px]="size">
+</ng-template>
+
+<ng-template #userPhoto>
+  <img class="user-photo" [src]="user?.photo" [style.width.px]="size">
+</ng-template>

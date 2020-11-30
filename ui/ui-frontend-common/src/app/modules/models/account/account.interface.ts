@@ -34,21 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Address } from '../customer';
 import { Group } from '../group';
-import { Id} from '../id.interface';
+import { User } from '../user';
 
-export interface Account extends Id {
-  identifier?: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  mobile: string;
-  phone: string;
-  address: Address;
-  language: string;
+export interface Account extends User {
   profileGroup: Group;
-  customerId: string;
-  otp: boolean;
-  photo?: string;
 }
