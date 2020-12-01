@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-
 import { Group } from 'ui-frontend-common';
 import { GroupService } from '../../../group/group.service';
 
@@ -47,7 +46,7 @@ import { GroupService } from '../../../group/group.service';
 export class GroupDetailComponent implements OnInit {
 
   @Input() group: Group;
-  displayedGroup: Group;
+  public displayedGroup: Group;
 
   constructor(private groupService: GroupService) { }
 
