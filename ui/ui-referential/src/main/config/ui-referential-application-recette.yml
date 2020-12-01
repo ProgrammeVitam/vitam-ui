@@ -71,34 +71,26 @@ ui-referential:
     technical-referent-email: contact@programmevitam.fr
     website-url: http://www.programmevitam.fr
   portal-categories:
-    users:
-      title: "Utilisateur"
-      displayTitle: false
+    ingest_and_consultation:
+      title: "Versement & consultation"
+      displayTitle: true
       order: 1
-    administrators:
-      title: "Management"
-      displayTitle: true
-      order: 2
-    settings:
-      title: "Paramétrage"
-      displayTitle: true
-      order: 3
     referential:
       title: "Référentiels"
       displayTitle: true
+      order: 2
+    supervision_and_audits:
+      title: "Supervision & Audits"
+      displayTitle: true
+      order: 3
+    security_and_application_rights:
+      title: "Sécurité & droits applicatifs"
+      displayTitle: true
       order: 4
-    opaudit:
-      title: "Audits et opérations"
+    organization_and_user_rights:
+      title: "Organisation & droits utilisateurs"
       displayTitle: true
       order: 5
-    techadmin:
-      title: "Administration technique"
-      displayTitle: true
-      order: 6
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 7
 
 ui:
   url: "https://dev.vitamui.com"
