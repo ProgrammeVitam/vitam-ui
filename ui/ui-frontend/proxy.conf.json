@@ -16,5 +16,11 @@
     "secure": false,
     "pathRewrite": {},
     "logLevel": "debug"
+  },
+  "/archive-api": {
+    "target": "https://dev.vitamui.com:9009/",
+    "secure": false,
+    "pathRewrite": {},
+    "logLevel": "debug"
   }
 }

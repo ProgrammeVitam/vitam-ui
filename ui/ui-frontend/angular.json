@@ -498,6 +498,130 @@
           }
         }
       }
+    },
+    "archive": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/archive",
+      "sourceRoot": "projects/archive/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/archive",
+            "index": "projects/archive/src/index.html",
+            "main": "projects/archive/src/main.ts",
+            "polyfills": "projects/archive/src/polyfills.ts",
+            "tsConfig": "projects/archive/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/archive/src/favicon.ico",
+              "projects/archive/src/assets"
+            ],
+            "styles": [
+              "projects/archive/src/sass/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/archive/src/environments/environment.ts",
+                  "with": "projects/archive/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "archive:build",
+            "host": "dev.vitamui.com",
+            "port": 4209
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "archive:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "archive:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/archive/src/test.ts",
+            "polyfills": "projects/archive/src/polyfills.ts",
+            "tsConfig": "projects/archive/tsconfig.spec.json",
+            "karmaConfig": "projects/archive/karma.conf.ci.js",
+            "assets": [
+              "projects/archive/src/favicon.ico",
+              "projects/archive/src/assets"
+            ],
+            "styles": [
+              "projects/archive/src/sass/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/archive/tsconfig.app.json",
+              "projects/archive/tsconfig.spec.json",
+              "projects/archive/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/archive/e2e/protractor.conf.js",
+            "devServerTarget": "archive:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "archive:serve:production"
+            }
+          }
+        }
+      }
     }
   },
   "defaultProject": "portal",

@@ -25,15 +25,18 @@ function generateCerts {
     generateHostCertAndStorePassphrase          security-internal   hosts_vitamui_security_internal
     generateHostCertAndStorePassphrase          iam-internal        hosts_vitamui_iam_internal
     generateHostCertAndStorePassphrase          referential-internal        hosts_vitamui_referential_internal
+    generateHostCertAndStorePassphrase          archive-internal     hosts_vitamui_archive_internal
     #Zone externe
     generateHostCertAndStorePassphrase          iam-external        hosts_vitamui_iam_external
     generateHostCertAndStorePassphrase          referential-external        hosts_vitamui_referential_external
     generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
+    generateHostCertAndStorePassphrase          archive-external     hosts_vitamui_archive_external
     #Zone UI
     generateHostCertAndStorePassphrase          ui-portal           hosts_ui_portal
     generateHostCertAndStorePassphrase          ui-identity         hosts_ui_identity
     generateHostCertAndStorePassphrase          ui-identity-admin   hosts_ui_identity_admin
     generateHostCertAndStorePassphrase          ui-referential      hosts_ui_referential
+    generateHostCertAndStorePassphrase          ui-archive          hosts_ui_archive
     #Reverse
     generateHostCertAndStorePassphrase          reverse             hosts_vitamui_reverseproxy
 

@@ -36,7 +36,7 @@ db.customers.insert({
     zipCode: "{{ vitamui_platform_informations.address.zip_code }}",
     city: "{{ vitamui_platform_informations.address.city }}",
     country: "{{ vitamui_platform_informations.address.country }}"
-  }, 
+  },
   "graphicIdentity": {
     "hasCustomGraphicIdentity": true,
     "themeColors": {
@@ -937,6 +937,34 @@ db.profiles.insert({
   ]
 });
 
+// ========================================= partie archive ============================================
+
+db.profiles.insert({
+  "_id": "system_archive_profile",
+  "identifier" : NumberInt(23),
+  "name": "Archive Profile",
+  "description": "Archive Profile",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "ARCHIVE_MANAGEMENT_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_ARCHIVE"
+  },
+  {
+    "name": "ROLE_GET_ARCHIVE"
+  },
+  {
+    "name": "ROLE_GET_ALL_ARCHIVE"
+  }
+   ]
+});
+
+//========================================== partie archive =============================================
+
 // ========================================= GROUPS =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
@@ -967,7 +995,8 @@ db.groups.insert({
     "system_audit",
     "system_secure",
     "system_dsl",
-    "system_probative_value"
+    "system_probative_value",
+    "system_archive_profile"
   ],
   "customerId": "system_customer"
 });

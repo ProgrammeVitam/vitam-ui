@@ -90,3 +90,6 @@ vitamui:
     base_url: "https://dev.vitamui.com:4200"
   referential:
     base_url: "https://dev.vitamui.com:4202"
+  archive:
+    base_url: "https://dev.vitamui.com:4209"
+

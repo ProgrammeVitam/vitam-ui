@@ -164,6 +164,38 @@
   tags:
     - referential_app
 
+###################### ARCHIVE #################
+
+- hosts: hosts_vitamui_archive_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_internal.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_vitamui_archive_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_external.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_ui_archive
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
 # ########################################################
 # # ZONE Data
 # ########################################################

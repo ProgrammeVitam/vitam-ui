@@ -325,6 +325,14 @@ public class ServicesData {
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
     public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
+
+    //------------------------------------ ARCHIVES -----------------------------------------
+
+    public static final String SERVICE_ARCHIVE = "ARCHIVE";
+
+    public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
+    public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
+    public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
     //@formatter:off
 
     /**
@@ -403,9 +411,13 @@ public class ServicesData {
 
             ROLE_RUN_AUDITS,
             ROLE_GET_OPERATIONS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
 
-            );
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE
+
+        );
 
     /**
      * List of all the roles in the VITAMUI application (including the admin roles present in the ADMIN_VITAMUI_ROLES list)
@@ -506,9 +518,13 @@ public class ServicesData {
             ROLE_DELETE_ONTOLOGIES,
 
             ROLE_RUN_AUDITS,
-            ROLE_RUN_PROBATIVE_VALUE
+            ROLE_RUN_PROBATIVE_VALUE,
 
-            );
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE
+
+        );
     //@formatter:on
 
     public static List<String> getAdminVitamUIRoleNames() {
