@@ -477,8 +477,6 @@ public abstract class BaseIntegration {
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
         //@formatter:off
         try {
-        	LOGGER.debug("Get certificate : {}", genericCert);
-        	LOGGER.debug("Get passaword : {}", jksPassword);
             final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
