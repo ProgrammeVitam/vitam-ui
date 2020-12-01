@@ -59,6 +59,7 @@ import { EditableFieldModule } from './components/editable-field/editable-field.
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
+import { SelectLanguageModule } from './components/header/select-language/select-language.module';
 import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { NavbarModule } from './components/navbar/navbar.module';
@@ -170,6 +171,7 @@ export function startupServiceFactory(startupService: StartupService) {
   exports: [
     AccountModule,
     TranslateModule,
+    SelectLanguageModule,
     ApplicationSelectContentModule,
     BlankComponent,
     ConfirmDialogModule,

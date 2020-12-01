@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum ApplicationId {
+    STARTER_KIT_APP = 'STARTER_KIT_APP',
     PORTAL_APP = 'PORTAL_APP',
     CUSTOMERS_APP = 'CUSTOMERS_APP',
     USERS_APP = 'USERS_APP',

@@ -49,6 +49,11 @@ body {
 .clickable {
     cursor: pointer;
 }
+
+.hidden {
+    visibility: hidden!important;
+}
+
 .text-primary {
     color: var(--vitamui-primary)!important;
 }

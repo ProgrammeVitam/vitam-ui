@@ -45,14 +45,8 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
-import {
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  TranslateVitamModule,
-  VitamUICommonModule,
-  WINDOW_LOCATION } from 'ui-frontend-common';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,7 +58,15 @@ import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.mo
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
+
 registerLocaleData(localeFr, 'fr');
+
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpClient,  [
+    {prefix: './assets/shared-i18n/', suffix: '.json'},
+    {prefix: './assets/i18n/', suffix: '.json'}
+  ]);
+}
 
 @NgModule({
   declarations: [
@@ -80,13 +82,13 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     StarterKitModule,
     LoggerModule.forRoot(),
-    TranslateModule.forChild({
+    TranslateModule.forRoot({
+      defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
-        useFactory: TranslateVitamModule.httpLoaderChildFactory,
+        useFactory: httpLoaderFactory,
         deps: [HttpClient]
-      },
-      isolate: false,
+      }
     }),
     QuicklinkModule,
     ButtonsModule,
