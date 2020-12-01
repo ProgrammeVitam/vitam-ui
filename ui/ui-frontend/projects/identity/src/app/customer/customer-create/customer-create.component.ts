@@ -69,7 +69,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     name: null,
     companyName: null,
   };
-  public stepIndex = 1;
+  public stepIndex = 0;
   public stepCount = 5;
   // tslint:disable-next-line: variable-name
   private _customerForm: FormGroup;
