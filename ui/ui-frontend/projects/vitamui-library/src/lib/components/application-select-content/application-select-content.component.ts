@@ -46,7 +46,6 @@ import {Application, AuthService} from 'ui-frontend-common';
 export class UpdatedApplicationSelectContentComponent {
 
   @Input() isModalMenu: boolean;
-
   @Input()
   set applications(applications: Application[]) {
     this._applications = applications;
@@ -58,6 +57,7 @@ export class UpdatedApplicationSelectContentComponent {
     this.referentialApplications = sortedApps.filter((app) => app.category === 'referential');
     this.opauditApplications = sortedApps.filter((app) => app.category === 'opaudit');
     this.techAdminApplications = sortedApps.filter((app) => app.category === 'techadmin');
+    this.externalApplications = sortedApps.filter((app) => app.category === 'external');
   }
 
   get applications(): Application[] {
@@ -74,11 +74,13 @@ export class UpdatedApplicationSelectContentComponent {
   }
 
   userApplications: Application[];
+
   settingsApplications: Application[];
   adminApplications: Application[];
   referentialApplications: Application[];
   opauditApplications: Application[];
   techAdminApplications: Application[];
+  externalApplications: Application[];
 
   constructor(private authService: AuthService) {
   }

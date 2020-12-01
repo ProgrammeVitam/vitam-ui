@@ -6,6 +6,16 @@
     </div>
 </div>
 
+<div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="externalApplications?.length > 0"
+     i18n="external category@@PortalExternalCategory">Applications tierces</div>
+<div class="app-container" [class.modal-container]="isModalMenu">
+  <div class="row">
+    <vitamui-common-menu-tile-updated class="col-sm-12 col-md-6 col-lg-4 col-xl-4"
+                                      *ngFor="let appExternal of externalApplications" [application]="appExternal" [isModalMenu]="isModalMenu"
+                                      (appSelect)="selectApp($event)"></vitamui-common-menu-tile-updated>
+  </div>
+</div>
+
 <div class="row category-header" [class.modal-category]="isModalMenu" *ngIf="referentialApplications?.length > 0"
      i18n="Referential category@@PortalReferentialCategory">Référentiels</div>
 <div class="app-container" [class.modal-container]="isModalMenu">
