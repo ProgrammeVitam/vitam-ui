@@ -90,11 +90,14 @@
                     <xsd:documentation>Version de la liste de codes des relations.</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element ref="OtherCodeListAbstract" minOccurs="0" maxOccurs="unbounded">
+            <!-- Redefined by VITAM -->
+            <!--xsd:element ref="OtherCodeListAbstract" minOccurs="0" maxOccurs="unbounded">
                 <xsd:annotation>
-                    <xsd:documentation>Permet d'ajouter de nouvelles listes de codes si l'ajout d'autres métadonnées l'impose.</xsd:documentation>
+                    <xsd:documentation>Permet d'ajouter de nouvelles listes de codes si l'ajout
+                        d'autres métadonnées l'impose.</xsd:documentation>
                 </xsd:annotation>
-            </xsd:element>
+            </xsd:element-->
+            <xsd:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute ref="xml:id" use="optional"/>
     </xsd:complexType>
@@ -121,38 +124,27 @@
                     </xsd:annotation>
                 </xsd:element>
             </xsd:choice>
-            <xsd:element name="LogBook" minOccurs="0">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="Event" minOccurs="0" maxOccurs="unbounded">
-                            <xsd:complexType>
-                                <xsd:complexContent>
-                                    <xsd:extension base="EventType">
-                                        <xsd:sequence>
-                                            <xsd:element name="DataObjectReference" minOccurs="0">
-                                                <xsd:annotation>
-                                                    <xsd:documentation>Permet de faire référence à un objet-donnée binaire ou physique déjà présent dans les métadonnées du bordereau.</xsd:documentation>
-                                                </xsd:annotation>
-                                                <xsd:complexType>
-                                                    <xsd:sequence>
-                                                        <xsd:element name="DataObjectReferenceId" type="DataObjectRefIdType">
-                                                            <xsd:annotation>
-                                                                <xsd:documentation>Référence à un objet-données listé dans les métadonnées de transport.</xsd:documentation>
-                                                            </xsd:annotation>
-                                                        </xsd:element>
-                                                    </xsd:sequence>
-                                                </xsd:complexType>
-                                            </xsd:element>
-                                        </xsd:sequence>
-                                    </xsd:extension>
-                                </xsd:complexContent>
-                            </xsd:complexType>
-                        </xsd:element>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
+            <xsd:element name="LogBook" type="LogBookOgType" minOccurs="0"/>
         </xsd:sequence>
         <xsd:attribute name="id" type="GroupIdType" use="required"/>
+    </xsd:complexType>
+    <xsd:complexType name="LogBookOgType">
+        <xsd:sequence>
+            <xsd:element name="Event" type="EventLogBookOgType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="EventLogBookOgType">
+        <xsd:complexContent>
+            <xsd:extension base="EventType">
+                <xsd:sequence>
+                    <xsd:element name="DataObjectReferenceId" type="DataObjectRefIdType" minOccurs="0" maxOccurs="1">
+                        <xsd:annotation>
+                            <xsd:documentation>Permet de faire référence à un objet-donnée binaire ou physique déjà présent dans les métadonnées du bordereau.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 
     <!-- Paquet d'Objets-données -->
@@ -328,7 +320,7 @@
                     <xsd:documentation>Identifiant du message.</xsd:documentation>
                 </xsd:annotation>
             </xsd:element>
-            <xsd:element name="Signature" type="SignatureType" minOccurs="0">
+            <xsd:element name="Signature" type="SignatureMessageType" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>Signature du message.</xsd:documentation>
                 </xsd:annotation>

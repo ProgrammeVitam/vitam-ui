@@ -186,6 +186,7 @@
 							</execution>
 						</executions>
 						<configuration>
+							<laxSchemaValidation>true</laxSchemaValidation>
 							<!-- The package of your generated sources -->
 							<packageName>fr.gouv.vitamui.commons.vitam.seda</packageName>
 							<sources>
