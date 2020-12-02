@@ -5,13 +5,14 @@ $animation-time: 150ms;
 
 .vitamui-autocomplete {
   position: relative;
+  font-family: "Mulish", sans-serif;
 
   > input {
-    @include elevation-0;
-    background: white;
-    border-radius: 25px;
+    background: $white;
+    box-sizing: border-box;
+    border-radius: 87px;
     background-color: $white;
-    border: solid 1px #f0f0f0;
+    border: solid 1px var(--vitamui-grey-400);
     height: 50px;
     width: 100%;
     padding: 10px 40px 10px 29px;
@@ -19,11 +20,22 @@ $animation-time: 150ms;
 
     &:focus {
       outline: none;
+      border: solid 1px var(--vitamui-primary);
+    }
+
+    &:hover {
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     }
   }
 
   &.disabled {
-    opacity: 0.4;
+    > input {
+      background: var(--vitamui-grey-300);
+    }
+
+    > i {
+      color: var(--vitamui-grey-700)
+    }
   }
 
   > i {
@@ -37,14 +49,16 @@ $animation-time: 150ms;
 
   .input-label {
     font-family: "Mulish", sans-serif;
-    color: var(--vitamui-grey-600);
-    font-weight: bold;
+    font-size: 14px;
+    align-items: center;
+    letter-spacing: 0.1px;
+    line-height: 22px;
     position: absolute;
     left: 30px;
     top: 16px;
-    font-size: 14px;
     pointer-events: none;
     transform-origin: left;
+    color: var(--vitamui-grey-600);
     transition: transform $animation-time ease-out, top $animation-time ease-out;
   }
 
@@ -55,6 +69,10 @@ $animation-time: 150ms;
 
     > input {
       padding-top: 30px;
+      font-family: "Mulish", sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--vitamui-grey-900);
     }
   }
 }

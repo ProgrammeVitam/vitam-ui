@@ -1,25 +1,27 @@
+<div class="mb-4 row">
+  <vitamui-common-vitamui-autocomplete class="col-8" [options]="applications" [formControl]="appSelect"
+    placeholder="Application" i18n-placeholder="Application@@profilesFormApplicationPlaceholder">
+  </vitamui-common-vitamui-autocomplete>
 
-  <div class="mb-4 row">
-    <vitamui-common-vitamui-autocomplete class="col-8" [options]="applications" [formControl]="appSelect" placeholder="Application"
-      i18n-placeholder="Application@@profilesFormApplicationPlaceholder"></vitamui-common-vitamui-autocomplete>
-      <button type="button" class="btn primary ml-5" (click)="add()" [disabled]="!canAddProfile"
+</div>
+
+<div class="mb-4 row" *ngIf="!tenantIdentifier">
+  <vitamui-common-vitamui-autocomplete class="col-8" [options]="filteredTenants" [formControl]="tenantSelect"
+    #tenantInput placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder">
+  </vitamui-common-vitamui-autocomplete>
+  <button type="button" class="btn primary ml-5" (click)="add()" [disabled]="!canAddProfile"
     i18n="Add@@profilesFormAddButton" #addButton>Ajouter</button>
-  </div>
 
-  <div class="mb-4 row" *ngIf="!tenantIdentifier">
-    <vitamui-common-vitamui-autocomplete class="col-8" [options]="filteredTenants" [formControl]="tenantSelect" #tenantInput
-      placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder">
-    </vitamui-common-vitamui-autocomplete>
-    <button type="button" class="btn-link ml-5 col-2" (click)="resetTree()">
-      <i class="material-icons">replay</i>
-    </button>
-  </div>
+</div>
 
-  <div class="mb-4 col-8" >
-    <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect" placeholder="Profil"
-      i18n-placeholder="Profile@@profilesFormProfilePlaceholder" #profileInput>
-    </vitamui-common-vitamui-autocomplete>
-  </div>
+<div class="mb-4 row">
+  <vitamui-common-vitamui-autocomplete class="col-8" [options]="filteredProfiles" [formControl]="profileSelect"
+    placeholder="Profil" i18n-placeholder="Profile@@profilesFormProfilePlaceholder" #profileInput>
+  </vitamui-common-vitamui-autocomplete>
+  <button type="button" class="btn-link ml-5 col-2" (click)="resetTree()">
+    <i class="material-icons">replay</i>
+  </button>
+</div>
 
 <div class="vitamui-table">
   <div class="vitamui-table-head">

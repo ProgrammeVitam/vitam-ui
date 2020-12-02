@@ -240,8 +240,8 @@ $row-padding: 0.8rem;
 // table css
 .vitamui-table {
     background-color: $white;
-    border: 1px solid var(--vitamui-grey-200);
-    border-radius: 10px;
+    border: 1px solid var(--vitamui-grey-400);
+    border-radius: 5px;
 }
 
 .vitamui-table-head {
@@ -280,11 +280,11 @@ $row-padding: 0.8rem;
     }
 
     .vitamui-row {
-        border-top: 1px solid var(--vitamui-grey-100); 
+        border-top: 1px solid var(--vitamui-grey-400); 
         padding: $row-padding;
 
         &:hover {
-            background-color: var(--vitamui-grey-100);
+            background-color: var(--vitamui-grey-300);
     
             .actions > div {
                 visibility: visible;
@@ -348,14 +348,14 @@ $row-padding: 0.8rem;
 
     .vitamui-row {
         height: 55px;
-        border-top: 1px solid var(--vitamui-grey-200);
+        border-top: 1px solid var(--vitamui-grey-400);
 
         &:hover {
             background-color: var(--vitamui-grey-300);
         }
 
         &:last-of-type {
-            border-bottom: 1px solid var(--vitamui-grey-200);
+            border-bottom: 1px solid var(--vitamui-grey-400);
         }
     }
 }
@@ -363,4 +363,15 @@ $row-padding: 0.8rem;
 // Profile list item css
 .vitamui-profile-list {
     background-color: var(--vitamui-grey-100);
+    font-family: 'Mulish',sans-serif;
+
+    .profile-label {
+        font-size: 12px;
+        color: var(--vitamui-grey-600);
+    }
+    
+    .profile-value {
+        font-size: 16px;
+        color: var(--vitamui-grey-900);
+    }
 }
