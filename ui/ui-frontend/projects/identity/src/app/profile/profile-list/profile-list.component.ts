@@ -88,7 +88,7 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
       if (profileIndex > -1) {
         this.dataSource[profileIndex] = {
           id: this.dataSource[profileIndex].id,
-          enabled: this.dataSource[profileIndex].enabled,
+          enabled: updatedProfile.enabled,
           name: updatedProfile.name,
           level: updatedProfile.level,
           customerId: updatedProfile.customerId,
