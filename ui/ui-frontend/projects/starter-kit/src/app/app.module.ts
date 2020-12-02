@@ -57,6 +57,7 @@ import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
+import { TypographyModule } from './components/typography/typography.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
 
 registerLocaleData(localeFr, 'fr');
@@ -81,6 +82,18 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     VitamUICommonModule,
     AppRoutingModule,
     StarterKitModule,
+    QuicklinkModule,
+    ButtonsModule,
+    MiscellaneousModule,
+    ArraysModule,
+    BreadcrumbModule,
+    InputsModule,
+    ProgressBarModule,
+    TypographyModule,
+    TooltipModule,
+    MatCardModule,
+    MatSidenavModule,
+    MatListModule,
     LoggerModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: 'fr',
@@ -90,17 +103,6 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
         deps: [HttpClient]
       }
     }),
-    QuicklinkModule,
-    ButtonsModule,
-    MiscellaneousModule,
-    ArraysModule,
-    BreadcrumbModule,
-    InputsModule,
-    ProgressBarModule,
-    TooltipModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatListModule,
   ],
   providers: [
     Title,

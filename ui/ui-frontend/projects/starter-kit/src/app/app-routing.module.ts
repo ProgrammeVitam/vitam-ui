@@ -45,6 +45,7 @@ import { InputsComponent } from './components/inputs/inputs.component';
 import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
+import { TypographyComponent } from './components/typography/typography.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
 const routes: Routes = [
@@ -57,6 +58,7 @@ const routes: Routes = [
   { path: 'progress-bar', component: ProgressBarComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'tooltip', component: TooltipComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: '**', redirectTo: '' },
 ];
 
