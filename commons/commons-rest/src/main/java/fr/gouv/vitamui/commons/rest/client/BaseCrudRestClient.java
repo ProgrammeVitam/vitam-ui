@@ -238,7 +238,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URI uri = buildUriBuilder(builder);
         LOGGER.debug("uri = {}", uri.toString());
-        final ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uri, HttpMethod.GET, request, new ParameterizedTypeReference<>() {});
+        final ResponseEntity<Map<String, Object>> response = restTemplate.exchange(uri, HttpMethod.GET, request, new ParameterizedTypeReference<Map<String, Object>>() {});
         checkResponse(response, 200);
         return response.getBody();
     }

@@ -56,6 +56,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.client.result.UpdateResult;
 
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -152,5 +153,5 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param operationType type of the aggregation operation to apply.
      * @return Map<String, Object> aggregation results.
      */
-    Map<String, Object> aggregation(String[] fields, final List<CriteriaDefinition> criteria, String operationType);
+    Map<String, Object> aggregation(Iterable<String> fields, final Iterable<CriteriaDefinition> criteria, AggregationRequestOperator operationType);
 }

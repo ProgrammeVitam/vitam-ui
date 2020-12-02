@@ -41,6 +41,8 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
@@ -96,6 +98,23 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<PaginatedValuesDto<D>> response =
             restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, getDtoPaginatedClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
+        LOGGER.debug("search {}", requestParam);
+
+        final URIBuilder builder = getUriBuilderFromUrl();
+        builder.addParameter("page", requestParam.getPage().toString());
+        builder.addParameter("size", requestParam.getSize().toString());
+        requestParam.getCriteria().ifPresent(o -> builder.addParameter("criteria", o));
+        requestParam.getOrderBy().ifPresent(o -> builder.addParameter("orderBy", o));
+        requestParam.getDirection().ifPresent(o -> builder.addParameter("direction", o.toString()));
+
+        final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<ResultsDto<D>> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
+                new ParameterizedTypeReference<ResultsDto<D>>() { });
         checkResponse(response);
         return response.getBody();
     }
