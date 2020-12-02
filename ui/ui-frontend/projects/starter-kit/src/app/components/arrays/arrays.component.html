@@ -129,8 +129,8 @@
       <div class="vitamui-table-rows">
         <ng-container *ngFor="let customer of dataSource">
           <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
-            <div class="d-flex align-items-center clickable" (click)="row.toggle()">
-              <div class="col-2 d-flex">
+            <div class="d-flex align-items-center clickable">
+              <div class="col-2 d-flex"  (click)="row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row.state">keyboard_arrow_up</i>
               </div>
