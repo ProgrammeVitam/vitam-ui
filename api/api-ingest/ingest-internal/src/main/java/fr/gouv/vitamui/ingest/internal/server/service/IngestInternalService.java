@@ -47,62 +47,30 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
+import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
-/*import fr.opensagres.xdocreport.core.XDocReportException;
-import fr.opensagres.xdocreport.template.TemplateEngineKind;*/
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.Borders;
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import java.io.File;
 import java.io.ByteArrayOutputStream;
 
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTabStop;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblWidth;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTabJc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTblWidth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import javax.ws.rs.core.Response;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UncheckedIOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,6 +85,7 @@ public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
     private final InternalSecurityService internalSecurityService;
+
     private final IngestExternalClient ingestExternalClient;
 
     private final IngestService ingestService;
@@ -125,15 +94,26 @@ public class IngestInternalService {
 
     private ObjectMapper objectMapper;
 
-    private String message = "Generation docx from here";
+    private final CustomerInternalRestClient customerInternalRestClient;
+
+    private final IngestDocxGenerator ingestDocxGenerator;
+
 
     @Autowired
     public IngestInternalService(final InternalSecurityService internalSecurityService,
-            final LogbookService logbookService, final ObjectMapper objectMapper, final IngestService ingestService) {
+        final LogbookService logbookService, final ObjectMapper objectMapper,
+        IngestExternalClient ingestExternalClient, final IngestService ingestService,
+        final CustomerInternalRestClient customerInternalRestClient,
+        IngestDocxGenerator ingestDocxGenerator)
+    {
         this.internalSecurityService = internalSecurityService;
+        this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
         this.ingestService = ingestService;
+        this.customerInternalRestClient = customerInternalRestClient;
+        this.ingestDocxGenerator = ingestDocxGenerator;
+
     }
 
     public RequestResponseOK upload(MultipartFile path, String contextId, String action)
@@ -248,10 +228,11 @@ public class IngestInternalService {
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
             Resource resource = new InputStreamResource((InputStream) entity);
-            manifest = manifest + IngestDocxGenerator.resourceAsString(resource);
+            manifest = manifest + ingestDocxGenerator.resourceAsString(resource);
 
             return manifest;
         }
+
         return null;
     }
 
@@ -261,217 +242,51 @@ public class IngestInternalService {
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
             Resource resource = new InputStreamResource((InputStream) entity);
-            atr = atr + IngestDocxGenerator.resourceAsString(resource);
+            atr = atr + ingestDocxGenerator.resourceAsString(resource);
 
             return atr;
         }
         return null;
     }
 
-
     public byte[] generateDocX(VitamContext vitamContext, final String id) throws IOException, JSONException {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
-       // String service = "";
- /*       if(jsonObject.toString().contains("submissionAgency")) {
-            service = jsonObject.get("submissionAgency").toString();
-        }
-        else {service = jsonObject.get("originatingAgency").toString();}*/
+        CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
+        Resource logo = customerInternalRestClient.getCustomerLogo(internalSecurityService.getHttpContext(), myCustomer.getId()).getBody();
 
      try {
+         Document atr = ingestDocxGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+         Document manifest = ingestDocxGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
-
-         Document doc = IngestDocxGenerator.convertStringToXMLDocument( getAtrAsString(vitamContext, id) );
-         Document manifest = IngestDocxGenerator.convertStringToXMLDocument( getManifestAsString(vitamContext, id) );
-         //Blank Document
          XWPFDocument document = new XWPFDocument();
 
-         //Write the Document in file system
-         FileOutputStream out = new FileOutputStream(new File("src/main/resources/ingestDoc.docx"));
+         ingestDocxGenerator.generateDocHeader(document,myCustomer,logo);
 
+         ingestDocxGenerator.generateFirstTitle(document);
 
-         //Generate the header
-         IngestDocxGenerator.generateDocHeader(document);
-// title 1
-         IngestDocxGenerator.generateFirstTitle(document);
+         ingestDocxGenerator.generateTableOne(document,manifest,jsonObject);
 
-// table 1
-         IngestDocxGenerator.generateTableOne(document,manifest,jsonObject);
+         ingestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
 
+         ingestDocxGenerator.generateTableThree(document,manifest,id);
 
+         ingestDocxGenerator.generateTableFour(document);
 
+         ingestDocxGenerator.generateSecondtTitle(document);
 
-         // table 2
-         IngestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
+         List<ArchiveUnitDto> list = ingestDocxGenerator.getValuesForDynamicTable(atr,manifest);
 
+         ingestDocxGenerator.generateDynamicTable(document,list);
 
+         ByteArrayOutputStream result = new ByteArrayOutputStream();
+              document.write(result);
+             return result.toByteArray();
 
-
-         //table 3
-         IngestDocxGenerator.generateTableThree(document,manifest,id);
-
-
-         // table 4
-         IngestDocxGenerator.generateTableFour(document);
-
-
-
-
-IngestDocxGenerator.generateSecondtTitle(document);
-
-
-         XWPFParagraph paragraph = document.createParagraph();
-         XWPFRun run = paragraph.createRun();
-
-             run.setText("Service producteur " + jsonObject.get("originatingAgency") +
-                // " \n\n service versant " + service +
-                 "\n" +
-                 "\n\n num du versement " + selectedIngest.getObIdIn() +
-                 "\n\n présentation du contenu " + new JSONObject(selectedIngest.getData()).get("EvDetailReq") +
-                 "\n\n date de début " + selectedIngest.getDateTime() +
-                 "\n\n date fin " +  selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getDateTime() +
-                 " \n\n Nombre des fichiers binaire "  + selectedIngest.getEvents().size() +
-                 "\n\n poids "+
-                 "GUID " + id  +
-                 " dfdf   sdf sdfdsfds  " +  doc.getFirstChild().getNodeName() // resourcee.toString()//+ input.length()
-                 + "les valeurs ID " + getthevalue(doc)
-
-
-             );
-
-
-         List<Sea> list;
-         list = getValueforTable(vitamContext, id);
-         //create dynamique table
-         XWPFTable tableDyn2 = document.createTable();
-         //create first row
-         XWPFTableRow tableDyn2Row1 = tableDyn2.getRow(0);
-         tableDyn2Row1.getCell(0).setText("Identifiant SAE VAS ");
-         tableDyn2Row1.getCell(0).setWidth("2000");
-         tableDyn2Row1.getCell(0).setColor("909399");
-         tableDyn2Row1.addNewTableCell().setText("Titre ");
-         tableDyn2Row1.getCell(1).setWidth("5000");
-         tableDyn2Row1.getCell(1).setColor("909399");
-         tableDyn2Row1.addNewTableCell().setText("Date de début ");
-         tableDyn2Row1.getCell(2).setWidth("1500");
-         tableDyn2Row1.getCell(2).setColor("909399");
-         tableDyn2Row1.addNewTableCell().setText("Date de fin");
-         tableDyn2Row1.getCell(3).setWidth("1500");
-         tableDyn2Row1.getCell(3).setColor("909399");
-
-         list.stream().forEach(x -> {
-             XWPFTableRow tableDynRowX = tableDyn2.createRow();
-             tableDynRowX.getCell(0).setText(x.getSystemId());
-             tableDynRowX.getCell(1).setText(x.getTiltle());
-             tableDynRowX.getCell(2).setText(x.getStartDate());
-             tableDynRowX.getCell(3).setText(x.getEndDate());
-
-         });
-
-         XWPFParagraph mparagraph = document.createParagraph();
-        // XWPFRun mrun = mparagraph.createRun();
-        // mparagraph = document.createParagraph();
-
- document.write(out);
-         out.close();
-
-         ByteArrayOutputStream ff = new ByteArrayOutputStream();
-              document.write(ff);
-             return ff.toByteArray();
-
-     } catch (IOException | InvalidFormatException e) {
-         throw new IOException("Unable to generate the report ", e);
+     } catch (IOException e) {
+         throw new IOException("Unable to generate the ingest report ", e);
      }
-
     }
 
-int x = 0;
-    List<String> tab = new ArrayList<>() ;
-    Map<String,String> map = new HashMap<>();
-    public String getthevalue(Document doc) {
-
-
-        String s = "";
-        doc.getDocumentElement().normalize();
-        NodeList nList = doc.getElementsByTagName("ArchiveUnit");
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-
-            Node nNode = nList.item(temp);
-
-            System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                Element eElement = (Element) nNode;
-s = s + eElement.getElementsByTagName("SystemId").item(0).getTextContent();
-                System.out.println("Staff id : " + eElement.getAttribute("id"));
-                System.out.println("First Name : " + eElement.getElementsByTagName("SystemId").item(0).getTextContent());
-                map.put(eElement.getAttribute("id"),eElement.getElementsByTagName("SystemId").item(0).getTextContent());
-tab.add(eElement.getAttribute("id"));
- x+=1;
-            }
-        }
-
-        return s;
-
-    }
-
-    public List<Sea> getValueforTable(VitamContext vitamContext, final String id) {
-        List<Sea> list = new ArrayList<Sea>();
-        Document manifest = IngestDocxGenerator.convertStringToXMLDocument( getManifestAsString(vitamContext, id) );
-        manifest.getDocumentElement().normalize();
-        NodeList nList = manifest.getElementsByTagName("ArchiveUnit");
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Sea sea = new Sea();
-                Element eElement = (Element) nNode;
-                System.out.println("hada id " + eElement.getAttribute("id"));
-     /*           System.out.println("hada title " + eElement.getElementsByTagName("Title").item(0).getTextContent());
-                System.out.println("hada startdate " + eElement.getElementsByTagName("StartDate").item(0).getTextContent());
-                System.out.println("hada endDate " + eElement.getElementsByTagName("EndDate").item(0).getTextContent());*/
-                System.out.println("hada system Id " + map.get(eElement.getAttribute("id")));
-                if(map.get(eElement.getAttribute("id")) != null) {
-
-                    sea.setId(eElement.getAttribute("id"));
-                    sea.setTiltle(eElement.getElementsByTagName("Title").getLength() == 0 ?
-                        "---" :
-                        eElement.getElementsByTagName("Title").item(0).getTextContent());
-                    sea.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
-                        "---" :
-                        eElement.getElementsByTagName("EndDate").item(0).getTextContent());
-                    sea.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
-                        "---" :
-                        eElement.getElementsByTagName("StartDate").item(0).getTextContent());
-                    sea.setSystemId(map.get(eElement.getAttribute("id")));
-                    list.add(sea);
-                }
-            }
-        }
-        return list;
-    }
-
-/*    private static Document convertStringToXMLDocument(String xmlString)
-    {
-        //Parser that produces DOM object trees from XML content
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-        //API to obtain DOM Document instance
-        DocumentBuilder builder = null;
-        try
-        {
-            //Create DocumentBuilder with default configuration
-            builder = factory.newDocumentBuilder();
-
-            //Parse the content to Document object
-            Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
-            return doc;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 }

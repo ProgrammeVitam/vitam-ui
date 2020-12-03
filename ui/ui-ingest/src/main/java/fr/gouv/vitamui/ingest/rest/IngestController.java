@@ -137,19 +137,14 @@ public class IngestController extends AbstractUiRestController {
                 .body(body);
     }
 
-    @GetMapping("/message" + CommonConstants.PATH_ID)
+    @ApiOperation(value = "download Docx Report for an ingest operation")
+    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> genereateDocX(final @PathVariable("id") String id) {
-
+        LOGGER.debug("download Docx report for the ingest with id :{}", id);
         byte[] bytes = service.generateDocX(buildUiHttpContext(), id).getBody();
-           // HttpHeaders headers = new HttpHeaders();
-          //  headers.add("Content-Disposition", "attachment;filename=template.docx");
-         return ResponseEntity.ok()
+        return ResponseEntity.ok()
              .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
              .body(bytes);
-
-             //.headers(headers).body(bytes);
-        //return service.generateDocX(buildUiHttpContext());
-
 
     }
 
