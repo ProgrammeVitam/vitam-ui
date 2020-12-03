@@ -50,8 +50,8 @@ export class IngestApiService extends BaseHttpClient<any> {
     return this.http.get(`${this.apiUrl}/atr/${id}`, { responseType: 'blob' });
   }
 
-  getmessage(id : string) : Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/message/${id}`, { responseType: 'blob' });
+  downloadDocxReport(id : string) : Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/docxreport/${id}`, { responseType: 'blob' });
   }
 
 }

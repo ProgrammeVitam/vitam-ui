@@ -43,11 +43,9 @@ import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,10 +57,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -146,19 +141,18 @@ public class IngestInternalController {
         return null;
     }
 
-    @GetMapping("/message" + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> getMessage(final @PathVariable("id") String id)
+    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)
         throws IOException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-
-  try {
+      try {
+          LOGGER.debug("export docx report for operation with id :{}", id);
+          ParameterChecker.checkParameter("Identifier is mandatory : ", id);
        byte[] response =  this.ingestInternalService.generateDocX(vitamContext, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+      }
+       catch(Exception e) {
+            throw new IOException(e.getMessage());
+      }
     }
-    catch(Exception e) {
-        throw new IOException(e.getMessage());
-    }
-
-    }
-
 }

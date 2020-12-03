@@ -76,7 +76,6 @@ export class IngestPreviewComponent implements OnInit {
   }
 
   generateDocX() {
-    console.log("generation DocX");
-    this.ingestService.getMessage(this.ingest.id);
+    this.ingestService.downloadDocxReport(this.ingest.id);
   }
 }

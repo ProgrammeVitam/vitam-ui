@@ -136,8 +136,9 @@ public class IngestExternalController {
         return ingestExternalService.downloadATR(id);
     }
 
-    @GetMapping("/message" + CommonConstants.PATH_ID)
+    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocX(final @PathVariable("id") String id) {
+        LOGGER.debug("export docx report for ingest with id :{}", id);
         return ingestExternalService.generateDocX(id);
     }
 }
