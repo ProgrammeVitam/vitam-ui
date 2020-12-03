@@ -2,7 +2,7 @@ h1, h2, h3, h4, h5 {
     color: var(--vitamui-grey-900);
     margin: 10px 0;
 
-    &.lighted {
+    &.light {
         color: var(--vitamui-grey-600);
     }
 }
@@ -65,7 +65,7 @@ h5 {
         letter-spacing: 0.8px;
     }
 
-    &.lighted {
+    &.light {
         color: var(--vitamui-grey-600);
     }
 }

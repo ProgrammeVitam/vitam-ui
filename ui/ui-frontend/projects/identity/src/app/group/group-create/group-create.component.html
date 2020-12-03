@@ -7,7 +7,7 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Profile Group Creation@@profileGroupCreateTitle">Création d'un groupe de profil</div>
+        <div class="text large bold" i18n="Profile Group Creation@@profileGroupCreateTitle">Création d'un groupe de profils</div>
 
           <vitamui-common-slide-toggle formControlName="enabled">Groupe de profils <span *ngIf="!form.get('enabled').value">in</span>actif</vitamui-common-slide-toggle>
 
@@ -31,7 +31,7 @@
 
         <div class="d-flex">
           <div class="mr-4 p-2">
-            <div class="text normal lighted">Niveau</div>
+            <div class="text normal light">Niveau</div>
             <div class="text medium bold">{{authService.user.level}}</div>
           </div>
 

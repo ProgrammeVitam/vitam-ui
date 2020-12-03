@@ -124,7 +124,7 @@
               i18n="Duration until password revocation (since the last change)@@customerCreatePasswordRevocationInputLabel">
                 Durée de révocation du mot de passe
             </div>
-            <div class="text normal bold lighted"><small>(depuis le dernier changement)</small></div>
+            <div class="text normal bold light"><small>(depuis le dernier changement)</small></div>
           </div>
 
           <mat-form-field class="vitamui-mat-select ml-5">
@@ -163,7 +163,7 @@
           <div class="text medium bold" i18n="Email domain input label@@customerCreateEmailDomainInputLabel">
             Restriction de domaine e-mail
           </div>
-          <div class="text normal bold lighted">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
+          <div class="text normal bold light">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
 
           <app-domains-input formControlName="emailDomains" placeholder="domaine.xyz"
             i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder"
@@ -202,7 +202,7 @@
           pour "{{ customerInfo?.name }}"</div>
         <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
 
-        <div class="text normal bold lighted ml-2"
+        <div class="text normal bold light ml-2"
           i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
             Le coffre des éléments de preuve est créé automatiquement avec son propriétaire
         </div>
