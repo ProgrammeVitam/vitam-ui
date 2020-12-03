@@ -13,5 +13,10 @@
         "Disabled_outline": "Outline disabled",
         "Disabled_contrast": "Contrast disabled",
         "Disabled_contrast_outline": "Contrast outline disabled"
-	}
+    },
+    "SAMPLE-DIALOG": {
+        "Open": "Open the sample dialog",
+        "Step-0": "First Step",
+        "Step-1": "Second Step"
+    }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 
 @Component({
   selector: 'app-miscellaneous',
@@ -7,8 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MiscellaneousComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {}
+
+  openDialog() {
+    this.dialog.open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true }).afterClosed().subscribe(() => {
+      console.log('Dialog closed !');
+    });
+  }
 
 }

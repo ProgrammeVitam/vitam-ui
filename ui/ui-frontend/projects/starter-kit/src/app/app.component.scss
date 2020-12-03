@@ -2,6 +2,8 @@
     div {
         margin: 3rem 5rem;;
     }
+
+
     
     mat-list-item {
         cursor: pointer;
@@ -23,6 +25,10 @@
          
         .mat-list-item-content {
             justify-content: center;
+        }
+
+        h4 {
+            margin: 1rem 0;
         }
     }
 }

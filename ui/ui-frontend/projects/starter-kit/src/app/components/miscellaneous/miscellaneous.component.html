@@ -1,5 +1,5 @@
 <div>
-  <h1>Banner with searchbar & button</h1>
+  <h4>Banner with searchbar & button</h4>
   <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
     [disableSearchBar]="true">
     <button class="btn primary ml-5">
@@ -9,7 +9,7 @@
 </div>
 
 <div>
-  <h1>Banner with searchbar & buttons</h1>
+  <h4>Banner with searchbar & buttons</h4>
   <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
     [disableSearchBar]="true">
     <button class="btn primary ml-5">
@@ -25,18 +25,18 @@
 </div>
 
 <div>
-  <h1>Banner with searchbar only</h1>
+  <h4>Banner with searchbar only</h4>
   <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code client, adresse...'"
     [disableSearchBar]="true"></vitamui-common-banner>
 </div>
 
 <div>
-  <h1>User photo with default picture</h1>
+  <h4>User photo with default picture</h4>
   <vitamui-common-user-photo></vitamui-common-user-photo>
 </div>
 
 <div>
-  <h1>Action button menu with overlay</h1>
+  <h4>Action button menu with overlay</h4>
   
   <div class="d-flex">
     <div class="mr-2">
@@ -67,4 +67,9 @@
       </vitamui-common-menu-button>
     </div>
   </div>
+</div>
+
+<div>
+  <h4>{{'SAMPLE-DIALOG.Open' | translate}}</h4>
+  <button class="btn primary" (click)="openDialog()">Open sample dialog</button>
 </div>
