@@ -120,7 +120,10 @@ const expectedCustomer = {
       country: 'FR',
     }
   }],
-  themeColors: {}
+  themeColors: {
+    primary : '#ff4a54',
+    secondary : '#241f63'
+  }
 };
 
 let component: CustomerCreateComponent;

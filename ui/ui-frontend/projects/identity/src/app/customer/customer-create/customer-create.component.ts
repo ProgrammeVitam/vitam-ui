@@ -296,16 +296,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       return this.form.pending || this.form.invalid || invalid || this.creating;
   }
 
-  private isThemeColorsFormValid(): boolean {
-    const value = this.form.get('themeColors').value;
-    for (const key of Object.keys(value)) {
-      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
