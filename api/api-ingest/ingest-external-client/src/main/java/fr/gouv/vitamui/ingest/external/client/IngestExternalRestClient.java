@@ -97,7 +97,7 @@ public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient
     }
 
     public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/message" + CommonConstants.PATH_ID );
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/docxreport" + CommonConstants.PATH_ID );
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
 
