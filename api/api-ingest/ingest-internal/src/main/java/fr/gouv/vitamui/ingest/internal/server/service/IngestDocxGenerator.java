@@ -28,28 +28,28 @@
 package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
@@ -59,15 +59,15 @@ import java.util.Arrays;
 
 public class IngestDocxGenerator {
 
+    public static final String FIRST_TITLE = "Bordereau de versement d'archives";
+    public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
+
     public static Document convertStringToXMLDocument(String xmlString) {
-        //Parser that produces DOM object trees from XML content
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         try {
-            //Create DocumentBuilder with default configuration
             builder = factory.newDocumentBuilder();
-
-            //Parse the content to Document object
             Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
             return doc;
         } catch (Exception e) {
@@ -76,23 +76,132 @@ public class IngestDocxGenerator {
         return null;
     }
 
-    public static void generateTableOne() {
+    public static void generateTableOne(XWPFDocument document, Document manifest, JSONObject jsonObject)
+        throws JSONException {
+
+        XWPFTable tableOne = document.createTable();
+        try {
+
+            XWPFTableRow tableOneRowOne = tableOne.getRow(0);
+            tableOneRowOne.getCell(0).setText("Service producteur :");
+            tableOneRowOne.getCell(0).setWidth("3000");
+            tableOneRowOne.addNewTableCell().setText(getServiceProducteur(manifest));
+            tableOneRowOne.getCell(1).setWidth("7000");
+
+            XWPFTableRow tableOneRowTwo = tableOne.createRow();
+            tableOneRowTwo.getCell(0).setText("Service versant : ");
+            tableOneRowTwo.getCell(1).setText(getServiceVersant(jsonObject));
+
+            XWPFParagraph paragraph = document.createParagraph();
+            XWPFRun run = paragraph.createRun();
+            run.addBreak();
+
+        } catch (JSONException e) {
+            throw new JSONException("Unable to get the data from the JsonObject " + e);
+        }
     }
 
-    public static void generateTableTwo() {
+    public static void generateTableTwo(XWPFDocument document, Document manifest, LogbookOperationDto selectedIngest) {
+
+        XWPFTable tableTwo = document.createTable();
+
+        XWPFTableRow tableTwoRowOne = tableTwo.getRow(0);
+
+        tableTwoRowOne.getCell(0).setText("Numéro du versement :");
+        tableTwoRowOne.getCell(0).setWidth("3000");
+        tableTwoRowOne.addNewTableCell().setText(getNumVersement(manifest));
+        tableTwoRowOne.getCell(1).setWidth("7000");
+
+        XWPFTableRow tableTwoRowTwo = tableTwo.createRow();
+        tableTwoRowTwo.getCell(0).setText("Présentation du contenu :");
+        tableTwoRowTwo.getCell(1).setText(getComment(manifest));
+
+        XWPFTableRow tableTwoRowThree = tableTwo.createRow();
+        tableTwoRowThree.getCell(0).setText("Dates extremes :");
+        tableTwoRowThree.getCell(1).setText("Date de début :" + selectedIngest.getDateTime() + "\n" + " Date fin :" +
+            selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getDateTime());
+
+        XWPFTableRow tableTwoRowFour = tableTwo.createRow();
+        tableTwoRowFour.getCell(0).setText("Historique des conservations :");
+        tableTwoRowFour.getCell(1).setText(getCustodialHistory(manifest));
+
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
     }
 
-    public static void generateTableThree() {
+    public static void generateTableThree(XWPFDocument document, Document manifest, String id) {
+
+        XWPFTable tableThree = document.createTable();
+
+        XWPFTableRow tableThreeRowOne = tableThree.getRow(0);
+
+        tableThreeRowOne.getCell(0).setText("Nombre de fichiers binaires:");
+        tableThreeRowOne.getCell(0).setWidth("3000");
+        tableThreeRowOne.addNewTableCell().setText(getBinaryFileNumber(manifest) + " fichiers");
+        tableThreeRowOne.getCell(1).setWidth("7000");
+
+        XWPFTableRow tableThreeRowFour = tableThree.createRow();
+        tableThreeRowFour.getCell(0).setText("Identifiant de l’opération d’entrée :");
+        tableThreeRowFour.getCell(1).setText("GUID : " + id);
+
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
     }
 
-    public static void generateTableFour() {
+    public static void generateTableFour(XWPFDocument document) {
+
+        XWPFTable table = document.createTable();
+
+        XWPFTableRow tableRowOne = table.getRow(0);
+        tableRowOne.getCell(0).setText("Date de signature :");
+        tableRowOne.getCell(0).setWidth("5000");
+        tableRowOne.addNewTableCell().setText("Date de signature :");
+        tableRowOne.getCell(1).setWidth("5000");
+        tableRowOne.setHeight(750);
+
+        XWPFTableRow tableRowTwo = table.createRow();
+        tableRowTwo.getCell(0).setText("Le responsable du versement : ");
+        tableRowTwo.getCell(1).setText("Le responsable du service d'archives : ");
+        tableRowTwo.setHeight(750);
+
+        table.getCTTbl().getTblPr().getTblBorders().getRight().setVal(STBorder.NONE);
+        table.getCTTbl().getTblPr().getTblBorders().getLeft().setVal(STBorder.NONE);
+        table.getCTTbl().getTblPr().getTblBorders().getInsideH().setVal(STBorder.NONE);
+        table.getCTTbl().getTblPr().getTblBorders().getInsideV().setVal(STBorder.NONE);
+        table.getCTTbl().getTblPr().getTblBorders().getTop().setVal(STBorder.NONE);
+        table.getCTTbl().getTblPr().getTblBorders().getBottom().setVal(STBorder.NONE);
+
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun run = paragraph.createRun();
+        run.addBreak(BreakType.PAGE);
+    }
+
+    public static void generateFirstTitle(XWPFDocument document) {
+
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun paragraphRun = paragraph.createRun();
+        paragraphRun.setText(FIRST_TITLE);
+        paragraphRun.setBold(true);
+        paragraphRun.setFontSize(22);
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+
+    }
+
+    public static void generateSecondtTitle(XWPFDocument document) {
+
+        XWPFParagraph paragraph = document.createParagraph();
+        XWPFRun paragraphRun = paragraph.createRun();
+        paragraphRun.setBold(true);
+        paragraphRun.setText(SECOND_TITLE);
+        paragraphRun.setFontSize(12);
 
     }
 
     public static void generateDocHeader(XWPFDocument document) throws IOException, InvalidFormatException {
 
         String imgFile = "src/main/resources/logo_ministere.png";
-
         String adresses = " Ministère des solidarités et de la santé " +
             " Ministère du travail\n" +
             " Ministère des sports\n" +
@@ -137,20 +246,26 @@ public class IngestDocxGenerator {
         document.getDocumentElement().normalize();
         return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
     }
+
     public static String getNumVersement(Document document) {
         return document.getElementsByTagName("MessageIdentifier").item(0).getTextContent();
     }
+
     public static String getComment(Document document) {
         return document.getElementsByTagName("Comment").item(0).getTextContent();
     }
+
     public static String getCustodialHistory(Document document) {
-        return document.getElementsByTagName("CustodialHistory").getLength() == 0 ? "historique indisponible" : document.getElementsByTagName("CustodialHistory").item(0).getTextContent();
+        return document.getElementsByTagName("CustodialHistory").getLength() == 0 ?
+            "historique indisponible" :
+            document.getElementsByTagName("CustodialHistory").item(0).getTextContent();
     }
+
     public static String getServiceVersant(JSONObject jsonObject) throws JSONException {
-        if(jsonObject.toString().contains("submissionAgency")) {
-            return  jsonObject.get("submissionAgency").toString();
+        if (jsonObject.toString().contains("submissionAgency")) {
+            return jsonObject.get("submissionAgency").toString();
         }
-        return  jsonObject.get("originatingAgency").toString();
+        return jsonObject.get("originatingAgency").toString();
     }
 
     public static int getBinaryFileNumber(Document document) {

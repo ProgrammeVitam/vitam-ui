@@ -242,28 +242,6 @@ public class IngestInternalService {
         }
     }
 
-/*    public  String asString(Resource resource) {
-        try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
-            return FileCopyUtils.copyToString(reader);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }*/
-
- /*   public String test(VitamContext vitamContext, final String id) {
-         String s = "";
-        Response response = this.exportATR( vitamContext,  id);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
-         //  s = s + asString(resource);
-
-            return s;
-        }
-        return null;
-    }*/
-
-
     public String getManifestAsString(VitamContext vitamContext, final String id) {
         String manifest = "";
         Response response = exportManifest(vitamContext, id);
@@ -293,187 +271,61 @@ public class IngestInternalService {
 
     public byte[] generateDocX(VitamContext vitamContext, final String id) throws IOException, JSONException {
 
-        LogbookOperationDto selectedIngest = this.getOne(vitamContext, id) ;
+        LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
-        String service = "";
-        if(jsonObject.toString().contains("submissionAgency")) {
+       // String service = "";
+ /*       if(jsonObject.toString().contains("submissionAgency")) {
             service = jsonObject.get("submissionAgency").toString();
         }
-        else {service = jsonObject.get("originatingAgency").toString();}
+        else {service = jsonObject.get("originatingAgency").toString();}*/
 
      try {
 
 
-         //==================================
-    /*     XWPFDocument documente = new XWPFDocument(OPCPackage.open("template.docx"));
-         for (XWPFParagraph paragraph : documente.getParagraphs()) {
-             for (XWPFRun run : paragraph.getRuns()) {
-                 String text = run.getText(0);
-                 text = text.replace("${name}", "oussama");
-                 run.setText(text,0);
-                 System.out.println(text);
-             }
-         }
-         documente.write(new FileOutputStream("output.docx"));*/
-         //===================================
          Document doc = IngestDocxGenerator.convertStringToXMLDocument( getAtrAsString(vitamContext, id) );
          Document manifest = IngestDocxGenerator.convertStringToXMLDocument( getManifestAsString(vitamContext, id) );
          //Blank Document
          XWPFDocument document = new XWPFDocument();
 
          //Write the Document in file system
-         FileOutputStream out = new FileOutputStream(new File("template.docx"));
+         FileOutputStream out = new FileOutputStream(new File("src/main/resources/ingestDoc.docx"));
 
 
          //Generate the header
          IngestDocxGenerator.generateDocHeader(document);
+// title 1
+         IngestDocxGenerator.generateFirstTitle(document);
+
+// table 1
+         IngestDocxGenerator.generateTableOne(document,manifest,jsonObject);
 
 
 
 
-
-         //create paragraph
-         XWPFParagraph heey = document.createParagraph();
-
-         //Set Bold an Italic
-         XWPFRun paragraphOneRunOne = heey.createRun();
-
-         paragraphOneRunOne.setText("Bordereau de versement d'archives");
-         paragraphOneRunOne.setItalic(true);
-         paragraphOneRunOne.setBold(true);
-         paragraphOneRunOne.setFontSize(22);
-        //  paragraphOneRunOne.setVerticalAlignment(VerticalAlignment.CENTER.toString());
-         heey.setAlignment(ParagraphAlignment.CENTER);
-         //paragraphOneRunOne.addBreak();
+         // table 2
+         IngestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
 
 
-         //create table
-         XWPFTable tableOne = document.createTable();
-
-         //create first row
-
-             XWPFTableRow tableOneRowOne = tableOne.getRow(0);
-         tableOneRowOne.getCell(0).setText("Service producteur :");
-         tableOneRowOne.getCell(0).setWidth("3000");
-         tableOneRowOne.addNewTableCell().setText(IngestDocxGenerator.getServiceProducteur(manifest));
-         tableOneRowOne.getCell(1).setWidth("7000");
-
-         //create second row
-         XWPFTableRow tableOneRowTwo = tableOne.createRow();
-         tableOneRowTwo.getCell(0).setText("Service versant : ");
-         tableOneRowTwo.getCell(1).setText(IngestDocxGenerator.getServiceVersant(jsonObject));
-
-         XWPFParagraph paragraph1 = document.createParagraph();
-         XWPFRun run1 = paragraph1.createRun();
-         run1.addBreak();
-
-         //table 2
-         XWPFTable tableTwo = document.createTable();
-
-         //row 1
-         XWPFTableRow tableTwoRowOne = tableTwo.getRow(0);
-
-         tableTwoRowOne.getCell(0).setText("Numéro du versement :");
-         tableTwoRowOne.getCell(0).setWidth("3000");
-         tableTwoRowOne.addNewTableCell().setText(IngestDocxGenerator.getNumVersement(manifest));
-         tableTwoRowOne.getCell(1).setWidth("7000");
-
-         //row 2
-         XWPFTableRow tableTwoRowTwo = tableTwo.createRow();
-         tableTwoRowTwo.getCell(0).setText("Présentation du contenu :");
-         tableTwoRowTwo.getCell(1).setText(IngestDocxGenerator.getComment(manifest));
-         //row 3
-         XWPFTableRow tableTwoRowThree = tableTwo.createRow();
-         tableTwoRowThree.getCell(0).setText("Dates extremes :");
-         tableTwoRowThree.getCell(1).setText("Date de début :" + selectedIngest.getDateTime() + "\n" +" Date fin :" + selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getDateTime());
-         //row 4
-         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
-         tableTwoRowFour.getCell(0).setText("Historique des conservations :");
-         tableTwoRowFour.getCell(1).setText(IngestDocxGenerator.getCustodialHistory(manifest));
-
-         XWPFParagraph paragraph2 = document.createParagraph();
-         XWPFRun run2 = paragraph2.createRun();
-         run2.addBreak();
 
 
          //table 3
-         XWPFTable tableThree = document.createTable();
-         //row 1
-         XWPFTableRow tableThreeRowOne = tableThree.getRow(0);
+         IngestDocxGenerator.generateTableThree(document,manifest,id);
 
-         tableThreeRowOne.getCell(0).setText("Nombre de fichiers binaires:");
-         tableThreeRowOne.getCell(0).setWidth("3000");
-         tableThreeRowOne.addNewTableCell().setText(IngestDocxGenerator.getBinaryFileNumber(manifest) + " fichiers");
-         tableThreeRowOne.getCell(1).setWidth("7000");
-         //row 2
-         XWPFTableRow tableThreeRowTwo = tableThree.createRow();
-         tableThreeRowTwo.getCell(0).setText("Poids :");
-         tableThreeRowTwo.getCell(1).setText("Information indisponible");
-         //row 3
-         XWPFTableRow tableThreeRowThree = tableThree.createRow();
-         tableThreeRowThree.getCell(0).setText("Empreinte du fichier émis :");
-         tableThreeRowThree.getCell(1).setText("Information indisponible");
-         //row 4
-         XWPFTableRow tableThreeRowFour = tableThree.createRow();
-         tableThreeRowFour.getCell(0).setText("Identifiant de l’opération d’entrée :");
-         tableThreeRowFour.getCell(1).setText("GUID : " + id);
 
-         XWPFParagraph paragraph3 = document.createParagraph();
-         XWPFRun run3 = paragraph3.createRun();
-         run3.addBreak();
+         // table 4
+         IngestDocxGenerator.generateTableFour(document);
 
-         //table 4
-         XWPFTable tableFour = document.createTable();
-         //row 1
-         XWPFTableRow tableFourRowOne = tableFour.getRow(0);
-         tableFourRowOne.getCell(0).setText("Date de signature :");
-         tableFourRowOne.getCell(0).setWidth("5000");
-         tableFourRowOne.addNewTableCell().setText("Date de signature :");
-         tableFourRowOne.getCell(1).setWidth("5000");
-         tableFourRowOne.setHeight(700);
-         //row 2
-         XWPFTableRow tableFourRowTwo = tableFour.createRow();
-         tableFourRowTwo.getCell(0).setText("Le responsable du versement : ");
 
-         tableFourRowTwo.getCell(1).setText("Le responsable du service d'archives : ");
-         tableFourRowTwo.setHeight(700);
-        // tableFourRowTwo.setHeight(15);
 
-       /*  //create second table
-         XWPFTableRow tableRowthree = tableTwo.getRow(0);
-         tableRowOne.getCell(0).setText("Service Producteur");
-         tableRowOne.addNewTableCell().setText(jsonObject.get("originatingAgency").toString());
 
-         XWPFTableRow tableRowFour = tableTwo.getRow(0);
-         tableRowOne.getCell(0).setText("Service versant");
-         tableRowOne.addNewTableCell().setText(service);
-
-         tableRowOne.getCell(0).setText("Service Producteur");
-         tableRowOne.addNewTableCell().setText(jsonObject.get("originatingAgency").toString());
-         XWPFTableRow tableRowFour = tableTwo.getRow(0);
-         tableRowOne.getCell(0).setText("Service versant");
-         tableRowOne.addNewTableCell().setText(service);*/
-         XWPFParagraph paragraph4 = document.createParagraph();
-         XWPFRun run4 = paragraph4.createRun();
-
-         run4.addBreak(BreakType.PAGE);
-
-         XWPFParagraph paragraph1page2 = document.createParagraph();
-         XWPFRun runheey = paragraph1page2.createRun();
-         runheey.setBold(true);
-         runheey.setItalic(true);
-         runheey.setText("Détail des unités archivistiques de type répertoire et dossiers :");
-         paragraph1page2.setAlignment(ParagraphAlignment.CENTER);
-         XWPFParagraph paragraph12 = document.createParagraph();
-         XWPFRun run12 = paragraph12.createRun();
-         run12.addBreak();
+IngestDocxGenerator.generateSecondtTitle(document);
 
 
          XWPFParagraph paragraph = document.createParagraph();
          XWPFRun run = paragraph.createRun();
 
              run.setText("Service producteur " + jsonObject.get("originatingAgency") +
-                 " \n\n service versant " + service +
+                // " \n\n service versant " + service +
                  "\n" +
                  "\n\n num du versement " + selectedIngest.getObIdIn() +
                  "\n\n présentation du contenu " + new JSONObject(selectedIngest.getData()).get("EvDetailReq") +
