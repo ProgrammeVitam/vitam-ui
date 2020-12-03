@@ -1,16 +1,16 @@
 <div class="row dialog">
-    <h1 class="col-12">{{ 'SELECT-TENANT.DIALOG_TITLE' | translate }}</h1>
-    <h2 class="col-12">{{ 'SELECT-TENANT.DIALOG_SUBTITLE' | translate }}</h2>
-    <p class="col-12">{{ 'SELECT-TENANT.DIALOG_INSTRUCTIONS' | translate }} <span class="asterix">*</span></p>
+    <h4 class="col-12 p-0 m-0">{{ 'SELECT-TENANT.DIALOG_TITLE' | translate }}</h4>
+    <h5 class="col-12 p-0">{{ 'SELECT-TENANT.DIALOG_SUBTITLE' | translate }}</h5>
+    <p class="col-12 p-0 mt-5">{{ 'SELECT-TENANT.DIALOG_INSTRUCTIONS' | translate }} <span class="asterix">*</span></p>
 
     <vitamui-common-item-select
-        class="col-12 mb-5"
+        class="col-12 p-0 mb-5"
         [label]="'SELECT-TENANT.SELECT' | translate"
         [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
         (itemSelected)="selectedTenant = $event"
         [items]="tenants">
     </vitamui-common-item-select>
 
-    <button class="col-12 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT-TENANT.DIALOG_BUTTON_LABEL' | translate }}</button>
-    <p><span class="asterix">*</span> {{ 'SELECT-TENANT.DIALOG_MESSAGE' | translate }}</p>
+    <button class="col-12 p-0 mt-4 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT-TENANT.DIALOG_BUTTON_LABEL' | translate }}</button>
+    <p class="text normal mx-auto mt-4"><span class="asterix">*</span> {{ 'SELECT-TENANT.DIALOG_MESSAGE' | translate }}</p>
 </div>
