@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <div class="vitamui-table-rows" *ngFor="let owner of ownersWithoutTenant" >
-        <div class="vitamui-row d-flex align-items-center clickable" (click)="ownerClick.emit(owner)">
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center clickable" *ngFor="let owner of ownersWithoutTenant" (click)="ownerClick.emit(owner)">
           <div class="col-3 d-flex justify-content-center align-items-end">
             <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>
           </div>
@@ -37,9 +37,9 @@
       </div>
 
     <div class="footer-action">
-        <span class="clickable" i18n="Add owner@@OwnerListAddOwnerButton" (click)="openCreateOwnerDialog()">
+        <div class="text normal link bold text-primary" i18n="Add owner@@OwnerListAddOwnerButton" (click)="openCreateOwnerDialog()">
           Ajouter un propriétaire
-        </span>
+        </div>
     </div>
   </div>
 </div>

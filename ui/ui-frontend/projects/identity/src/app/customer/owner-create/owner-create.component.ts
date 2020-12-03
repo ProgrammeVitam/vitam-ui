@@ -52,8 +52,9 @@ import { TenantService } from '../tenant.service';
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
 
-  ownerForm: FormGroup;
-  tenantForm: FormGroup;
+  public ownerForm: FormGroup;
+  public tenantForm: FormGroup;
+  public stepIndex = 0;
 
   private keyPressSubscription: Subscription;
 

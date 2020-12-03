@@ -1,12 +1,12 @@
 <div class="header">
-  <mat-progress-bar mode="determinate" [value]="100" class="stepper-progress-bar"></mat-progress-bar>
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="2"></vitamui-common-progress-bar>
 </div>
 
-<vitamui-common-stepper>
+<vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
   <cdk-step>
     <form [formGroup]="ownerForm" (ngSubmit)="onOwnerSubmit()">
       <div class="content">
-        <h2 i18n="Create owner for the customer@@ownerCreateTitle">Création d'un propriétaire pour "{{data?.customer?.name}}"</h2>
+        <div class="text large bold" i18n="Create owner for the customer@@ownerCreateTitle">Création d'un propriétaire pour "{{data?.customer?.name}}"</div>
 
         <app-owner-form formControlName="owner" [customerId]="data?.customer?.id"></app-owner-form>
 
@@ -22,7 +22,8 @@
   <cdk-step>
     <form [formGroup]="tenantForm" (ngSubmit)="onTenantSubmit()">
       <div class="content">
-        <h2 i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{ownerForm?.value?.owner?.name}}"</h2>
+        <div class="text large bold" i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{ownerForm?.value?.owner?.name}}"</div>
+
         <vitamui-common-input formControlName="name" required placeholder="Nom du coffre" i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder">
           <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('required')" i18n="Existing name error hint@@formErrorExistingName">Champ requis</vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('uniqueName')" i18n="Existing name error hint@@formErrorExistingName">Nom déjà existant</vitamui-common-input-error>
