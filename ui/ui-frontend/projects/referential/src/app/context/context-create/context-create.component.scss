@@ -1,22 +1,5 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
-$field-spacing: 15px;
-
-.header {
-    padding: 30px 60px 0 60px;
-}
-
-.content {
-    padding: 0px 60px 60px 60px;
-}
-
-h2 {
-    font-size: 26px;
-    line-height: 46px;
-    margin-top: 23px;
-    margin-bottom: 37px;
-}
-
 .actions {
     margin-top: 20px;
     display: flex;
@@ -47,7 +30,7 @@ h2 {
 }
 
 label {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     font-size: 15px;
     line-height: normal;
     margin-bottom: 10px;
@@ -125,7 +108,7 @@ button > small {
     border: 2px dashed var(--vitamui-secondary);
     border-radius: 6px;
     box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
-    background: $white;
+    background: white;
     margin-bottom: 60px;
 
     p {
@@ -137,13 +120,13 @@ button > small {
     border: 2px solid var(--vitamui-secondary);
 
     p {
-        color: $white;
+        color: white;
     }
 
     .drop-area {
-        background: $dark-grey;
+        background: var(--vitamui-grey-900);
         opacity: 0.9;
-        color: $white;
+        color: white;
     }
 }
 
@@ -188,16 +171,10 @@ button > small {
 .logo-drop {
     font-size: 14px;
     line-height: 20px;
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     text-align: center;
 
     small {
         color: #a5a5a5;
     }
-}
-
-.error-message {
-    color: $red;
-    font-size: 14px;
-    margin-bottom: 30px;
 }

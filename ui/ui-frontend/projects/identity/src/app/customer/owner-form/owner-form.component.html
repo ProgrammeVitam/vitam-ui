@@ -1,5 +1,5 @@
 <ng-container [formGroup]="form">
-  <vitamui-common-input class="col-6" maxlength="20" required formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
+  <vitamui-common-input class="col-6 pl-0" maxlength="20" required formControlName="code" placeholder="Code propriétaire" i18n-placeholder="Owner code input placeholder@@ownerFormCodeInputPlaceholder">
     <ng-container *ngIf="form.get('code')?.touched">
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
       <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-input-error>
@@ -8,7 +8,7 @@
   </vitamui-common-input>
 
   <div class="d-flex">
-    <vitamui-common-input class="col-6" formControlName="name" maxlength="100" required placeholder="Nom du propriétaire" i18n-placeholder="Owner name input placeholder@@ownerFormNameInputPlaceholder">
+    <vitamui-common-input class="col-6 pl-0" formControlName="name" maxlength="100" required placeholder="Nom du propriétaire" i18n-placeholder="Owner name input placeholder@@ownerFormNameInputPlaceholder">
       <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
     </vitamui-common-input>
 
@@ -18,10 +18,10 @@
   </div>
 
   <ng-container formGroupName="address">
-    <vitamui-common-input class="col-12" formControlName="street" maxlength="250" placeholder="N° et nom de la rue" i18n-placeholder="Owner street input placeholder@@ownerFormStreetInputPlaceholder"></vitamui-common-input>
+    <vitamui-common-input class="col-12 pl-0" formControlName="street" maxlength="250" placeholder="N° et nom de la rue" i18n-placeholder="Owner street input placeholder@@ownerFormStreetInputPlaceholder"></vitamui-common-input>
 
     <div class="d-flex">
-      <vitamui-common-input class="col-4" formControlName="zipCode" maxlength="10" placeholder="Code postal" i18n-placeholder="Owner zip code input placeholder@@ownerFormZipCodeInputPlaceholder"></vitamui-common-input>
+      <vitamui-common-input class="col-4 pl-0" formControlName="zipCode" maxlength="10" placeholder="Code postal" i18n-placeholder="Owner zip code input placeholder@@ownerFormZipCodeInputPlaceholder"></vitamui-common-input>
       <vitamui-common-input class="col-4" formControlName="city" maxlength="100" placeholder="Ville" i18n-placeholder="Owner city input placeholder@@ownerFormCityInputPlaceholder"></vitamui-common-input>
       <mat-form-field class="vitamui-mat-select col-4">
         <mat-select formControlName="country" placeholder="Pays"
@@ -42,6 +42,6 @@
     </div>
   </ng-container>
 
-  <vitamui-common-input class="col-12" formControlName="internalCode" maxlength="20" placeholder="Code interne"
+  <vitamui-common-input class="col-12 pl-0" formControlName="internalCode" maxlength="20" placeholder="Code interne"
   i18n-placeholder="Internal code@@OwnerInternalCodePlaceholder"></vitamui-common-input>
 </ng-container>

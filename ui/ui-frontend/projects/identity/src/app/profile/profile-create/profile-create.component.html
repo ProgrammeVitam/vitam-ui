@@ -4,7 +4,7 @@
 
 <form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
     <div class="content vitamui-form">
-        <h2 i18n="Admin profile create@@createAdminProfileTitle">Création d'un Profil Administrateur</h2>
+        <div class="text large bold" i18n="Admin profile create@@createAdminProfileTitle">Création d'un Profil Administrateur</div>
 
         <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="enabled">Profil <span *ngIf="!adminProfileForm.get('enabled').value" i18n="profile info in@@profileInfoIn">in</span>actif</vitamui-common-slide-toggle>
@@ -20,9 +20,9 @@
         </vitamui-common-input>
 
         <div class="d-flex">
-            <div class="mr-4">
-                <label class="">Niveau du profil</label>
-                <div>{{authService.user.level}}</div>
+            <div class="mr-4 p-2">
+                <div class="text normal lighted">Niveau</div>
+                <div class="text medium bold">{{authService.user.level}}RH</div>
             </div>
             <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
                 <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
@@ -31,7 +31,7 @@
             </vitamui-common-level-input>
         </div>
 
-        <vitamui-common-role-toggle formControlName="roles">
+        <vitamui-common-role-toggle class="d-flex flex-column" formControlName="roles">
             <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS" i18n="Strong authentication@@profileFormLabelStrongAuthentication">Authentification forte</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS" i18n="User creation@@profileFormLabeluserCreation">Création d'utilisateur</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS" i18n="Standard attributes modification@@profileFormLabelStandardAttributesModification">Modification des informations standards</vitamui-common-role>

@@ -47,7 +47,7 @@
 
   vitamui-common-textarea + small {
       text-align: end;
-      color: $charcoal-grey-two;
+      color: var(--vitamui-grey-900);
   }
 
   .form-group {
@@ -77,6 +77,6 @@
 
   vitamui-common-textarea + small {
       text-align: end;
-      color: $charcoal-grey-two;
+      color: var(--vitamui-grey-900);
   }
 }

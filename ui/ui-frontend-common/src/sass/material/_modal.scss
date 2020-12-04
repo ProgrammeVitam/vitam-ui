@@ -3,5 +3,75 @@
     padding: 0;
     min-width: 800px;
     max-width: fit-content;
-    max-height: 90vh;
+    max-height: 96vh;
 }
+
+.vitamui-modal {
+    .header {
+        padding: 20px 60px 0 60px;
+    }
+
+    .content {
+        padding: 0px 60px 30px 60px;
+
+        // dialog title
+        > .text.large:first-of-type {
+            margin: 1.5rem 0;
+        }
+
+        .actions:last-of-type {
+            display: flex;
+            margin-top: 35px;
+        }
+
+        .actions:last-of-type > button:not(:last-child) {
+            margin-right: 20px;
+        }
+    }
+
+    .error-message {
+        color: $red;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .vitamui-table {
+        overflow: auto;
+        max-height: 43vh;
+      
+        &::-webkit-scrollbar {
+          display: none;
+        }
+    }
+
+    // TODO : depereacted, remove at the end of the redesign
+    .form-group {
+        margin-bottom: 20px;
+    }
+}
+
+
+// button.back {
+//     display: flex;
+//     align-items: center;
+//     background: transparent;
+//     color: var(--vitamui-primary);
+//     font-size: 14px;
+//     font-weight: normal;
+//     border: none;
+//     padding: 0;
+//     margin-top: 60px;
+//     cursor: pointer;
+
+//     i {
+//         display: block;
+//         font-size: 18px;
+//         color: var(--vitamui-primary);
+//         background-color: #e7f5f2;
+//         width: 30px;
+//         height: 30px;
+//         border-radius: 15px;
+//         line-height: 30px;
+//         margin-right: 10px;
+//     }
+// }

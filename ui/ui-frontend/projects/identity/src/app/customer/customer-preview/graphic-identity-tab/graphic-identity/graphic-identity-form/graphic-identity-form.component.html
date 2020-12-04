@@ -2,7 +2,7 @@
 
     <div class="d-flex justify-content-between">
       <div class="container-color">
-        <h2 i18n="graphicIdentityUpdate@@colorsParams">Paramètrage des couleurs</h2>
+        <div class="text large bold mb-4" i18n="graphicIdentityUpdate@@colorsParams">Paramètrage des couleurs</div>
         <app-customer-colors-input class="d-inline-flex flex-column" 
           [formGroup]="graphicIdentityForm.get('themeColors')"
           [isUpdating]="true"
@@ -10,7 +10,7 @@
       </div>
   
       <div class="pl-4 d-flex flex-column">
-        <h2 i18n="graphicIdentityUpdate@@labelTitleLogos">Gestion des titres et logos</h2>
+        <div class="text large bold mb-4" i18n="graphicIdentityUpdate@@colorsParams">Gestion des titres et logos</div>
   
         <vitamui-common-input
           class="pb-2"
@@ -32,7 +32,7 @@
         </div>
   
         <div class="d-flex">
-          <div class="mb-2 mr-4">
+          <div class="mr-4">
             <label>Logo header</label>
             <vitamui-common-drag-drop-file
               class="color-header-footer"
@@ -46,7 +46,7 @@
               [messContent]="'Déposez votre logo'"
               [messPj]="'Joindre un logo'"></vitamui-common-drag-drop-file>
           </div>
-          <div class="mb-2">
+          <div>
             <label>Logo footer</label>
             <vitamui-common-drag-drop-file
               class="color-header-footer"

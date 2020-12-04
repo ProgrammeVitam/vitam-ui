@@ -8,11 +8,11 @@
 
 body {
     margin: 0;
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     background: $pale-grey;
 }
 
 h2 {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     font-weight: 500;
 }

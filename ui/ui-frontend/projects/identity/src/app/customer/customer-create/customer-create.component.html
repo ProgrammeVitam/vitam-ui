@@ -2,76 +2,101 @@
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer" class="content">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" id="formCreateCustomer">
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
     <cdk-step>
-      <h2 i18n="Create customer title@@customerCreateTitle1" class="col-12">Création d'un client</h2>
+      <div class="content">
+        <div class="text large bold" i18n="Create customer title@@customerCreateTitle1">Création d'un client</div>
 
-      <vitamui-common-input class="col-6" formControlName="code" required placeholder="Code client (4 chiffres)"
-        i18n-placeholder="Customer code@@customerCreateCustomerCodeInputPlaceholder">
+        <vitamui-common-input class="col-6 pl-0" formControlName="code" required placeholder="Code client (4 chiffres)"
+          i18n-placeholder="Customer code@@customerCreateCustomerCodeInputPlaceholder">
 
-        <ng-container *ngIf="form.get('code')?.touched">
-          <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
-            i18n="Wrong format (4 digits minimum) error hint@@formError6DigitsField">Format incorrect (4 chiffres
-            minimum)</vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
-            i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-input-error>
-        </ng-container>
-      </vitamui-common-input>
-
-      <div class="d-flex">
-        <vitamui-common-input class="col-6" formControlName="name" maxlength="100" required placeholder="Client"
-          i18n-placeholder="Customer name input placeholder@@customerCreateNameInputPlaceholder">
-          <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-        </vitamui-common-input>
-        <vitamui-common-input class="col-6" formControlName="companyName" maxlength="250" required
-          placeholder="Raison sociale"
-          i18n-placeholder="Customer company name input placeholder@@customerCreateCompanyNameInputPlaceholder">
-          <vitamui-common-input-error
-            *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-        </vitamui-common-input>
-      </div>
-
-      <ng-container formGroupName="address">
-        <vitamui-common-input class="col-12" formControlName="street" maxlength="250" required
-          placeholder="N° et nom de rue"
-          i18n-placeholder="Customer street input placeholder@@customerCreateStreetInputPlaceholder">
-          <vitamui-common-input-error
-            *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          <ng-container *ngIf="form.get('code')?.touched">
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
+              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
+              i18n="Wrong format (4 digits minimum) error hint@@formError6DigitsField">Format incorrect (4 chiffres
+              minimum)</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
+              i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-input-error>
+          </ng-container>
         </vitamui-common-input>
 
         <div class="d-flex">
-          <vitamui-common-input class="col-4" formControlName="zipCode" maxlength="10" required
-            placeholder="Code postal"
-            i18n-placeholder="Customer zip code input placeholder@@customerCreateZipCodeInputPlaceholder">
+          <vitamui-common-input class="col-6 pl-0" formControlName="name" maxlength="100" required placeholder="Client"
+            i18n-placeholder="Customer name input placeholder@@customerCreateNameInputPlaceholder">
+            <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
+              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          </vitamui-common-input>
+          <vitamui-common-input class="col-6" formControlName="companyName" maxlength="250" required
+            placeholder="Raison sociale"
+            i18n-placeholder="Customer company name input placeholder@@customerCreateCompanyNameInputPlaceholder">
             <vitamui-common-input-error
-              *ngIf="form.get('address.zipCode')?.touched && !!form.get('address.zipCode')?.errors?.required"
+              *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required"
+              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
+
+        <ng-container formGroupName="address">
+          <vitamui-common-input class="col-12 pl-0" formControlName="street" maxlength="250" required
+            placeholder="N° et nom de rue"
+            i18n-placeholder="Customer street input placeholder@@customerCreateStreetInputPlaceholder">
+            <vitamui-common-input-error
+              *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required"
               i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
           </vitamui-common-input>
 
-          <vitamui-common-input class="col-4" formControlName="city" maxlength="100" required placeholder="Ville"
-            i18n-placeholder="Customer city input placeholder@@customerCreateCityInputPlaceholder">
-            <vitamui-common-input-error
-              *ngIf="form.get('address.city')?.touched && !!form.get('address.city')?.errors?.required"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-          </vitamui-common-input>
+          <div class="d-flex">
+            <vitamui-common-input class="col-4 pl-0" formControlName="zipCode" maxlength="10" required
+              placeholder="Code postal"
+              i18n-placeholder="Customer zip code input placeholder@@customerCreateZipCodeInputPlaceholder">
+              <vitamui-common-input-error
+                *ngIf="form.get('address.zipCode')?.touched && !!form.get('address.zipCode')?.errors?.required"
+                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            </vitamui-common-input>
 
-          <mat-form-field class="col-4" class="vitamui-mat-select">
-            <mat-select formControlName="country" required placeholder="Pays"
-              i18n-placeholder="Customer country select placeholder@@customerCreateCountrySelectPlaceholder"
-              panelClass="vitamui-mat-select">
-              <!-- TODO Fetch those values from a referential -->
-              <mat-option value="FR">France</mat-option>
-              <mat-option value="GB">Royaume Uni</mat-option>
-              <mat-option value="DE">Allemagne</mat-option>
-              <mat-option value="DK">Danemark</mat-option>
-              <mat-option value="ES">Espagne</mat-option>
-              <mat-option value="IT">Italie</mat-option>
+            <vitamui-common-input class="col-4" formControlName="city" maxlength="100" required placeholder="Ville"
+              i18n-placeholder="Customer city input placeholder@@customerCreateCityInputPlaceholder">
+              <vitamui-common-input-error
+                *ngIf="form.get('address.city')?.touched && !!form.get('address.city')?.errors?.required"
+                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            </vitamui-common-input>
+
+            <mat-form-field class="col-4" class="vitamui-mat-select">
+              <mat-select formControlName="country" required placeholder="Pays"
+                i18n-placeholder="Customer country select placeholder@@customerCreateCountrySelectPlaceholder"
+                panelClass="vitamui-mat-select">
+                <!-- TODO Fetch those values from a referential -->
+                <mat-option value="FR">France</mat-option>
+                <mat-option value="GB">Royaume Uni</mat-option>
+                <mat-option value="DE">Allemagne</mat-option>
+                <mat-option value="DK">Danemark</mat-option>
+                <mat-option value="ES">Espagne</mat-option>
+                <mat-option value="IT">Italie</mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <vitamui-common-input class="col-12 pl-0" formControlName="internalCode" maxlength="20" placeholder="Code interne"
+          i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
+        </vitamui-common-input>
+
+        <div class="col-12 d-flex align-items-center">
+          <label for="language" class="mr-4 mb-0"
+            i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
+            <div class="font-weight-bold">Langue de l'interface <span class="required-marker">*</span></div>
+            <div class="font-weight-bold"><small>(par défaut pour l'utilisateur)</small></div>
+          </label>
+
+          <mat-form-field class="vitamui-mat-select">
+            <mat-select formControlName="language" required panelClass="vitamui-mat-select">
+              <mat-option value="ENGLISH" i18n="@@languageEnglish">Anglais</mat-option>
+              <mat-option value="FRENCH" i18n="@@languageFrench">Français</mat-option>
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_up</i>
@@ -79,106 +104,89 @@
             </div>
           </mat-form-field>
         </div>
-      </ng-container>
 
-      <vitamui-common-input class="col-12" formControlName="internalCode" maxlength="20" placeholder="Code interne"
-        i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
-      </vitamui-common-input>
-
-      <div class="col-12 d-flex align-items-center">
-        <label for="language" class="mr-4 mb-0"
-          i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
-          <div class="font-weight-bold">Langue de l'interface <span class="required-marker">*</span></div>
-          <div class="font-weight-bold"><small>(par défaut pour l'utilisateur)</small></div>
-        </label>
-
-        <mat-form-field class="vitamui-mat-select">
-          <mat-select formControlName="language" required panelClass="vitamui-mat-select">
-            <mat-option value="ENGLISH" i18n="@@languageEnglish">Anglais</mat-option>
-            <mat-option value="FRENCH" i18n="@@languageFrench">Français</mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex mt-4">
-        <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
-          i18n="Next step button label@@customerCreateNextButton">Suivant</button>
-        <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
+            i18n="Next step button label@@customerCreateNextButton">Suivant</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
       </div>
     </cdk-step>
 
     <cdk-step>
-      <h2 class="col-12" i18n="Customer access title@@customerCreateTitle2">Accès client</h2>
+      <div class="content">
+        <div class="text large bold" i18n="Customer access title@@customerCreateTitle2">Accès client</div>
 
-      <div class="col-12 d-flex align-items-center">
-        <label for="passwordRevocationDelay"
-          i18n="Duration until password revocation (since the last change)@@customerCreatePasswordRevocationInputLabel">
-          <div class="font-weight-bold">Durée de révocation du mot de passe</div>
-          <div class="font-weight-bold"><small>(depuis le dernier changement)</small></div>
-        </label>
-
-        <mat-form-field class="vitamui-mat-select ml-5">
-          <mat-select formControlName="passwordRevocationDelay" placeholder="Durée de révocation des mots de passe"
-            i18n-placeholder="Customer password revocation delay select placeholder@@customerCreatePasswordRevocationDelaySelectPlaceholder"
-            panelClass="vitamui-mat-select">
-            <mat-option [value]="6" i18n="6 months@@customerCreatePasswordRevocationDelayOption6Months">6 mois
-            </mat-option>
-            <mat-option [value]="9" i18n="9 months@@customerCreatePasswordRevocationDelayOption9Months">9 mois
-            </mat-option>
-            <mat-option [value]="12" i18n="12 months@@customerCreatePasswordRevocationDelayOption12Months">12 mois
-            </mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_up</i>
-            <i class="material-icons">keyboard_arrow_down</i>
+        <div class="col-12 p-0 d-flex align-items-center">
+          <div>
+            <div
+              class="text medium bold"
+              i18n="Duration until password revocation (since the last change)@@customerCreatePasswordRevocationInputLabel">
+                Durée de révocation du mot de passe
+            </div>
+            <div class="text normal bold lighted"><small>(depuis le dernier changement)</small></div>
           </div>
-        </mat-form-field>
-      </div>
 
-      <div class="col-12 mt-3">
-        <label for="otp" i18n="OTP label@@customerCreateOTPInputLabel" class="font-weight-bold">
-          Validation en deux étapes <span class="required-marker">*</span>
-        </label>
-        <mat-button-toggle-group formControlName="otp" #group="matButtonToggleGroup"
-          class="vitamui-button-toggle-group">
-          <mat-button-toggle value="DISABLED" i18n="OTP deactivate button@@customerCreateOTPDeactivatedButton">Non
-          </mat-button-toggle>
-          <mat-button-toggle value="OPTIONAL" i18n="OTP optional button@@customerCreateOTPOptionalButton">Optionnelle
-          </mat-button-toggle>
-          <mat-button-toggle value="MANDATORY" i18n="OTP mandatory button@@customerCreateOTPMandatoryButton">
-            Obligatoire</mat-button-toggle>
-        </mat-button-toggle-group>
-      </div>
+          <mat-form-field class="vitamui-mat-select ml-5">
+            <mat-select formControlName="passwordRevocationDelay" placeholder="Durée de révocation des mots de passe"
+              i18n-placeholder="Customer password revocation delay select placeholder@@customerCreatePasswordRevocationDelaySelectPlaceholder"
+              panelClass="vitamui-mat-select">
+              <mat-option [value]="6" i18n="6 months@@customerCreatePasswordRevocationDelayOption6Months">6 mois
+              </mat-option>
+              <mat-option [value]="9" i18n="9 months@@customerCreatePasswordRevocationDelayOption9Months">9 mois
+              </mat-option>
+              <mat-option [value]="12" i18n="12 months@@customerCreatePasswordRevocationDelayOption12Months">12 mois
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
 
-      <div class="col-12 mt-4 mb-3">
-        <label for="emailDomains" i18n="Email domain input label@@customerCreateEmailDomainInputLabel">
-          <div class="font-weight-bold">Restriction de domaine e-mail</div>
-          <div class="font-weight-bold"><small>(cliquer sur l'étiquette pour définir le domaine par défaut)</small></div>
-        </label>
-        <app-domains-input formControlName="emailDomains" placeholder="domaine.xyz"
-          i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder"
-          [selected]="form.get('defaultEmailDomain').value"
-          (selectedChange)="form.get('defaultEmailDomain').setValue($event)"></app-domains-input>
-      </div>
+        <div class="col-12 p-0 mt-3">
+          <div class="text medium bold" i18n="OTP label@@customerCreateOTPInputLabel">
+            Validation en deux étapes <span class="required-marker">*</span>
+          </div>
+          <mat-button-toggle-group formControlName="otp" #group="matButtonToggleGroup" class="vitamui-button-toggle-group mt-2">
+            <mat-button-toggle value="DISABLED" i18n="OTP deactivate button@@customerCreateOTPDeactivatedButton">Désactivé
+            </mat-button-toggle>
+            <mat-button-toggle value="OPTIONAL" i18n="OTP optional button@@customerCreateOTPOptionalButton">Optionnelle
+            </mat-button-toggle>
+            <mat-button-toggle value="MANDATORY" i18n="OTP mandatory button@@customerCreateOTPMandatoryButton">
+              Obligatoire</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
 
-      <div class="d-flex mt-4">
-        <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
-          i18n="@@customerCreateNextButton">Suivant</button>
-        <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        <div class="col-12 p-0 mt-4 mb-3">
+          <div class="text medium bold" i18n="Email domain input label@@customerCreateEmailDomainInputLabel">
+            Restriction de domaine e-mail
+          </div>
+          <div class="text normal bold lighted">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
+
+          <app-domains-input formControlName="emailDomains" placeholder="domaine.xyz"
+            i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder"
+            [selected]="form.get('defaultEmailDomain').value"
+            (selectedChange)="form.get('defaultEmailDomain').setValue($event)"></app-domains-input>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
+            i18n="@@customerCreateNextButton">Suivant</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
       </div>
-      <ng-container *ngTemplateOutlet="back"></ng-container>
     </cdk-step>
 
     <cdk-step>
-      <div *ngIf="stepIndex===2" id="toOverride" class="mt-4">
+      <div *ngIf="stepIndex===2" id="toOverride" class="content mt-4">
         <app-graphic-identity (formToSend)="customerForm = $event.form; logos = $event.logos"></app-graphic-identity>
 
-        <div class="d-flex mt-4">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()" i18n="Create owner button@@customerCreateCreateOwnerButton">
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()"
+            i18n="Create owner button@@customerCreateCreateOwnerButton">
             Suivant
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
@@ -189,17 +197,23 @@
     </cdk-step>
 
     <cdk-step>
-      <h2 class="col-12" i18n="Create evidence owner title@@customerCreateTitle3">Création d'un propriétaire pour "{{ customerInfo?.name }}"</h2>
-      <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
-      <p class="pl-4 mt-0 mb-4" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le
-        coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
+      <div class="content">
+        <div class="text large bold" i18n="Create evidence owner title@@customerCreateTitle3">Création d'un propriétaire
+          pour "{{ customerInfo?.name }}"</div>
+        <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
 
-      <div class="d-flex mt-4">
-        <button type="submit" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
-          [disabled]="lastStepIsInvalid()">Terminer</button>
-        <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        <div class="text normal bold lighted ml-2"
+          i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
+            Le coffre des éléments de preuve est créé automatiquement avec son propriétaire
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
+            [disabled]="lastStepIsInvalid()">Terminer</button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
       </div>
-      <ng-container *ngTemplateOutlet="back"></ng-container>
     </cdk-step>
 
     <ng-template #cancel>

@@ -1,7 +1,7 @@
 @import "~ui-frontend-common/sass/variables/colors";
 
 .cell-content-bold {
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     font-size: 15px;
     font-weight: bold;
 }

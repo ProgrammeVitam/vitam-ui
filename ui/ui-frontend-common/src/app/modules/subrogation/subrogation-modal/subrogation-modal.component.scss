@@ -1,24 +1,6 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/fonts';
 
-$field-spacing: 15px;
-
-.header {
-    padding: 30px 60px 0 60px;
-}
-
-.content {
-    padding: 0px 60px 60px 60px;
-}
-
-h2 {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 46px;
-    margin-top: 23px;
-    margin-bottom: 37px;
-}
-
 .actions {
     margin-top: 30px;
     display: flex;
