@@ -4,14 +4,14 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="content">
-    <h2 i18n="Create an IDP for the customer@@idpCreateTitle">Création d'un IDP pour "{{data?.customer?.name}}"</h2>
+    <div class="text large bold" i18n="Create an IDP for the customer@@idpCreateTitle">Création d'un IDP pour "{{data?.customer?.name}}"</div>
 
-    <div class="form-group">
-      <vitamui-common-slide-toggle formControlName="enabled" i18n="IDP Enabled@@idpCreateEnabledToggleLabel">IDP Actif</vitamui-common-slide-toggle>
+    <div>
+      <vitamui-common-slide-toggle class="col-4 p-0" formControlName="enabled" i18n="IDP Enabled@@idpCreateEnabledToggleLabel">IDP Actif</vitamui-common-slide-toggle>
     </div>
 
-    <div class="form-group-flex">
-      <vitamui-common-input
+    <div class="mt-4">
+      <vitamui-common-input class="col-4 p-0"
         formControlName="name"
         maxlength="100"
         required
@@ -25,8 +25,7 @@
     </div>
 
     <div>
-      <vitamui-common-input
-        class="field-keystore-password"
+      <vitamui-common-input class="col-4 p-0"
         formControlName="keystorePassword"
         type="password"
         required
@@ -40,37 +39,37 @@
       </vitamui-common-input>
     </div>
 
-    <div class="form-group vitamui-input-file">
+    <div class="col-5 p-0 mt-3 vitamui-input-file">
       <label for="keystore">
-          <span class="vitamui-input-file-label" i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel">Uploader le fichier keystore de CAS</span>
+          <span class="text link bold text-primary" i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel">Uploader le fichier keystore de CAS</span>
           <div class="vitamui-input-file-filename">{{keystore?.name}}</div>
       </label>
       <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)">
     </div>
 
-    <div class="form-group vitamui-input-file">
+    <div class="col-5 p-0 mt-4 vitamui-input-file">
       <label for="idpMetadata">
-        <span class="vitamui-input-file-label" i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel">Uploader le fichier metadata de l'IDP</span>
+        <span class="text link bold text-primary" i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel">Uploader le fichier metadata de l'IDP</span>
         <div class="vitamui-input-file-filename">{{idpMetadata?.name}}</div>
       </label>
       <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)">
     </div>
 
 
-    <div class="form-group-flex">
-      <vitamui-common-input
+    <div class="mt-4">
+      <vitamui-common-input class="col-5 p-0 "
         formControlName="mailAttribute"
         placeholder="Attribut mail" i18n-placeholder="Mail attribute@@idpCreateMailAttributePlaceholder"
       >
       </vitamui-common-input>
     </div>
 
-    <div class="form-group">
-      <label for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</label>
+    <div class="mt-2">
+      <div class="text medium bold mb-3" for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</div>
       <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>
     </div>
 
-    <div class="actions">
+    <div class="actions mt-4">
       <button type="submit" class="btn primary" [disabled]="!isFormValid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
       <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
     </div>

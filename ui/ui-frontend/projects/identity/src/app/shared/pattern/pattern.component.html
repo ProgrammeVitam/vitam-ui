@@ -6,19 +6,19 @@
         {{ option.value }} <span *ngIf="option?.disabled" i18n="Already in use@@patternOptionAlreadyInUse">(déjà utilisé)</span>
       </mat-option>
     </mat-select>
-    
+
     <div class="select-arrow">
       <i class="material-icons">keyboard_arrow_up</i>
       <i class="material-icons">keyboard_arrow_down</i>
     </div>
   </mat-form-field>
 
-  <button  class="btn btn-circle secondary" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
+  <button  class="btn primary btn-circle" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
     <i class="vitamui-icon vitamui-icon-add"></i>
   </button>
 </div>
 
-<div class="vitamui-chip-list">
+<div class="mt-3 vitamui-chip-list">
   <div *ngFor="let pattern of patterns" class="vitamui-chip">
     <div class="vitamui-chip-content">{{pattern}}</div>
     <div class="vitamui-remove-chip" (click)="remove(pattern)">
