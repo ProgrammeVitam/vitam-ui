@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>fr.gouv.vitamui</groupId>
 		<artifactId>api-referential</artifactId>
-		<version>3.14.2</version>
+		<version>3.14.0</version>
 	</parent>
 
 	<properties>
