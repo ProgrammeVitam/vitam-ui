@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,6 +29,9 @@ public class OwnerControllerTest extends UiIdentityRestControllerTest<OwnerDto> 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OwnerControllerTest.class);
 
     private static final String PREFIX = "/owners";
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testCreateOwner() {

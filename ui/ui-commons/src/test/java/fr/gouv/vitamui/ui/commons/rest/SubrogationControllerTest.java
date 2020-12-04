@@ -3,8 +3,6 @@ package fr.gouv.vitamui.ui.commons.rest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-import java.util.Properties;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -31,9 +29,9 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
-@WebMvcTest(controllers = { SubrogationController.class })
-@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class })
+@ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
+@WebMvcTest(controllers = {SubrogationController.class})
+@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class})
 public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> {
 
     @TestConfiguration
@@ -46,13 +44,6 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
             return properties;
         }
 
-
-        @Bean
-        public BuildProperties buildProperties() {
-            Properties props = new Properties();
-            props.put("version.release", "0.0.0");
-            return new BuildProperties(props);
-        }
 
     }
 
@@ -68,6 +59,9 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
 
     @MockBean
     private SubrogationService service;
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testSubrogationControllerEnabled() {
@@ -124,4 +118,5 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
         Mockito.when(service.create(any(), any(SubrogationDto.class))).thenReturn(new SubrogationDto());
         Mockito.when(service.getOne(any(), any(), any())).thenReturn(new SubrogationDto());
     }
+
 }

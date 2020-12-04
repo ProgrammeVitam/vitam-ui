@@ -4,7 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -33,6 +35,9 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
     private final String PREFIX = "/security";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SecurityControllerTest.class);
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testGetUserConnected() throws Exception {

@@ -1,21 +1,9 @@
-@import "../../../../sass/variables/colors";
-
-$text-color: $white;
-
 :host {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
   height: 100px;
-  background-color: $white;
+  background-color: var(--vitamui-background);
   align-items: center;
   justify-content: center;
-  color: $text-color;
-}
-
-.version {
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  color: var(--vitamui-primary-300);
 }

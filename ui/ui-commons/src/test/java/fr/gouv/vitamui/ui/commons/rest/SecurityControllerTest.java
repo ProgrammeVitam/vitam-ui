@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -39,14 +40,6 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
-
-        @Bean
-        public BuildProperties buildProperties() {
-            Properties props = new Properties();
-            props.put("version.release", "0.0.0");
-            return new BuildProperties(props);
-        }
-
     }
 
     @Value("${ui-prefix}")
@@ -55,6 +48,9 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
     private final String PREFIX = "/security";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SecurityControllerTest.class);
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testGetUserConnected() throws Exception {

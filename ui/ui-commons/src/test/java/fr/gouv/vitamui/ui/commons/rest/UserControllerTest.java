@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Map;
-import java.util.Properties;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,12 +62,10 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
-        @Bean
-        public BuildProperties buildProperties() {
-            Properties props = new Properties();
-            props.put("version.release", "0.0.0");
-            return new BuildProperties(props);
-        }
+
+
+        @MockBean
+        private BuildProperties buildProperties;
 
     }
 

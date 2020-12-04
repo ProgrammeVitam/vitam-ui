@@ -2,12 +2,9 @@ package fr.gouv.vitamui.ui.commons.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Properties;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +22,11 @@ import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UICommonsAutoConfigurationTest {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
-            .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
-            .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
+
+    private final ApplicationContextRunner contextRunner =
+            new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
+                    .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
+                    .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
 
     @Test
     public void serviceNameCanBeConfigured() {
@@ -44,6 +42,7 @@ public class UICommonsAutoConfigurationTest {
     @Configuration
     static class UserConfiguration {
 
+
         @Bean
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
@@ -57,13 +56,6 @@ public class UICommonsAutoConfigurationTest {
             return casBean;
         }
 
-        @Bean
-        public BuildProperties buildProperties() {
-            Properties props = new Properties();
-            props.put("version.release", "0.0.0");
-            return new BuildProperties(props);
-        }
-
-
     }
+
 }

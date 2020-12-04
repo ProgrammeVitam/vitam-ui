@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,10 @@ public class UserControllerTest extends UiIdentityRestControllerTest<UserDto> {
     public void testCreateUser() {
         super.testCreateEntity();
     }
+
+    @MockBean
+    private BuildProperties buildProperties;
+
 
     @Test
     public void testUpdateUser() {

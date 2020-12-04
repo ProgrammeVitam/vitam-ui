@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +19,9 @@ import fr.gouv.vitamui.identity.service.ProfileService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(controllers = { ProfileController.class })
 public class ProfileControllerTest extends UiIdentityRestControllerTest<ProfileDto> {
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Value("${ui-identity.prefix}")
     protected String apiUrl;

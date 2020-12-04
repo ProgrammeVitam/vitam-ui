@@ -1,11 +1,8 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Properties;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,12 +38,6 @@ public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> 
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
-        }
-        @Bean
-        public BuildProperties buildProperties() {
-            Properties props = new Properties();
-            props.put("version.release", "0.0.0");
-            return new BuildProperties(props);
         }
     }
 

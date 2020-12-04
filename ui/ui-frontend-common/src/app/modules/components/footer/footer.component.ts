@@ -12,7 +12,7 @@ import { ThemeService } from '../../theme.service';
 })
 export class FooterComponent implements OnInit {
   public footerLogoUrl: SafeResourceUrl;
-  public version = 'v';
+  public version: string;
 
   constructor(
     private startupService: StartupService,
@@ -21,11 +21,9 @@ export class FooterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const versionRelease = this.startupService.getConfigStringValue(
-      'VERSION_RELEASE'
-    );
+    const versionRelease = this.startupService.getConfigStringValue( 'VERSION_RELEASE');
     if (versionRelease) {
-      this.version = this.version + versionRelease;
+      this.version = 'v' + versionRelease;
     }
     this.footerLogoUrl = this.themeService.getData(
       this.authService.user,

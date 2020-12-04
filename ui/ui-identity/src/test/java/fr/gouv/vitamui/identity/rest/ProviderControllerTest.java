@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -32,6 +33,10 @@ public class ProviderControllerTest extends UiIdentityRestControllerTest<Identit
 
     @MockBean
     private ProviderService service;
+
+    @MockBean
+    private BuildProperties buildProperties;
+
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProviderControllerTest.class);
 
