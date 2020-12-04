@@ -1,28 +1,19 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i
-          class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+<vitamui-common-sidenav-header
+  [title]="profile?.name"
+  [subtitle]="'(' + profile?.identifier + ')'"
+  [icon]="'vitamui-icon-admin-key'"
+  [badge]="profile?.enabled ? 'green' : 'grey'"
+  (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-    <div class="title">
-      <i class="vitamui-icon vitamui-icon-admin-key vitamui-row-icon" [class.status-badge-green]="profile?.enabled"
-        [class.status-badge-grey]="!profile?.enabled"></i>
-      <h2>{{profile?.name}}</h2>
-    </div>
-  </div>
-
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@hierarchyDetailTabInformation">
-        <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()">
-        </app-information-tab>
-      </mat-tab>
-      <mat-tab label="Historique" i18n-label="History tab@@hierarchyDetailTabHistory">
-        <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier"
-          collectionName="profiles" [filter]="filterEvents"></vitamui-common-operation-history-tab>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="Informations" i18n-label="Information tab@@hierarchyDetailTabInformation">
+      <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()"></app-information-tab>
+    </mat-tab>
+    <mat-tab label="Historique" i18n-label="History tab@@hierarchyDetailTabHistory">
+      <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier"
+        collectionName="profiles" [filter]="filterEvents"></vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>
