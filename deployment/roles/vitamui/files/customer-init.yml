@@ -105,6 +105,28 @@ customer-init:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
 
+    - name: Profil pour la gestion des opérations de sécurisation
+      description: Gestion des opérations de sécurisation dans Vitam
+      app-name: SECURE_APP
+      level:
+      roles:
+       - ROLE_GET_OPERATIONS
+
+    - name: Profil de gestion des valeurs probantes
+      description: Gestion des valeurs probantes dans Vitam
+      app-name: PROBATIVE_VALUE_APP
+      level:
+      roles:
+       - ROLE_GET_OPERATIONS
+       - ROLE_RUN_PROBATIVE_VALUE
+       
+    - name: Profil pour la gestion des formats de fichiers
+      description: Gestion des formats de fichiers dans Vitam
+      app-name: FILE_FORMATS_APP
+      level:
+      roles:
+       - ROLE_GET_FILE_FORMATS
+
     - name: Profil Journal des Opérations
       description: Gestion des applications des Journaux des Opérations
       app-name: LOGBOOK_OPERATION_APP
