@@ -1,30 +1,32 @@
+
 .vitamui-autocomplete-panel {
     border-radius: 5px;
     background-color: $white;
     border: solid 1px var(--vitamui-grey-400);
 
     .mat-option {
-        height: 40px;
+        height: 50px;
     }
 
     .mat-option:not(:last-child) {
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid var(--vitamui-grey-300);
     }
 
   // FIXME: Seems that var( --colorName ) cant be applied in transparentize function. How to load specific color with a composite here ?
     .mat-option:hover:not(.mat-option-disabled),
     .mat-option:focus:not(.mat-option-disabled),
     .mat-option.mat-active {
-        background: var(--vitamui-grey-100)
+        background: var(--vitamui-grey-300)
     }
 
     .mat-option-text {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         font-family:'Mulish', sans-serif;
         font-size: 14px;
+        line-height: 22px;
         color: var(--vitamui-grey-900);
+        letter-spacing: 0.1px;
 
         .vitamui-option-label {
             overflow: hidden;
@@ -39,3 +41,9 @@
     }
 
 }
+
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    box-shadow: none !important;
+}
+
+
