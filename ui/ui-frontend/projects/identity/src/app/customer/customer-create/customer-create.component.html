@@ -197,24 +197,41 @@
     </cdk-step>
 
     <cdk-step>
-      <div class="content">
-        <div class="text large bold" i18n="Create evidence owner title@@customerCreateTitle3">Création d'un propriétaire
-          pour "{{ customerInfo?.name }}"</div>
+      <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire des éléments de preuve
+      </h2>
+      <div class="form-group">
         <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
 
-        <div class="text normal bold light ml-2"
-          i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
-            Le coffre des éléments de preuve est créé automatiquement avec son propriétaire
-        </div>
-
-        <div class="actions">
-          <button type="submit" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
-            [disabled]="lastStepIsInvalid()">Terminer</button>
-          <ng-container *ngTemplateOutlet="cancel"></ng-container>
-        </div>
-        <ng-container *ngTemplateOutlet="back"></ng-container>
+        <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
+          Ce propriétaire détiendra les éléments de preuve du client.
+        </p>
       </div>
-    </cdk-step>
+
+      <button type="button" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
+        cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">Créer un coffre</button>
+      <button type="button" class="btn cancel" (click)="onCancel()"
+        i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+      <button type="button" class="back" cdkStepperPrevious>
+        <i class="material-icons">arrow_back</i>
+        <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+      </button>
+  </cdk-step>
+
+  <cdk-step>
+      <h2 i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{ getOwnerName() }}"</h2>
+      <vitamui-common-input formControlName="tenantName" required placeholder="Nom du coffre" i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder">
+        <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')" i18n="Existing name error hint@@formErrorExistingName">Champ requis</vitamui-common-input-error>
+        <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')" i18n="Existing name error hint@@formErrorExistingName">Nom déjà existant</vitamui-common-input-error>
+      </vitamui-common-input>
+
+      <div class="actions">
+        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish owner creation button@@ownerCreateFinishButton">Terminer</button>
+        <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel owner creation@@ownerCreateCancelButton">Annuler</button>
+      </div>
+      <button type="button" class="back" cdkStepperPrevious>
+        <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+      </button>
+  </cdk-step>
 
     <ng-template #cancel>
       <button type="button" class="btn cancel link ml-3" (click)="onCancel()"
