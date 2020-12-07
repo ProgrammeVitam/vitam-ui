@@ -45,11 +45,12 @@ import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.cri
 import { Unit } from './models/unit.interface';
 import { SearchResponse } from './models/search-response.interface';
 
- 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ArchiveService extends SearchService<any> {
+
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,
@@ -118,7 +119,7 @@ export class ArchiveService extends SearchService<any> {
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<PagedResult> {
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
-   //   timeout(TIMEOUT_SEC), 
+   //   timeout(TIMEOUT_SEC),
       catchError((error) => {
         if(error instanceof TimeoutError) {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
@@ -133,7 +134,7 @@ export class ArchiveService extends SearchService<any> {
   private buildPagedResults(response: SearchResponse): PagedResult {
     let pagedResult: PagedResult = { results: response.$results, totalResults: response.$hits.total, pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0 };
     let resultFacets: ResultFacet[] = [];
-    if(response.$facetResults && response.$facetResults){     
+    if(response.$facetResults && response.$facetResults){
       for(let facet of response.$facetResults){
         if(facet.name === 'COUNT_BY_NODE'){
           let buckets = facet.buckets;
@@ -147,7 +148,29 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  
+  downloadObjectFromUnit(id : string , headers?: HttpHeaders) {
+
+    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
+
+      file => {
+
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(file);
+        element.download ='item-'+id;
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      errors => {
+        console.log('Error message : ',errors);
+      }
+    ); }
+
+  findArchiveUnit(id : string, headers?: HttpHeaders) {
+      return this.archiveApiService.findArchiveUnit(id, headers);
+    }
+
 }
 
 function idExists(units: Unit[], id: string): boolean {

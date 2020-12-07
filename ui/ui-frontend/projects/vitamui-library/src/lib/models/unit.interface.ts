@@ -28,6 +28,7 @@ export interface Unit {
   PhysicalStatus?: string[];
   PhysicalType?: string[];
 
+
   // This does not come from the API. It is built from the unit info
   isDigital?: boolean;
   isPhysical?: boolean;

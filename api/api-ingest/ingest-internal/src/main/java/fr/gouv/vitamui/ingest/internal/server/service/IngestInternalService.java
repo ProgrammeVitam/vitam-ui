@@ -47,14 +47,14 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.ByteArrayOutputStream;
@@ -123,6 +123,7 @@ public class IngestInternalService {
 
         RequestResponse<Void> ingestResponse = null;
         try {
+            LOGGER.info("Upload EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
             LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
 
@@ -147,6 +148,7 @@ public class IngestInternalService {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
+            LOGGER.info(" All ingests EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
@@ -171,6 +173,8 @@ public class IngestInternalService {
 
         final RequestResponse<LogbookOperation> requestResponse;
         try {
+            LOGGER.info("Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
             requestResponse = logbookService.selectOperationbyId(id, vitamContext);
 
             LOGGER.debug("One Ingest Response: {}: ", requestResponse);
@@ -190,6 +194,7 @@ public class IngestInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
+            LOGGER.info("All Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             LOGGER.debug("Response: {}: ", requestResponse);
@@ -205,38 +210,46 @@ public class IngestInternalService {
         }
     }
 
-      public String getManifestAsString(VitamContext vitamContext, final String id) {
+    public Response exportManifest(VitamContext vitamContext, String id) {
         try {
-            String manifest = "";
-            Response response = ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.MANIFESTS);
-            Object entity = response.getEntity();
-            if (entity instanceof InputStream) {
-                Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestDocxGenerator.resourceAsString(resource);
-            }
-            LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            return manifest;
+            LOGGER.info("Export Manifest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            return ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.MANIFESTS);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Unable to find Manifest", e);
+        }
+    }
+
+    public Response exportATR(VitamContext vitamContext, String id) {
+        try {
+            LOGGER.info("Export ATR EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            return ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.ARCHIVETRANSFERREPLY);
         } catch (VitamClientException e) {
             throw new InternalServerException("Unable to find ATR", e);
         }
     }
 
+    public String getManifestAsString(VitamContext vitamContext, final String id) {
+        String manifest = "";
+        Response response = exportManifest(vitamContext, id);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            manifest = ingestDocxGenerator.resourceAsString(resource);
+           }
+        LOGGER.info("Manifest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+         return manifest;
+    }
+
     public String getAtrAsString(VitamContext vitamContext, final String id) {
-        try {
-            String atr = "";
-        Response response =
-            ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.ARCHIVETRANSFERREPLY);
+        String atr = "";
+        Response response = exportATR( vitamContext,  id);
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
             Resource resource = new InputStreamResource((InputStream) entity);
             atr = ingestDocxGenerator.resourceAsString(resource);
         }
-        LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        LOGGER.info("ATR EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return atr;
-
-    } catch (VitamClientException e) {
-            throw new InternalServerException("Unable to find ATR", e);
-        }
     }
 
     public byte[] generateDocX(VitamContext vitamContext, final String id) throws JSONException, IOException {
@@ -251,12 +264,9 @@ public class IngestInternalService {
          Document manifest = ingestDocxGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
          XWPFDocument document = new XWPFDocument();
-
          if(myCustomer.isHasCustomGraphicIdentity()) {
              logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
          }
-
-
          ingestDocxGenerator.generateDocHeader(document,myCustomer,logo);
 
          ingestDocxGenerator.generateFirstTitle(document);

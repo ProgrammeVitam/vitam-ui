@@ -27,14 +27,13 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,7 +42,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ArchiveUnitsDto extends IdDto implements Serializable {
-    private VitamUIArchiveUnitResponseDto archives;
+public class ArchiveUnit extends ResultsDto {
+
+    @JsonProperty("originating_agencyName")
+    private String originatingAgencyName;
 
 }

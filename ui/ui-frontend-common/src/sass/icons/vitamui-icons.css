@@ -1957,3 +1957,6 @@ i.vitamui-icon {
 .vitamui-icon-target:before {
   content: "\e9b3";
 }
+.vitamui-icon-download1:before {
+  content: "\e955";
+}

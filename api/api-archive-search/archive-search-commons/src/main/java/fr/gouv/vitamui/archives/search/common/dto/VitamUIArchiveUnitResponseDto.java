@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,48 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+package fr.gouv.vitamui.archives.search.common.dto;
 
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
-import { ArchiveComponent } from './archive.component';
-import { ArchiveSearchResolverService } from './archive-search-resolver.service';
-import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full'
-  }, {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: ArchiveComponent,
-    canActivate: [ActiveTenantGuard]
-  },
+@Getter
+@Setter
+@ToString
+public class VitamUIArchiveUnitResponseDto extends AbstractVitamUIResponseDto<ArchiveUnit> {
 
-  {
-    path: 'tenant/:tenantIdentifier/:accessContractId/id/:id',
-    component: ArchiveSearchPopupComponent,
-    resolve : {archiveUnit : ArchiveSearchResolverService}
-  }
-];
+    @JsonProperty("$context")
+    private VitamSearchRequestDto context;
 
+    @JsonProperty("$facetResults")
+    private List<FacetResultsDto> facetResults = new ArrayList<>();
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
-})
-export class ArchiveRoutingModule { }
+}
