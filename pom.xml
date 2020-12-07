@@ -309,27 +309,27 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-commons</artifactId>
+                <artifactId>archive-search-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-internal</artifactId>
+                <artifactId>archive-search-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-internal-client</artifactId>
+                <artifactId>archive-search-internal-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-external</artifactId>
+                <artifactId>archive-search-external</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
-                <artifactId>archive-external-client</artifactId>
+                <artifactId>archive-search-external-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

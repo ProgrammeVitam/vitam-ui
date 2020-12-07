@@ -1,0 +1,25 @@
+db = db.getSiblingDB('security')
+
+print("START 217_security_archive_search_ref.js");
+
+db.contexts.insert({
+    "_id" : "ui_archive_search_context",
+    "name": "Contexte UI Archive Search",
+    "fullAccess" : true,
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "roleNames" : [
+            "ROLE_GET_CUSTOMERS", "ROLE_CREATE_CUSTOMERS", "ROLE_UPDATE_CUSTOMERS",
+            "ROLE_GET_USERS", "ROLE_CREATE_USERS", "ROLE_UPDATE_USERS", "ROLE_UPDATE_STANDARD_USERS", "ROLE_GENERIC_USERS", "ROLE_MFA_USERS", "ROLE_ANONYMIZATION_USERS",
+            "ROLE_UPDATE_ME_USERS",
+            "ROLE_GET_PROFILES", "ROLE_CREATE_PROFILES", "ROLE_UPDATE_PROFILES", "ROLE_DELETE_PROFILES",
+            "ROLE_GET_PROVIDERS", "ROLE_CREATE_PROVIDERS", "ROLE_UPDATE_PROVIDERS",
+            "ROLE_GET_GROUPS", "ROLE_CREATE_GROUPS", "ROLE_UPDATE_GROUPS", "ROLE_DELETE_GROUPS", "ROLE_GET_PROFILES_ALL_TENANTS",
+            "ROLE_GET_TENANTS", "ROLE_CREATE_TENANTS", "ROLE_CREATE_TENANTS_ALL_CUSTOMERS", "ROLE_UPDATE_TENANTS", "ROLE_UPDATE_TENANTS_ALL_CUSTOMERS", "ROLE_GET_ALL_TENANTS",
+            "ROLE_GET_OWNERS", "ROLE_CREATE_OWNERS", "ROLE_UPDATE_OWNERS",
+            "ROLE_GET_SUBROGATIONS", "ROLE_CREATE_SUBROGATIONS", "ROLE_DELETE_SUBROGATIONS", "ROLE_GET_USERS_SUBROGATIONS", "ROLE_GET_GROUPS_SUBROGATIONS",
+            "ROLE_CREATE_ACCESS_CONTRACTS",
+        "ROLE_CREATE_ARCHIVE_SEARCH", "ROLE_GET_ARCHIVE_SEARCH", "ROLE_GET_ALL_ARCHIVE_SEARCH"
+    ]
+});
+
+print("END 217_security_archive_search_ref.js");

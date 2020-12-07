@@ -165,6 +165,21 @@ db.tenants.insert({
 });
 
 db.tenants.insert({
+  "_id": "auto_tenant",
+  "name": "Tenant Auto Referentiel",
+  "proof": true,
+  "enabled": true,
+  "readonly": false,
+  "identifier": NumberInt(2),
+  "ownerId": "system_owner",
+  "customerId": "system_customer",
+  "ingestContractHoldingIdentifier" : "IC-000001",
+  "itemIngestContractIdentifier" : "IC-000001",
+  "accessContractHoldingIdentifier" : "AC-000001",
+  "accessContractLogbookIdentifier" : "AC-000002"
+});
+
+db.tenants.insert({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,
@@ -333,6 +348,24 @@ db.profiles.insert({
   },
   {
     "name": "ROLE_UPDATE_PROVIDERS"
+  },
+  {
+    "name": "ROLE_GET_ACCESS_CONTRACTS"
+  },
+  {
+    "name": "ROLE_CREATE_ACCESS_CONTRACTS"
+  },
+  {
+    "name": "ROLE_UPDATE_ACCESS_CONTRACTS"
+  },
+  {
+    "name": "ROLE_GET_INGEST_CONTRACTS"
+  },
+  {
+    "name": "ROLE_CREATE_INGEST_CONTRACTS"
+  },
+  {
+    "name": "ROLE_UPDATE_INGEST_CONTRACTS"
   }
   ]
 });
@@ -529,33 +562,33 @@ db.profiles.insert({
   ]
 });
 
-// ========================================= partie archive ============================================
+// ========================================= partie archive search ============================================
 
 db.profiles.insert({
-  "_id": "system_archive_profile",
+  "_id": "system_archive_search_profile",
   "identifier" : NumberInt(23),
-  "name": "Archive Profile",
-  "description": "Archive Profile",
+  "name": "Archive Search Profile",
+  "description": "Archive Search Profile",
   "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "ARCHIVE_MANAGEMENT_APP",
+  "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
   "level": "",
   "enabled": true,
   "readonly": false,
   "customerId": "system_customer",
   "roles": [
   {
-    "name": "ROLE_CREATE_ARCHIVE"
+    "name": "ROLE_CREATE_ARCHIVE_SEARCH"
   },
   {
-    "name": "ROLE_GET_ARCHIVE"
+    "name": "ROLE_GET_ARCHIVE_SEARCH"
   },
   {
-    "name": "ROLE_GET_ALL_ARCHIVE"
+    "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
   }
    ]
 });
 
-//========================================== partie archive =============================================
+//========================================== partie archive search =============================================
 
 // ========================================= GROUPS =========================================
 
