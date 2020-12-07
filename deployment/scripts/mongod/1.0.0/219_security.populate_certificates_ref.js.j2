@@ -23,6 +23,6 @@ db.certificates.insert({
     {% endfor %}
 {%- endmacro %}
 
-{{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive.pem', 'ui_archive_context', 'hosts_ui_archive') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive-search.pem', 'ui_archive_search_context', 'hosts_ui_archive_search') }}
 
-print("END 219_security.populate_certificates_archive_ref.js");
+print("END 219_security.populate_certificates_archive_search_ref.js");
