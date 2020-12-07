@@ -48,6 +48,8 @@ import { CustomerApiService } from '../core/api/customer-api.service';
 })
 export class CustomerSelectService {
 
+  private customers: Customer[];
+
   constructor(private customerApi: CustomerApiService) { }
 
   getAll(subrogeable: boolean): Observable<MenuOption[]> {
@@ -60,6 +62,7 @@ export class CustomerSelectService {
       .pipe(
         catchError(() => of([])),
         map((results) => {
+          this.customers = results;
           return (results || []).map((c: { id: string, code: string, name: string  }) => {
             const label = c.code + ' - ' + c.name;
 
@@ -69,11 +72,7 @@ export class CustomerSelectService {
       );
   }
 
-  getAllSubrogableCustomers(): Observable<Customer[]> {
-    const criterionArray: any[] = [ { key: 'subrogeable', value: true, operator: Operators.equals }];
-    const query: SearchQuery = { criteria: criterionArray };
-    const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
-    return this.customerApi.getAllByParams(httpParams);
+  getCustomers(): Customer[] {
+    return this.customers;
   }
-
 }

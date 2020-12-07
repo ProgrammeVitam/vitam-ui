@@ -7,8 +7,8 @@
     <vitamui-common-banner
       [searchbarPlaceholder]="'Nom de Profil de Subrogation'"
       (search)="onSearchSubmit($event)">
-        <button class="btn primary ml-5">
-          Subroger un utilisateur client
+        <button class="btn primary ml-5" (click)="openUserSubrogationDialog()">
+          Subroger un Utilisateur Client
         </button>
     </vitamui-common-banner>
 

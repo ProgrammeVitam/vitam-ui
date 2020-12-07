@@ -38,7 +38,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { switchMap, takeLast, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import {
   AppRootComponent,
   Customer,
@@ -61,7 +61,6 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
   public search: string;
 
   private destroyer$ = new Subject();
-  private subrogableCustomers: Customer[];
 
   constructor(
     public dialog: MatDialog,
@@ -104,27 +103,22 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
     this.destroyer$.complete();
   }
 
-  openUserSubrogationDialog() {
+  public openUserSubrogationDialog(): void {
     this.subrogationModalService.open(this.customer.emailDomains);
   }
 
-  changeCustomer(customerId: string) {
-    this.router.navigate(['..', customerId], { relativeTo: this.route });
-  }
-
-  onSearchSubmit(search: string) {
+  public onSearchSubmit(search: string): void {
     this.search = search;
   }
 
-  private updateCustomer(customerId: string) {
-    if (this.subrogableCustomers) {
-      this.customer = this.subrogableCustomers.find(value => value.id === customerId);
-    } else {
-      this.customerSelectService.getAllSubrogableCustomers().pipe(takeLast(1))
-      .subscribe((customers: Customer[]) => {
-        this.subrogableCustomers = customers;
-        this.updateCustomer(customerId);
-      });
+  private changeCustomer(customerId: string): void {
+    this.router.navigate(['..', customerId], { relativeTo: this.route });
+  }
+
+  private updateCustomer(customerId: string): void {
+    const customers = this.customerSelectService.getCustomers();
+    if (customers) {
+      this.customer = customers.find(value => value.id === customerId);
     }
   }
 
