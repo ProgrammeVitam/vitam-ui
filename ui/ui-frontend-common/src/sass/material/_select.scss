@@ -1,8 +1,9 @@
 .vitamui-mat-select.mat-select-panel {
-    @include mat-select-panel
+    @include mat-select-panel;
 }
 
 .vitamui-mat-select.mat-form-field {
+    font-family: "Mulish", sans-serif;
     font-size: 14px;
     font-weight: 500;
     width: 240px;
@@ -14,7 +15,12 @@
 
     &.mat-focused {
         .mat-form-field-label {
-            color: $greyish-two;
+            color: var(--vitamui-grey-600);
+        }
+
+        .mat-form-field-flex {
+            outline: none;
+            border: solid 1px var(--vitamui-primary) !important;
         }
     }
 
@@ -31,7 +37,7 @@
     }
 
     .mat-form-field-label {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
         font-weight: 400;
 
         .mat-form-field-required-marker {
@@ -41,7 +47,8 @@
 
     &.mat-form-field-type-mat-input {
         .mat-form-field-flex .mat-form-field-infix {
-            transition: border-top-width .4s cubic-bezier(.25,.8,.25,1), padding-bottom .4s cubic-bezier(.25,.8,.25,1);
+            transition: border-top-width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         &.mat-form-field-should-float .mat-form-field-flex .mat-form-field-infix {
@@ -67,57 +74,83 @@
     }
 
     &.mat-form-field-type-mat-select {
-
         &.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
             display: none;
         }
 
         &.mat-form-field-disabled {
-            opacity: 0.4;
-        }
+            .mat-form-field-flex {
+                background-color: var(--vitamui-grey-300);
 
-        .mat-form-field-label {
-            color: var(--vitamui-grey-900);
-        }
-
-        .mat-form-field-flex {
-            border: 1px solid var(--vitamui-grey-300);
-            padding-right: 15px;
-
-            .mat-form-field-infix {
-                border-top-width: 0;
-                display: flex;
-                align-items: center;
-                width: 100%;
-            }
-
-            .mat-select .mat-select-value {
-                color: var(--vitamui-grey-900);
-                font-weight: normal;
-            }
-
-            .mat-select .mat-select-arrow-wrapper {
-                visibility: hidden;
-            }
-
-            .select-arrow {
-                display: flex;
-                flex-direction: column;
-                margin-top: -8px;
-
-                i {
-                    height: 10px;
-                    font-size: 18px;
-                    color: var(--vitamui-primary);
+                .mat-select .mat-select-value {
+                    font-weight: normal;
+                    color: var(--vitamui-grey-700);
                 }
-            }
 
-            &:hover {
-                @include elevation-1;
+                &:hover {
+                    box-shadow: none;
+                }
+
+                .select-arrow {
+                    i {
+                        color: var(--vitamui-grey-700);
+                    }
+                }
             }
         }
     }
 
+    .mat-form-field-label {
+        color: var(--vitamui-grey-900);
+    }
+
+    .mat-form-field-flex {
+        padding-right: 15px;
+        border: 1px solid var(--vitamui-grey-300);
+
+        .mat-form-field-infix {
+            border-top-width: 0;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .mat-select .mat-select-value {
+            font-family: "Mulish", sans-serif;
+        }
+
+        .mat-select .mat-select-arrow-wrapper {
+            visibility: hidden;
+        }
+
+        .select-arrow {
+            display: flex;
+            flex-direction: column;
+            margin-top: -8px;
+
+            i{
+                height: 10px;
+                font-size: 18px;
+            }
+        }
+    }
+
+    :not(.mat-form-field-disabled).mat-form-field-flex {
+        &:hover {
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mat-select .mat-select-value {
+            color: var(--vitamui-grey-900);
+            font-weight: 700;
+        }
+
+        .select-arrow {
+            i {
+                color: var(--vitamui-primary);
+            }
+        }
+    }
 
     &.no-padding .mat-form-field-wrapper {
         padding-bottom: 0;
@@ -135,9 +168,9 @@
         height: 25px;
         padding: 0;
         border: none;
-        
+
         &:hover {
-            @include elevation-0;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
         }
     }
 
