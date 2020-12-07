@@ -172,14 +172,15 @@ customer-init:
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
 
-    - name: Profil Arbres et Plans
-      description: Gestion des applications d'import d'arbres de positionnement et plans de classement
-      app-name: HOLDING_FILLING_SCHEME_APP
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_MANAGEMENT_APP
       level:
       roles:
-        - ROLE_CREATE_HOLDING_FILLING_SCHEME
-        - ROLE_GET_HOLDING_FILLING_SCHEME
-        - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+        - ROLE_CREATE_ARCHIVE
+        - ROLE_GET_ARCHIVE
+        - ROLE_GET_ALL_ARCHIVE
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName
