@@ -120,11 +120,11 @@
 {% endfor %}
 
 
-    # UI ARCHIVE
+    # UI ARCHIVE SEARCH
 
-{% for host in groups['hosts_ui_archive'] %}
-    ProxyPassMatch ^/archive(/.*)$ {% if vitamui.archive.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive.port_service }}/archive$1
-    ProxyPassReverse /archive {% if vitamui.archive.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive.port_service }}/archive
+{% for host in groups['hosts_ui_archive_search'] %}
+    ProxyPassMatch ^/archive_search(/.*)$ {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive_search$1
+    ProxyPassReverse /archive_search {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive_search
 {% endfor %}
 
     # CAS SERVER

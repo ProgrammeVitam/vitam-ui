@@ -78,10 +78,10 @@ vitamui-env
 hosts_vitamui_iam_internal
 hosts_vitamui_iam_external
 hosts_vitamui_ingest_internal
-hosts_vitamui_archive_internal
+hosts_vitamui_archive_search_internal
 hosts_vitamui_referential_internal
 hosts_vitamui_ingest_external
-hosts_vitamui_archive_external
+hosts_vitamui_archive_search_external
 hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 
@@ -97,7 +97,7 @@ vitamui-env
 # EDIT
 vitamui-env
 
-[hosts_vitamui_archive_internal]
+[hosts_vitamui_archive_search_internal]
 # EDIT
 vitamui-env
 
@@ -105,7 +105,7 @@ vitamui-env
 # EDIT
 vitamui-env
 
-[hosts_vitamui_archive_external]
+[hosts_vitamui_archive_search_external]
 # EDIT
 vitamui-env
 
@@ -129,7 +129,7 @@ hosts_ui_identity
 hosts_ui_portal
 hosts_ui_search
 hosts_ui_ingest
-hosts_ui_archive
+hosts_ui_archive_search
 hosts_ui_referential
 
 [hosts_ui_identity]
@@ -140,7 +140,7 @@ vitamui-env
 # EDIT
 vitamui-env
 
-[hosts_ui_archive]
+[hosts_ui_archive_search]
 # EDIT
 vitamui-env
 
