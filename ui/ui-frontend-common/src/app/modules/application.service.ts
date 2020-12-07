@@ -234,7 +234,7 @@ export class ApplicationService {
 
         // Get 8 last used apps if there is more than 8
         if (lastUsedApps.length > max) {
-          lastUsedApps = lastUsedApps.slice(0, 7);
+          lastUsedApps = lastUsedApps.slice(0, 8);
         }
 
         return { category: lastUsedAppsCateg, apps: lastUsedApps };
