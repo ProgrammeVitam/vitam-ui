@@ -42,8 +42,7 @@ import { NotificationSnackBarComponent } from '../notification-snack-bar/notific
 import { NotificationType } from '../notification-type.enum';
 
 @Component({
-  templateUrl: './subrogation-snack-bar.component.html',
-  styleUrls: ['./subrogation-snack-bar.component.scss']
+  templateUrl: './subrogation-snack-bar.component.html'
 })
 export class SubrogationSnackBarComponent {
 

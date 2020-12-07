@@ -97,6 +97,7 @@ export class SubrogationModalComponent implements OnInit {
   // a. the subrogation exists, we retrieve it
   // b. we asks for a subrogation
   retrieveOrCreateSubrogation(surrogateEmail: string) {
+    this.pending = true;
     this.subrogationService.checkCurrentUserIsInSubrogation().subscribe((response: Subrogation) => {
       if (response.id) {
         if (response.surrogate === surrogateEmail) {
