@@ -126,6 +126,15 @@ customer-init:
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
 
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE
+        - ROLE_GET_ARCHIVE
+        - ROLE_GET_ALL_ARCHIVE
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName
