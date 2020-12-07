@@ -109,7 +109,7 @@ public class IngestExternalController {
             LOGGER.debug("[IngestExternalController] upload file [{}], [{}] bytes.", file.getOriginalFilename(),
                 file.getInputStream().available());
         } catch (IOException e) {
-            LOGGER.debug("ERROR: InputStream error ", e);
+            LOGGER.error("ERROR: InputStream error ", e);
             throw new BadRequestException("ERROR: InputStream writing error : ", e);
         }
 

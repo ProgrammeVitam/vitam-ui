@@ -66,7 +66,7 @@ import java.util.Optional;
 @RequestMapping(RestApi.V1_INGEST)
 @Getter
 @Setter
-@Api(tags = "ingest", value = "Ingest an SIP", description = "Ingest an SIP")
+@Api(tags = "ingest", value = "Ingest a SIP", description = "Ingest an SIP")
 public class IngestInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);

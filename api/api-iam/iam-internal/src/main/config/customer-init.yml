@@ -109,8 +109,8 @@ customer-init:
       level:
       roles:
         - ROLE_LOGBOOKS
-    - name: Profil Ingest
-      description: Gestion des application de dépot et suivi des versements
+    - name: Profil pour le dépôt et suivi des versements
+      description: Gestion des applications de dépôt et suivi des versements
       app-name: INGEST_MANAGEMENT_APP
       level:
       roles:
