@@ -299,6 +299,10 @@ $row-padding: 0.8rem;
                 background-color: transparent!important;
             }
         }
+
+        button {
+            max-height: 40px;
+        }
     }
 
     .actions {

@@ -1,69 +1,88 @@
-<table
-  class="vitamui-table"
-  vitamuiCommonInfiniteScroll
-  (vitamuiScroll)="onScroll()"
->
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-user vitamui-row-icon"></i></th>
-      <th i18n="Subrogation name column header@@subrogationListNameHeader">Nom / Prénom</th>
-      <th i18n="Subrogation id column header@@subrogationListIDHeader">ID</th>
-      <th i18n="Subrogation criticity column header@@subrogationListCriticityHeader">Criticité</th>
-      <th i18n="Subrogation group column header@@subrogationListGroupHeader">Groupe</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody *ngIf="loaded">
-    <tr class="user-row" *ngFor="let subrogableUser of dataSource; let index = index">
-      <td>
-        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="subrogableUser?.status === 'ENABLED'"></i>
-        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-gray" *ngIf="subrogableUser?.status === 'DISABLED'"></i>
-        <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="subrogableUser?.status === 'BLOCKED'"></i>
-        <div *ngIf="subrogableUser?.status === 'ANONYM'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1"><i class="vitamui-icon vitamui-icon-user" [style.fontSize.px]="30"></i></div>
+      <div class="col-2" i18n="Subrogation name column header@@subrogationListNameHeader">Nom / Prénom</div>
+      <div class="col-2" i18n="Subrogation id column header@@subrogationListIDHeader">Criticité</div>
+      <div class="col-2" i18n="Subrogation group column header@@subrogationListGroupHeader">Groupe</div>
+      <div class="col-1" i18n="Subrogation criticity column header@@subrogationListCriticityHeader">ID</div>
+      <div class="col-4"></div>
+    </div>
 
-      </td>
-      <td>
-        {{ subrogableUser?.lastname | uppercase }} {{ subrogableUser?.firstname }}
-      </td>
-      <td>{{ subrogableUser?.identifier }}</td>
-      <td class="criticity-column" *ngIf="subrogableUser?.criticality === 0">
-        <div id="rectangle-criticity-high"></div>
-        <div id="rectangle-criticity-low"></div>
-        <div id="rectangle-criticity-low"></div>
-      </td>
-      <td class="criticity-column" *ngIf="subrogableUser?.criticality === 1">
-        <div id="rectangle-criticity-high"></div>
-        <div id="rectangle-criticity-high"></div>
-        <div id="rectangle-criticity-low"></div>
-      </td>
-      <td class="criticity-column" *ngIf="subrogableUser?.criticality === 2">
-        <div id="rectangle-criticity-high"></div>
-        <div id="rectangle-criticity-high"></div>
-        <div id="rectangle-criticity-high"></div>
-      </td>
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let subrogableUser of dataSource">
+        <div class="vitamui-row d-flex align-items-center">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-user"
+              [ngClass]="subrogableUser?.status === 'ENABLED' ? 'status-badge-green' :
+              (subrogableUser?.status === 'DISABLED' || subrogableUser?.status === 'ANONYM' ? 'status-badge-grey' : 'status-badge-orange')"
+              [style.fontSize.px]="30"
+            ></i>
+          </div>
+          <div class="col-2">{{ subrogableUser?.lastname }} {{ subrogableUser?.firstname }}</div>
+          <div class="col-2">
+            <ng-container [ngSwitch]="subrogableUser?.criticality">
+              <div *ngSwitchCase="0" class="d-flex">
+                <div id="rectangle-criticity-high"></div>
+                <div id="rectangle-criticity-high"></div>
+                <div id="rectangle-criticity-low"></div>
+              </div>
+              <div *ngSwitchCase="1" class="d-flex">
+                <div id="rectangle-criticity-high"></div>
+                <div id="rectangle-criticity-low"></div>
+                <div id="rectangle-criticity-low"></div>
+              </div>
+              <div *ngSwitchCase="2" class="d-flex">
+                <div id="rectangle-criticity-high"></div>
+                <div id="rectangle-criticity-high"></div>
+                <div id="rectangle-criticity-high"></div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-2">{{ getGroup(subrogableUser)?.name }}</div>
+          <div class="col-1">{{ subrogableUser?.identifier }}</div>
+          <div class="col-2 d-flex justify-content-end"> 
+            <div *ngIf="subrogableUser.superUserEmail">
+              <span *ngIf="subrogableUser.superUserEmail === currenteUser.email"
+                class="text normal bold text-red" i18n="@@SubrogateCurrentUserInSubroLabel">En cours</span>
+      
+              <span *ngIf="subrogableUser.superUserEmail !== currenteUser.email"
+                class="text normal bold text-red" i18n="@@SubrogateUserInSubroLabel">Subrogé par {{subrogableUser.superUserEmail}}</span>
+            </div>
+          </div>
 
-      <td>{{ getGroup(subrogableUser)?.name }}</td>
-      <td>
-        <button *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" type="button" class="btn outline-primary" (click)="openUserSubrogationDialog(subrogableUser)"
-                [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable"
-                i18n="Subrogate subrogate@@SubrogateButton">
-          Subroger
-        </button>
+          <div class="col-2 d-flex justify-content-end">
+            <button
+              *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" 
+              class="btn outline-primary"
+              i18n="Subrogate subrogate@@SubrogateButton"
+              (click)="openUserSubrogationDialog(subrogableUser)"
+              [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable">
+                Subroger
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-        <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail == currenteUser.email"
-        class="user-current-in-subrogation-label" i18n="@@SubrogateCurrentUserInSubroLabel">En cours</span>
-
-        <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail != currenteUser.email"
-        class="user-in-subrogation-label" i18n="@@SubrogateUserInSubroLabel">Subrogé par {{subrogableUser.superUserEmail}}</span>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" class="vitamui-spinner medium"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && subrogationService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
-    Afficher plus de résultats...
-  </button>
+  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && subrogationService.canLoadMore && !pending then loadMore"></div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+ </ng-template>
+
+ <ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="subrogationService.loadMore()">
+    <span class="clickable">Afficher plus de résultats...</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

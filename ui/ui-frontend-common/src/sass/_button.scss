@@ -102,7 +102,6 @@
 }
 
 .btn.contrast-outline {
-
     @include btn(transparent, transparent, $white, $white, $white, $white);
 
     &.contrast-outline-primary {
@@ -117,7 +116,6 @@
         @include disabled(transparent, $white, $white);
         opacity: .4;
     }
-
 }
 
 .btn-circle {
