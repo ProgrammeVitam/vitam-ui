@@ -2,7 +2,7 @@
   <h4>Basic array</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-2"><i class="vitamui-icon vitamui-icon-gestion-de-profil" [style.fontSize.px]="30"></i></div>
+      <div class="col-2"><i class="vitamui-icon vitamui-icon-gestion-de-profil"></i></div>
       <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
       <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
       <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
@@ -14,7 +14,7 @@
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-2">
             <i class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'" [style.fontSize.px]="30"></i>
+              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"></i>
           </div>
           <div class="col-3">{{ profile.name }}</div>
           <div class="col-2">{{ profile.identifier }}</div>
@@ -53,7 +53,7 @@
           </vitamui-common-table-filter>
         </ng-template>
 
-        <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon" [style.fontSize.px]="30"></i>
+        <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
         <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
@@ -101,7 +101,7 @@
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-2 d-flex align-items-center">
             <i class="vitamui-icon vitamui-icon-keys pl-4"
-              [ngClass]=" group?.enabled ? 'status-badge-green' :'status-badge-grey'" [style.fontSize.px]="30">
+              [ngClass]=" group?.enabled ? 'status-badge-green' :'status-badge-grey'">
             </i>
           </div>
           <div class="col-3">{{ group.name }}</div>
@@ -118,7 +118,7 @@
   <h4>Array with subtable</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-2"><i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i></div>
+      <div class="col-2"><i class="vitamui-icon vitamui-icon-bank"></i></div>
       <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
       <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
       <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
@@ -131,7 +131,7 @@
           <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
             <div class="d-flex align-items-center clickable">
               <div class="col-2 d-flex"  (click)="row.toggle()">
-                <i class="vitamui-icon vitamui-icon-bank" [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-bank"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row.state">keyboard_arrow_up</i>
               </div>
               <div [style.display]="'contents'">
