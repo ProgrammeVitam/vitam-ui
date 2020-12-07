@@ -128,6 +128,15 @@ customer-init:
       roles:
         - ROLE_LOGBOOKS
 
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE
+        - ROLE_GET_ARCHIVE
+        - ROLE_GET_ALL_ARCHIVE
+
   #- name: profileName
   #  description: desc
   #  level: 1

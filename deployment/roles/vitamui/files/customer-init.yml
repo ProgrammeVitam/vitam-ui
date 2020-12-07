@@ -143,6 +143,23 @@ customer-init:
         - ROLE_CREATE_HOLDING_FILLING_SCHEME
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
+
+    - name: Profil Journal des Opérations
+      description: Gestion des applications des Journaux des Opérations
+      app-name: LOGBOOK_OPERATION_APP
+      level:
+      roles:
+        - ROLE_LOGBOOKS
+
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE
+        - ROLE_GET_ARCHIVE
+        - ROLE_GET_ALL_ARCHIVE
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName
