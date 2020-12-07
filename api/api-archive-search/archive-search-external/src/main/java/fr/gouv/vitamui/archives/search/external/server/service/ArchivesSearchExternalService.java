@@ -31,16 +31,20 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
 /**
- * The service to create vitam Archive.
+ * The service to create vitam Archive-Search.
  */
 @Getter
 @Setter
@@ -71,8 +75,16 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
         return getClient().searchArchiveUnitsByCriteria(getInternalHttpContext(), query);
     }
 
+    public ResponseEntity<ResultsDto> findUnitById(String id) {
+        return archiveInternalRestClient.findUnitById(id, getInternalHttpContext());
+    }
+
     public VitamUISearchResponseDto getFilingHoldingScheme() {
         return archiveInternalRestClient.getFilingHoldingScheme(getInternalHttpContext());
     }
+    public ResponseEntity<Resource> downloadObjectFromUnit(String id) {
+        return archiveInternalRestClient.downloadObjectFromUnit(id, getInternalHttpContext());
+    }
+
 
 }

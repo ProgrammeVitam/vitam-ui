@@ -38,6 +38,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NodeData } from '../archive/models/nodedata.interface';
 import { ResultFacet } from '../archive/models/search.criteria';
+import { Unit } from '../archive/models/unit.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,12 +51,18 @@ export class ArchiveSharedDataServiceService {
   private toggleSubject = new BehaviorSubject<boolean>(true);
   private toggleReverseSubject = new BehaviorSubject<boolean>(true);
 
+  private archiveUnitTpPreviewSubject = new BehaviorSubject<Unit>(null);
+
+  private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
+
   currentNode = this.sourceNode.asObservable();
   currentNodeTarget = this.targetNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
   toggleObservable = this.toggleSubject.asObservable();
   toggleReverseObservable = this.toggleReverseSubject.asObservable();
+  archiveUnitToPreviewObservable = this.archiveUnitTpPreviewSubject.asObservable();
 
+  toggleArchiveUnitObservable = this.toggleArchiveUnitSubject.asObservable();
 
   constructor() { }
 

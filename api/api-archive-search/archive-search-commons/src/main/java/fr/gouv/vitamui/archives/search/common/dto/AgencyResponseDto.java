@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,48 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
+package fr.gouv.vitamui.archives.search.common.dto;
 
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
-import { ArchiveComponent } from './archive.component';
-import { ArchiveSearchResolverService } from './archive-search-resolver.service';
-import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
+public class AgencyResponseDto extends AbstractVitamUIResponseDto<AgencyModelDto> {
 
-const routes: Route[] = [
-  {
-    path: '',
-    redirectTo: 'tenant',
-    pathMatch: 'full'
-  }, {
-    path: 'tenant',
-    component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
-  },
-  {
-    path: 'tenant/:tenantIdentifier',
-    component: ArchiveComponent,
-    canActivate: [ActiveTenantGuard]
-  },
-
-  {
-    path: 'tenant/:tenantIdentifier/:accessContractId/id/:id',
-    component: ArchiveSearchPopupComponent,
-    resolve : {archiveUnit : ArchiveSearchResolverService}
-  }
-];
-
-
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
-})
-export class ArchiveRoutingModule { }
+}
