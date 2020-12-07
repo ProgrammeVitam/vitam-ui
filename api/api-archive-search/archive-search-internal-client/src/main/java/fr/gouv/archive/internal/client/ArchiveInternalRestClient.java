@@ -36,13 +36,16 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -120,5 +123,19 @@ public class ArchiveInternalRestClient
         }
         return headers;
     }
+
+    public ResponseEntity<Resource> downloadObjectFromUnit(String id, final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
+    }
+
+    public ResponseEntity<ResultsDto> findUnitById(String id , final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
 
 }

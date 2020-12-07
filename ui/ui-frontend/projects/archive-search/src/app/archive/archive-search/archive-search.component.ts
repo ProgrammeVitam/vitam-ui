@@ -34,17 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PagedResult, SearchCriteria, SearchCriteriaEltDto, SearchCriteriaStatusEnum} from '../models/search.criteria';
 import { merge,  Subject,  Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff, Direction } from 'ui-frontend-common';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
+import { Unit } from '../models/unit.interface';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
@@ -57,12 +58,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss']
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges {
+export class ArchiveSearchComponent implements OnInit {
+
+  @Output() archiveUnitClick = new EventEmitter<any>();
 
   private readonly orderChange = new Subject<string>();
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
-
   @Input()
   accessContract: string;
   nbQueryCriteria: number = 0;
@@ -72,8 +74,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
   totalResults: number = 0;
   pending: boolean = false;
   canLoadMore: boolean = false;
-  accessContractIdSelected: string = 'ContratTNR';
-  accessContracts: string[];
   tenantIdentifier: string;
   form: FormGroup;
   submited: boolean = false;
@@ -82,11 +82,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
   otherCriteriaValueType: string = 'DATE';
   showCriteriaPanel: boolean = true;
   selectedValueOntolonogy: any;
-  archiveUnits: any[];
+  archiveUnits: Unit[];
   ontologies: any;
   filterMapType: { [key: string]: string[] } = {
     status: ['Folder', 'Document']
   };
+  shouldShowPreviewArchiveUnit = false;
+
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
 
   previousValue: {
@@ -122,21 +124,20 @@ emptyForm = {
   otherCriteriaValue: ''}
 
   show = true;
+  showUnitPreviewBlock = false;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient, private archiveService: ArchiveService,
-              private route: ActivatedRoute, private nodesService: ArchiveSharedDataServiceService, private datePipe: DatePipe) {
-      private route: ActivatedRoute, private nodesService: ArchiveSharedDataServiceService, private datePipe:DatePipe ) {
-    this.subscriptionNodes = this.nodesService.getNodes().subscribe(node => {
+  constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
+              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe) {
+    this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe(node => {
       if(node.checked){
         this.addCriteria("NODE", "Noeud", node.id, node.title);
-
       }else {
         node.count = null;
         this.removeCriteria("NODE", node.id);
       }
     });
 
-    this.getOntologiesFromJson().subscribe((data:any) =>{
+    this.archiveService.getOntologiesFromJson().subscribe((data:any) =>{
       this.ontologies= data;
       this.ontologies.sort(function (a: any, b: any) {
         var shortNameA = a.ShortName;
@@ -190,12 +191,6 @@ emptyForm = {
     }
     );
    }
-
-   getOntologiesFromJson() {
-    return this.httpClient.get("assets/ontologies/ontologies.json")
-    .pipe(map(resp => resp));
-  }
-
 
    isEmpty(formData: any): boolean{
      if(formData){
@@ -254,19 +249,15 @@ emptyForm = {
   }
 
   ngOnInit() {
-    this.tenantIdentifier  = this.route.snapshot.paramMap.get('tenantIdentifier');
+
+    this.route.params.subscribe(params => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
+
     this.searchCriterias = new Map();
-    //this.accessContractService.getAllForTenant(this.tenantIdentifier).subscribe(accessContracts => this.accessContracts = accessContracts);
-    this.accessContracts= [];
-    this.accessContracts.push("contract_with_field_EveryDataObjectVersion");
-    this.accessContracts.push("contrat_producteur1");
-    this.accessContracts.push("contrat_tous_producteur");
-    this.accessContracts.push("ContratTNR");
-    const searchCriteriaChange = merge(this.orderChange)
     this.filterMapType['Type'] = ['Folder','Document'];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
 
     searchCriteriaChange.subscribe(() => {
       this.submit();
@@ -276,7 +267,7 @@ emptyForm = {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.accessContract) {
       this.show = true;
-      this.nodesService.emitToggle(this.show);
+      this.archiveExchangeDataService.emitToggle(this.show);
     }
   }
 
@@ -313,7 +304,7 @@ emptyForm = {
 
         }
         if(key === 'NODE'){
-          this.nodesService.emitNodeTarget(valueElt);
+          this.archiveExchangeDataService.emitNodeTarget(valueElt);
         }
       });
     }
@@ -376,7 +367,11 @@ emptyForm = {
     this.showCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
-    this.callVitamApiService(this.buildNodesListForQUery(), this.buildCriteriaListForQUery());
+    let queriesList = this.buildCriteriaListForQUery();
+    let nodesQueriesList = this.buildNodesListForQUery();
+    if((queriesList && queriesList.length > 0) || (nodesQueriesList && nodesQueriesList.length > 0)) {
+      this.callVitamApiService(nodesQueriesList, queriesList);
+    }
 
   }
 
@@ -428,16 +423,16 @@ emptyForm = {
   private callVitamApiService(nodesIds: String[], criteriaList: SearchCriteriaEltDto[])  {
     this.pending = true;
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-     headers = headers.append('X-Access-Contract-Id', this.accessContractIdSelected);
+     headers = headers.append('X-Access-Contract-Id', this.accessContract);
 
     let sortingCriteria = { criteria: this.orderBy , sorting: this.direction}
     this.archiveService.searchArchiveUnitsByCriteria({ "nodes": nodesIds, "criteriaList": criteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria }, headers).subscribe(
       (pagedResult: PagedResult) => {
 
 
-        if(this.currentPage === 0 ){
+        if (this.currentPage === 0 ) {
           this.archiveUnits = pagedResult.results;
-          this.nodesService.emitFacets(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(pagedResult.facets);
         } else {
           if (pagedResult.results) {
             pagedResult.results.forEach(elt => this.archiveUnits.push(elt));
@@ -446,7 +441,6 @@ emptyForm = {
         this.pageNumbers = pagedResult.pageNumbers;
         this.totalResults = pagedResult.totalResults;
         this.canLoadMore = (this.currentPage < this.pageNumbers - 1);
-        this.nodesService.emitFacets(pagedResult.facets);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.INCLUDED);
         this.pending = false;
       },
@@ -454,7 +448,7 @@ emptyForm = {
         this.canLoadMore = false;
         this.pending = false;
         console.log("Errors : ", error.message);
-        this.nodesService.emitFacets([]);
+        this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       })
   }
@@ -488,27 +482,28 @@ emptyForm = {
     return subText;
   }
 
-  initContractSelected(event: any) {
-    this.accessContractIdSelected = event.value;
-  }
-
   loadMore(){
     if(this.canLoadMore) {
       this.submited = true;
       this.currentPage = this.currentPage + 1 ;
-      this.callVitamApiService(this.buildNodesListForQUery(), this.buildCriteriaListForQUery());
+      let queriesList = this.buildCriteriaListForQUery();
+      let nodesQueriesList = this.buildNodesListForQUery();
+      if((queriesList && queriesList.length > 0) || (nodesQueriesList && nodesQueriesList.length > 0)){
+        this.callVitamApiService(nodesQueriesList, queriesList);
+      }
     }
   }
-
   hiddenTreeBlock(hidden: boolean): void {
     this.show = !hidden;
-    this.nodesService.emitToggle(this.show);
+    this.archiveExchangeDataService.emitToggle(this.show);
   }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscriptionNodes.unsubscribe();
   }
+
+
 
   get uaid() { return this.form.controls.uaid }
   get archiveCriteria() { return this.form.controls.archiveCriteria }
@@ -523,5 +518,6 @@ emptyForm = {
   get serviceProdCommunicabilityDt() { return this.form.controls.serviceProdCommunicabilityDt }
   get otherCriteria() { return this.form.controls.otherCriteria }
   get otherCriteriaValue() { return this.form.controls.otherCriteriaValue }
+
 
 }
