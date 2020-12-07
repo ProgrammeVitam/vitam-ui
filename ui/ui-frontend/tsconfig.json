@@ -40,7 +40,6 @@
       ]
     },
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true
+    "noUnusedParameters": true
   }
 }

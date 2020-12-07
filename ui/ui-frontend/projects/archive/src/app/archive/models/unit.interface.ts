@@ -4,7 +4,9 @@ export interface Unit {
   '#allunitups': string[];
   '#unitType': string;
   '#object'?: string;
-
+  '#opi': string;
+  '#version'?: string;
+  originating_agencyName?: string;
   Title?: string;
   Title_?: any;
   Description?: string;

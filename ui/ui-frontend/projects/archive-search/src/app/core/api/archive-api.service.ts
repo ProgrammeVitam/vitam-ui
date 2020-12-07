@@ -43,6 +43,7 @@ import {  SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -80,6 +81,14 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   // Its a temporary api => to be removed when access contracts bill be delivered
   getAllAccessContracts(params: HttpParams, headers?: HttpHeaders): Observable<any[]> {
     return this.http.get<any>(`${this.apiUrl}/accesscontracts`, { params, headers });
+  }
+
+  downloadObjectFromUnit(id : string, headers?: HttpHeaders) : Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`,{headers: headers, responseType: 'blob'});
+  }
+
+  findArchiveUnit(id: string, headers?: HttpHeaders) :Observable<any> {
+      return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' });
   }
 
 }

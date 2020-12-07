@@ -45,7 +45,9 @@ import { MatTooltipModule, MatDialogModule, MatMenuModule, MatSidenavModule, Mat
    MatSelectModule,
    MatProgressSpinnerModule,
    MatButtonModule,
-   MatTreeModule} from '@angular/material';
+   MatTreeModule,
+   MatIconModule,
+   MatTabsModule} from '@angular/material';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -58,7 +60,10 @@ import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 import { AccessContractComponent } from './access-contract/access-contract.component';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
-
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+ 
 @NgModule({
   imports: [
     MatTooltipModule,
@@ -83,15 +88,20 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
     MatSelectModule,
     MatProgressSpinnerModule,
     TableFilterModule,
-    VitamUILibraryModule
+    VitamUILibraryModule,
+    MatIconModule, 
+    MatTabsModule
   ],
-  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe] ,
+  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService] ,
   declarations: [
     ArchiveComponent,
     FilingHoldingNodeComponent,
     FilingHoldingSchemeComponent,
     ArchiveSearchComponent,
-    AccessContractComponent
+    AccessContractComponent,
+    ArchivePreviewComponent,
+    ArchiveSearchPopupComponent,
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
