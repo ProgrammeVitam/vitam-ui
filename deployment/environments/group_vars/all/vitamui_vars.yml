@@ -223,7 +223,7 @@ vitamui:
       vitamui_level: "INFO"
     reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
   security_internal:
-    host: "vitamui-security-internal.service.consul"
+    host: "vitamui-security-internal.service.{{ consul_domain }}"
     vitamui_component: "security-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-security-internal"
