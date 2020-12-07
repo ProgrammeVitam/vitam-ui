@@ -1,0 +1,44 @@
+# Archive Search internal calls VITAM
+- hosts: hosts_vitamui_archive_search_internal
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.archive_search_internal }}"
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_archive_search_internal }}"
+    password_truststore: "{{ truststores_server }}"
+    vitam_cert: "{{ vitam_certs.vitamui }}"
+    consul_tags: "archive-search-internal, api, internal"
+
+# Archive Search external calls archive internal
+- hosts: hosts_vitamui_archive_search_external
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.archive_search_external }}"
+    vitamui_certificate_type: "external"
+    password_keystore: "{{ keystores_server_archive_search_external }}"
+    password_truststore: "{{ truststores_client_external }}"
+    consul_tags: "archive-search-external, api, external"
+
+# UI archive search calls archive external
+
+- hosts: hosts_ui_archive_search
+  gather_facts: no
+  any_errors_fatal: true
+  roles:
+    - vitamui
+  vars:
+    app_default_root_path: "/vitamui"
+    vitamui_struct: "{{ vitamui.archive_search }}"
+    vitamui_certificate_type: "server"
+    password_keystore: "{{ keystores_server_ui_archive_search }}"
+    password_truststore: "{{ truststores_server }}"
+    consul_tags: "ui-archive-search, ui"
+

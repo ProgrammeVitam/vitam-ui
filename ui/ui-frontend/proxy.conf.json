@@ -23,7 +23,7 @@
     "pathRewrite": {},
     "logLevel": "debug"
   },
-  "/archive-api": {
+  "/archive-search-api": {
     "target": "https://dev.vitamui.com:9009/",
     "secure": false,
     "pathRewrite": {},
