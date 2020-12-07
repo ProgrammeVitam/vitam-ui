@@ -72,6 +72,9 @@ export class GroupAttributionComponent implements OnInit {
   selectedGroupName: string;
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
 
+  public stepIndex = 0;
+  public stepCount = 1;
+
   public profileGroupChange(event: Group): void {
     this.user.groupId = event.id;
     this.selectedGroupName = event.name;
@@ -88,6 +91,7 @@ export class GroupAttributionComponent implements OnInit {
   }
 
   public resetActiveGroups(): void {
+
     this.activeGroups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX];
     this.activeGroups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
     if (this.data[1]) {

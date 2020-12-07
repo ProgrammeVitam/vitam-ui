@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 import {CollapseDirectiveModule, SearchBarModule} from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
@@ -50,6 +51,7 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
         MatTooltipModule,
         CollapseDirectiveModule,
         SearchBarModule,
+        VitamUICommonModule,
     ],
   declarations: [
     GroupAttributionComponent,
