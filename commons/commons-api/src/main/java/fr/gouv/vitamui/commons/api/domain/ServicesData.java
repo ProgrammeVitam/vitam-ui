@@ -372,6 +372,13 @@ public class ServicesData {
     public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
 
+    
+    //------------------------------------ UNITS -----------------------------------------
+
+    public static final String SERVICE_UNITS = "UNITS";
+
+    public static final String ROLE_GET_UNITS = GET_ROLE_PREFIX + SERVICE_UNITS;
+    
     //@formatter:off
 
     /**
@@ -458,6 +465,7 @@ public class ServicesData {
             ROLE_GET_ALL_INGEST,
             ROLE_GET_INGEST,
             ROLE_CREATE_INGEST,
+
             ROLE_LOGBOOKS,
 
             ROLE_GET_ALL_ARCHIVE,
@@ -466,8 +474,10 @@ public class ServicesData {
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
-    );
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
+            
+            ROLE_GET_UNITS
+            );
 
     /**
      * List of all the roles in the VITAMUI application (including the admin roles present in the ADMIN_VITAMUI_ROLES list)
@@ -585,8 +595,9 @@ public class ServicesData {
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
 
+            ROLE_GET_UNITS
             );
     //@formatter:on
 
