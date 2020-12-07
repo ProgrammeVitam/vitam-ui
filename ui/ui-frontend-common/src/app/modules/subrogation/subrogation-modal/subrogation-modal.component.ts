@@ -54,14 +54,14 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class SubrogationModalComponent implements OnInit {
 
-  stepIndex = 0;
-  private stepCount = 2;
-  domains: string[];
-  user: { email: string, firstname: string, lastname: string };
-  form: FormGroup;
-  pending: boolean;
-  subrogation: Subrogation;
-  step: string;
+  public stepIndex = 0;
+  public stepCount = 2;
+  public domains: string[];
+  public user: { email: string, firstname: string, lastname: string };
+  public form: FormGroup;
+  public pending: boolean;
+
+  private subrogation: Subrogation;
 
   constructor(
     public dialogRef: MatDialogRef<SubrogationModalComponent>,

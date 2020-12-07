@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeLast, takeUntil } from 'rxjs/operators';
 import {
   AppRootComponent,
   Customer,
@@ -54,13 +54,14 @@ import { CustomerSelectService } from '../customer-select.service';
   templateUrl: './subrogate-user.component.html',
   styleUrls: ['./subrogate-user.component.scss']
 })
-export class SubrogateUserComponent extends AppRootComponent implements OnInit {
+export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
 
   public customer: Customer;
   public customers: MenuOption[];
   public search: string;
 
   private destroyer$ = new Subject();
+  private subrogableCustomers: Customer[];
 
   constructor(
     public dialog: MatDialog,
@@ -85,6 +86,9 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
        if (!currentCustomerId || currentCustomerId !== routeCustomerId) {
          this.customerSelectionService.setCustomerId(routeCustomerId);
+         this.updateCustomer(routeCustomerId);
+       } else {
+        this.updateCustomer(currentCustomerId);
        }
 
        this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$)).subscribe((customerId: string) => {
@@ -93,6 +97,11 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
          }
        });
      });
+  }
+
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
   }
 
   openUserSubrogationDialog() {
@@ -105,6 +114,18 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
   onSearchSubmit(search: string) {
     this.search = search;
+  }
+
+  private updateCustomer(customerId: string) {
+    if (this.subrogableCustomers) {
+      this.customer = this.subrogableCustomers.find(value => value.id === customerId);
+    } else {
+      this.customerSelectService.getAllSubrogableCustomers().pipe(takeLast(1))
+      .subscribe((customers: Customer[]) => {
+        this.subrogableCustomers = customers;
+        this.updateCustomer(customerId);
+      });
+    }
   }
 
 }

@@ -36,7 +36,7 @@
  */
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { MenuOption, Operators, SearchQuery } from 'ui-frontend-common';
+import { Customer, MenuOption, Operators, SearchQuery } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -67,6 +67,13 @@ export class CustomerSelectService {
           });
         })
       );
+  }
+
+  getAllSubrogableCustomers(): Observable<Customer[]> {
+    const criterionArray: any[] = [ { key: 'subrogeable', value: true, operator: Operators.equals }];
+    const query: SearchQuery = { criteria: criterionArray };
+    const httpParams = new HttpParams().set('criteria', JSON.stringify(query));
+    return this.customerApi.getAllByParams(httpParams);
   }
 
 }
