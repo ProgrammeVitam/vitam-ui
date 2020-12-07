@@ -1,6 +1,7 @@
 
 .vitamui-autocomplete-panel {
-    border-radius: 5px;
+    border-bottom-left-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
     background-color: $white;
     border: solid 1px var(--vitamui-grey-400);
 
@@ -43,7 +44,10 @@
 }
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
-    box-shadow: none !important;
+    box-shadow: none !important;  
+    width: 90%;
+    left: 5%;
+
 }
 
 
