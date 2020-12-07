@@ -51,17 +51,19 @@ export class ThemeService {
   // Default theme
   defaultMap: {[colordId in ThemeColorType]: string} = {
     [ThemeColorType.VITAMUI_PRIMARY]: '#604379',
-    [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
-    [ThemeColorType.VITAMUI_PRIMARY_LIGHT_20]: '',
-    [ThemeColorType.VITAMUI_PRIMARY_DARK]: '',
+    [ThemeColorType.VITAMUI_GREY]: '#9E9E9E',
     [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
-    [ThemeColorType.VITAMUI_SECONDARY_LIGHT]: '',
-    [ThemeColorType.VITAMUI_SECONDARY_LIGHT_8]: '',
-    [ThemeColorType.VITAMUI_SECONDARY_DARK_5]: '',
     [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
     [ThemeColorType.VITAMUI_BACKGROUND]: '#F5F5F5',
-    [ThemeColorType.VITAMUI_GREY]: '#9E9E9E'
+    /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
+    var(--vitamui-secondary-XXX) and var(--vitamui-grey-XXX) */
+    [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
+    [ThemeColorType.VITAMUI_PRIMARY_LIGHT_20]: '',
+    [ThemeColorType.VITAMUI_PRIMARY_DARK]: '',
+    [ThemeColorType.VITAMUI_SECONDARY_LIGHT]: '',
+    [ThemeColorType.VITAMUI_SECONDARY_LIGHT_8]: '',
+    [ThemeColorType.VITAMUI_SECONDARY_DARK_5]: '',
   };
 
   // Theme for current app configuration
@@ -168,6 +170,7 @@ export class ThemeService {
     colors[key + '-800'] = convertLighten(rgbValue, -24);
     colors[key + '-700'] = convertLighten(rgbValue, -16);
     colors[key + '-600'] = convertLighten(rgbValue, -8);
+    // The color declination 500 is the base version (we use var(--vitamui-primary) instead of var(--vitamui-primary-500))
     colors[key + '-400'] = convertLighten(rgbValue, 8);
     colors[key + '-300'] = convertLighten(rgbValue, 16);
     colors[key + '-200'] = convertLighten(rgbValue, 24);

@@ -20,4 +20,8 @@ export class SampleDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSubmit() {
+    this.dialogRef.close();
+  }
+
 }
