@@ -99,7 +99,7 @@ customer-init:
 
     - name: Profil pour le dépôt et suivi des versements
       description: Gestion des applications de dépôt et suivi des versements
-      app-name: INGEST_APP
+      app-name: INGEST_MANAGEMENT_APP
       level:
       roles:
         - ROLE_GET_INGEST

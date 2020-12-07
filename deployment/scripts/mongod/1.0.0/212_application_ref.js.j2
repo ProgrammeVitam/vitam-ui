@@ -21,4 +21,55 @@ db.applications.insert({
     "tooltip": "Consultation des versements ou création d'un nouveau versement",
     "target": "_self"
 });
+
+db.profiles.insert({
+  "_id": "system_ingest_profile",
+  "identifier" : NumberInt(22),
+  "name": "Ingest Profile",
+  "description": "Ingest Profile",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "INGEST_MANAGEMENT_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_INGEST"
+  },
+  {
+    "name": "ROLE_GET_INGEST"
+  },
+  {
+    "name": "ROLE_GET_ALL_INGEST"
+  }
+   ]
+});
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_ingest_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ingest_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "super_admin_group",
+		"profileIds": { $nin: ["system_ingest_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_ingest_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
 print("END 212_application_ref.js");
