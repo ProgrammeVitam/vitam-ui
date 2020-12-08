@@ -44,6 +44,7 @@ import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -109,7 +110,7 @@ public class IngestInternalController {
         return ingestInternalService.upload(path, contextId, action);
     }
 
-    @GetMapping("/manifest" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_MANIFEST + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportManifest(
             final @PathVariable("id") String id /*,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
@@ -125,7 +126,7 @@ public class IngestInternalController {
         return null;
     }
 
-    @GetMapping("/atr" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_ATR + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportATR(
             final @PathVariable("id") String id /*,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
@@ -141,7 +142,7 @@ public class IngestInternalController {
         return null;
     }
 
-    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)
         throws IOException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -151,8 +152,9 @@ public class IngestInternalController {
        byte[] response =  this.ingestInternalService.generateDocX(vitamContext, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-       catch(Exception e) {
-            throw new IOException(e.getMessage());
+       catch(IOException | JSONException e) {
+           LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            throw new IOException ("Unable to generate the ingest report " + e.getMessage());
       }
     }
 }
