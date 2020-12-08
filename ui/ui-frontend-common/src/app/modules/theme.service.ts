@@ -166,16 +166,29 @@ export class ThemeService {
     const map = {...this.defaultMap, ...this.applicationColorMap, ...customerColors};
     const rgbValue = hexToRgb(map[key]);
     // consider hs-L from color key as 500
-    colors[key + '-900'] = convertLighten(rgbValue, -32);
-    colors[key + '-800'] = convertLighten(rgbValue, -24);
-    colors[key + '-700'] = convertLighten(rgbValue, -16);
-    colors[key + '-600'] = convertLighten(rgbValue, -8);
-    // The color declination 500 is the base version (we use var(--vitamui-primary) instead of var(--vitamui-primary-500))
-    colors[key + '-400'] = convertLighten(rgbValue, 8);
-    colors[key + '-300'] = convertLighten(rgbValue, 16);
-    colors[key + '-200'] = convertLighten(rgbValue, 24);
-    colors[key + '-100'] = convertLighten(rgbValue, 32);
-    colors[key + '-50'] = convertLighten(rgbValue, 40);
+
+    if (key === ThemeColorType.VITAMUI_GREY) {
+      colors[key + '-900'] = '#212121';
+      colors[key + '-800'] = '#424242';
+      colors[key + '-700'] = '#616161';
+      colors[key + '-600'] = '#757575';
+      colors[key + '-400'] = '#BDBDBD';
+      colors[key + '-300'] = '#E0E0E0';
+      colors[key + '-200'] = '#EEEEEE';
+      colors[key + '-100'] = '#F5F5F5';
+      colors[key + '-50'] = '#FAFAFA';
+    } else {
+      colors[key + '-900'] = convertLighten(rgbValue, -32);
+      colors[key + '-800'] = convertLighten(rgbValue, -24);
+      colors[key + '-700'] = convertLighten(rgbValue, -16);
+      colors[key + '-600'] = convertLighten(rgbValue, -8);
+       // The color declination 500 is the base version (we use var(--vitamui-primary) instead of var(--vitamui-primary-500))
+      colors[key + '-400'] = convertLighten(rgbValue, 8);
+      colors[key + '-300'] = convertLighten(rgbValue, 16);
+      colors[key + '-200'] = convertLighten(rgbValue, 24);
+      colors[key + '-100'] = convertLighten(rgbValue, 32);
+      colors[key + '-50'] = convertLighten(rgbValue, 40);
+    }
 
     colors[key + '-900-font'] = this.calculateFontColor(colors[key + '-900']);
     colors[key + '-800-font'] = this.calculateFontColor(colors[key + '-800']);
