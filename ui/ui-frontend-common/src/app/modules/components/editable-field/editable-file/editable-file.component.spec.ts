@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -79,7 +79,7 @@ describe('EditableFileComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -125,7 +125,7 @@ describe('EditableFileComponent', () => {
       expect(elLabel.textContent).toContain('Test label');
     });
 
-    it('should display the value', async(() => {
+    it('should display the value', waitForAsync(() => {
       testhost.value = newFile([''], 'test-file.txt');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -214,7 +214,7 @@ describe('EditableFileComponent', () => {
 
   describe('Class', () => {
 
-    it('should set the control value', async(() => {
+    it('should set the control value', waitForAsync(() => {
       testhost.value = newFile([''], 'test-file.txt');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -260,7 +260,7 @@ describe('EditableFileComponent', () => {
       });
     });
 
-    it('should emit a new value', async(() => {
+    it('should emit a new value', waitForAsync(() => {
       const originFile = newFile([''], 'origin-file.txt');
       const newFileTmp = newFile([''], 'new-file.txt');
       testhost.value = originFile;
@@ -278,7 +278,7 @@ describe('EditableFileComponent', () => {
       });
     }));
 
-    it('should reverse the changes', async(() => {
+    it('should reverse the changes', waitForAsync(() => {
       const originFile = newFile([''], 'origin-file.txt');
       const newFileTmp = newFile([''], 'new-file.txt');
       testhost.value = originFile;

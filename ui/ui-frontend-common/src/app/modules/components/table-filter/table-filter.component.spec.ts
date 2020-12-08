@@ -36,7 +36,7 @@
  */
 // tslint:disable:no-magic-numbers
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
 import { By } from '@angular/platform-browser';
@@ -71,7 +71,7 @@ describe('TableFilterComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatPseudoCheckboxModule,

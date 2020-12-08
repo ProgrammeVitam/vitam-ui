@@ -37,7 +37,7 @@
 import { of } from 'rxjs';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { AuthService } from '../../auth.service';
@@ -48,7 +48,7 @@ describe('SubrogationBannerComponent', () => {
   let component: SubrogationBannerComponent;
   let fixture: ComponentFixture<SubrogationBannerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [MatDialogModule],
       declarations: [ SubrogationBannerComponent ],

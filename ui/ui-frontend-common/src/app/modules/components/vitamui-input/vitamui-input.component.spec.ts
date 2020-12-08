@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -60,7 +60,7 @@ let fixture: ComponentFixture<TesthostComponent>;
 
 describe('VitamUIInputComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, MatProgressSpinnerModule],
       declarations: [VitamUIInputComponent, TesthostComponent]
@@ -78,7 +78,7 @@ describe('VitamUIInputComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
-  it('should display the value', async(() => {
+  it('should display the value', waitForAsync(() => {
     testhost.value = 'value to display';
     fixture.detectChanges();
     fixture.whenStable().then(() => {

@@ -36,9 +36,9 @@
  */
 // tslint:disable:max-classes-per-file
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { ApplicationSelectContentStubComponent } from '../../../../../../testing/src/public_api';
 import { CommonMenuComponent } from './common-menu.component';
@@ -65,7 +65,7 @@ describe('CommonMenuComponent', () => {
   let component: CommonMenuComponent;
   let fixture: ComponentFixture<CommonMenuComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,

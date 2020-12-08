@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { ScrollTopComponent } from './scroll-top.component';
 
@@ -6,7 +6,7 @@ describe('ScrollTopComponent', () => {
   let component: ScrollTopComponent;
   let fixture: ComponentFixture<ScrollTopComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ScrollTopComponent],
       imports: [MatIconModule]

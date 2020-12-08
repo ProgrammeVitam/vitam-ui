@@ -36,7 +36,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ApplicationId } from '../../application-id.enum';
 import { BASE_URL } from '../../injection-tokens';
 import { Application } from '../../models/application';
@@ -56,7 +56,7 @@ describe('VitamUIMenuTileComponent', () => {
   let component: VitamUIMenuTileComponent;
   let fixture: ComponentFixture<VitamUIMenuTileComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = { getPortalUrl: () => 'https://dev.vitamui.com',
     getConfigStringValue: () => 'https://dev.vitamui.com/identity' };
     TestBed.configureTestingModule({

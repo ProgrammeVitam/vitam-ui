@@ -37,7 +37,7 @@
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 
-import { VITAMUI_TOOLTIP_MESSAGE, VitamUITooltipMessage } from '../../injection-tokens';
+import { VitamUITooltipMessage, VITAMUI_TOOLTIP_MESSAGE } from '../../injection-tokens';
 
 @Component({
   selector: 'vitamui-common-tooltip',

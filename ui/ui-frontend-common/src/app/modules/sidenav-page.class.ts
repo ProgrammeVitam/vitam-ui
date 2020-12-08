@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, OnDestroy, ViewChild, Directive } from '@angular/core';
+import { AfterViewInit, Directive, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
@@ -44,6 +44,7 @@ import { AppRootComponent } from './app-root-component.class';
 import { GlobalEventService } from './global-event.service';
 
 @Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
 
   openedItem: T;

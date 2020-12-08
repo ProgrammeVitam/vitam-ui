@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 import { CancelledSnackBarComponent } from './cancelled-snack-bar.component';
@@ -43,7 +43,7 @@ describe('CancelledSnackBarComponent', () => {
   let component: CancelledSnackBarComponent;
   let fixture: ComponentFixture<CancelledSnackBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CancelledSnackBarComponent ],
       providers: [
