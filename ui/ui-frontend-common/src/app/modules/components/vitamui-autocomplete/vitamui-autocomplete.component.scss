@@ -31,6 +31,10 @@ $animation-time: 150ms;
   &.disabled {
     > input {
       background: var(--vitamui-grey-300);
+
+      &:hover {
+        box-shadow: none !important;
+      }
     }
 
     > i {
