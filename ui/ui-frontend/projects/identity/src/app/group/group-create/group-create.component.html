@@ -2,9 +2,9 @@
 <div class="header">
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
-
     <cdk-step>
       <div class="content">
         <div class="text large bold" i18n="Profile Group Creation@@profileGroupCreateTitle">Création d'un groupe de profils</div>
@@ -26,36 +26,35 @@
             </vitamui-common-input>
           </div>
 
-        <div class="d-flex">
-          <div class="mr-4 p-2">
-            <div class="text normal light">Niveau</div>
-            <div class="text medium bold">{{authService.user.level}}</div>
-          </div>
+          <div class="d-flex">
+            <div class="mr-4 p-2">
+              <div class="text normal light">Niveau</div>
+              <div class="text medium bold">{{authService.user.level}}</div>
+            </div>
 
-          <div class="col-3 p-0">
-            <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-              <ng-container *ngIf="form.get('level')?.touched">
-                <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
-                  requis</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format
-                  incorrect (caractères alphanumériques
-                  séparés par le caractères .)
-                </vitamui-common-input-error>
-              </ng-container>
-            </vitamui-common-level-input>
+            <div class="col-3 p-0">
+              <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
+                <ng-container *ngIf="form.get('level')?.touched">
+                  <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
+                    requis</vitamui-common-input-error>
+                  <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format
+                    incorrect (caractères alphanumériques séparés par le caractères .)
+                  </vitamui-common-input-error>
+                </ng-container>
+              </vitamui-common-level-input>
+            </div>
+          </div>
+        
+          <div class="actions">
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()" i18n="Next@@profileGroupCreateNextButton">Suivant</button>
+            <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@profileGroupCreateCancelButton">Annuler</button>
           </div>
         </div>
-        
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()" i18n="Next@@profileGroupCreateNextButton">Suivant</button>
-          <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@profileGroupCreateCancelButton">Annuler</button>
-        </div>
-      </div>
-    </cdk-step>
+      </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Group Provisioning@@profileGroupCreateTitle2">Provisionnement du groupe “{{ form.get('name').value }}”</div>
+        <div class="text large bold" [ngClass]="{'mb-0': form.get('level').value}" i18n="Group Provisioning@@profileGroupCreateTitle2">Provisionnement du groupe “{{ form.get('name').value }}”</div>
         <div class="text medium bold mb-4" *ngIf="form.get('level').value" i18n="@@groupLevel">Niveau : {{ form.get('level').value }}</div>
         
         <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>

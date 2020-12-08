@@ -1,56 +1,50 @@
-<div class="mb-4 row">
-  <vitamui-common-vitamui-autocomplete class="col-8" [options]="applications" [formControl]="appSelect"
-    placeholder="Application" i18n-placeholder="Application@@profilesFormApplicationPlaceholder">
-  </vitamui-common-vitamui-autocomplete>
+<div class="d-flex align-items-center">
+  <div>
+    <div class="mb-3">
+      <vitamui-common-vitamui-autocomplete [options]="applications" [formControl]="appSelect"
+        placeholder="Application" i18n-placeholder="Application@@profilesFormApplicationPlaceholder">
+      </vitamui-common-vitamui-autocomplete>
+    </div>
+    <div class="mb-3" *ngIf="!tenantIdentifier" >
+      <vitamui-common-vitamui-autocomplete [options]="filteredTenants" [formControl]="tenantSelect"
+        #tenantInput placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder">
+      </vitamui-common-vitamui-autocomplete>
+    </div>
+    <div class="mb-3">
+      <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect"
+        placeholder="Profil" i18n-placeholder="Profile@@profilesFormProfilePlaceholder" #profileInput>
+      </vitamui-common-vitamui-autocomplete>
+    </div>
+  </div>
 
+  <div>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!canAddProfile" i18n="Add@@profilesFormAddButton" #addButton>Ajouter</button>
+      <button type="button" class="btn link" (click)="resetTree()">
+        <i class="material-icons">replay</i>
+      </button>
+    </div>
+  </div>
 </div>
 
-<div class="mb-4 row" *ngIf="!tenantIdentifier">
-  <vitamui-common-vitamui-autocomplete class="col-8" [options]="filteredTenants" [formControl]="tenantSelect"
-    #tenantInput placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder">
-  </vitamui-common-vitamui-autocomplete>
-  <button type="button" class="btn primary ml-5" (click)="add()" [disabled]="!canAddProfile"
-    i18n="Add@@profilesFormAddButton" #addButton>Ajouter</button>
-
-</div>
-
-<div class="mb-4 row">
-  <vitamui-common-vitamui-autocomplete class="col-8" [options]="filteredProfiles" [formControl]="profileSelect"
-    placeholder="Profil" i18n-placeholder="Profile@@profilesFormProfilePlaceholder" #profileInput>
-  </vitamui-common-vitamui-autocomplete>
-  <button type="button" class="btn-link ml-5 col-2" (click)="resetTree()">
-    <i class="material-icons">replay</i>
-  </button>
-</div>
-
-<div class="vitamui-table">
+<div class="vitamui-table mt-2">
   <div class="vitamui-table-head">
     <div class="col-3" i18n="Application@@profilesFormColumnHeaderApplication">Application</div>
-    <div class="col-3" *ngIf="!tenantIdentifier" i18n="Tenant@@profilesFormColumnHeaderTenant"><span>Coffre</span>
-    </div>
-    <div class="col-3" i18n="Profile@@profilesFormColumnHeaderProfile"><span>Profil</span>
-    </div>
+    <div *ngIf="!tenantIdentifier" class="col-3" i18n="Tenant@@profilesFormColumnHeaderTenant">Coffre</div>
+    <div class="col-5" i18n="Profile@@profilesFormColumnHeaderProfile">Profil</div>
   </div>
   <div class="vitamui-table-body">
     <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index=index">
       <div class="vitamui-row d-flex align-items-center">
-        <div class="col-3
-        ">{{ getApplicationFromId(id)?.name }}</div>
-        <div class="col-3
-        " *ngIf="!tenantIdentifier">{{ getProfileFromId(id)?.tenantName }}</div>
-        <div class="col-3
-        ">{{ getProfileFromId(id)?.name }}</div>
-        <div class="col-3
-        ">
-          <div class="hide">
-            <button class="btn-link" (click)="remove(index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
+        <div class="col-3">{{ getApplicationFromId(id)?.name }}</div>
+        <div *ngIf="!tenantIdentifier" class="col-3">{{ getProfileFromId(id)?.tenantName }}</div>
+        <div class="col-5">{{ getProfileFromId(id)?.name }}</div>
+        <div class="d-flex justify-content-end" [ngClass]="{'col-1': !tenantIdentifier, 'col-4': tenantIdentifier}">
+          <button class="btn link" (click)="remove(index)">
+            <i class="material-icons">clear</i>
+          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="table-container">
 </div>

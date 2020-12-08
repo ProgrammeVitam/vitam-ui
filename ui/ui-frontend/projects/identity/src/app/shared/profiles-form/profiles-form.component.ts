@@ -181,7 +181,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     if (profileToDisplay) {
       return this.applicationsDetails.find((app) => app.identifier === profileToDisplay.applicationName);
     } else {
-      return 'Non défini';
+      return { name: 'Non défini'};
     }
   }
 
