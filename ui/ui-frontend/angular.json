@@ -266,7 +266,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/demo/src/sass/styles.scss"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           },
