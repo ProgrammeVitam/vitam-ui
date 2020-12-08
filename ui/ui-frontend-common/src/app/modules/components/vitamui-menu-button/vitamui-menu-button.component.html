@@ -1,4 +1,4 @@
-<button  #trigger="matMenuTrigger" [matMenuTriggerFor]="moreMenu" class="btn outline outline-primary"
+<button #trigger="matMenuTrigger" [matMenuTriggerFor]="moreMenu" class="btn outline outline-primary"
   [ngClass]="{'btn-circle large' : icon && !label}" [class.hidden]="trigger.menuOpen">
     <i *ngIf="icon" class="material-icons" [class.mr-3]="label">{{icon}}</i>
     {{label}}
