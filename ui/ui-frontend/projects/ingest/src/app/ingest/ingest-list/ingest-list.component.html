@@ -30,26 +30,36 @@
     </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let ingest of dataSource; let index = index">
-    <tr class="vitamui-table-row">
-      <td>
-        <i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon status-badge"
-           [ngClass]="{'status-badge-green': ingestStatus(ingest) == 'OK', 'status-badge-grey':ingestStatus(ingest) == 'STARTED',
-                        'status-badge-orange': ingestStatus(ingest) == 'WARNING', 'status-badge-red': ingestStatus(ingest) == 'KO' || ingestStatus(ingest) == 'FATAL' }"></i>
-      </td>
-      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.obIdIn }}</td>
-      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.name }}</td>
-      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }}</td>
-      <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy'  }}</td>
-      <td class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
-        <span *ngSwitchCase="'OK'" class="text-green">Succès</span>
-        <span *ngSwitchCase="'STARTED'" class="text-grey">En cours</span>
-        <span *ngSwitchCase="'WARNING'" class="text-orange">Avertissement</span>
-        <span *ngSwitchCase="'KO'" class="text-red">Erreur</span>
-        <span *ngSwitchCase="'FATAL'" class="text-red">Erreur Technique</span>
-      </td>
-    </tr>
-  </ng-container>
+    <ng-container *ngFor="let ingest of dataSource; let index = index">
+      <tr class="vitamui-table-row">
+        <td>
+          <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"
+           [ngClass]="{'status-badge-green': ingestStatus(ingest) == 'OK',
+                       'status-badge-grey':ingestStatus(ingest) == 'STARTED',
+                       'status-badge-orange': ingestStatus(ingest) == 'WARNING',
+                       'status-badge-red': ingestStatus(ingest) == 'KO',
+                       'status-badge-black': ingestStatus(ingest) == 'FATAL',
+                       'status-badge-grey': getOperationStatus(ingest) == 'En cours' }"></i>
+        </td>
+
+
+        <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.obIdIn }}</td>
+        <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.name }}</td>
+
+        <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }} <br />
+          <span [ngStyle]="{'font-weight': 'bold'}">{{ ingest?.dateTime | date: 'hh:mm:ss'  }} </span></td>
+        <td class="clickable" (click)="ingestClick.emit(ingest)">{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy'  }}
+          <br /> <span [ngStyle]="{'font-weight': 'bold'}">{{ ingestEndDate(ingest) | date: 'hh:mm:ss'  }}</span></td>
+
+        <td class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
+          <span *ngSwitchCase="'OK'" class="text-green"><span class="status">Terminé</span><br/>Succès</span>
+          <span *ngSwitchCase="'En cours'" class="text-greyy"><span class="status">En cours</span><br/>...</span>
+          <span *ngSwitchCase="'WARNING'" class="text-orange"><span class="status">Terminé</span><br />Avertissement</span>
+          <span *ngSwitchCase="'KO'" class="text-red"><span class="status">Terminé</span><br />Erreur</span>
+          <span *ngSwitchCase="'FATAL'" class="text-black"><span class="status">En pause</span><br />Erreur Technique</span>
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </table>
 

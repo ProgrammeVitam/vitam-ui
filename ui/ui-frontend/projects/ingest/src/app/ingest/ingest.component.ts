@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
+import { GlobalEventService, SidenavPage, SearchBarComponent, Direction } from 'ui-frontend-common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadComponent } from '../core/common/upload.component';
+import { UploadService } from '../core/common/upload.service';
+import { IngestList } from '../core/common/ingest-list';
 
 @Component({
   selector: 'app-ingest',
@@ -50,19 +52,20 @@ import { UploadComponent } from '../core/common/upload.component';
   styleUrls: ['./ingest.component.scss']
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
-
   search: string;
   tenantIdentifier: string;
-
+  guard = true;
   dateRangeFilterForm: FormGroup;
-
+  inProgress = false;
   filters: any = {};
+  ingestList: IngestList = new IngestList();
 
   @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
   @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
 
   constructor( private router: Router, private route: ActivatedRoute,
-               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
+               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder,
+               private uploadSipService: UploadService) {
     super(route, globalEventService);
 
     route.params.subscribe(params => {
@@ -79,10 +82,11 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     });
     this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
       if (value) {
-        value.setDate(value.getDate() + 1);
+        value.setDate(value.getDate());
       }
       this.filters.endDate = value;
       this.ingestListComponent.filters = this.filters;
+      this.ingestListComponent.direction = Direction.DESCENDANT;
     });
   }
 
@@ -105,7 +109,21 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     this.searchBar.reset();
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event: any) {
+    if (this.ingestList.wipNumber > 0) {
+      event.preventDefault();
+      console.log('ingest wip = ', this.ingestList.wipNumber);
+      event.returnValue = 'Unsaved changes';
+      console.log('before check');
+      return 'Vous avez des ingests en cours de téléchargement. Êtes-vous sûr de vouloir quitter la page ?';
+    }
+  }
+
   ngOnInit() {
+    this.uploadSipService.filesStatus().subscribe((ingestList) => {
+      this.ingestList = ingestList;
+    });
   }
 
   showIngest(item: Event) {
@@ -135,6 +153,7 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   }
 
   refresh() {
+    this.ingestListComponent.direction = Direction.DESCENDANT;
     this.ingestListComponent.emitOrderChange();
   }
 }

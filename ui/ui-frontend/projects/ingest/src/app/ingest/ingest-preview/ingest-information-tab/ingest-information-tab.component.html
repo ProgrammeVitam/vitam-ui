@@ -52,7 +52,8 @@
       <div *ngSwitchCase="'OK'" class="text-green">{{ ingestMessage(ingest) }}</div>
       <div *ngSwitchCase="'WARNING'" class="text-orange">{{ ingestMessage(ingest) }}</div>
       <div *ngSwitchCase="'KO'" class="text-red">{{ ingestMessage(ingest) }}</div>
-      <div *ngSwitchCase="'FATAL'" class="text-red">{{ ingestMessage(ingest) }}</div>
+      <div *ngSwitchCase="'FATAL'" class="text-black">{{ ingestMessage(ingest) }}</div>
+      <div *ngSwitchCase="'En cours'" class="text-grey status">{{ ingestMessage(ingest) }}</div>
     </div>
   </div>
   <div class="col-12 mb-3">
