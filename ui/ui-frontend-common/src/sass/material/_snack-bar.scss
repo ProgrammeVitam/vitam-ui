@@ -91,19 +91,20 @@
         display: flex;
         justify-content: flex-end;
     }
+
+    .btn {
+        &.link {
+            color: var(--vitamui-primary-font)!important;
+            text-decoration: underline;
+        }
+    
+        &.outline {
+            border: 1px solid var(--vitamui-primary-font)!important;
+            color: var(--vitamui-primary-font)!important;
+        }
+    }
 }
 
-.btn {
-    &.link {
-        color: var(--vitamui-primary-font)!important;
-        text-decoration: underline;
-    }
-
-    &.outline {
-        border: 1px solid var(--vitamui-primary-font)!important;
-        color: var(--vitamui-primary-font)!important;
-    }
-}
 
 .hidden-banner-div {
     border-radius: 3px 3px 0 0;
