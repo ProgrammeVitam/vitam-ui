@@ -103,6 +103,16 @@ cas:
     trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
 
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
 logging:
   level:
     fr.gouv.vitamui: DEBUG

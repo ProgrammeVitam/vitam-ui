@@ -277,6 +277,11 @@
             <artifactId>cas-server-support-saml-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
+
 
 
         <!-- OAuth support -->

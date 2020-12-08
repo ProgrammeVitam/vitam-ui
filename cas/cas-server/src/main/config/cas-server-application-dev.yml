@@ -158,6 +158,16 @@ theme:
   secondary: '#241f63'
   background: '#0F0D2D'
 
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
 debug: true
 logging:
   config: src/main/config/logback-dev.xml
