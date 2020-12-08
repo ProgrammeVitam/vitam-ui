@@ -30,7 +30,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
  */
-@import url("https://fonts.googleapis.com/css?family=Mulish");
+@import url("https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900");
 .mat-menu-panel.nav-menu {
   border-radius: 10px;
   margin-top: 4px; }

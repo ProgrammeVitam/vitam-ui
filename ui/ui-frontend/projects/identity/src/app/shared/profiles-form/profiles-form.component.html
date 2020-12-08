@@ -33,7 +33,10 @@
     <div *ngIf="!tenantIdentifier" class="col-3" i18n="Tenant@@profilesFormColumnHeaderTenant">Coffre</div>
     <div class="col-5" i18n="Profile@@profilesFormColumnHeaderProfile">Profil</div>
   </div>
-  <div class="vitamui-table-body">
+  <div *ngIf="loading" class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+  <div *ngIf="!loading" class="vitamui-table-body">
     <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index=index">
       <div class="vitamui-row d-flex align-items-center">
         <div class="col-3">{{ getApplicationFromId(id)?.name }}</div>
