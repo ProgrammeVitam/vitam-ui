@@ -113,12 +113,12 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     @Bean
     public IngestInternalService ingestInternalService(
             final InternalSecurityService internalSecurityService,
-            LogbookService logbookService,
-            ObjectMapper objectMapper,
-            IngestExternalClient ingestExternalClient,
-            IngestService ingestService,
-       final CustomerInternalRestClient customerInternalRestClient,
-        final IngestDocxGenerator ingestDocxGenerator) {
+            final LogbookService logbookService,
+            final ObjectMapper objectMapper,
+            final IngestExternalClient ingestExternalClient,
+            final IngestService ingestService,
+            final CustomerInternalRestClient customerInternalRestClient,
+            final IngestDocxGenerator ingestDocxGenerator) {
         return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService,
             customerInternalRestClient, ingestDocxGenerator);
     }

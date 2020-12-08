@@ -90,9 +90,9 @@ public class IngestInternalService {
 
     private final IngestService ingestService;
 
-    final private LogbookService logbookService;
+    private final LogbookService logbookService;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private final CustomerInternalRestClient customerInternalRestClient;
 
@@ -102,9 +102,9 @@ public class IngestInternalService {
     @Autowired
     public IngestInternalService(final InternalSecurityService internalSecurityService,
         final LogbookService logbookService, final ObjectMapper objectMapper,
-        IngestExternalClient ingestExternalClient, final IngestService ingestService,
+        final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        IngestDocxGenerator ingestDocxGenerator)
+        final IngestDocxGenerator ingestDocxGenerator)
     {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
@@ -228,12 +228,9 @@ public class IngestInternalService {
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
             Resource resource = new InputStreamResource((InputStream) entity);
-            manifest = manifest + ingestDocxGenerator.resourceAsString(resource);
-
-            return manifest;
-        }
-
-        return null;
+            manifest = ingestDocxGenerator.resourceAsString(resource);
+           }
+         return manifest;
     }
 
     public String getAtrAsString(VitamContext vitamContext, final String id) {
@@ -242,14 +239,12 @@ public class IngestInternalService {
         Object entity = response.getEntity();
         if (entity instanceof InputStream) {
             Resource resource = new InputStreamResource((InputStream) entity);
-            atr = atr + ingestDocxGenerator.resourceAsString(resource);
-
-            return atr;
+            atr = ingestDocxGenerator.resourceAsString(resource);
         }
-        return null;
+        return atr;
     }
 
-    public byte[] generateDocX(VitamContext vitamContext, final String id) throws IOException, JSONException {
+    public byte[] generateDocX(VitamContext vitamContext, final String id) throws JSONException, IOException {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -284,8 +279,10 @@ public class IngestInternalService {
               document.write(result);
              return result.toByteArray();
 
-     } catch (IOException e) {
-         throw new IOException("Unable to generate the ingest report ", e);
+     } catch (IOException | JSONException e) {
+         LOGGER.error("Error with generating Report : {} " , e.getMessage());
+        throw new IOException("Unable to generate the ingest report ", e);
+
      }
     }
 

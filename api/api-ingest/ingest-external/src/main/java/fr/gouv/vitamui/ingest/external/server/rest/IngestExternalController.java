@@ -124,19 +124,19 @@ public class IngestExternalController {
         return ingestExternalService.upload(in, action, contextId);
     }
 
-    @GetMapping("/manifest" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_MANIFEST + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> downloadManifest(final @PathVariable("id") String id) {
         LOGGER.debug("export manifest for ingest with id :{}", id);
         return ingestExternalService.downloadManifest(id);
     }
 
-    @GetMapping("/atr" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_ATR + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> downloadATR(final @PathVariable("id") String id) {
         LOGGER.debug("export atr for ingest with id :{}", id);
         return ingestExternalService.downloadATR(id);
     }
 
-    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocX(final @PathVariable("id") String id) {
         LOGGER.debug("export docx report for ingest with id :{}", id);
         return ingestExternalService.generateDocX(id);
