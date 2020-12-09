@@ -167,6 +167,9 @@ public class AuthUserDto extends UserDto implements UserDetails {
             final Object value = attributes.get(key);
             if (value != null) {
                 switch (key) {
+                    case READONLY_ATTRIBUTE:
+                        setReadonly(Boolean.parseBoolean((String) value));
+                        break;
                     case USER_ID_ATTRIBUTE :
                         setId((String) value);
                         break;
