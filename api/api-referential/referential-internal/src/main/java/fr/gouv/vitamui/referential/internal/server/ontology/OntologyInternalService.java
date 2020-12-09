@@ -63,7 +63,6 @@ import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
 
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -178,6 +177,7 @@ public class OntologyInternalService {
 
     public Boolean check(VitamContext vitamContext, OntologyDto ontologyDto) {
         try {
+            LOGGER.info("Ontology  Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             return !ontologyService.checkAbilityToCreateOntologyInVitam(converter.convertDtosToVitams(Arrays.asList(ontologyDto)), vitamContext);
         } catch (ConflictException e) {
             return true;

@@ -121,9 +121,8 @@ public class ArchiveInternalService {
     }
 
     public JsonNode searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
-        LOGGER.info("searchUnits EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
-        return response.toJsonNode();
-    }
 
+           RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
+           return response.toJsonNode();
+         }
 }

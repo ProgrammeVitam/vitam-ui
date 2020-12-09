@@ -176,6 +176,7 @@ public class AccessContractInternalService {
 
     public Boolean check(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
+            LOGGER.info("Access Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(converter.convertDtosToVitams(Arrays.asList(accessContractDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
         } catch (ConflictException e) {
@@ -311,8 +312,8 @@ public class AccessContractInternalService {
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
-        LOGGER.debug("findHistoryById " + id);
-        LOGGER.info("Find History Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+             LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,vitamContext.getApplicationSessionId());
+
         try {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {

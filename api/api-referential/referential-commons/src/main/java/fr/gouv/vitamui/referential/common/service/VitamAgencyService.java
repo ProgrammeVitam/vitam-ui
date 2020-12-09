@@ -125,7 +125,7 @@ public class VitamAgencyService {
         if (lastImportOperation.getHits().getTotal() == 0) {
             throw new VitamClientException("Can't get a result while selecting lase agency import");
         }
-
+        LOGGER.info("Export Agencies EvIdAppSession : {} " , context.getApplicationSessionId());
         return adminExternalClient.downloadAgenciesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
     
@@ -137,7 +137,7 @@ public class VitamAgencyService {
 
     public RequestResponse<?> patchAgency(final VitamContext vitamContext, final String id, AgencyModelDto patchAgency)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-
+        LOGGER.info("Patch Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
         final List<AgencyModelDto> actualAgencies = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
@@ -152,6 +152,8 @@ public class VitamAgencyService {
     public boolean deleteAgency(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
 
+        LOGGER.info("Delete Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
         final List<AgencyModelDto> actualAgencies = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
@@ -165,6 +167,8 @@ public class VitamAgencyService {
     public RequestResponse<?> create(final VitamContext vitamContext, AgencyModelDto newAgency)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
 
+        LOGGER.info("Create Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
         final List<AgencyModelDto> actualAgencies = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
@@ -176,12 +180,14 @@ public class VitamAgencyService {
 
     private RequestResponse importAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agenciesModel)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         LOGGER.debug("Reimport agencyies {}", agenciesModel);
         return importAgencies(vitamContext, agenciesModel, "Agencies.json");
     }
 
     private RequestResponse importAgencies(final VitamContext vitamContext, final List<AgencyModelDto> agencyModels, String fileName)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try (ByteArrayInputStream byteArrayInputStream = serializeAgencies(agencyModels)) {
             return importAgencies(vitamContext, byteArrayInputStream, fileName);
         }
@@ -189,6 +195,7 @@ public class VitamAgencyService {
 
     private RequestResponse<?> importAgencies(final VitamContext vitamContext, final InputStream agencies, String fileName)
             throws InvalidParseOperationException, AccessExternalClientException {
+        LOGGER.info("Import Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.createAgencies(vitamContext, agencies, fileName);
     }
 

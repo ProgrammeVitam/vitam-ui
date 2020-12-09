@@ -39,7 +39,6 @@ package fr.gouv.vitamui.commons.logbook.service;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.logbook.common.*;
 import org.apache.commons.lang3.StringUtils;
@@ -117,7 +116,6 @@ public class EventService {
     public Event logCreate(final InternalHttpContext context, final String accessContractLogbookIdentifier,
             final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
             final EventLogable evType, final String evDetData) {
-        LOGGER.info("EvIdAppSession : {} " , context.getApplicationId());
         LOGGER.debug("------------- context : {}", context);
         return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
                 tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK, evDetData,

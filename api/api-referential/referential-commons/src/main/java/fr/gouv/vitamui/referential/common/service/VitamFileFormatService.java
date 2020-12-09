@@ -99,12 +99,14 @@ public class VitamFileFormatService {
     }
 
     public RequestResponse<FileFormatModel> findFileFormats(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
+        LOGGER.info("File Formats EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final RequestResponse<FileFormatModel> response = adminExternalClient.findFormats(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
     public RequestResponse<FileFormatModel> findFileFormatById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
+        LOGGER.info("File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final RequestResponse<FileFormatModel> response = adminExternalClient.findFormatById(vitamContext, contractId);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -144,6 +146,8 @@ public class VitamFileFormatService {
     public RequestResponse<?> deleteFileFormat(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
+        LOGGER.info("Delete File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();
@@ -156,6 +160,7 @@ public class VitamFileFormatService {
     public RequestResponse<?> create(final VitamContext vitamContext, FileFormatModel newFileFormat)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
+        LOGGER.info("Create File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();

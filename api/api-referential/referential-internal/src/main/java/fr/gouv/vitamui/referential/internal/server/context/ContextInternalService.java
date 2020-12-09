@@ -186,6 +186,7 @@ public class ContextInternalService {
     public Boolean check(VitamContext vitamContext, ContextDto contextDto) {
         List<ContextDto> contextDtoList = new ArrayList<>();
         contextDtoList.add(contextDto);
+        LOGGER.info("Context Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             return !vitamContextService
                     .checkAbilityToCreateContextInVitam(

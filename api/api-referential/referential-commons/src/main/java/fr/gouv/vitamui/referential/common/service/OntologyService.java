@@ -81,12 +81,14 @@ public class OntologyService {
     }
 
     public RequestResponse<OntologyModel> findOntologyById(VitamContext vitamContext, String identifier) throws VitamClientException {
+        LOGGER.info("Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologyById(vitamContext,identifier);
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
 
     public RequestResponse<OntologyModel> findOntologies(VitamContext vitamContext, JsonNode jsonNode) throws VitamClientException {
+        LOGGER.info("All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<OntologyModel> jsonResponse = adminExternalClient.findOntologies(vitamContext,jsonNode);
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
@@ -94,6 +96,7 @@ public class OntologyService {
 
     public RequestResponse<?> importOntologies(VitamContext vitamContext, List<OntologyModel> ontologies) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeOntologies(ontologies)) {
+            LOGGER.info("Import All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             return adminExternalClient.importOntologies(true,vitamContext,byteArrayInputStream);
         }
     }

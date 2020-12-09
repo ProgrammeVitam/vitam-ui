@@ -93,16 +93,19 @@ public class VitamContextService {
 
     public RequestResponse<?> patchContext(final VitamContext vitamContext, final String id, JsonNode jsonNode)  throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
+        LOGGER.info("Patch Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.updateContext(vitamContext, id, jsonNode);
     }
 
     public RequestResponse<ContextModel> findContexts(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
+        LOGGER.info("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final RequestResponse<ContextModel> response = adminExternalClient.findContexts(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
     public RequestResponse<ContextModel> findContextById(final VitamContext vitamContext, final String contextId) throws VitamClientException {
+        LOGGER.info("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final RequestResponse<ContextModel> response = adminExternalClient.findContextById(vitamContext, contextId);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -110,6 +113,7 @@ public class VitamContextService {
 
     public RequestResponse<?> createContext(final VitamContext vitamContext, ContextDto newContexty)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
+        LOGGER.info("Create Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 
         final List<ContextDto> actualContexts = new ArrayList<>();
         newContexty.setIdentifier(newContexty.getName());

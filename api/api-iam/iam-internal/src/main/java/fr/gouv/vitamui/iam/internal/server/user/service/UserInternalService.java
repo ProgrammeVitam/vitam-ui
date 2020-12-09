@@ -250,9 +250,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     @Override
     public UserDto create(final UserDto userDto) {
 
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-
-        LOGGER.info("Create User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         UserDto createdUserDto = null;
 
         // start Transaction if needed
@@ -425,9 +422,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-
-            LOGGER.info("Patch User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
 
             // replacing the email with the lowercase version during update
@@ -524,9 +518,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     @Override
     protected void processPatch(final User user, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-
-        LOGGER.info("Patch User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
@@ -828,9 +819,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public AuthUserDto loadGroupAndProfiles(final UserDto userDto) {
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
 
-        LOGGER.info("Load Group And Profiles EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final AuthUserDto authUserDto = new AuthUserDto(userDto);
 
         final String groupId = userDto.getGroupId();
@@ -863,9 +852,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public void addTenantsByAppInformation(final AuthUserDto authUserDto) {
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
 
-        LOGGER.info("Add Tenant EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final Map<String, Set<TenantDto>> tenantsByApp = new HashMap<>();
         if (authUserDto.getProfileGroup().getProfiles() != null) {
             authUserDto.getProfileGroup().getProfiles().stream().filter(profile -> profile.getTenantName() != null).forEach(profile -> {

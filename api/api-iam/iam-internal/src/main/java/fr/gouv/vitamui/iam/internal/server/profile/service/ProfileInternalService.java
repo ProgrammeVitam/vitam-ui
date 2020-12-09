@@ -290,9 +290,6 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     @Override
     protected void processPatch(final Profile profile, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
-        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-
-        LOGGER.info(" Profile Patch EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
@@ -538,13 +535,13 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
-        LOGGER.debug("findHistoryById for id " + id);
+
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
                 .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
 
-        LOGGER.info(" Fin History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Find History Access Contract By ID {}, EvIdAppSession : {}", id,vitamContext.getApplicationSessionId());
         final Optional<Profile> profile = getRepository().findById(id);
         profile.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
         LOGGER.debug("findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}", profile.get().getIdentifier(), MongoDbCollections.PROFILES,

@@ -181,6 +181,7 @@ public class FileFormatInternalService {
     public Boolean check(VitamContext vitamContext, FileFormatDto accessContractDto) {
         List<FileFormatDto> fileFormatDtoList = new ArrayList<>();
         fileFormatDtoList.add(accessContractDto);
+        LOGGER.info("File Format Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             return !vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(converter.convertDtosToVitams(fileFormatDtoList), vitamContext);
         } catch (ConflictException e) {

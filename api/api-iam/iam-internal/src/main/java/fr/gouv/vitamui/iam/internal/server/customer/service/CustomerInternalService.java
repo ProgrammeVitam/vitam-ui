@@ -169,9 +169,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         CustomerDto createdCustomerDto = null;
 
         final CustomerDto dto = customerData.getCustomerDto();
-        final VitamContext vitamContext =
-            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-        LOGGER.info("Create Customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         LOGGER.debug("Create {} with {}", getObjectName(), dto);
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         Assert.isTrue(StringUtils.isNotBlank(customerData.getTenantName()), "Tenant name is mandatory");

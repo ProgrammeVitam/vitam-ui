@@ -170,6 +170,7 @@ public class IngestContractInternalService {
 
     public Boolean check(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
+            LOGGER.info("Ingest Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             Integer ingestContractCheckedTenant = ingestContractService.checkAbilityToCreateIngestContractInVitam(converter.convertDtosToVitams(Arrays.asList(ingestContractDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(ingestContractCheckedTenant);
         } catch (ConflictException e) {

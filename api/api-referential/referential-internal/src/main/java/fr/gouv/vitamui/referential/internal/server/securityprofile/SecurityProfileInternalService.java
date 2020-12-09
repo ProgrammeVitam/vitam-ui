@@ -172,6 +172,7 @@ public class SecurityProfileInternalService {
     public Boolean check(VitamContext vitamSecurityProfile, SecurityProfileDto securityProfileDto) {
         List<SecurityProfileDto> securityProfileDtoList = new ArrayList<>();
         securityProfileDtoList.add(securityProfileDto);
+        LOGGER.info("Security Profile Check EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         try {
             return !vitamSecurityProfileService
                     .checkAbilityToCreateSecurityProfileInVitam(

@@ -184,6 +184,7 @@ public class AgencyInternalService {
 
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
+            LOGGER.info("Check Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(converter.convertDtosToVitams(Arrays.asList(agencyDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);
         } catch (ConflictException e) {
@@ -232,8 +233,7 @@ public class AgencyInternalService {
     public boolean delete(VitamContext context, String id) {
         try {
             LOGGER.info("Delete Agency EvIdAppSession : {} " , context.getApplicationSessionId());
-            RequestResponse<?> requestResponse = vitamAgencyService.deleteAgency(context, id);
-            return requestResponse.isOk();
+            return vitamAgencyService.deleteAgency(context, id);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
             throw new InternalServerException("Unable to delete agency", e);
         }
