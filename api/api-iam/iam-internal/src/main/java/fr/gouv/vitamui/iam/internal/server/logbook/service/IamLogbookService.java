@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -116,6 +117,9 @@ public class IamLogbookService {
     */
     public void createCustomerEvent(final CustomerDto sourceEvent) {
         LOGGER.info("Create Customer {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.CUSTOMERS, EventType.EXT_VITAMUI_CREATE_CUSTOMER,
                 converters.getCustomerConverter().convertToLogbook(sourceEvent));
     }
@@ -142,6 +146,9 @@ public class IamLogbookService {
             default :
                 break;
         }
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         LOGGER.info(msg + "{}", sourceEvent.toString());
         create(getProofTenantIdentifierByCustomerId(sourceEvent.getSuperUserCustomerId()), sourceEvent.getId(), MongoDbCollections.SUBROGATIONS, eventType,
                 converters.getSubrogationConverter().convertToLogbook(sourceEvent));
@@ -157,8 +164,11 @@ public class IamLogbookService {
      */
     public void createProfileEvent(final ProfileDto sourceEvent) {
         LOGGER.info("Create Profile {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Profile Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
-                converters.getProfileConverter().convertToLogbook(sourceEvent));
+            converters.getProfileConverter().convertToLogbook(sourceEvent));
     }
 
     /**
@@ -167,6 +177,9 @@ public class IamLogbookService {
     */
     public void createIdpEvent(final IdentityProviderDto sourceEvent) {
         LOGGER.info("Create Provider {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create IDP Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
                 EventType.EXT_VITAMUI_CREATE_IDP, converters.getIdpConverter().convertToLogbook(sourceEvent));
     }
@@ -185,6 +198,9 @@ public class IamLogbookService {
     */
     public void createIdpEventInitCustomer(final IdentityProvider sourceEvent) {
         LOGGER.info("Create Provider {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Provider EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_CREATE_IDP,
                 converters.getIdpConverter().convertToLogbook(converters.getIdpConverter().convertEntityToDto(sourceEvent)));
     }
@@ -194,6 +210,9 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createProfileEvent(final Profile sourceEvent) {
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Profile Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         createProfileEvent(converters.getProfileConverter().convertEntityToDto(sourceEvent));
     }
 
@@ -203,6 +222,9 @@ public class IamLogbookService {
      */
     public void createUserEvent(final UserDto sourceEvent) {
         LOGGER.info("Create User {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create User Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_CREATE_USER,
                 converters.getUserConverter().convertToLogbook(sourceEvent));
     }
@@ -213,12 +235,18 @@ public class IamLogbookService {
     */
     public void createOwnerEvent(final OwnerDto sourceEvent) {
         LOGGER.info("Create Owner {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Customer Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS,
                 EventType.EXT_VITAMUI_CREATE_OWNER, converters.getOwnerConverter().convertToLogbook(sourceEvent));
     }
 
     public void createOwnerEventInitCustomer(final OwnerDto sourceEvent) {
         LOGGER.info("Create Owner {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Owner Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_CREATE_OWNER,
                 converters.getOwnerConverter().convertToLogbook(sourceEvent));
     }
@@ -229,11 +257,17 @@ public class IamLogbookService {
     */
     public void createGroupEvent(final GroupDto sourceEvent) {
         LOGGER.info("Create Group {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Group Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.GROUPS, EventType.EXT_VITAMUI_CREATE_GROUP,
                 converters.getGroupConverter().convertToLogbook(sourceEvent));
     }
 
     public void createGroupEvent(final Group group) {
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Group EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         createGroupEvent(converters.getGroupConverter().convertEntityToDto(group));
 
     }
@@ -244,12 +278,18 @@ public class IamLogbookService {
     */
     public void createTenantEvent(final TenantDto sourceEvent) {
         LOGGER.info("Create Tenant {}", sourceEvent.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Tenant Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_CREATE_TENANT, converters.getTenantConverter().convertToLogbook(sourceEvent));
     }
 
     public void createTenantEventInitCustomer(final Tenant sourceEvent) {
         LOGGER.info("Create Tenant {}", sourceEvent.toString());
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Tenant EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS, EventType.EXT_VITAMUI_CREATE_TENANT,
                 converters.getTenantConverter().convertToLogbook(converters.getTenantConverter().convertEntityToDto(sourceEvent)));
     }
@@ -265,6 +305,9 @@ public class IamLogbookService {
      */
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Profile {}", profile.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Profile EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
     }
 
@@ -275,6 +318,9 @@ public class IamLogbookService {
      */
     public void updateGroupEvent(final Group group, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Group {}", group.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Group EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), group.getIdentifier(), MongoDbCollections.GROUPS, EventType.EXT_VITAMUI_UPDATE_GROUP, logbooks);
     }
 
@@ -285,6 +331,9 @@ public class IamLogbookService {
      */
     public void updateUserEvent(final User user, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update User {}", user.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update User Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_UPDATE_USER, logbooks);
     }
 
@@ -295,6 +344,9 @@ public class IamLogbookService {
      */
     public void updateTenantEvent(final Tenant tenant, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update tenant {}", tenant.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Tenant Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), String.valueOf(tenant.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_UPDATE_TENANT, logbooks);
     }
@@ -306,6 +358,9 @@ public class IamLogbookService {
      */
     public void updateOwnerEvent(final Owner owner, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Owner {}", owner.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Owner Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), owner.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_UPDATE_OWNER,
                 logbooks);
     }
@@ -317,6 +372,9 @@ public class IamLogbookService {
      */
     public void updateIdpEvent(final IdentityProvider idp, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Provider {}", idp.toString());
+        final VitamContext vitamContext = internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Provider Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), idp.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_UPDATE_IDP,
                 logbooks);
     }
@@ -328,6 +386,9 @@ public class IamLogbookService {
     */
     public void updateCustomerEvent(final Customer customer, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Customer {}", customer.toString());
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Customer Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         update(getCurrentProofTenantIdentifier(), customer.getIdentifier(), MongoDbCollections.CUSTOMERS, EventType.EXT_VITAMUI_UPDATE_CUSTOMER, logbooks);
     }
 
@@ -338,6 +399,9 @@ public class IamLogbookService {
      */
     public void createPasswordEvent(final User user) {
         LOGGER.info("create password for user: {}", user.toString());
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Create Password for User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getProofTenantIdentifierByCustomerId(user.getCustomerId()), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_PASSWORD_INIT,
                 "");
     }
@@ -349,6 +413,9 @@ public class IamLogbookService {
      */
     public void updatePasswordEvent(final User user) {
         LOGGER.info("update password for user: {}", user.toString());
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Password Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         create(getProofTenantIdentifierByCustomerId(user.getCustomerId()), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_PASSWORD_CHANGE,
                 "");
     }
@@ -360,6 +427,9 @@ public class IamLogbookService {
      * @param superUser the super user
      */
     public void revokePasswordEvent(final User user, final String superUser) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Revoke Password Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         LOGGER.info("revoke password for user: {} / superUser: {}", user, superUser);
         final Map<String, String> logbookData = new HashMap<>();
         if (superUser != null) {
@@ -382,6 +452,9 @@ public class IamLogbookService {
      * @param duration of user's blocked
      */
     public void blockUserEvent(final User user, final UserStatusEnum oldStatus, final Duration duration) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Block User Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         LOGGER.info("block user: {} / oldStatus: {}", user.toString(), oldStatus);
         final List<EventDiffDto> updates = Arrays.asList(new EventDiffDto("Statut", oldStatus.toString(), user.getStatus().toString()));
         final ObjectNode evDetData = LogbookUtils.getEvData(updates);
@@ -399,6 +472,9 @@ public class IamLogbookService {
      * @param errorMessage the error message
      */
     public void loginEvent(final User user, final String surrogateIdentifier, final String ip, final String errorMessage) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Login Event EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         LOGGER.info("Login statut: {} / user: {} - {} / surrogate: {} / IP: {} / errorMessage: {}", errorMessage != null ? StatusCode.KO : StatusCode.OK,
                 user.getIdentifier(), user.getEmail(), surrogateIdentifier, ip, errorMessage);
     }
