@@ -15,6 +15,7 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
@@ -54,6 +55,9 @@ import lombok.val;
 @TestPropertySource(locations = "classpath:/application-test.properties")
 public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
+    private static final String PROVIDER = "google";
+    private static final String MAIL = "mail";
+
     private static final String USERNAME = "jleleu@test.com";
     private static final String ADMIN = "admin@test.com";
 
@@ -72,6 +76,10 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     private SessionStore sessionStore;
 
+    private IdentityProviderHelper identityProviderHelper;
+
+    private ProvidersService providersService;
+
     @Before
     public void setUp() {
         super.setUp();
@@ -80,8 +88,10 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val utils = new Utils(null, 0, null, null);
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
+        identityProviderHelper = mock(IdentityProviderHelper.class);
+        providersService = mock(ProvidersService.class);
         resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore,
-            mock(IdentityProviderHelper.class), mock(ProvidersService.class));
+            identityProviderHelper, providersService);
     }
 
     @Test
@@ -104,6 +114,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
             eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.empty());
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(new IdentityProviderDto()));
 
         val principal = resolver.resolve(new ClientCredential(),
             Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
@@ -113,6 +126,50 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
         assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveAuthnDelegationMailAttribute() {
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
+            eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.empty());
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        val provider = new IdentityProviderDto();
+        provider.setMailAttribute(MAIL);
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(provider));
+
+        val princAttributes = new HashMap<String, List<Object>>();
+        princAttributes.put(MAIL, Collections.singletonList(USERNAME));
+
+        val principal = resolver.resolve(new ClientCredential(),
+            Optional.of(principalFactory.createPrincipal("fake", princAttributes)), Optional.empty());
+
+        assertEquals(USERNAME_ID, principal.getId());
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
+        assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
+        assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveAuthnDelegationMailAttributeNoValue() {
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
+            eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.empty());
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        val provider = new IdentityProviderDto();
+        provider.setMailAttribute(MAIL);
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(provider));
+
+        val princAttributes = new HashMap<String, List<Object>>();
+        princAttributes.put(MAIL, Collections.emptyList());
+
+        val principal = resolver.resolve(new ClientCredential(),
+            Optional.of(principalFactory.createPrincipal("fake", princAttributes)), Optional.empty());
+
+        assertEquals("nobody", principal.getId());
     }
 
     @Test
@@ -143,6 +200,9 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(ADMIN),
             eq(Optional.empty()))).thenReturn(adminProfile());
         when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.of(USERNAME));
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(new IdentityProviderDto()));
 
         val  principal = resolver.resolve(new ClientCredential(), Optional.of(principalFactory.createPrincipal(ADMIN)), Optional.empty());
 
@@ -151,6 +211,51 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
         assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertEquals(ADMIN, attributes.get(SUPER_USER_ATTRIBUTE).get(0));
+    }
+
+    @Test
+    public void testResolveAuthnDelegationSurrogateMailAttribute() {
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
+            eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER))))
+            .thenReturn(userProfile(UserStatusEnum.ENABLED));
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(ADMIN),
+            eq(Optional.empty()))).thenReturn(adminProfile());
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.of(USERNAME));
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        val provider = new IdentityProviderDto();
+        provider.setMailAttribute(MAIL);
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(provider));
+
+        val princAttributes = new HashMap<String, List<Object>>();
+        princAttributes.put(MAIL, Collections.singletonList(ADMIN));
+
+        val  principal = resolver.resolve(new ClientCredential(), Optional.of(principalFactory.createPrincipal("fake", princAttributes)), Optional.empty());
+
+        assertEquals(USERNAME_ID, principal.getId());
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
+        assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
+        assertEquals(ADMIN, attributes.get(SUPER_USER_ATTRIBUTE).get(0));
+    }
+
+    @Test
+    public void testResolveAuthnDelegationSurrogateMailAttributeNoMail() {
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME),
+            eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER))))
+            .thenReturn(userProfile(UserStatusEnum.ENABLED));
+        when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(ADMIN),
+            eq(Optional.empty()))).thenReturn(adminProfile());
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.SURROGATE))).thenReturn(Optional.of(USERNAME));
+        when(sessionStore.get(any(JEEContext.class), eq(Constants.PROVIDER_TECHNICAL_NAME))).thenReturn(Optional.of(PROVIDER));
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        val provider = new IdentityProviderDto();
+        provider.setMailAttribute(MAIL);
+        when(identityProviderHelper.findByTechnicalName(any(List.class), eq(PROVIDER))).thenReturn(Optional.of(provider));
+
+        val  principal = resolver.resolve(new ClientCredential(), Optional.of(principalFactory.createPrincipal("fake")), Optional.empty());
+
+        assertEquals("nobody", principal.getId());
     }
 
     @Test

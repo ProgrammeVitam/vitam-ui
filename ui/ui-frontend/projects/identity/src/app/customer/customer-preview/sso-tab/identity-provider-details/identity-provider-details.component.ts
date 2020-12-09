@@ -112,7 +112,8 @@ export class IdentityProviderDetailsComponent implements OnInit {
       enabled: [true, Validators.required],
       name: [null, Validators.required],
       internal: [{ value: false, disabled: true }, Validators.required],
-      patterns: [null, Validators.required]
+      patterns: [null, Validators.required],
+      mailAttribute: [null]
     });
     this.idpMetadata = new FormControl({value: newFile([''], 'metadata.xml'), disabled: true});
 

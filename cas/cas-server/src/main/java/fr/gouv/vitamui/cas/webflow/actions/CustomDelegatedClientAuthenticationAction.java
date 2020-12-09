@@ -40,7 +40,6 @@ import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -68,7 +67,6 @@ import org.pac4j.core.context.session.SessionStore;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -170,7 +168,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
             // get the idp if it exists
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(context);
-            val idp = getIdpValue(request);
+            val idp = utils.getIdpValue(request);
             LOGGER.debug("Provided idp: {}", idp);
             if (StringUtils.isNotBlank(idp)) {
 
@@ -202,17 +200,5 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
         }
 
         return event;
-    }
-
-    private String getIdpValue(final HttpServletRequest request) {
-        String idp = request.getParameter(CommonConstants.IDP_PARAMETER);
-        if (StringUtils.isNotBlank(idp)) {
-            return idp;
-        }
-        val cookie = org.springframework.web.util.WebUtils.getCookie(request, CommonConstants.IDP_PARAMETER);
-        if (cookie != null) {
-            return cookie.getValue();
-        }
-        return null;
     }
 }

@@ -118,7 +118,8 @@ describe('IdentityProviderCreateComponent', () => {
         internal: true,
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
-        enabled: true
+        enabled: true,
+        mailAttribute: ''
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -154,7 +155,8 @@ describe('IdentityProviderCreateComponent', () => {
         internal: true,
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
-        enabled: true
+        enabled: true,
+        mailAttribute: ''
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -201,7 +203,8 @@ describe('IdentityProviderCreateComponent', () => {
         internal: true,
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
-        enabled: true
+        enabled: true,
+        mailAttribute: ''
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
