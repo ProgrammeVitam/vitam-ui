@@ -36,7 +36,7 @@
  */
 /* tslint:disable: no-use-before-declare */
 
-import { CollapseDirective, Group, User } from 'ui-frontend-common';
+import { Group, User } from 'ui-frontend-common';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
@@ -61,6 +61,12 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
       state('collapsed', style({ height: '0px', visibility: 'hidden' })),
       state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
+    ]),
+    trigger('expansionAnimation', [
+      state('true', style({ height: '*', visibility: 'visible' })),
+      state('void', style({ height: '0px', visibility: 'hidden' })),
+      transition(':enter', animate('150ms')),
+      transition(':leave', animate('150ms')),
     ]),
   ]
 })
@@ -109,15 +115,13 @@ export class GroupAttributionComponent implements OnInit {
     this.unselectAllProfileGroups();
   }
 
-  public updateGroup(groupId: string, groupName: string, groupLevel: string, collapseDirective: CollapseDirective): void {
+  public updateGroup(groupId: string, groupName: string): void {
     this.selectedGroupName = groupName;
     this.user.groupId = groupId;
-    this.user.level = groupLevel;
     this.unselectAllProfileGroups();
     const selectedGroup = this.activeGroups.find((group) => group.id === groupId);
     if (selectedGroup) {
       selectedGroup.selected = true;
-      collapseDirective.collapse();
     }
   }
 
