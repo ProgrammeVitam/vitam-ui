@@ -188,6 +188,11 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         final String id = CastUtils.toString(partialDto.get("id"));
         final String message = "Unable to update group " + id;
 
+        final VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Patch group EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
         final Group group = find(id, customerId, message);
 
@@ -230,6 +235,11 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     @Override
     protected void processPatch(final Group group, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Patch Group EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
@@ -408,6 +418,11 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
      * @param profileIds
      */
     public void updateProfilesById(final String id, final List<String> profileIds) {
+
+        final VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Update Profiles EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 
         final Query query = new Query(Criteria.where("id").is(id));
         final Update update = Update.update("profileIds", profileIds);
