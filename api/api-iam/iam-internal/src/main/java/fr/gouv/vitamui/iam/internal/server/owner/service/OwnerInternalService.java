@@ -195,6 +195,9 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     @Override
     protected void processPatch(final Owner owner, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Patch Owner EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
@@ -270,6 +273,10 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
 
         final Optional<Owner> owner = getRepository().findById(id);
         owner.orElseThrow(() -> new NotFoundException(String.format("No owner found with id : %s", id)));
+
+        LOGGER.info("findHistoryById for id {}, tenant {}", id, proofTenant.getIdentifier());
+
+        LOGGER.info("Find History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 
         return logbookService.findEventsByIdentifierAndCollectionNames(owner.get().getIdentifier(), MongoDbCollections.OWNERS, vitamContext).toJsonNode();
     }
