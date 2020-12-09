@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -100,7 +100,8 @@ export class ApplicationService {
    */
   list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
-    return this.applicationApi.getAllByParams(params).pipe(
+    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    return this.applicationApi.getAllByParams(params, headers).pipe(
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;

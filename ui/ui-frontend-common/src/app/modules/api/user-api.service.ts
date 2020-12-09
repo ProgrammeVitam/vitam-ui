@@ -38,6 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 import { BASE_URL } from '../injection-tokens';
 import { Analytics } from '../models/user/analytics.interface';
 import { User } from '../models/user/user.interface';
@@ -49,12 +50,13 @@ export class UserApiService {
 
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string, private authService: AuthService) {
     this.apiUrl = baseUrl + '/users';
   }
 
   public analytics(data: { applicationId?: string, lastTenantIdentifier?: number }): Observable<User> {
-    return this.http.post<User>(this.apiUrl + '/analytics', data);
+    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    return this.http.post<User>(this.apiUrl + '/analytics', data, { headers });
   }
 
 }
