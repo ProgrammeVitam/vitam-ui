@@ -3,7 +3,7 @@
     <div *ngFor="let category of appMap | keyvalue">
       <mat-tab label="{{'MENU.' + category.key.identifier | translate}}">
         <div class="row category">
-          <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let application of category.value">
+          <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 p-0" *ngFor="let application of category.value">
             <mat-card (click)="applicationClick.emit(application)">
               <div mat-card-image class="appIcon" *ngIf="application.identifier === 'ARCHIVE_APP' || application.identifier === 'MANUAL_INGEST_APP' else defaultImage">
                 <ng-container [ngTemplateOutlet]="icons" [ngTemplateOutletContext]="{application:application}"></ng-container>

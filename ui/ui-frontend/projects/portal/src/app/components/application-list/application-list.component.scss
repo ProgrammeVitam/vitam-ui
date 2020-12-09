@@ -24,12 +24,12 @@ mat-card-header {
 mat-card-title {
     color: $charcoal-grey;
     font-weight: 600;
+    font-size: 18px!important;
 }
 
 mat-card-subtitle {
     color: $warm-grey;
     font-size: 14px;
-    margin-top: 1rem!important;
 }
 
 :host::ng-deep {
@@ -63,8 +63,7 @@ mat-card-subtitle {
 
 .appIcon {
     overflow: hidden;
-    min-height: 200px;
-    max-height: 200px;
+    height: 200px;
     max-width: 280px;
     margin: 0 auto 17px auto;
 }
