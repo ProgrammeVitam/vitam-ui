@@ -17,7 +17,9 @@
         .mat-form-field-label {
             color: var(--vitamui-grey-600);
         }
+    }
 
+    &:not(.vitamui-mat-select-mini).mat-focused {
         .mat-form-field-flex {
             outline: none;
             border: solid 1px var(--vitamui-primary) !important;
@@ -128,7 +130,7 @@
             flex-direction: column;
             margin-top: -8px;
 
-            i{
+            i {
                 height: 10px;
                 font-size: 18px;
             }
@@ -170,7 +172,7 @@
         border: none;
 
         &:hover {
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            @include elevation-0;
         }
     }
 

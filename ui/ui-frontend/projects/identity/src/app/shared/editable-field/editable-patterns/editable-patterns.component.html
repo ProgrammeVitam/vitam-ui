@@ -6,8 +6,8 @@
           <span class="editable-field-text-content">
             <div *ngFor="let pattern of control.value">{{pattern}}</div>
           </span>
-          <div class="editable-field-control">
-            <app-pattern [style.width.%]="100" [vitamuiMiniMode]="true" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
+          <div class="mt-2 editable-field-control">
+            <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
           </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>

@@ -51,6 +51,7 @@ $anim-timing: 150ms ease-out;
 }
 
 .editable-field-content {
+    font-family: 'Mulish', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -59,6 +60,7 @@ $anim-timing: 150ms ease-out;
     max-width: 100%;
 
     .editable-field-label {
+        font-family: 'Mulish', sans-serif;
         position: absolute;
         font-size: 12px;
         color: var(--vitamui-grey-400);
@@ -85,6 +87,7 @@ $anim-timing: 150ms ease-out;
     }
 
     .editable-field-control > input {
+        font-family: 'Mulish', sans-serif;
         border: none!important;
         margin-top: 5px;
 
@@ -94,6 +97,7 @@ $anim-timing: 150ms ease-out;
     }
 
     .editable-field-control > textarea {
+        font-family: 'Mulish', sans-serif;
         border: none!important;
 
         &:focus {
