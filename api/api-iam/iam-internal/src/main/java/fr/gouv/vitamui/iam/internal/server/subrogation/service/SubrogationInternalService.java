@@ -42,6 +42,10 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.logbook.service.EventService;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +91,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SubrogationInternalService extends VitamUICrudService<SubrogationDto, Subrogation> {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalService.class);
 
     private SubrogationRepository subrogationRepository;
 
@@ -161,7 +167,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     @Override
     protected void beforeCreate(final SubrogationDto dto) {
         super.beforeCreate(dto);
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
 
+        LOGGER.info("Create Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         Assert.isTrue(dto.getStatus().equals(SubrogationStatusEnum.CREATED), "the subrogation must have the status CREATED at the creation");
         checkUsers(dto);
         // if status is now ACCEPTED, it's a generic user, set genericUsersSubrogationTtl min as lifetime
@@ -196,6 +204,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     private void checkUsers(final SubrogationDto dto) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Check Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
         final User surrogate = userRepository.findByEmail(emailSurrogate);
@@ -232,6 +243,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     protected void beforeDelete(final String id) {
         final Optional<Subrogation> subrogation = subrogationRepository.findById(id);
         if (subrogation.isPresent()) {
+            final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+            LOGGER.info("To Delete Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             final String emailSuperUser = subrogation.get().getSuperUser();
             final String emailCurrentUser = internalSecurityService.getUser().getEmail();
             Assert.isTrue(emailSuperUser.equals(emailCurrentUser), "Only super user can stop subrogation");
@@ -239,6 +253,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     public SubrogationDto accept(final String id) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Accept Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final Optional<Subrogation> optSubrogation = subrogationRepository.findById(id);
         final Subrogation subro = optSubrogation
                 .orElseThrow(() -> new IllegalArgumentException("Unable to accept subrogation: no subrogation found with id=" + id));
@@ -257,6 +274,9 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
 
     @Transactional
     public void decline(final String id) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Decline Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final Optional<Subrogation> optSubrogation = subrogationRepository.findById(id);
         final Subrogation subro = optSubrogation
                 .orElseThrow(() -> new IllegalArgumentException("Unable to decline subrogation: no subrogation found with id=" + id));

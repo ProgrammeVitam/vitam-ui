@@ -155,6 +155,9 @@ public class IamLogbookService {
     }
 
     public void subrogation(final Subrogation sourceEvent, final EventType eventType) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Subrogation EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         this.subrogation(converters.getSubrogationConverter().convertEntityToDto(sourceEvent), eventType);
     }
 
@@ -521,6 +524,9 @@ public class IamLogbookService {
     }
 
     public Tenant getProofTenantByCustomerId(final String customerId) {
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+
+        LOGGER.info("Tenant EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final Optional<Tenant> optTenant = tenantRepository.findOne(Query.query(Criteria.where("customerId").is(customerId).and("proof").is(true)));
 
         optTenant.orElseThrow(() -> new NotFoundException("No proof tenant found for customerId : " + customerId));
