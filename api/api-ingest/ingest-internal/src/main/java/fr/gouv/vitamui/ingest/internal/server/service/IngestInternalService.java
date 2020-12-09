@@ -230,6 +230,7 @@ public class IngestInternalService {
             Resource resource = new InputStreamResource((InputStream) entity);
             manifest = ingestDocxGenerator.resourceAsString(resource);
            }
+        LOGGER.error("EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
          return manifest;
     }
 
@@ -241,6 +242,7 @@ public class IngestInternalService {
             Resource resource = new InputStreamResource((InputStream) entity);
             atr = ingestDocxGenerator.resourceAsString(resource);
         }
+        LOGGER.error("EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return atr;
     }
 
@@ -275,6 +277,7 @@ public class IngestInternalService {
 
          ingestDocxGenerator.generateDynamicTable(document,list);
 
+         LOGGER.error("EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
          ByteArrayOutputStream result = new ByteArrayOutputStream();
               document.write(result);
              return result.toByteArray();
