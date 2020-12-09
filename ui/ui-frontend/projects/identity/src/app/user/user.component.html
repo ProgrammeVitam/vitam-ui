@@ -8,7 +8,7 @@
       Administrer mes utilisateurs
     </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner [searchbarPlaceholder]="'Nom,  Prénom, N° d \'identifiant, groupe'" i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
+    <vitamui-common-banner [searchbarPlaceholder]="'Nom, Prénom, Identifiant, Email'" i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
       <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
         <span>Créer un Utilisateur</span>
       </button>
