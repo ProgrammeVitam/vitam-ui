@@ -123,6 +123,7 @@ public class IngestInternalService {
 
         RequestResponse<Void> ingestResponse = null;
         try {
+            LOGGER.info("EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
             LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
 
