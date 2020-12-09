@@ -63,6 +63,7 @@ import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
 
+import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,8 @@ import java.util.stream.Collectors;
 @Service
 public class OntologyInternalService {
 	
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
 
     private OntologyService ontologyService;
@@ -102,6 +105,7 @@ public class OntologyInternalService {
 
     public OntologyDto getOne(VitamContext vitamContext, String identifier) {
         try {
+            LOGGER.info("Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse<OntologyModel> requestResponse = ontologyService.findOntologyById(vitamContext, identifier);
             final OntologyResponseDto accessContractResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
@@ -118,6 +122,7 @@ public class OntologyInternalService {
     public List<OntologyDto> getAll(VitamContext vitamContext) {
         final RequestResponse<OntologyModel> requestResponse;
         try {
+            LOGGER.info("All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = ontologyService
                 .findOntologies(vitamContext, new Select().getFinalSelect());
             final OntologyResponseDto ontologyResponseDto = objectMapper
@@ -135,6 +140,7 @@ public class OntologyInternalService {
 
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
+        LOGGER.info("All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
@@ -158,6 +164,7 @@ public class OntologyInternalService {
     private OntologyResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<OntologyModel> requestResponse;
         try {
+            LOGGER.info("All Ontologies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = ontologyService.findOntologies(vitamContext, query);
 
             final OntologyResponseDto ontologyResponseDto = objectMapper
@@ -182,6 +189,7 @@ public class OntologyInternalService {
         ontologyDto.setOrigin(OntologyOrigin.EXTERNAL);
         ontologies.add(ontologyDto);
         try {
+            LOGGER.info("Create Ontology EvIdAppSession : {} " , context.getApplicationSessionId());
             RequestResponse requestResponse = ontologyService.importOntologies(context, converter.convertDtosToVitams(ontologies));
             OntologyResponseDto ontologyResponseDto = objectMapper.treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
             List<OntologyDto> ontologyDtos = converter.convertVitamsToDtos(ontologyResponseDto.getResults());
@@ -194,6 +202,7 @@ public class OntologyInternalService {
     public void delete(VitamContext context, String identifier) {
         List<OntologyDto> ontologies = getAll(context);
         try {
+            LOGGER.info("Delete Ontology EvIdAppSession : {} " , context.getApplicationSessionId());
             ontologyService.importOntologies(context, converter.convertDtosToVitams(ontologies
                 .stream()
                 .filter(ontologyDto ->
@@ -207,6 +216,7 @@ public class OntologyInternalService {
 
     public OntologyDto patch(VitamContext vitamContext,final Map<String, Object> partialDto) {
         final OntologyDto ontologyDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
+        LOGGER.info("Patch Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         partialDto.forEach((key,value) ->
         {
             if ("type".equals(key)) {
@@ -231,7 +241,7 @@ public class OntologyInternalService {
 
     private RequestResponse<?> updateOntology(final VitamContext vitamContext, final String id, OntologyDto patchOntology)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
-
+        LOGGER.info("Update Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         final List<OntologyDto> ontologies = getAll(vitamContext);
 
         ontologies.stream()
@@ -261,6 +271,7 @@ public class OntologyInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
+            LOGGER.info("Ontology history EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
         	throw new InternalServerException("Unable to fetch history", e);
