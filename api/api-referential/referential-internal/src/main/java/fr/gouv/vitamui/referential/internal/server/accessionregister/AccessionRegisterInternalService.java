@@ -50,7 +50,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +74,7 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.info("List of Access Register EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("List of Access Register EvIdAppSession : {} " , context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSymbolic(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);

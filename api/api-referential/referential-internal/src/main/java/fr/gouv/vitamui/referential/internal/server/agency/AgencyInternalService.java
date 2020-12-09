@@ -231,7 +231,7 @@ public class AgencyInternalService {
 
     public boolean delete(VitamContext context, String id) {
         try {
-            LOGGER.info("Delete Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Delete Agency EvIdAppSession : {} " , context.getApplicationSessionId());
             RequestResponse<?> requestResponse = vitamAgencyService.deleteAgency(context, id);
             return requestResponse.isOk();
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
@@ -241,7 +241,7 @@ public class AgencyInternalService {
 
     public Response export(VitamContext context) {
         try {
-            LOGGER.info("Export Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Export Agency EvIdAppSession : {} " , context.getApplicationSessionId());
             return vitamAgencyService.export(context);
         } catch (InvalidParseOperationException | InvalidCreateOperationException | VitamClientException e) {
             throw new InternalServerException("Unable to export agencies", e);

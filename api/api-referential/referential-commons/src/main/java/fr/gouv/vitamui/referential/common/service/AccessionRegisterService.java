@@ -61,6 +61,7 @@ public class AccessionRegisterService {
 
     public RequestResponse<AccessionRegisterSummaryModel> findAccessionRegisterSymbolic(VitamContext context) throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
         LOGGER.debug("findAccessionRegisterSymbolic");
+
         return this.adminExternalClient.findAccessionRegister(context, new Select().getFinalSelect());
     }
 

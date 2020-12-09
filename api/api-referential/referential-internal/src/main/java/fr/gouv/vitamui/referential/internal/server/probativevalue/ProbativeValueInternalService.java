@@ -103,7 +103,7 @@ public class ProbativeValueInternalService {
 
 	/**
 	 * Export the report of a defined probative value.
-	 * 
+	 *
 	 * @param vitamContext           Context of execution
 	 * @param operationId            Probative Value operation identifier
 	 * @param workspaceOperationPath Workspace directory (it's the caller's
@@ -113,6 +113,7 @@ public class ProbativeValueInternalService {
 	 */
 	public void exportReport(final VitamContext vitamContext, final String operationId,
 			final String workspaceOperationPath, final OutputStream outputStream) {
+        LOGGER.info("Export Probative Values EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 		checkWorkspacePath(workspaceOperationPath);
 		getProbativeValueReportJson(vitamContext, operationId, workspaceOperationPath);
 		generatePDF(vitamContext, operationId, workspaceOperationPath);
