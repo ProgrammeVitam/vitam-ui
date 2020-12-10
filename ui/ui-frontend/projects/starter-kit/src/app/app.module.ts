@@ -60,6 +60,7 @@ import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.mo
 import { ProgressBarModule } from './components/progress-bar/progress-bar.module';
 import { TooltipModule } from './components/tooltip/tooltip.module';
 import { TypographyModule } from './components/typography/typography.module';
+import { ColorsModule } from './components/colors/colors.module';
 import { StarterKitModule } from './starter-kit/starter-kit.module';
 
 registerLocaleData(localeFr, 'fr');
@@ -93,6 +94,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     ProgressBarModule,
     TypographyModule,
     TooltipModule,
+    ColorsModule,
     MatCardModule,
     MatSidenavModule,
     MatListModule,

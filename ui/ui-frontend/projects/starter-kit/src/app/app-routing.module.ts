@@ -46,7 +46,9 @@ import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TypographyComponent } from './components/typography/typography.component';
+import { ColorsComponent } from './components/colors/colors.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
+
 
 const routes: Routes = [
   { path: '', component: StarterKitComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
@@ -59,6 +61,8 @@ const routes: Routes = [
   { path: 'tooltip', component: TooltipComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+
   { path: '**', redirectTo: '' },
 ];
 
