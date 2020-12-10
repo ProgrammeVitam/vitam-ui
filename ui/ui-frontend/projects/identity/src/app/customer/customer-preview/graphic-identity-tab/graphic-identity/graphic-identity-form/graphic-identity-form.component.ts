@@ -41,8 +41,11 @@ export class GraphicIdentityFormComponent implements OnInit {
   }
 
   private applyTheme(): void {
-    const colors = this.themeService.getThemeColors(this.graphicIdentityForm.get('themeColors').value);
-    this.themeService.overloadLocalTheme(colors, '#toOverride');
+    if(this.graphicIdentityForm.valid)
+    {
+      const colors = this.themeService.getThemeColors(this.graphicIdentityForm.get('themeColors').value);
+      this.themeService.overloadLocalTheme(colors, '#toOverride');
+    }
   }
 
   public addOrReplaceLogo(type: AttachmentType, data: File): void {
