@@ -45,7 +45,7 @@
     <div>
       <button type="button" class="btn link" (click)="selectedIdentityProvider=null">
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <ng-container i18n="Back button label@@idpBackButton">Retourner à la liste des IDP</ng-container>
+        <ng-container i18n="Back button label@@idpBackButton"><span class="underline">Retourner à la liste des IDP</span></ng-container>
       </button>
       <app-identity-provider-details [identityProvider]="selectedIdentityProvider" [domains]="domains"
         [readOnly]="readOnly || selectedIdentityProvider.readonly"></app-identity-provider-details>
