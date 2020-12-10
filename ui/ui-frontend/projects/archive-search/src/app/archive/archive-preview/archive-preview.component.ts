@@ -18,10 +18,10 @@ export class ArchivePreviewComponent  implements OnInit {
   accessContract : string;
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
-  @Input() 
+  @Input()
   isPopup: boolean;
 
-  
+
   tenantIdentifier: string;
   constructor(private archiveService : ArchiveService, private startupService : StartupService, private route: ActivatedRoute) {
     this.route.params.subscribe(params => {
@@ -34,12 +34,12 @@ export class ArchivePreviewComponent  implements OnInit {
   ngOnInit() {
 
     }
-  
+
 
   onDownloadArchive(archiveUnit : Unit){
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', this.accessContract);
-    
+
    return  this.archiveService.downloadArchiveUnit(archiveUnit['#id'], headers);
   }
 

@@ -63,7 +63,7 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
- 
+
 @NgModule({
   imports: [
     MatTooltipModule,
@@ -88,10 +88,10 @@ import { ArchiveSearchResolverService } from './archive-search-resolver.service'
     MatProgressSpinnerModule,
     TableFilterModule,
     VitamUILibraryModule,
-    MatIconModule, 
+    MatIconModule,
     MatTabsModule
   ],
-  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService] ,
+  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe] ,
   declarations: [
     ArchiveComponent,
     FilingHoldingNodeComponent,
@@ -100,7 +100,7 @@ import { ArchiveSearchResolverService } from './archive-search-resolver.service'
     AccessContractComponent,
     ArchivePreviewComponent,
     ArchiveSearchPopupComponent,
-    
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

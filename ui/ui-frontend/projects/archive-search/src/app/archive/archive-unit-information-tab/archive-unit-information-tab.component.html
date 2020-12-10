@@ -1,0 +1,49 @@
+
+<div class="vitamui-container">
+<div class="row">
+    Nom:
+</div>
+<div class="row">
+    {{archiveUnit.Title}}
+</div>
+<div class="row">
+    Identifiant technique du versement:
+</div>
+<div class="row">
+    {{archiveUnit.guid}}
+</div>
+<div class="row">
+        Identifiant technique de l'unité archivistique:
+</div>
+<div class="row">
+    {{archiveUnit['#id']}}
+</div>
+<div class="row">
+    Description:
+</div>
+<div class="row">
+    {{archiveUnit.Description}}
+</div>
+<div class="row">
+    Service Producteur:
+</div>
+<div class="row">
+    {{archiveUnit.OriginatingAgencyArchiveUnitIdentifier}}
+</div>
+
+<div class="row">
+    Chemin:
+</div>
+<div class="row">
+    {{archiveUnit.DescriptionLevel}}
+</div>
+
+
+<div class="actions">
+    <button class="btn secondary" (click)="onDownloadArchive()">
+        <i class="vitamui-icon vitamui-icon-admin-key-plus"></i> <span>Télécharger</span>
+    </button>
+</div>
+
+
+</div>
