@@ -1,0 +1,37 @@
+########################################################
+# ZONE APP
+########################################################
+
+- hosts: hosts_vitamui_referential_internal
+  roles:
+    - uninstall
+  vars:
+    service_name: referential-internal
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-app
+    - referential-internal
+
+- hosts: hosts_vitamui_referential_external
+  roles:
+    - uninstall
+  vars:
+    service_name: referential-external
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-app
+    - referential-external
+
+########################################################
+# ZONE UI
+########################################################
+- hosts: hosts_ui_referential
+  roles:
+    - uninstall
+  vars:
+    service_name: ui-referential
+    uninstaller_type: vitamui-service
+  tags:
+    - zone-vitamui-ui
+    - ui-referential
+
