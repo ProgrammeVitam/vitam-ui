@@ -139,4 +139,7 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
     UpdateResult updateFirst(Query query, Update update);
 
     UpdateResult updateFirst(Query query, Update update, Class<T> clazz);
+
+    UpdateResult upsert(Query query, Update update);
+
 }
