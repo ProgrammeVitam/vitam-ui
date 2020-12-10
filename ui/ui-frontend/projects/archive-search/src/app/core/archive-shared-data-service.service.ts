@@ -99,5 +99,24 @@ export class ArchiveSharedDataServiceService {
   getToggle(): Observable<boolean> {
     return this.toggleSubject.asObservable();
   }
+
+//For show/hide : archiveUnit tab
+  emitToggleArchiveTab(show: boolean) {
+    this.toggleArchiveUnitSubject.next(show);
+  }
+
+  getToggleArchiveTab(): Observable<boolean> {
+    return this.toggleArchiveUnitSubject.asObservable();
+  }
+
+
+  //For archiveUnit preview tab
+  emitPreviewArchiveUnitTab(archiveUnit: Unit) {
+    this.archiveUnitTpPreviewSubject.next(archiveUnit);
+  }
+
+  getArchiveUnitToPreview(): Observable<Unit> {
+    return this.archiveUnitTpPreviewSubject.asObservable();
+  }
 }
 
