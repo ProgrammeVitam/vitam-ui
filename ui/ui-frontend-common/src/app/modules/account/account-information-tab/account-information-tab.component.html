@@ -9,12 +9,14 @@
       <span>{{form?.get('firstname')?.value}}</span>
     </div>
   </div>
+  
   <div class="row">
     <div class="col-3">
       <label i18n-label="user info tab email@@UserInfoTabEmail">Adresse E-mail</label>
       <span>{{form?.get('email')?.value}}</span>
     </div>
   </div>
+
   <div class="row">
     <div class="col-2">
       <vitamui-common-editable-select class="fields-padding" formControlName="language" label="Langue de l'interface"
@@ -26,6 +28,7 @@
       </vitamui-common-editable-select>
     </div>
   </div>
+
   <div class="row">
     <div class="col-3">
       <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below"
@@ -33,32 +36,38 @@
       </vitamui-common-slide-toggle>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-4">
+    <div class="col-2">
       <label i18n-label="user info tab mobile@@UserInfoTabMobile">Numéro de mobile</label>
       <span>{{form?.get('mobile')?.value}}</span>
+    </div>
 
+    <div class="col-2">
       <label i18n-label="user info tab phone@@UserInfoTabPhone">Numéro de fix</label>
       <span>{{form?.get('phone')?.value}}</span>
     </div>
   </div>
+
   <div class="row">
     <div class="col-4">
       <label i18n="@@UserInfoTabAddress">Adresse de livraison</label>
       <span *ngIf="form.get('address').value?.street">{{form.get('address').value?.street}}
         <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
       </span>
-      <span
-        *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">{{form.get('address').value?.zipCode}},
-        {{form.get('address').value?.city}}</span>
+      <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">
+        {{form.get('address').value?.zipCode}}, {{form.get('address').value?.city}}
+      </span>
     </div>
   </div>
+
   <div class="row">
     <div class="col-3">
       <label i18n-label="user info tab email@@UserInfoTabLevel">Niveau</label>
       <span>{{form?.get('level')?.value}}</span>
     </div>
   </div>
+
   <div class="row">
     <div class="col-4">
       <label>Mon groupe de profils</label>
