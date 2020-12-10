@@ -1,13 +1,22 @@
-<vitamui-common-input #colorPickerInput
-                      [colorPicker]="color" (colorPickerChange)="handlePicker($event)"
-                      (colorPickerOpen)="onPickerOpen()"
-                      [disabled]="disabled"
-                      (change)="forceHex()" (keyup)="forceHex()"
-                      [formControl]="colorInput"
-                      cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
-                      maxlength="7"
-                      placeholder="{{placeholder}}">
+<vitamui-common-input #colorPickerInput [colorPicker]="color" (colorPickerChange)="handlePicker($event)"
+    (colorPickerOpen)="onPickerOpen()" [disabled]="disabled" (change)="forceHex()" (keyup)="forceHex()"
+    [formControl]="colorInput" cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex"
+    cpFallbackColor="#000" maxlength="7" placeholder="{{placeholder}}">
 </vitamui-common-input>
 <div class="container-preview">
     <span class="input-color-preview" [style.background-color]="color | safeStyle" (click)="openPicker()"></span>
+</div>
+<div *ngIf="colorError!==colorErrorEnum.NONE" class="text normal text-red pt-2 pl-2 d-flex">
+    <div class="col-1"><i class="vitamui-icon vitamui-icon-anomalie" [style.fontSize.px]="20"></i></div>
+    <div [ngSwitch]="colorError" class="col-10">
+        <div *ngSwitchCase="colorErrorEnum.COLOR_INVALID">{{'COLOR.INVALID' | translate}}</div>
+        <div *ngSwitchCase="colorErrorEnum.COLOR_TOO_LIGHT">
+            <div>{{'COLOR.TOO_LIGHT' | translate}}</div>
+            <div>{{'COLOR.INCOMPATIBLE' | translate}}</div>
+        </div>
+        <div *ngSwitchCase="colorErrorEnum.COLOR_TOO_DARK">
+            <div>{{'COLOR.TOO_DARK' | translate}}</div>
+            <div>{{'COLOR.INCOMPATIBLE' | translate}}</div>
+        </div>
+    </div>
 </div>

@@ -9,7 +9,7 @@ $anim-timing: 150ms ease-out;
     display: inline-block;
 
     &.vitamui-focused .vitamui-input {
-        border-color: $greyish-two;
+        border-color: var(--vitamui-primary);
     }
 
     &.vitamui-focused .vitamui-input,
@@ -35,7 +35,7 @@ $anim-timing: 150ms ease-out;
     height: $input-height;
     width: 100%;
     border-radius: $input-height / 2;
-    border: solid 1px var(--vitamui-grey-400);;
+    border: solid 1px var(--vitamui-grey-400);
     background-color: $white;
     padding: 8px 30px;
     transition: border-color $anim-timing;
@@ -47,6 +47,11 @@ $anim-timing: 150ms ease-out;
 
     &:focus {
         @include elevation-0;
+        
+        &:not(.disabled)
+        {
+            border: 1px solid var(--vitamui-grey-300);
+        }
     }
 
     mat-spinner {

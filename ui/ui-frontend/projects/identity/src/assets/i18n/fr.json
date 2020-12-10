@@ -1,5 +1,11 @@
 {
     "MISC" : {
-        "NO-DESC": "Aucune description"
+        "NO_DESC": "Aucune description"
+    },
+    "COLOR" : {
+        "INVALID": "Couleur incorrecte",
+        "TOO_LIGHT": "La couleur est trop claire.",
+        "TOO_DARK": "La couleur est trop foncée.",
+        "INCOMPATIBLE": "Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA."
     }
 }

@@ -1,53 +1,121 @@
-@import '../../../../sass/variables/colors';
-
-.selected-label, .unselected-label {
-    color: $greyish-two;
-    font-size: 14px;
-    font-family: 'Mulish', sans-serif;
-}
+@import "../../../../sass/variables/colors";
 
 :host::ng-deep {
+  .selected-label,
+  .unselected-label {
+    font-family: "Mulish", sans-serif;
+    color: var(--vitamui-grey-600);
+    font-size: 14px;
+  }
+
   .mat-form-field-underline {
     display: none;
   }
-  
+
   .mat-select-value-text {
-    font-size: 14px;
+    color: var(--vitamui-grey-900);
     font-weight: bold;
-    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
   }
-  
+
   .mat-select-arrow {
     color: var(--vitamui-primary);
   }
 
-  .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
     color: var(--vitamui-primary);
   }
 
   .mat-form-field-wrapper {
-    height: 48px;
-    padding: .5rem 0;
-    display: flex;
-    align-items: center;
+    padding-bottom: 0;
   }
 
   mat-form-field {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    height: 50px;
     width: 100%;
-    background-color: $white;
-    padding-left: 25px;
-    padding-right: 25px;
     border-radius: 25px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.2), 0 2px 2px rgba(0,0,0,.12), 0 0 2px rgba(0,0,0,.14);
+    border: solid 1px var(--vitamui-grey-400);
+    background-color: $white;
+    padding: 8px 30px;
+    transition: border-color 150ms ease-out;
+    vertical-align: top;
+    font-family: "Mulish", sans-serif;
   }
 
+  .mat-form-field {
+    font-family: "Mulish", sans-serif;
+    font-weight: 400;
+    width: 100%;
+  }
+  
+  .mat-form-field.mat-form-field-disabled {
+    background-color: var(--vitamui-grey-300);
+    border: none;
+    color: var(--vitamui-grey-300);
+
+    .mat-form-field-flex {
+      background-color: var(--vitamui-grey-300);
+    }
+  }
+
+  .mat-form-field:not(.mat-form-field-disabled) {
+    .mat-form-field-label {
+      color: var(--vitamui-grey-600);
+      .mat-form-field-required-marker {
+        color: $red;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    &.mat-focused {
+      border: solid 1px var(--vitamui-primary);
+
+      .mat-form-field-label {
+        color: var(--vitamui-grey-600);
+      }
+    }
+    .mat-select .mat-select-value {
+      color: var(--vitamui-grey-900);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .select-arrow {
+      i {
+        color: var(--vitamui-primary);
+      }
+    }
+  }
   .mat-form-field-flex {
-    background-color: $white!important;
-    padding: 0!important;
+    background-color: $white;
+    padding: 0 !important;
   }
 
   mat-select {
-    color: #747272!important;
+    font-family: "Mulish", sans-serif;
+    color: var(--vitamui-grey-900);
+    font-size: 14px;
+  }
+
+  .mat-option-text {
+    font-family: "Mulish", sans-serif;
+    color: var(--vitamui-grey-900);
+  }
+
+  .mat-option {
+    font-family: "Mulish", sans-serif;
+    color: var(--vitamui-grey-900);
+  }
+
+  .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: var(--vitamui-primary);
   }
 
   .mat-form-field-infix {
@@ -60,21 +128,5 @@
 
   span.mat-select-placeholder {
     margin-top: 0.4rem;
-  }
-
-  .mat-form-field-disabled {
-    background-color: var(--vitamui-grey-300);
-
-    .mat-form-field-flex {
-      background-color: var(--vitamui-grey-300)!important;
-    }
-
-    .mat-select-value-text {
-      color: var(--vitamui-grey-900);
-    }
-
-    .selected-label {
-      color: var(--vitamui-grey-600);
-    }
   }
 }

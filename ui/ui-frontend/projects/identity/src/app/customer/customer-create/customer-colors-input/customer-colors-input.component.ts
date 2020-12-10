@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {Color, hexToRgb, rgbToHsl, ThemeColorType, ThemeService} from 'ui-frontend-common';
+import {Color, ThemeColorType, ThemeService} from 'ui-frontend-common';
 
 
 @Component({
@@ -38,12 +38,4 @@ export class CustomerColorsInputComponent implements OnInit {
       .map((c: Color) => ({id: c.value, label: c.class, isDefault: c.isDefault}));
   }
 
-  public isColor500(color: string): boolean {
-    const rgbValue = hexToRgb(color);
-    if (rgbValue) {
-      const hslValue = rgbToHsl(rgbValue);
-      return hslValue && (hslValue.l <= 60 && hslValue.l >= 40);
-    }
-    return false;
-  }
 }

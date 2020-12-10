@@ -1,23 +1,30 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {ColorErrorEnum} from './color-error.enum';
 import {ColorPickerDirective} from 'ngx-color-picker';
+import {hexToRgb, rgbToHsl} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-input-color',
   templateUrl: './input-color.component.html',
   styleUrls: ['./input-color.component.scss'],
 })
+
 export class InputColorComponent implements OnInit {
 
+  
   @Input() placeholder: string;
   @Input() disabled: boolean;
-
   @Input() colorInput: FormControl;
+  @Input() checkWarning: boolean;
 
   public color: string;
 
   @ViewChild('colorPickerInput', {read: ColorPickerDirective, static: false})
   private colorPicker: ColorPickerDirective;
+
+  public colorErrorEnum : typeof ColorErrorEnum = ColorErrorEnum;
+  public colorError : ColorErrorEnum = ColorErrorEnum.NONE;
 
   constructor() {}
 
@@ -26,7 +33,33 @@ export class InputColorComponent implements OnInit {
     this.color = this.colorInput.value;
     this.colorInput.valueChanges.subscribe((color: string) => {
       this.color = color;
+      if(this.checkWarning)
+      {
+        this.checkColor500(color);
+      }
     });
+  }
+
+  checkColor500(color: string) {
+    this.colorError = ColorErrorEnum.NONE;
+    const rgbValue = hexToRgb(color);
+    if (rgbValue) {
+      const hslValue = rgbToHsl(rgbValue);
+      if(hslValue) {
+        if(hslValue.l > 60) {
+          this.colorError = ColorErrorEnum.COLOR_TOO_LIGHT;
+        }
+        else if(hslValue.l < 40) {
+          this.colorError = ColorErrorEnum.COLOR_TOO_DARK;
+        }
+      }
+      else{
+        this.colorError = ColorErrorEnum.COLOR_INVALID;
+      }
+    }
+    else {
+      this.colorError = ColorErrorEnum.COLOR_INVALID;
+    }
   }
 
   public onPickerOpen(): void {

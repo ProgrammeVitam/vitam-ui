@@ -3,9 +3,9 @@
     <app-input-color 
       [disabled]="disabled"
       [colorInput]="formGroup.get(color)"
+      [checkWarning]="true"
       [placeholder]="baseColors[color]">
     </app-input-color>
-    <div *ngIf="!isColor500(formGroup.get(color).value)" class="text-error pt-2 pl-2">Warning</div>
   </div>
 
   <ng-container *ngIf="!displayTertiary; else closeTertiary">
@@ -20,6 +20,7 @@
     [disabled]="disabled"
     class="pb-4"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
+    [checkWarning]="true"
     [placeholder]="baseColors[THEME_COLORS.VITAMUI_TERTIARY]">
   </app-input-color>
 
@@ -31,6 +32,7 @@
   </app-input-color>
 
   <vitamui-common-select 
+    class="mb-4"
     [disabled]="disabled" 
     [data]="backgroundColors"
     [messages]="{'unselected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND], 'selected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND]}"
