@@ -213,7 +213,7 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
         IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
         final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
                 dto.getPatterns(), new ByteArrayResource(keystore.getBytes()), dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-                new ByteArrayResource(idpMetadata.getBytes()), dto.getCustomerId(), dto.isReadonly());
+                new ByteArrayResource(idpMetadata.getBytes()), dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute());
         dto = builder.build();
         return getClient().create(c, dto);
     }

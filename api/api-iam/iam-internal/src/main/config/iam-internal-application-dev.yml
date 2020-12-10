@@ -40,6 +40,10 @@ cas-client:
     truststore:
       key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
       key-password: changeme
+    keystore:
+      key-path: src/main/config/keystore_iam-internal.jks
+      key-password: changeme
+      type: JKS
     hostname-verification: false
 
 cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
