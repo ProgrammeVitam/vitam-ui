@@ -72,6 +72,8 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     public static final String SP_METADATA_KEY = "Sp metadata";
 
+    public static final String MAIL_ATTRIBUTE_KEY = "Attribut mail";
+
     public static final String MAXIMUM_AUTHENTICATION_LIFE_TIME = "Temps maximum de connexion";
 
     private final SpMetadataGenerator spMetadataGenerator;
@@ -88,6 +90,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         logbookData.put(INTERNAL_KEY, String.valueOf(dto.getInternal()));
         logbookData.put(ENABLED_KEY, String.valueOf(dto.getEnabled()));
         logbookData.put(PATTERNS_KEY, dto.getPatterns().toString());
+        logbookData.put(MAIL_ATTRIBUTE_KEY, String.valueOf(dto.getMailAttribute()));
         logbookData.put(MAXIMUM_AUTHENTICATION_LIFE_TIME, String.valueOf(dto.getMaximumAuthenticationLifetime()));
         return ApiUtils.toJson(logbookData);
     }
@@ -108,6 +111,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         provider.setPrivateKeyPassword(dto.getKeystorePassword());
         dto.setPrivateKeyPassword(dto.getKeystorePassword());
         provider.setIdpMetadata(dto.getIdpMetadata());
+        provider.setMailAttribute(dto.getMailAttribute());
 
         // generates and saves the metadata
         final String spMetadata = spMetadataGenerator.generate(dto);

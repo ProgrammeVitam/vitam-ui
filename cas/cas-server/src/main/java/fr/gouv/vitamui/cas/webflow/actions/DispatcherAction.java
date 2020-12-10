@@ -141,6 +141,7 @@ public class DispatcherAction extends AbstractAction {
         }
         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         val webContext = new JEEContext(request, response, sessionStore);
+        sessionStore.set(webContext, Constants.PROVIDER_TECHNICAL_NAME, provider.getTechnicalName());
         if (isInternal) {
             sessionStore.set(webContext, Constants.SURROGATE, null);
             LOGGER.debug("Redirect the user to the password page...");

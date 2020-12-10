@@ -76,10 +76,12 @@ public class IdentityProviderBuilder {
 
     private final boolean readonly;
 
+    private final String mailAttribute;
+
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
             final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
             final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-            final boolean readonly) {
+            final boolean readonly, final String mailAttribute) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -91,6 +93,7 @@ public class IdentityProviderBuilder {
         this.idpMetadata = idpMetadata;
         this.customerId = customerId;
         this.readonly = readonly;
+        this.mailAttribute = mailAttribute;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -101,6 +104,7 @@ public class IdentityProviderBuilder {
         idp.setInternal(internal);
         idp.setPatterns(patterns);
         idp.setReadonly(readonly);
+        idp.setMailAttribute(mailAttribute);
 
         extractKeystore(idp, keystore);
 
