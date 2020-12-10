@@ -4,7 +4,8 @@ export interface Unit {
   '#allunitups': string[];
   '#unitType': string;
   '#object'?: string;
-
+  '#opi': string;
+  '#version'?: string;
   Title?: string;
   Title_?: any;
   Description?: string;

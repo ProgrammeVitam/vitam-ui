@@ -50,6 +50,7 @@ import { SearchResponse } from './models/search-response.interface';
   providedIn: 'root'
 })
 export class ArchiveService extends SearchService<any> {
+
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,

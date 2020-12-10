@@ -51,6 +51,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   tenantIdentifier: string;
   foundAccessContract =  false;
   accessContract: string;
+
   constructor(private route: ActivatedRoute, private router: Router,
               globalEventService: GlobalEventService, public dialog: MatDialog,
               private archiveSharedDataServiceService: ArchiveSharedDataServiceService) {
@@ -79,5 +80,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
 
   changeTenant(tenantIdentifier: number) {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+  }
+
+
+  showPreviewArchiveUnit(item: Event) {
+    console.log('show: ', item);
+    this.openPanel(item);
   }
 }

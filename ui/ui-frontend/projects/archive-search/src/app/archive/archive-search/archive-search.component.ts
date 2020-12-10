@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PagedResult, SearchCriteria, SearchCriteriaEltDto, SearchCriteriaStatusEnum} from '../models/search.criteria';
 import { merge,  Subject,  Subscription } from 'rxjs';
@@ -45,7 +45,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
-
+import { Unit } from '../models/unit.interface';
+ 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
@@ -57,12 +58,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss']
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges {
+export class ArchiveSearchComponent implements OnInit {
 
+  @Output() archiveUnitClick = new EventEmitter<any>();
+  
   private readonly orderChange = new Subject<string>();
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
-
   @Input()
   accessContract: string;
   nbQueryCriteria: number = 0;
@@ -80,11 +82,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
   otherCriteriaValueType: string = 'DATE';
   showCriteriaPanel: boolean = true;
   selectedValueOntolonogy: any;
-  archiveUnits: any[];
+  archiveUnits: Unit[];
   ontologies: any;
   filterMapType: { [key: string]: string[] } = {
     status: ['Folder', 'Document']
   };
+  shouldShowPreviewArchiveUnit = false;
+
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
 
   previousValue: {
@@ -120,10 +124,11 @@ emptyForm = {
   otherCriteriaValue: ''}
 
   show = true;
+  showUnitPreviewBlock = false;
 
   constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
-              private route: ActivatedRoute, private nodesService: ArchiveSharedDataServiceService, private datePipe: DatePipe) {
-    this.subscriptionNodes = this.nodesService.getNodes().subscribe(node => {
+              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe) {
+    this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe(node => {
       if(node.checked){
         this.addCriteria("NODE", "Noeud", node.id, node.title);
       }else {
@@ -244,6 +249,7 @@ emptyForm = {
   }
 
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
@@ -261,7 +267,7 @@ emptyForm = {
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.accessContract) {
       this.show = true;
-      this.nodesService.emitToggle(this.show);
+      this.archiveExchangeDataService.emitToggle(this.show);
     }
   }
 
@@ -298,7 +304,7 @@ emptyForm = {
 
         }
         if(key === 'NODE'){
-          this.nodesService.emitNodeTarget(valueElt);
+          this.archiveExchangeDataService.emitNodeTarget(valueElt);
         }
       });
     }
@@ -426,7 +432,7 @@ emptyForm = {
 
         if (this.currentPage === 0 ) {
           this.archiveUnits = pagedResult.results;
-          this.nodesService.emitFacets(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(pagedResult.facets);
         } else {
           if (pagedResult.results) {
             pagedResult.results.forEach(elt => this.archiveUnits.push(elt));
@@ -442,7 +448,7 @@ emptyForm = {
         this.canLoadMore = false;
         this.pending = false;
         console.log("Errors : ", error.message);
-        this.nodesService.emitFacets([]);
+        this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       })
   }
@@ -487,16 +493,17 @@ emptyForm = {
       }
     }
   }
-
   hiddenTreeBlock(hidden: boolean): void {
     this.show = !hidden;
-    this.nodesService.emitToggle(this.show);
+    this.archiveExchangeDataService.emitToggle(this.show);
   }
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscriptionNodes.unsubscribe();
   }
+
+ 
 
   get uaid() { return this.form.controls.uaid }
   get archiveCriteria() { return this.form.controls.archiveCriteria }
@@ -512,4 +519,5 @@ emptyForm = {
   get otherCriteria() { return this.form.controls.otherCriteria }
   get otherCriteriaValue() { return this.form.controls.otherCriteriaValue }
 
+   
 }
