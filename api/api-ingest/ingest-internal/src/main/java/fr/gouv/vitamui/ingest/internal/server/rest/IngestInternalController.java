@@ -112,9 +112,8 @@ public class IngestInternalController {
 
     @GetMapping(RestApi.INGEST_MANIFEST + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportManifest(
-            final @PathVariable("id") String id /*,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+            final @PathVariable("id") String id) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("export manifest for operation with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Response response = ingestInternalService.exportManifest(vitamContext, id);
@@ -128,9 +127,8 @@ public class IngestInternalController {
 
     @GetMapping(RestApi.INGEST_ATR + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportATR(
-            final @PathVariable("id") String id /*,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId */) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier()/*, accessContractId*/);
+            final @PathVariable("id") String id) {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("export atr for operation with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Response response = ingestInternalService.exportATR(vitamContext, id);

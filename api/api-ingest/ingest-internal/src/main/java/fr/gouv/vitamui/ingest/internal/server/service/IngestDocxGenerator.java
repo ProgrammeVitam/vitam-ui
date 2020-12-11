@@ -28,9 +28,12 @@
 package fr.gouv.vitamui.ingest.internal.server.service;
 
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -71,6 +74,7 @@ import java.util.Map;
 
 public class IngestDocxGenerator {
 
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestDocxGenerator.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
 
@@ -87,7 +91,12 @@ public class IngestDocxGenerator {
         }
         return null;
     }
-
+/*
+* Méthode pour créer le premier tableau du rapport Ingest
+* Le tableau contient 2 informations sur le :
+* Le service producteur et le service versant
+*
+* */
     public void generateTableOne(XWPFDocument document, Document manifest, JSONObject jsonObject)
         throws JSONException {
 
@@ -116,10 +125,19 @@ public class IngestDocxGenerator {
             run.addBreak();
 
         } catch (JSONException e) {
+            LOGGER.error("Unable to get the data from the JsonObject : {}", e.getMessage());
             throw new JSONException("Unable to get the data from the JsonObject " + e);
+
+
         }
     }
 
+    /*
+     * Méthode pour créer le 2eme tableau du rapport Ingest
+     * Le tableau contient les informations sur le :
+     * Numéro du versement, Présentation du contenu, Dates extrêmes et l'historique de conservation
+     *
+     * */
     public void generateTableTwo(XWPFDocument document, Document manifest, LogbookOperationDto selectedIngest) {
 
         XWPFTable tableTwo = document.createTable();
@@ -166,6 +184,12 @@ public class IngestDocxGenerator {
 
     }
 
+    /*
+     * Méthode pour créer le 3eme tableau du rapport Ingest
+     * Le tableau contient les informations sur le :
+     * Nombre de fichiers binaires et Identifiant de l’opération d’entrée
+     *
+     * */
     public void generateTableThree(XWPFDocument document, Document manifest, String id) {
 
         XWPFTable tableThree = document.createTable();
@@ -192,6 +216,12 @@ public class IngestDocxGenerator {
         run.addBreak();
     }
 
+    /*
+     * Méthode pour créer le 4eme tableau du rapport Ingest
+     * Le tableau contient les informations sur le :
+     * Date de signature, Le responsable du versement et Le responsable du service d'archives
+     *
+     * */
     public void generateTableFour(XWPFDocument document) {
 
         XWPFTable table = document.createTable();
@@ -220,6 +250,12 @@ public class IngestDocxGenerator {
         run.addBreak(BreakType.PAGE);
     }
 
+    /*
+     * Méthode pour créer tableau dynamique du rapport Ingest
+     * Le tableau contient les informations sur le :
+     * Identifiant SAE VAS, Titre, date de début et date de fin
+     *
+     * */
     public void generateDynamicTable(XWPFDocument document, List<ArchiveUnitDto> list) {
 
         XWPFTable dynamicTable = document.createTable();
