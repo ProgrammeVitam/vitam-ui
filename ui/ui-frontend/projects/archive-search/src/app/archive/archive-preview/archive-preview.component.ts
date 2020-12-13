@@ -55,4 +55,8 @@ export class ArchivePreviewComponent  implements OnInit {
         'detailPopup', 'width=684, height=713, resizable=no, location=no');
     this.emitClose();
   }
+
+  onDownloadArchive(){
+    //To implement
+  }
 }

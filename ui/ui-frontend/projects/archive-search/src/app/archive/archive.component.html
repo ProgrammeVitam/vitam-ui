@@ -17,11 +17,8 @@
             <div [style.display]="!show ? 'none' : 'block'" class="col-3">
                 <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
             </div>
-            <div [ngClass]="show && showArchiveTab ? 'col-6': show  || showArchiveTab  ? 'col-9' : 'col-12'">
+            <div [ngClass]="show ? 'col-9' : 'col-12'">
                 <app-archive-search [accessContract]="accessContract"></app-archive-search>
-            </div>
-            <div [style.display]="showArchiveTab ? 'none' : 'block'" class="col-3">
-                <app-archive-unit-information-tab [archiveUnit]= "archiveUnitToPreview"></app-archive-unit-information-tab>
             </div>
         </div>
     </mat-sidenav-content>
