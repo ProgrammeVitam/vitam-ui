@@ -26,5 +26,8 @@
         "Red": "Couleur rouge",
         "Orange": "Couleur orange",
         "Green": "Couleur vert"
+    },
+    "ICONS":{
+        "Title": "Liste des icônes de Vitam-UI"
     }
 }

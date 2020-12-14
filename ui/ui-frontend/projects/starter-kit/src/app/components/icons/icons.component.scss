@@ -1,0 +1,35 @@
+i {
+    font-size: 40px;
+    line-height: 100px;
+    text-align: center;
+    color: var(--vitamui-grey-600);
+}
+ul {
+    list-style: none;
+    display: flex;
+    background-color: var(--vitamui-grey-300);
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 50px;
+}
+.icon-container {
+    width: 100px;
+    height: 100px;
+    background-color: var(--vitamui-grey-100);
+    margin-right: 20px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.text-container {
+    width: 100px;
+    height: 100px;
+    padding-top: 10px;
+}
+span.text-container {
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.4px;
+    color: var(--vitamui-grey-800);
+}
+

@@ -47,6 +47,7 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TypographyComponent } from './components/typography/typography.component';
 import { ColorsComponent } from './components/colors/colors.component';
+import { IconsComponent } from './components/icons/icons.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
 
@@ -62,7 +63,7 @@ const routes: Routes = [
   { path: 'miscellaneous', component: MiscellaneousComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
-
+  { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: '**', redirectTo: '' },
 ];
 

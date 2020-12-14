@@ -26,5 +26,8 @@
         "Red": "Color red",
         "Orange": "Color orange",
         "Green": "Color green"
+    },
+    "ICONS":{
+        "Title": "Vitam-UI icons list" 
     }
 }
