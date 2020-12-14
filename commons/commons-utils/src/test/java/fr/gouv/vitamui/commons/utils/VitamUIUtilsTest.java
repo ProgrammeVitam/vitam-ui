@@ -1,14 +1,15 @@
 package fr.gouv.vitamui.commons.utils;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class VitamUIUtilsTest {
 
@@ -114,5 +115,21 @@ public class VitamUIUtilsTest {
     @Test(expected = IllegalArgumentException.class)
     public void generateApplicationId_whenRequestIdIsNull_thenIllegalArgumentException() {
         VitamUIUtils.generateApplicationId("", "applicationName", "userIdentifier", "", "customerIdentifier", null);
+    }
+
+    @Test
+    public void testSecureHeadersLogging() throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("host", "172.18.102.247:8008");
+        headers.add("authorization", "Basic sqklqsduqjksfknszazdfsdsdsq==");
+        headers.add("proxy-authorization", "Bearer sqklqsduqjksfknszazdfsdsdsq==");
+        headers.add("proxy-authenticate", "Digest sqklqsduqjksfknszazdfsdsdsq==");
+        headers.add("x-application-id", "INGEST_APP");
+        headers.add("x-forwarded-server", "env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr");
+        String result = VitamUIUtils.secureFormatHeadersLogging(headers);
+        String expected = "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
+        assertEquals(expected, result);
+
     }
 }

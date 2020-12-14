@@ -11,3 +11,6 @@ V	230717134711Z		0A	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
 V	230717134831Z		0B	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
 V	230717134843Z		0C	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
 V	230717134856Z		0D	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230925233626Z		0E	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230925233632Z		0F	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com
+V	230925233637Z		10	unknown	/C=fr/ST=idf/L=paris/O=vitamui/CN=dev.vitamui.com

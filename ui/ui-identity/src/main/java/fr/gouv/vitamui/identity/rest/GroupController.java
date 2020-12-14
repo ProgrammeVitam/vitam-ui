@@ -36,29 +36,8 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -73,6 +52,26 @@ import fr.gouv.vitamui.identity.service.GroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "groups")
 @RestController
@@ -103,6 +102,7 @@ public class GroupController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public GroupDto getOne(final @PathVariable String id, @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded) {
         LOGGER.debug("Get profileGroup={}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return service.getOne(buildUiHttpContext(), id, embedded);
     }
@@ -134,6 +134,7 @@ public class GroupController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public GroupDto patch(@RequestBody final Map<String, Object> partialDto, @PathVariable final String id) {
         LOGGER.debug("Update partially provider id={} with partialDto={}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
@@ -152,6 +153,7 @@ public class GroupController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for group with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 

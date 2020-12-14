@@ -132,7 +132,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   getProfiles() {
     const params = new HttpParams().set('filterApp', 'false');
     this.appApiService.getAllByParams(params).pipe(
-      tap((applications) => this.applicationsDetails = applications),
+      tap((applications) => this.applicationsDetails = applications.APPLICATION_CONFIGURATION),
       switchMap(( ) => this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude))
     ).subscribe((profiles) => {
       this.profiles = profiles;

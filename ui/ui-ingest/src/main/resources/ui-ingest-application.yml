@@ -1,0 +1,52 @@
+# TECHNICAL PROPERTIES / DON'T put environment properties
+# This property can be override by a config file give at run time with spring.config.location
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API for Ingest UI
+    description: API for Ingest UI
+    version: v1
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+    endpoints:
+      jmx:
+        domain: ${server-identity.identityRole}
+        unique-names: true
+      web:
+        exposure:
+          include: info,health,prometheus
+    endpoint:
+      health:
+        show-details: always
+    prometheus:
+        enabled: true
+
+ui-ingest:
+  prefix: ingest-api
+
+ui-prefix : ${ui-ingest.prefix}
+
+server-identity:
+  identityName: vitamui
+  identityRole: ui-ingest
+  identityServerId: 1
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+  context-path: /
+  servlet.session.timeout: 4h
+  servlet.session.cookie.max-age: ${server.servlet.session.timeout}
+  server.servlet.session.cookie.http-only: true
+  server.servlet.session.cookie.path: /
+  server.servlet.session.cookie.secure: true
+
+controller:
+  subrogation:
+    enabled: true

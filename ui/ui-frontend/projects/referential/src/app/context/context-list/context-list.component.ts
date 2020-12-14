@@ -47,7 +47,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {Context} from 'projects/vitamui-library/src/lib/models/context';
-import {merge, Subject, Subscription} from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -111,7 +111,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
 
   private groups: Array<{ id: string, group: any }> = [];
-  private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -174,7 +173,6 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   }
 
   ngOnDestroy() {
-    this.updatedUserSub.unsubscribe();
     this.updatedData.unsubscribe();
   }
 

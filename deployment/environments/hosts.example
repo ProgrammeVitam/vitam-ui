@@ -24,10 +24,12 @@ mongod
 [zone-internal:children]
 iam_internal
 referential_internal
+ingest_internal
 
 [zone-external:children]
 iam_external
 referential_external
+ingest_external
 
 [zone-admin:children]
 mongo-express
@@ -51,11 +53,18 @@ portal
 [referential_external]
 # put list here
 
+[ingest_external]
+# put list here
+
 [iam_internal]
 # put list here
 
 [referential_internal]
 # put list here
+
+[ingest_internal]
+# put list here
+
 
 [portal]
 # put list here
@@ -65,7 +74,7 @@ portal
 dns_servers=["1.1.1.1","2.2.2.2"] # defines list of DNS recursors for consul
 ansible_ssh_user=centos # for ansible
 ansible_become=true
-vitam_site_name=tobedefined # defines name in consul 
+vitam_site_name=tobedefined # defines name in consul
 consul_domain=consul # should not be changed
 url_prefix="https://{{ vitam_site_name }}.env.programmevitam.fr" # front URL from internet
 

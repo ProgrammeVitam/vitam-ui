@@ -67,6 +67,7 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
             .authorizeRequests()
             .antMatchers(getAuthList()).permitAll()
             .anyRequest().fullyAuthenticated()
+        .and().requiresChannel().anyRequest().requiresSecure()
         .and()
             .addFilterAt(casAuthenticationFilter(), CasAuthenticationFilter.class)
             .addFilterAfter(new LogHeaderRegistrationFilter(), CasAuthenticationFilter.class)

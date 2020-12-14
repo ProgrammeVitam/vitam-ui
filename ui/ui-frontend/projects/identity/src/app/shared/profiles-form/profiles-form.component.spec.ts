@@ -103,38 +103,36 @@ const expectedProfiles = [
   },
 ];
 
-const expectedApp = [
-  {
-    id: 'CUSTOMERS_APP',
-    identifier: 'CUSTOMERS_APP',
-    name: 'Organisations',
-    url: ''
-  },
-  {
-    id: 'ARCHIVE_APP',
-    identifier: 'ARCHIVE_APP',
-    name: 'Archives',
-    url: ''
-  },
-  {
-    id: 'USERS_APP',
-    identifier: 'USERS_APP',
-    name: 'Utilisateurs',
-    url: ''
-  },
-  {
-    id: 'GROUPS_APP',
-    identifier: 'GROUPS_APP',
-    name: 'Groupes de profils',
-    url: ''
-  },
-  {
-    id: 'PROFILES_APP',
-    identifier: 'PROFILES_APP',
-    name: 'Profils APP Utilisateurs',
-    url: ''
-  },
-];
+const expectedApp = {
+    APPLICATION_CONFIGURATION: [
+      {
+        id: 'CUSTOMERS_APP',
+        identifier: 'CUSTOMERS_APP',
+        name: 'Organisations',
+        url: ''
+      }, {
+        id: 'ARCHIVE_APP',
+        identifier: 'ARCHIVE_APP',
+        name: 'Archives',
+        url: ''
+      }, {
+        id: 'USERS_APP',
+        identifier: 'USERS_APP',
+        name: 'Utilisateurs',
+        url: ''
+      }, {
+        id: 'GROUPS_APP',
+        identifier: 'GROUPS_APP',
+        name: 'Groupes de profils',
+        url: ''
+      }, {
+        id: 'PROFILES_APP',
+        identifier: 'PROFILES_APP',
+        name: 'Profils APP Utilisateurs',
+        url: ''
+      },
+    ], CATEGORY_CONFIGURATION: {}
+};
 
 // tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })

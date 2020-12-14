@@ -1,0 +1,10 @@
+---
+
+- import_tasks: set_auth.yml
+
+- import_tasks: restore_db.yml
+  when: "collections is defined and (collections|length == 0)" 
+
+- import_tasks: restore_collection.yml
+  when: "collections is defined and (collections|length > 0)" 
+  
