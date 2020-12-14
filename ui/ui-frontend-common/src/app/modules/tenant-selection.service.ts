@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
@@ -7,13 +6,13 @@ import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { Tenant } from './models/customer/tenant.interface';
 
+/** Keyword in url that indicate the selected tenant identifier */
+export const TENANT_SELECTION_URL_CONDITION = '/tenant/';
+
 @Injectable({
     providedIn: 'root'
 })
 export class TenantSelectionService {
-
-    /** Keyword in url that indicate the selected tenant identifier */
-    private readonly TENANT_SELECTION_URL_CONDITION = '/tenant/';
 
     public currentAppId$ = new BehaviorSubject(undefined);
 
@@ -149,10 +148,15 @@ export class TenantSelectionService {
         });
     }
 
-    public hasTenantSelection(url: string): boolean {
-        if (!url) {
-            url = window.location.href;
-        }
-        return (url.includes(this.TENANT_SELECTION_URL_CONDITION) || this.currentAppId$.value === ApplicationId.PORTAL_APP);
+    public hasTenantSelection(url?: string): Observable<boolean> {
+        return new Observable((observer) => {
+            if (!url) {
+                url = window.location.href;
+            }
+
+            this.currentAppId$.subscribe((appId: ApplicationId) => {
+                observer.next((url.includes(TENANT_SELECTION_URL_CONDITION) ||  appId === ApplicationId.PORTAL_APP));
+            })
+        });
     }
 }
