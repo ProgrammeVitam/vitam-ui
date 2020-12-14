@@ -139,6 +139,20 @@ public class ArchiveInternalRestClient
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
+    public ResponseEntity<ResultsDto> findUnitById(String id , final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + "/archiveunit" + CommonConstants.PATH_ID);
+        //final  HttpEntity<Map<String, String>> request = new HttpEntity<>(data, buildHeaders(context));
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
 
+    public ResponseEntity<JsonNode> findObjectMetaData(String id , final InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + "/objectmetadata" + CommonConstants.PATH_ID);
+        //final  HttpEntity<Map<String, String>> request = new HttpEntity<>(data, buildHeaders(context));
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, JsonNode.class);
+    }
 
 }
