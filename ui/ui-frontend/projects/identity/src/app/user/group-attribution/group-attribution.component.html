@@ -3,36 +3,9 @@
 </div>
 
 <div class="mt-3 content">
-
-  <div classe="mt-4 text large bold" i18n="Set group title@@setGroupTitle">Attribution de groupe</div>
-
-  <vitamui-common-search-bar class="my-3" i18n-placeholder="user create search group@@userCreateSearchGroup"
-  [placeholder]="'Filtrer par «nom», «id» ...'" (search)="onSearch($event)"></vitamui-common-search-bar>
-
-<div class="d-flex mt-4 mb-3" *ngIf="selectedGroupName">
-  <div class="text medium bold">Groupe attribué : </div>&nbsp;<span class="text medium">{{ selectedGroupName }}</span>
-</div>
-
-<div class="vitamui-table">
-  <div class="vitamui-table-head p-0 py-3 d-flex align-items-center">
-    <div class="pl-4"  i18n="Set group header@@setGroupHeader">Groupe</div>
+  <div>
+    <app-group-list [groups] = "activeGroups" (selectedGroupEvent)="updateGroup($event)"></app-group-list>
   </div>
-
-  <div class="vitamui-table-body">
-    <div class="vitamui-table-rows">
-      <ng-container *ngFor="let group of activeGroups; let index = index">
-        <div class="vitamui-row p-0 px-4" [class.no-hover]="row.state === 'expanded'" *ngIf="!group?.selected" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse">
-          <div class="d-flex justify-content-between align-items-center clickable">
-            <div class="row-label d-flex align-items-center" (click)="updateGroup(group?.id,group?.name)">{{group?.name}}</div>
-            <button class="btn link underline" (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
-          </div>
-          <app-group-detail *ngIf="row.state === 'expanded'" [group]="group" [@expansionAnimation]></app-group-detail>
-        </div>
-      </ng-container>
-    </div>
-  </div>
-</div>
-
   <div class="actions">
     <button type="button" class="btn primary" (click)="saveUserUpdate()" [disabled]="!selectedGroupName" i18n="group attribution edit@@groupAttributionEdit">Modifier</button>
     <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>

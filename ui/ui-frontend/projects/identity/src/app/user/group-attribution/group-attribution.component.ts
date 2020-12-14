@@ -38,7 +38,6 @@
 
 import { Group, User } from 'ui-frontend-common';
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -56,19 +55,6 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   templateUrl: './group-attribution.component.html',
   styleUrls: ['./group-attribution.component.scss'],
   providers: [GROUP_ATTRIBUTION_VALUE_ACCESSOR],
-  animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-    trigger('expansionAnimation', [
-      state('true', style({ height: '*', visibility: 'visible' })),
-      state('void', style({ height: '0px', visibility: 'hidden' })),
-      transition(':enter', animate('150ms')),
-      transition(':leave', animate('150ms')),
-    ]),
-  ]
 })
 export class GroupAttributionComponent implements OnInit {
 
@@ -109,24 +95,11 @@ export class GroupAttributionComponent implements OnInit {
     }
   }
 
-  public removeGroup(): void {
-    this.selectedGroupName = null;
-    this.user.groupId = null;
-    this.unselectAllProfileGroups();
-  }
-
-  public updateGroup(groupId: string, groupName: string): void {
-    this.selectedGroupName = groupName;
-    this.user.groupId = groupId;
-    this.unselectAllProfileGroups();
-    const selectedGroup = this.activeGroups.find((group) => group.id === groupId);
-    if (selectedGroup) {
-      selectedGroup.selected = true;
-    }
-  }
-
-  public unselectAllProfileGroups(): void {
-    this.activeGroups.forEach((group) => group.selected = false);
+    updateGroup(event: any) {
+      const selectedGroup: GroupSelection = event;
+      this.selectedGroupName = selectedGroup.name;
+      this.user.groupId = selectedGroup.id;
+      this.user.level = selectedGroup.level;
   }
 
   public saveUserUpdate(): void {
@@ -139,14 +112,7 @@ export class GroupAttributionComponent implements OnInit {
   }
 
   public onCancel(): void {
-    this.unselectAllProfileGroups();
     this.dialogRef.close();
   }
 
-  public onSearch(text?: string): void {
-    this.resetActiveGroups();
-    if (text !== null && text.length > 0) {
-      this.activeGroups = this.activeGroups.filter((group) => group.name.includes(text) || group.description.includes(text));
-    }
-  }
 }

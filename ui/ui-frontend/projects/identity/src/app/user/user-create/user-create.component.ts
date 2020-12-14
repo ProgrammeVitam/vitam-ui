@@ -27,6 +27,7 @@
  * therefore means  that it is reserved for developers  and  experienced
  * professionals having in-depth computer knowledge. Users are therefore
  * encouraged to load and test the software's suitability as regards their
+ * encouraged to load and test the software's suitability as regards their
  * requirements in conditions enabling the security of their systems and/or
  * data to be ensured and,  more generally, to use and operate it in the
  * same conditions as regards security.
@@ -36,10 +37,9 @@
  */
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState, ProfileSelection
+  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState
 } from 'ui-frontend-common';
-
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { GroupSelection } from './../group-selection.interface';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -57,37 +57,14 @@ const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.scss'],
-  animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-    trigger('expansion2', [
-      transition(':enter', [
-          style({ height: 0, opacity: 0 }),
-          animate('1s ease-out', style({ height: 300, opacity: 1 }))
-      ]),
-      transition(':leave', [
-          style({ height: 300, opacity: 1 }),
-          animate('1s ease-in', style({ height: 0, opacity: 0 }))
-      ])
-    ]),
-    trigger('expansionAnimation', [
-      state('true', style({ height: '*', visibility: 'visible' })),
-      state('void', style({ height: '0px', visibility: 'hidden' })),
-      transition(':enter', animate('150ms')),
-      transition(':leave', animate('150ms')),
-    ]),
-  ]
+  styleUrls: ['./user-create.component.scss']
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
   public formEmail: FormGroup;
   public customer: Customer;
-  public groups: ProfileSelection[] = [];
+  public groups: GroupSelection[] = [];
   public fullGroup: Group[];
   public groupName: string;
   public stepIndex = 0;
@@ -192,9 +169,10 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.updateValueAndValidity({ emitEvent: false });
     } else if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup
-        .map((group) => ({ id: group.id, name: group.name, description: group.description, selected: false }));
+        .map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
       this.groups.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     }
+
   }
 
   onCancel() {
@@ -247,25 +225,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     return this.form.pending || this.form.invalid;
   }
 
-  updateGroupe(groupId: string, groupName: string) {
-    this.groupName = groupName;
-    this.unselectAllGroups();
-    const selectedGroup = this.groups.find((group) => group.id === groupId);
-    selectedGroup.selected = true;
+  updateGroup(event: any) {
+    const selectedGroup: GroupSelection = event;
+    this.groupName = selectedGroup.name;
+    const groupId = selectedGroup.id;
     this.form.patchValue({ groupId });
   }
 
-  removeGroup() {
-    this.groupName = null;
-    this.unselectAllGroups();
-    this.form.patchValue({ groupId: null });
-  }
-
-  unselectAllGroups() {
-    this.groups.forEach((group) => group.selected = false);
-  }
-
-  public findGroup(id: string): Group {
-    return this.fullGroup.find(value => value.id === id);
-  }
 }
