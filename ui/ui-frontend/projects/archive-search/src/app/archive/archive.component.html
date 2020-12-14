@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
     <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-        <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()" [archiveUnit]="openedItem"></app-archive-preview>
+        <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()" [archiveUnit]="openedItem" [accessContract]="accessContract"></app-archive-preview>
     </mat-sidenav>
 
     <mat-sidenav-content>
