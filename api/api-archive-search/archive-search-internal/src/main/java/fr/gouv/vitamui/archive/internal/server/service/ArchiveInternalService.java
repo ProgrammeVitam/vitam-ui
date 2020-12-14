@@ -38,6 +38,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -45,6 +46,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Archive Internal service communication with VITAM.
+ * Archive-Search Internal service communication with VITAM.
  */
 @Service
 public class ArchiveInternalService {
@@ -122,6 +124,17 @@ public class ArchiveInternalService {
     public JsonNode searchUnits(final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
         return response.toJsonNode();
+    }
+
+    public Response downloadArchiveUnit(String id,Map<String, String> texte, final VitamContext vitamContext) throws VitamClientException {
+
+        LOGGER.info("contrat acces  {}", vitamContext);
+        LOGGER.info("Download UA with id {} ", id);
+        try {
+            return unitService.getObjectStreamByUnitId(id,texte.get("usage"),Integer.valueOf(texte.get("version")) ,vitamContext);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Unable to find the UA", e);
+        }
     }
 
 }

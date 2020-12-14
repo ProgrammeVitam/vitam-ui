@@ -37,10 +37,14 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
- * The service to create vitam Archive.
+ * The service to create vitam Archive-Search.
  */
 @Getter
 @Setter
@@ -74,5 +78,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public VitamUISearchResponseDto getFilingHoldingScheme() {
         return archiveInternalRestClient.getFilingHoldingScheme(getInternalHttpContext());
     }
+    public ResponseEntity<Resource> downloadArchiveUnit(String id, Map<String, String> data) {
+        return archiveInternalRestClient.downloadArchiveUnit(id, data, getInternalHttpContext());
+    }
+
 
 }

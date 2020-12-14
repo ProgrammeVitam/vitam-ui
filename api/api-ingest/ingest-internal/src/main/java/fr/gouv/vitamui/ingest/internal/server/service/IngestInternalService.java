@@ -122,6 +122,7 @@ public class IngestInternalService {
 
         RequestResponse<Void> ingestResponse = null;
         try {
+            LOGGER.info("Upload EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
             LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
 
@@ -146,6 +147,7 @@ public class IngestInternalService {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
+            LOGGER.info(" All ingests EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
@@ -189,6 +191,7 @@ public class IngestInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
+            LOGGER.info("All Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             LOGGER.debug("Response: {}: ", requestResponse);

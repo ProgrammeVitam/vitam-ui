@@ -36,10 +36,15 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
- * Archive Service
+ * UI
+ * Archive-Search Service
  */
 @Service
 public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsDto> {
@@ -78,4 +83,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public VitamUISearchResponseDto findFilingHoldingScheme(ExternalHttpContext context) {
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
+
+    public ResponseEntity<Resource> downloadArchiveUnit(String id, Map<String, String> data, ExternalHttpContext context) {
+        LOGGER.info("Download the Archive Unit with ID {}", id);
+        return archiveSearchExternalRestClient.downloadArchiveUnit(id, data, context);
+    }
+
 }
