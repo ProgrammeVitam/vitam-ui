@@ -61,6 +61,7 @@ import { EditableToggleGroupComponent } from './editable-toggle-group/editable-t
 import { EmailsInputModule } from './emails-input/emails-input.module';
 import { LevelInputModule } from './level-input/level-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input/multiple-email-input.component';
+import { EditableFieldComponent } from './editable-field.component';
 
 
 @NgModule({
@@ -94,6 +95,7 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     HumanizedDurationPipe,
     MultipleEmailInputComponent,
     SubLevelPipe,
+    EditableFieldComponent
   ],
   exports: [
     EditableInputComponent,

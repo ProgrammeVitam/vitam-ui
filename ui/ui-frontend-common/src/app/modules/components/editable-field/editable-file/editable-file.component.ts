@@ -57,7 +57,7 @@ export class EditableFileComponent extends EditableFieldComponent {
   @Input() accept: string;
   file: File;
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   constructor(elementRef: ElementRef) {
     super(elementRef);

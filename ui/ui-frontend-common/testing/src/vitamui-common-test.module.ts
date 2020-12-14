@@ -178,7 +178,9 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 // Editable fields
 
-@Directive()
+@Directive({
+  selector: '[EditableFieldStubComponent]'
+})
 // tslint:disable-next-line:directive-class-suffix
 export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
@@ -353,6 +355,7 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
+    EditableFieldStubComponent
   ],
   exports: [
     ApplicationSelectContentStubComponent,

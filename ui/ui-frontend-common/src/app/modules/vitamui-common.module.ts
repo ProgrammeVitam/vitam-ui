@@ -97,6 +97,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import { SidenavPage } from './sidenav-page.class';
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -110,6 +111,7 @@ export function startupServiceFactory(startupService: StartupService) {
   declarations: [
     BlankComponent,
     ErrorDialogComponent,
+    SidenavPage
   ],
   imports: [
     CommonModule,
