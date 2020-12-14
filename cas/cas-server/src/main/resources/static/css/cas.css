@@ -56,27 +56,23 @@
   background-color: #ffffff;
   box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3); }
   .login-box h1 {
-    font-family: 'Mulish', sans-serif;
     font-size: 28px;
     font-weight: 300;
     color: #485053; }
   .login-box header p {
     margin-bottom: 0px; }
   .login-box p {
-    font-family: 'Mulish', sans-serif;
     font-size: 20px;
     font-weight: 300;
     color: #485053;
     line-height: 30px; }
     .login-box p small {
-      font-family: 'Mulish', sans-serif;
       font-size: 15px;
       color: #a6a6a6;
       font-weight: 400; }
   .login-box strong {
     font-weight: 500; }
   .login-box a {
-    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: var(--vitamui-secondary);
     text-decoration: underline; }
@@ -108,7 +104,6 @@
     .login-box input[type=password][disabled] {
       opacity: 0.4; }
   .login-box .form-error {
-    font-family: 'Mulish', sans-serif;
     font-size: 14px;
     letter-spacing: -0.4px;
     color: #C10000; }
@@ -117,7 +112,6 @@
       vertical-align: middle;
       margin-right: 10px; }
   .login-box button.vitamui-primary {
-    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     font-weight: 500;
     color: #ffffff;
@@ -136,7 +130,6 @@
     .login-box button.vitamui-primary[disabled] {
       opacity: 0.4; }
   .login-box .helper {
-    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: #aab0b3;
     text-align: right;
@@ -234,7 +227,6 @@
     color: var(--vitamui-secondary);
     font-size: 110px; }
   .password-recovery .cancel-link {
-    font-family: 'Mulish', sans-serif;
     font-size: 15px;
     color: #aab0b3;
     text-decoration: underline;
@@ -451,7 +443,6 @@
 body {
   margin: 0;
   color: #485053;
-  font-family: 'Mulish', sans-serif;
   background: #f7f8fb; }
 
 * {

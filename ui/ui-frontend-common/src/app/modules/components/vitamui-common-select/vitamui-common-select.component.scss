@@ -3,7 +3,7 @@
 :host::ng-deep {
   .selected-label,
   .unselected-label {
-    font-family: "Mulish", sans-serif;
+  
     color: var(--vitamui-grey-600);
     font-size: 14px;
   }
@@ -43,11 +43,11 @@
     padding: 8px 30px;
     transition: border-color 150ms ease-out;
     vertical-align: top;
-    font-family: "Mulish", sans-serif;
+  
   }
 
   .mat-form-field {
-    font-family: "Mulish", sans-serif;
+  
     font-weight: 400;
     width: 100%;
   }
@@ -99,18 +99,18 @@
   }
 
   mat-select {
-    font-family: "Mulish", sans-serif;
+  
     color: var(--vitamui-grey-900);
     font-size: 14px;
   }
 
   .mat-option-text {
-    font-family: "Mulish", sans-serif;
+  
     color: var(--vitamui-grey-900);
   }
 
   .mat-option {
-    font-family: "Mulish", sans-serif;
+  
     color: var(--vitamui-grey-900);
   }
 

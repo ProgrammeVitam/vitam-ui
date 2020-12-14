@@ -15,53 +15,53 @@
  */
 
 @mixin login-title {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 28px;
   font-weight: 300;
   color: $charcoal-grey;
 }
 
 @mixin login-text-1 {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 20px;
   font-weight: 300;
   color: $charcoal-grey;
 }
 
 @mixin button-primary {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 15px;
   font-weight: 500;
   color: $white;
 }
 
 @mixin login-text-2 {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 15px;
   color: $greyish-two;
 }
 
 @mixin login-helper {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 15px;
   color: $cool-grey;
 }
 
 @mixin vitamui-link {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 15px;
   color: var(--vitamui-primary);
 }
 
 @mixin vitamui-input-placeholder {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 14px;
   text-align: left;
   color: $greyish-two;
 }
 
 @mixin login-error {
-  font-family: 'Mulish', sans-serif;
+  
   font-size: 14px;
   letter-spacing: -0.4px;
   color: $red;
