@@ -238,6 +238,7 @@ vitamui:
     port_service: 8001
     port_admin: 7001
     secure: true
+    hostname_verification: true
     jvm_log: false
     logging_level: "INFO"
     theme:
