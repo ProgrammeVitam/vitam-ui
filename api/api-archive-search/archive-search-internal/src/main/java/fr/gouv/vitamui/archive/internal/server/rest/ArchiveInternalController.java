@@ -49,14 +49,22 @@ import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
@@ -126,4 +134,21 @@ public class ArchiveInternalController {
         }
 
     }
+
+    @PostMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadArchiveUnit( final @PathVariable("id") String id, @RequestBody final Map<String, String> data,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+        throws VitamClientException {
+
+        LOGGER.info("Access Contract {} ", accessContractId);
+        LOGGER.info("Download UA  {}", id);
+       final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        Response response =  archiveInternalService.downloadArchiveUnit(id, data, vitamContext);
+              Object entity = response.getEntity();
+              if (entity instanceof InputStream) {
+                  Resource resource = new InputStreamResource((InputStream) entity);
+                  return new ResponseEntity<>(resource, HttpStatus.OK);
+              }
+              return null;
+}
 }

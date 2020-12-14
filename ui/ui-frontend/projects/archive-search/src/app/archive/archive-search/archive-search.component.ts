@@ -46,7 +46,7 @@ import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
- 
+
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
@@ -61,7 +61,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 export class ArchiveSearchComponent implements OnInit {
 
   @Output() archiveUnitClick = new EventEmitter<any>();
-  
+
   private readonly orderChange = new Subject<string>();
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
@@ -503,7 +503,7 @@ emptyForm = {
     this.subscriptionNodes.unsubscribe();
   }
 
- 
+
 
   get uaid() { return this.form.controls.uaid }
   get archiveCriteria() { return this.form.controls.archiveCriteria }
@@ -519,5 +519,5 @@ emptyForm = {
   get otherCriteria() { return this.form.controls.otherCriteria }
   get otherCriteriaValue() { return this.form.controls.otherCriteriaValue }
 
-   
+
 }

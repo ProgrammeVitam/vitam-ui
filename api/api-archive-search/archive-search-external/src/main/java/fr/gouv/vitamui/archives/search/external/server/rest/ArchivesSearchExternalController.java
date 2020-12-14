@@ -31,22 +31,28 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
- * UI Archive External controller
+ * UI Archive-Search External controller
  */
 @Api(tags = "Archives search")
 @RequestMapping(RestApi.ARCHIVE_SEARCH_PATH)
@@ -75,6 +81,13 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public VitamUISearchResponseDto getFillingHoldingScheme() {
         return archivesSearchExternalService.getFilingHoldingScheme();
+    }
+
+    @PostMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id, @RequestBody final Map<String, String> data) {
+        LOGGER.info("Get the UA by id {} ", id);
+        return archivesSearchExternalService.downloadArchiveUnit(id, data);
     }
 
 }

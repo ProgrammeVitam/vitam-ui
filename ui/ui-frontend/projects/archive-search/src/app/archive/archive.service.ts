@@ -153,6 +153,23 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
+  downloadArchiveUnit(id : string , a: {[key: string]: any }, headers?: HttpHeaders) {
+
+    return this.archiveApiService.downloadArchiveUnit(id, a, headers).subscribe(
+
+      file => {
+
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(file);
+        element.download ='item-'+id;
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+    );
+
+    }
 
 }
 

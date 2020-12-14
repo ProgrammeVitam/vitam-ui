@@ -38,14 +38,17 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ArchiveInternalRestClient
     extends BasePaginatingAndSortingRestClient<ArchiveUnitsDto, InternalHttpContext> {
@@ -120,5 +123,14 @@ public class ArchiveInternalRestClient
         }
         return headers;
     }
+
+    public ResponseEntity<Resource> downloadArchiveUnit(String id, Map<String, String> data ,final InternalHttpContext context) {
+        LOGGER.info("Get the UA ");
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
+        final HttpEntity<Map<String, String>> request = new HttpEntity<>(data,buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, Resource.class);
+    }
+
+
 
 }
