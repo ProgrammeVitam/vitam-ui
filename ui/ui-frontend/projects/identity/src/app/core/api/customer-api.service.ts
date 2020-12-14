@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient, Customer, Logger, Logo, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { AttachementType } from '../../customer/attachment.enum';
+import { AttachmentType } from '../../customer/attachment.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -111,7 +111,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
     return super.getHttp().get<any>(super.getApiUrl() + '/me');
   }
 
-  public getLogo(id: string, type: AttachementType): Observable<HttpResponse<Blob>> {
+  public getLogo(id: string, type: AttachmentType): Observable<HttpResponse<Blob>> {
     return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo?type=' + type, { observe: 'response', responseType: 'blob' });
   }
 }

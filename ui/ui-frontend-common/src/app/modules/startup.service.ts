@@ -45,7 +45,7 @@ import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachementType, AuthUser, Color } from './models';
+import { AppConfiguration, AttachmentType, AuthUser, Color } from './models';
 import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
@@ -87,12 +87,12 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
-      .then(() => this.applicationApi.getAsset([AttachementType.Header, AttachementType.Footer, AttachementType.Portal]).toPromise())
+      .then(() => this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.Portal]).toPromise())
       .then((data) => {
-        this.configurationData.HEADER_LOGO = data[AttachementType.Header];
-        this.configurationData.FOOTER_LOGO = data[AttachementType.Footer];
-        this.configurationData.PORTAL_LOGO = data[AttachementType.Portal];
-        this.configurationData.LOGO = data[AttachementType.Portal];
+        this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
+        this.configurationData.FOOTER_LOGO = data[AttachmentType.Footer];
+        this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
+        this.configurationData.LOGO = data[AttachmentType.Portal];
       })
       .then(() => {
 

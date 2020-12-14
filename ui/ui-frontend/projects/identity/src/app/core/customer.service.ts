@@ -42,7 +42,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpResponse } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AttachementType } from '../customer/attachment.enum';
+import { AttachmentType } from '../customer/attachment.enum';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { CustomerApiService } from './api/customer-api.service';
 
@@ -130,14 +130,14 @@ export class CustomerService {
       );
   }
 
-  public getLogoUrl(id: string, type: AttachementType): Observable<SafeResourceUrl> {
+  public getLogoUrl(id: string, type: AttachmentType): Observable<SafeResourceUrl> {
     return this.customerApi.getLogo(id, type).pipe(
       map((res: HttpResponse<Blob>) => {
           if (res.status === 204) {
             switch (type) {
-              case AttachementType.Header: return this.themeService.defaultTheme.headerUrl; break;
-              case AttachementType.Footer: return this.themeService.defaultTheme.footerUrl; break;
-              case AttachementType.Portal: return this.themeService.defaultTheme.portalUrl; break;
+              case AttachmentType.Header: return this.themeService.defaultTheme.headerUrl; break;
+              case AttachmentType.Footer: return this.themeService.defaultTheme.footerUrl; break;
+              case AttachmentType.Portal: return this.themeService.defaultTheme.portalUrl; break;
             }
             return null;
           }
@@ -148,9 +148,9 @@ export class CustomerService {
   }
 
   public getLogos(customerId: string): Observable<SafeResourceUrl[]> {
-    const headerLogo$ = this.getLogoUrl(customerId, AttachementType.Header);
-    const footerLogo$ = this.getLogoUrl(customerId, AttachementType.Footer);
-    const portalLogo$ = this.getLogoUrl(customerId, AttachementType.Portal);
+    const headerLogo$ = this.getLogoUrl(customerId, AttachmentType.Header);
+    const footerLogo$ = this.getLogoUrl(customerId, AttachmentType.Footer);
+    const portalLogo$ = this.getLogoUrl(customerId, AttachmentType.Portal);
     return zip(headerLogo$, footerLogo$, portalLogo$);
   }
 }
