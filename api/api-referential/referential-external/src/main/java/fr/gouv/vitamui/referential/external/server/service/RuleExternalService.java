@@ -87,12 +87,7 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
             final Optional<String> orderBy, final Optional<DirectionDto> direction) {
 
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<RuleDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
-        return new PaginatedValuesDto<>(
-            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
-            result.getPageNum(),
-            result.getPageSize(),
-            result.isHasMore());
+        return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
 
     public RuleDto getOne(String id) {

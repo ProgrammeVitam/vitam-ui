@@ -276,7 +276,7 @@ public class VitamRuleService {
     public Response export(VitamContext context) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException {
         JsonNode query = VitamQueryHelper.getLastOperationQuery(VitamQueryHelper.RULE_IMPORT_OPERATION_TYPE);
         RequestResponse<LogbookOperation> lastImportOperationResponse = accessExternalClient.selectOperations(context, query);
-        fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+        LogbookOperationsResponseDto lastImportOperation = VitamRestUtils.responseMapping(lastImportOperationResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
         if (lastImportOperation.getHits().getTotal() == 0) {
             throw new VitamClientException("Can't get a result while selecting last rule import");
