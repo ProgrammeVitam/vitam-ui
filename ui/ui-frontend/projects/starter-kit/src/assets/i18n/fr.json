@@ -18,5 +18,13 @@
         "Open": "Ouvrir la popup d'exemple",
         "Step-0": "Première étape",
         "Step-1": "Deuxième étape"
+    },
+    "COLORS":{
+        "Primary": "Couleur primaire",
+        "Secondary": "Couleur secondaire",
+        "Grey": "Couleur gris",
+        "Red": "Couleur rouge",
+        "Orange": "Couleur orange",
+        "Green": "Couleur vert"
     }
 }

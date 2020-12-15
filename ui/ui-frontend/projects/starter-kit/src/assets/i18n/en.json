@@ -18,5 +18,13 @@
         "Open": "Open the sample dialog",
         "Step-0": "First Step",
         "Step-1": "Second Step"
+    },
+    "COLORS":{
+        "Primary": "Color primary",
+        "Secondary": "Color secondary",
+        "Grey": "Color grey",
+        "Red": "Color red",
+        "Orange": "Color orange",
+        "Green": "Color green"
     }
 }
