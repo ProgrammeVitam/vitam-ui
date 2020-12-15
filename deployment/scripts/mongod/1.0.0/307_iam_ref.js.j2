@@ -35,6 +35,14 @@ db.profiles.insert({
 	 ]
 });
 
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
+});
+
 // ------------------------------------------- REFERENTIAL TENANT 2 --------------------------------
 
 db.profiles.insert({
@@ -62,6 +70,14 @@ db.profiles.insert({
             "name": "ROLE_DELETE_RULES"
          }
 	 ]
+});
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
 });
 
 // ========================================= GROUPS =========================================
