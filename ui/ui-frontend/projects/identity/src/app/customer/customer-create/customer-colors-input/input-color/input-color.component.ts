@@ -1,18 +1,16 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ColorErrorEnum} from './color-error.enum';
-import {ColorPickerDirective} from 'ngx-color-picker';
-import {hexToRgb, rgbToHsl} from 'ui-frontend-common';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ColorPickerDirective } from 'ngx-color-picker';
+import { hexToRgb, rgbToHsl } from 'ui-frontend-common';
+
+import { ColorErrorEnum } from './color-error.enum';
 
 @Component({
   selector: 'app-input-color',
   templateUrl: './input-color.component.html',
   styleUrls: ['./input-color.component.scss'],
 })
-
 export class InputColorComponent implements OnInit {
-
-  
   @Input() placeholder: string;
   @Input() disabled: boolean;
   @Input() colorInput: FormControl;
@@ -20,21 +18,18 @@ export class InputColorComponent implements OnInit {
 
   public color: string;
 
-  @ViewChild('colorPickerInput', {read: ColorPickerDirective, static: false})
+  @ViewChild('colorPickerInput', { read: ColorPickerDirective, static: false })
   private colorPicker: ColorPickerDirective;
+  public colorErrorEnum: typeof ColorErrorEnum = ColorErrorEnum;
+  public colorError: ColorErrorEnum = ColorErrorEnum.NONE;
 
-  public colorErrorEnum : typeof ColorErrorEnum = ColorErrorEnum;
-  public colorError : ColorErrorEnum = ColorErrorEnum.NONE;
-
-  constructor() {}
+  constructor() { }
 
   public ngOnInit(): void {
-
     this.color = this.colorInput.value;
     this.colorInput.valueChanges.subscribe((color: string) => {
       this.color = color;
-      if(this.checkWarning)
-      {
+      if (this.checkWarning) {
         this.checkColor500(color);
       }
     });
@@ -45,19 +40,16 @@ export class InputColorComponent implements OnInit {
     const rgbValue = hexToRgb(color);
     if (rgbValue) {
       const hslValue = rgbToHsl(rgbValue);
-      if(hslValue) {
-        if(hslValue.l > 60) {
+      if (hslValue) {
+        if (hslValue.l > 60) {
           this.colorError = ColorErrorEnum.COLOR_TOO_LIGHT;
-        }
-        else if(hslValue.l < 40) {
+        } else if (hslValue.l < 40) {
           this.colorError = ColorErrorEnum.COLOR_TOO_DARK;
         }
-      }
-      else{
+      } else {
         this.colorError = ColorErrorEnum.COLOR_INVALID;
       }
-    }
-    else {
+    } else {
       this.colorError = ColorErrorEnum.COLOR_INVALID;
     }
   }
@@ -69,19 +61,18 @@ export class InputColorComponent implements OnInit {
   }
 
   public openPicker(): void {
-    if ( ! this.disabled) {
+    if (!this.disabled) {
       this.colorPicker.openDialog();
     }
   }
 
   public forceHex(): void {
-    if (! this.colorInput.value.startsWith('#')) {
+    if (!this.colorInput.value.startsWith('#')) {
       this.colorInput.setValue('#' + this.colorInput.value);
     }
   }
 
   public handlePicker(pickerValue: string): void {
-
     // Avoid 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
     let inputValue: string = this.colorInput.value.toUpperCase();
     pickerValue = pickerValue.toUpperCase();
@@ -95,7 +86,10 @@ export class InputColorComponent implements OnInit {
 
     if (inputValue.length === 3 && pickerValue.length === 6) {
       for (let i = 0; i < 3; i++) {
-        if (inputValue.charAt(i) !== pickerValue.charAt(2 * i) || inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)) {
+        if (
+          inputValue.charAt(i) !== pickerValue.charAt(2 * i) ||
+          inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)
+        ) {
           continue;
         }
         return;
@@ -103,5 +97,4 @@ export class InputColorComponent implements OnInit {
     }
     this.colorInput.setValue('#' + pickerValue);
   }
-
 }

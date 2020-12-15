@@ -41,8 +41,7 @@ export class GraphicIdentityFormComponent implements OnInit {
   }
 
   private applyTheme(): void {
-    if(this.graphicIdentityForm.valid)
-    {
+    if (this.graphicIdentityForm.valid) {
       const colors = this.themeService.getThemeColors(this.graphicIdentityForm.get('themeColors').value);
       this.themeService.overloadLocalTheme(colors, '#toOverride');
     }
