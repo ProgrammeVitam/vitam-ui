@@ -87,8 +87,8 @@
                     <div class="col-12">
                         <div class="read-only-field">
                             <label>Service Producteur:</label>
-                            <div>
-                                {{archiveUnit['#originating_agencies']}}
+                            <div matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300" >
+                                {{ archiveUnit['originating_agencyName']}}
                             </div>
                         </div>
                     </div>
