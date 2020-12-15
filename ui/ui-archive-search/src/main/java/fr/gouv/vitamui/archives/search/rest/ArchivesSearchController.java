@@ -75,9 +75,9 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PostMapping(RestApi.SEARCH_PATH)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto searchArchiveUnits(@RequestBody final SearchCriteriaDto searchQuery) {
+    public VitamUIArchiveUnitResponseDto searchArchiveUnits(@RequestBody final SearchCriteriaDto searchQuery) {
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
-        VitamUISearchResponseDto archiveResponseDtos = new VitamUISearchResponseDto();
+        VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
         ArchiveUnitsDto archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
