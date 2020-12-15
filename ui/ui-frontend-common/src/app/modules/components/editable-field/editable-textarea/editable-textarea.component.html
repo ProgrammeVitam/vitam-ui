@@ -1,8 +1,8 @@
 <div class="editable-field-wrapper" *ngIf="!disabled">
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
-    <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
+    <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-          <span class="editable-field-label">{{label}}</span>
+        <label>{{label}}</label>
           <span class="editable-field-text-content display-all">{{control?.value}}</span>
           <div class="editable-field-control">
             <textarea [formControl]="control" [maxlength]="maxlength" rows="3" #input></textarea>

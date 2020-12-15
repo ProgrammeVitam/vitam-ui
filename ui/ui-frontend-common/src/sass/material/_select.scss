@@ -83,6 +83,7 @@
         &.mat-form-field-disabled {
             .mat-form-field-flex {
                 background-color: var(--vitamui-grey-300);
+                border: none;
 
                 .mat-select .mat-select-value {
                     font-weight: normal;
@@ -108,17 +109,13 @@
 
     .mat-form-field-flex {
         padding-right: 15px;
-        border: 1px solid var(--vitamui-grey-300);
+        border: 1px solid var(--vitamui-grey-400);
 
         .mat-form-field-infix {
             border-top-width: 0;
             display: flex;
             align-items: center;
             width: 100%;
-        }
-
-        .mat-select .mat-select-value {
-          
         }
 
         .mat-select .mat-select-arrow-wrapper {

@@ -8,103 +8,15 @@ $anim-timing: 150ms ease-out;
 :host {
     display: inline-block;
 
-    &.vitamui-focused .vitamui-input {
-        border-color: var(--vitamui-primary);
-    }
-
-    &.vitamui-focused .vitamui-input,
-    &.vitamui-float .vitamui-input {
-        label {
-            transform: scale(0.7) translateY(-15px);
-        }
-
-        input {
-            margin-top: 15px;
-        }
-    }
-
     &.ng-invalid .vitamui-input {
         border-color: $red;
     }
-}
 
-.vitamui-input {
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    height: $input-height;
-    width: 100%;
-    border-radius: $input-height / 2;
-    border: solid 1px var(--vitamui-grey-400);
-    background-color: $white;
-    padding: 8px 30px;
-    transition: border-color $anim-timing;
-    vertical-align: top;
-
-    &:hover:not(.disabled) {
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    &:focus {
-        @include elevation-0;
-        
-        &:not(.disabled)
-        {
-            border: 1px solid var(--vitamui-grey-300);
-        }
-    }
-
-    mat-spinner {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        display: none;
-    }
-}
-
-.vitamui-input.disabled {
-    background-color: var(--vitamui-grey-300);
-    border: none;
-    color: var(--vitamui-grey-300);
-}
-
-.vitamui-input.disabled, .vitamui-input.disabled > * {
-    cursor: no-drop;
-}
-
-:host.ng-pending {
-    .vitamui-input mat-spinner {
-        display: block;
+    &.ng-pending .vitamui-input mat-spinner {
+            display: block;
     }
 }
 
 .vitamui-input-errors {
     min-height: 23px;
-}
-
-input {
-    color: var(--vitamui-grey-900);
-    font-size: 14px;
-    font-weight: 500;
-    
-    background: none;
-    border: none;
-    transition: margin $anim-timing;
-    outline: none;
-    width: 100%;
-}
-
-label {
-    color: var(--vitamui-grey-600);
-    font-size: 14px;
-    position: absolute;
-    left: 30px;
-    transform-origin: left;
-    transition: transform $anim-timing;
-    pointer-events: none;
-    white-space: nowrap;
-
-    .required-marker {
-        color: $red;
-    }
 }

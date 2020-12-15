@@ -1,8 +1,8 @@
 <ng-container *ngIf="!disabled">
     <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-      <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
+      <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
         <div class="editable-field-content">
-            <span class="editable-field-label">{{label}}</span>
+          <label>{{label}}</label>
             <span class="editable-field-text-content">
               <div *ngFor="let email of control.value">
                 {{ email }}

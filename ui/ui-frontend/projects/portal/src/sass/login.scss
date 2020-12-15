@@ -51,11 +51,11 @@
         border: 1px solid transparent;
 
         &:focus {
-            border-color: $greyish-two;
+            border-color: var(--vitamui-primary);
         }
 
         &.ng-valid.ng-touched {
-            border-color: #43ea2a;
+            border-color: $green;
         }
 
         &.ng-invalid.ng-touched {

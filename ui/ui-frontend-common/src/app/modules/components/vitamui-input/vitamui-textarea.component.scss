@@ -2,98 +2,32 @@
 @import '../../../../sass/mixins/elevation';
 
 $input-height: 90px;
-$input-small-height: 34px;
-$anim-timing: 150ms ease-out;
 
 :host {
-    display: inline-block;
-
-    &.vitamui-focused .vitamui-textarea {
-        border-color: $greyish-two;
+    align-items: baseline;
+    &.ng-valid.ng-touched .vitamui-input {
+        border-color: $green;
     }
 
-    &.vitamui-focused .vitamui-textarea,
-    &.vitamui-float .vitamui-textarea {
-        label {
-            transform: scale(0.7) translateY(-15px);
-        }
-
-        textarea {
-            margin-top: 15px;
-        }
-    }
-
-    &.ng-valid.ng-touched .vitamui-textarea {
-        border-color: #43ea2a;
-    }
-
-    &.ng-invalid.ng-touched .vitamui-textarea {
+    &.ng-invalid.ng-touched .vitamui-input {
         border-color: $red;
     }
 }
 
-.vitamui-textarea {
-    @include elevation-1;
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    border-radius: 25px;
-    border: solid 1px #f0f0f0;
-    background-color: $white;
-    padding: 8px 30px;
-    transition: border-color $anim-timing;
-    vertical-align: top;
-
-    mat-spinner {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        display: none;
-    }
-}
-
-.vitamui-textarea.disabled {
-    border: none;
-    background-color: var(--vitamui-grey-300);
+.vitamui-input {
+    border-radius: 25px !important;
+    height: 100% !important;
+    min-height: $input-height !important;
 }
 
 :host.ng-pending {
-    .vitamui-textarea mat-spinner {
+    .vitamui-input mat-spinner {
         display: block;
     }
 }
 
-.vitamui-input-errors {
-    min-height: 30px;
-}
-
-textarea {
-    color:  var(--vitamui-grey-700);
-    font-size: 14px;
-    font-weight: 500;
-    
-    background: none;
-    border: none;
-    transition: margin $anim-timing;
-    outline: none;
-    width: 100%;
-    resize: none;
-}
-
-label {
-    color: var(--vitamui-grey-600);
-    
-    font-size: 14px;
-    position: absolute;
-    line-height: 48px;
-    left: 30px;
-    top: 5px;
-    transform-origin: left;
-    transition: transform $anim-timing;
+label{
+    top: 15px;
     pointer-events: none;
-
-    .required-marker {
-        color: $red;
-    }
 }
+
