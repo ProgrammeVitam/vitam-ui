@@ -45,13 +45,38 @@
   .search.mat-autocomplete-panel .mat-option {
     padding: 0px 36px; }
 
+.flex-align-center {
+  display: flex;
+  align-items: center; }
+
+.flex-justify-end-margin {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem; }
+
+.login-padding {
+  padding: 48px 80px; }
+
+.login-marging {
+  margin: 120px auto; }
+
+.marging-top-form {
+  margin-top: 2rem; }
+
+.text-red {
+  color: #C10000; }
+
+.centered {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
 .login-box {
   position: relative;
   display: block;
   box-sizing: border-box;
   width: 800px;
-  margin: 120px auto;
-  padding: 48px 80px;
   border-radius: 20px;
   background-color: #ffffff;
   box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3); }
@@ -74,7 +99,7 @@
     font-weight: 500; }
   .login-box a {
     font-size: 15px;
-    color: var(--vitamui-secondary);
+    color: var(--vitamui-primary);
     text-decoration: underline; }
   .login-box input[type=text],
   .login-box input[type=email],
@@ -141,7 +166,7 @@
     display: flex;
     align-items: center;
     background: transparent;
-    color: var(--vitamui-secondary);
+    color: var(--vitamui-primary);
     font-size: 14px;
     font-weight: normal;
     border: none;
@@ -152,7 +177,7 @@
       display: block;
       font-size: 18px;
       color: white;
-      background-color: var(--vitamui-secondary);
+      background-color: var(--vitamui-primary);
       width: 30px;
       height: 30px;
       border-radius: 15px;
@@ -173,8 +198,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("../images/login-bg.jpg");
-  background-size: cover; }
+  background-color: var(--vitamui-background); }
   .login .success {
     padding: 0;
     height: 440px;
@@ -188,7 +212,7 @@
       padding: 0 15%;
       text-align: center; }
       .login .success .content i.check-icon {
-        color: var(--vitamui-secondary);
+        color: var(--vitamui-primary);
         font-size: 110px; }
     .login .success h1 {
       line-height: 36px; }
@@ -292,7 +316,7 @@
 
 .step-password i.check-icon {
   float: right;
-  color: var(--vitamui-secondary);
+  color: var(--vitamui-primary);
   font-size: 110px;
   margin-left: 60px; }
 
@@ -439,6 +463,53 @@
   font-size: 15px;
   font-weight: normal;
   color: #a6a6a6; }
+
+h1, h2, h3, h4, h5 {
+  color: #212121;
+  margin: 10px 0; }
+  h1.light, h2.light, h3.light, h4.light, h5.light {
+    color: #757575; }
+
+h1 {
+  font-size: 96px;
+  font-weight: 800; }
+
+h2 {
+  font-size: 60px;
+  font-weight: 900; }
+
+h3 {
+  font-size: 42px;
+  font-weight: 800; }
+
+h4 {
+  font-size: 30px;
+  font-weight: 600; }
+
+h5 {
+  font-size: 24px;
+  font-weight: 800; }
+
+.text {
+  color: #212121;
+  font-weight: 400; }
+  .text.large {
+    font-size: 20px; }
+  .text.medium {
+    font-size: 16px; }
+  .text.normal {
+    font-size: 14px; }
+  .text.caption {
+    font-size: 12px; }
+  .text.bold {
+    font-weight: bold; }
+  .text.link {
+    text-decoration: underline;
+    cursor: pointer; }
+  .text.spaced {
+    letter-spacing: 0.8px; }
+  .text.light {
+    color: #757575; }
 
 body {
   margin: 0;

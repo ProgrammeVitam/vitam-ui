@@ -21,62 +21,70 @@
     <div class="login">
     </div>
 
-    <div class="login-box step-password">
-        <header>
-            <img class="vitam-logo" th:src=" ${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png} ">
-            <h1><img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
-	        <p>
-	        	<span th:if="${!#strings.isEmpty(superUser)}">
-	            Bon retour parmi nous [[${superUser}]] !<br>
-                </span>
-	        	<span th:if="${#strings.isEmpty(superUser)}">
-	            Bon retour parmi nous [[${credential.username}]] !<br>
-                </span>
-	            <br>
-	            Veuillez saisir votre <strong>mot de passe *</strong>
-	            <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
-			        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-			        <input type="hidden" name="_eventId" value="resetPassword"/>
-			        <span class="fa fa-unlock"></span>
-	            	<small>Vous avez oubliez votre <strong>mot de passe</strong> ? Demandez moi de vous <a href="javascript:void(0)" onclick="$('#passwordManagementForm').submit();">créer un nouveau mot de passe</a>.</small>
-			    </form>
-	        </p>
-        </header>
+    <div class="centered">
+        <div class="flex-justify-end-margin">
+            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+        </div>
+        <div class="login-box login-padding step-password">
+            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+            <div>
+                <h5 th:if="${!#strings.isEmpty(superUser)}">
+                    Bon retour parmi nous [[${superUser}]] !
+                </h5>
 
-    	<form method="post" id="fm1" th:object="${credential}" action="login">
-            <div class="form-control">
+                <h5 th:if="${#strings.isEmpty(superUser)}">
+                    Bon retour parmi nous [[${credential.username}]] !<br>
+                </h5>
+            </div>
+            <div class="marging-top-form" >
+            <div class="text medium bold"> Veuillez saisir votre mot de passe <span class="text-red">*</span></div>
+            <div>
+                <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
+                    <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+                    <input type="hidden" name="_eventId" value="resetPassword"/>
+                    <span class="fa fa-unlock"></span>
+                    <div class="text medium">Vous avez oubliez votre mot de passe ? <a href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();">
+                        créer un nouveau mot de passe</a>.
+                    </div>
+                </form>
+            </div>
+            </div>
 
-                <input class="required"
-                    type="password"
-                    name="password" placeholder="Mot de passe *"
-                       autofocus
-                    id="password"
-                    size="25"
-                    tabindex="2"
-                    th:accesskey="#{screen.welcome.label.password.accesskey}"
-                    th:field="*{password}"
-                    autocomplete="off"/>
-                <span id="capslock-on" style="display:none;">
+            <form class="marging-top-form" method="post" id="fm1" th:object="${credential}" action="login">
+                <div class="form-control">
+
+                    <input class="required"
+                           type="password"
+                           name="password" placeholder="Mot de passe *"
+                           autofocus
+                           id="password"
+                           size="25"
+                           tabindex="2"
+                           th:accesskey="#{screen.welcome.label.password.accesskey}"
+                           th:field="*{password}"
+                           autocomplete="off"/>
+                    <span id="capslock-on" style="display:none;">
                     <p>
                         <i class="fa fa-exclamation-circle"></i>
                         <span th:utext="#{screen.capslock.on}"/>
                     </p>
                 </span>
 
-                <input th:if="${param.doChangePassword != null}" type="hidden" name="doChangePassword" id="doChangePassword" value="true" />
+                    <input th:if="${param.doChangePassword != null}" type="hidden" name="doChangePassword" id="doChangePassword" value="true"/>
 
-                <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-                <input type="hidden" name="_eventId" value="submit"/>
+                    <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+                    <input type="hidden" name="_eventId" value="submit"/>
 
-            </div>
-            <button type="submit" class="vitamui-primary" accesskey="l" th:value="#{screen.welcome.button.login}" tabindex="6">
-            	OK
+                </div>
+                <button type="submit" class="vitamui-primary" accesskey="l" th:value="#{screen.welcome.button.login}" tabindex="6">
+                    OK
+                </button>
+            </form>
+
+            <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
+                <i class="material-icons">arrow_back</i> Retour
             </button>
-        </form>
-
-		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
-			<i class="material-icons">arrow_back</i> Retour
-	    </button>
+        </div>
     </div>
 
 </body>

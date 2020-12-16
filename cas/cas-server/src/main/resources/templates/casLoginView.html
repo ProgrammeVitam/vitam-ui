@@ -18,24 +18,28 @@
 
     <div class="login">
     </div>
-
-    <div class="login-box step-email">
-        <header>
-            <img class="vitam-logo" th:src=" ${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png} ">
-            <h1>Bienvenue sur <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
-
-            <p th:if="${#strings.isEmpty(superUser)}">
-            Veuillez saisir votre <strong>adresse e-mail <span class="primary">*</span></strong><br>
-            <small>
+<div class="centered">
+    <div class="flex-justify-end-margin">
+        <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+    </div>
+    <div class="login-box login-padding  step-email">
+        <div class="flex-align-center">
+            <div><h3>Bienvenue sur &nbsp;&nbsp;</h3></div>
+            <div>
+                <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+          </div>
+        </div>
+            <div th:if="${#strings.isEmpty(superUser)}" class="text large bold">
+            Veuillez saisir votre adresse mail <span class="text-red">*</span></div><br>
+            <div class="text medium">
                 Vous avez oublié votre identifiant ? Contactez votre administrateur.
-            </small>
+            </div>
             </p>
 
             <p th:if="${!#strings.isEmpty(superUser)}">
             <strong>Subrogation</strong><br>
             </p>
-        </header>
-        <br>
+
         <form method="post" id="fm1" th:object="${credential}" action="login">
 
         	<div class="form-control" th:if="${#strings.isEmpty(superUser)}">
@@ -86,12 +90,12 @@
 
             <button  type="submit" autofocus  class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
-        <p class="helper">Appuyez sur <strong>Entrée</strong> pour valider</p>
+        <div class="helper">Appuyez sur <strong>Entrée</strong> pour valider</div>
 		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
 			<i class="material-icons">arrow_back</i> Retour
 	    </button>
     </div>
-
+</div>
     <div th:if="${logoutUrls}">
         <div th:each="entry : ${logoutUrls}">
             <script type="text/javascript" th:inline="javascript">
