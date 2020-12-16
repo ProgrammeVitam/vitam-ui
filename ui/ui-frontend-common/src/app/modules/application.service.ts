@@ -39,7 +39,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
-import { Application } from './models/application/application.interface';
+import { Application, ApplicationInfo } from './models/application/application.interface';
+import { Category } from './models/application/category.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -54,19 +55,28 @@ export class ApplicationService {
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
+  /**
+   * Categoriies of the application.
+   */
+  set categories(categories: { [categoryId: string]: Category }) { this._categories = categories; }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
+  // tslint:disable-next-line:variable-name
+  _categories: { [categoryId: string]: Category };
+
   constructor(private applicationApi: ApplicationApiService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
    */
-  list(): Observable<Application[]> {
+  list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
 
     return this.applicationApi.getAllByParams(params).pipe(
-      catchError(() => of([])),
-      map((apps: Application[]) => {
-        this._applications = apps;
-        return apps;
+      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
+      map((applicationInfo: ApplicationInfo) => {
+        this._applications = applicationInfo.APPLICATION_CONFIGURATION;
+        this._categories = applicationInfo.CATEGORY_CONFIGURATION;
+        return applicationInfo;
       })
     );
 

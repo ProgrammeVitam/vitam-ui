@@ -39,7 +39,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration, Application } from '../models';
+import { AppConfiguration, ApplicationInfo } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -52,8 +52,8 @@ export class ApplicationApiService {
     this.apiUrl = baseUrl + '/ui/applications';
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<Application[]> {
-    return this.http.get<Application[]>(this.apiUrl, { params, headers });
+  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<ApplicationInfo> {
+    return this.http.get<ApplicationInfo>(this.apiUrl, { params, headers });
   }
 
   getConfiguration(): Observable<AppConfiguration> {

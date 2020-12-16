@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -97,13 +99,14 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public SubrogationDto getOne(final @PathVariable("id") String id) {
         LOGGER.debug("Get {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return subrogationExternalService.getOne(id);
     }
 
     @Override
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_SUBROGATIONS)
-    public SubrogationDto create(@Valid final @RequestBody SubrogationDto dto) {
+    public SubrogationDto create(@Valid @RequestBody final  SubrogationDto dto) {
         LOGGER.debug("Create {}", dto);
         return subrogationExternalService.create(dto);
     }
@@ -122,6 +125,8 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @Secured(ServicesData.ROLE_GET_GROUPS_SUBROGATIONS)
     public GroupDto getGroupById(final @PathVariable("id") String id) {
         LOGGER.debug("Get group {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         return subrogationExternalService.getGroupById(id);
     }
 
@@ -134,12 +139,16 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @PatchMapping("/surrogate/accept/{id}")
     public SubrogationDto accept(final @PathVariable("id") String id) {
         LOGGER.debug("Accepte subrogation id : {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         return subrogationExternalService.accept(id);
     }
 
     @DeleteMapping("/surrogate/decline/{id}")
     public void decline(final @PathVariable("id") String id) {
         LOGGER.debug("Decline subrogation id : {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         subrogationExternalService.decline(id);
     }
 

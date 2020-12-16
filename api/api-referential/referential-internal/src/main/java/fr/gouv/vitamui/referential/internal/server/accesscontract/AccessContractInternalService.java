@@ -93,7 +93,7 @@ public class AccessContractInternalService {
     private LogbookService logbookService;
 
     @Autowired
-    public AccessContractInternalService(AccessContractService accessContractService, VitamUIAccessContractService vitamUIAccessContractService, ObjectMapper objectMapper, AccessContractConverter converter,LogbookService logbookService) {
+    public AccessContractInternalService(AccessContractService accessContractService, VitamUIAccessContractService vitamUIAccessContractService, ObjectMapper objectMapper, AccessContractConverter converter, LogbookService logbookService) {
         this.accessContractService = accessContractService;
         this.vitamUIAccessContractService=vitamUIAccessContractService;
         this.objectMapper = objectMapper;

@@ -233,6 +233,7 @@ deployment/playbooks/templates/vitamui/conf/*/*.p12
 # Vitam development configuration #
 ###################################
 api/api-referential/referential-internal/src/main/config/dev-vitam/*
+api/api-ingest/ingest-internal/src/main/config/dev-vitam/*
 api/api-iam/iam-internal/src/main/config/dev-vitam/*
 
 ##########################################

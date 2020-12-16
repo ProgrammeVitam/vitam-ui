@@ -36,13 +36,17 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.identity.service.OwnerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,15 +64,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.identity.service.OwnerService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "owners")
 @RestController
@@ -107,6 +106,7 @@ public class OwnerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public OwnerDto update(final @PathVariable("id") String id, @RequestBody final OwnerDto entityDto) {
         LOGGER.info("update class={}", entityDto.getClass().getName());
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);
     }
@@ -126,6 +126,7 @@ public class OwnerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch Owner {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch owner : the DTO id must match the path id");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
@@ -134,6 +135,7 @@ public class OwnerController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for owner with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 }

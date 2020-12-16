@@ -1,18 +1,5 @@
 package fr.gouv.vitamui.portal.rest;
 
-import static org.mockito.ArgumentMatchers.any;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -24,6 +11,18 @@ import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
 import fr.gouv.vitamui.ui.commons.rest.UIControllerTest;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })

@@ -36,25 +36,23 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 
 public final class CriteriaUtils {
 

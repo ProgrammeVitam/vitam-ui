@@ -118,7 +118,7 @@
 
       <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context><context context-type="linenumber">160</context></context-group></trans-unit><trans-unit id="updateCustomerGraphicIdentityButton" datatype="html">
         <source>Valider</source><target state="final">Valider</target>
-        
+
         <note priority="1" from="description">Update customer graphic identity</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-preview/graphic-identity-tab/graphic-identity-update/graphic-identity-update.component.html</context><context context-type="linenumber">42</context></context-group></trans-unit><trans-unit id="customerGraphicIdentityTabEditButton" datatype="html">
         <source>
@@ -1414,7 +1414,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
 
       <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-list/customer-list.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="caa39b927cc579baa54cfdda6a47a4cdc15e61d3" datatype="html">
         <source>{VAR_SELECT, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</source><target state="final">{VAR_SELECT, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-list/customer-list.component.html</context><context context-type="linenumber">33</context></context-group></trans-unit>
 
       <trans-unit id="tableMoreResultButton" datatype="html">
@@ -1450,7 +1450,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <target state="final">Nom du groupe</target>
       <context-group purpose="location"><context context-type="sourcefile">src/app/group/group-list/group-list.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="profileGroupListHeaderID" datatype="html">
         <source>Identifiant</source><target state="final">Identifiant</target>
-        
+
         <note priority="1" from="description">Group ID</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/group/group-list/group-list.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit>
       <trans-unit id="profileGroupListHeaderDescription" datatype="html">
@@ -1460,7 +1460,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <target state="final">Description</target>
       <context-group purpose="location"><context context-type="sourcefile">src/app/group/group-list/group-list.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="profileGroupListHeaderLevel" datatype="html">
         <source>Niveau</source><target state="final">Niveau</target>
-        
+
         <note priority="1" from="description">Description</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/group/group-list/group-list.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit>
       <trans-unit id="profileGroupPreviewComingSoon" datatype="html">
@@ -1541,7 +1541,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
                   <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Actif<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
                 </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-list/user-list.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="userStatusBlocked" datatype="html">
         <source>
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
@@ -1562,7 +1562,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
                   <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Désactivé<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
                 </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-list/user-list.component.html</context><context context-type="linenumber">33</context></context-group></trans-unit><trans-unit id="userStatusRemoved" datatype="html">
         <source>
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>x<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
@@ -1571,7 +1571,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>x<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
                   <x id="START_TAG_SPAN_1" ctype="x-span" equiv-text="&lt;span>"/>Effacé<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
                 </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-list/user-list.component.html</context><context context-type="linenumber">39</context></context-group></trans-unit><trans-unit id="userTypeGeneric" datatype="html">
         <source>
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
@@ -1580,7 +1580,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
                   <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
                   <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Générique<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
                 </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-list/user-list.component.html</context><context context-type="linenumber">45</context></context-group></trans-unit>
       <trans-unit id="profileGroupCreateTitle" datatype="html">
         <source>Création d'un groupe de profils</source>
@@ -1953,7 +1953,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <target state="final">Nom du profil administrateur</target>
       <context-group purpose="location"><context context-type="sourcefile">src/app/profile/profile-list/profile-list.component.html</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="profileListHeaderIdentifier" datatype="html">
         <source>Identifiant</source><target state="final">Identifiant</target>
-        
+
         <note priority="1" from="description">Profile Identifier</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/profile/profile-list/profile-list.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit>
       <trans-unit id="profileListHeaderDescription" datatype="html">
@@ -1963,7 +1963,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <target state="final">Description</target>
       <context-group purpose="location"><context context-type="sourcefile">src/app/profile/profile-list/profile-list.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="profileListHeaderLevel" datatype="html">
         <source>Niveau</source><target state="final">Niveau</target>
-        
+
         <note priority="1" from="description">Description</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/profile/profile-list/profile-list.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit>
       <trans-unit id="profileListHeaderUsersCount" datatype="html">
@@ -2150,7 +2150,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
     </source><target state="final">
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Vous avez déjà une subrogation en cours avec l'utilisateur : <x id="INTERPOLATION" equiv-text="{{data.email}}"/>
     </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/notification-snack-bar/notification-snack-bar.component.d.ts</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="subrogationBannerAdmin" datatype="html">
         <source>Subrogation de l'utilisateur
     <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:'HH:mm:ss'}}"/></source><target state="final">Subrogation de l'utilisateur
@@ -2275,16 +2275,16 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
   </source><target state="final">
     Êtes vous sûr de vouloir arrêter la subrogation de l'utilisateur <x id="INTERPOLATION" equiv-text="{{ authService?.user?.lastname }}"/> <x id="INTERPOLATION_1" equiv-text="{{ authService?.user?.firstname }}"/> ?
   </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-banner/subrogation-banner.component.d.ts</context><context context-type="linenumber">24</context></context-group></trans-unit><trans-unit id="stopSubrogationConfirmDialogTitle" datatype="html">
         <source>Arrêter la subrogation ?</source><target state="final">Arrêter la subrogation ?</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-banner/subrogation-banner.component.d.ts</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="stopSubrogationConfirmDialogConfirmLabel" datatype="html">
         <source>Arrêter</source><target state="final">Arrêter</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-banner/subrogation-banner.component.d.ts</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="stopSubrogationConfirmDialogCancelLabel" datatype="html">
         <source>Annuler</source><target state="final">Annuler</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-banner/subrogation-banner.component.d.ts</context><context context-type="linenumber">23</context></context-group></trans-unit><trans-unit id="SubrogateUser" datatype="html">
         <source>Subrogation d'utilisateur</source><target state="final">Subrogation d'utilisateur</target>
 
@@ -2315,10 +2315,10 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <note priority="1" from="description">Subrogate subrogate</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/subrogation/subrogate-user/subrogate-user-list/subrogate-user-list.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit><trans-unit id="SubrogateCurrentUserInSubroLabel" datatype="html">
         <source>En cours</source><target state="final">En cours</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/subrogation/subrogate-user/subrogate-user-list/subrogate-user-list.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="SubrogateUserInSubroLabel" datatype="html">
         <source>Subrogé par <x id="INTERPOLATION" equiv-text="{{subrogableUser.superUserEmail}}"/></source><target state="final">Subrogé par <x id="INTERPOLATION" equiv-text="{{subrogableUser.superUserEmail}}"/></target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/subrogation/subrogate-user/subrogate-user-list/subrogate-user-list.component.html</context><context context-type="linenumber">58</context></context-group></trans-unit><trans-unit id="SubrogateUserButton" datatype="html">
         <source>Subroger un utilisateur client</source><target state="final">Subroger un utilisateur client</target>
 
@@ -2426,23 +2426,23 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
           </source><target state="final">
             Continuer en saisissant les coordonnées
           </target>
-        
+
         <note priority="1" from="description">user create next step otp</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">145</context></context-group></trans-unit><trans-unit id="userCreateAddressTitle" datatype="html">
         <source>Coordonnées</source><target state="final">Coordonnées</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">158</context></context-group></trans-unit><trans-unit id="userCreateStreetInputPlaceholder" datatype="html">
         <source>N° et nom de rue</source><target state="final">N° et nom de rue</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">163</context></context-group></trans-unit><trans-unit id="userCreateZipCodeInputPlaceholder" datatype="html">
         <source>Code postal</source><target state="final">Code postal</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">171</context></context-group></trans-unit><trans-unit id="userCreateCityInputPlaceholder" datatype="html">
         <source>Ville</source><target state="final">Ville</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">176</context></context-group></trans-unit><trans-unit id="userCreateCountrySelectPlaceholder" datatype="html">
         <source>Pays</source><target state="final">Pays</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-create/user-create.component.html</context><context context-type="linenumber">182</context></context-group></trans-unit><trans-unit id="userCreateOtp" datatype="html">
         <source>Validation en deux étapes</source><target state="final">Validation en deux étapes</target>
 
@@ -2565,7 +2565,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         </context-group>
       </trans-unit><trans-unit id="UserInfoTabLevel" datatype="html">
         <source>Niveau</source><target state="final">Niveau</target>
-        
+
         <note priority="1" from="description">user info tab level</note>
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/account/account-information-tab/account-information-tab.component.d.ts</context><context context-type="linenumber">94</context></context-group></trans-unit><trans-unit id="noHistoryMessage" datatype="html">
         <source>Aucun historique</source><target state="final">Aucun historique</target>
@@ -2694,7 +2694,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
     </source><target state="final">
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est arrêté
     </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component.d.ts</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="notificationSubrogationActivated" datatype="html">
         <source>
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
@@ -2703,7 +2703,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
       <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: 'mm'}}"/>. Veuillez ne pas changer d'application.
     </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component.d.ts</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="tenantSearchLabel" datatype="html">
         <source>
         Mes <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/> Coffres<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
@@ -2714,19 +2714,30 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <note priority="1" from="description">Application research tenant label</note>
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/vitamui-tenant-select/vitamui-tenant-select.component.d.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="PortalManagementCategory" datatype="html">
         <source>Management</source><target state="final">Management</target>
-        
+
         <note priority="1" from="description">Management category</note>
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/application-select-content/application-select-content.component.d.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="PortalSettingsCategory" datatype="html">
         <source>Paramétrage</source><target state="final">Paramétrage</target>
-        
+
         <note priority="1" from="description">Settings category</note>
+      </trans-unit>
+      <trans-unit id="PortalIngestsCategory" datatype="html">
+        <source>Suivi des Versements</source>
+        <target state="new"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/application-select-content/application-select-content.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="description">Ingests monitoring category</note>
+      </trans-unit>
+      <trans-unit id="menuCustomer" datatype="html">
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/application-select-content/application-select-content.component.d.ts</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="menuCustomer" datatype="html">
         <source>Applications</source><target state="final">Applications</target>
-        
-        
+
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/navbar/application-menu/application-menu.component.d.ts</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/navbar/customer-menu/customer-menu.component.d.ts</context><context context-type="linenumber">4</context></context-group></trans-unit><trans-unit id="menuTenant" datatype="html">
         <source>Coffres</source><target state="final">Coffres</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/navbar/tenant-menu/tenant-menu.component.d.ts</context><context context-type="linenumber">4</context></context-group></trans-unit><trans-unit id="emailsInputAddButton" datatype="html">
         <source>Ajouter</source><target state="final">Ajouter</target>
         <context-group purpose="location">
@@ -2754,7 +2765,7 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
       </source><target state="final">
           Mes <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/> Organisations<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
       </target>
-        
+
         <note priority="1" from="description">Application research customer label</note>
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/vitamui-customer-select/vitamui-customer-select.component.d.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="downloadBarCancelled" datatype="html">
         <source>
@@ -2762,69 +2773,69 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
   </source><target state="final">
     <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/>info<x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Téléchargement annulé<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
   </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/cancelled-snack-bar/cancelled-snack-bar.component.d.ts</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="downloadBarDownloadCount" datatype="html">
         <source>
         Compression du fichier : <x id="ICU" equiv-text="{count, plural, =1 {...} other {...}}"/>
       </source><target state="final">
         Compression du fichier : <x id="ICU" equiv-text="{count, plural, =1 {...} other {...}}"/>
       </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="0988b237ade9776df95b3c32db1e0e2373819685" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 élément} other {<x id="INTERPOLATION" equiv-text="{{count}}"/> éléments} }</source><target state="final">{VAR_PLURAL, plural, =1 {1 élément} other {<x id="INTERPOLATION" equiv-text="{{count}}"/> éléments} }</target>
-        
-        
+
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="downloadBarDownloadCountOverTotal" datatype="html">
         <source>
         Compression du fichier : <x id="ICU" equiv-text="{count, plural, =1 {...} other {...}}"/> sur <x id="INTERPOLATION_1" equiv-text="{{total}}"/> (<x id="ICU_1" equiv-text="{notDownloadable, plural, =1 {...} other {...}}"/>)
       </source><target state="final">
         Compression du fichier : <x id="ICU" equiv-text="{count, plural, =1 {...} other {...}}"/> sur <x id="INTERPOLATION_1" equiv-text="{{total}}"/> (<x id="ICU_1" equiv-text="{notDownloadable, plural, =1 {...} other {...}}"/>)
       </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">9</context></context-group></trans-unit><trans-unit id="b7e090269b98e465105e10a74cf4b9abc7758e7b" datatype="html">
         <source>{VAR_PLURAL, plural, =1 {1 élément non téléchargeable} other {<x id="INTERPOLATION" equiv-text="{{notDownloadable}}"/> éléments non téléchargeables} }</source><target state="final">{VAR_PLURAL, plural, =1 {1 élément non téléchargeable} other {<x id="INTERPOLATION" equiv-text="{{notDownloadable}}"/> éléments non téléchargeables} }</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="downloadBarLabel" datatype="html">
         <source>
       Génération du fichier
     </source><target state="final">
       Génération du fichier
     </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="downloadBarCancelButton" datatype="html">
         <source>Annuler le téléchargement</source><target state="final">Annuler le téléchargement</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">19</context></context-group></trans-unit><trans-unit id="downloadBarConfirmation" datatype="html">
         <source>Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?</source><target state="final">Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">28</context></context-group></trans-unit><trans-unit id="downloadBarConfirmButton" datatype="html">
         <source>Confirmer</source><target state="final">Confirmer</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">31</context></context-group></trans-unit><trans-unit id="downloadBarBackButton" datatype="html">
         <source>Retour</source><target state="final">Retour</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/download-snack-bar/download-snack-bar.component.d.ts</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="closePopupConfirmDialogContent" datatype="html">
         <source>
   Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?
 </source><target state="final">
   Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?
 </target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/close-popup-dialog.component.d.ts</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="closePopupConfirmDialogTitle" datatype="html">
         <source>Fermer la fenêtre ?</source><target state="final">Fermer la fenêtre ?</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/close-popup-dialog.component.d.ts</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="closePopupConfirmDialogConfirmLabel" datatype="html">
         <source>Fermer</source><target state="final">Fermer</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/close-popup-dialog.component.d.ts</context><context context-type="linenumber">4</context></context-group></trans-unit><trans-unit id="closePopupConfirmDialogCancelLabel" datatype="html">
         <source>Retour</source><target state="final">Retour</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/close-popup-dialog.component.d.ts</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="confirmDialogConfirmLabel" datatype="html">
         <source>Confimer</source><target state="final">Confimer</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/confirm-dialog.component.d.ts</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="confirmDialogCancelLabel" datatype="html">
         <source>Retour</source><target state="final">Retour</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/confirm-dialog/confirm-dialog.component.d.ts</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="countryLabel" datatype="html">
         <source>
   <x id="ICU" equiv-text="{
@@ -2845,10 +2856,10 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         </context-group>
       </trans-unit><trans-unit id="editableSelectConfirmDialogDefaultContent" datatype="html">
         <source>Êtes-vous sûr de vouloir effectuer cette modification ?</source><target state="final">Êtes-vous sûr de vouloir effectuer cette modification ?</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/editable-field/editable-select/editable-select.component.d.ts</context><context context-type="linenumber">53</context></context-group></trans-unit><trans-unit id="editableSelectConfirmDialogCancelLabel" datatype="html">
         <source>Annuler</source><target state="final">Annuler</target>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/editable-field/editable-select/editable-select.component.d.ts</context><context context-type="linenumber">51</context></context-group></trans-unit><trans-unit id="emailInputPlaceholder" datatype="html">
         <source>nom@domaine.xyz</source><target state="final">nom@domaine.xyz</target>
         <context-group purpose="location">
