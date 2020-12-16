@@ -42,6 +42,7 @@ import org.springframework.context.annotation.Configuration;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.converter.IdentityProviderConverter;
@@ -108,14 +109,19 @@ public class ConverterConfig {
     public ApplicationConverter applicationConverter() {
         return new ApplicationConverter();
     }
+    
+    @Bean
+    public ExternalParametersConverter externalParametersConverter() {
+        return new ExternalParametersConverter();
+    }
 
     @Bean
     public Converters converters(final UserConverter userConverter, final TenantConverter tenantConverter, final OwnerConverter ownerConverter,
             final ProfileConverter profileConverter, final ApplicationConverter applicationConverter, final GroupConverter groupConverter,
             final CustomerConverter customerConverter, final IdentityProviderConverter identityProviderConverter,
-            final SubrogationConverter subrogationConverter) {
+            final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter) {
         return new Converters(userConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter, identityProviderConverter,
-                subrogationConverter);
+                subrogationConverter, externalParametersConverter);
     }
 
 }

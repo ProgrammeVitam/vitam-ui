@@ -15,4 +15,40 @@ db.contexts.updateOne( {
     }
 });
 
+db.contexts.updateOne( {
+	"_id": "ui_identity_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+				"ROLE_GET_EXTERNAL_PARAMS"
+        	]
+        }
+    }
+});
+
+db.contexts.updateOne( {
+	"_id": "ui_admin_identity_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+				"ROLE_GET_EXTERNAL_PARAMS"
+        	]
+        }
+    }
+});
+
+db.contexts.updateOne( {
+	"_id": "ui_referential_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+				"ROLE_GET_EXTERNAL_PARAMS"
+        	]
+        }
+    }
+});
+
 print("END 314_security_ref.js.j2");

@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AccessContract, Event} from 'projects/vitamui-library/src/public-api';
-
-import {AccessContractService} from '../../access-contract/access-contract.service';
-import {AuditService} from '../audit.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { AuditService } from '../audit.service';
+import { ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-audit-preview',
@@ -51,17 +50,25 @@ export class AuditPreviewComponent implements OnInit {
   @Input() audit: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  accessContracts: AccessContract[];
   accessContractId: string;
 
-  constructor(private auditService: AuditService, private accessContractService: AccessContractService, private route: ActivatedRoute) {
+  constructor(
+    private auditService: AuditService,
+    private externalParameterService: ExternalParametersService,
+    private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      if (params.tenantIdentifier) {
-        this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
-          this.accessContracts = value;
+    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessContratId && accessContratId.length > 0) {
+        this.accessContractId = accessContratId;
+      } else {
+        this.snackBar.open(
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000
         });
       }
     });
@@ -69,10 +76,6 @@ export class AuditPreviewComponent implements OnInit {
 
   emitClose() {
     this.previewClose.emit();
-  }
-
-  updateAccessContractId(event: any) {
-    this.accessContractId = event.value;
   }
 
   downloadReport() {

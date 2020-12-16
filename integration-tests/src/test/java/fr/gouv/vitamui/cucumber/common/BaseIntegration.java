@@ -15,6 +15,16 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.GroupExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.*;
 import fr.gouv.vitamui.referential.external.client.*;
@@ -109,6 +119,8 @@ public abstract class BaseIntegration {
     private ContextExternalRestClient contextRestClient;
 
     private RuleExternalRestClient ruleRestClient;
+    
+    private ExternalParametersExternalRestClient externalParametersExternalRestClient;
 
     private UnitExternalRestClient unitRestClient;
 
@@ -665,6 +677,19 @@ public abstract class BaseIntegration {
         }
         return unitRestClient;
     }
+
+    protected ExternalParametersExternalRestClient getExternalParametersExternalRestClient() {
+        if (externalParametersExternalRestClient == null) {
+        	externalParametersExternalRestClient = getIamRestClientFactory().getExternalParametersExternalRestClient();
+        }
+        return externalParametersExternalRestClient;
+    }
+
+    protected ExternalParametersExternalRestClient getExternalParametersExternalRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
+        prepareGenericContext(fullAccess, tenants, roles);
+        return getIamRestClientFactory(GENERIC_CERTIFICATE).getExternalParametersExternalRestClient();
+    }
+
 
     protected MongoCollection<Document> getProfilesCollection() {
         if (profilesCollection == null) {

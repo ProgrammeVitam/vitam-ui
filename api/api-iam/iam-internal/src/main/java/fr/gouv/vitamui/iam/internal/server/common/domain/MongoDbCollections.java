@@ -62,6 +62,8 @@ public final class MongoDbCollections {
     public static final String APPLICATIONS = "applications";
 
     public static final String SUBROGATIONS = "subrogations";
+    
+    public static final String EXTERNAL_PARAMETERS = "external_parameters";
 
     private MongoDbCollections() {
         // do nothing
