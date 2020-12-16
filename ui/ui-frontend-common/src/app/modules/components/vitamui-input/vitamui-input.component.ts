@@ -69,7 +69,7 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('vitamUIInput', {static: false}) private input: ElementRef;
+  @ViewChild('vitamUIInput') private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;

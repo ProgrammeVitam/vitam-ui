@@ -63,7 +63,7 @@ export class EditableSelectComponent extends EditableFieldComponent {
 
   @ContentChildren(EditableOptionComponent) options: QueryList<EditableOptionComponent>;
 
-  @ViewChild('select', {static: false}) select: MatSelect;
+  @ViewChild('select') select: MatSelect;
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<EditableFieldComponent>;
 
   @Input() showConfirmDialog = false;

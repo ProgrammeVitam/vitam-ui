@@ -71,7 +71,6 @@ export * from './tenant-selection.guard';
 export * from './theme.service';
 export * from './utils/index';
 
-export * from './components/header/select-language/index';
 export * from './components/application-select-content/index';
 export * from './components/blank/blank.component';
 export * from './components/collapse/collapse.module';

@@ -56,7 +56,6 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  // @ts-ignore
   get canConfirm() { return this.editMode && !!this.file && this.control.valid; }
 
   constructor(private identityProviderService: IdentityProviderService, elementRef: ElementRef) {

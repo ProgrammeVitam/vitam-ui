@@ -5,16 +5,11 @@
     "types": []
   },
   "include": [
-    // "src/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "testing",
     "src/test.ts",
     "src/**/*.spec.ts"
-  ],
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts",
-    "src/zone-flags.ts"
   ]
 }

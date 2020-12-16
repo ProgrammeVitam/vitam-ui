@@ -69,7 +69,7 @@ export class VitamUIInputPositiveNumberComponent implements ControlValueAccessor
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
-  @ViewChild('vitamUIInputPositiveNumber', {static: false}) private input: ElementRef;
+  @ViewChild('vitamUIInputPositiveNumber') private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;

@@ -36,7 +36,7 @@
  */
 // tslint:disable:max-classes-per-file
 import {
-  Component, Directive, EventEmitter, forwardRef, HostListener, Input, NgModule, Output, Pipe, PipeTransform
+  Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform
 } from '@angular/core';
 import {
   AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn
@@ -178,9 +178,7 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 // Editable fields
 
-@Directive({
-  selector: '[EditableFieldStubComponent]'
-})
+@Directive()
 // tslint:disable-next-line:directive-class-suffix
 export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
@@ -355,7 +353,6 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
-    EditableFieldStubComponent
   ],
   exports: [
     ApplicationSelectContentStubComponent,

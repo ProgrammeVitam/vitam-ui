@@ -68,7 +68,6 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
 
   private domainInputClicked = false;
 
-  // @ts-ignore
   get canConfirm(): boolean {
     return this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || (this.selected !== this.defaultDomain));
   }

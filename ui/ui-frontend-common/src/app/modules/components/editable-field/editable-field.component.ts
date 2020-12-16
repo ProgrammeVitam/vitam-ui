@@ -41,9 +41,8 @@ import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
-@Directive({
-  selector: '[appEditableFieldComponent]'
-})
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
 
   @Input() label: string;
@@ -71,7 +70,7 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   @Output() editOpen = new EventEmitter<void>();
   @Output() editClose = new EventEmitter<boolean>();
 
-  @ViewChild(CdkConnectedOverlay, {static: false}) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;
 
   @HostBinding('class.readonly') readonly = false;

@@ -43,14 +43,13 @@ import { takeUntil } from 'rxjs/operators';
 import { AppRootComponent } from './app-root-component.class';
 import { GlobalEventService } from './global-event.service';
 
-@Directive({
-  selector: '[appSidenavPage]'
-})
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
 
   openedItem: T;
 
-  @ViewChild('panel', {static: false}) panel: MatSidenav;
+  @ViewChild('panel') panel: MatSidenav;
 
   private destroy = new Subject<void>();
 
