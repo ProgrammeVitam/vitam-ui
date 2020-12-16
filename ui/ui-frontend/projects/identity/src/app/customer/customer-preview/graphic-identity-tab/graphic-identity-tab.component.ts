@@ -36,18 +36,13 @@
  */
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SafeResourceUrl } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Customer, Theme, ThemeColorType, ThemeService } from 'ui-frontend-common';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
+import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
 
-export interface LogosSafeResourceUrl {
-  headerUrl?: SafeResourceUrl;
-  footerUrl?: SafeResourceUrl;
-  portalUrl?: SafeResourceUrl;
-}
 
 @Component({
   selector: 'app-graphic-identity-tab',

@@ -73,10 +73,10 @@ let fixture: ComponentFixture<GroupListComponent>;
 
 class Page {
 
-  get table() { return fixture.nativeElement.querySelector('table'); }
-  get columns() { return fixture.nativeElement.querySelectorAll('th'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('tbody > tr'); }
-  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-footer button'); }
+  get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
+  get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head > .align-items-center'); }
+  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-row'); }
+  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable'); }
   get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
 
 }
@@ -227,10 +227,8 @@ describe('GroupListComponent', () => {
   });
 
   function testRow(index: number) {
-    const cells = page.rows[index].querySelectorAll('td');
+    const cells = page.rows[index].querySelectorAll('div');
     expect(cells.length).toBe(5);
-    expect(cells[1].textContent).toContain(groups[index].name);
-    expect(cells[3].textContent).toContain(groups[index].description);
   }
 
 });

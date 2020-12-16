@@ -156,7 +156,7 @@ export class TenantSelectionService {
 
             this.currentAppId$.subscribe((appId: ApplicationId) => {
                 observer.next((url.includes(TENANT_SELECTION_URL_CONDITION) ||  appId === ApplicationId.PORTAL_APP));
-            })
+            });
         });
     }
 }

@@ -123,7 +123,7 @@ describe('MultipleEmailInputComponent', () => {
     });
 
     it('should display the label', () => {
-      const elLabel = fixture.nativeElement.querySelector('.editable-field .editable-field-content .editable-field-label');
+      const elLabel = fixture.nativeElement.querySelector('label');
       expect(elLabel.textContent).toContain('Test label');
     });
 

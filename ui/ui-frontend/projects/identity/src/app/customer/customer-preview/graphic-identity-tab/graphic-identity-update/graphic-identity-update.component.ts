@@ -41,7 +41,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Customer, Logo } from 'ui-frontend-common';
 import { CustomerService } from '../../../../core/customer.service';
-import { LogosSafeResourceUrl } from '../graphic-identity-tab.component';
+import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 @Component({
   selector: 'app-graphic-identity-update',

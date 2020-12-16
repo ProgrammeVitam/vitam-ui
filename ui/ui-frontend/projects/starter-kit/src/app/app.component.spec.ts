@@ -37,7 +37,8 @@
 /* tslint:disable:component-selector max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -53,7 +54,7 @@ class RouterOutletStubComponent { }
 
 describe('AppComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => { },

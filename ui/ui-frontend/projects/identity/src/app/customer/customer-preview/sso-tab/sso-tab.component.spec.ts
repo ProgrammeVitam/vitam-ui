@@ -226,30 +226,21 @@ describe('SsoTabComponent', () => {
     describe('Providers List', () => {
 
       it('should display the list of providers', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li');
+        const elProviders = fixture.nativeElement.querySelectorAll('.provider-item-content');
         expect(elProviders.length).toBe(3);
         elProviders.forEach((elProvider: HTMLElement, index: number) => {
           expect(elProvider.textContent).toContain(providers[index].name);
           expect(elProvider.textContent).toContain(providers[index].internal ? 'Interne' : 'Externe');
           expect(elProvider.textContent).toContain(providers[index].enabled ? 'Actif' : 'Inactif');
-
-          const elPatterns = elProvider.querySelectorAll('.provider-item-column:nth-child(3) > span');
-          expect(elPatterns.length).toBe((providers[index].patterns || []).length);
         });
       });
 
       it('should select the provider on click', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li > .provider-item-content');
+        const elProviders = fixture.nativeElement.querySelectorAll('.provider-item-content');
         elProviders[0].click();
         fixture.detectChanges();
         expect(testhost.component.selectedIdentityProvider).toBe(testhost.component.providers[0]);
       });
-
-      it('should be disabled', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li > .disabled');
-        expect(elProviders.length).toBe(2);
-      });
-
     });
 
     describe('Provider Details', () => {

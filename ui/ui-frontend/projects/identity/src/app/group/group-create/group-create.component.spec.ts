@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -105,6 +106,7 @@ describe('GroupCreateComponent', () => {
           NoopAnimationsModule,
           VitamUICommonTestModule,
           LevelInputModule,
+          TranslateModule.forRoot(),
       ],
       declarations: [
         ProfilesFormStubComponent,

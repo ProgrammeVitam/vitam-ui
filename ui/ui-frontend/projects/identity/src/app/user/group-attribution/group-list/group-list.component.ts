@@ -36,10 +36,10 @@
  */
 /* tslint:disable: no-use-before-declare */
 
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GroupSelection } from './../../group-selection.interface';
-import { Component, Input, OnInit, Inject, Output, EventEmitter } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-group-list',

@@ -170,7 +170,7 @@ describe('IdentityProviderCreateComponent', () => {
   describe('DOM', () => {
 
     it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('h2');
+      const elTitle = fixture.nativeElement.querySelector('.large');
       expect(elTitle.textContent).toContain('Création d\'un IDP pour "OwnerName"');
     });
 

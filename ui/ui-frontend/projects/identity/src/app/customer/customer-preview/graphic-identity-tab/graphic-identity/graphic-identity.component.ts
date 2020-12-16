@@ -39,7 +39,7 @@ import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@a
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import {Customer, Logo, Theme, ThemeColorType, ThemeService} from 'ui-frontend-common';
-import { LogosSafeResourceUrl } from '../graphic-identity-tab.component';
+import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 @Component({
   selector: 'app-graphic-identity',

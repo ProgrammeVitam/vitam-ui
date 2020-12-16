@@ -57,7 +57,7 @@ let fixture: ComponentFixture<GroupComponent>;
 class Page {
 
   get groupList() { return fixture.nativeElement.querySelector('app-group-list'); }
-  get createGroup() { return fixture.nativeElement.querySelector('.actions button:first-child'); }
+  get createGroup() { return fixture.nativeElement.querySelector('button'); }
 
 }
 

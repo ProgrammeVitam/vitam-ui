@@ -35,14 +35,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState
 } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { GroupService } from '../../group/group.service';

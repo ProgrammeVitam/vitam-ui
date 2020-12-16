@@ -105,7 +105,7 @@ describe('ProfilesEditComponent', () => {
   describe('DOM', () => {
 
     it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('h2');
+      const elTitle = fixture.nativeElement.querySelector('.text, .large');
       expect(elTitle).toBeTruthy();
       expect(elTitle.textContent).toContain('Modification des profils de "Test"');
     });

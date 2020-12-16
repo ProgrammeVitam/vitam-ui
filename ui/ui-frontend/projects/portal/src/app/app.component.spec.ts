@@ -39,8 +39,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { BASE_URL, VitamUICommonModule } from 'ui-frontend-common';
 import { environment } from './../environments/environment.prod';
 
@@ -70,7 +71,8 @@ describe('AppComponent', () => {
       load: () => { },
       getPortalUrl: () => '',
       getCustomerTechnicalReferentEmail: () => '',
-      getCustomerWebsiteUrl: () => ''
+      getCustomerWebsiteUrl: () => '',
+      getConfigStringValue: () => '',
     };
 
     TestBed.configureTestingModule({
@@ -94,7 +96,8 @@ describe('AppComponent', () => {
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => { }, events: of() } },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: BASE_URL, useValue: '/fake-api' }
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: { data: EMPTY } },
       ]
     }).compileComponents();
   }));
