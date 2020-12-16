@@ -132,7 +132,7 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
-    
+
     private ContextExternalRestClient contextRestClient;
 
     private RuleExternalRestClient ruleRestClient;
@@ -206,8 +206,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword; 
-    
+    protected String iamTruststorePassword;
+
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -652,7 +652,7 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-    
+
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
@@ -666,7 +666,7 @@ public abstract class BaseIntegration {
         }
         return ruleRestClient;
     }
-    
+
     protected AccessContractExternalRestClient getAccessContractRestClient() {
         if (accessContractRestClient == null) {
             accessContractRestClient = getReferentialRestClientFactory().getAccessContractExternalRestClient();
