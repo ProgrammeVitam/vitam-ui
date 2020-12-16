@@ -348,7 +348,7 @@ vitamui_platform_informations:
       vitamui_secondary: "#2563A9"
       vitamui_tertiary: "#C22A40"
       vitamui_header_footer: "#1C0920"
-      vitamui_background: "#F5F5F5"
+      vitamui_background: "#F5F7FC"
   platform_name: VITAM-UI
   customer:
     technical_referent_email: contact@programmevitam.fr

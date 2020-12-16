@@ -37,7 +37,7 @@ ui-referential:
     vitamui-secondary: "#65B2E4"
     vitamui-tertiary: "#E7304D"
     vitamui-header-footer: "#604379"
-    vitamui-background: "#F5F5F5"
+    vitamui-background: "#F5F7FC"
   assets: src/main/resources/assets
   iam-external-client:
     server-host: localhost

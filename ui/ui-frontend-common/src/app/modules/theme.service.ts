@@ -55,7 +55,7 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_SECONDARY]: '#65B2E4',
     [ThemeColorType.VITAMUI_TERTIARY]: '#E7304D',
     [ThemeColorType.VITAMUI_HEADER_FOOTER]: '#604379',
-    [ThemeColorType.VITAMUI_BACKGROUND]: '#F5F5F5',
+    [ThemeColorType.VITAMUI_BACKGROUND]: '#F5F7FC',
     /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX),
     var(--vitamui-secondary-XXX) and var(--vitamui-grey-XXX) */
     [ThemeColorType.VITAMUI_PRIMARY_LIGHT]: '',
@@ -74,6 +74,7 @@ export class ThemeService {
     {class: 'Foncé', value: '#0F0D2D'},
     {class: 'Blanc', value: '#FFFFFF'},
     {class: 'Clair', value: '#F5F5F5'},
+    {class: 'Bleu clair', value: '#F5F7FC'},
   ];
 
   public get backgroundChoice(): Color[] { return this._backgroundChoice; }
