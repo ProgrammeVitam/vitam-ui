@@ -89,7 +89,7 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-    
+
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
@@ -113,7 +113,7 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
-    
+
     private ContextExternalRestClient contextRestClient;
 
     private UnitExternalRestClient unitRestClient;
@@ -183,8 +183,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword; 
-    
+    protected String iamTruststorePassword;
+
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -332,19 +332,19 @@ public abstract class BaseIntegration {
                 getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)));
         return webClientFactory;
     }
-    
+
     private ReferentialExternalRestClientFactory getReferentialRestClientFactory() {
         if (restReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
             restReferentialClientFactory = new ReferentialExternalRestClientFactory(getRestClientConfiguration(referentialServerHost, referentialServerPort, true,
-                    getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)), restTemplateBuilder); 
+                    getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)), restTemplateBuilder);
             final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
             interceptors.add(new RegisterRestQueryInterceptor());
             restReferentialClientFactory.setRestClientInterceptor(interceptors);
         }
         return restReferentialClientFactory;
     }
- 
+
     protected CustomerExternalRestClient getCustomerRestClient() {
         if (customerClient == null) {
             customerClient = getIamRestClientFactory().getCustomerExternalRestClient();
@@ -431,8 +431,6 @@ public abstract class BaseIntegration {
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
         //@formatter:off
         try {
-        	LOGGER.debug("Get certificate : {}", genericCert);
-        	LOGGER.debug("Get passaword : {}", jksPassword);
             final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
@@ -462,8 +460,6 @@ public abstract class BaseIntegration {
         while (enumeration.hasMoreElements()) {
             final String alias = (String) enumeration.nextElement();
 
-        	LOGGER.debug("Get certificate : {}", genericCert);
-        	LOGGER.debug("Get passaword : {}", jksPassword);
             final Certificate certificate = keyStore.getCertificate(alias);
             final byte[] encodedCertKey = certificate.getEncoded();
             result = Base64.getEncoder().encodeToString(encodedCertKey);
@@ -594,7 +590,7 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-    
+
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();

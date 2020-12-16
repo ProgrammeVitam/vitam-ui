@@ -36,7 +36,6 @@
               </div>
             </mat-form-field>
             <div class="form_size form_padding">
-              <!-- Must we validate Min / max length ? -->
               <vitamui-common-input formControlName="id" minlength="36" maxlength="36" placeholder="Identifiant"
                 i18n-placeholder="Name@@profileGroupCreateNamePlaceholder" [required]="isUnitIdRequired()"
                 class="full_size">
@@ -50,7 +49,6 @@
                     L'identfiant d'une unité doit contenir {{ form.get('id').errors.minlength.requiredLength }}
                     caractères
                   </vitamui-common-input-error>
-                  <!-- FIXME: Must we validate existance ? -->
                   <vitamui-common-input-error *ngIf="!!form?.get('id')?.errors?.unknownUnit"
                     i18n="Name exists error hint@@formErrorUnknownUnit">Unité inconnue
                   </vitamui-common-input-error>

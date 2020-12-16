@@ -115,8 +115,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    console.log('tenantIdentifier', this.tenantIdentifier);
-    console.log('isSlaveMode', this.isSlaveMode);
 
     this.agencyService.getAll().subscribe(agencies =>
       this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
