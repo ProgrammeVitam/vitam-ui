@@ -10,6 +10,7 @@
     [class.archive-tile]="application?.identifier === 'ARCHIVE_APP'"
     [class.settings-app]="application?.category === 'settings'"
     [class.admin-app]="application?.category === 'administrators'" [class.user-app]="application?.category === 'users'"
+    [class.ingest-app]="application?.category === 'ingests'" 
     [class.highlight]="application?.hasHighlight" [vitamuiCommonTooltip]="application?.tooltip"
     [vitamuiCommonTooltipShowDelay]="800" id="{{ application.identifier }}">
 

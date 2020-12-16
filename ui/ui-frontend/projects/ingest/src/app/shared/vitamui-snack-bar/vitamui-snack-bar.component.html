@@ -1,0 +1,15 @@
+<div class="vitamui-snack-bar-container">
+
+  <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
+
+    <ng-container *ngSwitchCase="'sipUploaded'">
+      <i class="vitamui-icon vitamui-icon-archive-ingest"></i> Un ou plusieurs versement(s) sont en cours
+      <br/>
+      <span>(Merci de ne pas éteindre votre navigateur pendant le processus)</span>
+    </ng-container>
+
+  </span>
+
+  <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
+
+</div>

@@ -105,6 +105,11 @@
 			<artifactId>spring-tx</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.owasp.antisamy</groupId>
+			<artifactId>antisamy</artifactId>
+		</dependency>
+
 		<!-- PAC4J -->
 		<dependency>
 			<groupId>org.pac4j</groupId>

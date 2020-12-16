@@ -77,6 +77,10 @@ vitamui-env
 [zone_vitamui_app:children]
 hosts_vitamui_iam_internal
 hosts_vitamui_iam_external
+hosts_vitamui_ingest_internal
+hosts_vitamui_referential_internal
+hosts_vitamui_ingest_external
+hosts_vitamui_referential_external
 hosts_vitamui_security_internal
 
 [hosts_vitamui_iam_internal]
@@ -86,6 +90,23 @@ vitamui-env
 [hosts_vitamui_iam_external]
 # EDIT
 vitamui-env
+
+[hosts_vitamui_ingest_internal]
+# EDIT
+vitamui-env
+
+[hosts_vitamui_ingest_external]
+# EDIT
+vitamui-env
+
+[hosts_vitamui_referential_internal]
+# EDIT
+vitamui-env
+
+[hosts_vitamui_referential_external]
+# EDIT
+vitamui-env
+
 
 [hosts_vitamui_security_internal]
 vitamui-env
@@ -97,8 +118,18 @@ vitamui-env
 hosts_ui_identity
 hosts_ui_portal
 hosts_ui_search
+hosts_ui_ingest
+hosts_ui_referential
 
 [hosts_ui_identity]
+# EDIT
+vitamui-env
+
+[hosts_ui_ingest]
+# EDIT
+vitamui-env
+
+[hosts_ui_referential]
 # EDIT
 vitamui-env
 

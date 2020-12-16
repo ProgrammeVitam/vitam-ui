@@ -5,6 +5,12 @@
     "pathRewrite": {},
     "logLevel": "debug"
   },
+  "/ingest-api": {
+  "target": "https://dev.vitamui.com:9008/",
+  "secure": false,
+  "pathRewrite": {},
+  "logLevel": "debug"
+},
   "/identity-api": {
     "target": "https://dev.vitamui.com:9001/",
     "secure": false,

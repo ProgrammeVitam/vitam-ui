@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Application, ApplicationService, AuthService, StartupService, User } from 'ui-frontend-common';
+import { Application, ApplicationService, AuthService, StartupService, User, Category } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
@@ -50,6 +50,7 @@ export class PortalComponent implements OnInit {
   portalUrl = '/';
 
   applications: Application[] = [];
+  categories: { [categoryId: string]: Category };
 
   constructor(titleService: Title, public authService: AuthService,
               private applicationService: ApplicationService, startupService: StartupService
@@ -62,5 +63,6 @@ export class PortalComponent implements OnInit {
 
   ngOnInit() {
     this.applications = this.applicationService.applications;
+    this.categories = this.applicationService.categories;
   }
 }

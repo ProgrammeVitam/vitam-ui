@@ -11,7 +11,6 @@ pipeline {
         SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
         SERVICE_SONAR_URL = credentials("service-sonar-url")
         SERVICE_GIT_URL = credentials("service-gitlab-url")
-        SERVICE_INFRA_URL = credentials("service-gitinfra-url")
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
         SERVICE_PROXY_PORT = credentials("http-proxy-port")
@@ -32,62 +31,20 @@ pipeline {
         )
     }
 
-    triggers {
-        cron('45 2 * * *')
-    }
+    // triggers {
+    //     cron('45 2 * * *')
+    // }
 
     stages {
-        stage('Activate steps') {
-            agent none
-            steps {
-                script {
-                    env.DO_TEST = 'true'
-                    env.DO_BUILD = 'true'
-                    env.DO_PUBLISH = 'true'
-                    env.DO_CHECKMARX = 'true'
-                }
-            }
-        }
-        
-
-        stage('Check vulnerabilities and tests.') {
-            when {
-                environment(name: 'DO_TEST', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                JAVA_TOOL_OPTIONS=""
-            }
-            steps {
-                sh 'npmrc default'
-                sh '''
-                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
-                '''
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-                success {
-                    archiveArtifacts (
-                        artifacts: '**/dependency-check-report.html',
-                        fingerprint: true
-                    )
-                }
-            }
-        }
 
         stage('Build sources') {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
             }
-            when {
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pvitam,rpm,webpack -DskipTests -DskipAllFrontend=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND deploy -Pvitam,rpm,webpack -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
         }

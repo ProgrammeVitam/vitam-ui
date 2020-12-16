@@ -3,7 +3,8 @@
         <h2>Mes <span>{{ title }}</span></h2>
 
         <mat-dialog-content>
-            <vitamui-common-application-select-content *ngIf="menuType === 'APPLICATION'" [applications]="items" [isModalMenu]="true" (applicationSelected)="closeApplicationMenu()"></vitamui-common-application-select-content>
+            <vitamui-common-application-select-content *ngIf="menuType === 'APPLICATION'" [applications]="applicationConfig.applications" [categories]="applicationConfig.categories"
+                                                       [isModalMenu]="true" (applicationSelected)="closeApplicationMenu()"></vitamui-common-application-select-content>
 
             <vitamui-common-customer-select-content *ngIf="menuType === 'CUSTOMER'" [customers]="items" [isModalMenu]="true" (customerSelected)="closeCustomerMenu()"></vitamui-common-customer-select-content>
 

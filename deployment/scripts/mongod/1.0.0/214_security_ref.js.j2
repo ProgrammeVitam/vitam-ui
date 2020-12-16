@@ -1,0 +1,15 @@
+db = db.getSiblingDB('security')
+
+print("START 214_security_ref.js");
+
+db.contexts.insert({
+    "_id" : "ui_ingest_context",
+    "name": "Contexte UI Ingest",
+    "fullAccess" : true,
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "roleNames" : [
+        "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST"
+    ]
+});
+
+print("END 214_security_ref.js");

@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -110,6 +111,7 @@ public class SubrogationInternalController implements CrudController<Subrogation
     @GetMapping(CommonConstants.PATH_ID)
     public SubrogationDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         RestUtils.checkCriteria(criteria);
         return internalSubrogationService.getOne(id, criteria);
     }
@@ -136,12 +138,14 @@ public class SubrogationInternalController implements CrudController<Subrogation
     @PatchMapping("/surrogate/accept/{id}")
     public SubrogationDto accept(final @PathVariable("id") String id) {
         LOGGER.debug("Accepte subrogation id : {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return internalSubrogationService.accept(id);
     }
 
     @DeleteMapping("/surrogate/decline/{id}")
     public void decline(final @PathVariable("id") String id) {
         LOGGER.debug("Decline subrogation id : {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         internalSubrogationService.decline(id);
     }
 
@@ -167,6 +171,7 @@ public class SubrogationInternalController implements CrudController<Subrogation
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
     public GroupDto getGroupById(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get group {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalSubrogationService.getGroupById(id, embedded);
     }

@@ -1,0 +1,33 @@
+# TECHNICAL PROPERTIES / DON'T put environment properties
+# This property can be override by a config file give at run time with spring.config.location
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API Ingest External
+    description: This API is used to manage Vitam's ingests
+    version: v1
+  mvc:
+    favicon:
+      enabled : false
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    jmx:
+      domain: ${server-identity.identityRole}
+      unique-names: true
+      web.exposure.include: info,health,prometheus
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+
+swagger:
+ layer: api-external
+ file-path: file:../../../tools/swagger/docs/api-external/ingest-external/swagger.json
+

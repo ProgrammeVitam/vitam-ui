@@ -1,0 +1,9 @@
+---
+
+- name: Restore each collection for {{db}}
+  command: "mongorestore --host  {{ ip_service }} --db {{db}} --collection {{inner_item}} {{mongo_credentials}} --gzip {{mongo_dump_folder}}/{{db}}/{{inner_item}}.bson.gz"
+  with_items: "{{collections}}"
+  loop_control:
+    loop_var: inner_item
+  no_log: "{{ hide_passwords_during_deploy }}"
+  ignore_errors: yes

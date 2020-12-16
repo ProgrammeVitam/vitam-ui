@@ -40,10 +40,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Application } from '../../../models/application/application.interface';
 import { MenuOption } from '../customer-menu/menu-option.interface';
 import { MenuType } from '../menu-type.enum';
+import {Category} from "../../../models/application/category.interface";
 
 interface ModalData {
   menuType: MenuType;
-  items: any[];
+  items: MenuOption[];
+  applicationConfig: {applications: Application[], categories: { [categoryId: string]: Category} };
 }
 
 @Component({
@@ -55,7 +57,8 @@ export class CommonMenuComponent implements OnInit {
 
   title: string;
   menuType: MenuType;
-  items: MenuOption[] | Application[];
+  items: MenuOption[];
+  applicationConfig?: {applications: Application[], categories: { [categoryId: string]: Category} };
 
   constructor(
     public dialogRef: MatDialogRef<CommonMenuComponent>,
@@ -66,7 +69,7 @@ export class CommonMenuComponent implements OnInit {
     this.title = this.menuType === MenuType.tenant ? 'Coffres' :
       this.menuType === MenuType.customer ? 'Organisations' : 'Applications';
     this.items = this.data.items;
-
+    this.applicationConfig = this.data.applicationConfig;
   }
 
   closeApplicationMenu() {

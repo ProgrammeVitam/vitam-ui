@@ -1,0 +1,47 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="100" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+<form [formGroup]="sipForm">
+  <div class="content">
+    <h4>Nouveau versement</h4>
+    <h2>Verser un SIP</h2>
+
+    <div class="d-flex">
+      <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
+        (fileToUploadEmitter)="onSipDropped($event)" (fileDragOverEmitter)="onSipDragOver($event)"
+        (fileDragLeaveEmitter)="onSipDragLeave($event)">
+        <div *ngIf="fileName && fileSize>0 && fileSizeString" class="drag-container">
+          <div class="file-info-class">{{ fileName }} : {{ fileSizeString }}
+            <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
+          </div>
+
+        </div>
+
+        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
+
+        <div class="drop-area">
+          <div *ngIf="!fileSize || !hasSip" class="sip-drop">
+            Glisser-déposer<br>
+          </div>
+          <div *ngIf="!fileSize || !hasSip">
+            <div class="upload-text">
+              <div class="upload"><span class="underline" (click)="addSip()">Parcourir</span></div>
+            </div>
+          </div>
+          <div class="error-message drag-container" *ngIf="hasError">
+            <div>
+              <i class="material-icons error-icon">error</i>
+              {{ message }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary" [disabled]="hasError" (click)="upload()">Confirmer le versement</button>
+      <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+    </div>
+  </div>
+</form>

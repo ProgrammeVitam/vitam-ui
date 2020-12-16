@@ -4,11 +4,14 @@ client_client_vitam_vitamui_key: changeme
 server_security_internal_key: changeme
 server_iam_internal_key: changeme
 server_referential_internal_key: changeme
+server_ingest_internal_key: changeme
 server_iam_external_key: changeme
 server_referential_external_key: changeme
+server_ingest_external_key: changemes
 server_cas_server_key: changeme
 server_ui_portal_key: changeme
 server_ui_identity_key: changeme
 server_ui_identity_admin_key: changeme
 server_ui_referential_key: changeme
+server_ui_ingest_key: changeme
 server_reverse_key: changeme
