@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material';
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   tenantIdentifier: string;
-  constructor(private service: ArchiveApiService, private route: ActivatedRoute,
+  constructor( private service : ArchiveApiService, private route: ActivatedRoute, private router: Router,
               globalEventService: GlobalEventService, public dialog: MatDialog) {
     super(route, globalEventService);
     this.route.params.subscribe(params => {

@@ -202,6 +202,8 @@ db.groups.insert({
         "system_probative_value",
         "system_logbook_operation",
         "system_holding_filling_scheme_profile"
+        "system_ingest_profile",
+        "system_archive_profile"
 	],
 	"readonly": false,
 	"level": "",

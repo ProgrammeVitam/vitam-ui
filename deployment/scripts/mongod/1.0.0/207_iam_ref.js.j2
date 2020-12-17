@@ -2,6 +2,32 @@ db = db.getSiblingDB('iam')
 
 print("START 207_iam_ref.js");
 
+// ========================================= TENANTS =========================================
+var maxIdTenant = db.getCollection('sequences').findOne({'_id': 'tenant_identifier'}).sequence;
+
+db.tenants.insert({
+  "_id": "auto_tenant",
+  "name": "Tenant Auto Referentiel",
+  "proof": true,
+  "enabled": true,
+  "readonly": false,
+  "identifier": NumberInt(maxIdTenant + 1),
+  "ownerId": "system_owner",
+  "customerId": "system_customer",
+  "ingestContractHoldingIdentifier" : "IC-000001",
+  "itemIngestContractIdentifier" : "IC-000001",
+  "accessContractHoldingIdentifier" : "AC-000001",
+  "accessContractLogbookIdentifier" : "AC-000002"
+});
+
+db.sequences.updateOne({
+    "_id": "tenant_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdTenant + 1)
+	}
+});
+
 // ========================================= PROFILES =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
@@ -267,11 +293,125 @@ db.profiles.insert({
 	 ]
 });
 
+// ------------------------------------------- REFERENTIAL TENANT 2 --------------------------------
+
+db.profiles.insert({
+	"_id" : "auto_access_contract",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Access Profile tenant 2",
+	"description" : "Access Profile tenant 2",
+	"tenantIdentifier": NumberInt(2),
+	"applicationName" : "ACCESS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_ACCESS_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_ACCESS_CONTRACTS"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_ingest_contract",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Ingest Profile tenant 2",
+	"description" : "Ingest Profile tenant 2",
+	"tenantIdentifier": NumberInt(2),
+	"applicationName" : "INGEST_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_CREATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_UPDATE_INGEST_CONTRACTS"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_PROFILES"
+        },
+        {
+            "name": "ROLE_GET_MANAGEMENT_CONTRACTS"
+        }
+
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_agencies",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Agencies Profile Tenant 2",
+	"description" : "Agencies Profile Tenant 2",
+    "tenantIdentifier": NumberInt(2),
+	"applicationName" : "AGENCIES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_AGENCIES"
+        },
+        {
+            "name": "ROLE_CREATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_UPDATE_AGENCIES"
+        },
+        {
+            "name": "ROLE_DELETE_AGENCIES"
+        },
+        {
+            "name": "ROLE_EXPORT_AGENCIES"
+        }
+	 ]
+});
+
+db.profiles.insert({
+	"_id" : "auto_file_format",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Auto File Formats Profile",
+	"description" : "Auto File Formats Profile",
+    "tenantIdentifier": NumberInt(2),
+	"applicationName" : "FILE_FORMATS_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_CREATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_UPDATE_FILE_FORMATS"
+        },
+        {
+            "name": "ROLE_DELETE_FILE_FORMATS"
+        }
+	 ]
+});
+
 db.profiles.insert({
   "_id": "system_logbook_operation_profile",
   "identifier" : NumberInt(maxIdProfile++),
   "name": "Journal des Opérations",
-  "description": "Logbook Operation Profile",
+  "description": "Logbook Operation Profile api",
   "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
   "applicationName": "LOGBOOK_OPERATION_APP",
   "level": "",
@@ -327,8 +467,11 @@ db.groups.updateOne( {
         "profileIds":  {
             $each: [
             	"system_access_contract",
+                "auto_access_contract",
                 "system_ingest_contract",
+                "auto_ingest_contract",
                 "system_agencies",
+                "auto_agencies",
                 "system_context",
                 "system_security_profile",
                 "system_ontology",
