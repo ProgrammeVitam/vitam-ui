@@ -18,13 +18,18 @@
             $border-color: transparent, 
             $border-color-hover: transparent,
             $button-color: $white,
-            $button-color-hover: $white) {
+            $button-color-hover: $white,
+            $box-shadow-color:var(--vitamui-grey-rgb) ) {
     
+    &:not(.link){
+        box-shadow:0px 4px 24px rgba($box-shadow-color, 0.6);
+    }
+
     &:not(:disabled) {
         background-color: $background-color;
         color: $button-color;
         border: 1px solid $border-color;
-    
+        
         i {
             display: flex!important;
             align-items: center;
@@ -85,14 +90,14 @@
 }
 
 .btn.contrast {
-    @include btn($white, $white, $white, $white);
+    @include btn($white, $white, $white, $white, var(--vitamui-grey-rgb));
 
     &.contrast-primary {
-        @include btn($white, $white, $white, $white, var(--vitamui-primary), var(--vitamui-primary-700));
+        @include btn($white, $white, $white, $white, var(--vitamui-primary), var(--vitamui-primary-700), var(--vitamui-primary-rgb));
     }
 
     &.contrast-secondary {
-        @include btn($white, $white, $white, $white, var(--vitamui-secondary), var(--vitamui-secondary-700));
+        @include btn($white, $white, $white, $white, var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-rgb));
     }
     &:disabled {
         @include disabled($white);
@@ -101,14 +106,14 @@
 }
 
 .btn.contrast-outline {
-    @include btn(transparent, transparent, $white, $white, $white, $white);
+    @include btn(transparent, transparent, $white, $white, $white, $white, var(--vitamui-grey-rgb));
 
     &.contrast-outline-primary {
-        @include btn(transparent, var(--vitamui-primary-400), $white, $white, $white, $white);
+        @include btn(transparent, var(--vitamui-primary-400), $white, $white, $white, $white, var(--vitamui-primary-rgb));
     }
 
     &.contrast-outline-secondary {
-        @include btn(transparent, var(--vitamui-secondary-400), $white, $white, $white, $white);
+        @include btn(transparent, var(--vitamui-secondary-400), $white, $white, $white, $white, var(--vitamui-secondary-rgb));
     }
 
     &:disabled {
@@ -147,17 +152,16 @@
 }
 
 .btn.primary {
-    @include btn(var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary-font), var(--vitamui-primary-font));
+    @include btn(var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary-font), var(--vitamui-primary-font), var(--vitamui-primary-rgb));
 }
 
 .btn.secondary {
-    @include btn(var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-font), var(--vitamui-secondary-font));
+    @include btn(var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-font), var(--vitamui-secondary-font), var(--vitamui-secondary-rgb));
 }
 
 
 .btn.link {
     padding: 0;
-
     &:not(.cancel) {
         @include btn(transparent, transparent, transparent, transparent, var(--vitamui-primary), var(--vitamui-primary));
     }
@@ -196,11 +200,11 @@
 }
 
 .btn.outline-primary {
-    @include btn(transparent, transparent, var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800));
+    @include btn(transparent, transparent, var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary), var(--vitamui-primary-800), var(--vitamui-primary-rgb));
 }
 
 .btn.outline-secondary {
-    @include btn(transparent, transparent, var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700));
+    @include btn(transparent, transparent, var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary), var(--vitamui-secondary-700), var(--vitamui-secondary-rgb));
 }
 
 .btn-double-icons {
