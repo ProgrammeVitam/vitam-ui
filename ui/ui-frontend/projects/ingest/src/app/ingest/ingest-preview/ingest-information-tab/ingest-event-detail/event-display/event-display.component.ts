@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Event } from '../../../event';
 
 @Component({
@@ -62,7 +62,6 @@ export class EventDisplayComponent implements OnInit {
   }
 
   private setStepColorClass(stepStatus: string) {
-    console.log('stepStatus', stepStatus);
     switch (stepStatus.toUpperCase()) {
       case 'KO':
       case 'FATAL':

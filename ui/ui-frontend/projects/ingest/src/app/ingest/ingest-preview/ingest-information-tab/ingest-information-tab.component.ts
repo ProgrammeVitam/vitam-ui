@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { IngestService } from '../../ingest.service';
 
 @Component({
@@ -60,7 +60,7 @@ export class IngestInformationTabComponent implements OnInit, OnChanges {
   }
 
   getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
+    if (ingest.events[ingest.events.length - 1].outcome !== 'OK' && ingest.events[ingest.events.length - 1].outcome !== 'FATAL') {
       this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
         this.ingestDetails = data;
       });
