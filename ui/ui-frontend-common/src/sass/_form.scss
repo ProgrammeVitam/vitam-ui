@@ -1,6 +1,6 @@
 .read-only-field {
     display: inline-block;
-    min-height: 50px;
+    min-height: 60px;
     width: 100%;
     padding: 5px;
     vertical-align: top;
@@ -8,12 +8,14 @@
     font-weight: 400;
 
     label {
-        font-size: 14px;
-        color: var(--vitamui-grey-600);
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--vitamui-primary);
     }
 
     div {
         color: var(--vitamui-grey-900);
+        font-weight: 700;
     }
 }
 
@@ -32,19 +34,23 @@ input[type=email].vitamui-input {
     padding: 0 30px;
     width: 100%;
     max-width: 300px;
-    border: solid 1px var(--vitamui-grey-400);
+    border: none;
+    box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
 
     &.ng-valid.ng-touched {
-        border-color: $green;
+        border: 1px solid $green;
     }
 
     &.ng-invalid.ng-touched {
-        border-color: $red;
+        border: 1px solid $red;
     }
     
     &.vitamui-small {
         height: 34px;
-        border-radius: 17px;
+        border-radius: 4px;
     }
 
     &::-webkit-input-placeholder {

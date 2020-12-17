@@ -1,27 +1,12 @@
 @import "~ui-frontend-common/sass/variables/colors";
 @import "~ui-frontend-common/sass/mixins/elevation";
 
-$input-height: 50px;
+$input-height: 60px;
 $input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
 :host {
     display: inline-block;
-
-    &.vitamui-focused .vitamui-input {
-        border-color: var(--vitamui-primary);
-    }
-
-    &.vitamui-focused .vitamui-input,
-    &.vitamui-float .vitamui-input {
-        label {
-            transform: scale(0.7) translateY(-15px);
-        }
-
-        input {
-            margin-top: 15px;
-        }
-    }
 
     &.ng-valid.ng-touched .vitamui-input {
         border-color: $green;
@@ -32,66 +17,8 @@ $anim-timing: 150ms ease-out;
     }
 }
 
-.vitamui-input {
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    height: $input-height;
-    width: 100%;
-    border-radius: $input-height / 2;
-    border: solid 1px #f0f0f0;
-    background-color: #ffffff;
-    padding: 8px 30px;
-    transition: border-color $anim-timing;
-    vertical-align: top;
-    @include elevation-1;
-
-    mat-spinner {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        display: none;
-    }
-}
-
-.vitamui-input.disabled {
-    opacity: 0.4;
-    margin-bottom: 10px;
-}
-
 :host {
     .vitamui-input mat-spinner {
         display: block;
-    }
-}
-
-.vitamui-input-errors {
-    min-height: 30px;
-}
-
-input {
-    color: var(--vitamui-grey-900);
-    font-size: 15px;
-    font-weight: 500;
-    
-    background: none;
-    border: none;
-    transition: margin $anim-timing;
-    outline: none;
-    width: 100%;
-}
-
-label {
-    color: $greyish-two;
-    font-size: 15px;
-    position: absolute;
-    left: 30px;
-    transform-origin: left;
-    transition: transform $anim-timing;
-    pointer-events: none;
-    white-space: nowrap;
-
-    .required-marker {
-        color: var(--vitamui-primary);
     }
 }

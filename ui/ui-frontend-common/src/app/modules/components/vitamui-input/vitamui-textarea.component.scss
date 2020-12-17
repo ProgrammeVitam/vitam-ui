@@ -5,17 +5,17 @@ $input-height: 90px;
 
 :host {
     align-items: baseline;
+    
     &.ng-valid.ng-touched .vitamui-input {
-        border-color: $green;
+        border: 1px solid $green;
     }
 
     &.ng-invalid.ng-touched .vitamui-input {
-        border-color: $red;
+        border: 1px solid $red;
     }
 }
 
 .vitamui-input {
-    border-radius: 25px !important;
     height: 100% !important;
     min-height: $input-height !important;
 }

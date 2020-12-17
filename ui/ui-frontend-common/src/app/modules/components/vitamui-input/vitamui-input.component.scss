@@ -1,7 +1,6 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
-$input-height: 50px;
 $input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
@@ -9,7 +8,7 @@ $anim-timing: 150ms ease-out;
     display: inline-block;
 
     &.ng-invalid .vitamui-input {
-        border-color: $red;
+        border: 1px solid $red;
     }
 
     &.ng-pending .vitamui-input mat-spinner {

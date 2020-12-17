@@ -4,7 +4,7 @@
 
 .vitamui-mat-select.mat-form-field {
   
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     width: 240px;
 
@@ -28,6 +28,7 @@
 
     .mat-form-field-wrapper {
         padding-bottom: 0;
+        background-color: white;
     }
 
     &.no-bottom-padding .mat-form-field-wrapper {
@@ -64,9 +65,9 @@
 
     .mat-form-field-flex {
         vertical-align: top;
-        border-radius: 25px;
+        border-radius: 4px;
         transition: box-shadow 200ms ease-out;
-        height: 50px;
+        height: 60px;
         align-items: center;
         padding: 0 30px;
     }
@@ -84,14 +85,11 @@
             .mat-form-field-flex {
                 background-color: var(--vitamui-grey-300);
                 border: none;
+                box-shadow:none;
 
                 .mat-select .mat-select-value {
                     font-weight: normal;
                     color: var(--vitamui-grey-700);
-                }
-
-                &:hover {
-                    box-shadow: none;
                 }
 
                 .select-arrow {
@@ -109,7 +107,8 @@
 
     .mat-form-field-flex {
         padding-right: 15px;
-        border: 1px solid var(--vitamui-grey-400);
+        border: none;
+        box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
 
         .mat-form-field-infix {
             border-top-width: 0;
@@ -135,9 +134,7 @@
     }
 
     :not(.mat-form-field-disabled).mat-form-field-flex {
-        &:hover {
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-        }
+      
 
         .mat-select .mat-select-value {
             color: var(--vitamui-grey-900);
@@ -167,10 +164,7 @@
         height: 25px;
         padding: 0;
         border: none;
-
-        &:hover {
-            @include elevation-0;
-        }
+        box-shadow: none;
     }
 
     .mat-form-field-infix {

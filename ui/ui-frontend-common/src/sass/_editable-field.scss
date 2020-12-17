@@ -1,4 +1,3 @@
-$input-height: 50px;
 $anim-timing: 150ms ease-out;
 
 .editable-field-wrapper {
@@ -14,7 +13,7 @@ $anim-timing: 150ms ease-out;
 
 .editable-field {
     justify-content: space-between;
-    min-height: $input-height;
+    min-height: 60px;
     width: 100% !important;
     cursor: pointer;
     outline: none;
@@ -33,7 +32,6 @@ $anim-timing: 150ms ease-out;
     }
 
     &:hover:not(.edit-mode), &:focus:not(.edit-mode) {
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 
         i.edit-icon {
             opacity: 1;
@@ -53,7 +51,8 @@ $anim-timing: 150ms ease-out;
     .editable-field-text-content {
         margin-top: 15px;
         width: 100%;
-        line-height: 24px;
+        font-weight: 700;
+        line-height: 18px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -105,8 +104,8 @@ $anim-timing: 150ms ease-out;
 
 .editable-field-actions {
     width: 85px;
-    height: $input-height;
-    border-radius: $input-height / 2;
+    height: 50px;
+    border-radius: 25px;
     padding: 10px;
     background-color: white;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
@@ -120,10 +119,10 @@ $anim-timing: 150ms ease-out;
         background: none;
         border: none;
         color: white;
-        height: $input-height - 20px;
-        width: $input-height - 20px;
+        height: 30px;
+        width: 30px;
         padding: 0;
-        border-radius: ($input-height - 10px) / 2;
+        border-radius: 20px;
         transition: opacity 200ms ease-out, background-color 200ms ease-out;
 
         &:disabled {
@@ -135,18 +134,18 @@ $anim-timing: 150ms ease-out;
         }
 
         &.editable-field-confirm {
-            background-color: #74c41c;
+            background-color: $green;
 
             &:hover, &:active, &:focus {
-                background-color: lighten(#74c41c, 15%);
+                background-color: lighten($green, 15%);
             }
         }
 
         &.editable-field-cancel {
-            background-color: #ea0101;
+            background-color: $red;
 
             &:hover, &:active, &:focus {
-                background-color: lighten(#ea0101, 15%);
+                background-color: lighten($red, 15%);
             }
         }
     }

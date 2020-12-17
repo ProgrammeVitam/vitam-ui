@@ -6,11 +6,10 @@
     display:flex;
     justify-content: center; /* align horizontal */
     align-items: center;
-    border-radius: 87px;
-    box-shadow: 0 0 20px 0 #a9a9a94d;
+    border-radius: 4px;
+    box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
     background-color: $white;
-    background-color: var(--white);
-    border: solid 1px #f0f0f0;
+    border: none;
 }
 
 .unite {

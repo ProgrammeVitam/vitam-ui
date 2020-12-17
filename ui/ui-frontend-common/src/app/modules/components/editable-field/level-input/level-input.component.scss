@@ -1,6 +1,6 @@
 @import '../../../../../sass/variables/colors';
 
-$input-height: 50px;
+$input-height: 60px;
 $input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
@@ -8,11 +8,11 @@ $anim-timing: 150ms ease-out;
     display: inline-block;
 
     &.ng-valid.ng-touched .vitamui-input {
-        border-color: $green;
+        border: 1px solid $green;
     }
 
     &.ng-invalid.ng-touched .vitamui-input {
-        border-color: $red;
+        border: 1px solid $red;
     }
 }
 

@@ -11,7 +11,8 @@ export class InputsComponent implements OnInit {
   public control = new FormControl();
   
   public streetEmpty = new FormControl('', [Validators.maxLength(3)]);
-  public street = new FormControl('azerty', [Validators.maxLength(3)]);
+  public streetInvalid = new FormControl('azerty', [Validators.maxLength(3)]);
+  public streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);
   public emailFirstPart = new FormControl('azerty', [Validators.maxLength(25)]);
   public email = new FormControl('azerty@test.fr', [Validators.maxLength(25)]);
   public domain = new FormControl('test.fr', [Validators.maxLength(10)]);

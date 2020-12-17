@@ -1,22 +1,22 @@
 <div class="d-flex flex-column">
     <h4>Simple</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 pl-3 pr-3 mt-4">
             <vitamui-common-input [formControl]="streetEmpty" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input [formControl]="street" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input disabled [formControl]="street" placeholder="N° et nom de rue"></vitamui-common-input>
+            <vitamui-common-input [formControl]="streetInvalid" placeholder="N° et nom de rue"></vitamui-common-input>
+            <vitamui-common-input disabled [formControl]="streetDisable" placeholder="N° et nom de rue"></vitamui-common-input>
         </div>
         <div class="row m-0">
             <div class="col-8">
                 <vitamui-common-editable-input [formControl]="streetEmpty" [label]="'Editable input'">
                 </vitamui-common-editable-input>
             </div>
-            <vitamui-common-editable-input [formControl]="street" [label]="'Editable input disabled'" [disabled]="true">
+            <vitamui-common-editable-input [formControl]="streetDisable" [label]="'Editable input disabled'" [disabled]="true">
             </vitamui-common-editable-input>
         </div>
     </div>
     <h4>Email</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 pl-3 mt-4">
 
             <vitamui-common-input class="field-email" [formControl]="emailFirstPart" placeholder="Adresse e-mail">
@@ -35,7 +35,7 @@
                 </div>
             </mat-form-field>
         </div>
-        <div class="row m-0 ">
+        <div class="row m-0">
             <div class="col-8">
                 <vitamui-common-editable-email-input [formControl]="email" [label]="'Editable email'"
                     [domains]="['test.fr', 'test.com', 'test.de']"></vitamui-common-editable-email-input>
@@ -56,14 +56,14 @@
     </div>
 
     <h4>List</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 pl-3 pr-3 mt-4">
             <vitamui-common-list-input [formControl]="list" [placeholder]="'Multiple input'">
             </vitamui-common-list-input>
         </div>
     </div>
     <h4>Select</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 mt-4">
             <div class="col-8">
                 <mat-form-field class="mr-3 field-domain vitamui-mat-select">
@@ -108,7 +108,7 @@
         </div>
     </div>
     <h4>Textarea</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 mt-4">
             <div class="col-8">
                 <vitamui-common-textarea [formControl]="textarea" placeholder="Textarea">
@@ -129,7 +129,7 @@
     </div>
 
     <h4>Level</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 mt-4 pl-3">
             <vitamui-common-level-input></vitamui-common-level-input>
         </div>
@@ -144,7 +144,7 @@
         </div>
     </div>
     <h4>Toggle</h4>
-    <div class="row m-0 contrast-container">
+    <div class="row m-0">
         <div class="col-12 mt-4">
             <vitamui-common-slide-toggle class="mr-3">Slide Toggle</vitamui-common-slide-toggle>
             <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle disabled</vitamui-common-slide-toggle>
@@ -153,7 +153,7 @@
        
     </div>
     <h4>Toggle Group</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 mt-4 pl-3">
             <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group mr-4">
                 <mat-button-toggle [value]="'FIRST'">
@@ -204,7 +204,7 @@
         </div>
     </div>
     <h4>Duration</h4>
-    <div class="d-flex flex-column contrast-container">
+    <div class="d-flex flex-column">
         <div class="row m-0 mt-4 pl-3">
             <vitamui-common-vitamui-duration-input [formControl]="duration">
             </vitamui-common-vitamui-duration-input>
@@ -220,7 +220,7 @@
         </div>
     </div>
     <h4>File</h4>
-    <div class="row m-0 contrast-container">
+    <div class="row m-0">
         <div class="col-8 mt-4">
             <vitamui-common-editable-file [formControl]="file" [label]="'Editable file upload'">
             </vitamui-common-editable-file>

@@ -9,10 +9,11 @@ $animation-time: 150ms;
   > input {
     background: $white;
     box-sizing: border-box;
-    border-radius: 87px;
+    border-radius: 4px;
     background-color: $white;
-    border: solid 1px var(--vitamui-grey-400);
-    height: 50px;
+    border: none;
+    box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
+    height: 60px;
     width: 100%;
     padding: 10px 40px 10px 29px;
     transition: padding $animation-time ease-out;
@@ -20,10 +21,6 @@ $animation-time: 150ms;
     &:focus {
       outline: none;
       border: solid 1px var(--vitamui-primary);
-    }
-
-    &:hover {
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -53,28 +50,29 @@ $animation-time: 150ms;
   .input-label {
   
     font-size: 14px;
+    font-weight: 700;
     align-items: center;
     letter-spacing: 0.1px;
-    line-height: 22px;
+    line-height: 10px;
     position: absolute;
     left: 30px;
     top: 16px;
     pointer-events: none;
     transform-origin: left;
-    color: var(--vitamui-grey-600);
+    color: var(--vitamui-primary);
     transition: transform $animation-time ease-out, top $animation-time ease-out;
   }
 
   &.label-up {
     .input-label {
-      transform: scale(0.7) translateY(-15px);
+      transform: scale((12/14)) translateY(-15px);
     }
 
     > input {
       padding-top: 30px;
     
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--vitamui-grey-900);
     }
   }

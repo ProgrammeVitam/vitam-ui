@@ -56,7 +56,7 @@
         }
 
         &.ng-valid.ng-touched {
-            border-color: #43ea2a;
+            border-color: $green;
         }
 
         &.ng-invalid.ng-touched {
