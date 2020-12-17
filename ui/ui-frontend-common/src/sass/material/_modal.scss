@@ -1,3 +1,5 @@
+$arrow-size: 70px;
+
 .vitamui-modal .mat-dialog-container {
     border-radius: 20px;
     padding: 0;
@@ -47,5 +49,126 @@
     // TODO : depereacted, remove at the end of the redesign
     .form-group {
         margin-bottom: 20px;
+    }
+}
+
+.vitamui-form-dual-panel .mat-dialog-container {
+    border-radius: 20px;
+    padding: 0;
+
+    .vitamui-form-dual-panel-content {
+        display: flex;
+        align-items: stretch;
+        position: relative;
+
+        .vitamui-form-left-panel {
+            background: var(--vitamui-grey-200);
+            padding: 65px 38px;
+            position: relative;
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                border-color: transparent transparent transparent var(--vitamui-grey-200);
+                border-width: ($arrow-size * 0.5) 0 ($arrow-size * 0.5) ($arrow-size * 0.5);
+                border-style: solid;
+                width: $arrow-size * 0.5;
+                height: $arrow-size;
+                top: 50%;
+                left: 100%;
+                margin-top: $arrow-size * -0.5;
+                pointer-events: none;
+            }
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                border-color: transparent transparent transparent var(--vitamui-grey-200);
+                border-width: ($arrow-size - 2px) * 0.5 0 ($arrow-size - 2px) * 0.5 ($arrow-size - 2px) * 0.5;
+                border-style: solid;
+                width: $arrow-size * 0.5 - 2px;
+                height: $arrow-size - 2px;
+                top: 50%;
+                left: 100%;
+                margin-top: ($arrow-size - 2px) * -0.5;
+                pointer-events: none;
+            }
+
+            &-title {
+                margin-bottom: 30px;
+                font-weight: bold;
+                font-size: 20px;
+                color: var(--vitamui-grey-900);
+            }
+
+            &-property {
+                margin-bottom: 10px;
+
+                &-label {
+                    font-size: 13px;
+                    color: var(--vitamui-grey-600);
+                }
+
+                &-content {
+                    font-size: 15px;
+                    font-weight: 500;
+                    color: var(--vitamui-grey-800);
+                    word-break: break-word;
+                }
+            }
+
+            .scroll-container {
+                max-height: 400px;
+                overflow: auto;
+                padding-right: 20px;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+        }
+
+        .vitamui-form-right-panel {
+            padding: 50px 70px;
+
+            &-title {
+                margin-bottom: 30px;
+                font-weight: bold;
+                font-size: 20px;
+                color: var(--vitamui-grey-900);
+            }
+
+            &-actions {
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                > :not(:last-child) {
+                    margin-right: 20px;
+                }
+            }
+
+            .scroll-container {
+                max-height: 400px;
+                overflow: auto;
+                padding-right: 20px;
+            }
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+
+            > i {
+                color: var(--vitamui-grey-600);
+                opacity: 0.5;
+                font-size: 35px;
+            }
+        }
     }
 }
