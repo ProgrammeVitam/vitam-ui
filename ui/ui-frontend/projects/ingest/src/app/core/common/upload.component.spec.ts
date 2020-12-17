@@ -44,7 +44,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoggerModule, ConfirmDialogService } from 'ui-frontend-common';
 
-fdescribe('UploadComponent', () => {
+describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
 
@@ -83,23 +83,9 @@ fdescribe('UploadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-  it('should call upload()', () => {
-    const uploadService = TestBed.get(UploadService);
-    const confirmerVersementButton = fixture.nativeElement.querySelector('button');
-    expect(confirmerVersementButton.attributes.disabled).toBeFalsy();
-    expect(confirmerVersementButton.textContent).toContain('Confirmer le versement');
-    component.sipForm.setValue({
-      hasSip: true
-    });
-    component.upload();
-    expect(uploadService.uploadFile.calls.count()).toBe(1);
-  });
-
-
   describe('initContextIdentifier', () => {
 
-    beforeEach( () => {
+    beforeEach(() => {
       spyOn(console, 'error');
     });
 
