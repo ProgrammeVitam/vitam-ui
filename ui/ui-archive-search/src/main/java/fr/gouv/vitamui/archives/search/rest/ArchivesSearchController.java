@@ -28,12 +28,14 @@ package fr.gouv.vitamui.archives.search.rest;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +54,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import java.util.Map;
 
 
 @Api(tags = "archives Search")
@@ -94,14 +95,23 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return archivesSearchService.findFilingHoldingScheme(buildUiHttpContext());
     }
 
-    @ApiOperation(value = "Download Archive Unit file")
-    @PostMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+
+    @ApiOperation(value = "Find the Archive Unit Details")
+    @GetMapping("/archiveunit" + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id, @RequestBody final Map<String, String> texte ) {
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id){
+        LOGGER.debug("Find the Archive Unit with ID {}", id);
+        return archivesSearchService.findUnitById(id, buildUiHttpContext());
+    }
+
+    @ApiOperation(value = "Download Archive Unit file")
+    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id) {
         LOGGER.debug("Donwload the Archive Unit with ID {}", id);
-        Resource body =  archivesSearchService.downloadArchiveUnit(id, texte , buildUiHttpContext()).getBody();
+        Resource body = archivesSearchService.downloadArchiveUnit(id, buildUiHttpContext()).getBody();
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
             .body(body);
     }
 }

@@ -41,7 +41,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {  SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { SearchResponse } from '../../archive/models/search-response.interface';
-//import { Unit } from '../../archive/models/unit.interface';
+
 
 
 @Injectable({
@@ -82,8 +82,13 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   getAllAccessContracts(params: HttpParams, headers?: HttpHeaders): Observable<any[]> {
     return this.http.get<any>(`${this.apiUrl}/accesscontracts`, { params, headers });
   }
-  downloadArchiveUnit(id : string, a: { [key: string]: any }, headers?: HttpHeaders) : Observable<Blob> {
-    return this.http.post<any>(`${this.apiUrl}/downloadarchiveunit/${id}`,a,{headers: headers, responseType: 'blob' as 'json'});
+  
+  downloadArchiveUnit(id : string, headers?: HttpHeaders) : Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/downloadarchiveunit/${id}`,{headers: headers, responseType: 'blob'});
+  }
+
+  findArchiveUnit(id: string, headers?: HttpHeaders) :Observable<any> { 
+      return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' }); 
   }
 
 }

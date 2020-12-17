@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -64,7 +65,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
@@ -135,15 +135,23 @@ public class ArchiveInternalController {
 
     }
 
-    @PostMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadArchiveUnit( final @PathVariable("id") String id, @RequestBody final Map<String, String> data,
+    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    public ResultsDto findUnitById(final @PathVariable("id") String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+        throws VitamClientException {
+        LOGGER.info("UA Details  {}", id);
+        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.findUnitById(id,vitamContext);
+    }
+
+    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> downloadArchiveUnit( final @PathVariable("id") String id,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
 
         LOGGER.info("Access Contract {} ", accessContractId);
         LOGGER.info("Download UA  {}", id);
        final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        Response response =  archiveInternalService.downloadArchiveUnit(id, data, vitamContext);
+        Response response =  archiveInternalService.downloadArchiveUnit(id, vitamContext);
               Object entity = response.getEntity();
               if (entity instanceof InputStream) {
                   Resource resource = new InputStreamResource((InputStream) entity);
