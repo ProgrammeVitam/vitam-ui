@@ -163,7 +163,7 @@
     }
 
     &.cancel {
-        @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-gray-900));
+        @include btn(transparent, transparent, transparent, transparent, var(--vitamui-grey-900), var(--vitamui-grey-900));
     }
 
     i {

@@ -2,13 +2,18 @@
     background: white;
     margin-top: 72px; // header height
     width: 584px;
-    height: 100vh;
 }
 
 .vitamui-sidepanel-header {
     background-color: white;
-    padding: 5px 15px 10px 10px;
-    height: 142px;
+    padding: 2px 20px 10px 10px;
+    height: 174px;
+
+    .cancel {
+        > i {
+            color: var(--vitamui-grey-600)!important;
+        }
+    }
 
     .title {
         display: flex;
@@ -17,7 +22,7 @@
 
         > i {
             color: var(--vitamui-grey-900);
-            font-size: 45px;
+            font-size: 35px;
         }
 
         // DEPREACTED : REMOVE THIS H2 CSS AT THE END OF THE REDESIGN
@@ -30,8 +35,16 @@
         }
 
         > div:first-of-type {
-            width: 66%;
-            padding-left: 1.5rem;
+            width: 76%;
+            padding-left: 2rem;
+
+            > h5 {
+                display: -webkit-box;
+                overflow: hidden;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
 
             > p {
                 display: -webkit-box;
@@ -43,22 +56,30 @@
         }
 
         > .actions {
-            width: 25%;
+            width: 15%;
         }
     }
 }
 
 .vitamui-sidepanel-body {
     font-size: 16px;
-    
+    background-color: var(--vitamui-background);
     color: var(--vitamui-grey-900);
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
-    top: 214px;
+    top: 247px;
     overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
+
+
 
 .mat-drawer-content {
     background-color: var(--vitamui-background);

@@ -4,7 +4,7 @@
   [subtitle]="'(' +  user?.identifier + ')'"
   [icon]="'vitamui-icon-user'"
   (onclose)="emitClose()">
-    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'more_horiz'">
+    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
       <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED'">Activer </button>
       <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">Désactiver</button>
     </vitamui-common-menu-button>

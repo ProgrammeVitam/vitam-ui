@@ -167,7 +167,7 @@
             <div class="d-flex justify-content-between align-items-center clickable">
               <div class="row-label d-flex align-items-center" (click)="handleClick(group)">
                 {{group?.name}}</div>
-              <button class="btn link underline"
+              <button class="btn link text-underline"
                 (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
             </div>
             <div *ngIf="row.state === 'expanded' then dialogSubArray"></div>

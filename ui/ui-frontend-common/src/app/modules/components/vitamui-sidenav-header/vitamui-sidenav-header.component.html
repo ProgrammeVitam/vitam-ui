@@ -1,7 +1,9 @@
 <div class="vitamui-sidepanel">
   <div class="vitamui-sidepanel-header">
     <div class="d-flex justify-content-end">
-      <button class="btn link xx-large" (click)="onclose.emit()"><i class="material-icons">close</i></button>
+      <button class="btn link cancel" (click)="onclose.emit()">
+        <i class="vitamui-icon vitamui-icon-close"></i>
+      </button>
     </div>
 
     <!-- if we have a one line title (25 chars), then apply a top margin -->
@@ -15,11 +17,11 @@
       </i>
 
       <div>
-        <h5 class="m-0">{{title}}</h5>
-        <p class="text medium m-0">{{subtitle}}</p>
+        <h5 class="m-0 text-primary">{{title}}</h5>
+        <p class="text large light m-0">{{subtitle}}</p>
       </div>
 
-      <div class="d-flex align-items-end actions">
+      <div class="d-flex align-items-end justify-content-end actions">
         <ng-content></ng-content>
       </div>
     </div>

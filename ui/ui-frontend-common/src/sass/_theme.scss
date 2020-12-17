@@ -100,14 +100,16 @@ button {
     color: var(--vitamui-primary-300)!important;
 }
 
-
-
 .text-secondary {
     color: var(--vitamui-secondary)!important;
 }
 
 .text-red {
     color: $red!important;
+}
+
+.text-underline {
+    text-decoration: underline;
 }
 
 .bg-primary {
@@ -118,9 +120,7 @@ button {
     background-color: var(--vitamui-secondary)!important;
 }
 
-.underline {
-    text-decoration: underline;
-}
+
 
 .no-hover {
     &:hover {

@@ -13,6 +13,7 @@ export class VitamuiMenuButtonComponent {
   /**
    * Set the icon to display on the button.
    * If there is only an icon, the button will be rounded.
+   * WARNING : ONLY USE VITAMUI ICONS, MATERIAL ICONS WONT WORK
    */
   @Input() icon: string;
 
