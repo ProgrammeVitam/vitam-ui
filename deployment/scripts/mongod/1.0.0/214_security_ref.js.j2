@@ -8,9 +8,6 @@ db.contexts.insert({
     "fullAccess" : true,
     "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
     "roleNames" : [
-<<<<<<< HEAD
-        "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST"
-=======
         "ROLE_GET_CUSTOMERS", "ROLE_CREATE_CUSTOMERS", "ROLE_UPDATE_CUSTOMERS",
         "ROLE_GET_USERS", "ROLE_CREATE_USERS", "ROLE_UPDATE_USERS", "ROLE_UPDATE_STANDARD_USERS", "ROLE_GENERIC_USERS", "ROLE_MFA_USERS", "ROLE_ANONYMIZATION_USERS",
         "ROLE_UPDATE_ME_USERS",
@@ -23,7 +20,6 @@ db.contexts.insert({
         "ROLE_CREATE_ACCESS_CONTRACTS",
         "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST",
         "ROLE_CREATE_HOLDING_FILLING_SCHEME", "ROLE_GET_HOLDING_FILLING_SCHEME", "ROLE_GET_ALL_HOLDING_FILLING_SCHEME"
->>>>>>> b6afef02... adding ng specs and use of Holding-filling-scheme instead of trees and plans
     ]
 });
 

@@ -252,9 +252,9 @@ public class ServicesData {
 
     public static final String SERVICE_FILE_FORMATS = "FILE_FORMATS";
 
-    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX  + SERVICE_FILE_FORMATS;
 
-    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX+ SERVICE_FILE_FORMATS;
 
     public static final String ROLE_UPDATE_FILE_FORMATS = UPDATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
@@ -266,9 +266,9 @@ public class ServicesData {
 
     public static final String SERVICE_CONTEXTS = "CONTEXTS";
 
-    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX+ SERVICE_CONTEXTS;
 
-    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX  + SERVICE_CONTEXTS;
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
@@ -333,6 +333,25 @@ public class ServicesData {
     public static final String ROLE_CREATE_INGEST = CREATE_ROLE_PREFIX + SERVICE_INGEST;
     public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
     public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
+
+
+    //------------------------------------ ARCHIVES -----------------------------------------
+
+    public static final String SERVICE_ARCHIVE = "ARCHIVE";
+
+    public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
+    public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
+    public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
+
+
+    //------------------------------------ API TREES & PLANS -----------------------------------------
+
+    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
+
+    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+
 
     //@formatter:off
 
