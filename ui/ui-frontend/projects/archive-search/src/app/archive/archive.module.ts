@@ -61,6 +61,8 @@ import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-ser
 import { AccessContractComponent } from './access-contract/access-contract.component';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import { ArchiveSearchResolverService } from './archive-search-resolver.service';
  
 @NgModule({
   imports: [
@@ -89,7 +91,7 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
     MatIconModule, 
     MatTabsModule
   ],
-  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe] ,
+  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService] ,
   declarations: [
     ArchiveComponent,
     FilingHoldingNodeComponent,
@@ -97,6 +99,7 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
     ArchiveSearchComponent,
     AccessContractComponent,
     ArchivePreviewComponent,
+    ArchiveSearchPopupComponent,
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

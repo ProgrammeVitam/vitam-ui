@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
  import { Unit } from '../models/unit.interface';
 import { HttpHeaders } from '@angular/common/http';
 import { ArchiveService } from '../archive.service';
+import { StartupService } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-archive-preview',
@@ -14,26 +16,43 @@ export class ArchivePreviewComponent  implements OnInit {
   archiveUnit: Unit;
   @Input()
   accessContract : string;
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Output()
+  previewClose: EventEmitter<any> = new EventEmitter();
+  @Input() 
+  isPopup: boolean;
 
-  constructor(private archiveService : ArchiveService) {
+  
+  tenantIdentifier: string;
+  constructor(private archiveService : ArchiveService, private startupService : StartupService, private route: ActivatedRoute) {
+    this.route.params.subscribe(params => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
 
   }
+
+
   ngOnInit() {
-  }
+
+    }
+  
 
   onDownloadArchive(archiveUnit : Unit){
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', this.accessContract);
-    const a =  {
-      usage : "BinaryMaster",
-      version : "1"
-    };
-
-  return  this.archiveService.downloadArchiveUnit(archiveUnit['#id'],a, headers);
+    
+   return  this.archiveService.downloadArchiveUnit(archiveUnit['#id'], headers);
   }
 
   emitClose() {
     this.previewClose.emit();
+  }
+
+
+
+  openPopup() {
+    window.open(this.startupService.getConfigStringValue('UI_URL')
+      + '/archive-search/tenant/' + this.tenantIdentifier + '/' + this.accessContract + '/id/' + this.archiveUnit['#id'],
+        'detailPopup', 'width=684, height=713, resizable=no, location=no');
+    this.emitClose();
   }
 }

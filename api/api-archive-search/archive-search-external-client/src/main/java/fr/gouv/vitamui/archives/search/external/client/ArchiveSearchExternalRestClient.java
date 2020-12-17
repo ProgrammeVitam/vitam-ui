@@ -26,6 +26,7 @@
 
 package fr.gouv.vitamui.archives.search.external.client;
 
+import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -35,6 +36,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.Resource;
@@ -47,7 +49,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 public class ArchiveSearchExternalRestClient
@@ -120,10 +121,16 @@ public class ArchiveSearchExternalRestClient
         return headers;
     }
 
-    public ResponseEntity<Resource> downloadArchiveUnit(String id , Map<String, String> data, ExternalHttpContext context) {
+    public ResponseEntity<ResultsDto> findUnitById(String id , ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
+    public ResponseEntity<Resource> downloadArchiveUnit(String id , ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
-        final  HttpEntity<Map<String, String>> request = new HttpEntity<>(data, buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, Resource.class);
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 
 

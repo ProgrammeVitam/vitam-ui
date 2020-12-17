@@ -35,6 +35,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 
 /**
  * UI Archive-Search External controller
@@ -83,11 +83,18 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.getFilingHoldingScheme();
     }
 
-    @PostMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id, @RequestBody final Map<String, String> data) {
-        LOGGER.info("Get the UA by id {} ", id);
-        return archivesSearchExternalService.downloadArchiveUnit(id, data);
+    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id) {
+        LOGGER.info("Download the UA by id {} ", id);
+        return archivesSearchExternalService.downloadArchiveUnit(id);
+    }
+
+    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
+        LOGGER.info("the UA by id {} ", id);
+        return archivesSearchExternalService.findUnitById(id);
     }
 
 }

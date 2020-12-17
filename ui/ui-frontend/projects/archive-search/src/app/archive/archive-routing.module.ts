@@ -40,6 +40,8 @@ import { Route, RouterModule } from '@angular/router';
 
 import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
 import { ArchiveComponent } from './archive.component';
+import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 
 
 const routes: Route[] = [
@@ -56,6 +58,12 @@ const routes: Route[] = [
     path: 'tenant/:tenantIdentifier',
     component: ArchiveComponent,
     canActivate: [ActiveTenantGuard]
+  },
+
+  {
+    path: 'tenant/:tenantIdentifier/:accessContractId/id/:id',
+    component: ArchiveSearchPopupComponent,
+    resolve : {archiveUnit : ArchiveSearchResolverService}
   }
 ];
 

@@ -153,9 +153,9 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  downloadArchiveUnit(id : string , a: {[key: string]: any }, headers?: HttpHeaders) {
+  downloadArchiveUnit(id : string , headers?: HttpHeaders) {
 
-    return this.archiveApiService.downloadArchiveUnit(id, a, headers).subscribe(
+    return this.archiveApiService.downloadArchiveUnit(id, headers).subscribe(
 
       file => {
 
@@ -166,9 +166,14 @@ export class ArchiveService extends SearchService<any> {
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+      },
+      errors => {
+        console.log('Error message : ',errors);
       }
-    );
+    ); }
 
+  findArchiveUnit(id : string, headers?: HttpHeaders) {
+      return this.archiveApiService.findArchiveUnit(id, headers);
     }
 
 }

@@ -84,7 +84,6 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
 
 
   showPreviewArchiveUnit(item: Event) {
-    console.log('show: ', item);
     this.openPanel(item);
   }
 }
