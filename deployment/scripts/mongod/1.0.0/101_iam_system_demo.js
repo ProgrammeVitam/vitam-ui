@@ -203,7 +203,13 @@ db.groups.insert({
         "system_logbook_operation",
         "system_holding_filling_scheme_profile"
         "system_ingest_profile",
+<<<<<<< HEAD
         "system_archive_profile"
+=======
+        "system_archive_profile",
+        "system_logbook_operation_profile",
+        "system_holding_filling_scheme_profile"
+>>>>>>> resoudre conflit de merge
 	],
 	"readonly": false,
 	"level": "",

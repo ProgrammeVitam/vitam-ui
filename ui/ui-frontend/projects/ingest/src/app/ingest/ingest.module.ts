@@ -50,6 +50,7 @@ import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { UploadModule } from '../core/common/upload.module';
+import { MatProgressBarModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -65,7 +66,8 @@ import { UploadModule } from '../core/common/upload.module';
     IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressBarModule
   ],
   declarations: [
     IngestComponent
