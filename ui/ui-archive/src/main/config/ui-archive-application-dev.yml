@@ -82,7 +82,7 @@ ui-archive:
       order: 1
 
 ui:
-  url: "https://dev.vitamui.com:4208"
+  url: "https://dev.vitamui.com:4209"
   redirect-url: https://dev.vitamui.com:9009/${ui-prefix}
 
 cas:

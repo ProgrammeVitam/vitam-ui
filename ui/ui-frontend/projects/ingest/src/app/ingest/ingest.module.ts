@@ -49,15 +49,10 @@ import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
-<<<<<<< HEAD
-=======
 import { UploadModule } from '../core/common/upload.module';
-import { IngestResolverService } from './ingest-resolver.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { UploadSipComponent } from './upload-sip/upload-sip.component';
+import { MatProgressBarModule } from '@angular/material';
 
-
-
->>>>>>> b0524bc2... Commonize filing, holding and ingest upload components and services
 
 @NgModule({
   imports: [
@@ -73,10 +68,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule, 
+    MatProgressBarModule
   ],
   declarations: [
-    IngestComponent
+    IngestComponent,
+    UploadSipComponent
   ],
   providers: [
   ]

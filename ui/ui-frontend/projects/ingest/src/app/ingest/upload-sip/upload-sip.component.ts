@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-/*
+ /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -40,15 +39,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BytesPipe, Logger } from 'ui-frontend-common';
-import { UploadSipService } from './upload-sip.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UploadService } from '../../core/common/upload.service';
 
 
 
 @Component({
   selector: 'app-upload-sip',
   templateUrl: './upload-sip.component.html',
-  styleUrls: ['./upload-sip.component.scss']
+  styleUrls: []
 })
 export class UploadSipComponent implements OnInit {
 
@@ -75,7 +75,7 @@ export class UploadSipComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UploadSipComponent>,
     private formBuilder: FormBuilder,
-    private uploadService: UploadSipService,
+    private uploadService: UploadService,
     private snackBar: MatSnackBar,
     public logger: Logger
   ) {
@@ -144,7 +144,7 @@ export class UploadSipComponent implements OnInit {
             this.displaySnackBar(res);
           }
         },
-        (error) => {
+        (error: HttpErrorResponse) => {
           console.error(error);
           this.message = error.message;
         });
@@ -179,5 +179,3 @@ export class UploadSipComponent implements OnInit {
   }
 
 }
-=======
->>>>>>> 3af54ac9... Delete no more used components
