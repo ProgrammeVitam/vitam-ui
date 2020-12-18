@@ -214,6 +214,8 @@ export class ThemeService {
       if (this.defaultMap.hasOwnProperty(key)) {
         if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
           this.add10Declinations(key, colors, customerColors);
+        } else if (ThemeColorType.VITAMUI_HEADER_FOOTER === key) {
+          colors[key + '-font'] = this.calculateFontColor(this.applicationColorMap[key]);
         }
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);
       }

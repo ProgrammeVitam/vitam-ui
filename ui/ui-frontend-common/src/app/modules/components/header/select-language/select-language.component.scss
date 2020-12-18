@@ -35,4 +35,11 @@ span {
 ::ng-deep.mat-menu-content {
     padding: 0!important;
 }
-    
+
+.select-language {
+  border-left: 1px solid var(--vitamui-header-footer-font);
+}
+
+div {
+    height: 100%;
+}

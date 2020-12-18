@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public trustedInlineLogoUrl: SafeUrl;
   public hasTenantSelection = false;
   public hasCustomerSelection = false;
+  public hasLangSelection = false;
   public portalUrl: string;
   public currentUser: AuthUser;
   public selectedTenant: MenuOption;

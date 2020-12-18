@@ -15,7 +15,14 @@ import { SessionStorageService } from '../../../services/session-storage.service
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
 
-  public hasLangSelection = false;
+  /**
+   * This component have two display mode :
+   * select : displays a select box with the current selected lang as text.
+   * button : displays a circle button with the current selected lang as an image.
+   */
+  @Input() displayMode: 'select' | 'button' = 'button';
+
+  public hasLangSelection = true;
   public currentLang = '';
 
   private destroyer$ = new Subject();

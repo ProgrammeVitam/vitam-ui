@@ -1,39 +1,50 @@
+@import '../../../../sass/mixins/elevation';
+
+$header-height: 72px;
+
 mat-toolbar {
+  @include elevation-4;
   z-index: 10;
 }
 
 .header {
   background-color: var(--vitamui-header-footer);
+  height: $header-height;
   position: fixed;
   top: 0;
-  height: 72px;
+  display: flex;
 }
 
 .header-logo {
-  vertical-align: middle;
+  width: 15%;
+
+  img {
+    vertical-align: middle;
+    line-height: 0;
+  }
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
-.header-logo {
-  line-height: 0;
-}
-
-.selection-component {
+.header-actions {
+  width: 85%;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
-.tenantSelection {
-  display: flex;
-  align-items: center;
+vitamui-common-item-select {
+  height: 100%;
+  width: 100%;
 }
 
-.separator::before {
-  content: "|";
-  margin: 0 1rem;
+vitamui-common-select-language, .select-tenant {
+  height: $header-height;
+}
+
+.select-tenant {
+  width: 18%;
+  min-width: 200px;
+  border-left: 1px solid var(--vitamui-header-footer-font);
+  border-right: 1px solid var(--vitamui-header-footer-font);
 }
 
 .username {
@@ -44,6 +55,18 @@ mat-toolbar {
 
 .account {
   cursor: pointer;
+
+  .text {
+    color: var(--vitamui-header-footer-font);
+
+    &.caption {
+      line-height: 1.4;
+    }
+
+    &.normal {
+      line-height: 2.8;
+    }
+  }
 }
 
 .apps-button {
@@ -56,4 +79,32 @@ mat-toolbar {
 
 .vitamui-icon-apps-colored {
   font-size: 24px;
+}
+
+// Override item selection component css properties for header display only,
+// since the design is not common anymore with the other component usages.
+:host::ng-deep {
+  mat-select, .mat-select-value, .mat-select-arrow, .selected-item-label, .unselected-item-label, .mat-select-value-text {
+    color: var(--vitamui-header-footer-font)!important;
+  }
+
+  .mat-select-arrow-wrapper {
+    vertical-align: top!important;
+  }
+
+  mat-form-field {
+    background-color: transparent!important;
+    box-shadow: none!important;
+    height: 100%!important;
+    padding-left: 0 1rem!important;
+    border: none!important;
+    border-radius: 0!important;
+    padding: 0 1rem!important;
+
+    .mat-form-field-wrapper  {
+      .mat-form-field-flex {
+        background-color: transparent!important;
+      }
+    }
+}
 }

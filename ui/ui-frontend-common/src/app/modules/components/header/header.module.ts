@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
@@ -21,7 +20,6 @@ import { UserPhotoModule } from './user-photo/user-photo.module';
     CommonModule,
     RouterModule,
     MatMenuModule,
-    MatIconModule,
     MatToolbarModule,
     MatButtonModule,
     ItemSelectModule,
