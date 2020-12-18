@@ -239,8 +239,7 @@ $row-padding: 0.8rem;
 
 // table css
 .vitamui-table {
-    background-color: $white;
-    border: 1px solid var(--vitamui-grey-400);
+    background-color: var(--vitamui-background);
     border-radius: 5px;
 }
 
@@ -251,6 +250,9 @@ $row-padding: 0.8rem;
     font-size: 14px;
     font-weight: 700;
     color: var(--vitamui-grey-700);
+    margin-bottom: 0.3rem;
+    border-bottom: 2px solid var(--vitamui-grey-300);
+    background-color: white;
 
     i {
         color: var(--vitamui-grey-600);
@@ -282,12 +284,14 @@ $row-padding: 0.8rem;
     }
 
     .vitamui-row {
-        border-top: 1px solid var(--vitamui-grey-400); 
         padding: $row-padding;
+        margin-bottom: 0.3rem;
+        background-color: white;
 
         &:hover {
-            background-color: var(--vitamui-grey-300);
-    
+            background-color: transparent;
+            box-shadow: 0px 0px 8px rgba(var(--vitamui-grey-600-rgb), 0.24);
+
             .actions > div {
                 visibility: visible;
                 opacity: 1;
@@ -328,7 +332,6 @@ $row-padding: 0.8rem;
 // Subtable css
 .vitamui-subtable {
     background-color: var(--vitamui-background);
-    border-top: 1px solid var(--vitamui-grey-400);
 
     .vitamui-table-head {
         height: 55px;       
@@ -348,14 +351,13 @@ $row-padding: 0.8rem;
 
     .vitamui-row {
         height: 55px;
-        border-top: 1px solid var(--vitamui-grey-400);
 
         &:hover {
-            background-color: var(--vitamui-grey-300);
+            background-color: transparent;
         }
 
         &:last-of-type {
-            border-bottom: 1px solid var(--vitamui-grey-400);
+            //border-bottom: 1px solid var(--vitamui-grey-400);
         }
     }
 }
