@@ -138,6 +138,28 @@ public class IngestInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
     }
 
+    public LogbookOperationDto getOne(VitamContext vitamContext, final String id) {
+
+        final RequestResponse<LogbookOperation> requestResponse;
+        try {
+            LOGGER.info("Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
+            requestResponse = logbookService.selectOperationbyId(id, vitamContext);
+
+            LOGGER.debug("One Ingest Response: {}: ", requestResponse);
+
+            final LogbookOperationsResponseDto logbookOperationDtos = objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+
+            List<LogbookOperationDto> singleLogbookOperationDto =
+                IngestConverter.convertVitamsToDtos(logbookOperationDtos.getResults());
+
+            return singleLogbookOperationDto.get(0);
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new InternalServerException("Unable to find LogbookOperations", e);
+        }
+
+    }
+
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {

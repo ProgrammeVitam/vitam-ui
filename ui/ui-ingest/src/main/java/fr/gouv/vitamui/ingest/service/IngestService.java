@@ -94,6 +94,11 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         ingestThread.start();
     }
 
+    public LogbookOperationDto getOne(final ExternalHttpContext context, final String id) {
+        LOGGER.info("Get the Ingest with ID {}", id);
+        return super.getOne(context,id);
+    }
+
     public IngestExternalRestClient getClient() {
         return ingestExternalRestClient;
     }

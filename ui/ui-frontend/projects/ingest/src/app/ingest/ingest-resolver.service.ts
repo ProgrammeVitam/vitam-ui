@@ -14,7 +14,6 @@ export class IngestResolverService implements Resolve<any>{
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
     
     const id = route.paramMap.get('id');
-    console.log(id);
     return this.ingestService.get(id)
       .pipe(
         take(1),

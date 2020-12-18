@@ -1,8 +1,6 @@
 
-import { Customer } from 'ui-frontend-common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CustomerService } from 'projects/identity/src/app/core/customer.service';
 
 
 @Component({
@@ -14,10 +12,9 @@ export class IngestPopupComponent implements OnInit {
 
 
   ingest: any;
-  customer: Customer;
+  
 
-  constructor(private route: ActivatedRoute, private customerService: CustomerService) {
-    this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
+  constructor(private route: ActivatedRoute) {
     this.ingest = this.route.snapshot.data.ingest;
 
   }

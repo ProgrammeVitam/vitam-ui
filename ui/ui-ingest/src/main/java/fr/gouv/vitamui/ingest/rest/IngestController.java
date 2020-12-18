@@ -50,7 +50,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -170,5 +169,13 @@ public class IngestController extends AbstractUiRestController {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(CommonConstants.X_REQUEST_ID_HEADER, requestId);
         return new ResponseEntity<>(headers, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Get one ingest operation details")
+    @GetMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public LogbookOperationDto getOne(final @PathVariable("id") String id ) {
+        LOGGER.error("Get Ingest={}", id);
+        return service.getOne(buildUiHttpContext(), id);
     }
 }

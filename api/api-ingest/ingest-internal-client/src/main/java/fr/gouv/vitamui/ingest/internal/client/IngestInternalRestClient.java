@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.ingest.internal.client;
 
-
-import fr.gouv.vitam.common.model.AuditOptions;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -47,25 +44,22 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.util.List;
 
 /**
  * Ingest Internal REST Client.
  */
-public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
+public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext>  {
+
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalRestClient.class);
 
     public IngestInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
-    }
+           }
 
     @Override
     public String getPathUrl() {

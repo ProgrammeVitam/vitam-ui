@@ -46,9 +46,6 @@ import {
 } from '@angular/material';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestPopupComponent } from './ingest-popup.component';
-import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
-import { EventDisplayHelperService } from './event-display-helper.service';
-import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 
 
 
@@ -56,9 +53,9 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
   declarations: [
     IngestPreviewComponent,
     IngestInformationTabComponent,
-    EventDisplayComponent,
     IngestPopupComponent,
-    IngestEventDetailComponent],
+    
+  ],
 
   imports: [
     CommonModule,
@@ -79,11 +76,8 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
     IngestPopupComponent,
     IngestPreviewComponent,
     IngestInformationTabComponent,
-    IngestEventDetailComponent,
-    EventDisplayComponent
   ],
   providers: [
-    EventDisplayHelperService
   ]
 })
 export class IngestPreviewModule { }

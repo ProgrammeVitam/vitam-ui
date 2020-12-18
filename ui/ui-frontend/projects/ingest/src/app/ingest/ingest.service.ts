@@ -38,6 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -57,7 +58,7 @@ export class IngestService extends SearchService<any> {
     return this.ingestApiService.getBaseUrl();
   }
 
- get(id: string): Observable<Event> {
+  get(id: string): Observable<any> {
     return this.ingestApiService.getOne(id);
   }
 
