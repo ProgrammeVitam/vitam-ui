@@ -18,59 +18,47 @@ label {
 }
 
 .slide-toggle {
-    width: 70px;
-    min-width: 70px;
-    height: 30px;
+    width: 36px;
+    height: 12px;
     margin-right: 18px;
-    border-radius: 15px;
-    overflow: hidden;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    background-color: #8f8f8f;
+    background-color: var(--vitamui-grey);
     transition: background-color 100ms ease-in-out, box-shadow 200ms ease-out;
 
     &.slide-toggle-on:not(.slide-toggle-disabled) {
-        background-color: var(--vitamui-primary);
-        &:hover {
-            background-color: var(--vitamui-primary-700);
-        }
+        background-color: var(--vitamui-secondary);
     }
 
     &.slide-toggle-off:not(.slide-toggle-disabled) {
         background-color: var(--vitamui-grey-800);
-        &:hover {
-            background-color: var(--vitamui-grey-800);
-        }
     }
 
     .slide-toggle-inner {
         display: flex;
 
         .slide-toggle-label {
-            overflow: hidden;
-            width: 44px;
+            width: 14px;
             line-height: 22px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            color: $white;
             transition: margin-left 100ms ease-in-out;
 
             &:first-child {
-                padding-left: 4px;
+                padding-left: 0px;
             }
 
             &:last-child {
-                padding-right: 4px;
+                padding-right: 0px;
             }
         }
 
         .slide-toggle-thumb {
-            width: 22px;
-            height: 22px;
-            border-radius: 11px;
-            background-color: $white;
-            box-shadow: 0 0 10px 0 rgba(115, 115, 115, 0.5);
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: var(--vitamui-primary);
+            border: 2px solid white;
+            box-shadow: 0px 2px 4px rgba(46, 53, 69, 0.15);
             cursor: grab;
         }
     }
@@ -78,13 +66,13 @@ label {
     &:not(.slide-toggle-on) {
 
         .slide-toggle-label:first-child {
-            margin-left: -40px;
+            margin-left: -16px;
         }
 
     }
 
     &.slide-toggle-disabled {
         cursor: no-drop;
-        background-color: var(--vitamui-grey-600);
+        background-color: var(--vitamui-grey);
     }
 }
