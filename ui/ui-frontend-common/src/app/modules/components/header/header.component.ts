@@ -126,16 +126,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
           eventsObsRef = this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {
           
             if (data instanceof ActivationStart) {
-            const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
-            
-            if (tenantIdentifier) {
-              this.tenantService.setSelectedTenantByIdentifier(tenantIdentifier);
-              this.tenantService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
-                  if (tenant.identifier !== tenantIdentifier) {
-                    this.changeTenant(tenant.identifier);
-                  }
-              });
-            }
+              const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
+              
+              if (tenantIdentifier) {
+                this.tenantService.setSelectedTenantByIdentifier(tenantIdentifier);
+                this.tenantService.getSelectedTenant$().pipe(takeUntil(this.destroyer$)).subscribe((tenant: Tenant) => {
+                    if (tenant.identifier !== tenantIdentifier) {
+                      this.changeTenant(tenant.identifier);
+                    }
+                });
+              }
             }
           });
         }
@@ -201,6 +201,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private changeTenant(tenantIdentifier: Number): void {
-    this.router.navigate([this.route.firstChild.snapshot.url[0].path + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate([this.route.firstChild.snapshot.routeConfig.path + TENANT_SELECTION_URL_CONDITION, tenantIdentifier], { relativeTo: this.route });
   }
 }
