@@ -51,7 +51,7 @@ describe('ApplicationService', () => {
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(() => {
-    const authStubService = { token: 'fakeToken', user: {} };
+    const authStubService = { token: 'fakeToken', user: {}, getAnyTenantIdentifier: () => 10 };
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
