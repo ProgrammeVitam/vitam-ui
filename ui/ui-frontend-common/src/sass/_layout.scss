@@ -40,7 +40,6 @@ $footer-height: 100px !default;
 }
 
 .vitamui-body {
-    padding: 40px 100px;
     min-height: calc(100vh - #{$header-height + $footer-height});
 }
 
