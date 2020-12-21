@@ -38,7 +38,7 @@ import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, Criterion, DEFAULT_PAGE_SIZE,
-  Direction, InfiniteScrollTable, Operators, PageRequest, Role, SearchQuery, User
+  Direction, InfiniteScrollTable, Operators, PageRequest, Role, SearchQuery, User, VitamUISnackBar
 } from 'ui-frontend-common';
 
 import { animate, state, style, transition, trigger } from '@angular/animations';
