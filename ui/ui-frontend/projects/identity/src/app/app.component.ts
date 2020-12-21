@@ -41,14 +41,18 @@ import { StartupService } from 'ui-frontend-common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
 
-  constructor(private titleService: Title, private startupService: StartupService) { }
+  title = 'Identity App';
+  subrogating = false;
+
+  constructor(titleService: Title, startupService: StartupService) {
+    titleService.setTitle(startupService.getPlatformName());
+  }
 
   ngOnInit() {
-    this.titleService.setTitle(this.startupService.getPlatformName());
   }
-  
+
 }
