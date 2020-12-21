@@ -92,7 +92,7 @@ class TestHostComponent {
         country : 'DK'
     },
     owners: [],
-    themeColors: {}, 
+    themeColors: {},
     alerte : false,
     alertDelay : 72
   };

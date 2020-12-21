@@ -340,4 +340,5 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
+
 }

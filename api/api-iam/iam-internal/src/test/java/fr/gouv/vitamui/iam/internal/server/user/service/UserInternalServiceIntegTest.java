@@ -311,6 +311,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
+        user.setSiteCode("001");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -345,7 +346,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"OTP\":\"true\","
                 + "\"desactivationDate\":\"\","
                 + "\"removingDate\":\"\","
-                + "\"Code du site\":\"001\","
+                + "\"Code du site\":\"\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
                 + "\"Ville\":\"-\","
@@ -408,9 +409,13 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("otp");
 
+        partialDto.put("siteCode", "001");
+        internalUserService.patch(partialDto);
+        partialDto.remove("siteCode");
+
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
-        assertThat(events).hasSize(11);
+        assertThat(events).hasSize(12);
 
     }
 
@@ -576,7 +581,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("customerId", user.getCustomerId());
         map.put("address", TestUtils.getMapFromObject(newAddress));
 
-        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
 
         internalUserService.patch(map);
 
@@ -587,11 +592,11 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Event event = events.iterator().next();
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo(
-                "{\"diff\":{"
-                + "\"-Code postal\":\"75009\",\"+Code postal\":\"newZipCode\","
-                + "\"-Pays\":\"france\",\"+Pays\":\"newCountry\","
-                + "\"-Ville\":\"paris\",\"+Ville\":\"newCity\","
-                + "\"-Nom de la rue\":\"rue faubourg poissoniére\",\"+Nom de la rue\":\"newStreet\""
+            "{\"diff\":{"
+                + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
+                + "\"-Pays\":\"-\",\"+Pays\":\"-\","
+                + "\"-Ville\":\"-\",\"+Ville\":\"-\","
+                + "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\""
                 + "}}");
         //@formatter:on
     }

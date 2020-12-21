@@ -171,7 +171,6 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final CustomerDto dto = customerData.getCustomerDto();
         LOGGER.debug("Create {} with {}", getObjectName(), dto);
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
-        Assert.isTrue(StringUtils.isNotBlank(customerData.getTenantName()), "Tenant name is mandatory");
         beforeCreate(dto);
         dto.setId(generateSuperId());
         final Customer entity = convertFromDtoToEntity(dto);
@@ -191,7 +190,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         createdCustomerDto = convertFromEntityToDto(getRepository().save(entity));
 
         iamLogbookService.createCustomerEvent(dto);
-        initCustomerService.initCustomer(customerData.getTenantName(), createdCustomerDto, dto.getOwners());
+        initCustomerService.initCustomer(createdCustomerDto, dto.getOwners());
 
         return createdCustomerDto;
     }
@@ -450,9 +449,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
-        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
-        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
+                .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);
