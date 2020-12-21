@@ -68,4 +68,16 @@ h5 {
     &.light {
         color: var(--vitamui-grey-600);
     }
+
+    &.success {
+        color: $green;
+    }
+
+    &.warning {
+        color: $orange;
+    }
+
+    &.danger {
+        color: $red;
+    }
 }
