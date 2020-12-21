@@ -108,7 +108,7 @@
     .mat-form-field-flex {
         padding-right: 15px;
         border: none;
-        box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
+        box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
 
         .mat-form-field-infix {
             border-top-width: 0;

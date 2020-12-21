@@ -17,7 +17,7 @@ $anim-timing: 150ms ease-out;
     }
 
     &:not(.disabled) {
-        box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.25);
+        box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
     }
 
     &:focus {
@@ -81,7 +81,7 @@ $anim-timing: 150ms ease-out;
 }
 
 .vitamui-focused .vitamui-input {
-    border-color: var(--vitamui-primary);
+    border: solid 1px var(--vitamui-primary);
 }
 
 .vitamui-focused .vitamui-input,

@@ -511,10 +511,21 @@ h5 {
   .text.light {
     color: #757575; }
 
+@font-face {
+  font-family: 'Mulish', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  src: local("Mulish", sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format("woff2");
+  font-display: optional; }
+
 body {
   margin: 0;
-  color: #485053;
-  background: #f7f8fb; }
+  font-family: 'Mulish', sans-serif;
+  background-color: var(--vitamui-background);
+  color: var(--vitamui-grey-900); }
+
+button, textarea, input {
+  font-family: 'Mulish', sans-serif; }
 
 * {
   box-sizing: border-box; }
