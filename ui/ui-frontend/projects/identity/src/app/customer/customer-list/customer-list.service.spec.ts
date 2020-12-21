@@ -76,7 +76,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             country: 'France'
           },
           readonly: false,
-      
+
         },
         {
           id: '2',

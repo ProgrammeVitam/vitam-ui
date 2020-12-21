@@ -93,9 +93,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this.emitClose();
   }
 
-
-  updateStatus(status: string) {
-
+  updateStatus( status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
       dialogToOpen = this.confirmEnabledUserDialog;
@@ -111,8 +109,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
         this.user = user;
       });
 
-      });
-
+    });
   }
 
   levelNotAllowed(): boolean {
@@ -142,6 +139,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     const email = "anonyme-"+user.identifier + "@"+emailadress[1];
     const firstname = "";
     const lastname = "";
+    const siteCode = "";
     const address = {
       street: "",
       zipCode: "",
@@ -155,7 +153,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     dialogRef.afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname })
+        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname, siteCode })
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

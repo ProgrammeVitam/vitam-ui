@@ -75,7 +75,10 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     ]),
   ]
 })
+
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
+
+
 
   // tslint:disable-next-line:no-input-rename
   @Input('search')
@@ -260,7 +263,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       this.userClick.emit(user);
     }
   }
-
 
   checkInactifUsers() {
 

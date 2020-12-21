@@ -296,26 +296,6 @@ describe('UserInfoTabComponent', () => {
     expect(testhost.component.form.get('code')).toBeDefined();
   });
 
-  // it('should have the required validator on some fields', () => {
-  //   testhost.component.form.setValue({
-  //     id: null,
-  //     firstname: null,
-  //     lastname: null,
-  //     email: null,
-  //     mobile: null,
-  //     phone: null,
-  //     language: null,
-  //     otp: null,
-  //     type: null,
-  //     customerId: null,
-  //     groupId: null,
-  //     code: null
-  //   });
-  //   expect(testhost.component.form.get('firstname').valid).toBeFalsy('firstname');
-  //   expect(testhost.component.form.get('lastname').valid).toBeFalsy('lastname');
-  //   expect(testhost.component.form.get('email').valid).toBeFalsy('email');
-  //   expect(testhost.component.form.get('language').valid).toBeFalsy('language');
-  // });
 
   it('should have the email validator', () => {
     const emailControl = testhost.component.form.get('email');
@@ -327,23 +307,6 @@ describe('UserInfoTabComponent', () => {
     expect(emailControl.valid).toBeTruthy();
   });
 
-  // it('should be valid and call update()', () => {
-  //   testhost.component.form.setValue({
-  //     id: expectedUser.id,
-  //     firstname: expectedUser.firstname,
-  //     lastname: expectedUser.lastname,
-  //     email: expectedUser.email,import { merge } from 'rxjs/observable/merge';
-  //     mobile: expectedUser.mobile,
-  //     phone: expectedUser.phone,
-  //     language: expectedUser.language,
-  //     otp: expectedUser.otp,
-  //     type: 'Nominatif',
-  //     customerId: expectedUser.customerId,
-  //     groupId: expectedUser.groupId,
-  //     code: expectedUser.code
-  //   });
-  //   expect(testhost.component.form.valid).toBeTruthy();
-  // });
 
   it('should disable then enable the form', () => {
     testhost.readOnly = true;
