@@ -332,12 +332,12 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Event event = events.iterator().next();
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo("{"
-                + "\"Nom\":\"-\","
-                + "\"Prénom\":\"-\","
-                + "\"Email\":\"-\","
+                + "\"Nom\":\"DUPONT\","
+                + "\"Prénom\":\"Jean\","
+                + "\"Email\":\"user-dev@vitamui.com\","
                 + "\"Langue\":\"FRENCH\","
-                + "\"Numéro mobile\":\"-\","
-                + "\"Numéro fixe\":\"-\","
+                + "\"Numéro mobile\":\"+33671270699\","
+                + "\"Numéro fixe\":\"+33134237766\","
                 + "\"Type\":\"NOMINATIVE\","
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
