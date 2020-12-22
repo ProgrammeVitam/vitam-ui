@@ -11,7 +11,7 @@
     register: mongo_authent_enabled
     failed_when: false
     no_log: "{{ hide_passwords_during_deploy }}"
-  
+
   - name: Set mongo_no_auth fact to true
     set_fact:
       mongo_no_auth: true
@@ -21,7 +21,6 @@
 - block:
   - name: Load script in database (docker)
     shell: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo --host mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'\""
-    no_log: "{{ hide_passwords_during_deploy }}"
     failed_when: false
     register: mongo_authent_enabled
 
