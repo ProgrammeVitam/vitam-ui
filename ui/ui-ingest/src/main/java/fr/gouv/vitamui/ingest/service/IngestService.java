@@ -41,13 +41,12 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.thread.IngestThread;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -97,15 +96,7 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         ingestThread.start();
     }
 
-    public ResponseEntity<Resource> downloadManifest(ExternalHttpContext context, String id) {
-        return ingestExternalRestClient.downloadManifest(context, id);
-    }
-
-    public ResponseEntity<Resource> downloadATR(ExternalHttpContext context, String id) {
-        return ingestExternalRestClient.downloadATR(context, id);
-    }
-
-    public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
+     public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
         return ingestExternalRestClient.generateDocX(context, id);
     }
 

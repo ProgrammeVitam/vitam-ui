@@ -62,8 +62,6 @@ export class IngestService extends SearchService<any> {
     return this.ingestApiService.getOne(id);
   }
 
-
-
   getIngestOperation(id: string): Observable<any> {
     return this.ingestApiService.getOne(id);
   }

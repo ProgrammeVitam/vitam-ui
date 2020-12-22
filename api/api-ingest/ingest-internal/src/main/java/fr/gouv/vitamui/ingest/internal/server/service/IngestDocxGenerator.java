@@ -30,10 +30,9 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
-import fr.gouv.vitamui.ingest.common.dto.LogbookOperationDto;
-import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
@@ -166,9 +165,9 @@ public class IngestDocxGenerator {
         runDate.setBold(true);
         tableTwoRowThree.getCell(1).removeParagraph(0);
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
-            "date de début : " + selectedIngest.getDateTime().split("T")[0].replace('-', '/'));
+            "date de début : " + selectedIngest.getEvDateTime().split("T")[0].replace('-', '/'));
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
-            selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getDateTime().split("T")[0]
+            selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getEvDateTime().split("T")[0]
                 .replace('-', '/'));
 
         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
@@ -302,7 +301,7 @@ public class IngestDocxGenerator {
 
             dynamicTableRow.getCell(1).removeParagraph(0);
             XWPFRun runTitle = dynamicTableRow.getCell(1).addParagraph().createRun();
-            runTitle.setText(x.getTiltle());
+            runTitle.setText(x.getTitle());
             runTitle.setFontSize(8);
 
             dynamicTableRow.getCell(2).removeParagraph(0);
@@ -373,7 +372,7 @@ public class IngestDocxGenerator {
             tableRow.getTable().getCTTbl().getTblPr().getTblBorders().getBottom().setVal(STBorder.NONE);
             tableRow.getTable().getCTTbl().getTblPr().getTblBorders().getInsideV().setVal(STBorder.NONE);
 
-            if (myCustomer.isHasCustomGraphicIdentity() && logo != null) {
+            if (myCustomer.isHasCustomGraphicIdentity()) {
 
                 byte[] bytes = logo.getInputStream().readAllBytes();
                 String base64Image = Base64.getEncoder().encodeToString(bytes);
@@ -506,7 +505,7 @@ public class IngestDocxGenerator {
                 if (map.get(eElement.getAttribute("id")) != null) {
 
                     sea.setId(eElement.getAttribute("id"));
-                    sea.setTiltle(eElement.getElementsByTagName("Title").getLength() == 0 ?
+                    sea.setTitle(eElement.getElementsByTagName("Title").getLength() == 0 ?
                         "_ _ _ _" :
                         eElement.getElementsByTagName("Title").item(0).getTextContent());
                     sea.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
