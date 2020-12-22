@@ -7,7 +7,7 @@
     </div>
 
     <!-- if we have a one line title (25 chars), then apply a top margin -->
-    <div class="title" [class.mt-3]="title?.length < 26">
+    <div *ngIf="!loading; else spinner" class="title" [class.mt-3]="title?.length < 26">
       <i class="vitamui-icon {{icon}}"
         [ngClass]="{
           'status-badge-green': badge === 'green',
@@ -27,3 +27,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #spinner>
+  <div class="d-flex justify-content-center">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

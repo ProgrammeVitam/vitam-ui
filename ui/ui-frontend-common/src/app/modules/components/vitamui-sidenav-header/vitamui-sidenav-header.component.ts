@@ -10,6 +10,8 @@ export class VitamuiSidenavHeaderComponent {
 
   @Input() icon: string;
 
+  @Input() loading: boolean;
+
   @Input() badge: 'green' | 'grey' | 'orange';
 
   @Input() title: string;

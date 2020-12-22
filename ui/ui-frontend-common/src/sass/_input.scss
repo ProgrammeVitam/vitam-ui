@@ -58,6 +58,7 @@ $anim-timing: 150ms ease-out;
         line-height: 18px;
         transform-origin: left;
         transition: margin $anim-timing;
+        width: 100%;
     }
 
     textarea {
