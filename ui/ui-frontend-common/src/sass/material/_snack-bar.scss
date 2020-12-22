@@ -1,12 +1,12 @@
 .vitamui-snack-bar.mat-snack-bar-container {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 16px;
     color: white;
     background: var(--vitamui-primary);
     max-width: none;
     width: 100vw;
     margin: 0;
     border-radius: 0;
+    padding: 22px 120px;
 }
 
 .vitamui-snack-bar-container {
@@ -26,20 +26,20 @@
 
     > i {
         color: white;
-        opacity: 0.5;
         font-size: 36px;
     }
 }
 
 .vitamui-snack-bar-content {
-    font-size: 14px;
-    font-weight: bold;
     color: white;
     vertical-align: middle;
+    display: flex;
+    align-items: center;
 
     > i.vitamui-icon {
         color: white;
-        margin-right: 10px;
+        margin-right: 20px;
+        font-size: 23px;
     }
 
     a {
@@ -56,7 +56,7 @@
     outline: none;
     cursor: pointer;
     padding: 10px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 // SUBROGATION SNACKBAR CSS
