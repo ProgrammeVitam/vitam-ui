@@ -44,7 +44,6 @@ vitamui-common-select-language, .select-tenant {
   width: 18%;
   min-width: 200px;
   border-left: 1px solid var(--vitamui-header-footer-font);
-  border-right: 1px solid var(--vitamui-header-footer-font);
 }
 
 .username {
@@ -55,6 +54,8 @@ vitamui-common-select-language, .select-tenant {
 
 .account {
   cursor: pointer;
+  height: $header-height;
+  border-left: 1px solid var(--vitamui-header-footer-font);
 
   .text {
     color: var(--vitamui-header-footer-font);

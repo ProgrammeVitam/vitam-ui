@@ -31,7 +31,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public trustedInlineLogoUrl: SafeUrl;
   public hasTenantSelection = false;
   public hasCustomerSelection = false;
-  public hasLangSelection = false;
   public portalUrl: string;
   public currentUser: AuthUser;
   public selectedTenant: MenuOption;
@@ -121,7 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       let eventsObsRef: Subscription;
 
       // Show or hide the tenant selection component from the header when needed
-      this.tenantService.hasTenantSelection().subscribe((result: boolean) => {
+      this.applicationService.hasTenantList().subscribe((result: boolean) => {
         this.hasTenantSelection = result;
         if (this.hasTenantSelection && !eventsObsRef) {
           eventsObsRef = this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {

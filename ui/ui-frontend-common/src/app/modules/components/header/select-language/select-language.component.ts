@@ -22,7 +22,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
    */
   @Input() displayMode: 'select' | 'button' = 'button';
 
-  public hasLangSelection = true;
+  public hasLangSelection = false;
   public currentLang = '';
 
   private destroyer$ = new Subject();

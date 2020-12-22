@@ -147,16 +147,4 @@ export class TenantSelectionService {
             });
         });
     }
-
-    public hasTenantSelection(url?: string): Observable<boolean> {
-        return new Observable((observer) => {
-            if (!url) {
-                url = window.location.href;
-            }
-
-            this.currentAppId$.subscribe((appId: ApplicationId) => {
-                observer.next((url.includes(TENANT_SELECTION_URL_CONDITION) ||  appId === ApplicationId.PORTAL_APP));
-            });
-        });
-    }
 }

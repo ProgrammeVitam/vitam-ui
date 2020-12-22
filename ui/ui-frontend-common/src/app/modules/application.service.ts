@@ -42,6 +42,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { AuthService } from './auth.service';
+import { GlobalEventService } from './global-event.service';
 import { ApplicationInfo } from './models/application/application.interface';
 import { Application } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
@@ -93,7 +94,7 @@ export class ApplicationService {
   private appMap$ = new BehaviorSubject(undefined);
 
   constructor(private applicationApi: ApplicationApiService, private authService: AuthService,
-              private tenantService: TenantSelectionService) { }
+              private tenantService: TenantSelectionService, private globalEventService: GlobalEventService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
