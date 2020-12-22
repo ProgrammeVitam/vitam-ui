@@ -14,7 +14,7 @@
     </div>
 
 
-    <form [formGroup]="form" (ngSubmit)="search()" (keydown.enter)="$event.preventDefault()">
+    <form [formGroup]="form" (ngSubmit)="search()">
       <div class="row">
         <mat-form-field class="vitamui-mat-select">
           <mat-select formControlName="dslQueryType" placeholder="Catégorie de recherche" required="required"
