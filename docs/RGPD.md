@@ -6,8 +6,8 @@ pour la partie suppression des données personnelles des utilisateurs, on a modi
 
 * ### Modification au niveau du modèle  des clients/ Customers :
 Pour cela nous avons ajouté deux attributs : 
-   - **`Alerte`** :  Pour indiquer que le client créé recois ou non une alerte qui indique la présence des utilisateurs inactifs au niveau son organisation.
-   - **`alertDelay` :**  c'est le délais d'alerte pour recevoir une notification qui indique la présence des utilisateurs inactifs à supprimer.
+   - **`rgpdAlert`** :  Pour indiquer que le client créé recois ou non une alerte qui indique la présence des utilisateurs inactifs au niveau son organisation.
+   - **`rgpdAlertDelay` :**  c'est le délais d'alerte pour recevoir une notification qui indique la présence des utilisateurs inactifs à supprimer.
 
 * ### Modification au niveau du modèle des utilisateurs  :
 Pour cela nous avons ajouté 2 attributs : 

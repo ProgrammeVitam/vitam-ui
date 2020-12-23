@@ -305,13 +305,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
 
-                case "alertDelay" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTDELAY_KEY, customer.getAlertDelay(), entry.getValue()));
-                    customer.setAlertDelay(CastUtils.toInteger(entry.getValue()));
+                case "rgpdAlertDelay" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.RGPD_ALERT_DELAY_KEY, customer.getRgpdAlertDelay(), entry.getValue()));
+                    customer.setRgpdAlertDelay(CastUtils.toInteger(entry.getValue()));
                     break;
-                case "alerte" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.ALERTE_KEY, customer.isAlerte(), entry.getValue()));
-                    customer.setAlerte(CastUtils.toBoolean(entry.getValue()));
+                case "rgpdAlert" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.RGPD_ALERT_KEY, customer.isRgpdAlert(), entry.getValue()));
+                    customer.setRgpdAlert(CastUtils.toBoolean(entry.getValue()));
                     break;
 
                 case "address" :

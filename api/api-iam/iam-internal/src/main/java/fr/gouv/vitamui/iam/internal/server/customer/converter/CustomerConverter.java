@@ -92,9 +92,9 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String CUSTOM_GRAPHIC_IDENTITY_KEY = "Identité graphique personnalisée";
 
-    public static final String ALERTDELAY_KEY = "alertDelay";
+    public static final String RGPD_ALERT_DELAY_KEY = "rgpd_Alert_Delay";
 
-    public static final String ALERTE_KEY = "alerte";
+    public static final String RGPD_ALERT_KEY = "rgpd_Alert";
 
     public CustomerConverter(final AddressConverter addressConverter, final OwnerRepository ownerRepository, final OwnerConverter ownerConverter) {
         this.ownerRepository = ownerRepository;
@@ -107,8 +107,8 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         final Map<String, String> logbookData = new LinkedHashMap<>();
         logbookData.put(CODE_KEY, LogbookUtils.getValue(customer.getCode()));
         logbookData.put(NAME_KEY, LogbookUtils.getValue(customer.getName()));
-        logbookData.put(ALERTDELAY_KEY, LogbookUtils.getValue(customer.getAlertDelay()));
-        logbookData.put(ALERTE_KEY, LogbookUtils.getValue(customer.isAlerte()));
+        logbookData.put(RGPD_ALERT_DELAY_KEY, LogbookUtils.getValue(customer.getRgpdAlertDelay()));
+        logbookData.put(RGPD_ALERT_KEY, LogbookUtils.getValue(customer.isRgpdAlert()));
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(customer.isEnabled()));
         logbookData.put(COMPANY_NAME_KEY, LogbookUtils.getValue(customer.getCompanyName()));
         final AddressDto address = customer.getAddress() != null ? customer.getAddress() : new AddressDto();
