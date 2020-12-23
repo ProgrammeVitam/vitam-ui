@@ -120,7 +120,7 @@ public class UserDto extends CustomerIdDto {
 
     private String siteCode;
 
-    private OffsetDateTime desactivationDate;
+    private OffsetDateTime disablingDate;
 
     private OffsetDateTime removingDate;
 }
