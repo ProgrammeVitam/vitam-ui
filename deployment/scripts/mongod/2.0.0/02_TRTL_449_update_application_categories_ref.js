@@ -67,11 +67,38 @@ db.applications.update({
 });
 
 db.applications.update({
+    "identifier": "INGEST_APP",
+    "category": "referential",
+}, {
+    $set: {
+        "category": "security_and_application_rights"
+    },
+});
+
+db.applications.update({
+    "identifier": "ACCESS_APP",
+    "category": "referential",
+}, {
+    $set: {
+        "category": "security_and_application_rights"
+    },
+});
+
+db.applications.update({
+    "identifier": "SECURITY_PROFILES_APP",
+    "category": "referential",
+}, {
+    $set: {
+        "category": "security_and_application_rights"
+    },
+});
+
+db.applications.update({
     "identifier": "AUDIT_APP",
     "category": "opaudit",
 }, {
     $set: {
-        "category": "ingest_and_consultation"
+        "category": "supervision_and_audits"
     },
 });
 
@@ -80,7 +107,7 @@ db.applications.update({
     "category": "opaudit",
 }, {
     $set: {
-        "category": "ingest_and_consultation"
+        "category": "supervision_and_audits"
     },
 });
 
@@ -89,7 +116,16 @@ db.applications.update({
     "category": "opaudit",
 }, {
     $set: {
-        "category": "ingest_and_consultation"
+        "category": "supervision_and_audits"
+    },
+});
+
+db.applications.update({
+    "identifier": "LOGBOOK_OPERATION_APP",
+    "category": "referential",
+}, {
+    $set: {
+        "category": "supervision_and_audits"
     },
 });
 
@@ -98,7 +134,7 @@ db.applications.update({
     "category": "techadmin",
 }, {
     $set: {
-        "category": "ingest_and_consultation"
+        "category": "supervision_and_audits"
     },
 });
 
