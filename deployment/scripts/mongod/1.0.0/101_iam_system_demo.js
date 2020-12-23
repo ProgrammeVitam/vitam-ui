@@ -201,10 +201,9 @@ db.groups.insert({
         "system_dsl",
         "system_probative_value",
         "system_ingest_profile",
-        "system_archive_profile",
+        "system_archive_search_profile",
         "system_logbook_operation_profile",
-        "system_holding_filling_scheme_profile",
-        "system_trees_plans_profile"
+        "system_holding_filling_scheme_profile"
 	],
 	"readonly": false,
 	"level": "",

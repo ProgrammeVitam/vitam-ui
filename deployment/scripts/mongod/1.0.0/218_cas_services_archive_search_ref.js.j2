@@ -1,0 +1,28 @@
+db = db.getSiblingDB('cas')
+
+
+print("START 218_cas_services_archive_search_ref.js");
+
+var nbInsert = db.services.insert({
+   "_id" : NumberInt(6),
+   "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.archive_search.base_url is defined %}
+	"serviceId": "^{{ vitamui.archive_search.base_url }}/.*",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/archive-search/.*",
+{% endif %}
+   "name": "Archive Search Management Application",
+   "logoutType" : "FRONT_CHANNEL",
+{% if vitamui.archive_search.base_url is defined %}
+	"logoutUrl": "{{ vitamui.archive_search.base_url }}/logout",
+{% else %}
+	"logoutUrl": "{{ url_prefix }}/archive-search/logout",
+{% endif %}
+   "attributeReleasePolicy": {
+      "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+   }
+});
+
+print("inserted: " + nbInsert);
+
+print("END 218_cas_services_archive_ref.js");

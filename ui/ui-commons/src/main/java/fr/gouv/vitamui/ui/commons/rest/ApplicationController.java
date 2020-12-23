@@ -36,10 +36,12 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,13 +51,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ui.commons.service.ApplicationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(tags = "applications")
 @ResponseBody
@@ -79,12 +76,13 @@ public class ApplicationController extends AbstractUiRestController {
     @ApiOperation(value = "Return config about applications and categories")
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) {
-        LOGGER.debug("getApplications");
+        LOGGER.info("getApplications {} ", filterApp);
         return service.getApplications(buildUiHttpContext(), filterApp);
     }
 
     /**
      * Return configuration informations.
+     *
      * @return MapwString, String>
      */
     @ApiOperation(value = "Get Server Configuration")
@@ -98,6 +96,7 @@ public class ApplicationController extends AbstractUiRestController {
 
     /**
      * Return asset file as base64 data
+     *
      * @param fileName the file to get from assets
      * @return the file as base64 string
      */

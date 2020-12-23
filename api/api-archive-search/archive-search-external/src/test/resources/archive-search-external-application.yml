@@ -1,0 +1,36 @@
+spring:
+  api:
+    name: API Archive externe - Gestion des archives
+    description: API externe de gestion des archives
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+archive-search-external:
+  security-client:
+    server-host: localhost
+    server-port: 8089
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  archive-search-internal-client:
+    server-host: localhost
+    server-port: 7089
+    secure: false
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+swagger:
+  layer: api-external
