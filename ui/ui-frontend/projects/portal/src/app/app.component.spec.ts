@@ -42,7 +42,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { BASE_URL, VitamUICommonModule } from 'ui-frontend-common';
+import { BASE_URL } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -84,7 +85,7 @@ describe('AppComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         InjectorModule,
-        VitamUICommonModule,
+        VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -102,7 +103,7 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app Portal', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();

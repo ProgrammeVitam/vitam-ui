@@ -1,3 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,14 +41,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:component-selector max-classes-per-file */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
-import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL, VitamUICommonModule } from 'ui-frontend-common';
+import { BASE_URL } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -74,9 +75,9 @@ describe('AppComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         InjectorModule,
-        VitamUICommonModule,
+        VitamUICommonTestModule,
         BrowserAnimationsModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
       ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
@@ -88,7 +89,7 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app Starter-kit', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();
@@ -96,11 +97,11 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Portal App'`, () => {
+  it(`should have as title Starter-kit'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const title = fixture.componentInstance.title;
     console.log('Title App: ', title);
-    expect(title).toEqual('Portal App');
+    expect(title).toEqual('Starter-kit App');
   });
 
 });
