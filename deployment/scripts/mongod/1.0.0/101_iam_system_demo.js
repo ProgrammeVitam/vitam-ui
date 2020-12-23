@@ -196,7 +196,7 @@ db.groups.insert({
         "system_secure",
         "system_dsl",
         "system_probative_value",
-        "system_logbook_operation_profile"
+        "system_logbook_operation"
 	],
 	"readonly": false,
 	"level": "",
