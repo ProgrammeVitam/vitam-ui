@@ -343,7 +343,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Subrogeable\":\"false\","
                 + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
-                + "\"desactivationDate\":\"\","
+                + "\"disablingDate\":\"\","
                 + "\"removingDate\":\"\","
                 + "\"Code du site\":\"\","
                 + "\"Nom de la rue\":\"-\","

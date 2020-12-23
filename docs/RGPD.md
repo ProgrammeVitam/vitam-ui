@@ -11,7 +11,7 @@ Pour cela nous avons ajouté deux attributs :
 
 * ### Modification au niveau du modèle des utilisateurs  :
 Pour cela nous avons ajouté 2 attributs : 
-   - Attribut **`DesactivationDate`** : pour indiquer la date de désactivation d'un utilisateur.
+   - Attribut **`DisablingDate`** : pour indiquer la date de désactivation d'un utilisateur.
    - Attribut **`RemovingDate`** : pour indiquer la date de suppression d'un utilisateur
 
 Toutes les données personnelles seront supprimées de la base à part l'email qui sera enregistré mais avec une adresse anonyme sous la forme `anonyme-identifier@nom de l'organisation`

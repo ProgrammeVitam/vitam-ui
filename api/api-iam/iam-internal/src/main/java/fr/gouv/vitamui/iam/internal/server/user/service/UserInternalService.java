@@ -566,18 +566,18 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     user.setStatus(EnumUtils.stringToEnum(UserStatusEnum.class, status));
 
                     if(user.getStatus()== UserStatusEnum.DISABLED) {
-                        logbooks.add(new EventDiffDto(UserConverter.DESACTIVATION_DATE, user.getDesactivationDate(),
+                        logbooks.add(new EventDiffDto(UserConverter.DISABLING_DATE, user.getDisablingDate(),
                             OffsetDateTime.now()));
-                        user.setDesactivationDate(OffsetDateTime.now());
+                        user.setDisablingDate(OffsetDateTime.now());
                     }
                     if(user.getStatus() == UserStatusEnum.REMOVED) {
                         logbooks.add(new EventDiffDto(UserConverter.REMOVING_DATE, user.getRemovingDate(),
                             OffsetDateTime.now()));
                         user.setRemovingDate(OffsetDateTime.now());
-                        user.setDesactivationDate(null);
+                        user.setDisablingDate(null);
                     }
                     if(user.getStatus() == UserStatusEnum.ENABLED) {
-                        user.setDesactivationDate(null);
+                        user.setDisablingDate(null);
                         user.setRemovingDate(null);
                     }
 

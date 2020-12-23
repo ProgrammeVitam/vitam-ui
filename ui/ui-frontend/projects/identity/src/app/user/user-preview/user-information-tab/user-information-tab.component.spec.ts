@@ -76,7 +76,7 @@ let expectedUser: User = {
       country: 'france'
   },
   siteCode: '001',
-  desactivationDate : null
+  disablingDate : null
 };
 
 let expectedCustomer: Customer = {
@@ -188,7 +188,7 @@ describe('UserInfoTabComponent', () => {
           country: 'france'
       },
       siteCode: '001',
-      desactivationDate : null
+      disablingDate : null
     };
     expectedCustomer = {
       id: 'idCustomer',

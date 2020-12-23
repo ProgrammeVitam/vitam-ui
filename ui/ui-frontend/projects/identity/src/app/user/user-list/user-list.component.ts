@@ -269,9 +269,9 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
     this.customerService.getMyCustomer().subscribe((customer) => {
       if (customer.alerte) {
-        this.dataSource.filter((user: User) => user.status === "DISABLED" && user.desactivationDate !== null).forEach((u: User) => {
+        this.dataSource.filter((user: User) => user.status === "DISABLED" && user.disablingDate !== null).forEach((u: User) => {
 
-          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.desactivationDate)).getFullYear()) * 12 - (new Date(u.desactivationDate)).getMonth() + (new Date().getMonth());
+          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12 - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
 
           if (this.totalMonth > customer.alertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
 
