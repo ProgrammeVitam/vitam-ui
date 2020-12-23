@@ -42,9 +42,9 @@ import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
-import { SearchResponse } from './models/search-response.interface';
 import { Unit } from './models/unit.interface';
- 
+import { SearchResponse } from './models/search-response.interface';
+
 
 @Injectable({
   providedIn: 'root'
