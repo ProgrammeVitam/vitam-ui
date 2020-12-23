@@ -790,6 +790,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         final List<String> profileIds = groupDto.getProfileIds();
         final List<ProfileDto> profiles = profileInternalService.getMany(profileIds.toArray(new String[0]));
+        LOGGER.info(profiles.toString());
+        LOGGER.info(profileIds.toString());
         if (profiles.size() != profileIds.size()) {
             // retrieve ids of profiles not found
             final List<String> profilesNotFound = profileIds.stream()
