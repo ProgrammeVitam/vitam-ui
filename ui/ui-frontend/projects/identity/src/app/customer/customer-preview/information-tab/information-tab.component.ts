@@ -71,8 +71,8 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     language: string,
     emailDomains: string[],
     defaultEmailDomain: string
-    alerte : boolean,
-    alertDelay : number,
+    rgpdAlert : boolean,
+    rgpdAlertDelay : number,
   };
 
   @Input()

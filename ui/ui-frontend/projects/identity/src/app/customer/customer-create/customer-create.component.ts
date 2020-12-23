@@ -104,8 +104,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      alerte: false,
-      alertDelay: [72, Validators.min(72)],
+      rgpdAlert: false,
+      rgpdAlertDelay: [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -279,13 +279,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   isDurationNotValid(): boolean {
 
-    if (this.form.get('alerte').value) {
-      return this.form.get('alertDelay').invalid || this.form.get('alertDelay').pending
+    if (this.form.get('rgpdAlert').value) {
+      return this.form.get('rgpdAlertDelay').invalid || this.form.get('rgpdAlertDelay').pending
     }
     else {
 
-      this.form.get('alerte').valueChanges.subscribe(() =>
-        this.form.get('alertDelay').setValue(72)
+      this.form.get('rgpdAlert').valueChanges.subscribe(() =>
+        this.form.get('rgpdAlertDelay').setValue(72)
       );
 
       return false;

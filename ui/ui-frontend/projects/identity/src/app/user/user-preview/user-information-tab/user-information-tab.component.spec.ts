@@ -118,8 +118,8 @@ let expectedCustomer: Customer = {
     readonly : false
   }],
   themeColors: {},
-  alerte : false,
-  alertDelay : 72
+  rgpdAlert : false,
+  rgpdAlertDelay : 72
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -229,8 +229,8 @@ describe('UserInfoTabComponent', () => {
         readonly : false
       }],
       themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      rgpdAlert : false,
+      rgpdAlertDelay : 72
     };
     expectedUserInfo = {
       multifactorAllowed: true,

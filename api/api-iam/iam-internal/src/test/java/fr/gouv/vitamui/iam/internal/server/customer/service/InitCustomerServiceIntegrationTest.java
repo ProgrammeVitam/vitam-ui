@@ -312,8 +312,8 @@ public class InitCustomerServiceIntegrationTest {
         owners.add(owner);
         dto.setOwners(owners);
         dto.setHasCustomGraphicIdentity(false);
-        dto.setAlertDelay(72);
-        dto.setAlerte(false);
+        dto.setRgpdAlertDelay(72);
+        dto.setRgpdAlert(false);
         return dto;
     }
 }

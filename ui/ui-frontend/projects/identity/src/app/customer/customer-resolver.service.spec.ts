@@ -69,8 +69,8 @@ const expectedCustomer: Customer = {
   },
   owners: [],
   themeColors: {},
-  alerte : false,
-  alertDelay : 72
+  rgpdAlert : false,
+  rgpdAlertDelay : 72
 };
 
 describe('CustomerResolver', () => {

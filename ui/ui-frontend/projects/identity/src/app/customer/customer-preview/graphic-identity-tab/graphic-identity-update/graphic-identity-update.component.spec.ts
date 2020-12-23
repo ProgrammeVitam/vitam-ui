@@ -88,8 +88,8 @@ const expectedCustomer: Customer = {
     readonly: false
   }],
   themeColors: {},
-  alerte : false,
-  alertDelay : 72
+  rgpdAlert : false,
+  rgpdAlertDelay : 72
 };
 
 @Component({
