@@ -45,6 +45,7 @@ import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { CoreModule } from './core/core.module';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { ArchiveService } from './archive/archive.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -60,7 +61,8 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
-    VitamUILibraryModule
+    VitamUILibraryModule,
+    BrowserAnimationsModule
   ],
   providers: [ArchiveService,
     Title,
