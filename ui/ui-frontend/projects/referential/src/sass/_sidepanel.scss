@@ -4,6 +4,7 @@
     min-width: 584px;
     height: 100vh;
     background: white;
+    margin-top: 0px !important;
 
     .read-only-field {
         display: inline-block;
@@ -52,6 +53,7 @@
             font-size: 38px;
             line-height: 22px;
             width: 30px;
+            cursor: pointer;
         }
     }
 
@@ -106,5 +108,5 @@
     bottom: 0;
     right: 0;
     left: 0;
-    top: 163px;
+    top: 200px;
 }

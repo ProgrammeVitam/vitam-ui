@@ -7,8 +7,8 @@
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="Create ontology title@@ontologyCreateTitle1">Création d'une ontologie</h2>
-        <h3 i18n="Create ontology title@@ontologyCreateTitle1">Informations</h3>
+        <h4 i18n="Create ontology title@@ontologyCreateTitle1">Création d'une ontologie</h4>
+        <h5 i18n="Create ontology title@@ontologyCreateTitle1">Informations</h5>
         <div class="row">
           <div class="col-8 form-control">
             <!-- Must we validate Min / max length ? -->
@@ -79,11 +79,12 @@
             </vitamui-common-textarea>
           </div>
         </div>
-
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
-                i18n="Finish ontology creation button@@ontologyCreateFinishButton">Terminer</button>
-        <button type="button" class="btn cancel" (click)="onCancel()"
-                i18n="Cancel ontology creation@@ontologyCreateCancelButton">Annuler</button>
+        <div class="btn-container">
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
+                  i18n="Finish ontology creation button@@ontologyCreateFinishButton">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()"
+                  i18n="Cancel ontology creation@@ontologyCreateCancelButton">Annuler</button>
+        </div>
       </div>
     </cdk-step>
   </vitamui-common-stepper>

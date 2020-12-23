@@ -7,8 +7,8 @@
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="Create securityProfile title@@securityProfileCreateTitle1">Création d'un profil de sécurité</h2>
-        <h3 i18n="Create securityProfile title@@securityProfileCreateTitle2">Informations</h3>
+        <h4 i18n="Create securityProfile title@@securityProfileCreateTitle1">Création d'un profil de sécurité</h4>
+        <h5 i18n="Create securityProfile title@@securityProfileCreateTitle2">Informations</h5>
 
         <div class="d-flex">
           <!-- Must we validate Min / max length ? -->
@@ -30,19 +30,20 @@
           </vitamui-common-slide-toggle>
           <i class="material-icons field-tooltip" matTooltip="Droits auquels le profil de sécurité donne accès" matTooltipClass="vitamui-tooltip">info</i>
         </div>
-
-        <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()" *ngIf="!form.value.fullAccess"
-                i18n="Next step button label@@securityProfileCreateNextButton">Suivant</button>
-        <button type="button" class="btn primary" (click)="finishAfterFirstStep()" *ngIf="form.value.fullAccess"
-                [disabled]="form.pending || form.invalid" i18n="Finish securityProfile creation button@@securityProfileCreateFinishButton">Terminer</button>
-        <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel securityProfile creation@@securityProfileCreateCancelButton">Annuler</button>
+        <div class="btn-container">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()" *ngIf="!form.value.fullAccess"
+                  i18n="Next step button label@@securityProfileCreateNextButton">Suivant</button>
+          <button type="button" class="btn primary" (click)="finishAfterFirstStep()" *ngIf="form.value.fullAccess"
+                  [disabled]="form.pending || form.invalid" i18n="Finish securityProfile creation button@@securityProfileCreateFinishButton">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel securityProfile creation@@securityProfileCreateCancelButton">Annuler</button>
+        </div>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="Create securityProfile title@@securityProfileCreateTitle1">Création d'un profil de sécurité</h2>
-        <h3 i18n="Create securityProfile title@@securityProfileCreateTitle1">Permissions</h3>
+        <h4 i18n="Create securityProfile title@@securityProfileCreateTitle1">Création d'un profil de sécurité</h4>
+        <h5 i18n="Create securityProfile title@@securityProfileCreateTitle1">Permissions</h5>
 
         <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
 

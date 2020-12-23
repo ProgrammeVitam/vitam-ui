@@ -2,6 +2,7 @@
   margin: 0;
   > h2 {
     display: inline-block;
+    word-break: break-all;
   }
   .btn-circle {
     width: 40px;
@@ -14,6 +15,10 @@
 }
 
 .button-maring {
-  margin-top: 32px;
   margin-left: 10px;
+}
+
+.preview-btn-container{
+  display: flex;
+  margin-top: 30px;
 }

@@ -59,7 +59,11 @@
   }
 
   .actions {
-
+    .btn{
+      background-color: transparent;
+      color: var(--vitamui-secondary);
+      border-color: var(--vitamui-secondary) !important;
+    }
   }
 
   .right {
