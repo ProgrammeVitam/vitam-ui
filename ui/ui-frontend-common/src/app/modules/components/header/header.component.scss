@@ -1,6 +1,6 @@
 @import '../../../../sass/mixins/elevation';
 
-$header-height: 72px;
+$header-height: 72px !default;
 
 mat-toolbar {
   @include elevation-4;

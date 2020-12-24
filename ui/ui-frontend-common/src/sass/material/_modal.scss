@@ -1,14 +1,18 @@
 $arrow-size: 70px;
-$max-height: 95vh;
-$radius: 20px;
+$header-height: 72px !default;
+$footer-height: 100px !default;
+
+%mat-dialog-container {
+    border-radius: 20px;
+    padding: 0;
+    max-height: calc(100vh - #{$header-height + $footer-height});
+    top: 72px;
+}
 
 .vitamui-modal .mat-dialog-container {
-    border-radius: $radius;
-    padding: 0;
-    min-width: 800px;
-    max-width: fit-content;
-    max-height: $max-height;
 
+    @extend %mat-dialog-container;
+    
     .header {
             padding: 20px 60px 0 60px;
         }
@@ -42,7 +46,7 @@ $radius: 20px;
             max-height: 43vh;
 
             &::-webkit-scrollbar {
-              display: none;
+                display: none;
             }
         }
 
@@ -50,12 +54,11 @@ $radius: 20px;
         .form-group {
             margin-bottom: 20px;
         }
-}
+} 
 
 .vitamui-form-dual-panel .mat-dialog-container {
-    border-radius: $radius;
-    padding: 0;
-    max-height: $max-height;
+
+    @extend %mat-dialog-container;
 
     .vitamui-form-dual-panel-content {
         display: flex;
@@ -172,4 +175,4 @@ $radius: 20px;
             }
         }
     }
-}
+} 

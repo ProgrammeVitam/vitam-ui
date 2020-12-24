@@ -1,3 +1,6 @@
+$header-height: 72px !default;
+$footer-height: 100px !default;
+
 .vitamui-header {
     background-image: url('/assets/background.jpg');
     background-size: cover;
@@ -38,7 +41,7 @@
 
 .vitamui-body {
     padding: 40px 100px;
-    min-height: calc(100vh - 172px); // header + footer
+    min-height: calc(100vh - #{$header-height + $footer-height});
 }
 
 .bg-fingerprint {
