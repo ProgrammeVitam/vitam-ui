@@ -1,6 +1,5 @@
 @import "variables";
 @import "mixins";
-
 @import "material";
 @import "app-loader";
 @import "badge";
@@ -21,8 +20,8 @@
 @import "title";
 @import "tooltip";
 @import "spinner";
-@import "typography";
-@import "material-theme";
+@import "base/typography";
+@import "material/material-theme";
 
 @import url("https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap");
 
@@ -30,100 +29,4 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~@angular/material/theming';
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-
-$custom-typography: mat-typography-config(
-    $font-family:   'Mulish',
-    $display-4:     mat-typography-level(112px, 112px, 300),
-    $display-3:     mat-typography-level(56px, 56px, 400),
-    $display-2:     mat-typography-level(45px, 48px, 400),
-    $display-1:     mat-typography-level(34px, 40px, 400),
-    $headline:      mat-typography-level(24px, 32px, 400),
-    $title:         mat-typography-level(20px, 32px, 500),
-    $subheading-2:  mat-typography-level(16px, 28px, 400),
-    $subheading-1:  mat-typography-level(15px, 24px, 400),
-    $body-2:        mat-typography-level(14px, 24px, 500),
-    $body-1:        mat-typography-level(14px, 20px, 400),
-    $caption:       mat-typography-level(12px, 20px, 400),
-    $button:        mat-typography-level(14px, 14px, 500),
-    $input:         mat-typography-level(inherit, 1.125, 400)
-);
-
-@include mat-base-typography($custom-typography);
-@include mat-checkbox-typography($custom-typography);
-@include angular-material-typography($custom-typography);
-@include mat-core($custom-typography);
-
-html, body {
-    height: 100%;
-}
-
-/* mulish-regular - latin */
-@font-face {
-    font-family: 'Mulish', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    src: local('Mulish', sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format('woff2');
-    font-display: optional;
-  }
-
-body {
-    margin: 0;
-    font-family: 'Mulish', sans-serif;
-    background-color: var(--vitamui-background);
-    color: var(--vitamui-grey-900);
-}
-
-button, textarea, input {
-    font-family: 'Mulish', sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-.hidden {
-    visibility: hidden!important;
-}
-
-.text-primary {
-    color: var(--vitamui-primary)!important;
-}
-
-.text-primary-300 {
-    color: var(--vitamui-primary-300)!important;
-}
-
-.text-secondary {
-    color: var(--vitamui-secondary)!important;
-}
-
-.text-red {
-    color: $red!important;
-}
-
-.underline {
-    text-decoration: underline;
-}
-
-.bg-primary {
-    background-color: var(--vitamui-primary)!important;
-}
-
-.bg-secondary {
-    background-color: var(--vitamui-secondary)!important;
-}
-
-
-
-.no-hover {
-    &:hover {
-      background-color: transparent!important;
-    }
-}
+@import "base/base";
