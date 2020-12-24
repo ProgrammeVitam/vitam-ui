@@ -87,9 +87,9 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String GROUP_IDENTIFIER_KEY = "Groupe de profils";
 
-    public static final String DISABLING_DATE = "disablingDate";
+    public static final String DISABLING_DATE = "Date de désactivation";
 
-    public static final String REMOVING_DATE = "removingDate";
+    public static final String REMOVING_DATE = "Date de suppression";
 
     public static final String INTERNAL_CODE_KEY = "Code interne";
 
