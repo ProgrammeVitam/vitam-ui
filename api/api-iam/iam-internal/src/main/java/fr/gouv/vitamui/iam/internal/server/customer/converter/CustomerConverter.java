@@ -92,9 +92,9 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String CUSTOM_GRAPHIC_IDENTITY_KEY = "Identité graphique personnalisée";
 
-    public static final String RGPD_ALERT_DELAY_KEY = "rgpd_Alert_Delay";
+    public static final String RGPD_ALERT_DELAY_KEY = "RGPD Délai d'alerte";
 
-    public static final String RGPD_ALERT_KEY = "rgpd_Alert";
+    public static final String RGPD_ALERT_KEY = "RGPD Alerte";
 
     public CustomerConverter(final AddressConverter addressConverter, final OwnerRepository ownerRepository, final OwnerConverter ownerConverter) {
         this.ownerRepository = ownerRepository;
