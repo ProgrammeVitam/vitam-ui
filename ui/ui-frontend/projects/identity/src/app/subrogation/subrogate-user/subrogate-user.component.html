@@ -1,17 +1,19 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav-content class="vitamui-body">
-    <vitamui-common-title-breadcrumb>
-      Subroger un utilisateur
-    </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Subroger un utilisateur
+      </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner
-      [searchbarPlaceholder]="'Utilisateur, Admin'"
-      (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'Utilisateur, Admin'" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openUserSubrogationDialog()">
           Subroger un Utilisateur Client
         </button>
     </vitamui-common-banner>
+</div>
 
-    <app-subrogate-user-list [search]="search" [emailDomains]="customer?.emailDomains"></app-subrogate-user-list>
+    <div class="vitamui-content">
+      <app-subrogate-user-list [search]="search" [emailDomains]="customer?.emailDomains"></app-subrogate-user-list>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

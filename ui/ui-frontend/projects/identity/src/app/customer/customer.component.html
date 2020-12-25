@@ -5,23 +5,23 @@
     <app-owner-preview *ngIf="previewType === 'TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="vitamui-body">
-    <vitamui-common-title-breadcrumb>
-      Paramétrer les organisations
-    </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Paramétrer les organisations
+      </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner
-      [searchbarPlaceholder]="'Nom, Raison sociale, Code client, Adresse...'"
-      [disableSearchBar]="true">
+      <vitamui-common-banner [searchbarPlaceholder]="'Nom, Raison sociale, Code client, Adresse...'" [disableSearchBar]="true">
         <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
           <span>Créer un Client</span>
         </button>
-    </vitamui-common-banner>
+      </vitamui-common-banner>
+    </div>
 
-    <app-customer-list
-      (customerClick)="openCustomerPanel($event)"
-      (ownerClick)="openOwnerPanel($event)"
-      (tenantClick)="openTenantPanel($event)">
-    </app-customer-list>
+    <div class="vitamui-content">
+      <app-customer-list (customerClick)="openCustomerPanel($event)" (ownerClick)="openOwnerPanel($event)"
+        (tenantClick)="openTenantPanel($event)">
+      </app-customer-list>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

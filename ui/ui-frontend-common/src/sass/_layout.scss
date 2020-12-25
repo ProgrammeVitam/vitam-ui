@@ -1,6 +1,37 @@
 $header-height: 72px !default;
 $footer-height: 100px !default;
 
+.vitamui-heading {
+    margin-bottom: 3rem;
+    max-width: 1440px;
+    margin: 0 240px;
+}
+
+.vitamui-content {
+    max-width: 1440px;
+    margin: 0 240px;
+}
+
+/** RESPONSIVE MANAGEMENT */
+@media screen and (max-width: 1440px) {
+    .vitamui-heading, .vitamui-content {
+        max-width: 1200px;
+        margin: 0 120px;
+    }
+}
+  
+@media screen and (max-width: 1200px) {
+    .vitamui-heading, .vitamui-content {
+        max-width: 1060px;
+        margin: 0 70px;
+    }
+}
+
+.vitamui-body {
+    min-height: calc(100vh - #{$header-height + $footer-height});
+}
+
+/**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/
 .vitamui-header {
     background-image: url('/assets/background.jpg');
     background-size: cover;
@@ -39,9 +70,6 @@ $footer-height: 100px !default;
     }
 }
 
-.vitamui-body {
-    min-height: calc(100vh - #{$header-height + $footer-height});
-}
 
 .bg-fingerprint {
     z-index: -2;

@@ -3,17 +3,23 @@
     <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"></app-user-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none  vitamui-body">
-    <vitamui-common-title-breadcrumb>
-      Administrer mes utilisateurs
-    </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Administrer mes utilisateurs
+      </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner [searchbarPlaceholder]="'Nom, Prénom, Identifiant, Email'" i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
-      <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-        <span>Créer un Utilisateur</span>
-      </button>
-    </vitamui-common-banner>
+      <vitamui-common-banner [searchbarPlaceholder]="'Nom, Prénom, Identifiant, Email'"
+        i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
+        <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
+          <span>Créer un Utilisateur</span>
+        </button>
+      </vitamui-common-banner>
+    </div>
 
-    <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" (userClick)="openPanel($event)"></app-user-list>
+    <div class="vitamui-content">
+      <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" (userClick)="openPanel($event)">
+      </app-user-list>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

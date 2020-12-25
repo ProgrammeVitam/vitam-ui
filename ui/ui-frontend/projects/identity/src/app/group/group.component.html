@@ -3,19 +3,21 @@
     <app-group-preview *ngIf="openedItem" (previewClose)="closePanel()" [group]="openedItem"></app-group-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="vitamui-body">
-    <vitamui-common-title-breadcrumb>
-      Paramétrer les groupes de profils
-    </vitamui-common-title-breadcrumb>
-    
-    <vitamui-common-banner
-      [searchbarPlaceholder]="'Nom du groupe, Identifiant'"
-      (search)="onSearchSubmit($event)">
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Paramétrer les groupes de profils
+      </vitamui-common-title-breadcrumb>
+
+      <vitamui-common-banner [searchbarPlaceholder]="'Nom du groupe, Identifiant'" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openCreateGroupDialog()">
           <span>Créer un Groupe</span>
         </button>
-    </vitamui-common-banner>
-    
-    <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
+      </vitamui-common-banner>
+    </div>
+
+    <div class="vitamui-content">
+      <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

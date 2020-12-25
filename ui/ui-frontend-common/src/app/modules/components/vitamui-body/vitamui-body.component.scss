@@ -1,25 +1,6 @@
 div {
-    padding-top: 72px;
     min-height: calc(100vh - 100px);
     background-color: var(--vitamui-background);
-    margin: 40px auto;
-    width: 1440px;
-}
-
-@media screen and (max-width: 1440px){
-
-  div {
-    width: 1200px;
-  }
-
-}
-
-
-@media screen and (max-width: 1200px){
-
-  div {
-    width: 1060px;
-  }
-
+    margin: 102px auto;
 }
 

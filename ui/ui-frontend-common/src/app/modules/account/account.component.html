@@ -1,4 +1,4 @@
-<div class="vitamui-body">
+<div class="vitamui-heading">
   <vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
     <div class="d-flex align-items-center d-flex">
       <vitamui-common-user-photo class="mr-1" [photo]="account?.photo"></vitamui-common-user-photo>
@@ -13,7 +13,9 @@
       <button class="btn primary">Contacter l'administrateur</button>
     </div>
   </div>
+</div>
 
+<div class="vitamui-content">
   <mat-tab-group>
     <mat-tab label="Informations" i18n-label="Information tab@@profileDetailTabInformation">
       <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>

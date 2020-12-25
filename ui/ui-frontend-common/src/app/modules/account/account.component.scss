@@ -13,15 +13,9 @@ h2 {
   margin-right: 20px;
 }
 
-mat-tab-group {
-  margin-top: 40px;
-  
-}
-
 :host::ng-deep {
   --radius: 20px;
   
-
   .mat-tab-body-wrapper {
     border-top-right-radius: var(--radius);
     border-bottom-right-radius: var(--radius);
@@ -32,7 +26,6 @@ mat-tab-group {
   }
 
   .mat-tab-label {
-    
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     margin-right: 5px;
@@ -59,13 +52,11 @@ mat-tab-group {
   }
 
   .mat-tab-body-content {
-    
     height: 100%;
     overflow: hidden;
   }
 
   .mat-tab-body-content {
-    
     height: 100%;
     overflow: hidden;
   }

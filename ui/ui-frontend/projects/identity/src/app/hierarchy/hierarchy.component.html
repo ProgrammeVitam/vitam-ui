@@ -1,29 +1,23 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-hierarchy-detail
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [id]="openedItem?.id"
-    ></app-hierarchy-detail>
+    <app-hierarchy-detail *ngIf="openedItem" (previewClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none vitamui-body">
-    <vitamui-common-title-breadcrumb>
-      Paramétrer les Profils de droits d'accès
-    </vitamui-common-title-breadcrumb>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Paramétrer les Profils de droits d'accès
+      </vitamui-common-title-breadcrumb>
 
-    <vitamui-common-banner
-      [searchbarPlaceholder]="'Nom du profil, Identifiant'"
-      (search)="onSearchSubmit($event)"
-    >
-      <button class="btn primary ml-5" (click)="openHierarchyDuplicateDialog()">
-        <span>Dupliquer un Profil</span>
-      </button>
-    </vitamui-common-banner>
+      <vitamui-common-banner [searchbarPlaceholder]="'Nom du profil, Identifiant'" (search)="onSearchSubmit($event)">
+        <button class="btn primary ml-5" (click)="openHierarchyDuplicateDialog()">
+          <span>Dupliquer un Profil</span>
+        </button>
+      </vitamui-common-banner>
+    </div>
 
-    <app-hierarchy-list
-      [search]="search"
-      (profileClick)="openPanel($event)"
-    ></app-hierarchy-list>
+    <div class="vitamui-content">
+      <app-hierarchy-list [search]="search" (profileClick)="openPanel($event)"></app-hierarchy-list>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
