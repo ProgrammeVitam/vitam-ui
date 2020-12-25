@@ -34,16 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { merge, Subscription } from 'rxjs';
+import { merge, Subscription, Observable } from 'rxjs';
 import { ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
 
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerCreateValidators } from './customer-create.validators';
+import { filter } from 'rxjs/operators';
+import { ComponentType } from '@angular/cdk/portal';
+import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -98,6 +101,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
     private themeService: ThemeService,
+    private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
   ) {
   }
@@ -143,6 +147,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       'vitamui-primary': colors['vitamui-primary'],
       'vitamui-secondary': colors['vitamui-secondary']
     });
+
+    this.form.get('rgpdAlert').valueChanges.subscribe(() => {
+      if (!this.form.get('rgpdAlert').value) {
+        this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('rgpdAlert').setValue(true));
+      }
+    })
+
     this.onChanges();
     this.form.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.form.get('hasCustomGraphicIdentity').value;
@@ -163,7 +174,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.imageUrl = null;
       }
     });
-
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -198,6 +208,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     } else {
       this.dialogRef.close();
     }
+  }
+
+  confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
+    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' }).beforeClose().pipe(
+      filter((result) => !result)
+    );
+
   }
 
   onSubmit() {
@@ -283,17 +300,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       return this.form.get('rgpdAlertDelay').invalid || this.form.get('rgpdAlertDelay').pending
     }
     else {
-
-      this.form.get('rgpdAlert').valueChanges.subscribe(() =>
+      this.form.get('rgpdAlert').valueChanges.subscribe(() => {
         this.form.get('rgpdAlertDelay').setValue(72)
-      );
-
+      });
       return false;
     }
   }
 
   firstStepInvalid(): boolean {
-
 
     return this.form.get('code').invalid || this.form.get('code').pending ||
       this.form.get('name').invalid || this.form.get('name').pending ||
@@ -304,7 +318,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('address.country').invalid || this.form.get('address.country').pending || this.isDurationNotValid() ||
       this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending;
-
 
   }
 

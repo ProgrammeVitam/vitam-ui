@@ -148,7 +148,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
       let dialogToOpen;
     dialogToOpen = this.confirmdeleteUserDialog;
-
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     dialogRef.afterClosed()
       .pipe(filter((result) => !!result))
@@ -160,9 +159,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
           });
 
       });
-
-
   }
-
 
 }

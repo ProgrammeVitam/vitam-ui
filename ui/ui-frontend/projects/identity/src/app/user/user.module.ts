@@ -65,7 +65,6 @@ import { UserService } from './user.service';
     UserListModule,
     MatDialogModule,
     MatMenuModule,
-    MatDialogModule,
     UserPreviewModule,
     GroupAttributionModule,
     MatSidenavModule,
