@@ -9,7 +9,8 @@
       <div class="content">
         <h2 i18n="Create customer title@@customerCreateTitle1">Création d'un client</h2>
         <div>
-          <vitamui-common-input class="field-code" formControlName="code" required placeholder="Code client"
+          <vitamui-common-input class="field-code" formControlName="code" maxlength="20" required
+            placeholder="Code client"
             i18n-placeholder="Customer code input placeholder + format@@customerCreateCustomerCodeInputPlaceholder">
             <ng-container *ngIf="form.get('code')?.touched">
               <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"

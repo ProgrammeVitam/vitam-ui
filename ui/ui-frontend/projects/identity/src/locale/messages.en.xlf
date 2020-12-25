@@ -2757,6 +2757,10 @@ Your request for subrogation has been canceled
         <source>Êtes vous sur de vouloir désactiver l'utilisateur <x id="INTERPOLATION" equiv-text="{{user?.firstname}}"/> <x id="INTERPOLATION_1" equiv-text="{{user?.lastname}}"/> - <x id="INTERPOLATION_2" equiv-text="{{user?.email}}"/> ?</source>
         <target state="translated">Are you sure you want to disable the user <x id="INTERPOLATION" equiv-text="{{user?.firstname}}"/> <x id="INTERPOLATION_1" equiv-text="{{user?.lastname}}"/> - <x id="INTERPOLATION_2" equiv-text="{{user?.email}}"/>?</target>
 
+      <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-create/customer-alerting/customer-alerting.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="disabledRgpdAlertConfirm" datatype="html">
+        <source>Vous êtes sur le point de désactiver les alertes sur utilisateurs inactifs dont les données personnelles sont arrivées à échéance dans cette organisation. Voulez-vous continuer ? </source>
+        <target state="translated">You are about to turn off alerts for inactive users whose personal data has expired in this organization. Do you want to continue ?</target>
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-preview/user-preview.component.html</context><context context-type="linenumber">43</context></context-group></trans-unit><trans-unit id="confirmDialogConfirmButton" datatype="html">
         <source>Confirmer</source>
         <target state="translated">Confirm</target>
