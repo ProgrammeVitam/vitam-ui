@@ -38,7 +38,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService, StartupService, ThemeDataType, ThemeService } from 'ui-frontend-common';
+import { ApplicationId, AuthService, GlobalEventService, StartupService, ThemeDataType, ThemeService } from 'ui-frontend-common';
 import { Application, ApplicationService, Category } from 'ui-frontend-common';
 
 @Component({
@@ -49,13 +49,9 @@ import { Application, ApplicationService, Category } from 'ui-frontend-common';
 export class PortalComponent implements OnInit, OnDestroy {
 
   public applications: Map<Category, Application[]>;
-
   public welcomeTitle: string;
-
   public welcomeMessage: string;
-
   public customerLogoUrl: SafeResourceUrl;
-
   public loading = true;
 
   private sub: Subscription;
@@ -65,7 +61,8 @@ export class PortalComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private authService: AuthService,
     private themeService: ThemeService,
-    private router: Router) { }
+    private router: Router,
+    private globalEventService: GlobalEventService) { }
 
   ngOnInit() {
     this.sub = this.applicationService.getActiveTenantAppsMap().subscribe((appMap) => {
@@ -75,6 +72,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.welcomeTitle = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_TITLE) as string;
     this.welcomeMessage = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_MESSAGE) as string;
     this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
+    this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
   }
 
   ngOnDestroy() {

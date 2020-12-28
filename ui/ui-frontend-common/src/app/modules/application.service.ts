@@ -41,6 +41,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
+import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
 import { ApplicationInfo } from './models/application/application.interface';
@@ -189,6 +190,26 @@ export class ApplicationService {
 
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
+  }
+
+  public getAppById(identifier: string): Application {
+    return this.applications.find(value => value.identifier === identifier);
+  }
+
+  /**
+   * Return an observable that notify if the current application has a tenant list or not.
+   */
+  public hasTenantList(): Observable<boolean> {
+    return new Observable((observer) => {
+      this.globalEventService.pageEvent.subscribe((appId: string) => {
+        if (appId === ApplicationId.PORTAL_APP) {
+          observer.next(true);
+        } else {
+          const app = this.applications.find(value => value.identifier === appId);
+          app ? observer.next(app.hasTenantList) : observer.next(false);
+        }
+      });
+    });
   }
 
   private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
