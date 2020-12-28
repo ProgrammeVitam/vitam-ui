@@ -6,6 +6,7 @@ $footer-height: 100px !default;
     border-radius: 20px;
     padding: 0;
     max-height: calc(100vh - #{$header-height + $footer-height});
+    min-width: 800px;
     top: 72px;
 }
 
