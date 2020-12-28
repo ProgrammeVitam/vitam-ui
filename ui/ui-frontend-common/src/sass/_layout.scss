@@ -3,27 +3,27 @@ $footer-height: 100px !default;
 
 .vitamui-heading {
     margin-bottom: 3rem;
-    max-width: 1440px;
-    margin: 0 240px;
 }
 
-.vitamui-content {
+// Defaut supported screen width is 1920px
+.vitamui-content, .vitamui-heading {
     max-width: 1440px;
-    margin: 0 240px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 /** RESPONSIVE MANAGEMENT */
 @media screen and (max-width: 1440px) {
     .vitamui-heading, .vitamui-content {
         max-width: 1200px;
-        margin: 0 120px;
     }
 }
   
 @media screen and (max-width: 1200px) {
     .vitamui-heading, .vitamui-content {
         max-width: 1060px;
-        margin: 0 70px;
     }
 }
 
