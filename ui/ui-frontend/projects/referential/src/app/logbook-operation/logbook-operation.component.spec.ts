@@ -63,7 +63,7 @@ describe('LogbookOperationComponent', () => {
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => { } } },
-        { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
+        GlobalEventService,
         { provide: ENVIRONMENT, useValue: environment }
       ],
       schemas: [NO_ERRORS_SCHEMA]
