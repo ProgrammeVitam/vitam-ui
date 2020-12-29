@@ -78,7 +78,6 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     @Test
     public void patchAnalytics_thenOk() throws Exception {
-        LOGGER.debug("testPatchAnalytics");
         Map<String, Object> analytics = ImmutableMap.of("applicationId", "API_SUPERVISION_APP");
         ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchAnalytics(analytics)));
