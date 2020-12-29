@@ -152,17 +152,14 @@ export class ApplicationService {
     const apps: Application[] = [];
     const tenantsByApp = this.authService.user.tenantsByApp;
     if (tenantsByApp && tenant) {
-      tenantsByApp.forEach((element: { name: string; tenants: Tenant[] }) => {
-        const index = element.tenants.findIndex((value) => value.identifier === tenant.identifier);
-        const items = this.applications.find((value) => value.identifier === element.name);
+      tenantsByApp.forEach((tenantByAppItem: { name: string; tenants: Tenant[] }) => {
+        const index = tenantByAppItem.tenants.findIndex((value) => value.identifier === tenant.identifier);
+        const app = this.applications.find((value) => value.identifier === tenantByAppItem.name);
 
-        if (items) {
-          if (index !== -1) {
-            apps.push(items);
-          } else if (!items.hasTenantList) {
-            apps.push(items);
-          }
+        if (app && (index !== -1 || !app.hasTenantList)) {
+          apps.push(app);
         }
+
       });
 
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
