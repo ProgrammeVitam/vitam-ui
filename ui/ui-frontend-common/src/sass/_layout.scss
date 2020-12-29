@@ -24,10 +24,6 @@ $footer-height: 100px !default;
     }
 }
 
-.vitamui-body {
-    min-height: calc(100vh - #{$header-height + $footer-height});
-}
-
 /**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/
 .vitamui-header {
     background-image: url('/assets/background.jpg');
@@ -88,4 +84,8 @@ $footer-height: 100px !default;
         vertical-align: middle;
         margin-right: 17px;
     }
+}
+
+.vitamui-body {
+    min-height: calc(100vh - #{$header-height + $footer-height});
 }
