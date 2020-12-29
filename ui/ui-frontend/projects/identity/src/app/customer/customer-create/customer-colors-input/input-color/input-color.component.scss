@@ -1,25 +1,15 @@
 :host {
- 
-  ::ng-deep .vitamui-input-errors {
-    display: none;
-  }
+  position: relative;
+  width: 255px;
+  display: block;
 
-  .container-preview {
-    display: flex;
-    flex-direction: row-reverse;
-    top: -40px;
-    position: relative;
-    right: 5px;
-    height: 0;
-  }
-   
   .input-color-preview {
     padding: 0;
-    margin: 0 5px 0 0;
-    display: inline-block;
+    position: absolute;
+    top: 14px;
+    right: 5px;
     width: 30px;
     height: 30px;
     border-radius: 100%;
   }
-  
 }

@@ -41,10 +41,6 @@
       width: 47%;
   }
 
-  ::ng-deep div.vitamui-input-errors {
-      display: none;
-  }
-
   vitamui-common-textarea + small {
       text-align: end;
       color: var(--vitamui-grey-900);
@@ -69,10 +65,6 @@
 
   vitamui-common-input {
       width: 47%;
-  }
-
-  ::ng-deep div.vitamui-input-errors {
-      display: none;
   }
 
   vitamui-common-textarea + small {

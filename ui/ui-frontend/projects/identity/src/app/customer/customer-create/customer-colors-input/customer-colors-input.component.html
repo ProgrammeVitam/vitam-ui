@@ -1,5 +1,5 @@
 <ng-container [formGroup]="formGroup">
-  <div *ngFor="let color of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="pb-4">
+  <div *ngFor="let color of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]">
     <app-input-color 
       [disabled]="disabled"
       [colorInput]="formGroup.get(color)"
@@ -18,14 +18,12 @@
   <app-input-color
     [style.visibility]="!displayTertiary ? 'hidden' : 'visible'"
     [disabled]="disabled"
-    class="pb-4"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
     [checkWarning]="true"
     [placeholder]="baseColors[THEME_COLORS.VITAMUI_TERTIARY]">
   </app-input-color>
 
   <app-input-color
-    class="pb-4"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER)"
     [disabled]="disabled"
     [placeholder]="baseColors[THEME_COLORS.VITAMUI_HEADER_FOOTER]">
