@@ -26,7 +26,6 @@ $footer-height: 100px !default;
 
 /**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/
 .vitamui-header {
-    background-image: url('/assets/background.jpg');
     background-size: cover;
     background-position: center;
     padding-top: 1rem;
@@ -61,15 +60,6 @@ $footer-height: 100px !default;
             margin-right: 17px;
         }
     }
-}
-
-
-.bg-fingerprint {
-    z-index: -2;
-    position: fixed;
-    bottom: -70px;
-    right: -20px;
-    width: 700px;
 }
 
 .vitamui-header > .vitamui-container > h2 {
