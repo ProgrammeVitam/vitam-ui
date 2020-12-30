@@ -22,10 +22,10 @@
     "COLORS":{
         "Primary": "Couleur primaire",
         "Secondary": "Couleur secondaire",
-        "Grey": "Couleur gris",
+        "Grey": "Couleur grise",
         "Red": "Couleur rouge",
         "Orange": "Couleur orange",
-        "Green": "Couleur vert"
+        "Green": "Couleur verte"
     },
     "ICONS":{
         "Title": "Liste des icônes de Vitam-UI"

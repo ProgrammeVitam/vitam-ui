@@ -50,3 +50,5 @@ Update the `icomoon-selection.json` file : copy the `selection.json` file from t
 You also need to update the `vitamui-icons.css` file. Open the `style.css` from your downloaded archive and copy everything from line `27` to the end of the file. Now open `src/sass/icons/vitamui-icons.css` and replace the same portion of code.
 
 > Attention: Do not override the first part of the file (from line `1` to line `25`)
+
+Please add each new icon to the icon category in the starter-kit project.
