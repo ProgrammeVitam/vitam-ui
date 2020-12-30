@@ -34,6 +34,8 @@ Click on `Import icons` and select the `icomoon-selection.json` file located in 
 
 A `vitamui-icon` icon set should appear on the screen. From here you can select/deselect icons, rename, delete or add new icons.
 
+Drag and drop your icon that you want to add, then select them and remove the color
+
 Once you made the desired modifications, you can generate the font by clicking `Generate Font` at the bottom right corner of the screen. It will show a preview of the icons. Click again at the bottom right of the screen, on the `Download` button.
 
 Automatic Method :

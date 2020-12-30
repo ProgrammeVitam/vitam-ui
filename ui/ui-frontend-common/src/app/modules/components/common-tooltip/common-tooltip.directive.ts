@@ -97,9 +97,9 @@ export class CommonTooltipDirective implements OnInit {
     switch (type) {
       case TooltipType.TOP: {
         return {
-          originX: 'center',
+          originX: 'start',
           originY: 'top',
-          overlayX: 'center',
+          overlayX: 'start',
           overlayY: 'bottom',
         };
       }

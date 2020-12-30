@@ -25,6 +25,16 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-add-basket:before {
+  content: "\ea74";
+}
+.vitamui-icon-export-result:before {
+  content: "\ea75";
+}
+.vitamui-icon-download-basic:before {
+  content: "\ea76";
+}
+
 .vitamui-icon-app_unknown .path1:before {
   content: "\ea4d";
   color: rgb(226, 226, 225);
