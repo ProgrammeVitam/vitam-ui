@@ -25,7 +25,7 @@
  */
 package fr.gouv.vitamui.archives.search.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -38,7 +38,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -96,12 +95,5 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.findUnitById(id, context);
     }
 
-    public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
-        return archiveSearchExternalRestClient.findUnitById(id, context);
-    }
-
-    public ResponseEntity<JsonNode> findobjectmetadata(String id, ExternalHttpContext context) {
-        return archiveSearchExternalRestClient.findObjectMetaData(id, context);
-    }
 
 }

@@ -13,8 +13,8 @@
     <div class="row justify-content-around">
       <div class="col-9 form-control">
         <vitamui-common-editable-input formControlName="archiveCriteria"
-                                       [validator]="form?.get('archiveCriteria')?.validator"
-                                       label="Rechercher une archive">
+                                      [validator]="form?.get('archiveCriteria')?.validator"
+                                      label="Rechercher une archive">
         </vitamui-common-editable-input>
 
       </div>
@@ -38,10 +38,10 @@
                   class="button-content right-not-arround btn">
             <ng-container *ngIf="isFirst">
               <i class="vitamui-icon vitamui-icon-target vitamui-row-icon"></i>
-              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:20}}
+              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:45}}
             </ng-container>
             <ng-container *ngIf="!isFirst">
-              {{(criteriaValue.label) | truncate:20}}
+              {{(criteriaValue.label) | truncate:45}}
             </ng-container>
           </button>
 
@@ -53,10 +53,10 @@
                   [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
                   class="  button-content right-not-arround btn">
             <ng-container *ngIf="isFirst">
-              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:20}}
+              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:45}}
             </ng-container>
             <ng-container *ngIf="!isFirst">
-              {{(criteriaValue.label) | truncate:20}}
+              {{(criteriaValue.label) | truncate:45}}
             </ng-container>
           </button>
 
@@ -89,7 +89,6 @@
         <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">Afficher les filtres de recherche</a>
       </div>
       <div class="col-6 text-right">
-
       </div>
     </div>
 
@@ -105,7 +104,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="title" [validator]="form?.get('title')?.validator"
-                                             label="Titre">
+                                            label="Titre">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -117,7 +116,7 @@
                 </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt"
-                       [min]="form.get('beginDt').value">
+                      [min]="form.get('beginDt').value">
                 <mat-datepicker #pickerBegin></mat-datepicker>
               </div>
             </div>
@@ -126,7 +125,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="description"
-                                             [validator]="form?.get('description')?.validator" label="Description">
+                                            [validator]="form?.get('description')?.validator" label="Description">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -137,7 +136,7 @@
               </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt"
-                       [min]="form.get('endDt').value">
+                      [min]="form.get('endDt').value">
                 <mat-datepicker #pickerEnd></mat-datepicker>
               </div>
             </div>
@@ -145,7 +144,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="guid" [validator]="form?.get('guid')?.validator"
-                                             label="GUID du versement">
+                                            label="GUID du versement">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -155,7 +154,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="uaid" [validator]="form?.get('uaid')?.validator"
-                                             label="GUID d'unité d'archivage">
+                                            label="GUID d'unité d'archivage">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -175,8 +174,8 @@
           <div class="row justify-content-around">
             <div class="col-3 form-control">
               <vitamui-common-editable-input formControlName="serviceProdCode"
-                                             [validator]="form?.get('serviceProdCode')?.validator"
-                                             label="Code">
+                                            [validator]="form?.get('serviceProdCode')?.validator"
+                                            label="Code">
               </vitamui-common-editable-input>
             </div>
             <div class="col-2 form-control"></div>
@@ -209,27 +208,27 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="serviceProdLabel"
-                                             [validator]="form?.get('serviceProdLabel')?.validator"
-                                             label="Libellé">
+                                            [validator]="form?.get('serviceProdLabel')?.validator"
+                                            label="Libellé">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
               <vitamui-common-editable-input formControlName="otherCriteriaValue"
-                                             *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT') "
-                                             [validator]="form?.get('otherCriteriaValue')?.validator"
-                                             label="Valeur du critère : {{selectedValueOntolonogy}}">
+                                            *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT') "
+                                            [validator]="form?.get('otherCriteriaValue')?.validator"
+                                            label="Valeur du critère : {{selectedValueOntolonogy}}">
               </vitamui-common-editable-input>
 
               <div class="search-date-filter" (click)="pickerOtherCriteria.open()"
-                   *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE' ">
+                  *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE' ">
                 <span *ngIf="!form.get('otherCriteriaValue').value; else showOtherCriteria"
                       (click)="pickerOtherCriteria.open()" class="search-date-label">Valeur du critère : {{selectedValueOntolonogy}}</span>
                 <ng-template #showOtherCriteria><span (click)="pickerOtherCriteria.open()">{{ form.get('otherCriteriaValue').value | date:'dd/MM/yyyy' }}
               </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerOtherCriteria"
-                       formControlName="otherCriteriaValue"
-                       [min]="form.get('otherCriteriaValue').value">
+                      formControlName="otherCriteriaValue"
+                      [min]="form.get('otherCriteriaValue').value">
                 <mat-datepicker #pickerOtherCriteria></mat-datepicker>
               </div>
 
@@ -258,7 +257,6 @@
   </form>
 </div>
 
-
 <div class="archive-search-result" *ngIf="submited">
   <table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
     <thead>
@@ -279,7 +277,7 @@
 
           <ng-template #typeFilterTemplate>
             <vitamui-common-table-filter [(filter)]="filterMapType['Type']"
-                                         (filterChange)="onFilterChange('Type', $event)">
+                                        (filterChange)="onFilterChange('Type', $event)">
               <vitamui-common-table-filter-option value="Folder">
                 <div class="table-filter-icon">
                   <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"></i> Dossier
@@ -335,7 +333,7 @@
 
     <ng-container *ngFor="let archiveUnit of archiveUnits; let index = index">
       <tr class="vitamui-table-row">
-        <td class="clickable">
+        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">
               <span class="vitamui-snack-bar-content" [ngSwitch]="archiveUnit?.DescriptionLevel">
 
                 <ng-container *ngSwitchCase="'RecordGrp'">
@@ -347,26 +345,33 @@
                 <ng-container *ngSwitchCase="'Item'">
                   <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
                 </ng-container>
-             </span>
+            </span>
         </td>
-        <td class="clickable">
+        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">
           <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
-            <b>{{ archiveUnit?.Title }}</b> <br/> {{archiveUnit?.Description}}
+            <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+               <b>
+                {{ archiveUnit?.Title }}</b> <br/> {{archiveUnit?.Description | truncate:100 }}
+              </p>
           </ng-container>
           <ng-template #subTitleFr>
             <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
-              <b>{{ archiveUnit.Title_.fr }} </b> <br/> {{archiveUnit?.Description}}
+              <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                 <b>{{ archiveUnit.Title_.fr }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
+              </p>
             </ng-container>
           </ng-template>
           <ng-template #subTitleEn>
             <ng-container *ngIf="archiveUnit.Title_.en">
-              <b>{{ archiveUnit.Title_.en }} </b> <br/> {{archiveUnit?.Description}}
+              <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                <b>{{ archiveUnit.Title_.en }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
+              </p>
             </ng-container>
           </ng-template>
-        <td class="clickable">{{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="clickable">{{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="clickable">{{ archiveUnit['#originating_agencies']}} {{
-          archiveUnit['OriginatingAgencyIdentifier']}}
+        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">{{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">{{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)" matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+          {{ archiveUnit['originating_agencyName']}}
         </td>
       </tr>
     </ng-container>

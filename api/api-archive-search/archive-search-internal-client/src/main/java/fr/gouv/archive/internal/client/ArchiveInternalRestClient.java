@@ -50,7 +50,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class ArchiveInternalRestClient
     extends BasePaginatingAndSortingRestClient<ArchiveUnitsDto, InternalHttpContext> {
@@ -135,14 +134,6 @@ public class ArchiveInternalRestClient
     public ResponseEntity<ResultsDto> findUnitById(String id , final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
-    }
-
-    public ResponseEntity<ResultsDto> findUnitById(String id , final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + "/archiveunit" + CommonConstants.PATH_ID);
-        //final  HttpEntity<Map<String, String>> request = new HttpEntity<>(data, buildHeaders(context));
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
