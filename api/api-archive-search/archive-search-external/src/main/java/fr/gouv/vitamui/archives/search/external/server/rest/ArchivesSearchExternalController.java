@@ -27,7 +27,7 @@
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -97,16 +96,6 @@ public class ArchivesSearchExternalController {
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
         LOGGER.info("the UA by id {} ", id);
         return archivesSearchExternalService.findUnitById(id);
-    }
-
-    @GetMapping("/archiveunit" + CommonConstants.PATH_ID)
-    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
-        return archivesSearchExternalService.findUnitById(id);
-    }
-
-    @GetMapping("/objectmetadata" + CommonConstants.PATH_ID)
-    public ResponseEntity<JsonNode> findObjectMetaData(final @PathVariable("id") String id) {
-           return archivesSearchExternalService.findObjectMetaData(id);
     }
 
 }

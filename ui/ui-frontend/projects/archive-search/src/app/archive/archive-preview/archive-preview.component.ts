@@ -56,7 +56,4 @@ export class ArchivePreviewComponent  implements OnInit {
     this.emitClose();
   }
 
-  onDownloadArchive(){
-    //To implement
-  }
 }
