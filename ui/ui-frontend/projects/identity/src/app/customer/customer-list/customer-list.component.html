@@ -2,36 +2,40 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-2" i18n="Customer code@@customerListCustomerCodeHeader">Code client</div>
-      <div class="col-2" i18n="Customer name@@customerListNameHeader">Client</div>
-      <div class="col-3" i18n="Compagny name@@customerListCompanyNameHeader">Raison sociale</div>
-      <div class="col-2" i18n="SSO@@customerListSSOHeader">SSO</div>
+
+      <div class="col-9 d-flex align-items-center">
+        <div class="col-2" i18n="Customer code@@customerListCustomerCodeHeader">Code client</div>
+        <div class="col-3" i18n="Customer name@@customerListNameHeader">Client</div>
+        <div class="col-4" i18n="Compagny name@@customerListCompanyNameHeader">Raison sociale</div>
+        <div class="col-2" i18n="SSO@@customerListSSOHeader">SSO</div>
+      </div>
+
       <div class="col-2" i18n="Two factor validation@@customerListTwoStepsValidationHeader">Validation en deux étapes</div>
     </div>
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
-        <ng-container *ngFor="let customer of dataSource">
-          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
-            <div class="d-flex align-items-center clickable">
-              <div class="col-1 d-flex"  (click)="row.toggle()">
+        <ng-container *ngFor="let customer of dataSource" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
+            <div class="vitamui-row d-flex">
+              <div class="col-1 d-flex align-items-baseline clickable" (click)="row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row.state">keyboard_arrow_up</i>
               </div>
-              <div (click)="customerClick.emit(customer)" [style.display]="'contents'">
+              
+              <div class="col-9 d-flex align-items-center clickable"  (click)="customerClick.emit(customer)">
                 <div class="col-2">{{ customer?.code }}</div>
-                <div class="col-2">{{ customer?.name }}</div>
-                <div class="col-3">{{ customer?.companyName }}</div>
+                <div class="col-3">{{ customer?.name }}</div>
+                <div class="col-4">{{ customer?.companyName }}</div>
                 <div class="col-2">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
               </div>
-              <div class="col-2 actions">
+
+              <div class="col-2 d-flex align-items-center actions clickable">
                 <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
                 <div>
                   <button class="btn btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
                     <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
                   </button>
                 </div>
-              </div>
             </div>
           </div>
 
