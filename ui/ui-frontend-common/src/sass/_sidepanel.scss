@@ -72,6 +72,10 @@
     top: 246px;
     overflow: auto;
 
+    .mat-tab-body-wrapper {
+      height: 100%;
+    }
+
     &::-webkit-scrollbar {
         display: none;
     }
