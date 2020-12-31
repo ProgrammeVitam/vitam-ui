@@ -25,6 +25,10 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-filing-plan:before {
+  content: "\ea77";
+}
+
 .vitamui-icon-add-basket:before {
   content: "\ea74";
 }
