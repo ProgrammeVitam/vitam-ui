@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,6 +40,7 @@ public class VitamUIUtilsTest {
 
     @Test
     public void testConvertStringToDate() throws IOException {
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
         Date date = VitamUIUtils.convertStringToDate("2020-01-01");
 
         System.out.println(date);
