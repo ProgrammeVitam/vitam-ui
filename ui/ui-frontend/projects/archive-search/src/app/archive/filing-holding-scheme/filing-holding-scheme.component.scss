@@ -1,5 +1,10 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
+.tree-filing-scheme{
+    height:auto;
+    max-height: 70vh;
+    overflow:auto;   
+}
 .filing-holding-scheme-tree-invisible {
     display: none;
 }

@@ -1,5 +1,6 @@
-<div *ngIf="!loadingHolding">
-    <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="filing-holding-scheme-tree">
+    <div *ngIf="!loadingHolding" >
+        <div *ngIf="!loadingHolding" class="tree-filing-scheme"> 
+        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="filing-holding-scheme-tree">
 
         <mat-tree-node *matTreeNodeDef="let node">
         <ng-container *ngIf="!node.hidden">
@@ -26,6 +27,7 @@
             </ng-container>
         </mat-nested-tree-node>
     </mat-tree>
+    </div>
     <div *ngIf="nestedDataSource.data.length <= 0"> Aucun Arbres ou Plans trouvés avec le contrat choisi  </div>
    <a *ngIf="nestedDataSource.data.length > 0" class="tree-show-link" (click)="showAllTreeNodes()">Afficher l'arborescence au complet</a>
 </div>
