@@ -37,11 +37,10 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, Criterion, DEFAULT_PAGE_SIZE,
-  Direction, InfiniteScrollTable, Operators, PageRequest, Role, SearchQuery, User
+  AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, Criterion, DEFAULT_PAGE_SIZE,
+  Direction, InfiniteScrollTable, Operators, PageRequest, Role, rotateAnimation, SearchQuery, User
 } from 'ui-frontend-common';
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpParams } from '@angular/common/http';
 import {
   Component, ElementRef, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output,
@@ -59,17 +58,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({ transform: 'rotate(180deg)' })),
-      state('expanded', style({ transform: 'none' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {

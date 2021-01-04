@@ -20,7 +20,7 @@
             <div class="d-flex align-self-stretch align-items-center w-100" (click)="updateGroup(group?.id,group?.name, row)">{{group?.name}}</div>
             <button class="btn link underline" (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
           </div>
-          <app-group-detail *ngIf="row.state === 'expanded'" [group]="group" [@expansionAnimation]></app-group-detail>
+          <app-group-detail *ngIf="row.state === 'expanded'" [group]="group" [@collapseAnimation]></app-group-detail>
         </div>
       </ng-container>
     </div>

@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService, Event, LogbookService } from 'ui-frontend-common';
+import { AuthService, Event, fadeInOutAnimation, LogbookService } from 'ui-frontend-common';
 
 
 @Component({
@@ -45,16 +44,7 @@ import { AuthService, Event, LogbookService } from 'ui-frontend-common';
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('200ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate('200ms', style({ opacity: 0 })),
-      ]),
-    ])
+    fadeInOutAnimation
   ]
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges {

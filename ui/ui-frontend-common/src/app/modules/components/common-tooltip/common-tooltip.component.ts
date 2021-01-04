@@ -36,21 +36,14 @@
  */
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { fadeInOutAnimation } from '../../animations';
 
 @Component({
   selector: 'vitamui-common-tooltip',
   templateUrl: './common-tooltip.component.html',
   styleUrls: ['./common-tooltip.component.scss'],
   animations: [
-    trigger('tooltip', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 })),
-      ]),
-      transition(':leave', [
-        animate(300, style({ opacity: 0 })),
-      ]),
-    ]),
+    fadeInOutAnimation,
   ],
 })
 export class CommonTooltipComponent implements OnInit {

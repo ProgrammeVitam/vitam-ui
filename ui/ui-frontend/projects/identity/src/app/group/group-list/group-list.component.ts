@@ -34,17 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import {Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output} from '@angular/core';
 import {merge, Subject, Subscription} from 'rxjs';
 
 import {
   buildCriteriaFromSearch,
-  DEFAULT_PAGE_SIZE, Direction,
+  collapseAnimation, DEFAULT_PAGE_SIZE,
+  Direction,
   Group,
   InfiniteScrollTable,
   PageRequest,
-  SearchQuery
+  rotateAnimation,
+  SearchQuery,
 } from 'ui-frontend-common';
 import { GroupService } from '../group.service';
 import {buildCriteriaFromGroupFilters} from './group-criteria-builder.util';
@@ -54,17 +56,8 @@ import {buildCriteriaFromGroupFilters} from './group-criteria-builder.util';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {

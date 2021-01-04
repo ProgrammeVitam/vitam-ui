@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { rotateUpAnimation } from '../../animations/vitamui-common-animations';
 
 import { ApplicationId } from '../../application-id.enum';
 import { AuthService } from '../../auth.service';
@@ -50,11 +51,7 @@ import { MenuOption } from './customer-menu/menu-option.interface';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   animations: [
-    trigger('arrowUp', [
-      state('true', style({ transform: 'none' })),
-      state('false', style({ transform: 'rotate(180deg)' })),
-      transition('true <=> false', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    rotateUpAnimation,
   ]
 })
 export class NavbarComponent {

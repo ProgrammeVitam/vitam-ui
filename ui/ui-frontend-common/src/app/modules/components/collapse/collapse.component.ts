@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { collapseAnimation, rotate90Animation } from '../../animations/vitamui-common-animations';
 
 @Component({
   selector: 'vitamui-common-collapse',
@@ -43,16 +44,8 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core';
   styleUrls: ['./collapse.component.scss'],
   exportAs: 'vitamuiCommonCollapse',
   animations: [
-    trigger('collapseAnimation', [
-      state('collapse', style({ height: 0, visibility: 'hidden' })),
-      state('expand', style({ height: '*' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-90deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
+    collapseAnimation,
+    rotate90Animation,
   ]
 })
 export class CollapseComponent implements OnInit {
@@ -61,7 +54,7 @@ export class CollapseComponent implements OnInit {
 
   @Input() collapseTitle: string;
 
-  @Input() collapseState = 'expand';
+  @Input() collapseState = 'expanded';
 
   constructor() { }
 
@@ -69,7 +62,7 @@ export class CollapseComponent implements OnInit {
   }
 
   toggle() {
-    this.collapseState = this.collapseState === 'expand' ? 'collapse' : 'expand';
+    this.collapseState = this.collapseState === 'expanded' ? 'collapsed' : 'expanded';
   }
 
 }

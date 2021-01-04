@@ -34,13 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
+
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Customer, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Owner, PageRequest, Tenant } from 'ui-frontend-common';
+import { collapseAnimation,
+  Customer,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  Owner, PageRequest,
+  rotateAnimation,
+  Tenant } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
@@ -52,17 +59,8 @@ import { CustomerListService } from './customer-list.service';
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden', opacity: '0'})),
-      state('expanded', style({height: '*', visibility: 'visible',  opacity: '1'})),
-      transition('expanded <=> collapsed', animate('150ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+   collapseAnimation,
+   rotateAnimation,
   ]
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {

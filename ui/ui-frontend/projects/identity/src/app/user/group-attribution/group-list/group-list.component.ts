@@ -36,9 +36,9 @@
  */
 /* tslint:disable: no-use-before-declare */
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { collapseAnimation, rotateAnimation } from 'ui-frontend-common';
 import { GroupSelection } from './../../group-selection.interface';
 
 @Component({
@@ -46,17 +46,8 @@ import { GroupSelection } from './../../group-selection.interface';
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-    trigger('expansionAnimation', [
-      state('true', style({ height: '*', visibility: 'visible' })),
-      state('void', style({ height: '0px', visibility: 'hidden' })),
-      transition(':enter', animate('150ms')),
-      transition(':leave', animate('150ms')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class GroupListComponent implements OnInit {

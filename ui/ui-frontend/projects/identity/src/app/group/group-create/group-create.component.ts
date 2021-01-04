@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, ConfirmDialogService } from 'ui-frontend-common';
-
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService , rotateAnimation} from 'ui-frontend-common';
 
 
 import { GroupService } from '../group.service';
@@ -52,17 +50,8 @@ import { GroupValidators } from '../group.validators';
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {

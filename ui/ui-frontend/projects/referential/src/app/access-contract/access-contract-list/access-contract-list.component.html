@@ -65,12 +65,12 @@
 
       <!--td [vitamuiCommonCollapseTriggerFor]="row">
       <i class="vitamui-icon vitamui-icon-bank vitamui-row-icon"></i>
-      <i class="material-icons caret" [@arrow]="row.state">keyboard_arrow_up</i>
+      <i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
     </td-->
       <td>
         <i class="vitamui-icon vitamui-icon-contrat vitamui-row-icon status-badge"
            [ngClass]="{'status-badge-green': accessContract?.status == 'ACTIVE', 'status-badge-grey':accessContract?.status == 'INACTIVE' }"></i>
-        <!--i class="material-icons caret" [@arrow]="row.state">keyboard_arrow_up</i-->
+        <!--i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i-->
       </td>
       <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.name }}</td>
       <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.identifier }}</td>

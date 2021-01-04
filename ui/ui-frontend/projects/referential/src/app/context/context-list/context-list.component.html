@@ -65,7 +65,7 @@
       <td>
         <i class="vitamui-icon vitamui-icon-securite vitamui-row-icon status-badge"
            [ngClass]="{'status-badge-green': context?.status == 'ACTIVE', 'status-badge-grey':context?.status == 'INACTIVE' }"></i>
-        <!--i class="material-icons caret" [@arrow]="row.state">keyboard_arrow_up</i-->
+        <!--i class="material-icons caret" [@rotateAnimation]="row.state">keyboard_arrow_up</i-->
       </td>
       <td class="clickable" (click)="contextClick.emit(context)">{{ context?.name }}</td>
       <td class="clickable" (click)="contextClick.emit(context)">{{ context?.identifier }}</td>

@@ -130,7 +130,7 @@
             <div class="d-flex align-items-center clickable">
               <div class="col-2 d-flex"  (click)="row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
-                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@arrow]="row.state">keyboard_arrow_up</i>
+                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
               </div>
               <div [style.display]="'contents'">
                 <div class="col-3">{{ customer?.name }}</div>

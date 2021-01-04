@@ -5,6 +5,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { opacityAnimation , slideAnimation} from '../../../animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
@@ -19,40 +20,8 @@ import { MenuOverlayRef } from './menu-overlay-ref';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [
-    trigger('opacityAnimation', [
-      state('close', style({})),
-      transition(':enter', [
-        animate('500ms cubic-bezier(0, 0, 0.2, 1)', keyframes([
-          style({ opacity: 0 }),
-          style({ opacity: 1 }),
-        ])),
-      ]),
-      transition('* => close', [
-        animate('500ms cubic-bezier(0, 0, 0.2, 1)', keyframes([
-          style({ opacity: 1 }),
-          style({ opacity: 0 }),
-        ])),
-      ]),
-    ]),
-    trigger('slideLeftRight', [
-      transition(':enter', [
-        query('*', [
-          style({ opacity: 0, transform: 'translateX(-20px)' }),
-          stagger(50, [
-            animate(
-              '50ms',
-              style({ opacity: 1, transform: 'none' })
-            )
-          ])
-        ])
-      ]),
-      transition(':leave', [
-        animate(
-          '250ms',
-          style({ opacity: 0, transform: 'translateX(+100px)' })
-        )
-      ])
-    ])
+    opacityAnimation,
+    slideAnimation,
   ]
 })
 export class MenuComponent implements OnInit, AfterViewInit {

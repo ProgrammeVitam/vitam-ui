@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
+
 import {
   Component,
   ElementRef,
@@ -53,11 +53,13 @@ import {
   AdminUserProfile,
   ApplicationId,
   AuthService,
+  collapseAnimation,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
   Role,
+  rotateAnimation,
   User
 } from 'ui-frontend-common';
 import {ContextService} from '../context.service';
@@ -69,17 +71,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+   collapseAnimation,
+   rotateAnimation,
   ]
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {

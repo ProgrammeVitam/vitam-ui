@@ -35,7 +35,7 @@
             <mat-selection-list id="searchResults"
                 class="py-3 overflow"
                 (selectionChange)="openApplication($event.option.value)">
-                <mat-list-option [value]="app" @slideLeftRight *ngFor="let app of filteredApplications">
+                <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
                     <vitamui-common-menu-application-tile [application]="app" [hlCriteria]="criteria"></vitamui-common-menu-application-tile>
                 </mat-list-option>
             </mat-selection-list>

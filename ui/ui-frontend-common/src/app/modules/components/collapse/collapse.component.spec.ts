@@ -86,16 +86,16 @@ describe('CollapseComponent', () => {
   });
 
   it('should toggle the content on click on the title', () => {
-    expect(testhost.component.collapseState).toBe('expand');
+    expect(testhost.component.collapseState).toBe('expanded');
     const elTitle = fixture.nativeElement.querySelector('.collapse-title');
 
     elTitle.click();
     fixture.detectChanges();
-    expect(testhost.component.collapseState).toBe('collapse');
+    expect(testhost.component.collapseState).toBe('collapsed');
 
     elTitle.click();
     fixture.detectChanges();
-    expect(testhost.component.collapseState).toBe('expand');
+    expect(testhost.component.collapseState).toBe('expanded');
 
   });
 });
