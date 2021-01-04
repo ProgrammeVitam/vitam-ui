@@ -215,11 +215,8 @@ export class ThemeService {
         if (([ThemeColorType.VITAMUI_PRIMARY, ThemeColorType.VITAMUI_SECONDARY, ThemeColorType.VITAMUI_GREY] as string[]).includes(key)) {
           this.add10Declinations(key, colors, customerColors);
         } else if (key === ThemeColorType.VITAMUI_HEADER_FOOTER) {
-          if (customerColors[key]) {
-            colors[key + '-font'] = this.calculateFontColor(customerColors[key]);
-          } else {
-            colors[key + '-font'] = this.calculateFontColor(this.applicationColorMap[key]);
-          }
+          const map = {...this.defaultMap, ...this.applicationColorMap, ...customerColors};
+          colors[key + '-font'] = this.calculateFontColor(map[key]);
         }
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);
       }
