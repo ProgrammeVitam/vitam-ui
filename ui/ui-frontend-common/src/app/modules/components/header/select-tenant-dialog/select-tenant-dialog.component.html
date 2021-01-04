@@ -11,6 +11,6 @@
         [items]="tenants">
     </vitamui-common-item-select>
 
-    <button class="col-12 p-0 mt-4 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT-TENANT.DIALOG_BUTTON_LABEL' | translate }}</button>
+    <button class="col-12 p-0 mt-4 btn primary" [disabled]="!selectedTenant" (click)="closeDialog()">{{ 'SELECT-TENANT.DIALOG_BUTTON_LABEL' | translate }}  {{platformName}}</button>
     <p class="text normal mx-auto mt-4"><span class="asterix">*</span> {{ 'SELECT-TENANT.DIALOG_MESSAGE' | translate }}</p>
 </div>
