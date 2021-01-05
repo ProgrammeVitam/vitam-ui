@@ -63,16 +63,16 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     passwordRevocationDelay: number,
     otp: OtpState,
     address: {
-        street: string,
-        zipCode: string,
-        city: string,
-        country: string,
-      },
+      street: string,
+      zipCode: string,
+      city: string,
+      country: string,
+    },
     language: string,
     emailDomains: string[],
     defaultEmailDomain: string
-    rgpdAlert : boolean,
-    rgpdAlertDelay : number,
+    rgpdAlert: boolean,
+    rgpdAlertDelay: number,
   };
 
   @Input()
@@ -105,7 +105,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
-      identifier: [{value: null, disabled: true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       code: [
         null,
         [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
@@ -124,7 +124,11 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       internalCode: [null],
       language: [null, Validators.required],
       emailDomains: [null, Validators.required],
-      defaultEmailDomain: [null, Validators.required]
+      defaultEmailDomain: [null, Validators.required],
+      rgpdAlert: false,
+      rgpdAlertDelay: [
+        null,
+        [Validators.required, Validators.min(72), Validators.pattern(/^[0-9]{1,20}$/)]]
     });
   }
 
@@ -140,6 +144,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     )
     .subscribe((customer: Customer) => this.resetForm(customer));
   }
+
 
   ngOnDestroy() {
     if (this.sub) {

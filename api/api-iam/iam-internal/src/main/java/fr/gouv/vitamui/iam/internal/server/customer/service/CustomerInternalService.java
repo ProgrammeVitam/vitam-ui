@@ -307,8 +307,9 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
                 case "rgpdAlertDelay" :
                     logbooks.add(new EventDiffDto(CustomerConverter.RGPD_ALERT_DELAY_KEY, customer.getRgpdAlertDelay(), entry.getValue()));
-                    customer.setRgpdAlertDelay(CastUtils.toInteger(entry.getValue()));
+                    customer.setRgpdAlertDelay(CastUtils.toInt(entry.getValue()));
                     break;
+
                 case "rgpdAlert" :
                     logbooks.add(new EventDiffDto(CustomerConverter.RGPD_ALERT_KEY, customer.isRgpdAlert(), entry.getValue()));
                     customer.setRgpdAlert(CastUtils.toBoolean(entry.getValue()));

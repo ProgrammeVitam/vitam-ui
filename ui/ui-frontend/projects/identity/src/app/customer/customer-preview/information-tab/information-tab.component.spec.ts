@@ -229,7 +229,9 @@ describe('Customer InformationTabComponent', () => {
       internalCode: null,
       language: null,
       emailDomains: null,
-      defaultEmailDomain: null
+      defaultEmailDomain: null,
+      rgpdAlert : null,
+      rgpdAlertDelay : null
     });
     expect(testhost.component.form.get('id').valid).toBeFalsy('id');
     expect(testhost.component.form.get('code').valid).toBeFalsy('code');
@@ -276,7 +278,9 @@ describe('Customer InformationTabComponent', () => {
       internalCode: expectedCustomer.internalCode,
       language: expectedCustomer.language,
       emailDomains: expectedCustomer.emailDomains,
-      defaultEmailDomain: expectedCustomer.defaultEmailDomain
+      defaultEmailDomain: expectedCustomer.defaultEmailDomain,
+      rgpdAlert : expectedCustomer.rgpdAlert,
+      rgpdAlertDelay : expectedCustomer.rgpdAlertDelay
     });
     expect(testhost.component.form.valid).toBeTruthy();
   });
