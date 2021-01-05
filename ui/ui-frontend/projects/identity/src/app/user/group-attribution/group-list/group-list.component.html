@@ -17,7 +17,7 @@
       <ng-container *ngFor="let group of groups">
         <div class="vitamui-row p-0 px-4" [class.no-hover]="row.state === 'expanded'" *ngIf="!group?.selected" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse">
           <div class="d-flex justify-content-between align-items-center clickable">
-            <div class="row-label d-flex align-items-center" (click)="updateGroup(group?.id,group?.name, row)">{{group?.name}}</div>
+            <div class="d-flex align-self-stretch align-items-center w-100" (click)="updateGroup(group?.id,group?.name, row)">{{group?.name}}</div>
             <button class="btn link underline" (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
           </div>
           <app-group-detail *ngIf="row.state === 'expanded'" [group]="group" [@expansionAnimation]></app-group-detail>
