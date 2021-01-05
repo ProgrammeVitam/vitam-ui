@@ -121,6 +121,26 @@ public final class CastUtils {
     }
 
     /**
+     * Cast the object into int.
+     * @param value
+     * @param clazz
+     * @throws InvalidTypeException
+     *             If the object is not null and is not assignable to the type T
+     * @return
+     */
+    public static int toInt(final Object value) {
+        if(value == null) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(value.toString());
+        }
+        catch (final ClassCastException e) {
+            throw new InvalidTypeException(e.getMessage());
+        }
+    }
+
+    /**
      * Cast the object into Double.
      * @param value
      * @param clazz

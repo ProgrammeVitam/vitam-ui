@@ -175,6 +175,58 @@
       ></app-editable-domain-input>
     </div>
   </div>
+
+
+
+  <div class="row">
+    <div class="col-12 form-control">
+
+
+    <vitamui-common-slide-toggle formControlName="rgpdAlert" i18n="rgpdAlert Account@@accountrgpdAlertToggleLabel">
+      Alerte sur les utilisateurs inactifs</vitamui-common-slide-toggle>
+
+    </div>
+  </div>
+
+      <div class="row" *ngIf="form?.get('rgpdAlert')?.value">
+        <div class="col-12 form-control">
+    <vitamui-common-editable-input  [disabled]= "!form?.get('rgpdAlert')?.value"
+    formControlName="rgpdAlertDelay"
+    
+    label="Durée d'alerte sur les utilisateurs inactifs (mois)" i18n-label="rgpdAlertDelay@@CustomerDetailLabelrgpdAlertDelay"
+    [validator]="form?.get('rgpdAlertDelay')?.validator"
+    [asyncValidator]="form?.get('rgpdAlertDelay')?.asyncValidator"
+
+  >
+
+  
+  <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredFieldAndMinValue">Champ obligatoire et il faut au moins 72 mois (6 ans)</vitamui-common-field-error>
+  <vitamui-common-field-error errorKey="pattern" i18n="Wrong format error hint@@formErrorFormatField">Format incorrecte</vitamui-common-field-error>
+  <vitamui-common-field-error errorKey="min" i18n="Required a min value error hint@@formErrorRequiredMinValue">Il faut au moins 72 mois (6 ans)</vitamui-common-field-error>
+  </vitamui-common-editable-input>
+
+</div>
+</div>
+
+
+  <!-- <vitamui-common-editable-input
+   [disabled]="!form.get('rgpdAlert').value" 
+   formControlName="rgpdAlertDelay"
+  maxlength="250" 
+  required placeholder="Durée d'alerte">
+
+  <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+  
+   <vitamui-common-input-error
+    *ngIf="form.get('rgpdAlert').value && form.get('rgpdAlertDelay')?.touched && !!form.get('rgpdAlertDelay')?.errors?.required"
+    i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+  <vitamui-common-input-error *ngIf="form.get('rgpdAlert').value && !!form.get('rgpdAlertDelay')?.errors?.min"
+    i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)
+  </vitamui-common-input-error> 
+</vitamui-common-editable-input> -->
+
+
+
 </form>
 
 

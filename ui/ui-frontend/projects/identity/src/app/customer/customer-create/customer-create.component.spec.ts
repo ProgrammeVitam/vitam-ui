@@ -43,7 +43,7 @@ import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -123,8 +123,8 @@ const expectedCustomer = {
   }],
   themeColors: {},
   tenantName: 'tenantName'
-  alerte : false,
-  alertDelay : 72
+  rgpdAlert : false,
+  rgpdAlertDelay : 72
 };
 
 let component: CustomerCreateComponent;
@@ -180,7 +180,8 @@ describe('CustomerCreateComponent', () => {
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy }
+        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
+        {provide : MatDialog , useValue : {}}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
