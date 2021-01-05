@@ -225,7 +225,7 @@
         <div class="content">
           <h2 i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{ getOwnerName() }}"</h2>
           <vitamui-common-input formControlName="tenantName" required placeholder="Nom du coffre" i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder">
-            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')" i18n="Existing name error hint@@formErrorExistingName">Champ requis</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')" i18n="Existing name error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')" i18n="Existing name error hint@@formErrorExistingName">Nom déjà existant</vitamui-common-input-error>
           </vitamui-common-input>
 
