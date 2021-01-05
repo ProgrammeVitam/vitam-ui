@@ -3168,14 +3168,14 @@
         "address": {
           "$ref": "#/definitions/AddressDto"
         },
-        "alertDelay":{
+        "rgpdAlertDelay":{
           "type":"integer",
           "format":"int32",
           "minimum": 72,
           "example" : "130",
           "description" : "La durée d'alerte pour les notifications"
         },
-        "alerte":{
+        "rgpdAlert":{
           "type":"boolean",
           "description" : "Pour activer ou désactiver la récéeption des alertes"
         },
