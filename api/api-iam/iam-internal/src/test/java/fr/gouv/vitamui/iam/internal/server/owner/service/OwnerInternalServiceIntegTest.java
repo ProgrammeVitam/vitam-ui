@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.owner.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -226,6 +227,8 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         final JsonNode historyResult = ownerService.findHistoryById(ownerCreated.getId());
 
         assertThat(historyResult).isNotEmpty();
+        Mockito.verify(internalSecurityService).getTenantIdentifier();
+        Mockito.verify(internalSecurityService).getTenant(tenant.getIdentifier());
 
     }
 
