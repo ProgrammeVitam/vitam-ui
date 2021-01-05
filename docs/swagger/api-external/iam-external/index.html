@@ -1718,8 +1718,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -1767,8 +1767,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -1941,8 +1941,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -2228,8 +2228,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -2392,8 +2392,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -2590,8 +2590,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -2639,8 +2639,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -2838,8 +2838,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "street" : "43 avenue de la grande armée",
     "zipCode" : "75008"
   },
-  "alertDelay" : 130,
-  "alerte" : true,
+  "rgpdAlertDelay" : 130,
+  "rgpdAlert" : true,
   "code" : "1",
   "companyName" : "archiveco",
   "defaultEmailDomain" : "@archiveco.fr",
@@ -11580,21 +11580,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_addressdto">AddressDto</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>alertDelay</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La durée d&#8217;alerte pour les notifications<br>
-<strong>Valeur minimale</strong> : <code>72</code><br>
-<strong>Exemple</strong> : <code>130</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>alerte</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pour activer ou désactiver la récéeption des alertes<br>
-<strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>code</strong><br>
 <em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant métier<br>
@@ -11693,6 +11678,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Lecture seule<br>
 <strong>Exemple</strong> : <code>true</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rgpdAlert</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pour activer ou désactiver la récéeption des alertes<br>
+<strong>Exemple</strong> : <code>true</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rgpdAlertDelay</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La durée d&#8217;alerte pour les notifications<br>
+<strong>Valeur minimale</strong> : <code>72</code><br>
+<strong>Exemple</strong> : <code>130</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>subrogeable</strong><br>
