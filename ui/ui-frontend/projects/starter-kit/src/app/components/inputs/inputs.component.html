@@ -107,6 +107,15 @@
             </vitamui-common-editable-select>
         </div>
     </div>
+
+    <h4>Auto complete</h4>
+
+    <div class="d-flex justify-content-around">
+        <vitamui-common-vitamui-autocomplete [options]="countries" placeholder="Pays">
+        </vitamui-common-vitamui-autocomplete>
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" placeholder="Pays" disable="true">
+        </vitamui-common-vitamui-autocomplete>
+    </div>
     <h4>Textarea</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 mt-4">
@@ -150,7 +159,7 @@
             <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle On disabled</vitamui-common-slide-toggle>
             <vitamui-common-slide-toggle class="mr-3" [checked]="false" [disabled]="true">Slide Toggle Off disabled</vitamui-common-slide-toggle>
         </div>
-       
+
     </div>
     <h4>Toggle Group</h4>
     <div class="d-flex flex-column">
@@ -166,7 +175,7 @@
                     <span>Last</span>
                 </mat-button-toggle>
             </mat-button-toggle-group>
-    
+
             <mat-button-toggle-group disabled [formControl]="control" class="vitamui-button-toggle-group disabled">
                 <mat-button-toggle [value]="'FIRST'">
                     <span>First</span>
