@@ -34,14 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule, MatSnackBarModule, MatDialogModule,
-  MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
+import {
+  MatMenuModule, MatSnackBarModule, MatDialogModule,
+  MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule, MatTooltipModule
+} from '@angular/material';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
 import { EventDisplayHelperService } from './event-display-helper.service';
@@ -67,7 +69,8 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ],
   exports: [
     IngestPreviewComponent,
@@ -77,6 +80,8 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
   ],
   providers: [
     EventDisplayHelperService
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class IngestPreviewModule { }
