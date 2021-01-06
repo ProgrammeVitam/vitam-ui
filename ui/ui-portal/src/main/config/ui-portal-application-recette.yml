@@ -39,7 +39,7 @@ ui-portal:
     vitamui-primary: "#702382"
     vitamui-secondary: "#2563A9"
     vitamui-tertiary: "#C22A40"
-    vitamui-header-footer: "#1C0920"
+    vitamui-header-footer: "#ffffff"
     vitamui-background: "#F5F7FC"
   assets: src/main/resources/assets
   iam-external-client:
