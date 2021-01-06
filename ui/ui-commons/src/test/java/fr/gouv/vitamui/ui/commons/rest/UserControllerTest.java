@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,7 +67,7 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
     @Test
     public void patchAnalyticsOk() throws Exception {
         LOGGER.debug("testPatchAnalytics");
-        Map<String, Object> analytics = ImmutableMap.of("applicationId", "API_SUPERVISION_APP");
+        Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
         ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isCreated());
         Mockito.verify(userService).patchAnalytics(any(ExternalHttpContext.class), eq(analytics));
     }

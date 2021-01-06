@@ -1,15 +1,17 @@
 package fr.gouv.vitamui.iam.external.server.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.test.utils.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +20,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
-import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
@@ -64,10 +64,10 @@ public class UserExternalServiceTest {
 
     @Test
     public void patchAnalyticsShouldReturnUserWithNewData() {
-        UserDto user = buildUser();
+        UserDto user = UserBuilder.buildWithAnalytics();
         when(userInternalRestClient.patchAnalytics(any(), any())).thenReturn(user);
-        mockSecurityContext("customerIdAllowed", 10);
-        Map<String, Object> analytics = Map.of("applicationId", "RECORD_MANAGEMENT_APP");
+        mockSecurityContext();
+        Map<String, Object> analytics = Map.of(APPLICATION_ID, "RECORD_MANAGEMENT_APP");
 
         UserDto result = userExternalService.patchAnalytics(analytics);
 
@@ -77,34 +77,16 @@ public class UserExternalServiceTest {
         assertThat(arg.getValue()).isEqualTo(analytics);
     }
 
-    private void mockSecurityContext(final String userCustomerId, final Integer tenantIdentifier, final String... userRoles) {
+    private void mockSecurityContext(final String... userRoles) {
         final AuthUserDto user = new AuthUserDto();
         user.setId("79");
         user.setLevel("");
-        user.setCustomerId(userCustomerId);
+        user.setCustomerId("customerIdAllowed");
         final List<String> roles = Arrays.asList(userRoles);
 
         roles.forEach(r -> Mockito.when(externalSecurityService.hasRole(r)).thenReturn(true));
 
         when(externalSecurityService.getUser()).thenReturn(user);
-        when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(10, "userToken", "applicationId", "identifier"));
+        when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(10, "userToken", APPLICATION_ID, "identifier"));
     }
-
-    private UserDto buildUser() {
-        ApplicationAnalyticsDto applicationAnalytic = new ApplicationAnalyticsDto();
-        applicationAnalytic.setAccessCounter(9546);
-        applicationAnalytic.setLastAccess(OffsetDateTime.now());
-        applicationAnalytic.setApplicationId("INGEST_SUPERVISION_APP");
-
-        AnalyticsDto analytics = new AnalyticsDto();
-        analytics.setApplications(List.of(applicationAnalytic));
-
-        UserDto user = new UserDto();
-        user.setId("79");
-        user.setEmail("test@user.fr");
-        user.setAnalytics(analytics);
-
-        return user;
-    }
-
 }

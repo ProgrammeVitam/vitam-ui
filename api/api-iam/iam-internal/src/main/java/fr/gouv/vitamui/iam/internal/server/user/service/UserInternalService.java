@@ -117,6 +117,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+
 /**
  * The service to read, create, update and delete the users.
  *
@@ -889,7 +891,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         partialDto.forEach((key, value) -> {
             switch (key) {
-                case "applicationId":
+                case APPLICATION_ID:
                     patchApplicationAnalytics(user, CastUtils.toString(value));
                     break;
             }
@@ -903,7 +905,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkAnalyticsAllowedFields(final Map<String, Object> partialDto) {
-        Set<String> analyticsPatchAllowedFields = Set.of("applicationId");
+        Set<String> analyticsPatchAllowedFields = Set.of(APPLICATION_ID);
 
         if (MapUtils.isEmpty(partialDto)) {
             throw new IllegalArgumentException("Unable to patch user analytics : payload is empty");

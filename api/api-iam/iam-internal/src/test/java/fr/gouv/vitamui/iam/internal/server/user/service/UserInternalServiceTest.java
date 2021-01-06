@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.Assert.*;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
@@ -870,7 +872,7 @@ public final class UserInternalServiceTest {
         when(internalUserService.getMe()).thenReturn(authUserDto);
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "PROFILES_APP")));
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "PROFILES_APP")));
 
         assertThat(thrown).isInstanceOf(NotFoundException.class).hasMessageContaining("No user found with id : userId");
         verify(userRepository).findById(authUserDto.getId());
@@ -887,7 +889,7 @@ public final class UserInternalServiceTest {
         when(userRepository.findById(any())).thenReturn(Optional.of(user));
         when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of());
 
-        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("applicationId", "applicationWithoutPermission")));
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "applicationWithoutPermission")));
 
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
         verify(userRepository).findById(user.getId());
@@ -910,7 +912,7 @@ public final class UserInternalServiceTest {
         when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of(application));
         assertThat(user.getAnalytics().getApplications()).isNullOrEmpty();
 
-        internalUserService.patchAnalytics(Map.of("applicationId", applicationId));
+        internalUserService.patchAnalytics(Map.of(APPLICATION_ID, applicationId));
 
         verify(userRepository).findById(user.getId());
         verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());

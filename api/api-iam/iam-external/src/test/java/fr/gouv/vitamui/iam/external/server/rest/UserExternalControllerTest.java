@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Map;
@@ -78,7 +79,7 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     @Test
     public void patchAnalytics_thenOk() throws Exception {
-        Map<String, Object> analytics = ImmutableMap.of("applicationId", "API_SUPERVISION_APP");
+        Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
         ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchAnalytics(analytics)));
         Mockito.verify(userExternalService).patchAnalytics(analytics);
