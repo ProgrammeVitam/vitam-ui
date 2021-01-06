@@ -85,7 +85,7 @@ vitamui-common-select-language, .select-tenant {
 // Override item selection component css properties for header display only,
 // since the design is not common anymore with the other component usages.
 :host::ng-deep {
-  mat-select, .mat-select-value, .mat-select-arrow, .selected-item-label, .unselected-item-label, .mat-select-value-text {
+  mat-select, .mat-select-value, .mat-select-arrow, .selected-item-label, .unselected-item-label, .mat-select-value-text, .mat-toolbar-row, .mat-toolbar-single-row {
     color: var(--vitamui-header-footer-font)!important;
   }
 
