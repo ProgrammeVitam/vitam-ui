@@ -122,9 +122,9 @@ const expectedCustomer = {
     }
   }],
   themeColors: {},
+  gdprAlert : true,
+  gdprAlertDelay : 72
   tenantName: 'tenantName'
-  rgpdAlert : false,
-  rgpdAlertDelay : 72
 };
 
 let component: CustomerCreateComponent;

@@ -3361,14 +3361,14 @@
         "address": {
           "$ref": "#/definitions/AddressDto"
         },
-        "rgpdAlertDelay":{
+        "gdprAlertDelay":{
           "type":"integer",
           "format":"int32",
           "minimum": 72,
           "example" : "130",
           "description" : "La durée d'alerte pour les notifications"
         },
-        "rgpdAlert":{
+        "gdprAlert":{
           "type":"boolean",
           "description" : "Pour activer ou désactiver la récéeption des alertes"
         },

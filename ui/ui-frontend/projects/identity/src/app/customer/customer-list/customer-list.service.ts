@@ -103,8 +103,8 @@ export class CustomerListService extends SearchService<Customer> {
       readonly: customer.readonly,
       hasCustomGraphicIdentity: customer.hasCustomGraphicIdentity,
       themeColors: customer.themeColors,
-      alerte : customer.alerte,
-      alertDelay : customer.alertDelay,
+      gdprAlert : customer.gdprAlert,
+      gdprAlertDelay : customer.gdprAlertDelay,
 
     };
   }

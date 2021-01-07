@@ -69,8 +69,8 @@ const expectedCustomer: Customer = {
   },
   owners: [],
   themeColors: {},
-  rgpdAlert : false,
-  rgpdAlertDelay : 72
+  gdprAlert : false,
+  gdprAlertDelay : 72
 };
 
 describe('CustomerResolver', () => {
