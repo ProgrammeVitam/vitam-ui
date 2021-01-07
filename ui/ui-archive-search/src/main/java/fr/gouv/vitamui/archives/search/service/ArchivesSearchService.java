@@ -85,9 +85,9 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public ResponseEntity<Resource> downloadArchiveUnit(String id, ExternalHttpContext context) {
-        LOGGER.info("Download the Archive Unit with ID {}", id);
-        return archiveSearchExternalRestClient.downloadArchiveUnit(id, context);
+    public ResponseEntity<Resource> downloadObjectFromUnit(String id, ExternalHttpContext context) {
+        LOGGER.info("Download the Archive Unit Object with id {}", id);
+        return archiveSearchExternalRestClient.downloadObjectFromUnit(id, context);
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {

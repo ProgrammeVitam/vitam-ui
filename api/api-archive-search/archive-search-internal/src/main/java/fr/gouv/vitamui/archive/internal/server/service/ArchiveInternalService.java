@@ -247,17 +247,17 @@ public class ArchiveInternalService {
 
     }
 
-    public Response downloadArchiveUnit(String id, final VitamContext vitamContext)
+    public Response downloadObjectFromUnit(String id, final VitamContext vitamContext)
         throws VitamClientException {
 
         LOGGER.info("Access Contract  {}", vitamContext.getAccessContract());
-        LOGGER.info("Download UA with id {} ", id);
+        LOGGER.info("Download Archive Unit Object with id {} ", id);
         try {
             return unitService
                 .getObjectStreamByUnitId(id, getUsage(id, vitamContext), getVersion(id, vitamContext), vitamContext);
         } catch (VitamClientException e) {
-            LOGGER.error("Unable to find the UA {} ", e);
-            throw new VitamClientException("Unable to find the UA", e);
+            LOGGER.error("Unable to find the Archive Unit Object with id {} ", e);
+            throw new VitamClientException("Unable to find the Archive Unit Object with id", e);
         }
     }
 }

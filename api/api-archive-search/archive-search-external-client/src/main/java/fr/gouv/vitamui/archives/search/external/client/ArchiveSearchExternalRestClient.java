@@ -26,7 +26,7 @@
 
 package fr.gouv.vitamui.archives.search.external.client;
 
-import fr.gouv.vitam.common.model.AuditOptions;
+
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -123,13 +123,13 @@ public class ArchiveSearchExternalRestClient
 
     public ResponseEntity<ResultsDto> findUnitById(String id , ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public ResponseEntity<Resource> downloadArchiveUnit(String id , ExternalHttpContext context) {
+    public ResponseEntity<Resource> downloadObjectFromUnit(String id , ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 

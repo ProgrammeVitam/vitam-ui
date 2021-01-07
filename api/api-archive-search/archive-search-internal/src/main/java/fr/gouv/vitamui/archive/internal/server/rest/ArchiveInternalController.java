@@ -144,18 +144,18 @@ public class ArchiveInternalController {
     }
 
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadArchiveUnit( final @PathVariable("id") String id,
+    public ResponseEntity<Resource> downloadObjectFromUnit( final @PathVariable("id") String id,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
 
         LOGGER.info("Access Contract {} ", accessContractId);
-        LOGGER.info("Download UA  {}", id);
+        LOGGER.info("Download Archive Unit Object with id  {}", id);
        final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        Response response =  archiveInternalService.downloadArchiveUnit(id, vitamContext);
+        Response response =  archiveInternalService.downloadObjectFromUnit(id, vitamContext);
               Object entity = response.getEntity();
               if (entity instanceof InputStream) {
                   Resource resource = new InputStreamResource((InputStream) entity);
-                  return new ResponseEntity<>(resource, HttpStatus.OK);
+                  return  new ResponseEntity<>(resource, HttpStatus.OK);
               }
               return null;
 }
