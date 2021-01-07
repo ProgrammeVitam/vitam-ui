@@ -86,9 +86,9 @@ public class ArchivesSearchExternalController {
 
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id) {
-        LOGGER.info("Download the UA by id {} ", id);
-        return archivesSearchExternalService.downloadArchiveUnit(id);
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
+        LOGGER.info("Download the Archive Unit Object with id {} ", id);
+        return archivesSearchExternalService.downloadObjectFromUnit(id);
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)

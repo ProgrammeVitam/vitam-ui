@@ -83,8 +83,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     return this.http.get<any>(`${this.apiUrl}/accesscontracts`, { params, headers });
   }
 
-  downloadArchiveUnit(id : string, headers?: HttpHeaders) : Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/downloadarchiveunit/${id}`,{headers: headers, responseType: 'blob'});
+  downloadObjectFromUnit(id : string, headers?: HttpHeaders) : Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`,{headers: headers, responseType: 'blob'});
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders) :Observable<any> {

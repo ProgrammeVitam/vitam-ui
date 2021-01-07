@@ -97,19 +97,19 @@ public class ArchivesSearchController extends AbstractUiRestController {
 
 
     @ApiOperation(value = "Find the Archive Unit Details")
-    @GetMapping("/archiveunit" + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id){
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
     }
 
-    @ApiOperation(value = "Download Archive Unit file")
+    @ApiOperation(value = "Download Object from the Archive Unit ")
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadArchiveUnit(final @PathVariable("id") String id) {
-        LOGGER.debug("Donwload the Archive Unit with ID {}", id);
-        Resource body = archivesSearchService.downloadArchiveUnit(id, buildUiHttpContext()).getBody();
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
+        LOGGER.debug("Donwload the Archive Unit Object with ID {}", id);
+        Resource body = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext()).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
             .body(body);

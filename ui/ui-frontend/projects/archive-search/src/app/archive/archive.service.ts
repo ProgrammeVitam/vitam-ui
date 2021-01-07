@@ -153,9 +153,9 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  downloadArchiveUnit(id : string , headers?: HttpHeaders) {
+  downloadObjectFromUnit(id : string , headers?: HttpHeaders) {
 
-    return this.archiveApiService.downloadArchiveUnit(id, headers).subscribe(
+    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
 
       file => {
 
