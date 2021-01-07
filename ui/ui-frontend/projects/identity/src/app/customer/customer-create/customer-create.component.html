@@ -84,23 +84,30 @@
           </div>
         </ng-container>
 
-     <div class="d-flex">
+        <div class="d-flex">
 
-     <label for="alerte" class="inline-label label-alerte" >
-      Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br>
-           </label>
-       <vitamui-common-slide-toggle formControlName="rgpdAlert" i18n="client create alerte account@@AlertedAccount"></vitamui-common-slide-toggle>
-       <label for="duréealerte" class="inline-label label-alertDelay" >
-      Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
-       </label>
-    <vitamui-common-input [disabled]="!form.get('rgpdAlert').value" formControlName="rgpdAlertDelay" maxlength="250" required placeholder="Durée d'alerte"  >
-        <vitamui-common-input-error *ngIf="form.get('rgpdAlert').value && form.get('rgpdAlertDelay')?.touched && !!form.get('rgpdAlertDelay')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-        <vitamui-common-input-error *ngIf="form.get('rgpdAlert').value && !!form.get('rgpdAlertDelay')?.errors?.min" i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)</vitamui-common-input-error>
-   </vitamui-common-input>
-   </div>
+          <label for="alerte" class="inline-label label-alerte">
+            Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br>
+          </label>
+          <vitamui-common-slide-toggle formControlName="gdprAlert" i18n="client create alerte account@@AlertedAccount">
+          </vitamui-common-slide-toggle>
+          <label for="duréealerte" class="inline-label label-alertDelay">
+            Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
+          </label>
+          <vitamui-common-input [disabled]="!form.get('gdprAlert').value" formControlName="gdprAlertDelay"
+            maxlength="250" required placeholder="Durée d'alerte">
+            <vitamui-common-input-error
+              *ngIf="form.get('gdprAlert').value && form.get('gdprAlertDelay')?.touched && !!form.get('gdprAlertDelay')?.errors?.required"
+              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form.get('gdprAlert').value && !!form.get('gdprAlertDelay')?.errors?.min"
+              i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)
+            </vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
 
- <div class="d-flex">
-          <label for="language" class="inline-label label-language" i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
+        <div class="d-flex">
+          <label for="language" class="inline-label label-language"
+            i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
             Langue de l'interface <span class="required-marker">*</span><br>
             <small>(par défault pour l'utilisateur)</small>
           </label>
@@ -248,14 +255,18 @@
 
     <cdk-step>
       <div class="content">
-        <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire des éléments de preuve</h2>
+        <h2 i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire des éléments de preuve
+        </h2>
         <div class="form-group">
           <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
-          <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
+          <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">Le
+            coffre des éléments de preuve est créé automatiquement avec son propriétaire</p>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || creating" i18n="Finish customer creation button@@customerCreateFinishButton">Terminer</button>
-        <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || creating"
+          i18n="Finish customer creation button@@customerCreateFinishButton">Terminer</button>
+        <button type="button" class="btn cancel" (click)="onCancel()"
+          i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
           <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>

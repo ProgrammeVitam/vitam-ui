@@ -85,8 +85,8 @@ const expectedCustomer: Customer = {
     readonly: false
   }],
   themeColors: {},
-  rgpdAlert: false,
-  rgpdAlertDelay : 72
+  gdprAlert: false,
+  gdprAlertDelay : 72
 };
 
 // TODO fix tests with filling plan

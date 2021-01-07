@@ -117,7 +117,7 @@ public class Customer extends IdDocument {
     private GraphicIdentity graphicIdentity;
 
     @Getter
-    private boolean rgpdAlert = false;
+    private boolean gdprAlert = false;
 
-    private int rgpdAlertDelay;
+    private int gdprAlertDelay;
 }

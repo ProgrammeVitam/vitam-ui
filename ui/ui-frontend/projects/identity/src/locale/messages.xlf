@@ -2451,7 +2451,7 @@
         </context-group>
         <note priority="1" from="description">Customer city</note>
       </trans-unit>
-    <trans-unit id="CustomerDetailLabelrgpdAlertDelay" datatype="html">
+    <trans-unit id="CustomerDetailLabelgdprAlertDelay" datatype="html">
         <source>Durée d'alerte sur les utilisateurs inactifs (mois)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context>
@@ -2810,7 +2810,7 @@
           <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
-     <trans-unit id="disabledRgpdAlertConfirm" datatype="html">
+     <trans-unit id="disabledGdprAlertConfirm" datatype="html">
         <source>Vous êtes sur le point de désactiver les alertes sur utilisateurs inactifs dont les données personnelles sont arrivées à échéance dans cette organisation. Voulez-vous continuer ?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-alerting/customer-alerting.component.html</context>
@@ -3320,6 +3320,17 @@
         </context-group>
         <note priority="1" from="description">Subrogate Account</note>
       </trans-unit>
+
+      <trans-unit id="accountgdprAlertToggleLabel" datatype="html">
+        <source>
+        Alerte sur les utilisateurs inactifs</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+        <note priority="1" from="description">Alert on inactive users</note>
+      </trans-unit>
+
       <trans-unit id="fillMobileForOtpActivation" datatype="html">
         <source>Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile</source>
         <context-group purpose="location">

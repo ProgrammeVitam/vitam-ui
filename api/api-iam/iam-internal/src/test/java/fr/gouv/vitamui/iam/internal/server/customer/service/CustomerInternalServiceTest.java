@@ -302,8 +302,8 @@ public class CustomerInternalServiceTest {
         owners.add(owner);
         dto.setOwners(owners);
         dto.setHasCustomGraphicIdentity(false);
-        dto.setRgpdAlert(false);
-        dto.setRgpdAlertDelay(72);
+        dto.setGdprAlert(false);
+        dto.setGdprAlertDelay(72);
         return dto;
     }
 }

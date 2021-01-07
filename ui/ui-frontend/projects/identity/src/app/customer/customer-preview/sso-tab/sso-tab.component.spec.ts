@@ -93,8 +93,8 @@ class TestHostComponent {
     },
     owners: [],
     themeColors: {},
-    alerte : false,
-    alertDelay : 72
+    gdprAlert : false,
+    gdprAlertDelay : 72
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

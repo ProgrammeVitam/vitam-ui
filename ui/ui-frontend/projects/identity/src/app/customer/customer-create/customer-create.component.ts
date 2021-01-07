@@ -108,8 +108,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      rgpdAlert: false,
-      rgpdAlertDelay: [72, Validators.min(72)],
+      gdprAlert: true,
+      gdprAlertDelay: [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -148,9 +148,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       'vitamui-secondary': colors['vitamui-secondary']
     });
 
-    this.form.get('rgpdAlert').valueChanges.subscribe(() => {
-      if (!this.form.get('rgpdAlert').value) {
-        this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('rgpdAlert').setValue(true));
+    this.form.get('gdprAlert').valueChanges.subscribe(() => {
+      if (!this.form.get('gdprAlert').value) {
+        this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));
       }
     })
 
@@ -295,13 +295,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   isDurationNotValid(): boolean {
-
-    if (this.form.get('rgpdAlert').value) {
-      return this.form.get('rgpdAlertDelay').invalid || this.form.get('rgpdAlertDelay').pending
+    if (this.form.get('gdprAlert').value) {
+      return this.form.get('gdprAlertDelay').invalid || this.form.get('gdprAlertDelay').pending
     }
     else {
-      this.form.get('rgpdAlert').valueChanges.subscribe(() => {
-        this.form.get('rgpdAlertDelay').setValue(72)
+      this.form.get('gdprAlert').valueChanges.subscribe(() => {
+        this.form.get('gdprAlertDelay').setValue(72)
       });
       return false;
     }

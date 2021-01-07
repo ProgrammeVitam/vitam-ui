@@ -71,8 +71,8 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     language: string,
     emailDomains: string[],
     defaultEmailDomain: string
-    rgpdAlert: boolean,
-    rgpdAlertDelay: number,
+    gdprAlert: boolean,
+    gdprAlertDelay: number,
   };
 
   @Input()
@@ -125,9 +125,9 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       language: [null, Validators.required],
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
-      rgpdAlert: false,
-      rgpdAlertDelay: [
-        null,
+      gdprAlert: false,
+      gdprAlertDelay: [
+        72,
         [Validators.required, Validators.min(72), Validators.pattern(/^[0-9]{1,20}$/)]]
     });
   }

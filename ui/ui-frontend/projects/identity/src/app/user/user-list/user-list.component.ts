@@ -268,13 +268,13 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   checkInactifUsers() {
 
     this.customerService.getMyCustomer().subscribe((customer) => {
-      if (customer.rgpdAlert) {
+      if (customer.gdprAlert) {
        
         this.dataSource.filter((user: User) => user.status === "DISABLED" && user.disablingDate !== null).forEach((u: User) => {
 
           this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12 - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
 
-          if (this.totalMonth > customer.rgpdAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
+          if (this.totalMonth > customer.gdprAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
 
             this.isInactifUsers = true;
           }

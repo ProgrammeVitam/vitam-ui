@@ -120,7 +120,7 @@ public class CustomerDto extends IdDto {
 
     private Map<String, String> themeColors = new HashMap<>();
 
-    private boolean rgpdAlert = false;
+    private boolean gdprAlert = false;
 
-    private int rgpdAlertDelay;
+    private int gdprAlertDelay;
 }

@@ -85,7 +85,7 @@
       <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context><context context-type="linenumber">84</context></context-group></trans-unit>
 
 
-      <trans-unit id="CustomerDetailLabelrgpdAlertDelay" datatype="html">
+      <trans-unit id="CustomerDetailLabelgdprAlertDelay" datatype="html">
         <source>Durée d'alerte sur les utilisateurs inactifs (mois)</source>
         <target xml:lang="en-US">Alert duration on inactive users (months)</target>
         <note from="description" annotates="1">Customer alert duration</note>
@@ -1888,7 +1888,7 @@ person          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>
 
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-preview/user-information-tab/user-information-tab.component.html</context><context context-type="linenumber">152</context></context-group></trans-unit>
                     
-     <trans-unit id="accountrgpdAlertToggleLabel" datatype="html">
+     <trans-unit id="accountgdprAlertToggleLabel" datatype="html">
         <source>
         Alerte sur les utilisateurs inactifs</source>
         <note priority="1" from="description">Alert on inactive users</note>
@@ -2711,7 +2711,7 @@ Your request for subrogation has been canceled
         <source>Êtes vous sur de vouloir désactiver l'utilisateur <x id="INTERPOLATION" equiv-text="{{user?.firstname}}"/> <x id="INTERPOLATION_1" equiv-text="{{user?.lastname}}"/> - <x id="INTERPOLATION_2" equiv-text="{{user?.email}}"/> ?</source>
         <target state="translated">Are you sure you want to disable the user <x id="INTERPOLATION" equiv-text="{{user?.firstname}}"/> <x id="INTERPOLATION_1" equiv-text="{{user?.lastname}}"/> - <x id="INTERPOLATION_2" equiv-text="{{user?.email}}"/>?</target>
 
-      <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-create/customer-alerting/customer-alerting.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="disabledRgpdAlertConfirm" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/customer/customer-create/customer-alerting/customer-alerting.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="disabledGdprAlertConfirm" datatype="html">
         <source>Vous êtes sur le point de désactiver les alertes sur utilisateurs inactifs dont les données personnelles sont arrivées à échéance dans cette organisation. Voulez-vous continuer ? </source>
         <target state="translated">You are about to turn off alerts for inactive users whose personal data has expired in this organization. Do you want to continue ?</target>
 
