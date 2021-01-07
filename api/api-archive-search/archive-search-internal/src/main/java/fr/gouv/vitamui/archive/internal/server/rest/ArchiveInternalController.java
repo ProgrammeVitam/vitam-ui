@@ -148,6 +148,8 @@ public class ArchiveInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
 
+        ResponseEntity<Resource> result = null;
+
         LOGGER.info("Access Contract {} ", accessContractId);
         LOGGER.info("Download Archive Unit Object with id  {}", id);
        final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
@@ -155,8 +157,8 @@ public class ArchiveInternalController {
               Object entity = response.getEntity();
               if (entity instanceof InputStream) {
                   Resource resource = new InputStreamResource((InputStream) entity);
-                  return  new ResponseEntity<>(resource, HttpStatus.OK);
+                  result = new ResponseEntity<>(resource, HttpStatus.OK);
               }
-              return null;
+              return result;
 }
 }
