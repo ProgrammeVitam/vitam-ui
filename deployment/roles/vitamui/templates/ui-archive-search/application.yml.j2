@@ -14,8 +14,8 @@ server:
   servlet.context-path: /
   servlet.session.cookie.path: /
 {% else %}
-  servlet.context-path: /archive_search
-  servlet.session.cookie.path: /archive_search
+  servlet.context-path: /archive-search
+  servlet.session.cookie.path: /archive-search
 {% endif %}
   scheme: {% if vitamui.archive_search.secure | lower =='true' %}https{% else %}http{% endif %}
 
@@ -93,7 +93,7 @@ ui-archive-search:
 {% if vitamui.archive_search.base_url is defined %}
     archive-search: "{{ vitamui.archive_search.base_url }}"
 {% else %}
-    archive-search: "{{ url_prefix }}/archive_search"
+    archive-search: "{{ url_prefix }}/archive-search"
 {% endif %}
   portal-categories:
 {% for id, category in vitamui_defaults.portal_categories.iteritems() %}
