@@ -13,8 +13,10 @@
                       'status-badge-grey':ingestStatus(ingest) == 'STARTED',
                       'status-badge-orange': ingestStatus(ingest) == 'WARNING',
                       'status-badge-red': ingestStatus(ingest) == 'KO' || ingestStatus(ingest) == 'FATAL' }"></i>
-      <h2>{{ ingest?.data?.EvDetailReq ? ingest?.data?.EvDetailReq : ingest?.id }}</h2>
-
+      <h2 matTooltip="{{ (ingest?.obIdIn ? ingest?.obIdIn : ingest?.id )}}" matTooltipClass="vitamui-tooltip"
+          [matTooltipShowDelay]="300">
+        {{ (ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate:30 }}
+      </h2>
       <ng-container *ngIf="ingestStatus(ingest) !== 'FATAL'">
         <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
@@ -22,6 +24,7 @@
             (click)="downloadManifest()" *ngIf="ingestStatus(ingest) !== 'KO'">Télécharger le manifest</button>
           <button mat-menu-item i18n="Ingest Download ATR@@ingestPreviewDownloadATR" (click)="downloadATR()">Télécharger
             l'ATR</button>
+            <button mat-menu-item i18n="Ingest Generate DocX@@ingestPreviewGenerateDocX" (click)="generateDocX()" *ngIf="ingestStatus(ingest) === 'OK' || ingestStatus(ingest) === 'WARNING'">Télécharger le bordereau de versement</button>
         </mat-menu>
       </ng-container>
     </div>

@@ -36,21 +36,7 @@
  */
 package fr.gouv.vitamui.ingest.common.dsl;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
@@ -58,6 +44,19 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
@@ -68,14 +67,15 @@ public class VitamQueryHelper {
     /* Query fields */
     private static final String ID = "#id";
     private static final String OB_ID_IN = "obIdIn";
-    private static final String TRANSFERRING_AGENCY = "agIdExt.TransferringAgency";;
-    private static final String ORIGINATING_AGENCY = "agIdExt.originatingAgency";;
+    private static final String TRANSFERRING_AGENCY = "agIdExt.TransferringAgency";
+    private static final String ORIGINATING_AGENCY = "agIdExt.originatingAgency";
     private static final String ARCHIVAL_AGENCY = "agIdExt.ArchivalAgreement";
     private static final String EV_TYPE_PROC = "evTypeProc";
     private static final String STATUS = "Status";
-    private static final String EV_TYPE ="evType";
+    private static final String EV_TYPE = "evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
+    private static final String COMMENT = "events.evDetData.EvDetailReq";
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -85,9 +85,10 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction)
-            throws InvalidParseOperationException, InvalidCreateOperationException {
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
+        final Integer size,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
 
         final Select select = new Select();
         final BooleanQuery query = and();
@@ -127,6 +128,7 @@ public class VitamQueryHelper {
                     case TRANSFERRING_AGENCY:
                     case ORIGINATING_AGENCY:
                     case ARCHIVAL_AGENCY:
+                    case COMMENT:
                         final String value = (String) entry.getValue();
                         orGroup.add(eq(searchKey, value));
                         haveOrGroup = true;
