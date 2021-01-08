@@ -36,8 +36,7 @@
  */
 package fr.gouv.vitamui.ingest.external.client;
 
-import fr.gouv.vitam.common.model.AuditOptions;
-import fr.gouv.vitamui.commons.api.CommonConstants;
+
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -50,7 +49,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.util.List;
 
