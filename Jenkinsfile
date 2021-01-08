@@ -55,7 +55,6 @@ pipeline {
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                JAVA_TOOL_OPTIONS=""
             }
             steps {
                 sh 'npmrc default'
