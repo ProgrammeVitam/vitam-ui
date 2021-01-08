@@ -1,9 +1,9 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
 
 export const collapseAnimation = trigger('collapseAnimation', [
-  state('collapsed', style({ height: 0, visibility: 'hidden' })),
-  state('expanded', style({ height: '*' })),
-  transition('expanded <=> collapsed', animate('300ms ease-out')),
+  state('collapsed', style({height: '0px', visibility: 'hidden', opacity: '0'})),
+  state('expanded', style({height: '*', visibility: 'visible',  opacity: '1'})),
+  transition('expanded <=> collapsed', animate('150ms cubic-bezier(0.4,0.0,0.2,1)')),
 ]);
 
 export const rotateAnimation = trigger('rotateAnimation', [
