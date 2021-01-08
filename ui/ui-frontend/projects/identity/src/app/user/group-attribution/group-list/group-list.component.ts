@@ -39,7 +39,6 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { collapseAnimation, rotateAnimation } from 'ui-frontend-common';
 import { GroupSelection } from './../../group-selection.interface';
-
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
@@ -59,6 +58,11 @@ export class GroupListComponent implements OnInit {
 
   @Input()
   public searchActiv = false;
+
+  @Input()
+  public set userGroupName(val: string) {
+    this.groupName = val;
+  }
 
   @Output()
   public selectedGroupEvent = new EventEmitter<GroupSelection>();
