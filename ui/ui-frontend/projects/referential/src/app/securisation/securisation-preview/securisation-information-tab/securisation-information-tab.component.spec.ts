@@ -30,6 +30,7 @@ describe('SecurisationInformationTabComponent', () => {
     agId: 'agId',
     agIdApp: 'agIdApp',
     agIdExt: 'agIdExt',
+    obIdReq: 'obIdReq',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
     events: [{
       id: 'id2',
@@ -50,6 +51,7 @@ describe('SecurisationInformationTabComponent', () => {
       collectionName: 'collectionName',
       agId: 'agId',
       agIdApp: 'agIdApp',
+      obIdReq: 'obIdReq',
       agIdExt: 'agIdExt',
       rightsStatementIdentifier: 'rightsStatementIdentifier'
     }]

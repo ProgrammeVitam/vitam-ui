@@ -115,9 +115,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     if (data.roles) {
       const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
       const hasRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
-      if (hasRole) {
+      const hasUpdateUsersRole = data.roles.some((r: any) => r.name === Role.ROLE_UPDATE_USERS.toString());
+      if (hasRole && !hasUpdateUsersRole) {
         data.roles = data.roles.concat([{ name: Role.ROLE_UPDATE_USERS }]);
-      } else {
+      } else if (!hasRole) {
         data.roles = data.roles.filter((r: any) => Role.ROLE_UPDATE_USERS !== r.name);
       }
     }

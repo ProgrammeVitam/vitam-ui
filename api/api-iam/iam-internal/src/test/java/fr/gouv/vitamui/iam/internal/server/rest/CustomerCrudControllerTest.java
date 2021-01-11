@@ -200,7 +200,7 @@ public final class CustomerCrudControllerTest {
 
         prepareServices();
 
-        final CustomerDto createdCustomer = controller.create(new CustomerCreationFormData(customerDto));
+        final CustomerDto createdCustomer = controller.create(buildCustomerData(customerDto));
         Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
     }
 
@@ -210,7 +210,7 @@ public final class CustomerCrudControllerTest {
 
         prepareServices();
 
-        final CustomerDto createdCustomer = controller.create(new CustomerCreationFormData(customerDto));
+        final CustomerDto createdCustomer = controller.create(buildCustomerData(customerDto));
         Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
     }
 
@@ -220,7 +220,7 @@ public final class CustomerCrudControllerTest {
 
         prepareServices();
 
-        final CustomerDto createdCustomer = controller.create(new CustomerCreationFormData(customerDto));
+        final CustomerDto createdCustomer = controller.create(buildCustomerData(customerDto));
         Assert.assertNotNull("Customer should be created.", createdCustomer.getId());
     }
 
@@ -231,7 +231,7 @@ public final class CustomerCrudControllerTest {
 
         prepareServices();
         try {
-            controller.create(new CustomerCreationFormData(customerDto));
+            controller.create(buildCustomerData(customerDto));
             fail("should fail");
         }
         catch (final IllegalArgumentException ex) {
@@ -246,7 +246,7 @@ public final class CustomerCrudControllerTest {
 
         prepareServices();
         try {
-            controller.create(new CustomerCreationFormData(customerDto));
+            controller.create(buildCustomerData(customerDto));
             fail("should fail");
         }
         catch (final IllegalArgumentException ex) {
@@ -260,7 +260,7 @@ public final class CustomerCrudControllerTest {
         customerDto.setId("customerId");
 
         try {
-            controller.create(new CustomerCreationFormData(customerDto));
+            controller.create(buildCustomerData(customerDto));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -277,7 +277,7 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.of(buildCustomer()));
 
         try {
-            controller.create(new CustomerCreationFormData(customerDto));
+            controller.create(buildCustomerData(customerDto));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -294,7 +294,7 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString())).thenReturn(Optional.of(buildCustomer()));
 
         try {
-            controller.create(new CustomerCreationFormData(customerDto));
+            controller.create(buildCustomerData(customerDto));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -311,7 +311,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(identityProviderRepository.save(any())).thenThrow(new InternalServerException("IDP Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
 
         fail("should fail");
     }
@@ -323,7 +323,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(ownerRepository.save(any())).thenThrow(new InternalServerException("Owner Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
         fail("should fail");
     }
 
@@ -334,7 +334,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(tenantRepository.save(any())).thenThrow(new InternalServerException("Tenant Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
         fail("should fail");
     }
 
@@ -345,7 +345,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(groupRepository.save(any())).thenThrow(new InternalServerException("Group Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
         fail("should fail");
     }
 
@@ -356,7 +356,7 @@ public final class CustomerCrudControllerTest {
         prepareServices();
         when(profileRepository.save(any())).thenThrow(new InternalServerException("Profile Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
         fail("should fail");
     }
 
@@ -368,8 +368,14 @@ public final class CustomerCrudControllerTest {
         //        when(internalUserService.internalConvertFromEntityToDto(any())).thenThrow(new InternalServerException("User Creation error"));
         when(internalUserService.create(any())).thenThrow(new InternalServerException("User Creation error"));
 
-        controller.create(new CustomerCreationFormData(customerDto));
+        controller.create(buildCustomerData(customerDto));
         fail("should fail");
+    }
+
+    private CustomerCreationFormData buildCustomerData(final CustomerDto customerDto) {
+        final CustomerCreationFormData customerCreationFormData = new CustomerCreationFormData(customerDto);
+        customerCreationFormData.setTenantName("tenantName");
+        return customerCreationFormData;
     }
 
     @Test
