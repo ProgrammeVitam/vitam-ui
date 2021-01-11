@@ -47,6 +47,12 @@ import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
 
+const CAS_CONTEXT = 'Contexte CAS';
+const UNKNOWN_VALUE = '-';
+const USER_INDEX = 3;
+const SUBROGATOR_INDEX = 4;
+const API_CONTEXT_INDEX = 2;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -61,6 +67,8 @@ export class LogbookApiService implements PaginatedApi<Event> {
   }
 
   public static toEvent(apiEvent: ApiEvent): Event {
+    const user: string = LogbookApiService.getUserIdentifier(apiEvent.evIdAppSession, USER_INDEX);
+    const subrogator: string = LogbookApiService.getUserIdentifier(apiEvent.evIdAppSession, SUBROGATOR_INDEX);
     return {
       id: apiEvent.evId,
       idRequest: apiEvent.evIdReq,
@@ -80,8 +88,34 @@ export class LogbookApiService implements PaginatedApi<Event> {
       agIdExt: apiEvent.agIdExt,
       obIdReq: apiEvent.obIdReq,
       rightsStatementIdentifier: apiEvent.rightsStatementIdentifier,
-      events: (apiEvent.events || []).map(LogbookApiService.toEvent)
+      userIdentifier: user,
+      subrogatorIdentifier: subrogator,
+      events: LogbookApiService.getSubEvents(apiEvent.events || [], user, subrogator)
     };
+  }
+
+  private static getSubEvents(apiEvents: ApiEvent[], userIdentifier: string, subrogatorIdentifier: string): Event[] {
+    const result: Event[] = [];
+    apiEvents.forEach(apiEvent => {
+      const event: Event = LogbookApiService.toEvent(apiEvent);
+      event.userIdentifier = userIdentifier;
+      event.subrogatorIdentifier = subrogatorIdentifier;
+      result.push(event);
+    });
+    return result;
+  }
+
+  private static getUserIdentifier(evIdAppSession: string, userIndex: number): string {
+    let userIdentifier: string;
+    if (evIdAppSession) {
+      // evIdAppSession format : API_ID:SESSSION_ID:API_CONTEXT:USER_ID:SUBROGATOR_ID:?
+      // evIdAppSession example : CUSTOMERS_APP101763287410:973862d2-12c1-4244-9ed9-0cd42627e74b:Contexte UI Identity:101:-:1
+      const data: string[] = evIdAppSession.split(':');
+      if (data && data[API_CONTEXT_INDEX] !== CAS_CONTEXT && data[userIndex] !== UNKNOWN_VALUE) {
+        userIdentifier = data[userIndex];
+      }
+    }
+    return userIdentifier;
   }
 
   findUnitLifeCyclesByUnitId(unitId: string, headers?: HttpHeaders): Observable<{ $hits: any, $results: Event[] }> {

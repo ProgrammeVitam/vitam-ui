@@ -165,7 +165,7 @@ public class LogbookService {
         final CompareQuery obIdQuery;
         final CompareQuery obIdReqQuery;
         try {
-            select.addUsedProjection("events");
+            select.addUsedProjection("events", "evIdAppSession");
             andQuery = QueryHelper.and();
             obIdQuery = QueryHelper.eq("events.obId", obId);
             obIdReqQuery = QueryHelper.eq("events.obIdReq", obIdReq);

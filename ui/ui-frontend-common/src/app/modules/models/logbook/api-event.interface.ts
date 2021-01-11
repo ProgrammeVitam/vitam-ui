@@ -51,5 +51,6 @@ export interface ApiEvent {
   agIdApp: string;
   agIdExt: string;
   rightsStatementIdentifier: string;
+  evIdAppSession: string;
   events?: ApiEvent[];
 }
