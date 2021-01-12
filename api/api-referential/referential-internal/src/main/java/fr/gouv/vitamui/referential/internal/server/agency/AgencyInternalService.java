@@ -252,6 +252,7 @@ public class AgencyInternalService {
         try {
             return vitamAgencyService.importAgencies(context, fileName, file).toJsonNode();
         } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            LOGGER.error("Unable to import agency file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import agency file " + fileName + " : ", e);
         }
     }

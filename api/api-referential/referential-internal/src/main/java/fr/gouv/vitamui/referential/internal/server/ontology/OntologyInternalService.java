@@ -54,11 +54,14 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.dto.OntologyResponseDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
+import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +79,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class OntologyInternalService {
+	
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
 
     private OntologyService ontologyService;
 
@@ -266,6 +271,7 @@ public class OntologyInternalService {
         try {
             return ontologyService.importOntologies(context, fileName, file).toJsonNode();
         } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            LOGGER.error("Unable to ontology file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import ontology file " + fileName + " : ", e);
         }
     }

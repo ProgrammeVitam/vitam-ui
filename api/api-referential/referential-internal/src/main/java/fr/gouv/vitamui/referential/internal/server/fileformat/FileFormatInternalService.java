@@ -257,6 +257,7 @@ public class FileFormatInternalService {
         try {
             return vitamFileFormatService.importFileFormats(context, fileName, file).toJsonNode();
         } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            LOGGER.error("Unable to file format file {}: {}", fileName, e.getMessage());
             throw new InternalServerException("Unable to import file format file " + fileName + " : ", e);
         }
     }

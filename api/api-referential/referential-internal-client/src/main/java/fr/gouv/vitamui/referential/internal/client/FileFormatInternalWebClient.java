@@ -42,15 +42,12 @@ import java.util.Optional;
 
 import javax.ws.rs.BadRequestException;
 
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -67,11 +64,12 @@ public class FileFormatInternalWebClient extends BaseWebClient<InternalHttpConte
     }
     
     public JsonNode importFileFormats(InternalHttpContext context, String fileName, MultipartFile file) {
-    	LOGGER.debug("check file {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
-            throw new BadRequestException("No file to check .");
+            LOGGER.error("No file to import");
+            throw new BadRequestException("No file to import .");
         }
- 
+        
+    	LOGGER.debug("Import file {}", file.getOriginalFilename());
         return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context, 
             Collections.singletonMap("fileName", fileName),
         	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class);

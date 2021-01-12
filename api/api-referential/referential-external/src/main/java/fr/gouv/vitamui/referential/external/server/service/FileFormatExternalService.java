@@ -59,14 +59,9 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
-import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalWebClient;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Service
 public class FileFormatExternalService extends AbstractResourceClientService<FileFormatDto, FileFormatDto> {
     private FileFormatInternalRestClient fileFormatInternalRestClient;
