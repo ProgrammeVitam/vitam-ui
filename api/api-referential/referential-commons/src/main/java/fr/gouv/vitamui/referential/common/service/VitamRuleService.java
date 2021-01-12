@@ -254,17 +254,18 @@ public class VitamRuleService {
 
     /**
      * Check if rule is not already created in Vitam.
-     * @param checkRules
-     * @param vitamRules
+     * @param checkRules the list of rules being tested
+     * @param existingRules the list of existing rules in Vitam
      */
-    private void verifyRuleExistence(final List<FileRulesModel> checkRules, final RequestResponse<FileRulesModel> vitamRules) {
+    private void verifyRuleExistence(final List<FileRulesModel> checkRules, final RequestResponse<FileRulesModel> existingRules) {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final RuleNodeResponseDto contextResponseDto = objectMapper.treeToValue(vitamRules.toJsonNode(), RuleNodeResponseDto.class);
-            final List<String> contextRuleIds = checkRules.stream().map(context -> context.getRuleId()).collect(Collectors.toList());
+            final RuleNodeResponseDto existingRulesDto = objectMapper.treeToValue(existingRules.toJsonNode(), RuleNodeResponseDto.class);
+            final List<String> checkRulesIds = checkRules.stream().map(checkRule -> checkRule.getRuleId()).collect(Collectors.toList());
 
-            if (contextResponseDto.getResults().stream().anyMatch(context -> contextRuleIds.contains(context.getRuleId()))) {
+            // For each existing rule, test if its id matches any of the checked rules ids.
+            if (existingRulesDto.getResults().stream().anyMatch(existingRule -> checkRulesIds.contains(existingRule.getRuleId()))) {
                 throw new ConflictException("Can't create rule, a rule with the same identifier already exist in Vitam");
             }
         }
