@@ -87,6 +87,11 @@
     &:disabled {
          @include disabled();
     }
+
+    &.uppercase
+    {
+        text-transform: uppercase;
+    }
 }
 
 .btn.contrast {

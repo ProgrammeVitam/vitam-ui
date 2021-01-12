@@ -63,5 +63,9 @@ h5 {
         letter-spacing: 0.8px;
     }
 
+    &.uppercase
+    {
+        text-transform: uppercase;
+    }
     @include text-colors;
 }

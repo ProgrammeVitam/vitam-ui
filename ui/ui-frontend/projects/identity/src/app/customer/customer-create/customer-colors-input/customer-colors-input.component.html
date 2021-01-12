@@ -9,14 +9,14 @@
   </div>
 
   <ng-container *ngIf="!displayTertiary; else closeTertiary">
-    <small class="pb-2" (click)="displayTertiary=!displayTertiary" i18n="colorsInput@@labelDisplayColorTertiary">Afficher la couleur tertiare</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate}}</small>
   </ng-container>
   <ng-template #closeTertiary>
-    <small class="pb-2" (click)="displayTertiary=!displayTertiary" i18n="colorsInput@@labelNotDisplayColorTertiary">Ne pas afficher la couleur tertiare</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate}}</small>
   </ng-template>
 
   <app-input-color
-    [style.visibility]="!displayTertiary ? 'hidden' : 'visible'"
+    [style.display]="!displayTertiary ? 'none' : 'block'"
     [disabled]="disabled"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
     [checkWarning]="true"

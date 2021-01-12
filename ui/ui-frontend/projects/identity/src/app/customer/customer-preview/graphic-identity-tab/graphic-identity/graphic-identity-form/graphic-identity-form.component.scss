@@ -3,15 +3,8 @@
 :host {
   h2 {
     margin-top: 0;
-    color: var(--vitamui-grey-900);
   }
   
-  label {
-    font-size: 13px;
-    color: $greyish-two;
-    font-weight: normal;
-  }
-
   ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
     background-color: var(--vitamui-header-footer);
   }

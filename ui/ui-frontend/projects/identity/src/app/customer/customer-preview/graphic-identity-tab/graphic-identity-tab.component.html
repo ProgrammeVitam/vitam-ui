@@ -39,16 +39,6 @@
   </div>
 </div>
 
-<div class="col-12 d-flex flex-column mt-4">
-  <label i18n="@@labelTitlePortal">Titre du portail</label>
-  <span>{{theme.portalTitle}}</span>
-</div>
-
-<div class="col-12 d-flex flex-column mt-4">
-  <label i18n="@@labelMessagePortal">Message d'accueil du portail</label>
-  {{theme.portalMessage}}
-</div>
-
 <div *ngFor="let colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
     <label>{{COLOR_NAME[colorName]}}</label>

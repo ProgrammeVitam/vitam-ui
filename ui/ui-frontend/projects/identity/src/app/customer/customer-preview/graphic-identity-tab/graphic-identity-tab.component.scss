@@ -2,7 +2,7 @@
 
 :host {
   .image-area {
-    border: 2px dashed $greyish-two;
+    border: 2px dashed var(--vitamui-grey-600);
     border-radius: 6px;
     height: 100px;
     max-width: 200px;

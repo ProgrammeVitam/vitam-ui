@@ -1,11 +1,10 @@
 <div id="toOverride" class="content">
-  <app-graphic-identity 
-    [customerLogosUrl]="customerLogosUrl"
-    [customer]="data.customer"
+  <app-graphic-identity [customerLogosUrl]="customerLogosUrl" [customer]="data.customer"
     (formToSend)="customForm = $event.form; logos = $event.logos">
   </app-graphic-identity>
   <div class="d-flex">
-    <button type="button" class="btn primary mr-4" [disabled]="disabled" i18n="Update customer graphic identity@@updateCustomerGraphicIdentityButton" (click)="updateGraphicIdentity()">Appliquer le changement de couleur</button>
-    <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer update@@customerUpdateCancelButton">Annuler</button>
+    <button type="button" class="btn primary mr-4 text uppercase" [disabled]="disabled"
+      (click)="updateGraphicIdentity()">{{'GRAPHIC_IDENTITY.SUBMIT' | translate}}</button>
+    <button type="button" class="btn cancel link uppercase" (click)="onCancel()">{{'COMMON.CANCEL' | translate}}</button>
   </div>
 </div>

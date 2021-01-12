@@ -8,9 +8,11 @@
             <span>{{'BUTTON.Primary' | translate}}</span>
             <i class="material-icons">keyboard_arrow_right</i>
         </button>
-
         <button class="btn primary" (click)="onClick()">
             <i class="material-icons">keyboard_arrow_left</i>
+            <span>{{'BUTTON.Primary' | translate}}</span>
+        </button>
+        <button class="btn primary uppercase" (click)="onClick()">
             <span>{{'BUTTON.Primary' | translate}}</span>
         </button>
     </div>
@@ -29,13 +31,15 @@
             <i class="material-icons">keyboard_arrow_left</i>
             <span>{{'BUTTON.Secondary' | translate}}</span>
         </button>
+        <button class="btn secondary uppercase" (click)="onClick()">
+            {{'BUTTON.Secondary' | translate}}
+        </button>
     </div>
 
     <div class="row m-0">
         <button disabled class="btn" (click)="onClick()">
             {{'BUTTON.Disabled_label' | translate}}
         </button>
-
         <button disabled class="btn" (click)="onClick()">
             <span>{{'BUTTON.Disabled_label' | translate}}</span>
             <i class="material-icons">keyboard_arrow_right</i>
@@ -44,6 +48,9 @@
         <button disabled class="btn" (click)="onClick()">
             <i class="material-icons">keyboard_arrow_left</i>
             <span>{{'BUTTON.Disabled_label' | translate}}</span>
+        </button>
+        <button disabled class="btn uppercase" (click)="onClick()">
+            {{'BUTTON.Disabled_label' | translate}}
         </button>
     </div>
 
@@ -52,6 +59,10 @@
             <span>{{'BUTTON.Tertiary' | translate}}</span>
         </button>
 
+        <button class="btn link underline" (click)="onClick()">
+            <span>{{'BUTTON.Tertiary' | translate}}</span>
+        </button>
+
         <button class="btn link" (click)="onClick()">
             <span>{{'BUTTON.Tertiary' | translate}}</span>
             <i class="material-icons">keyboard_arrow_right</i>
@@ -62,8 +73,22 @@
             <span>{{'BUTTON.Tertiary' | translate}}</span>
         </button>
 
+        <button class="btn link uppercase" (click)="onClick()">
+            <span>{{'BUTTON.Tertiary' | translate}}</span>
+        </button>
+
         <button class="btn link" disabled (click)="onClick()">
             {{'BUTTON.Tertiary' | translate}}
+        </button>
+    </div>
+
+    <div class="row m-0">
+        <button class="btn cancel link" (click)="onClick()">
+            <span>{{'BUTTON.CANCEL' | translate}}</span>
+        </button>
+
+        <button class="btn cancel link uppercase" (click)="onClick()">
+            <span>{{'BUTTON.CANCEL' | translate}}</span>
         </button>
     </div>
 

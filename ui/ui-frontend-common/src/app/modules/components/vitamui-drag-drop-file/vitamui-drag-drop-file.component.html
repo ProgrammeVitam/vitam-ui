@@ -1,6 +1,6 @@
 <mat-icon [class.disabled]="disabled" *ngIf="imageUrl && canDelete" (click)="onDelete()" class="delete pointer">clear</mat-icon>
 <div [class.disabled]="disabled">
-    <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
+    <div class="drag-and-drop-area" [style.width]="size.width +'px'" [style.height]="size.height +'px'" [ngClass]="{'on-over': hasDropZoneOver}"
         vitamuiCommonDragAndDrop
         (fileToUploadEmitter)="onImageDropped($event)"
         (fileDragOverEmitter)="onImageDragOver($event)"
@@ -16,10 +16,10 @@
         </div>
     </div>
     <div class="d-flex flex-column pt-2">
-        <small (click)="addLogo()" class="upload pointer">
+        <span (click)="addLogo()" class="small upload pointer text caption bold">
             <mat-icon class="pj">attach_file</mat-icon>
             {{messPj}}
-        </small>
+        </span>
         <small class="error-message" *ngIf="hasError">
             {{ message }}
         </small>

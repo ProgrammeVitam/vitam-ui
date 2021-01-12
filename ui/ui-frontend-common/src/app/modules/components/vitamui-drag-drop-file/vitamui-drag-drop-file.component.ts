@@ -80,7 +80,11 @@ export class VitamuiDragDropFileComponent implements OnInit {
   }
 
   @Input()
-  public size: {width: number, height: number} = {width: 1000, height: 1000};
+  public logoSize: {width: number, height: number} = {width: 1000, height: 1000};
+
+  @Input()
+  public size: {width: number, height: number} = {width: 240, height: 127};
+
 
   @Output()
   public file = new EventEmitter<File>();
@@ -115,10 +119,10 @@ export class VitamuiDragDropFileComponent implements OnInit {
       const logoUrl = reader.result;
       logoImage.src = logoUrl as string;
       logoImage.onload = () => {
-        if (logoImage.width > this.size.width || logoImage.height > this.size.height) {
+        if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
           // tslint:disable-next-line: max-line-length
-          this.message = `Les dimensions du fichier que vous essayez de déposer sont supérieures à ${this.size.width}px * ${this.size.height}px`;
+          this.message = `Les dimensions du fichier que vous essayez de déposer sont supérieures à ${this.logoSize.width}px * ${this.logoSize.height}px`;
           this.hasError = true;
         } else {
           this.imageUrl = logoUrl as string;
