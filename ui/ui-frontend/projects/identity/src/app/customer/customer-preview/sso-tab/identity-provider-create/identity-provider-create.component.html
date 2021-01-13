@@ -41,7 +41,7 @@
 
     <div class="col-5 p-0 mt-3 vitamui-input-file">
       <label for="keystore">
-          <span class="text link bold text-primary" i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel">Uploader le fichier keystore de CAS</span>
+          <span class="text link bold primary" i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel">Uploader le fichier keystore de CAS</span>
           <div class="vitamui-input-file-filename">{{keystore?.name}}</div>
       </label>
       <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)">
@@ -49,7 +49,7 @@
 
     <div class="col-5 p-0 mt-4 vitamui-input-file">
       <label for="idpMetadata">
-        <span class="text link bold text-primary" i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel">Uploader le fichier metadata de l'IDP</span>
+        <span class="text link bold primary" i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel">Uploader le fichier metadata de l'IDP</span>
         <div class="vitamui-input-file-filename">{{idpMetadata?.name}}</div>
       </label>
       <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)">

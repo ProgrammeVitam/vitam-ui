@@ -1,3 +1,6 @@
+.vitamui-icon {
+    @include text-colors;
+}
 
 // App engine icon theming
 .vitamui-icon-apps-colored .path1:before {
@@ -46,7 +49,6 @@
 }
 
 // DEPRECATED TODO : REMOVE AT THE END OF THE REDESIGN
-
 i.vitamui-icon.primary:before {
     color: var(--vitamui-primary);
 }

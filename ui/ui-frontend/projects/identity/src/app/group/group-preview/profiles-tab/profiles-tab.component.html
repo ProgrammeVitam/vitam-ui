@@ -7,12 +7,10 @@
     <div class="text caption spaced light mb-1">{{ profile?.appName | titlecase }}</div>
     <div class="text medium">{{ profile?.tenantName }} : {{ profile?.profileName | titlecase}}</div>
   </div>
+
   <div>
-    <div
-      class="material-icons clickable text-primary"
+    <i class="vitamui-icon vitamui-icon-info primary clickable"
       [matTooltip]="profile?.description ? profile.description : 'MISC.NO_DESC' | translate"
-      matTooltipClass="vitamui-tooltip">
-        info_outline
-    </div>
+      matTooltipClass="vitamui-tooltip"></i>
   </div>
 </div>

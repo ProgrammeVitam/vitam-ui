@@ -14,6 +14,41 @@
     limitations under the License.
  */
 
+ @mixin text-colors {
+  &.primary {
+      color: var(--vitamui-primary);
+  }
+
+  &.primary-300 {
+    color: var(--vitamui-primary-300);
+  }
+
+  &.secondary {
+      color: var(--vitamui-primary);
+  }
+
+  &.tertiary {
+      color: var(--vitamui-tertiary);
+  }
+
+  &.success {
+      color: $green;
+  }
+
+  &.warning {
+      color: $orange;
+  }
+
+  &.danger {
+      color: $red;
+  }
+
+  &.light {
+    color: var(--vitamui-grey-600);
+  }
+}
+
+/** TODO : CHECK IF THIS CODE IS USED OR DEPRECATED **/
 @mixin login-title {
   
   font-size: 28px;

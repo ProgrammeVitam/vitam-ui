@@ -29,9 +29,9 @@
         <div class="text medium">{{ profile?.name }}</div>
     </div>
     <div>
-        <div class="material-icons clickable text-primary" [matTooltip]="profile?.description" matTooltipClass="vitamui-tooltip">
-        info_outline
-        </div>
+        <i class="vitamui-icon vitamui-icon-info primary clickable"
+        [matTooltip]="profile?.description ? profile.description : 'MISC.NO_DESC' | translate"
+        matTooltipClass="vitamui-tooltip"></i>
     </div>
 </div>
 

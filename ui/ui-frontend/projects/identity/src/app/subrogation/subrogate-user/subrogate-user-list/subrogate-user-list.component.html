@@ -43,10 +43,10 @@
           <div class="col-2 d-flex justify-content-end"> 
             <div *ngIf="subrogableUser.superUserEmail">
               <span *ngIf="subrogableUser.superUserEmail === currenteUser.email"
-                class="text normal bold text-red" i18n="@@SubrogateCurrentUserInSubroLabel">En cours</span>
+                class="text normal bold danger" i18n="@@SubrogateCurrentUserInSubroLabel">En cours</span>
       
               <span *ngIf="subrogableUser.superUserEmail !== currenteUser.email"
-                class="text normal bold text-red" i18n="@@SubrogateUserInSubroLabel">Subrogé par {{subrogableUser.superUserEmail}}</span>
+                class="text normal bold danger" i18n="@@SubrogateUserInSubroLabel">Subrogé par {{subrogableUser.superUserEmail}}</span>
             </div>
           </div>
 
