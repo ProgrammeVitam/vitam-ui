@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.converter;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -105,19 +107,19 @@ public class UserConverter implements Converter<UserDto, User> {
     @Override
     public String convertToLogbook(final UserDto user) {
         final Map<String, String> userLogbookData = new LinkedHashMap<>();
-        userLogbookData.put(LASTNAME_KEY, LogbookUtils.getValue(user.getLastname()));
-        userLogbookData.put(FIRSTNAME_KEY, LogbookUtils.getValue(user.getFirstname()));
-        userLogbookData.put(EMAIL_KEY, LogbookUtils.getValue(user.getEmail()));
+        userLogbookData.put(LASTNAME_KEY, GPDR_DEFAULT_VALUE);
+        userLogbookData.put(FIRSTNAME_KEY, GPDR_DEFAULT_VALUE);
+        userLogbookData.put(EMAIL_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(LANGUAGE_KEY, LogbookUtils.getValue(user.getLanguage()));
-        userLogbookData.put(MOBILE_KEY, LogbookUtils.getValue(user.getMobile()));
-        userLogbookData.put(PHONE_KEY, LogbookUtils.getValue(user.getPhone()));
+        userLogbookData.put(MOBILE_KEY, GPDR_DEFAULT_VALUE);
+        userLogbookData.put(PHONE_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(TYPE_KEY, LogbookUtils.getValue(user.getType().toString()));
         userLogbookData.put(STATUS_KEY, LogbookUtils.getValue(user.getStatus().toString()));
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
         userLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(user.getInternalCode()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
-        AddressDto address = user.getAddress() != null ? user.getAddress() : new AddressDto();
+        AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
         addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());
         group.ifPresent(g -> userLogbookData.put(GROUP_IDENTIFIER_KEY, g.getIdentifier()));

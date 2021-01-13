@@ -134,9 +134,9 @@
     - "vitamui_certificate_type|lower == '{{ item.name }}'"
     - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
   with_items:
-    # Copy the trustore for all vitamui components in order to communicate between them.
+    # Copy the truststore for all vitamui components in order to communicate between them.
     - { name: server, src: "{{ inventory_dir }}/keystores/server/truststore_server.jks" }
-    # Copy the trustore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
+    # Copy the truststore for all external API in order to communicate with vitamui components (ui, external APIs, cas) and externals apps.
     - { name: external, src: "{{ inventory_dir }}/keystores/client-{{ vitamui_certificate_type }}/truststore_{{ vitamui_certificate_type }}.jks" }
   tags:
     - update_vitamui_certificates

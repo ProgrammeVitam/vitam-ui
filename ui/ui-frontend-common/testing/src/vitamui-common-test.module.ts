@@ -53,6 +53,7 @@ export class NavbarStubComponent {
 @Component({ selector: 'vitamui-common-application-select-content', template: '<ng-content></ng-content>'})
 export class ApplicationSelectContentStubComponent {
   @Input() applications: any[];
+  @Input() categories: any;
   @Input() isModalMenu: boolean;
 }
 

@@ -52,4 +52,7 @@ public class LogbookOperationDto extends LogbookEventDto {
     @JsonProperty("events")
     private List<LogbookEventDto> events;
 
+    @JsonProperty("obIdIn")
+    private String obIdIn;
+
 }

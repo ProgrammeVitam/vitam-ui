@@ -79,7 +79,7 @@ describe('ApplicationService', () => {
   it('should call /fake-api/ui/applications?filterApp=true', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response).toEqual([
+        expect(response.APPLICATION_CONFIGURATION).toEqual([
           {
             id: 'account',
             identifier: ApplicationId.ACCOUNTS_APP,
@@ -99,16 +99,19 @@ describe('ApplicationService', () => {
     );
     const req = httpTestingController.expectOne('/fake-api/ui/applications?filterApp=true');
     expect(req.request.method).toEqual('GET');
-    req.flush([
-      { id: 'account', identifier: ApplicationId.ACCOUNTS_APP, url: 'http://app-test-2.vitamui.com', icon: 'vitamui-icon vitamui-icon-user',
-        name: 'Mon compte', category: 'users', position: 7, hasCustomerList: false, hasTenantList: false, hasHighlight: false, target: '' }
-    ]);
+    req.flush({
+      APPLICATION_CONFIGURATION: [
+        { id: 'account', identifier: ApplicationId.ACCOUNTS_APP, url: 'http://app-test-2.vitamui.com',
+          icon: 'vitamui-icon vitamui-icon-user', name: 'Mon compte', category: 'users', position: 7,
+          hasCustomerList: false, hasTenantList: false, hasHighlight: false, target: '' }
+      ], CATEGORY_CONFIGURATION: { users: { title: '', displayTitle: false, order: 1 } }
+    });
   });
 
   it('should return an empty list if the API returns an error', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response).toEqual([]);
+        expect(response).toEqual({APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}});
       },
       fail
     );

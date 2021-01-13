@@ -98,9 +98,9 @@
   no_log: "{{ hide_passwords_during_deploy }}"
   when: mongodb.docker is not defined or not mongodb.docker.enable
 
-- name: Load script in database (docker)
+- name: Load script in database test (docker)
   command: "docker exec --tty {{ mongodb.docker.image_name }} /bin/bash -c \"mongo \\\"mongodb://{{ mongod_uri }}/admin\\\" {{ mongo_credentials }} {{ mongodb.docker.internal_dir}}/app/mongod/main_script.js \""
-  no_log: "{{ hide_passwords_during_deploy }}"
+  #no_log: "{{ hide_passwords_during_deploy }}"
   when: mongodb.docker is defined and mongodb.docker.enable
 
 # - name: "Execute file"

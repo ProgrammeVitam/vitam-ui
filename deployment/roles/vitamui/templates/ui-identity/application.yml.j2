@@ -2,7 +2,7 @@ spring:
   cloud:
     consul:
       enabled: true
-      host: consul.service.consul
+      host: consul.service.{{ consul_domain }}
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
@@ -84,6 +84,13 @@ ui-identity:
 {% else %}
     identity: "{{ url_prefix }}/identity"
 {% endif %}
+  portal-categories:
+{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+    {{ id }}:
+      title: "{{ category.title }}"
+      displayTitle: {{ category.displayTitle }}
+      order: {{ category.order }}
+{% endfor %}
 
 ui:
 {% if vitamui_struct.base_url is defined %}

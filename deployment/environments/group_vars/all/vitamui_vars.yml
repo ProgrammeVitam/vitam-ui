@@ -38,6 +38,36 @@ vitamui_defaults:
   # Configuration of log for reconstruction services (INFO or DEBUG for active logs). Logs will be present only on secondary site.
   reconstruction:
       log_level: INFO
+  portal_categories:
+    ingests:
+      title: "Suivi des Versements"
+      displayTitle: true
+      order: 4
+    administrators:
+      title: "Management"
+      displayTitle: true
+      order: 2
+    settings:
+      title: "Paramétrage"
+      displayTitle: true
+      order: 3
+    users:
+      title: ""
+      displayTitle: false
+      order: 1
+    referential:
+      title: "Référentiels"
+      displayTitle: true
+      order: 5
+    opaudit:
+      title: "Opérations et Audits"
+      displayTitle: true
+      order: 6
+    techadmin:
+      title: "Administration technique"
+      displayTitle: true
+      order: 7
+
 
 vitamui:
   identity:
@@ -225,7 +255,7 @@ vitamui:
     cors:
       enabled: false
   security_internal:
-    host: "vitamui-security-internal.service.consul"
+    host: "vitamui-security-internal.service.{{ consul_domain }}"
     vitamui_component: "security-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-security-internal"
@@ -242,6 +272,62 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "INFO"
+  ingest:
+    host: "ingest.service.consul"
+    vitamui_component: "ui-ingest"
+    vitamui_component_type: "ui"
+    package_name: "vitamui-ui-ingest"
+    service_name: "vitamui-ui-ingest"
+    store_name: "ui-ingest"
+    port_service: 8008
+    port_admin: 7008
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
+  ingest_external:
+    host: "ingest-external.service.consul"
+    vitamui_component: "ingest-external"
+    vitamui_component_type: "external"
+    package_name: "vitamui-ingest-external"
+    service_name: "vitamui-ingest-external"
+    store_name: "ingest-external"
+    port_service: 8108
+    port_admin: 7108
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
+  ingest_internal:
+    host: "ingest-internal.service.consul"
+    vitamui_component: "ingest-internal"
+    vitamui_component_type: "internal"
+    package_name: "vitamui-ingest-internal"
+    service_name: "vitamui-ingest-internal"
+    store_name: "ingest-internal"
+    port_service: 8208
+    port_admin: 7208
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
 
 vitamui_platform_informations:
   name: "system_customer"
@@ -255,10 +341,18 @@ vitamui_platform_informations:
     zip_code: change-it
     city: change-it
     country: change-it
-  proof_tenant: 3
+  proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
   theme_colors:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
   platform_name: VITAM-UI
+
+# backup specific collections before install and restore after install
+mongo_dump_folder: /backup/mongod/
+mongo_backup_reinstall:
+  - db: "iam"
+    collections: ["customers","users","profiles", "groups"]
+  #- db: "admin"
+  #  collections: []

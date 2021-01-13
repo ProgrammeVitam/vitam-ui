@@ -53,7 +53,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -102,6 +110,7 @@ public class IdentityProviderInternalController implements CrudController<Identi
     public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria,
             final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
+        EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         return internalIdentityProviderService.getOne(id, criteria, embedded);
     }
 

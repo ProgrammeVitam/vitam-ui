@@ -1,0 +1,17 @@
+---
+
+- name: Get credentials from key
+  set_fact:
+    login: "{{it.value.user}}"
+    password: "{{it.value.password}}"
+  loop: "{{ lookup('dict', mongodb) }}"
+  loop_control:
+    loop_var: it
+  when: "db in it.key"
+  no_log: true
+
+# When authentication is required, we set mongodb admin credentials
+- name: Set mongodb authentication credentials
+  set_fact:
+    mongo_credentials: " -u {{ login }} -p {{ password }} --quiet"
+  no_log: true

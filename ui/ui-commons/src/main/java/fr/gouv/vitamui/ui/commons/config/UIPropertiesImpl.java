@@ -40,6 +40,7 @@ import java.util.Map;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
+import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +48,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UIPropertiesImpl implements UIProperties {
-
     /**
      * Prefix URL RestController
      */
@@ -72,4 +72,9 @@ public class UIPropertiesImpl implements UIProperties {
     private String assets;
 
     private String platformName;
+
+    /**
+     * Map of application categories (key: category ID, value: category properties)
+     */
+    private Map<String, PortalCategoryConfig> portalCategories;
 }

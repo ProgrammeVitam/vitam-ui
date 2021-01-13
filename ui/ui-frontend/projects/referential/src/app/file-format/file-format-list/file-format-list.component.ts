@@ -48,7 +48,7 @@ import {
 import {MatDialog} from '@angular/material/dialog';
 import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject, Subscription} from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -95,7 +95,6 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
 
   private groups: Array<{ id: string, group: any }> = [];
-  private updatedUserSub: Subscription;
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
@@ -153,7 +152,6 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   }
 
   ngOnDestroy() {
-    this.updatedUserSub.unsubscribe();
     this.updatedData.unsubscribe();
   }
 

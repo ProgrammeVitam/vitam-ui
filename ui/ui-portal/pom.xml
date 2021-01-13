@@ -128,6 +128,11 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>org.owasp.antisamy</groupId>
+            <artifactId>antisamy</artifactId>
+        </dependency>
+
 		<dependency>
 			<groupId>fr.gouv.vitamui.ui</groupId>
 			<artifactId>ui-commons</artifactId>

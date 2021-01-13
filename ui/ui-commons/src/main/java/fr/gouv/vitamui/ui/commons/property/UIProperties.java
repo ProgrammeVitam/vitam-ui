@@ -58,4 +58,5 @@ public interface UIProperties {
 
     public String getPlatformName();
 
+    public Map<String, PortalCategoryConfig> getPortalCategories();
 }

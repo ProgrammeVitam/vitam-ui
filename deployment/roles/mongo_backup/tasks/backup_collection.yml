@@ -1,0 +1,11 @@
+---
+
+- name: mongo dump collection 
+  command: "mongodump --host  {{ ip_service }} --db {{db}} --collection {{inner_item}} {{mongo_credentials}} --gzip --out {{mongo_dump_folder}}"
+  with_items: 
+  - "{{collections}}"
+  loop_control:
+    loop_var: inner_item
+  no_log: "{{ hide_passwords_during_deploy }}" 
+  ignore_errors: yes
+  
