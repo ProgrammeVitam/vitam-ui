@@ -20,8 +20,7 @@ describe('AdminDslComponent', () => {
     id: 'id',
     accessContract: 'AC-000001',
     dsl: {},
-    response: {},
-    dslQueryType: {}
+    response: {}
   };
 
   beforeEach(async(() => {

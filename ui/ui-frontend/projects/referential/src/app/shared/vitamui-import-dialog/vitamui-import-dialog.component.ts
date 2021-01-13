@@ -60,7 +60,7 @@ export class VitamUIImportDialogComponent implements OnInit {
   isfileFormatValid = false;
   isImportInProgress = false;
   referentialEnum = Referential;
-  private referential: Referential;
+  referential: Referential;
 
   constructor(
     private referentialImportService: ReferentialImportService,

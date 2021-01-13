@@ -42,8 +42,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
@@ -69,6 +72,8 @@ import static org.easymock.EasyMock.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 @RunWith(org.powermock.modules.junit4.PowerMockRunner.class)
 @PrepareForTest({ ServerIdentityConfiguration.class })
@@ -203,13 +208,17 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void deleteAgency_should_return_ok_when_vitamclient_ok() throws VitamClientException,
+        AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class)))
             .andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
+        expect(adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class)))
+            .andReturn((RequestResponse) new RequestResponseOK<>().setHttpCode(200));
         EasyMock.replay(agencyService);
+        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             vitamAgencyService.deleteAgency(vitamContext, id);
@@ -217,13 +226,16 @@ public class VitamAgencyServiceTest {
     }
 
     @Test
-    public void deleteAgency_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    public void deleteAgency_should_return_ok_when_vitamclient_400() throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "id_0";
 
         expect(agencyService.findAgencies(isA(VitamContext.class), isA(ObjectNode.class)))
-            .andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(400));
+            .andReturn(new RequestResponseOK<AgenciesModel>().setHttpCode(200));
+        expect(adminExternalClient.createAgencies(isA(VitamContext.class), isA(InputStream.class), isA(String.class)))
+            .andReturn((RequestResponse) new RequestResponseOK<>().setHttpCode(400));
         EasyMock.replay(agencyService);
+        EasyMock.replay(adminExternalClient);
 
         assertThatCode(() -> {
             vitamAgencyService.deleteAgency(vitamContext, id);

@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential;
 
-import fr.gouv.vitamui.commons.vitam.api.administration.RuleService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -59,6 +58,7 @@ import fr.gouv.vitamui.referential.service.ManagementContractService;
 import fr.gouv.vitamui.referential.service.OntologyService;
 import fr.gouv.vitamui.referential.service.OperationService;
 import fr.gouv.vitamui.referential.service.ProfileService;
+import fr.gouv.vitamui.referential.service.RuleService;
 import fr.gouv.vitamui.referential.service.SecurityProfileService;
 import fr.gouv.vitamui.referential.service.TenantService;
 import fr.gouv.vitamui.referential.service.UnitService;
