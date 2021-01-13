@@ -47,18 +47,16 @@ import { UploadComponent } from '../core/common/upload.component';
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
 
-  search: string;
   tenantIdentifier: string;
 
   constructor(private router: Router, private route: ActivatedRoute, globalEventService: GlobalEventService, public dialog: MatDialog) {
     super(route, globalEventService);
-
-    route.params.subscribe(params => {
-      this.tenantIdentifier = params.tenantIdentifier;
-    });
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
   }
 
   openImportTreePlanPopup(type: string) {
@@ -76,19 +74,12 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.refresh();
       }
     });
-  }
-
-  onSearchSubmit(search: string) {
-    this.search = search || '';
   }
 
   changeTenant(tenantIdentifier: number) {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
-  refresh() {
-  }
 }
