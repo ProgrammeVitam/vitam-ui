@@ -148,7 +148,7 @@ describe('IdentityProviderService', () => {
     it('should call PATCH /fake-api/providers/42', () => {
       const snackBar = TestBed.get(VitamUISnackBar);
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
-      identityProviderService.update(identityProviders[0]).subscribe(
+      identityProviderService.patch(identityProviders[0]).subscribe(
         (provider: IdentityProvider) => {
           expect(provider).toEqual(identityProviders[0]);
           expect(snackBar.openFromComponent).toHaveBeenCalledTimes(1);
@@ -168,7 +168,7 @@ describe('IdentityProviderService', () => {
 
     it('should display an error message', () => {
       const snackBar = TestBed.get(VitamUISnackBar);
-      identityProviderService.update(identityProviders[0]).subscribe(
+      identityProviderService.patch(identityProviders[0]).subscribe(
         fail,
         () => {
           expect(snackBar.open).toHaveBeenCalledTimes(1);

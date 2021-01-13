@@ -64,9 +64,9 @@ public class ApiSecurityServerApplication implements CommandLineRunner {
 
     @Override
     public void run(final String... args) throws Exception {
-        LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
-        LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
+        LOGGER.debug("VITAMUI SpringBoot Application started:");
+        LOGGER.debug("spring.config.name: " + env.getProperty("spring.config.name"));
+        LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 
 }

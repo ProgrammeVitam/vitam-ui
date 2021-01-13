@@ -100,7 +100,7 @@ public class VitamRestUtils {
             response.setContentType(contentTypeOpt.get().toString());
         }
         else {
-            LOGGER.info("No content type in Vitam reponse");
+            LOGGER.debug("No content type in Vitam reponse");
         }
 
         // Copies content-disposition header from Vitam response
