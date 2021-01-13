@@ -1,0 +1,15 @@
+{
+    "/identity-api": {
+      "target": "http://localhost:8888/",
+      "secure": false,
+      "pathRewrite": {},
+      "logLevel": "debug"
+    },
+    "/portal-api": {
+      "target": "http://localhost:8888/",
+      "secure": false,
+      "pathRewrite": {},
+      "logLevel": "debug"
+    }
+  }
+  

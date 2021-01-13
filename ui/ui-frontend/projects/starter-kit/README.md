@@ -23,3 +23,7 @@ Inspecter le DOM pour voir les classes .scss et/ou composants utilisées.
 4. S'authentifier sur CAS [https://dev.vitamui.com:8080/cas](https://dev.vitamui.com:8080/cas)
 
 5. Aller sur l'URL du starter-kit [https://dev.vitamui.com:4201/](https://dev.vitamui.com:4201/)
+
+## Lancement en mode mocké
+> vitam-ui/ui/ui-frontend$ npm run mock-starter-kit
+Aller sur l'URL du starter-kit mocked http://dev.vitamui.com:4201/
