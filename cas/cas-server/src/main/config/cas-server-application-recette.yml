@@ -42,7 +42,7 @@ cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
 
 
 cas.tgc.path: /cas
-cas.tgc.secure: false
+cas.tgc.secure: true
 cas.tgc.crypto.enabled: false
 cas.webflow.crypto.enabled: true
 cas.authn.pm.reset.crypto.enabled: true
