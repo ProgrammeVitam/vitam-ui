@@ -308,7 +308,7 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
                     profile.setDescription(CastUtils.toString(entry.getValue()));
                     break;
                 case "enabled" :
-                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.getDescription(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.isEnabled(), entry.getValue()));
                     profile.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "level" :
@@ -536,8 +536,9 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id " + id);
-        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-                .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
+                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Profile> profile = getRepository().findById(id);

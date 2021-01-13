@@ -41,7 +41,7 @@ public class QueryDtoTest {
         QueryDto subQuery = new QueryDto();
         subQuery.addCriterion(new Criterion("firstname", "Pierre", CriterionOperator.EQUALS));
         criteria.addQuery(subQuery);
-        LOGGER.info(JsonUtils.toJson(criteria));
+        LOGGER.debug(JsonUtils.toJson(criteria));
         String queryAsString = JsonUtils.toJson(criteria);
         Assertions.assertThat(queryAsString).isEqualTo(exceptedQueryString);
     }

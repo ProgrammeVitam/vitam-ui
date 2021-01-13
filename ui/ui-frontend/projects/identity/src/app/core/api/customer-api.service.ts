@@ -84,6 +84,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
       readonly: customer.readonly,
       themeColors: customer.themeColors
     }));
+    formData.append('tenantName', customer.tenantName);
     if (logo) {
       formData.append('logo', logo);
     }
