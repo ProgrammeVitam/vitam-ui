@@ -83,17 +83,6 @@
               <button type="button" class="btn" (click)="checkDsl()"
                 i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
             </div>
-            <mat-form-field class="vitamui-mat-select form_padding">
-              <mat-select formControlName="accessContract" placeholder="Sélectionnez un contrat d'accès"
-                required="required" i18n-placeholder="Application@@accessContractFormApplicationPlaceholder"
-                panelclass="vitamui-mat-select" class="full_size">
-                <mat-option *ngFor='let accessContract of accessContracts' [value]="accessContract.key">
-                  {{accessContract.label}}</mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
           </div>
         </div>
         <div class="form_textarea">
