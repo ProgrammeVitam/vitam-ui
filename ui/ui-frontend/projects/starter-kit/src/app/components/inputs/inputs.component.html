@@ -212,6 +212,23 @@
             </div>
         </div>
     </div>
+
+
+  <h4>Date</h4>
+  <div class="d-flex">
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
+      <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis">
+      <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
+      <input [matDatepicker]="pickerEnd"  matInput placeholder="jusqu'au">
+      <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+  </div>
+
     <h4>Duration</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 mt-4 pl-3">
