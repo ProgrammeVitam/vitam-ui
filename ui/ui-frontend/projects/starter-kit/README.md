@@ -26,4 +26,4 @@ Inspecter le DOM pour voir les classes .scss et/ou composants utilisées.
 
 ## Lancement en mode mocké
 > vitam-ui/ui/ui-frontend$ npm run mock-starter-kit
-Aller sur l'URL du starter-kit mocked http://dev.vitamui.com:4201/
+Aller sur l'URL du starter-kit mocked : http://dev.vitamui.com:5000/
