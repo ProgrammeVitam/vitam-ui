@@ -152,7 +152,7 @@ export class UploadSipService {
     }
 
     const formdata: FormData = new FormData();
-    formdata.append('file', file.slice(start, end), file.name);
+    formdata.append('uploadedFile', file.slice(start, end), file.name);
 
     return new HttpRequest('POST', this.ingestApiService.getBaseUrl() + '/ingest/upload', formdata, { headers });
   }
