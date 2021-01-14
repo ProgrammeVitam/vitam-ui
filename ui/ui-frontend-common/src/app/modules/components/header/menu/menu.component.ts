@@ -1,5 +1,5 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatSelectionList } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
 import { TenantSelectionService } from '../../../tenant-selection.service';
 import { MenuOption } from '../../navbar';
+import { SearchBarComponent } from '../../search-bar';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
@@ -39,6 +40,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   private firstResultFocused = false;
   private destroyer$ = new Subject();
 
+  @ViewChild('searchBar', { static: true }) searchBar: SearchBarComponent;
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -85,7 +87,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.changeTabFocus();
+    this.searchBar.onFocus();
   }
 
   public onSearch(value: string): void {
@@ -111,7 +113,7 @@ export class MenuComponent implements OnInit, AfterViewInit {
   public resetSearch(): void {
     this.filteredApplications = null;
     this.criteria = '';
-    this.changeTabFocus();
+    this.searchBar.onFocus();
   }
 
   public onClose(): void {
