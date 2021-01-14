@@ -1,0 +1,36 @@
+spring:
+  api:
+    name: API Ingest externe - Gestion des ingests
+    description: API externe de gestion des ingests
+    version: v1
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+
+ingest-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  ingest-internal-client:
+    server-host: localhost
+    server-port: 7088
+    secure: false
+
+server-identity:
+  identityName: vitamui-test
+  identityRole: iam
+  identityServerId: 1
+
+swagger:
+  layer: api-external

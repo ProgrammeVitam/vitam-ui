@@ -77,7 +77,7 @@ export class IdentityProviderService {
       );
   }
 
-  update(idp: IdentityProvider): Observable<IdentityProvider> {
+  patch(idp: { id: string, [key: string]: any }): Observable<IdentityProvider> {
     return this.providerApi.patch(idp)
       .pipe(
         map((updatedIdp: IdentityProvider) => this.addMetadataUrl(updatedIdp)),

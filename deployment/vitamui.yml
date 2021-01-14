@@ -23,3 +23,6 @@
 - import_playbook: vitamui_apps.yml
 
 - import_playbook: reverse_proxy.yml
+
+# for dev and integration purpose
+- import_playbook: vitamui_extra.yml

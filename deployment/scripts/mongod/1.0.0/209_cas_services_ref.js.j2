@@ -2,17 +2,15 @@ db = db.getSiblingDB('cas')
 
 print("START 209_cas_services_ref.js");
 
-var maxId = db.getCollection('services').find().sort({_id: -1}).limit(1).id;
-
 db.services.insert({
-	"_id" : NumberInt(maxId + 1),
+	"_id" : NumberInt(4),
 	"_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.referential.base_url is defined %}
 	"serviceId": "^{{ vitamui.referential.base_url }}/.*",
 {% else %}
 	"serviceId": "^{{ url_prefix }}/referential/.*",
 {% endif %}
-	"name": "Referential Management Application",
+	"name": "Referential Management Application 2",
 	"logoutType" : "FRONT_CHANNEL",
 {% if vitamui.referential.base_url is defined %}
 	"logoutUrl": "{{ vitamui.referential.base_url }}/logout",

@@ -65,6 +65,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 
 /**
@@ -118,18 +119,12 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
 
         Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
-        Map<String, Map<String,Object>> categories = properties.getPortalCategories();
-        Collection<Map<String,Object>> listCategories = new ArrayList<>();
-        categories.keySet().stream().forEach(category -> {
-            Map<String,Object> categoryProperties = new HashMap<>();
-            categoryProperties.putAll(categories.get(category));
-            categoryProperties.put("identifier", category);
-            listCategories.add(categoryProperties);
-        });
+        Map<String, PortalCategoryConfig> categories = properties.getPortalCategories();
+        categories.keySet().forEach(category -> categories.get(category).setIdentifier(category));
 
         Map<String, Object> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
-        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, listCategories);
+        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, categories);
 
         return portalConfig;
     }

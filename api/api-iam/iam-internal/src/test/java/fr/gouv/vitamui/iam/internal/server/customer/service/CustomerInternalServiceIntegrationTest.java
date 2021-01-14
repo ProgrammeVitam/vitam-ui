@@ -194,6 +194,7 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
 
     private CustomerDto createCustomer() {
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildDto());
+        customerDta.setTenantName("tenantName");
 
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         return service.create(customerDta);

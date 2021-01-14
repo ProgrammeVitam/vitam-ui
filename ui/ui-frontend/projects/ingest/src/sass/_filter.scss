@@ -1,0 +1,69 @@
+@import "~ui-frontend-common/sass/variables/colors";
+
+.filter-controls {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  justify-content: space-between;
+
+  .filter-controls-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .btn {
+    margin-left: 20px;
+  }
+
+  .actions {
+    display: flex;
+  }
+}
+
+.filter-banner-container {
+  display: flex;
+  height: 70px;
+  margin-left: 10px;
+
+  .mat-form-field-filter {
+    width: 100%;
+    .mat-form-field-underline {
+      display: none;
+    }
+    .mat-form-field-label-wrapper {
+      display: none;
+    }
+    .mat-select-placeholder {
+      color: var(--vitamui-secondary);
+      -webkit-text-fill-color: var(--vitamui-secondary);
+    }
+    .mat-option.mat-active {
+      background: var(--vitamui-secondary) !important;
+    }
+    .mat-form-field-wrapper {
+      padding: 0;
+      .mat-form-field-infix {
+        border: 0;
+        padding: 0;
+      }
+    }
+
+    .mat-select-filter {
+      background: white;
+      padding: 25px 12px 25px 13px;
+      cursor: pointer;
+      transition: background 200ms ease-out;
+      outline: none;
+      position: relative;
+      min-width: 200px;
+      border: 1px solid var(--vitamui-secondary);
+      border-radius: 5px;
+      border-width: 1px 1px 1px 1px;
+
+      &:hover:not(:disabled) {
+        background-color: #f4f4f4;
+      }
+    }
+  }
+}

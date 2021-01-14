@@ -1,0 +1,6 @@
+---
+
+- hosts: hosts_browse
+  gather_facts: no
+  roles:
+    - browser

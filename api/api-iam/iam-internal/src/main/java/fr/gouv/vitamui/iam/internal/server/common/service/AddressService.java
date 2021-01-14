@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,27 +50,33 @@ import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 public class AddressService {
 
     public void processPatch(final Address address, final Map<String, Object> partialDto,
-            final Collection<EventDiffDto> logbooks) {
+            final Collection<EventDiffDto> logbooks, final boolean anonymized) {
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
+            String oldValue;
+            String newValue = anonymized ? GPDR_DEFAULT_VALUE : CastUtils.toString(entry.getValue());
             switch (entry.getKey()) {
                 case "street" :
-                    logbooks.add(new EventDiffDto(AddressConverter.STREET_KEY, address.getStreet(),
-                            entry.getValue()));
+                    oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getStreet();
+                    logbooks.add(new EventDiffDto(AddressConverter.STREET_KEY, oldValue,
+                            newValue));
                     address.setStreet(CastUtils.toString(entry.getValue()));
                     break;
                 case "zipCode" :
-                    logbooks.add(new EventDiffDto(AddressConverter.ZIP_CODE_KEY, address.getZipCode(),
-                            entry.getValue()));
+                    oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getZipCode();
+                    logbooks.add(new EventDiffDto(AddressConverter.ZIP_CODE_KEY, oldValue,
+                            newValue));
                     address.setZipCode(CastUtils.toString(entry.getValue()));
                     break;
                 case "city" :
-                    logbooks.add(new EventDiffDto(AddressConverter.CITY_KEY, address.getCity(),
-                            entry.getValue()));
+                    oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getCity();
+                    logbooks.add(new EventDiffDto(AddressConverter.CITY_KEY, oldValue,
+                            newValue));
                     address.setCity(CastUtils.toString(entry.getValue()));
                     break;
                 case "country" :
-                    logbooks.add(new EventDiffDto(AddressConverter.COUNTRY_KEY, address.getCountry(),
-                            entry.getValue()));
+                    oldValue = anonymized ? GPDR_DEFAULT_VALUE : address.getCountry();
+                    logbooks.add(new EventDiffDto(AddressConverter.COUNTRY_KEY, oldValue,
+                            newValue));
                     address.setCountry(CastUtils.toString(entry.getValue()));
                     break;
                 default :

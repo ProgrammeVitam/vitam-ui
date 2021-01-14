@@ -66,12 +66,11 @@ export class ApplicationService {
   /*
    * Categories of the application.
    */
-  set categories(categories: Category[]) { this._categories = categories; }
-
-  get categories(): Category[] { return this._categories; }
+  set categories(categories: { [categoryId: string]: Category }) { this._categories = categories; }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
 
   // tslint:disable-next-line:variable-name
-  _categories: Category[];
+  _categories: { [categoryId: string]: Category };
 
   constructor(private applicationApi: ApplicationApiService) { }
 
@@ -85,7 +84,7 @@ export class ApplicationService {
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
-        this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
+        this._categories = applicationInfo.CATEGORY_CONFIGURATION;
         return applicationInfo;
       })
     );
@@ -111,7 +110,13 @@ export class ApplicationService {
     }
   }
 
-  private fillCategoriesWithApps(categories: Category[], applications: Application[]) {
+  private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
+    
+    let categories: Category[] = Object.values(categoriesByIds);
+    categories.sort((a, b) => {
+      return a.order > b.order ? 1 : -1;
+    });
+
     categories.forEach((category: Category) => {
       if (applications.some(app =>  app.category === category.identifier)) {
         this.appMap.set(category, this.getSortedAppsOfCategory(category, applications));
@@ -130,13 +135,6 @@ export class ApplicationService {
     // Sort apps inside categories
     return applications.sort((a, b) => {
       return a.position < b.position ? -1 : 1;
-    });
-  }
-
-  private sortCategories(categories: Category[]): Category[] {
-    // Sort apps inside categories
-    return categories.sort((a, b) => {
-      return a.order > b.order ? 1 : -1;
     });
   }
 }

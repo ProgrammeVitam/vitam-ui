@@ -61,15 +61,15 @@ export class ApplicationSelectContentComponent {
   private _applications: Application[];
 
   @Input()
-  set categories(categories: Category[]) {
+  set categories(categories: { [categoryId: string]: Category }) {
     this._categories = categories;
     if (this._applications) {
       this.computeAppCategories();
     }
   }
-  get categories(): Category[] { return this._categories; }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
   // tslint:disable-next-line:variable-name
-  private _categories: Category[];
+  private _categories: { [categoryId: string]: Category };
 
   @Output() applicationSelected = new EventEmitter<string>();
 
@@ -83,11 +83,7 @@ export class ApplicationSelectContentComponent {
     apps.forEach((application) => {
       const app = this.authService.user.tenantsByApp.find((appToTest) => appToTest.name === application.id);
       if (app) {
-        if (app.tenants && app.tenants.length > 1 && application.hasTenantList) {
-          application.hasTenantList = true;
-        } else {
-          application.hasTenantList = false;
-        }
+          application.hasTenantList = app.tenants && app.tenants.length > 1 && application.hasTenantList;
       }
     });
   }
@@ -95,36 +91,34 @@ export class ApplicationSelectContentComponent {
   computeAppCategories() {
     const sortedApps = this._applications.sort((app1, app2) => app1.position - app2.position);
     this.categoryList = [];
-    const identifiers = [];
+    const ids = [];
 
     const defaultCategory = {
-      identifier: 'default',
-      title: 'Autres', // FIXME : MDI - handle this property when translating categories
+      id: 'default',
+      title: 'Autres',
       displayTitle: true,
       order: 99,
       applications: []
     };
     this.categoryList.push(defaultCategory);
 
-    // recreate categories list before assembling applications by categories
-    // add a default category in order to view applications linked to a non existent category
-    this.categories.forEach(category => {
-      if (category.identifier === 'default') {
-        // do not compute category when identifier is the default ;
-      } else {
-        const categoryTmp: any = this._categories.find(tmp => tmp.identifier === category.identifier);
-        categoryTmp.identifier = category.identifier;
-        categoryTmp.applications = [];
-        this.categoryList.push(categoryTmp);
-        identifiers.push(category.identifier);
+    for (const id in this._categories) {
+      if (!this._categories.hasOwnProperty(id) || id === 'default') {
+        continue;
       }
-    });
+
+      const category: any = this._categories[id];
+      category.id = id;
+      category.applications = [];
+      this.categoryList.push(category);
+      ids.push(id);
+    }
 
     this.categoryList.forEach(category => {
-      if (category.identifier === 'default') {
-        category.applications = sortedApps.filter((app) => !identifiers.includes(app.category));
+      if (category.id === 'default') {
+        category.applications = sortedApps.filter((app) => !ids.includes(app.category));
       } else {
-        category.applications = sortedApps.filter((app) => app.category === category.identifier);
+        category.applications = sortedApps.filter((app) => app.category === category.id);
       }
     });
 

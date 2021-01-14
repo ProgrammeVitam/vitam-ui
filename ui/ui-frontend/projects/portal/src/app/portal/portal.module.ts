@@ -55,7 +55,7 @@ import { PortalComponent } from './portal.component';
     RouterModule,
     ApplicationSelectContentModule,
     WelcomeMessageModule,
-    ApplicationListModule
+    ApplicationListModule,
   ],
   declarations: [PortalComponent]
 })
