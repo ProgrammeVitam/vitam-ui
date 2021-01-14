@@ -1,0 +1,49 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+
+  <div class="form-group">
+    <div class="col-12 form-control">
+      <mat-form-field class="vitamui-mat-select">
+        <mat-select formControlName="ruleType" placeholder="Type de règle" panelclass="vitamui-mat-select"
+          required="required" i18n-placeholder="Identifier@@rulePreviewRuleTypePlaceholder">
+          <mat-option *ngFor='let ruleType of ruleTypes' [value]="ruleType.key">{{ruleType.label}}</mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 form-control">
+      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*" maxlength="3"
+        required placeholder="Durée" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
+        <ng-container *ngIf="form.get('ruleDuration')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"
+            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+        </ng-container>
+      </vitamui-common-input>
+      <mat-form-field class="vitamui-mat-select">
+        <mat-select formControlName="ruleMeasurement" placeholder="Unité de mesure" panelclass="vitamui-mat-select"
+          required="required" i18n-placeholder="Identifier@@rulePreviewRuleMeasurementPlaceholder">
+          <mat-option *ngFor='let ruleMeasurement of ruleMeasurements' [value]="ruleMeasurement.key">
+            {{ruleMeasurement.label}}</mat-option>
+        </mat-select>
+        <div class="select-arrow">
+          <i class="material-icons">keyboard_arrow_up</i>
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </mat-form-field>
+    </div>
+
+    <div class="col-12 form-control">
+      <vitamui-common-textarea formControlName="ruleDescription" placeholder="Description" [rows]="2">
+      </vitamui-common-textarea>
+    </div>
+  </div>
+
+
+
+  <div class="form-group bottom">
+    <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>
+  </div>
+</form>

@@ -286,6 +286,18 @@ public class ServicesData {
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
 
+    //--------------------------------- REGLES DE GESTION -------------------------------------
+
+    public static final String SERVICE_RULES = "RULES";
+
+    public static final String ROLE_GET_RULES = GET_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_CREATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+    
+    public static final String ROLE_UPDATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
+    
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
@@ -414,6 +426,10 @@ public class ServicesData {
             ROLE_CREATE_SECURITY_PROFILES,
             ROLE_DELETE_SECURITY_PROFILES,
 
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
             ROLE_GET_ONTOLOGIES,
             ROLE_CREATE_ONTOLOGIES,
@@ -525,6 +541,10 @@ public class ServicesData {
             ROLE_CREATE_SECURITY_PROFILES,
             ROLE_DELETE_SECURITY_PROFILES,
 
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
             ROLE_GET_ONTOLOGIES,
             ROLE_CREATE_ONTOLOGIES,
