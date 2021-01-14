@@ -123,7 +123,7 @@ const expectedCustomer = {
   }],
   themeColors: {},
   gdprAlert : true,
-  gdprAlertDelay : 72
+  gdprAlertDelay : 72,
   tenantName: 'tenantName'
 };
 
