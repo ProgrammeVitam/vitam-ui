@@ -55,6 +55,7 @@ import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContract
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
 import fr.gouv.vitamui.referential.internal.server.profile.ProfileInternalService;
+import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
 import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileInternalService;
 import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
 
@@ -134,4 +135,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ProbativeValueInternalService probativeValueInternalService;
+
+    @MockBean
+    private RuleInternalService ruleInternalService;
 }
