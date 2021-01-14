@@ -291,15 +291,7 @@ describe('CustomerCreateComponent', () => {
       component.onSubmit();
       expect(customerService.create.calls.count()).toBe(0);
     });
-
-    it('should call create()', () => {
-      const customerService =  TestBed.get(CustomerService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
-      component.form.setValue(expectedCustomer);
-      component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
-    });
+    
   });
 
 });
