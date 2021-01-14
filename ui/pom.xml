@@ -19,6 +19,7 @@
         <module>ui-portal</module>
         <module>ui-identity</module>
         <module>ui-referential</module>
+        <module>ui-ingest</module>
     </modules>
 
 </project>

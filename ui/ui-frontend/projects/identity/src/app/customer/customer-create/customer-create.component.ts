@@ -43,9 +43,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { takeUntil } from 'rxjs/operators';
 import { CustomerService } from '../../core/customer.service';
+import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerCreateValidators } from './customer-create.validators';
-
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 interface CustomerInfo {
   code: string;
@@ -62,7 +61,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   private destroy = new Subject();
   public form: FormGroup;
-  public stepIndex = 0;
   public hasError = true;
   public message: string;
   public creating = false;
@@ -71,13 +69,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     name: null,
     companyName: null,
   };
-
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
-
+  public stepIndex = 0;
+  public stepCount = 5;
   // tslint:disable-next-line: variable-name
   private _customerForm: FormGroup;
   public get customerForm(): FormGroup { return this._customerForm; }
@@ -94,6 +87,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
+    private tenantFormValidators: TenantFormValidators,
   ) {
   }
 
@@ -123,7 +117,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       themeColors: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
-      ])
+      ]),
+      tenantName: [
+        null,
+        [Validators.required],
+        this.tenantFormValidators.uniqueName(),
+      ]
     });
 
 
@@ -154,6 +153,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       });
   }
 
+  getOwnerName(): string {
+    return this.form.get(['owners', 0]).value ? this.form.get(['owners', 0]).value.name : '';
+  }
+
   onCancel() {
     if (this.form.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
@@ -163,7 +166,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.lastStepIsInvalid()) { return; }
+    if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) { return; }
     this.creating = true;
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
@@ -219,10 +222,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   lastStepIsInvalid(): boolean {
     const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
     return this.form.pending || this.form.invalid || invalid || this.creating;
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
 }

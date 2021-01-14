@@ -59,6 +59,10 @@ public class CustomerCreationFormData {
     @NotNull
     private CustomerDto customerDto;
 
+    @NotNull
+    private String tenantName;
+
+    private Optional<MultipartFile> logo;
     private Optional<MultipartFile> header;
     private Optional<MultipartFile> footer;
     private Optional<MultipartFile> portal;

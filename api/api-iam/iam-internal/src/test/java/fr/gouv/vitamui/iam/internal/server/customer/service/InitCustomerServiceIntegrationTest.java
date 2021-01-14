@@ -206,6 +206,7 @@ public class InitCustomerServiceIntegrationTest {
     @Test
     public void testCreateCustomer() {
         final CustomerCreationFormData customerDta = new CustomerCreationFormData(buildCustomerDto());
+        customerDta.setTenantName("tenantName");
         customerInternalService.create(customerDta);
 
         Criteria criteria = Criteria.where("obId").is(customerDta.getCustomerDto().getIdentifier()).and("obIdReq").is(MongoDbCollections.CUSTOMERS)

@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -55,7 +56,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -100,6 +109,7 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get {}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return identityProviderCrudService.getOne(id, embedded);
     }
 
@@ -127,6 +137,7 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
     public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return identityProviderCrudService.patch(partialDto);
     }

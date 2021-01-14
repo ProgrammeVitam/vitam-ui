@@ -67,7 +67,11 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
 
   createCustomer(customer: Customer, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
-    formData.append('customerDto', JSON.stringify(customer));
+    const customerTmp = Object.assign({}, customer);
+    formData.append('tenantName', customerTmp.tenantName);
+    customerTmp.tenantName = undefined;
+    formData.append('customerDto', JSON.stringify(customerTmp));
+
     if (logos) {
       logos.forEach(logo => {
         formData.append(logo.attr.toLowerCase(), logo.file);

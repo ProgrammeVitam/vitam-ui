@@ -79,17 +79,16 @@ export class ApplicationService {
   /**
    * Map that will contain applications grouped by categories
    */
-  private appMap: Map<Category, Application[]>;
+  private appMap: Map<Category, Application[]> = undefined;
 
   /*
    * Categories of the application.
    */
-  set categories(categories: Category[]) { this._categories = categories; }
-
-  get categories(): Category[] { return this._categories; }
+  set categories(categories: { [categoryId: string]: Category }) { this._categories = categories; }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
 
   // tslint:disable-next-line:variable-name
-  _categories: Category[];
+  _categories: { [categoryId: string]: Category };
 
   private appMap$ = new BehaviorSubject(this.appMap);
 
@@ -105,7 +104,7 @@ export class ApplicationService {
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
-        this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
+        this._categories = applicationInfo.CATEGORY_CONFIGURATION;
         return applicationInfo;
       })
     );
@@ -116,13 +115,12 @@ export class ApplicationService {
    */
   public getAppsMap(): Observable<Map<Category, Application[]>> {
     if (!this.appMap) {
-      const stringMap = this.fillCategoriesWithApps(this.categories, this.applications);
+      const appsByCategorie = this.fillCategoriesWithApps(this.categories, this.applications);
       this.analyticsUpdated$.subscribe(() => {
         const lastUsedApps = this.getLastUsedApps(this.categories, this.applications);
         if (lastUsedApps) {
           this.appMap.set(lastUsedApps.category, lastUsedApps.apps);
-          const convertedMap = this.convertToCategoryMap(stringMap);
-          this.appMap = this.sortMapByCategory(convertedMap);
+          this.appMap = this.sortMapByCategory(appsByCategorie);
         }
         this.appMap$.next(this.appMap);
       });
@@ -160,10 +158,9 @@ export class ApplicationService {
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
       const lastUsedApps = this.getLastUsedApps(this.categories, apps);
       if (lastUsedApps) {
-        resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
+        resultMap.set(lastUsedApps.category, lastUsedApps.apps);
       }
-      const convertedMap = this.convertToCategoryMap(resultMap);
-      return this.sortMapByCategory(convertedMap);
+      return this.sortMapByCategory(resultMap);
     }
   }
 
@@ -187,35 +184,27 @@ export class ApplicationService {
       }
     });
   }
-
-  /**
-   * Convert a map using a string category identifier as key to a map using a Category object instead
-   * @param stringMap - the map to convert as Map<string, Application[]>
-   */
-  private convertToCategoryMap(stringMap: Map<string, Application[]>): Map<Category, Application[]> {
-    const categMap = new Map<Category, Application[]>();
-    stringMap.forEach((val, key) => {
-      const categ = this.categories.find(value => value.identifier === key);
-      categMap.set(categ, val);
-    });
-    return categMap;
-  }
-
+  
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
   }
 
-  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<string, Application[]> {
-    const resultMap = new Map<string, Application[]>();
+  private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
+    const resultMap = new Map<Category, Application[]>();
+    let categories: Category[] = Object.values(categoriesByIds);
+    categories.sort((a, b) => {
+      return a.order > b.order ? 1 : -1;
+    });
+
     categories.forEach((category: Category) => {
       if (applications.some(app =>  app.category === category.identifier)) {
-        resultMap.set(category.identifier, this.getSortedAppsOfCategory(category, applications));
+        resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
       }
     });
     return resultMap;
   }
 
-  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -232,9 +221,8 @@ export class ApplicationService {
 
       if (lastUsedApps.length !== 0) {
         // Check if category already exists
-        const categoryIndex = categories.findIndex((category: Category) => category.identifier === lastUsedAppsCateg.identifier);
-        if (categoryIndex === -1) {
-          this.categories.push(lastUsedAppsCateg);
+        if (!categoriesByIds[lastUsedAppsCateg.identifier]) {
+          categoriesByIds[lastUsedAppsCateg.identifier] = lastUsedAppsCateg;
         }
 
         // Sort last used apps by date
@@ -265,13 +253,6 @@ export class ApplicationService {
     // Sort apps inside categories
     return applications.sort((a: Application, b: Application) => {
       return a.position < b.position ? -1 : 1;
-    });
-  }
-
-  private sortCategories(categories: Category[]): Category[] {
-    // Sort apps inside categories
-    return categories.sort((a, b) => {
-      return a.order > b.order ? 1 : -1;
     });
   }
 }

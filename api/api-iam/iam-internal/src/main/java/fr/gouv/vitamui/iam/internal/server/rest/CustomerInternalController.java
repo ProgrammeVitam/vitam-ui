@@ -36,16 +36,28 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.common.utils.CustomerDtoEditor;
 import fr.gouv.vitamui.iam.common.utils.MapEditor;
+import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,30 +77,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.common.utils.CustomerDtoEditor;
-import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the customers.
@@ -157,6 +152,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public CustomerDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get One {}, criteria={}", id, criteria);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         RestUtils.checkCriteria(criteria);
         return internalCustomerService.getOne(id, criteria);
     }
@@ -191,6 +187,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalCustomerService.update(dto);
     }
@@ -206,6 +203,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     public CustomerDto patch(final @PathVariable("id") String id,
                              @ModelAttribute final CustomerPatchFormData customerData) {
         LOGGER.debug("Patch customer {}", customerData);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) customerData.getPartialCustomerDto().get("id")), "The DTO identifier must match the path identifier for update.");
         return internalCustomerService.patch(customerData);
     }

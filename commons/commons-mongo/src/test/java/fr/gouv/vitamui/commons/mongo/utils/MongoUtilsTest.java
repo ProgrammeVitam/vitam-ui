@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 
+import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.mongo.domain.Person;
 import fr.gouv.vitamui.commons.utils.ReflectionUtils;
@@ -51,30 +52,29 @@ public class MongoUtilsTest {
 
     @Test
     public void testGetCriteriaDefinitionFromEntityClass() {
-        fr.gouv.vitamui.commons.api.domain.Criterion c = new fr.gouv.vitamui.commons.api.domain.Criterion(
-                "firstName", "alex", CriterionOperator.EQUALS);
+        Criterion c = new Criterion("firstName", "alex", CriterionOperator.EQUALS);
         CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("firstName");
 
-        c = new fr.gouv.vitamui.commons.api.domain.Criterion("age", 2, CriterionOperator.EQUALS);
+        c = new Criterion("age", 2, CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("age");
 
-        c = new fr.gouv.vitamui.commons.api.domain.Criterion("lastConnection", OffsetDateTime.now().toString(),
+        c = new Criterion("lastConnection", OffsetDateTime.now().toString(),
                 CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("lastConnection");
 
-        c = new fr.gouv.vitamui.commons.api.domain.Criterion("emails", Arrays.asList("julien@vitamui.com"),
+        c = new Criterion("emails", Arrays.asList("julien@vitamui.com"),
                 CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("emails");
 
-        c = new fr.gouv.vitamui.commons.api.domain.Criterion("id", "012absd42", CriterionOperator.EQUALS);
+        c = new Criterion("id", "012absd42", CriterionOperator.EQUALS);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("id");
 
-        c = new fr.gouv.vitamui.commons.api.domain.Criterion("lastName", Arrays.asList("titi", "toto"),
+        c = new Criterion("lastName", Arrays.asList("titi", "toto"),
                 CriterionOperator.NOTIN);
         criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("lastName");
@@ -161,8 +161,7 @@ public class MongoUtilsTest {
     @Test
     public void getCriteria_with_elemMatch() {
         QueryDto queryDto = QueryDto.criteria("country", "France", CriterionOperator.EQUALS);
-        fr.gouv.vitamui.commons.api.domain.Criterion criterion =
-            new fr.gouv.vitamui.commons.api.domain.Criterion("addressList", queryDto, CriterionOperator.ELEMMATCH);
+        Criterion criterion = new Criterion("addressList", queryDto, CriterionOperator.ELEMMATCH);
         Criteria criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(criterion, Person.class);
 
         assertThat(criteria.getKey()).isEqualTo("addressList");

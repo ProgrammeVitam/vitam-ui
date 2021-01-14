@@ -27,7 +27,7 @@
 {% if (dns_servers|length > 0) and ("" not in dns_servers) %}
   "recursors": [ "{{ dns_servers|join('", "') }}" ],
 {% endif %}
-  "domain": "consul",
+  "domain": "{{ consul_domain }}",
   "datacenter": "{{ vitamui_site_name }}",
   "retry_join": [ {% for item in groups['hosts_vitamui_consul_server'] %}"{{ hostvars[item][consul.network] }}"{% if not loop.last %},{% endif %}{% endfor %} ],
   "retry_interval": "{{ consul.retry_interval }}s",

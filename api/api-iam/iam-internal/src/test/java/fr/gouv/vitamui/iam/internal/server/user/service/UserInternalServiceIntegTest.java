@@ -333,22 +333,22 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Event event = events.iterator().next();
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo("{"
-                + "\"Nom\":\"DUPONT\","
-                + "\"Prénom\":\"Jean\","
-                + "\"Email\":\"user-dev@vitamui.com\","
+                + "\"Nom\":\"-\","
+                + "\"Prénom\":\"-\","
+                + "\"Email\":\"-\","
                 + "\"Langue\":\"FRENCH\","
-                + "\"Numéro mobile\":\"+33671270699\","
-                + "\"Numéro fixe\":\"+33134237766\","
+                + "\"Numéro mobile\":\"-\","
+                + "\"Numéro fixe\":\"-\","
                 + "\"Type\":\"NOMINATIVE\","
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
                 + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
                 + "\"Code du site\":\"001\","
-                + "\"Nom de la rue\":\"rue faubourg poissoniére\","
-                + "\"Code postal\":\"75009\","
-                + "\"Ville\":\"paris\","
-                + "\"Pays\":\"france\""
+                + "\"Nom de la rue\":\"-\","
+                + "\"Code postal\":\"-\","
+                + "\"Ville\":\"-\","
+                + "\"Pays\":\"-\""
                 + "}");
         //@formatter:on
     }
@@ -579,7 +579,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         map.put("customerId", user.getCustomerId());
         map.put("address", TestUtils.getMapFromObject(newAddress));
 
-        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+        Mockito.doCallRealMethod().when(addressService).processPatch(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
 
         internalUserService.patch(map);
 
@@ -591,10 +591,10 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo(
                 "{\"diff\":{"
-                + "\"-Code postal\":\"75009\",\"+Code postal\":\"newZipCode\","
-                + "\"-Pays\":\"france\",\"+Pays\":\"newCountry\","
-                + "\"-Ville\":\"paris\",\"+Ville\":\"newCity\","
-                + "\"-Nom de la rue\":\"rue faubourg poissoniére\",\"+Nom de la rue\":\"newStreet\""
+                + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
+                + "\"-Pays\":\"-\",\"+Pays\":\"-\","
+                + "\"-Ville\":\"-\",\"+Ville\":\"-\","
+                + "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\""
                 + "}}");
         //@formatter:on
     }

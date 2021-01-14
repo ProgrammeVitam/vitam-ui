@@ -36,14 +36,25 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
+import fr.gouv.vitamui.iam.common.utils.CustomerDtoEditor;
+import fr.gouv.vitamui.iam.common.utils.MapEditor;
+import fr.gouv.vitamui.identity.service.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -66,23 +77,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
-import fr.gouv.vitamui.iam.common.utils.CustomerDtoEditor;
-import fr.gouv.vitamui.iam.common.utils.MapEditor;
-import fr.gouv.vitamui.identity.service.CustomerService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "customers")
 @RestController
@@ -119,6 +118,7 @@ public class CustomerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerDto getOne(final @PathVariable String id) {
         LOGGER.debug("Get customer={}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 
@@ -155,6 +155,7 @@ public class CustomerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerDto update(final @PathVariable("id") String id, @RequestBody final CustomerDto entityDto) {
         LOGGER.debug("update class={}", entityDto.getClass().getName());
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);
     }
@@ -174,6 +175,7 @@ public class CustomerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public CustomerDto patch(final @PathVariable("id") String id, @ModelAttribute final CustomerPatchFormData customerPatchFormData) {
         LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
                 "Unable to patch customer : the DTO id must match the path id");
         return service.patch(buildUiHttpContext(), id, customerPatchFormData);
@@ -183,6 +185,7 @@ public class CustomerController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for customer with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -191,6 +194,7 @@ public class CustomerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
         LOGGER.debug("Get customer logos={}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = service.getLogo(buildUiHttpContext(), id, type);
         if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
             return response;
