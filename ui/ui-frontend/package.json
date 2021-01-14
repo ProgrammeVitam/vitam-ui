@@ -58,8 +58,7 @@
     "check:referential": "npm run lint:referential && npm run test:referential && npm run build:referential",
     "copy-scss:vitamui-library": "cp-cli ./projects/vitamui-library/src/sass ./dist/sass",
     "build:vitamui-library": "ng build vitamui-library",
-    "watch:vitamui-library": "ng build vitamui-library --watch",
-    "extract-translations": "ngx-translate-extract --input ./projects/portal/src --output ./projects/portal/src/assets/i18n/*.json --sort --format namespaced-json --key-as-default-value"
+    "watch:vitamui-library": "ng build vitamui-library --watch"
   },
   "private": true,
   "dependencies": {
@@ -78,8 +77,6 @@
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/uuid": "^7.0.0",
-    "@ngx-translate/core": "^12.1.2",
-    "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^4.5.0",
     "bufferutil": "^4.0.1",
     "classlist.js": "^1.1.20150312",

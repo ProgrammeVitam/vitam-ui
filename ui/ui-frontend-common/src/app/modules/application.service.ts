@@ -77,7 +77,7 @@ export class ApplicationService {
   /**
    * Map that will contain applications grouped by categories
    */
-  private appMap: Map<Category, Application[]>;
+  private appMap: Map<Category, Application[]> = undefined;
 
   /*
    * Categories of the application.
@@ -126,6 +126,10 @@ export class ApplicationService {
     return this.appMap$;
   }
 
+  private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
+    return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
+  }
+
   public openApplication(app: Application, router: Router, uiUrl: string): void {
     // If called app is in the same server...
     if (app.url.includes(uiUrl)) {
@@ -136,7 +140,7 @@ export class ApplicationService {
   }
 
   private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
-
+    const resultMap = new Map<Category, Application[]>();
     let categories: Category[] = Object.values(categoriesByIds);
     categories.sort((a, b) => {
       return a.order > b.order ? 1 : -1;
@@ -147,10 +151,10 @@ export class ApplicationService {
         resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
       }
     });
-    return this.sortMapByCategory(resultMap);
+    return resultMap;
   }
 
-  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -167,9 +171,8 @@ export class ApplicationService {
 
       if (lastUsedApps.length !== 0) {
         // Check if category already exists
-        const categoryIndex = categories.findIndex((category: Category) => category.identifier === lastUsedAppsCateg.identifier);
-        if (categoryIndex === -1) {
-          this.categories.push(lastUsedAppsCateg);
+        if (!categoriesByIds[lastUsedAppsCateg.identifier]) {
+          categoriesByIds[lastUsedAppsCateg.identifier] = lastUsedAppsCateg;
         }
 
         // Sort last used apps by date
