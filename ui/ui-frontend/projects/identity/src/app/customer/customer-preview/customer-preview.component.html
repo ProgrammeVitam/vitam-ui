@@ -1,21 +1,25 @@
   <vitamui-common-sidenav-header [title]="customer?.name" [subtitle]="'(' +  customer?.code + ')'" [icon]="'vitamui-icon-bank'"
    (onclose)="emitClose()"></vitamui-common-sidenav-header>
 
-  <div class="vitamui-sidepanel-body">
+  <div class="vitamui-sidepanel-body" >
     <mat-tab-group class="preview-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
+      <mat-tab label="{{'CUSTOMER.TAB.INFORMATION' | translate}}" i18n-label="Information tab@@customerPreviewTabInformation">
         <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"></app-information-tab>
       </mat-tab>
 
-      <mat-tab label="SSO" i18n-label="SSO tab@@customerPreviewTabSSO" class="no-padding">
+      <mat-tab label="{{'CUSTOMER.TAB.SSO' | translate}}" i18n-label="SSO tab@@customerPreviewTabSSO" class="no-padding">
         <app-sso-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-sso-tab>
       </mat-tab>
 
-      <mat-tab label="ID. graphique" i18n-label="Visual identity tab@@customerPreviewTabVisualIdentity">
+      <mat-tab label="{{'CUSTOMER.TAB.GRAPHIC_ID' | translate}}" i18n-label="Visual identity tab@@customerPreviewTabVisualIdentity">
         <app-graphic-identity-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-graphic-identity-tab>
       </mat-tab>
 
-      <mat-tab label="Historique" i18n-label="History tab@@customerPreviewTabHistory">
+      <mat-tab label="{{'CUSTOMER.TAB.HOMEPAGE_MESSAGE' | translate}}" i18n-label="Visual identity tab@@customerPreviewTabVisualIdentity">
+        <app-homepage-message-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-homepage-message-tab>
+      </mat-tab>
+
+      <mat-tab label="{{'CUSTOMER.TAB.HISTORY' | translate}}" i18n-label="History tab@@customerPreviewTabHistory">
         <vitamui-common-operation-history-tab [id]="customer?.id" [identifier]="customer?.identifier" collectionName="customers" [filter]="filterEvents"></vitamui-common-operation-history-tab>
       </mat-tab>
     </mat-tab-group>

@@ -3,7 +3,7 @@
     (formToSend)="customForm = $event.form; logos = $event.logos">
   </app-graphic-identity>
   <div class="d-flex">
-    <button type="button" class="btn primary mr-4 text uppercase" [disabled]="disabled"
+    <button type="button" class="btn primary mr-4 uppercase" [disabled]="disabled"
       (click)="updateGraphicIdentity()">{{'GRAPHIC_IDENTITY.SUBMIT' | translate}}</button>
     <button type="button" class="btn cancel link uppercase" (click)="onCancel()">{{'COMMON.CANCEL' | translate}}</button>
   </div>

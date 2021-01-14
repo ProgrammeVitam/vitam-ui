@@ -1,3 +1,12 @@
+:host::ng-deep {
+    .mat-tab-header-pagination.mat-tab-header-pagination {
+        display: flex !important;
+    }
+    .mat-tab-header-pagination.mat-tab-header-pagination-disabled {
+        display: none!important;
+    }
+}
+
 .no-padding {
     padding: 0;
 }

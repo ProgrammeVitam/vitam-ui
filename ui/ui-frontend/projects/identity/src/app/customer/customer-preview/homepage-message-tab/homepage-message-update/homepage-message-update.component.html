@@ -1,0 +1,36 @@
+<div class="content">
+
+  <form [formGroup]="homepageMessageForm" id="homepageMessageForm">
+
+    <div class="d-flex justify-content-between">
+      <div class="pl-4 d-flex flex-column">
+        <div class="text large bold mb-4">
+          {{'HOMEPAGE_MESSAGE.UPDATE_TITLE' | translate}}
+        </div>
+
+        <vitamui-common-input
+        class="pb-2"
+        formControlName="portalTitle"
+        [placeholder]="'HOMEPAGE_MESSAGE.PORTAL_TITLE' | translate"
+        >
+        </vitamui-common-input>
+
+          <vitamui-common-textarea
+            class="pb-2"
+            formControlName="portalMessage"
+            [placeholder]="'HOMEPAGE_MESSAGE.PORTAL_MESSAGE' | translate"
+            [maxlength]="500"></vitamui-common-textarea>
+          <small class="d-flex justify-content-end ">{{homepageMessageForm.get('portalMessage')?.value?.length}} {{'HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH' | translate}}</small>
+       
+      </div>
+    </div>
+    <div class="d-flex mt-4">
+      <button type="submit" class="btn primary uppercase mr-4" [disabled]="!homepageMessageForm.valid">
+        {{'COMMON.APPLY_UPDATE' | translate}}
+      </button>
+      <button type="button" class="btn cancel link uppercase" (click)="onCancel()">
+        {{'COMMON.CANCEL' | translate}}
+      </button>
+    </div>
+  </form>
+</div>

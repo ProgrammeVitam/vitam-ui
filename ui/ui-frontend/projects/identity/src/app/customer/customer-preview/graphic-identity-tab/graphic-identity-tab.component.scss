@@ -7,11 +7,6 @@
     flex-direction: column;
   }
 
-  label {
-    font-size: 13px;
-    color: $greyish-two;
-    font-weight: normal;
-  }
 
   label+* {
     text-overflow: ellipsis;
