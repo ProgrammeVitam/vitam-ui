@@ -82,10 +82,6 @@ export class VitamuiDragDropFileComponent implements OnInit {
   @Input()
   public logoSize: {width: number, height: number} = {width: 1000, height: 1000};
 
-  @Input()
-  public size: {width: number, height: number} = {width: 240, height: 127};
-
-
   @Output()
   public file = new EventEmitter<File>();
 

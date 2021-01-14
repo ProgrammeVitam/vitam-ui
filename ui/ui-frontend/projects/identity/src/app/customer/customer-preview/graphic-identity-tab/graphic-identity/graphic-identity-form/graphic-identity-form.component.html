@@ -16,11 +16,10 @@
           <div>
             <label class="text medium bold">{{'GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
-              class="color-background"
+              class="color-background image-area-big"
               [disabled]="disabled"
               [fileUrl]="graphicIdentityForm.get('portalUrl')?.value"
               [logoSize]="{width: 280, height: 100}"
-              [size]="{width: 410, height: 230}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Portal, $event)"
               [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"
@@ -31,11 +30,10 @@
           <div class="mr-4">
             <label class="text medium bold">{{'GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
-              class="color-header-footer"
+              class="color-header-footer image-area-small"
               [disabled]="disabled"
               [fileUrl]="graphicIdentityForm.get('headerUrl')?.value"
               [logoSize]="{width: 280, height: 100}"
-              [size]="{width: 196, height: 127}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Header, $event)"
               [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"
@@ -44,11 +42,10 @@
           <div>
             <label class="text medium bold">{{'GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
-              class="color-header-footer"
+              class="color-header-footer image-area-small"
               [disabled]="disabled"
               [fileUrl]="graphicIdentityForm.get('footerUrl')?.value"
               [logoSize]="{width: 280, height: 100}"
-              [size]="{width: 196, height: 127}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Footer, $event)"
               [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"

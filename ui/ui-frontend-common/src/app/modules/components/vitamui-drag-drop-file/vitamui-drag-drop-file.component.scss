@@ -4,11 +4,6 @@
     display: flex;
     flex-direction: column;
 
-    .drag-and-drop-area {
-        border: 2px dashed var(--vitamui-grey-600);
-        border-radius: 6px;
-    }
-    
     .on-over {
         border: 2px solid var(--vitamui-grey-600);
     
@@ -22,24 +17,11 @@
     .pj {
         transform: rotate(45deg);
     }
-    
-    .small {
-        color: var(--vitamui-grey-700);
-    }
 
     .pointer {
         cursor: pointer;
     }
     
-    img {
-        max-width: 100%;
-        max-height: 100%;
-    }
-
-    .drop-area {
-        height: 100%;
-    }
-
     .error-message {
         color: $red;
     }

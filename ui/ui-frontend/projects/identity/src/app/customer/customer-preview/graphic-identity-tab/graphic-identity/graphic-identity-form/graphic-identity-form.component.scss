@@ -4,13 +4,28 @@
   h2 {
     margin-top: 0;
   }
-  
+
   ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
     background-color: var(--vitamui-header-footer);
   }
 
   ::ng-deep .color-background > * > .drag-and-drop-area { 
     background-color: var(--vitamui-background);
+  }
+
+  ::ng-deep .image-area-big > * > .drag-and-drop-area > .image-area { 
+    height: 230px;
+    width: 410px;
+    max-width: 100%;
+
+    img {
+      max-height: 120px;
+      max-width: 100%;
+    }
+  }
+
+  ::ng-deep .image-area-small > * > .drag-and-drop-area > .image-area { 
+    width: 200px;
   }
 
   .form-group {
