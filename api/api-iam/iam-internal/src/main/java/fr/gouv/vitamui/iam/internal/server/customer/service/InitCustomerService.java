@@ -151,7 +151,7 @@ public class InitCustomerService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitCustomerService.class);
 
     @Transactional()
-    public void initCustomer(final CustomerDto customerDto, final List<OwnerDto> owners) {
+    public void initCustomer(final String tenantName, final CustomerDto customerDto, final List<OwnerDto> owners) {
         final List<OwnerDto> ownerDtos = owners;
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
@@ -159,7 +159,7 @@ public class InitCustomerService {
         createIdentityProvider(customerDto.getId(), customerDto.getDefaultEmailDomain());
 
         // create proof tenant, profiles, group and user
-        final Tenant proofTenantDto = createProofTenant(createdOwnerDtos.get(0), customerDto.getId());
+        final Tenant proofTenantDto = createProofTenant(tenantName, createdOwnerDtos.get(0).getId(), customerDto.getId());
         final List<Profile> createdAdminProfiles = createAdminProfiles(customerDto, proofTenantDto);
         final Group createdAdminGroup = createAdminGroup(customerDto, createdAdminProfiles);
         createAdminUser(customerDto, createdAdminGroup);
@@ -230,12 +230,12 @@ public class InitCustomerService {
         return saveIdentityProvider(idp);
     }
 
-    private Tenant createProofTenant(final OwnerDto ownerDto, final String customerId) {
+    private Tenant createProofTenant(final String tenantName, final String ownerId, final String customerId) {
         final Tenant tenant = new Tenant();
         tenant.setCustomerId(customerId);
-        tenant.setName(ownerDto.getName());
+        tenant.setName(tenantName);
         tenant.setProof(true);
-        tenant.setOwnerId(ownerDto.getId());
+        tenant.setOwnerId(ownerId);
         tenant.setEnabled(true);
         tenant.setReadonly(false);
         tenant.setIdentifier(internalTenantService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, 100));

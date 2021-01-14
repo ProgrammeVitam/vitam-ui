@@ -455,14 +455,13 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
+                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+                .setApplicationSessionId(internalSecurityService.getApplicationId());
+
         final Optional<Tenant> tenant = getRepository().findById(id);
         tenant.orElseThrow(() -> new NotFoundException(String.format("No tenant found with id : %s", id)));
-        // if tenant is proof event are stored in system proof tenant otherwise in customer proof tenant
-        final Tenant proofTenant = tenant.get().isProof()
-                ? tenantRepository.findByIdentifier(internalSecurityService.getProofTenantIdentifier())
-                : iamLogbookService.getProofTenantByCustomerId(tenant.get().getCustomerId());
-        final VitamContext vitamContext = new VitamContext(proofTenant.getIdentifier()).setAccessContract(proofTenant.getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         return logbookService.findEventsByIdentifierAndCollectionNames(String.valueOf(tenant.get().getIdentifier()), MongoDbCollections.TENANTS, vitamContext)
                 .toJsonNode();

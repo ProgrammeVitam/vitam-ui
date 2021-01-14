@@ -234,7 +234,7 @@
                         <phase>process-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>run ng-high-memory build -- --project=referential --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
+                            <arguments>run ng-high-memory build -- --project=referential --prod --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
                         </configuration>
                     </execution>
                     <execution>

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -97,6 +98,7 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public OwnerDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get one {} criteria={}", id, criteria);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", id);
         return internalOwnerService.getOne(id, criteria);
     }
 

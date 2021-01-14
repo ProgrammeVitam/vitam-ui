@@ -1,25 +1,25 @@
 .content {
     padding: 0 20rem;
   }
-  
+
   @media screen and (min-width: 1501px) and (max-width: 1750px) {
     .content {
       padding: 0 15rem;
     }
   }
-  
+
   @media screen and (min-width: 1301px) and (max-width: 1500px) {
     .content {
       padding: 0 6rem;
     }
   }
-  
+
   @media screen and (max-width: 1300px) {
     .content {
       padding: 0 3rem;
     }
   }
-  
+
   @media screen and (max-width: 500px) {
     .content {
       padding: 0 1rem;

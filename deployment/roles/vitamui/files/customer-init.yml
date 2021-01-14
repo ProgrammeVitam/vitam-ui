@@ -3,44 +3,6 @@
 customer-init:
   # Default profiles for each customer created
   profiles:
-    - name: Profil pour la gestion des profiles de sécurité
-      description: Gestion des profiles de sécurité dans Vitam
-      app-name: SECURITY_PROFILES_APP
-      level:
-      roles:
-       - ROLE_GET_SECURITY_PROFILES
-       - ROLE_CREATE_SECURITY_PROFILES
-       - ROLE_UPDATE_SECURITY_PROFILES
-       - ROLE_DELETE_SECURITY_PROFILES
-
-    - name: Profil pour la gestion des formats de fichiers
-      description: Gestion des formats de fichiers dans Vitam
-      app-name: FILE_FORMATS_APP
-      level:
-      roles:
-       - ROLE_GET_FILE_FORMATS
-       - ROLE_CREATE_FILE_FORMATS
-       - ROLE_UPDATE_FILE_FORMATS
-       - ROLE_DELETE_FILE_FORMATS
-
-    - name: Profil pour la gestion des ontologies
-      description: Gestion des ontologies dans Vitam
-      app-name: ONTOLOGY_APP
-      level:
-      roles:
-       - ROLE_GET_ONTOLOGIES
-       - ROLE_CREATE_ONTOLOGIES
-       - ROLE_DELETE_ONTOLOGIES
-
-    - name: Profile pour la gestion des contrats des contextes
-      description: Gestion des contrats des contextes dans Vitam
-      app-name: CONTEXTS_APP
-      level:
-      roles:
-       - ROLE_GET_CONTEXTS
-       - ROLE_CREATE_CONTEXTS
-       - ROLE_UPDATE_CONTEXTS
-
   #- name: profileName
   #  description: desc
   #  level: 1
@@ -58,13 +20,14 @@ customer-init:
   #   profiles:
   #     - profileName
   #  ...
+
   # Default users for each customer created
   users:
   #- last-name: lastName
   #   first-name: firstName
   #   profiles-group-name: group1
   #   level: 1
-  #   email-prefix: a@mail.com
+  #   email-prefix: email.local-part
 
   # Default profiles for each tenant created
   tenant-profiles:
@@ -105,6 +68,28 @@ customer-init:
        - ROLE_GET_AUDITS
        - ROLE_RUN_AUDITS
 
+    - name: Profil pour la gestion des opérations de sécurisation
+      description: Gestion des opérations de sécurisation dans Vitam
+      app-name: SECURE_APP
+      level:
+      roles:
+       - ROLE_GET_OPERATIONS
+
+    - name: Profil de gestion des valeurs probantes
+      description: Gestion des valeurs probantes dans Vitam
+      app-name: PROBATIVE_VALUE_APP
+      level:
+      roles:
+       - ROLE_GET_OPERATIONS
+       - ROLE_RUN_PROBATIVE_VALUE
+       
+    - name: Profil pour la lecture des formats de fichiers
+      description: Lecture des formats de fichiers dans Vitam
+      app-name: FILE_FORMATS_APP
+      level:
+      roles:
+       - ROLE_GET_FILE_FORMATS
+
     - name: Profil Journal des Opérations
       description: Gestion des applications des Journaux des Opérations
       app-name: LOGBOOK_OPERATION_APP
@@ -112,15 +97,14 @@ customer-init:
       roles:
         - ROLE_LOGBOOKS
 
-  #- name: profileName
-  #  description: desc
-  #  level: 1
-  #  app-name: app
-  #  roles:
-  #   - role_1
-  #   - role_2
-  #   - role_3
-  #  ...
+    - name: Profil pour le dépôt et suivi des versements
+      description: Gestion des applications de dépôt et suivi des versements
+      app-name: INGEST_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_GET_INGEST
+        - ROLE_CREATE_INGEST
+        - ROLE_GET_ALL_INGEST
 
   # Other Default profiles for admin group
   admin-profiles:

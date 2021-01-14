@@ -69,7 +69,7 @@ vitamui_platform_informations:
     zip_code: change-it
     city: change-it
     country: change-it
-  proof_tenant: 3
+  proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
   system_archive_tenant_identifier: 9

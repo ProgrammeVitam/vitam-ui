@@ -157,7 +157,7 @@ public class IamLogbookService {
      */
     public void createProfileEvent(final ProfileDto sourceEvent) {
         LOGGER.info("Create Profile {}", sourceEvent.toString());
-        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
+        create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
                 converters.getProfileConverter().convertToLogbook(sourceEvent));
     }
 
@@ -167,7 +167,7 @@ public class IamLogbookService {
     */
     public void createIdpEvent(final IdentityProviderDto sourceEvent) {
         LOGGER.info("Create Provider {}", sourceEvent.toString());
-        create(getProofTenantIdentifierByCustomerId(sourceEvent.getCustomerId()), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
+        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
                 EventType.EXT_VITAMUI_CREATE_IDP, converters.getIdpConverter().convertToLogbook(sourceEvent));
     }
 
@@ -213,7 +213,7 @@ public class IamLogbookService {
     */
     public void createOwnerEvent(final OwnerDto sourceEvent) {
         LOGGER.info("Create Owner {}", sourceEvent.toString());
-        create(getProofTenantIdentifierByCustomerId(sourceEvent.getCustomerId()), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS,
+        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS,
                 EventType.EXT_VITAMUI_CREATE_OWNER, converters.getOwnerConverter().convertToLogbook(sourceEvent));
     }
 
@@ -244,7 +244,7 @@ public class IamLogbookService {
     */
     public void createTenantEvent(final TenantDto sourceEvent) {
         LOGGER.info("Create Tenant {}", sourceEvent.toString());
-        create(getProofTenantIdentifierByCustomerId(sourceEvent.getCustomerId()), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS,
+        create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_CREATE_TENANT, converters.getTenantConverter().convertToLogbook(sourceEvent));
     }
 
@@ -265,7 +265,7 @@ public class IamLogbookService {
      */
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Profile {}", profile.toString());
-        update(getCurrentProofTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
+        update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
     }
 
     /**
@@ -295,7 +295,7 @@ public class IamLogbookService {
      */
     public void updateTenantEvent(final Tenant tenant, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update tenant {}", tenant.toString());
-        update(getProofTenantIdentifierByCustomerId(tenant.getCustomerId()), String.valueOf(tenant.getIdentifier()), MongoDbCollections.TENANTS,
+        update(getCurrentProofTenantIdentifier(), String.valueOf(tenant.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_UPDATE_TENANT, logbooks);
     }
 
@@ -306,7 +306,7 @@ public class IamLogbookService {
      */
     public void updateOwnerEvent(final Owner owner, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Owner {}", owner.toString());
-        update(getProofTenantIdentifierByCustomerId(owner.getCustomerId()), owner.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_UPDATE_OWNER,
+        update(getCurrentProofTenantIdentifier(), owner.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_UPDATE_OWNER,
                 logbooks);
     }
 
@@ -317,7 +317,7 @@ public class IamLogbookService {
      */
     public void updateIdpEvent(final IdentityProvider idp, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Provider {}", idp.toString());
-        update(getProofTenantIdentifierByCustomerId(idp.getCustomerId()), idp.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_UPDATE_IDP,
+        update(getCurrentProofTenantIdentifier(), idp.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_UPDATE_IDP,
                 logbooks);
     }
 

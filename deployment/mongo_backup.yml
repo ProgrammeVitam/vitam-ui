@@ -1,0 +1,15 @@
+---
+
+- hosts: hosts_vitamui_mongod
+  tasks:
+    - debug:
+        msg: "{{mongo_backup_reinstall}}"
+
+    - name: Pass variables to role
+      include_role:
+        name: mongo_backup
+      vars:
+        db: "{{ item.db }}"
+        collections: "{{ item.collections }}"
+      with_items: 
+        - "{{ mongo_backup_reinstall }}"

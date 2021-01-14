@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -69,6 +70,7 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
 
     public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size, final Optional<String> criteria,
             final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        SanityChecker.sanitizeCriteria(criteria);
         return getAllPaginated(context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 

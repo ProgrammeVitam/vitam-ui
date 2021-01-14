@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.commons.rest.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Optional;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
+import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -63,13 +61,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.util.Assert;
 
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
-import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 public final class RestUtils {
 
@@ -114,12 +113,13 @@ public final class RestUtils {
      * @param criteria
      */
     public static void checkCriteria(final Optional<String> criteria) {
+        SanityChecker.sanitizeCriteria(criteria);
         criteria.ifPresent(c -> CriteriaUtils.checkFormat(c));
     }
 
     /**
      * Check criteria
-     * @param criteria
+     * @param criteriaDto criteria query DTO
      */
     public static void checkCriteriaDto(final Optional<QueryDto> criteriaDto) {
         criteriaDto.ifPresent(c -> CriteriaUtils.checkFormat(c));

@@ -83,23 +83,10 @@ public class TenantConverter implements Converter<TenantDto, Tenant> {
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(tenant.getEnabled()));
         Optional<Owner> owner = ownerRepository.findById(tenant.getOwnerId());
         owner.ifPresent(o -> logbookData.put(OWNER_ID_KEY, o.getIdentifier()));
-        final String accessContractHoldingIdentifier = tenant.getAccessContractHoldingIdentifier();
-        if (StringUtils.isNotBlank(accessContractHoldingIdentifier)) {
-            logbookData.put(ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY, accessContractHoldingIdentifier);
-        }
-        final String accessContractLogbookIdentifier = tenant.getAccessContractLogbookIdentifier();
-        if (StringUtils.isNotBlank(accessContractLogbookIdentifier)) {
-            logbookData.put(ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY, accessContractLogbookIdentifier);
-        }
-        final String ingestContractHoldingIdentifier = tenant.getIngestContractHoldingIdentifier();
-        if (StringUtils.isNotBlank(ingestContractHoldingIdentifier)) {
-            logbookData.put(INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY, ingestContractHoldingIdentifier);
-        }
-
-        final String itemIngestContractIdentifier = tenant.getItemIngestContractIdentifier();
-        if (StringUtils.isNotBlank(itemIngestContractIdentifier)) {
-            logbookData.put(ITEM_INGEST_CONTRACT_IDENTIFIER_KEY, itemIngestContractIdentifier);
-        }
+        logbookData.put(ACCESS_CONTRACT_HOLDING_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getAccessContractHoldingIdentifier()));
+        logbookData.put(ACCESS_CONTRACT_LOGBOOK_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getAccessContractLogbookIdentifier()));
+        logbookData.put(INGEST_CONTRACT_HOLDING_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getIngestContractHoldingIdentifier()));
+        logbookData.put(ITEM_INGEST_CONTRACT_IDENTIFIER_KEY, LogbookUtils.getValue(tenant.getItemIngestContractIdentifier()));
 
         return ApiUtils.toJson(logbookData);
     }

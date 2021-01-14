@@ -36,12 +36,20 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.CrudController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.TenantExternalService;
+import io.swagger.annotations.Api;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,20 +68,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.TenantExternalService;
-import io.swagger.annotations.Api;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the tenants.
@@ -114,6 +112,7 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @Override
     public TenantDto getOne(final @PathVariable("id") String id) {
         LOGGER.debug("Get {}", id);
+        SanityChecker.check(id);
         return tenantExternalService.getOne(id);
     }
 
@@ -130,6 +129,7 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @Override
     public TenantDto update(final @PathVariable("id") String id, final @Valid @RequestBody TenantDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return tenantExternalService.update(dto);
     }
@@ -140,6 +140,7 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @Secured(ServicesData.ROLE_UPDATE_TENANTS)
     public TenantDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch tenant {} with {}", id, partialDto);
+        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch tenant : the DTO id must match the path id");
         return tenantExternalService.patch(partialDto);
     }
@@ -156,6 +157,7 @@ public class TenantExternalController implements CrudController<TenantDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for tenant with id :{}", id);
+        SanityChecker.check(id);
         return tenantExternalService.findHistoryById(id);
     }
 }

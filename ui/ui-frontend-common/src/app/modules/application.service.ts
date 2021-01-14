@@ -82,12 +82,11 @@ export class ApplicationService {
   /*
    * Categories of the application.
    */
-  set categories(categories: Category[]) { this._categories = categories; }
-
-  get categories(): Category[] { return this._categories; }
+  set categories(categories: { [categoryId: string]: Category }) { this._categories = categories; }
+  get categories(): { [categoryId: string]: Category } { return this._categories; }
 
   // tslint:disable-next-line:variable-name
-  _categories: Category[];
+  _categories: { [categoryId: string]: Category };
 
   private appMap$ = new BehaviorSubject(this.appMap);
 
@@ -103,7 +102,7 @@ export class ApplicationService {
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
-        this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
+        this._categories = applicationInfo.CATEGORY_CONFIGURATION;
         return applicationInfo;
       })
     );
@@ -136,12 +135,13 @@ export class ApplicationService {
     }
   }
 
-  private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
-    return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
-  }
+  private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
 
-  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<Category, Application[]> {
-    const resultMap = new Map<Category, Application[]>();
+    let categories: Category[] = Object.values(categoriesByIds);
+    categories.sort((a, b) => {
+      return a.order > b.order ? 1 : -1;
+    });
+
     categories.forEach((category: Category) => {
       if (applications.some(app =>  app.category === category.identifier)) {
         resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
@@ -200,13 +200,6 @@ export class ApplicationService {
     // Sort apps inside categories
     return applications.sort((a: Application, b: Application) => {
       return a.position < b.position ? -1 : 1;
-    });
-  }
-
-  private sortCategories(categories: Category[]): Category[] {
-    // Sort apps inside categories
-    return categories.sort((a, b) => {
-      return a.order > b.order ? 1 : -1;
     });
   }
 }

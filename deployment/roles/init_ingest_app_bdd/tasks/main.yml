@@ -1,0 +1,4 @@
+---
+- import_tasks: check_mongo_auth.yml
+
+- import_tasks: ingest.yml

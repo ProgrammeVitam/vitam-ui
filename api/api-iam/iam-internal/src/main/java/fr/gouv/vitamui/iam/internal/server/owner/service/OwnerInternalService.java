@@ -227,7 +227,7 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
                     else {
                         address = owner.getAddress();
                     }
-                    addressService.processPatch(address, CastUtils.toMap(entry.getValue()), logbooks);
+                    addressService.processPatch(address, CastUtils.toMap(entry.getValue()), logbooks, false);
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch owner " + owner.getId() + ": key " + entry.getKey() + " is not allowed");
@@ -263,26 +263,13 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id {}", id);
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
+                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+                .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Owner> owner = getRepository().findById(id);
         owner.orElseThrow(() -> new NotFoundException(String.format("No owner found with id : %s", id)));
-
-        final Criteria customerCriteria = Criteria.where(CUSTOMER_KEY).is(owner.get().getCustomerId()).and(IS_PROOF_TENANT_KEY).is(true);
-        try {
-            LOGGER.debug("find owner proof tenant criteria {}", JsonUtils.toJson((customerCriteria)));
-        }
-        catch (final JsonProcessingException e) {
-            // do nothing
-        }
-        final Tenant tenant = tenantRepository.findByOwnerId(owner.get().getId());
-        // if owner of tenant proof event are stored in system proof tenant otherwise in customer proof tenant
-        final Tenant proofTenant = tenant.isProof()
-                ? tenantRepository.findByIdentifier(internalSecurityService.getProofTenantIdentifier())
-                : iamLogbookService.getProofTenantByCustomerId(owner.get().getCustomerId());
-        final VitamContext vitamContext = new VitamContext(proofTenant.getIdentifier()).setAccessContract(proofTenant.getAccessContractLogbookIdentifier())
-                .setApplicationSessionId(internalSecurityService.getApplicationId());
-
-        LOGGER.debug("findHistoryById for id {}, tenant {}", id, proofTenant.getIdentifier());
 
         return logbookService.findEventsByIdentifierAndCollectionNames(owner.get().getIdentifier(), MongoDbCollections.OWNERS, vitamContext).toJsonNode();
     }

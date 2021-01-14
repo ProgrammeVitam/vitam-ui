@@ -30,6 +30,7 @@ describe('AuditInformationTabComponent', () => {
     agIdApp: 'agIdApp',
     agIdExt: 'agIdExt',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
+    obIdReq: 'obIdReq',
     events: [{
       id: 'id2',
       idAppSession: 'idAppSession2',
@@ -50,6 +51,7 @@ describe('AuditInformationTabComponent', () => {
       agId: 'agId',
       agIdApp: 'agIdApp',
       agIdExt: 'agIdExt',
+      obIdReq: 'obIdReq',
       rightsStatementIdentifier: 'rightsStatementIdentifier'
     }]
 

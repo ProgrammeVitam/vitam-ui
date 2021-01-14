@@ -1,8 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -211,12 +212,14 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         VitamUIUtils.copyProperties(ownerCreated, owner);
         assertThat(ownerCreated.getCode()).isNotBlank();
 
-        final Tenant tenant = new Tenant();
+        final TenantDto tenant = new TenantDto();
         tenant.setOwnerId(owner.getId());
         tenant.setProof(true);
         tenant.setIdentifier(125);
+        tenant.setAccessContractLogbookIdentifier("AC-000002");
 
-        Mockito.when(tenantRepository.findByOwnerId(ownerCreated.getId())).thenReturn(tenant);
+        Mockito.when(internalSecurityService.getTenantIdentifier()).thenReturn(tenant.getIdentifier());
+        Mockito.when(internalSecurityService.getTenant(eq(tenant.getIdentifier()))).thenReturn(tenant);
         final RequestResponse<LogbookOperation> operationsResponse = new RequestResponseOK<JsonNode>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
                 .addHeader(GlobalDataRest.X_APPLICATION_ID, "appId").setHttpCode(Response.Status.OK.getStatusCode());
         Mockito.when(logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())).thenReturn(operationsResponse);
@@ -224,6 +227,8 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         final JsonNode historyResult = ownerService.findHistoryById(ownerCreated.getId());
 
         assertThat(historyResult).isNotEmpty();
+        Mockito.verify(internalSecurityService).getTenantIdentifier();
+        Mockito.verify(internalSecurityService).getTenant(tenant.getIdentifier());
 
     }
 

@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -333,7 +335,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            LOGGER.info("Update {} {}", getObjectName(), dto);
+            LOGGER.debug("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);
             final String entityId = entity.getId();
@@ -518,15 +520,15 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                 case "customerId" :
                     break;
                 case "email" :
-                    logbooks.add(new EventDiffDto(UserConverter.EMAIL_KEY, user.getEmail(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(UserConverter.EMAIL_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setEmail(CastUtils.toString(entry.getValue()));
                     break;
                 case "firstname" :
-                    logbooks.add(new EventDiffDto(UserConverter.FIRSTNAME_KEY, user.getFirstname(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(UserConverter.FIRSTNAME_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setFirstname(CastUtils.toString(entry.getValue()));
                     break;
                 case "lastname" :
-                    logbooks.add(new EventDiffDto(UserConverter.LASTNAME_KEY, user.getLastname(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(UserConverter.LASTNAME_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setLastname(CastUtils.toString(entry.getValue()));
                     break;
                 case "language" :
@@ -543,11 +545,11 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     user.setLevel(CastUtils.toString(entry.getValue()));
                     break;
                 case "mobile" :
-                    logbooks.add(new EventDiffDto(UserConverter.MOBILE_KEY, user.getMobile(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(UserConverter.MOBILE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setMobile(CastUtils.toString(entry.getValue()));
                     break;
                 case "phone" :
-                    logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, user.getPhone(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
                 case "groupId" :
@@ -575,7 +577,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     if (address == null) {
                         user.setAddress(new Address());
                     }
-                    addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks);
+                    addressService.processPatch(user.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, true);
                     break;
                 case "internalCode" :
                     logbooks.add(new EventDiffDto(UserConverter.INTERNAL_CODE_KEY, user.getInternalCode(), entry.getValue()));
@@ -859,8 +861,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
-        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-                .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
+                .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
                 .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<User> user = getRepository().findById(id);
