@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -109,6 +111,8 @@ public class GroupExternalController implements CrudController<GroupDto> {
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public GroupDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get group {} embedded={}", id, embedded);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return groupCrudService.getOne(id, embedded);
     }
@@ -143,6 +147,8 @@ public class GroupExternalController implements CrudController<GroupDto> {
     @Secured(ServicesData.ROLE_UPDATE_GROUPS)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch group {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch group : the DTO id must match the path id");
         return groupCrudService.patch(partialDto);
     }
@@ -150,6 +156,7 @@ public class GroupExternalController implements CrudController<GroupDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for group with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return groupCrudService.findHistoryById(id);
     }
 

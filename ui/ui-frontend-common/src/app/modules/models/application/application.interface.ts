@@ -53,5 +53,5 @@ export interface Application extends Id {
 
 export interface ApplicationInfo {
   APPLICATION_CONFIGURATION: Application[];
-  CATEGORY_CONFIGURATION: Category[];
+  CATEGORY_CONFIGURATION: { [key: string]: Category };
 }

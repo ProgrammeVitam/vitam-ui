@@ -111,6 +111,32 @@
   with_fileglob:
     - "{{ inventory_dir }}/certs/server/ca/*.crt"
 
+### TEST Browser
+- name: copy index resources
+  copy:
+    src: "apache/page/{{item}}"
+    dest: "/var/www/html-{{vitam_site_name}}/"
+    owner: "root"
+    mode: 0644
+  with_items:
+      - css
+      - images
+      - js
+  notify:
+     - reload apache
+
+- name: copy index default page
+  template:
+    src: "apache/page/index.html.j2"
+    dest: "/var/www/html-{{vitam_site_name}}/index.html"
+    owner: "root"
+    mode: 0644
+  tags:
+    - update_package_vitam
+  notify:
+     - reload apache
+###
+
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"

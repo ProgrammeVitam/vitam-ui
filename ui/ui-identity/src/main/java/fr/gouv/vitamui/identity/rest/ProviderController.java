@@ -36,14 +36,23 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.EnumUtils;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
+import fr.gouv.vitamui.iam.common.utils.IamUtils;
+import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
+import fr.gouv.vitamui.identity.service.ProviderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -62,23 +71,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.utils.EnumUtils;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
-import fr.gouv.vitamui.iam.common.utils.IamUtils;
-import fr.gouv.vitamui.identity.domain.dto.ProviderPatchType;
-import fr.gouv.vitamui.identity.service.ProviderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "providers")
 @RestController
@@ -128,6 +128,7 @@ public class ProviderController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(@RequestParam(required = true) final Integer tenantId, final @PathVariable String id) {
         LOGGER.debug("Get keystore provider ={}");
+        ParameterChecker.checkParameter("Parameters are mandatory : ", tenantId, id);
         final IdentityProviderDto dto = service.getOne(buildUiHttpContext(tenantId), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
         final HttpHeaders headers = new HttpHeaders();
         final ByteArrayResource resource = new ByteArrayResource(dto.getIdpMetadata().getBytes());
@@ -142,6 +143,9 @@ public class ProviderController extends AbstractUiRestController {
     public IdentityProviderDto create(@RequestPart final String provider, @RequestPart("keystore") final MultipartFile keystore,
             @RequestPart("idpMetadata") final MultipartFile idpMetadata) throws Exception {
         LOGGER.debug("Create provider");
+        ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, idpMetadata);
+        SanityChecker.isValidFileName(keystore.getOriginalFilename());
+        SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         return service.create(buildUiHttpContext(), keystore, idpMetadata, provider);
     }
 
@@ -150,6 +154,7 @@ public class ProviderController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public IdentityProviderDto patchProvider(final @RequestBody Map<String, Object> provider, final @PathVariable String id) {
         LOGGER.debug("Update partially provider id={} with partialDto={}", id, provider);
+        ParameterChecker.checkParameter("Parameters are mandatory : ", provider, id);
         return service.patch(buildUiHttpContext(), provider, null, null, id, ProviderPatchType.JSON);
     }
 
@@ -160,6 +165,8 @@ public class ProviderController extends AbstractUiRestController {
     public IdentityProviderDto patchProviderKeystore(final @RequestPart("keystore") MultipartFile keystore, final @RequestPart("provider") String provider,
             final @PathVariable String id) throws IOException {
         LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
+        ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
+        SanityChecker.isValidFileName(keystore.getOriginalFilename());
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), keystore, null, id, ProviderPatchType.KEYSTORE);
     }
 
@@ -170,6 +177,8 @@ public class ProviderController extends AbstractUiRestController {
     public IdentityProviderDto patchProviderIdpMetadata(final @RequestPart("idpMetadata") MultipartFile idpMetadata,
             final @RequestPart("provider") String provider, final @PathVariable String id) throws IOException {
         LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
+        ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
+        SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), null, idpMetadata, id, ProviderPatchType.IDPMETADATA);
     }
 }

@@ -107,14 +107,14 @@ describe('ApplicationService', () => {
         { id: 'account', identifier: ApplicationId.ACCOUNTS_APP, url: 'http://app-test-2.vitamui.com',
           icon: 'vitamui-icon vitamui-icon-user', name: 'Mon compte', category: 'users', position: 7,
           hasCustomerList: false, hasTenantList: false, hasHighlight: false, target: '' }
-      ], CATEGORY_CONFIGURATION: [{ identifier: 'users', title: '', displayTitle: false, order: 1 } ]
+      ], CATEGORY_CONFIGURATION: { users: { title: '', displayTitle: false, order: 1 } }
     });
   });
 
   it('should return an empty list if the API returns an error', () => {
     appService.list().subscribe(
       (response) => {
-        expect(response).toEqual({APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: []});
+        expect(response).toEqual({APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}});
       },
       fail
     );
@@ -122,7 +122,7 @@ describe('ApplicationService', () => {
 
   it('should return a map', () => {
     appService.applications = [];
-    appService.categories = [];
+    appService.categories = {};
     const appMap = appService.getAppsMap();
     expect(appMap).toBeTruthy();
   });

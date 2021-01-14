@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -127,6 +128,7 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     public ProfileDto getOne(final @PathVariable("id") String id, @RequestParam final Optional<String> criteria,
             final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get One {}, criteria={}, embedded={}", id, criteria, embedded);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         RestUtils.checkCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalProfileService.getOne(id, criteria, embedded);
@@ -140,6 +142,7 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         RestUtils.checkCriteria(Optional.of(criteria));
         LOGGER.debug("checkExist criteria={}", criteria);
+        ParameterChecker.checkParameter("criteria is mandatory : ", criteria);
         final boolean exist = internalProfileService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -169,6 +172,7 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalProfileService.patch(partialDto);
     }

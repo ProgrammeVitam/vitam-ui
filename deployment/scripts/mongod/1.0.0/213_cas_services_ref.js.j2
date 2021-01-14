@@ -1,0 +1,27 @@
+db = db.getSiblingDB('cas')
+
+print("START 213_cas_services_ref.js");
+
+var nbInsert = db.services.insert({
+   "_id" : NumberInt(5),
+   "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.ingest.base_url is defined %}
+	"serviceId": "^{{ vitamui.ingest.base_url }}/.*",
+{% else %}
+	"serviceId": "^{{ url_prefix }}/ingest/.*",
+{% endif %}
+   "name": "Ingest Management Application",
+   "logoutType" : "FRONT_CHANNEL",
+{% if vitamui.ingest.base_url is defined %}
+	"logoutUrl": "{{ vitamui.ingest.base_url }}/logout",
+{% else %}
+	"logoutUrl": "{{ url_prefix }}/ingest/logout",
+{% endif %}
+   "attributeReleasePolicy": {
+      "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+   }
+});
+
+print("inserted: " + nbInsert);
+
+print("END 213_cas_services_ref.js");

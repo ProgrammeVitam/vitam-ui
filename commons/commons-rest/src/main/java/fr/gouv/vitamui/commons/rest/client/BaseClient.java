@@ -36,18 +36,7 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -55,6 +44,17 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.http.client.utils.URIBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A REST client to check existence, read, created, update and delete an object with identifier.
@@ -126,7 +126,6 @@ public abstract class BaseClient<C extends AbstractHttpContext> implements RestC
         if (accessContractId != null) {
             headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContractId));
         }
-
     }
 
     private void buildHeadersInternal(final InternalHttpContext context, final MultiValueMap<String, String> headers) {

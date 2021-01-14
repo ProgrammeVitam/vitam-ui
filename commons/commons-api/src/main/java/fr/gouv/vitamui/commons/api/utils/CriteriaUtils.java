@@ -36,18 +36,7 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -55,6 +44,15 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class CriteriaUtils {
 
@@ -131,17 +129,20 @@ public final class CriteriaUtils {
 
             // if we have a ElemMatch operator we have to check that current field is allowed and his child field also
             // field.childField
-            final String keyWithPoint = criterion.getKey() + ".";
+            String keyWithPoint = criterion.getKey() + ".";
             if (criterion.getOperator().equals(CriterionOperator.ELEMMATCH) &&
                 allowedKeys.stream().anyMatch(key -> key.startsWith(keyWithPoint))) {
                 // we recurse on children's to check the allowed key
                 try {
-                    final QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
-                    final List<String> elemAllowedKeys =
-                            allowedKeys.stream().filter(key -> key.startsWith(keyWithPoint)).map(key -> key.replaceFirst(keyWithPoint, ""))
-                                    .collect(Collectors.toList());
+                    QueryDto elemMatchQuery = QueryDto.fromJson(JsonUtils.toJson(criterion.getValue()));
+                    List<String> elemAllowedKeys =
+                        allowedKeys.stream()
+                            .filter(key -> key.startsWith(keyWithPoint))
+                            .map(key -> key.replaceFirst(keyWithPoint, ""))
+                            .collect(Collectors.toList());
                     checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
-                } catch (final JsonProcessingException e) {
+                }
+                catch (JsonProcessingException e) {
                     throw new InvalidFormatException(e.getMessage(), e);
                 }
                 return;

@@ -11,7 +11,6 @@ pipeline {
         SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
         SERVICE_SONAR_URL = credentials("service-sonar-url")
         SERVICE_GIT_URL = credentials("service-gitlab-url")
-        SERVICE_INFRA_URL = credentials("service-gitinfra-url")
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
         SERVICE_PROXY_PORT = credentials("http-proxy-port")
@@ -48,7 +47,7 @@ pipeline {
                 }
             }
         }
-        
+
 
         stage('Check vulnerabilities and tests.') {
             when {
@@ -56,7 +55,6 @@ pipeline {
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                JAVA_TOOL_OPTIONS=""
             }
             steps {
                 sh 'npmrc default'
