@@ -9,10 +9,10 @@
   </div>
 
   <ng-container *ngIf="!displayTertiary; else closeTertiary">
-    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate}}</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_SHOW' | translate}}</small>
   </ng-container>
   <ng-template #closeTertiary>
-    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate}}</small>
+    <small class="mb-4 pb-2" (click)="displayTertiary=!displayTertiary">{{'CUSTOMER.GRAPHIC_IDENTITY.TERTIARY_COLOR_HIDE' | translate}}</small>
   </ng-template>
 
   <app-input-color

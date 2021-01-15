@@ -228,9 +228,23 @@
         <app-graphic-identity (formToSend)="customerForm = $event.form; logos = $event.logos"></app-graphic-identity>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()"
-                  i18n="Create owner button@@customerCreateCreateOwnerButton">
-            Suivant
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()">
+            {{'COMMON.NEXT' | translate}}
+          </button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
+      </div>
+
+    </cdk-step>
+
+    <cdk-step>
+      <div *ngIf="stepIndex===3" class="content mt-4">
+        <app-homepage-message (formToSend)="homepageMessageForm = $event.form"></app-homepage-message>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!fourthStepValid()">
+            {{'COMMON.NEXT' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>

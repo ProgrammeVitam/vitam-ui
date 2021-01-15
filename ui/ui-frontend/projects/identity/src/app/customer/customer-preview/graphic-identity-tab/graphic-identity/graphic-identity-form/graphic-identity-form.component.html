@@ -2,7 +2,7 @@
 
     <div class="d-flex justify-content-between">
       <div class="container-color">
-        <div class="text large bold mb-4">{{'GRAPHIC_IDENTITY.COLOR_TITLE' | translate}}</div>
+        <div class="text large bold mb-4">{{'CUSTOMER.GRAPHIC_IDENTITY.COLOR_TITLE' | translate}}</div>
         <app-customer-colors-input class="d-inline-flex flex-column" 
           [formGroup]="graphicIdentityForm.get('themeColors')"
           [isUpdating]="true"
@@ -10,11 +10,11 @@
       </div>
   
       <div class="pl-4 d-flex flex-column">
-        <div class="text large bold mb-4">{{'GRAPHIC_IDENTITY.LOGO_TITLE' | translate}}</div>
+        <div class="text large bold mb-4">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_TITLE' | translate}}</div>
 
         <div class="d-flex">
           <div>
-            <label class="text normal bold">{{'GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate}}</label>
+            <label class="text normal bold">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
               class="color-background image-area-big"
               [disabled]="disabled"
@@ -22,13 +22,13 @@
               [logoSize]="{width: 280, height: 100}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Portal, $event)"
-              [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"
-              [messPj]="'GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
+              [messContent]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_DROP' | translate"
+              [messPj]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
           </div>
         </div>
         <div class="d-flex">
           <div class="mr-4">
-            <label class="text normal bold">{{'GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate}}</label>
+            <label class="text normal bold">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
               class="color-header-footer image-area-small"
               [disabled]="disabled"
@@ -36,11 +36,11 @@
               [logoSize]="{width: 280, height: 100}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Header, $event)"
-              [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"
-              [messPj]="'GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
+              [messContent]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_DROP' | translate"
+              [messPj]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
           </div>
           <div>
-            <label class="text normal bold">{{'GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate}}</label>
+            <label class="text normal bold">{{'CUSTOMER.GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate}}</label>
             <vitamui-common-drag-drop-file
               class="color-header-footer image-area-small"
               [disabled]="disabled"
@@ -48,8 +48,8 @@
               [logoSize]="{width: 280, height: 100}"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Footer, $event)"
-              [messContent]="'GRAPHIC_IDENTITY.LOGO_DROP' | translate"
-              [messPj]="'GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
+              [messContent]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_DROP' | translate"
+              [messPj]="'CUSTOMER.GRAPHIC_IDENTITY.LOGO_ATTACH' | translate"></vitamui-common-drag-drop-file>
           </div>
         </div>
        

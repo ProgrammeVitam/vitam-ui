@@ -56,6 +56,7 @@ import { GraphicIdentityFormComponent } from './graphic-identity-tab/graphic-ide
 import { GraphicIdentityComponent } from './graphic-identity-tab/graphic-identity/graphic-identity.component';
 import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
 import { HomepageMessageUpdateComponent } from './homepage-message-tab/homepage-message-update/homepage-message-update.component';
+import { HomepageMessageComponent } from './homepage-message-tab/homepage-message/homepage-message.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-create/identity-provider-create.component';
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
@@ -89,9 +90,10 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     GraphicIdentityComponent,
     GraphicIdentityFormComponent,
     HomepageMessageTabComponent,
-    HomepageMessageUpdateComponent
+    HomepageMessageUpdateComponent,
+    HomepageMessageComponent
   ],
-  exports: [ CustomerPreviewComponent, GraphicIdentityComponent ],
+  exports: [ CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent ],
   entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
   providers: [IdentityProviderService]
 })

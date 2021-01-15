@@ -1,7 +1,9 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { CustomerService } from 'projects/identity/src/app/core/customer.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'ui-frontend-common';
 
 @Component({
@@ -12,35 +14,51 @@ import { ConfirmDialogService, Customer } from 'ui-frontend-common';
 
 export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
 
-  @Input()
-  public homepageMessageForm: FormGroup;
+  private destroy = new Subject();
 
-  private keyPressSubscription: Subscription;
+  // tslint:disable-next-line: variable-name
+  private _customForm: FormGroup;
+  public get customForm(): FormGroup { return this._customForm; }
+  public set customForm(form: FormGroup) {
+    this._customForm = form;
+    this.disabled = !(this._customForm && this._customForm.valid);
+  }
+
+  public disabled = true;
 
   constructor(
     public dialogRef: MatDialogRef<HomepageMessageUpdateComponent>,
-    private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer},
+    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer },
+    private customerService: CustomerService,
     private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnDestroy(): void {
-    this.keyPressSubscription.unsubscribe();
+    this.destroy.next();
   }
-
   ngOnInit() {
-    this.homepageMessageForm = this.formBuilder.group({
-      portalTitle: ['', [Validators.required]],
-      portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
-    });
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
   onCancel() {
-    if (this.homepageMessageForm.dirty) {
+    if (this.customForm.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
+    }
+  }
+
+  public updateHomepageMessage(): void {
+    if (this.customForm.valid) {
+      this.customerService.patch(this.customForm.value)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(
+        () => {
+          this.dialogRef.close(true);
+        },
+        (error: any) => {
+          this.dialogRef.close(false);
+          console.error(error);
+        });
     }
   }
 }

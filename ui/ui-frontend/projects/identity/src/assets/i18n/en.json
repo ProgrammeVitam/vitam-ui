@@ -1,48 +1,54 @@
 {
-    "COMMON" : {
-        "CANCEL" : "Cancel",
-        "SUBMIT" : "Submit",
-        "UPDATE" : "Update",
-        "APPLY_UPDATE" : "Apply changes"
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "SUBMIT": "Submit",
+    "UPDATE": "Update",
+    "APPLY_UPDATE": "Apply changes",
+    "NEXT": "Next",
+    "REQUIRED" :"Required param"
+  },
+  "MISC": {
+    "NO_DESC": "No description"
+  },
+  "COLOR": {
+    "INVALID": "Invalid color",
+    "TOO_LIGHT": "The color is too light.",
+    "TOO_DARK": "The color is too dark.",
+    "INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards.",
+    "TERTIARY": "Tertiary color",
+    "HEADER_FOOTER": "Header/footer color",
+    "BACKGROUND": "Background color"
+  },
+  "CUSTOMER": {
+    "TAB": {
+      "INFORMATION": "Informations",
+      "SSO": "SSO",
+      "GRAPHIC_ID": "Graphic ID.",
+      "HOMEPAGE_MESSAGE": "Homepage message",
+      "HISTORY": "History"
     },
-    "MISC" : {
-        "NO_DESC": "No description"
+    "GRAPHIC_IDENTITY": {
+      "TOGGLE_TITLE": "Personalized graphic identity",
+      "COLOR_TITLE": "Colors settings",
+      "LOGO_TITLE": "Logo management",
+      "LOGO_HEADER_TITLE": "Header logo",
+      "LOGO_FOOTER_TITLE": "Footer logo",
+      "LOGO_PORTAL_TITLE": "Portal logo",
+      "LOGO_DROP": "Drop your logo",
+      "LOGO_ATTACH": "Attach a logo",
+      "TERTIARY_COLOR_SHOW": "Show tertiary color",
+      "TERTIARY_COLOR_HIDE": "Hide tertiary color",
+      "SUBMIT": "Apply graphic idendity chart"
     },
-    "COLOR" : {
-        "INVALID": "Invalid color",
-        "TOO_LIGHT": "The color is too light.",
-        "TOO_DARK": "The color is too dark.",
-        "INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards.",
-        "TERTIARY": "Tertiary color",
-        "HEADER_FOOTER": "Header/footer color",
-        "BACKGROUND": "Background color"
-    },
-    "GRAPHIC_IDENTITY" : {
-        "TOGGLE_TITLE" : "Personalized graphic identity",
-        "COLOR_TITLE" :"Colors settings",
-        "LOGO_TITLE" :"Logo management",
-        "LOGO_HEADER_TITLE" :"Header logo",
-        "LOGO_FOOTER_TITLE" :"Footer logo",
-        "LOGO_PORTAL_TITLE" :"Portal logo",
-        "LOGO_DROP":"Drop your logo",
-        "LOGO_ATTACH":"Attach a logo",
-        "TERTIARY_COLOR_SHOW":"Show tertiary color",
-        "TERTIARY_COLOR_HIDE":"Hide tertiary color",
-        "SUBMIT":"Apply graphic idendity chart"
-    },
-    "CUSTOMER" : {
-        "TAB" : {
-            "INFORMATION" : "Informations",
-            "SSO" : "SSO",
-            "GRAPHIC_ID" :"Graphic ID.",
-            "HOMEPAGE_MESSAGE" : "Homepage message",
-            "HISTORY" : "History"
-        }
-    },
-    "HOMEPAGE_MESSAGE" : {
-        "UPDATE_TITLE" : "Homepage message personalization",
-        "PORTAL_TITLE" : "Portal title",
-        "PORTAL_MESSAGE" : "Portal homepage message",
-        "PORTAL_MESSAGE_LENGTH" : "/500 characters max left"
+    "HOMEPAGE_MESSAGE": {
+      "TITLE": "Homepage message personalization",
+      "PORTAL_TITLE": "Portal title",
+      "DEFAULT_PORTAL_TITLE": "Default title",
+      "PORTAL_MESSAGE": "Portal homepage message",
+      "DEFAULT_PORTAL_MESSAGE": "Default Portal message",
+      "PORTAL_MESSAGE_LENGTH": "/500 characters max left",
+      "ADD_LANGUAGE" : "Add a language"
     }
+  }
+
 }

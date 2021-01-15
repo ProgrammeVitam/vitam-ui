@@ -69,7 +69,9 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   private destroy = new Subject();
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
-  public defaultTheme: Theme;
+
+  private portalMessage: string;
+  private portalTitle: string;
 
   public theme: Theme;
   public COLOR_NAME: {[colorId: string]: string};
@@ -95,14 +97,21 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   }
 
   private resetTab(customer: Customer): void {
+
+    // cannot set them without the values. It needs to be separated in the service
+    this.portalMessage = this.customer && this.customer.portalMessage ? this.customer.portalMessage
+     : this.themeService.defaultTheme.portalMessage;
+    this.portalTitle =  this.customer && this.customer.portalTitle ? this.customer.portalTitle
+     : this.themeService.defaultTheme.portalTitle;
+
     if (customer.hasCustomGraphicIdentity) {
       const colors = this.themeService.getThemeColors(customer.themeColors);
-      this.theme = this.majTheme(colors, customer.portalMessage, customer.portalTitle);
+      this.theme = this.majTheme(colors, this.portalMessage, customer.portalTitle);
     } else {
       this.theme = this.majTheme(
         this.themeService.getThemeColors(this.themeService.defaultTheme.colors),
-        this.themeService.defaultTheme.portalMessage,
-        this.themeService.defaultTheme.portalTitle
+        this.portalMessage,
+        this.portalTitle
       );
       this.theme.headerUrl = this.themeService.defaultTheme.headerUrl;
       this.theme.portalUrl = this.themeService.defaultTheme.portalUrl;
