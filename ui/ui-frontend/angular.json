@@ -130,6 +130,7 @@
       "root": "projects/portal/",
       "sourceRoot": "projects/portal/src",
       "projectType": "application",
+      "prefix": "portal",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
@@ -201,16 +202,7 @@
           "configurations": {
             "production": {
               "browserTarget": "portal:build:production"
-            },
-            "en": {
-              "browserTarget": "portal:build:en"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "portal:build"
           }
         },
         "test": {
@@ -632,14 +624,5 @@
       }
     }
   },
-  "defaultProject": "portal",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  }
+  "defaultProject": "portal"
 }

@@ -37,6 +37,7 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LOCALE_ID, Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -47,20 +48,22 @@ import { StartupService } from './startup.service';
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
   let appService: ApplicationService;
+  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(() => {
-    const authStubService = { token: 'fakeToken' };
+    const authStubService = { token: 'fakeToken', user: {} };
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
       userId: 'fakeUserId',
-      customerId: 'fakeCustomerId'
+      customerId: 'fakeCustomerId',
     };
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         ApplicationService,
+        { provide: Router, useValue: routerSpy },
         { provide: AuthService, useValue: authStubService },
         { provide: LOCALE_ID, useValue: 'fr' },
         { provide: StartupService, useValue: startupServiceStub },
@@ -115,9 +118,12 @@ describe('ApplicationService', () => {
       },
       fail
     );
-    const req = httpTestingController.expectOne('/fake-api/ui/applications?filterApp=true');
-    expect(req.request.method).toEqual('GET');
-    const msg = 'deliberate 404 error';
-    req.flush(msg, {status: 404, statusText: 'Not Found'});
+  });
+
+  it('should return a map', () => {
+    appService.applications = [];
+    appService.categories = {};
+    const appMap = appService.getAppsMap();
+    expect(appMap).toBeTruthy();
   });
 });

@@ -49,6 +49,7 @@ import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UserService;
 
 @Configuration
 public class AutoConfigurationService {
@@ -86,6 +87,13 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public AccountService accountService(final IamExternalRestClientFactory factory) {
         return new AccountService(factory);
+    }
+
+    @Bean("commonUserService")
+    @DependsOn("iamRestClientFactory")
+    @ConditionalOnMissingBean
+    public UserService userService(final IamExternalRestClientFactory factory) {
+        return new UserService(factory);
     }
 
 }
