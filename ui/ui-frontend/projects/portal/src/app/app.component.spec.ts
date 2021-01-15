@@ -99,19 +99,19 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();
     console.log('Create App: ', app);
     expect(app).toBeTruthy();
-  });
+  }));
 
-  it(`should have as title 'Portal App'`, () => {
+  it(`should have as title 'Portal App'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const title = fixture.componentInstance.title;
     console.log('Title App: ', title);
     expect(title).toEqual('Portal App');
-  });
+  }));
 
 });

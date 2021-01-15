@@ -46,6 +46,7 @@ import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerCreateValidators } from './customer-create.validators';
 
+const PROGRESS_BAR_MULTIPLICATOR = 100;
 interface CustomerInfo {
   code: string;
   name: string;
@@ -223,5 +224,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
     return this.form.pending || this.form.invalid || invalid || this.creating;
   }
+
+  get stepProgress() {
+    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+
 
 }
