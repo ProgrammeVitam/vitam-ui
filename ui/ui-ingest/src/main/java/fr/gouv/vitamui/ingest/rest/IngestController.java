@@ -129,7 +129,7 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_CHUNK_OFFSET) final String chunkOffset,
         @RequestHeader(value = CommonConstants.X_SIZE_TOTAL) final String totalSize,
-        @RequestParam final MultipartFile file) {
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
 
         LOGGER.debug("[{}] Upload File : {} - {} bytes", requestId, file.getOriginalFilename(), totalSize);
         if (StringUtils.isEmpty(requestId)) {

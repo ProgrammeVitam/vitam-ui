@@ -101,7 +101,7 @@ public class IngestExternalController {
     public Mono<RequestResponseOK> upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestParam("file") final MultipartFile file) {
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
         InputStream in = null;
         try {
             in = file.getInputStream();
