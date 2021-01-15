@@ -44,6 +44,8 @@ export * from './api/profile-api.service';
 export * from './api/subrogation-api.service';
 export * from './app.guard';
 export * from './application.service';
+export * from './tenant-selection.service';
+export * from './customer-selection.service';
 export * from './app-root-component.class';
 export * from './application-id.enum';
 export * from './auth.guard';
@@ -90,6 +92,7 @@ export * from './components/role-toggle/index';
 export * from './components/search-bar/index';
 export * from './components/stepper/index';
 export * from './components/table-filter/index';
+export * from './components/header/select-tenant-dialog/index';
 export * from './components/order-by-button/index';
 
 export * from './directives/collapse/index';

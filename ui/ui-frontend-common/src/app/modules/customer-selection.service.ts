@@ -34,27 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { BASE_URL } from '../injection-tokens';
-import { Analytics } from '../models/user/analytics.interface';
-import { User } from '../models/user/user.interface';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { MenuOption } from './components/navbar/customer-menu/menu-option.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserApiService {
+export class CustomerSelectionService {
 
-  private readonly apiUrl: string;
+  private selectedCustomer$ = new BehaviorSubject(undefined);
+  private customers$ = new BehaviorSubject(undefined);
 
-  constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    this.apiUrl = baseUrl + '/users';
+  constructor() {}
+
+  public setCustomerId(customerId: string): void {
+    if (customerId && customerId !== this.selectedCustomer$.getValue()) {
+      this.selectedCustomer$.next(customerId);
+    }
   }
 
-  public analytics(data: { applicationId?: string, lastTenantIdentifier?: number }): Observable<User> {
-    return this.http.post<User>(this.apiUrl + '/analytics', data);
+  public getSelectedCustomerId$(): Observable<string> {
+    return this.selectedCustomer$.asObservable();
   }
 
+  public getSelectedCustomerId(): string {
+    return this.selectedCustomer$.getValue();
+  }
+
+  public getCustomers$(): Observable<MenuOption[]> {
+    return this.customers$.asObservable();
+  }
+
+  public getCustomers(): MenuOption[] {
+    return this.customers$.getValue();
+  }
+
+  public setCustomers(customers: MenuOption[]): void {
+    // Set only if there is no value yet
+    if (!this.customers$.getValue()) {
+      this.customers$.next(customers);
+    }
+  }
 }
