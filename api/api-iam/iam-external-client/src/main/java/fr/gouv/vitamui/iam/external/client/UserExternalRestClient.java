@@ -109,6 +109,17 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
         return response.getBody();
     }
 
+    public UserDto patchAnalytics(final ExternalHttpContext context, final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch analytics partialDto={}");
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_ANALYTICS);
+        final URI uri = buildUriBuilder(uriBuilder);
+        final MultiValueMap<String, String> headers = buildHeaders(context);
+        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
+        final ResponseEntity<UserDto> response = restTemplate.exchange(uri, HttpMethod.POST, request, getDtoClass());
+        checkResponse(response);
+        return response.getBody();
+    }
+
     @Override
     public String getPathUrl() {
         return RestApi.V1_USERS_URL;
@@ -135,5 +146,4 @@ public class UserExternalRestClient extends BasePaginatingAndSortingRestClient<U
         return new ParameterizedTypeReference<List<String>>() {
         };
     }
-
 }

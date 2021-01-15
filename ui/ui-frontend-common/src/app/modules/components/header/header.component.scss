@@ -26,6 +26,11 @@ mat-toolbar {
   line-height: 0;
 }
 
+.selection-component {
+  display: flex;
+  align-items: center;
+}
+
 .separator::before {
   content: "|";
   margin: 0 1rem;

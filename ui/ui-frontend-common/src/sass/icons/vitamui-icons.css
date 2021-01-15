@@ -1,10 +1,9 @@
 @font-face {
-  font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?poavac');
-  src:  url('fonts/vitamui-icon.eot?poavac#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?poavac') format('truetype'),
-    url('fonts/vitamui-icon.woff?poavac') format('woff'),
-    url('fonts/vitamui-icon.svg?poavac#vitamui-icon') format('svg');
+  font-family: "vitamui-icon";
+  src: url("fonts/vitamui-icon.eot?poavac");
+  src: url("fonts/vitamui-icon.eot?poavac#iefix") format("embedded-opentype"),
+    url("fonts/vitamui-icon.ttf?poavac") format("truetype"), url("fonts/vitamui-icon.woff?poavac") format("woff"),
+    url("fonts/vitamui-icon.svg?poavac#vitamui-icon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -12,7 +11,7 @@
 
 i.vitamui-icon {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'vitamui-icon' !important;
+  font-family: "vitamui-icon" !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -24,7 +23,140 @@ i.vitamui-icon {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.vitamui-icon-app_unknown .path1:before {
+  content: "\ea4b";
+  color: rgb(226, 226, 225);
+}
+.vitamui-icon-app_unknown .path2:before {
+  content: "\ea4c";
+  margin-left: -1.3515625em;
+  color: rgb(154, 154, 154);
+}
+.vitamui-icon-app_unknown .path3:before {
+  content: "\ea4d";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path4:before {
+  content: "\ea4e";
+  margin-left: -1.3515625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_unknown .path5:before {
+  content: "\ea4f";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path6:before {
+  content: "\ea50";
+  margin-left: -1.3515625em;
+  color: rgb(154, 154, 154);
+}
+.vitamui-icon-app_unknown .path7:before {
+  content: "\ea51";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path8:before {
+  content: "\ea52";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path9:before {
+  content: "\ea53";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path10:before {
+  content: "\ea54";
+  margin-left: -1.3515625em;
+  color: rgb(239, 239, 239);
+}
+.vitamui-icon-app_unknown .path11:before {
+  content: "\ea55";
+  margin-left: -1.3515625em;
+  color: rgb(197, 197, 197);
+}
+.vitamui-icon-app_unknown .path12:before {
+  content: "\ea56";
+  margin-left: -1.3515625em;
+  color: rgb(154, 154, 154);
+}
+.vitamui-icon-app_unknown .path13:before {
+  content: "\ea57";
+  margin-left: -1.3515625em;
+  color: rgb(133, 133, 133);
+}
+.vitamui-icon-app_unknown .path14:before {
+  content: "\ea58";
+  margin-left: -1.3515625em;
+  color: rgb(133, 133, 133);
+}
+.vitamui-icon-app_unknown .path15:before {
+  content: "\ea59";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path16:before {
+  content: "\ea5a";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path17:before {
+  content: "\ea5b";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path18:before {
+  content: "\ea5c";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path19:before {
+  content: "\ea5d";
+  margin-left: -1.3515625em;
+  color: #fff;
+}
+.vitamui-icon-app_unknown .path20:before {
+  content: "\ea5e";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary-light);
+}
+.vitamui-icon-app_unknown .path21:before {
+  content: "\ea5f";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary-light-20);
+}
+.vitamui-icon-app_unknown .path22:before {
+  content: "\ea60";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path23:before {
+  content: "\ea61";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary-light);
+}
+.vitamui-icon-app_unknown .path24:before {
+  content: "\ea62";
+  margin-left: -1.3515625em;
+  color: var(--vitamui-primary);
+}
+.vitamui-icon-app_unknown .path25:before {
+  content: "\ea63";
+  margin-left: -1.3515625em;
+  color: #fff;
+}
+.vitamui-icon-app_unknown .path26:before {
+  content: "\ea64";
+  margin-left: -1.3515625em;
+  color: #fff;
+}
+.vitamui-icon-app_unknown .path27:before {
+  content: "\ea65";
+  margin-left: -1.3515625em;
+  color: #fff;
+}
 .vitamui-icon-app_sip_seda .path1:before {
   content: "\e95e";
   color: rgb(226, 226, 225);
@@ -173,7 +305,7 @@ i.vitamui-icon {
 .vitamui-icon-app_sip_seda .path30:before {
   content: "\e97b";
   margin-left: -1.3525390625em;
-  color:var(--vitamui-primary-light-20);
+  color: var(--vitamui-primary-light-20);
 }
 .vitamui-icon-app_sip_seda .path31:before {
   content: "\e97c";

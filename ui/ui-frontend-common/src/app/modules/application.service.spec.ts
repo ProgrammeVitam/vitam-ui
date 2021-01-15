@@ -51,12 +51,12 @@ describe('ApplicationService', () => {
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(() => {
-    const authStubService = { token: 'fakeToken' };
+    const authStubService = { token: 'fakeToken', user: {} };
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
       userId: 'fakeUserId',
-      customerId: 'fakeCustomerId'
+      customerId: 'fakeCustomerId',
     };
 
     TestBed.configureTestingModule({
@@ -123,9 +123,7 @@ describe('ApplicationService', () => {
   it('should return a map', () => {
     appService.applications = [];
     appService.categories = {};
-    const appMap = appService.getAppsGroupByCategories();
+    const appMap = appService.getAppsMap();
     expect(appMap).toBeTruthy();
-    expect(appMap.keys.length).toBeDefined();
-    expect(appMap.values).toBeDefined();
   });
 });

@@ -47,10 +47,12 @@ import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
 import fr.gouv.vitamui.ui.commons.rest.LogbookController;
 import fr.gouv.vitamui.ui.commons.rest.SecurityController;
 import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
+import fr.gouv.vitamui.ui.commons.rest.UserController;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UserService;
 
 @Configuration
 public class AutoConfigurationRestController {
@@ -87,6 +89,13 @@ public class AutoConfigurationRestController {
     @DependsOn("logbookService")
     public LogbookController logbookController(final LogbookService logbookService) {
         return new LogbookController(logbookService);
+    }
+
+    @Bean("commonUserController")
+    @DependsOn("commonUserService")
+    @ConditionalOnProperty(prefix = "controller.user", value = "enabled", matchIfMissing = true)
+    public UserController userController(final UserService userService) {
+        return new UserController(userService);
     }
 
 }

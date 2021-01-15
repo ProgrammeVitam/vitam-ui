@@ -1,34 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { Tenant } from '../../..';
-import { AuthService } from '../../../auth.service';
-import { TenantMenuService } from '../../navbar/tenant-menu/tenant-menu.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Tenant } from '../../../models/customer/tenant.interface';
 
 @Component({
   selector: 'vitamui-common-select-tenant',
   templateUrl: './select-tenant.component.html',
   styleUrls: ['./select-tenant.component.scss']
 })
-export class SelectTenantComponent implements OnInit {
+export class SelectTenantComponent implements OnInit, OnDestroy {
 
-  public tenants: Tenant[];
+  /** Available tenant list to display */
+  @Input() tenants: Tenant[];
 
-  public selectedTenant: Tenant;
+  /** Current tenant in the select box */
+  @Input() selectedTenant: Tenant;
 
-  constructor(private tenantService: TenantMenuService, private authService: AuthService) { }
+  @Output() tenantSelected = new EventEmitter<Tenant>();
 
-  ngOnInit() {
-    if (this.authService.user) {
-      const tenantOfApp = this.authService.user.tenantsByApp.find(tenant => tenant.name === 'ARCHIVE_APP');
-      if (tenantOfApp) {
-        this.tenants = tenantOfApp.tenants;
-      }
-    }
-    this.selectedTenant = this.tenantService.activeTenant;
+  private destroyer$ = new Subject();
+
+  constructor() { }
+
+  ngOnInit() { }
+
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
   }
 
   public selectTenant(tenant: Tenant): void {
     this.selectedTenant = tenant;
-    this.tenantService.sendSelectedTenant(tenant.identifier);
+    this.tenantSelected.emit(this.selectedTenant);
   }
 
 }

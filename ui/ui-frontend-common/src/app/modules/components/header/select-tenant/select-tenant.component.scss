@@ -1,11 +1,12 @@
 @import '../../../../../sass/variables/colors';
 
-.selected-tenant-label, .unselected-tenant-label {
-  color: $warm-grey;
-  font-size: 16px;
-}
-
 :host::ng-deep {
+  
+  .selected-tenant-label, .unselected-tenant-label {
+    color: $warm-grey;
+    font-size: 16px;
+  }
+
   .mat-form-field-underline {
     display: none;
   }
@@ -23,10 +24,14 @@
   }
 
   mat-form-field {
+    border: 1px solid $light-grey;
     background-color: $white;
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .mat-form-field-flex {
@@ -35,7 +40,7 @@
   }
 
   mat-select {
-    color: #747272!important;
+    color: var(--vitamui-grey-400)!important;
   }
 
   .mat-form-field-infix {

@@ -1,7 +1,10 @@
 {
 	"APPLICATION-LIST": {
-		"Management": "Management",
-		"Paramétrage": "Paramétrage",
-		"Utilisateur": "Utilisateur"
+		"settings": "Paramétrage",
+		"administrators": "Management",
+		"users": "Utilisateur",
+		"referential": "Référentiels",
+		"opaudit": "Audits et opérations",
+		"techadmin": "Administration technique"
 	}
 }

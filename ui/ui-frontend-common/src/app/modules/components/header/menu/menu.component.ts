@@ -1,10 +1,14 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
+import { TenantSelectionService } from '../../../tenant-selection.service';
+import { Tenant } from './../../../models/customer/tenant.interface';
 import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
 
@@ -49,7 +53,7 @@ import { MenuOverlayRef } from './menu-overlay-ref';
     ])
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public state = '';
 
@@ -66,6 +70,12 @@ export class MenuComponent implements OnInit, AfterViewInit {
   private firstResult: any;
 
   private firstResultFocused = false;
+
+  public selectedTenant: Tenant;
+
+  public tenants: Tenant[];
+
+  private destroyer$ = new Subject();
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
   @HostListener('document:keydown', ['$event'])
@@ -91,23 +101,39 @@ export class MenuComponent implements OnInit, AfterViewInit {
     private applicationService: ApplicationService,
     private cdrRef: ChangeDetectorRef,
     private router: Router,
+    private tenantService: TenantSelectionService,
     private startupService: StartupService) { }
+
+  ngOnInit() {
+    this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
+    this.tenants = this.tenantService.getTenants();
+
+    // Display application list depending on the current active tenant.
+    // If no active tenant is set, then use the last tenant identifier.
+    this.selectedTenant = this.tenantService.getSelectedTenant();
+    if (this.selectedTenant) {
+      this.updateApps(this.selectedTenant);
+    } else {
+      this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
+        this.updateApps(this.tenants.find(value => value.identifier === identifier));
+      });
+    }
+  }
 
   ngAfterViewInit(): void {
     this.changeTabFocus();
   }
 
-  ngOnInit() {
-    this.appMap = this.applicationService.getAppsGroupByCategories();
-    this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
+  ngOnDestroy() {
+    this.destroyer$.next();
   }
 
   public onSearch(value: string): void {
     if (value) {
       this.criteria = value;
       this.firstResultFocused = false;
+      const flattenApps: Application[] = Array.from(new Set([].concat.apply([], Array.from(this.appMap.values()))));
 
-      const flattenApps = [].concat.apply([], Array.from(this.appMap.values()));
       this.filteredApplications = flattenApps.filter((application: Application) => {
         return application.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
           .includes(value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
@@ -139,15 +165,23 @@ export class MenuComponent implements OnInit, AfterViewInit {
     }
     setTimeout(() => {
       // tslint:disable-next-line: variable-name
-      const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex).options.first;
-      if (firstElem) {
-        firstElem.focus();
+      const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex);
+      if (firstElem && firstElem.options && firstElem.options.first) {
+        firstElem.options.first.focus();
       }
     }, 300);
   }
 
   public openApplication(app: Application) {
     this.onClose();
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
+    this.applicationService.
+      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
+  }
+
+  public updateApps(tenant: Tenant) {
+    if (tenant) {
+      this.selectedTenant = tenant;
+      this.appMap = this.applicationService.getTenantAppMap(tenant);
+    }
   }
 }

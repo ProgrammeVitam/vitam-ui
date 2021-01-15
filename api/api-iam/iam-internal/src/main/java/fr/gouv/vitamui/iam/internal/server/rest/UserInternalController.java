@@ -180,4 +180,15 @@ public class UserInternalController implements CrudController<UserDto> {
         RestUtils.checkCriteria(criteria);
         return internalUserService.getLevels(criteria);
     }
+
+    /**
+     * Create/refresh current user analytics
+     * @param partialDto analytics to create or refresh
+     * @return current user with updated analytics
+     */
+    @PostMapping(CommonConstants.PATH_ANALYTICS)
+    public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch analytics with {}", partialDto);
+        return internalUserService.patchAnalytics(partialDto);
+    }
 }

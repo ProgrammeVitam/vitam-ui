@@ -1,0 +1,9 @@
+<mat-form-field appearance="fill">
+    <mat-label *ngIf="selectedCustomer" class="selected-customer-label">{{'SELECT-CUSTOMER.SELECTED' | translate}}</mat-label>
+    <mat-label *ngIf="!selectedCustomer" class="unselected-customer-label">{{'SELECT-CUSTOMER.SELECT' | translate}}</mat-label>
+    <mat-select (selectionChange)="selectCustomer($event.source.value)" [(value)]="selectedCustomer">
+        <mat-option *ngFor="let customer of customers" [value]="customer">
+            {{ customer.label }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
