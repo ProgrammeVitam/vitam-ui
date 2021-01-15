@@ -335,7 +335,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            LOGGER.debug("Update {} {}", getObjectName(), dto);
+            final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+            if(vitamContext != null) {
+                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId()); }
+            LOGGER.info("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);
             final String entityId = entity.getId();
@@ -489,7 +492,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         final String groupId = CastUtils.toString(partialDto.get("groupId"));
-        if (groupId != null) {
+        if (groupId != null && !groupId.isEmpty()) {
             final GroupDto groupDto = getGroupDtoById(groupId, message);
             checkGroup(groupDto, customerId, message);
             if (!StringUtils.equals(user.getLevel(), groupDto.getLevel())) {
@@ -516,8 +519,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
-                case "id" :
-                case "customerId" :
+                case "id":
+                case "customerId":
                     break;
                 case "email" :
                     logbooks.add(new EventDiffDto(UserConverter.EMAIL_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
@@ -531,16 +534,16 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.LASTNAME_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setLastname(CastUtils.toString(entry.getValue()));
                     break;
-                case "language" :
+                case "language":
                     logbooks.add(new EventDiffDto(UserConverter.LANGUAGE_KEY, user.getLanguage(), entry.getValue()));
                     user.setLanguage(CastUtils.toString(entry.getValue()));
                     break;
-                case "type" :
+                case "type":
                     final String typeAsString = CastUtils.toString(entry.getValue());
                     logbooks.add(new EventDiffDto(UserConverter.TYPE_KEY, user.getType(), typeAsString));
                     user.setType(EnumUtils.stringToEnum(UserTypeEnum.class, typeAsString));
                     break;
-                case "level" :
+                case "level":
                     logbooks.add(new EventDiffDto(UserConverter.LEVEL_KEY, user.getLevel(), entry.getValue()));
                     user.setLevel(CastUtils.toString(entry.getValue()));
                     break;
@@ -553,12 +556,18 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
 
-                case "groupId" :
+                case "groupId":
                     final GroupDto oldGroup = groupInternalService.getOne(user.getGroupId(), Optional.empty(), Optional.empty());
-                    final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
 
+                    if(CastUtils.toString(entry.getValue()).isEmpty()) {
+                        logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), Optional.empty()));
+                        user.setGroupId(CastUtils.toString(entry.getValue()));
+                    }
+                    else {
+                    final GroupDto newGroup = groupInternalService.getOne(CastUtils.toString(entry.getValue()), Optional.empty(), Optional.empty());
                     logbooks.add(new EventDiffDto(UserConverter.GROUP_IDENTIFIER_KEY, oldGroup.getIdentifier(), newGroup.getIdentifier()));
                     user.setGroupId(CastUtils.toString(entry.getValue()));
+            }
                     break;
                 case "status" :
                     final String status = CastUtils.toString(entry.getValue());
