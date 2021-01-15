@@ -1,12 +1,11 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -27,6 +28,8 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -41,6 +44,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
+import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
@@ -56,6 +60,7 @@ import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.domain.ApplicationAnalytics;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -105,6 +110,8 @@ public final class UserInternalServiceTest {
 
     private final UserConverter userConverter = new UserConverter(groupRepository, addressConverter);
 
+    private ApplicationInternalService applicationInternalService;
+
     @Before
     public void setUp() {
 
@@ -120,10 +127,11 @@ public final class UserInternalServiceTest {
         tenantRepository = mock(TenantRepository.class);
         internalGroupService = mock(GroupInternalService.class);
         addressService = mock(AddressService.class);
+        applicationInternalService = mock(ApplicationInternalService.class);
 
         internalUserService = new UserInternalService(sequenceRepository, userRepository, internalGroupService, internalProfileService,
                 userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
-                mock(IamLogbookService.class), userConverter, null, null, addressService);
+                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService);
 
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -171,6 +179,7 @@ public final class UserInternalServiceTest {
         final UserDto userToUpdate = new UserDto();
         VitamUIUtils.copyProperties(user, userToUpdate);
         userToUpdate.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        userToUpdate.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
         final GroupDto groupDto = buildGroupDto();
         groupDto.setId(user.getGroupId());
         groupDto.setCustomerId(user.getCustomerId());
@@ -610,6 +619,7 @@ public final class UserInternalServiceTest {
         final UserDto userToUpdate = new UserDto();
         VitamUIUtils.copyProperties(user, userToUpdate);
         userToUpdate.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        userToUpdate.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
         final GroupDto groupDto = buildGroupDto();
         groupDto.setId(user.getGroupId());
         groupDto.setCustomerId(user.getCustomerId());
@@ -772,6 +782,7 @@ public final class UserInternalServiceTest {
         final UserDto userToUpdate = new UserDto();
         VitamUIUtils.copyProperties(user, userToUpdate);
         userToUpdate.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        userToUpdate.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
         final GroupDto groupDto = buildGroupDto();
         groupDto.setId(user.getGroupId());
         groupDto.setCustomerId(user.getCustomerId());
@@ -834,5 +845,86 @@ public final class UserInternalServiceTest {
         userUpdated = internalUserService.update(userToUpdate);
         assertNotNull("User shouldn't be null", userUpdated);
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
+    }
+
+    @Test
+    public void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
+        verifyNoInteractions(applicationInternalService);
+        verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    public void patchAnalyticsWithEmptyPayloadShouldThrowAnException() {
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of()));
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Unable to patch user analytics : payload is empty");
+        verifyNoInteractions(applicationInternalService);
+        verifyNoInteractions(userRepository);
+    }
+
+    @Test
+    public void patchApplicationAnalyticsNonExistentUserShouldThrowAnException() {
+        internalUserService = spy(internalUserService);
+        final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
+        when(internalUserService.getMe()).thenReturn(authUserDto);
+        when(userRepository.findById(any())).thenReturn(Optional.empty());
+
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "PROFILES_APP")));
+
+        assertThat(thrown).isInstanceOf(NotFoundException.class).hasMessageContaining("No user found with id : userId");
+        verify(userRepository).findById(authUserDto.getId());
+        verify(applicationInternalService, never()).getAll(any(), any());
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    public void patchApplicationAnalyticsWithoutPermissionShouldThrowAnException() {
+        internalUserService = spy(internalUserService);
+        final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
+        when(internalUserService.getMe()).thenReturn(authUserDto);
+        final User user = IamServerUtilsTest.buildUser(authUserDto.getId(), "", "");
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of());
+
+        Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "applicationWithoutPermission")));
+
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
+        verify(userRepository).findById(user.getId());
+        verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
+        verifyNoMoreInteractions(applicationInternalService);
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    public void patchApplicationAnalyticsOk() {
+        String applicationId = "PROFILES_APP";
+        ApplicationDto application = new ApplicationDto();
+        application.setIdentifier(applicationId);
+
+        internalUserService = spy(internalUserService);
+        final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
+        when(internalUserService.getMe()).thenReturn(authUserDto);
+        final User user = IamServerUtilsTest.buildUser(authUserDto.getId(), "", "");
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        when(applicationInternalService.getAll(Optional.empty(), Optional.empty())).thenReturn(List.of(application));
+        assertThat(user.getAnalytics().getApplications()).isNullOrEmpty();
+
+        internalUserService.patchAnalytics(Map.of(APPLICATION_ID, applicationId));
+
+        verify(userRepository).findById(user.getId());
+        verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
+        verifyNoMoreInteractions(applicationInternalService);
+
+        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(captor.capture());
+
+        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(user);
+        List<ApplicationAnalytics> applications = captor.getValue().getAnalytics().getApplications();
+        assertThat(applications).hasSize(1);
+        assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
+        assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
     }
 }

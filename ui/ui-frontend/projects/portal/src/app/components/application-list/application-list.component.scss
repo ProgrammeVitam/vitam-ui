@@ -59,12 +59,19 @@ mat-card-subtitle {
     .mat-ink-bar {
         background-color: var(--vitamui-primary)!important;
     }
+
+    .mat-tab-header-pagination.mat-tab-header-pagination-disabled, .mat-tab-header-pagination-after {
+        display: none!important;
+    }
 }
 
 .appIcon {
     overflow: hidden;
     min-height: 200px;
     max-height: 200px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 17px auto;
 }
 
 .appIcon i {

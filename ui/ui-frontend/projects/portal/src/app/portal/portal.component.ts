@@ -34,18 +34,19 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
-import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
+import { Subscription } from 'rxjs';
+import { StartupService } from 'ui-frontend-common';
+import { Application, ApplicationService, Category } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
   templateUrl: './portal.component.html',
   styleUrls: ['./portal.component.scss']
 })
-export class PortalComponent implements OnInit {
+export class PortalComponent implements OnInit, OnDestroy {
 
   public applications: Map<Category, Application[]>;
 
@@ -55,6 +56,10 @@ export class PortalComponent implements OnInit {
 
   public customerLogoUrl: string;
 
+  public loading = true;
+
+  private sub: Subscription;
+
   constructor(
     private applicationService: ApplicationService,
     private startupService: StartupService,
@@ -62,8 +67,10 @@ export class PortalComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.applications = this.applicationService.getAppsGroupByCategories();
-
+    this.sub = this.applicationService.getActiveTenantAppsMap().subscribe((appMap) => {
+        this.applications = appMap;
+        this.loading = false;
+    });
     this.welcomeTitle = this.startupService.getWelcomeTitle();
     this.welcomeMessage = this.startupService.getWelcomeMessage();
 
@@ -80,8 +87,13 @@ export class PortalComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
   public openApplication(app: Application): void {
     this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
-
 }

@@ -1,13 +1,31 @@
 <mat-toolbar color="primary" class="header">
   <a href="{{portalUrl}}" >
-    <img class="header-logo" alt="header logo" src="../../assets/logo.svg">
+    <img class="header-logo" alt="header logo" src="../../../../assets/logo.svg">
   </a>
 
   <div class="spacer"></div>
 
-  <vitamui-common-select-tenant class="d-flex mx-3"></vitamui-common-select-tenant>
+  <vitamui-common-select-language class="mx-3"></vitamui-common-select-language>
 
-  <div class="separator"></div>
+  <div class="selection-component">
+    <vitamui-common-select-tenant
+      *ngIf="hasTenantSelection"
+      class="mx-4"
+      [tenants]="tenants"
+      [selectedTenant]="selectedTenant"
+      (tenantSelected)="updateTenant($event)">
+    </vitamui-common-select-tenant>
+
+    <vitamui-common-select-customer
+      *ngIf="hasCustomerSelection"
+      class="mx-4"
+      [customers]="customers"
+      [selectedCustomer]="selectedCustomer"
+      (customerSelected)="updateCustomer($event)">
+    </vitamui-common-select-customer>
+
+    <div class="separator"></div>
+  </div>
 
   <div class="mx-3 d-flex account" [matMenuTriggerFor]="accountMenu">
     <div class="person-icon">
@@ -25,9 +43,9 @@
     <div class="account-menu">
       <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
         <ng-container>
-          <button mat-menu-item [routerLink]="['/account']" i18n="@@myAccountButtonLabel" *ngIf="hasAccountProfile">Mon compte</button>
-          <button mat-menu-item (click)="enabledSubrogation()" i18n="@@activateSubrogationButtonLabel" *ngIf="!!!currentUser?.superUser">Activer le mode subrogation</button>
-          <button mat-menu-item (click)="logout()" i18n="@@logoutButtonLabel">Déconnexion</button>
+          <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{'HEADER.MY_ACCOUNT' | translate}}</button>
+          <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!currentUser?.superUser">{{'HEADER.NAVIGATE_AS' | translate}}</button>
+          <button mat-menu-item (click)="logout()">{{'HEADER.LOGOUT' | translate}}</button>
         </ng-container>
       </mat-menu>
     </div>

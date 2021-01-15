@@ -1,7 +1,7 @@
 <div class="content">
   <mat-tab-group>
     <div *ngFor="let category of appMap | keyvalue">
-      <mat-tab label="{{category.key.title}}">
+      <mat-tab label="{{'MENU.' + category.key.identifier | translate}}">
         <div class="row category">
           <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let application of category.value">
             <mat-card (click)="applicationClick.emit(application)">
@@ -31,5 +31,9 @@
 </ng-template>
 
 <ng-template #defaultImage>
-  <img mat-card-image alt="application illustration" src="../../../assets/app1.png">
+  <div mat-card-image class="appIcon">
+    <i class="vitamui-icon vitamui-icon-app_unknown"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span><span class="path11"></span><span class="path12"></span><span class="path13"></span><span class="path14"></span><span class="path15"></span><span class="path16"></span><span class="path17"></span><span class="path18"></span><span class="path19"></span><span class="path20"></span><span class="path21"></span><span class="path22"></span><span class="path23"></span><span class="path24"></span><span class="path25"></span><span class="path26"></span><span class="path27"></span></i>
+  </div>
 </ng-template>
+
+

@@ -52,7 +52,7 @@ export class AccountApiService {
     this.apiUrl = baseUrl + '/accounts';
   }
 
-  patch(userPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Account> {
+  public patchMe(userPartial: { [key: string]: any }, headers?: HttpHeaders): Observable<Account> {
     return this.http.patch<Account>(this.apiUrl + '/me', userPartial, { headers });
   }
 

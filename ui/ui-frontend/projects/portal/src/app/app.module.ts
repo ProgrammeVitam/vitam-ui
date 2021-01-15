@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { registerLocaleData } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -42,15 +43,23 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PortalModule } from './portal';
 
-
 registerLocaleData(localeFr, 'fr');
+
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+    return new MultiTranslateHttpLoader(httpClient,  [
+    {prefix: './assets/shared-i18n/', suffix: '.json'},
+    {prefix: './assets/i18n/', suffix: '.json'}
+  ]);
+}
 
 @NgModule({
   declarations: [
@@ -60,14 +69,22 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     BrowserAnimationsModule,
     PortalModule,
+    VitamUICommonModule,
     InjectorModule,
     MatSnackBarModule,
     MatDialogModule,
-    VitamUICommonModule,
     AppRoutingModule,
-    LoggerModule.forRoot(),
     QuicklinkModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    LoggerModule.forRoot(),
+    TranslateModule.forRoot({
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Title,
@@ -75,7 +92,6 @@ registerLocaleData(localeFr, 'fr');
     { provide: BASE_URL, useValue: '/portal-api' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: WINDOW_LOCATION, useValue: window.location }
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
   bootstrap: [AppComponent]
 })

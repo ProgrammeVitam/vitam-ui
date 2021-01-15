@@ -44,6 +44,7 @@ import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
 
+import { TranslateModule } from '@ngx-translate/core';
 import { AccountModule } from './account/account.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
 import { BlankComponent } from './components/blank/blank.component';
@@ -57,6 +58,7 @@ import { EditableFieldModule } from './components/editable-field/editable-field.
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
+import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -131,6 +133,7 @@ export function startupServiceFactory(startupService: StartupService) {
     NavbarModule,
     HeaderModule,
     SelectTenantModule,
+    SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -144,13 +147,14 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
-    VitamuiBodyModule
+    VitamuiBodyModule,
   ],
   entryComponents: [
     ErrorDialogComponent
   ],
   exports: [
     AccountModule,
+    TranslateModule,
     ApplicationSelectContentModule,
     BlankComponent,
     ConfirmDialogModule,
@@ -173,6 +177,7 @@ export function startupServiceFactory(startupService: StartupService) {
     NavbarModule,
     HeaderModule,
     SelectTenantModule,
+    SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
     RowCollapseModule,
@@ -187,7 +192,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
-    PipesModule
+    PipesModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

@@ -133,4 +133,6 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
     private String internalCode;
 
     private String siteCode;
+
+    private Analytics analytics = new Analytics();
 }

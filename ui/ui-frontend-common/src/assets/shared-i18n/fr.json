@@ -1,0 +1,37 @@
+{
+    "FOOTER": {
+        "HELP": "Aide",
+        "LEGAL_NOTICE": "Mentions légales",
+        "TECHNICAL_REFERENT": "Référent technique"
+    },
+    "HEADER": {
+        "LOGOUT": "Déconnexion",
+        "NAVIGATE_AS": "Activer le mode subrogation",
+        "MY_ACCOUNT": "Mon compte"
+    },
+    "MENU" : {
+        "GRAB_APPLICATION": "Saisir le nom de l'application", 
+        "MY_APPLICATIONS": "Mes applications",
+        "RESULT": "Résultat(s)",
+        "Utilisateur": "Utilisateur",
+        "Management": "Management",
+        "Paramétrage": "Paramétrage",
+        "Dernières utilisées": "Dernières utilisées"
+    },
+    "MENU-APPLICATION-TILE": {
+        "ENTER_APPLICATION": "Entrée pour lancer l'application"
+    },
+    "SELECT-TENANT": {
+        "SELECTED": "Coffre sélectioné",
+        "SELECT" : "Sélectionner un coffre",
+        "DIALOG_TITLE" : "Bienvenue sur VitamUI",
+        "DIALOG_SUBTITLE" : "Le portail des applications de l'archivage",
+        "DIALOG_INSTRUCTIONS" : "Veuillez sélectionner votre coffre par défaut",
+        "DIALOG_MESSAGE" : "Votre coffre par défaut pourra être modifié depuis votre compte",
+        "DIALOG_BUTTON_LABEL" : "Accéder à VitamUI"
+    },
+    "SELECT-CUSTOMER": {
+        "SELECTED": "Client sélectioné",
+        "SELECT" : "Sélectionner un client"
+    }
+}
