@@ -1,0 +1,100 @@
+<div class="header">
+  <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+
+    <cdk-step>
+      <div class="content">
+        <h2 i18n="Create rule title@@ruleCreateTitle1">Création d'une règle de gestion</h2>
+        <h3 i18n="Create rule title@@ruleCreateTitle2">Informations</h3>
+        <div class="row">
+          <div class="col-8 form-control">
+            <vitamui-common-input class="field-ruleId" formControlName="ruleId" minlength="2" maxlength="100" required
+              placeholder="Identifiant" i18n-placeholder="Identifier@@ruleCreateRuleIdPlaceholder">
+              <ng-container *ngIf="form.get('ruleId')?.touched">
+                <vitamui-common-input-error *ngIf="!!form.get('ruleId')?.errors?.required"
+                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="!!form?.get('ruleId')?.errors?.ruleIdExists"
+                  i18n="Identfier exists error hint@@formErrorIdentifierExists">Identifiant déjà utilisé
+                </vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="!!form?.get('ruleId')?.errors?.ruleIdPattern"
+                  i18n="Identfier pattern error hint@@formErrorIdentifierPattern">Identifiant non conforme
+                </vitamui-common-input-error>
+              </ng-container>
+            </vitamui-common-input>
+          </div>
+          <i class="material-icons field-tooltip select-tooltip" matTooltip="L'identifiant est unique par type de règle.
+            &#13;Il ne doit pas comprendre d'espace ou de caractère accentué"
+            matTooltipClass="vitamui-tooltip">info</i>
+
+          <div class="col-8 form-control">
+            <mat-form-field class="vitamui-mat-select">
+              <mat-select formControlName="ruleType" placeholder="Type de règle" panelclass="vitamui-mat-select"
+                required="required" i18n-placeholder="Identifier@@ruleCreateRuleTypePlaceholder">
+                <mat-option *ngFor='let ruleType of ruleTypes' [value]="ruleType.key">{{ruleType.label}}</mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+          <i class="material-icons field-tooltip select-tooltip" matTooltip="StorageRule : Durée d’utilité courante
+            &#13;AppraisalRule : Durée d’utilité administrative
+            &#13;AccessRule : Délai de communicabilité
+            &#13;ReuseRule: Durée de réutilisation
+            &#13;DisseminationRule : Délai de diffusion
+            &#13;ClassificationRule : Durée de classification" matTooltipClass="vitamui-tooltip">info</i>
+
+          <div class="col-8 form-control">
+            <vitamui-common-input class="field-ruleValue" formControlName="ruleValue" minlength="2" maxlength="100"
+              required placeholder="Intitulé de la règle" i18n-placeholder="Identifier@@ruleCreateRuleValuePlaceholder">
+              <ng-container *ngIf="form.get('ruleValue')?.touched">
+                <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required"
+                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              </ng-container>
+            </vitamui-common-input>
+          </div>
+
+          <div class="col-12 form-control">
+            <vitamui-common-textarea formControlName="ruleDescription" placeholder="Description" [rows]="1">
+            </vitamui-common-textarea>
+          </div>
+
+          <div class="col-8 form-control d-flex">
+            <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*"
+              maxlength="3" required placeholder="Durée" i18n-placeholder="Identifier@@ruleCreateRuleValuePlaceholder">
+              <ng-container *ngIf="form.get('ruleDuration')?.touched">
+                <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"
+                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              </ng-container>
+            </vitamui-common-input>
+            <mat-form-field class="vitamui-mat-select">
+              <mat-select formControlName="ruleMeasurement" placeholder="Unité de mesure"
+                panelclass="vitamui-mat-select" required="required"
+                i18n-placeholder="Identifier@@ruleCreateRuleMeasurementPlaceholder">
+                <mat-option *ngFor='let ruleMeasurement of ruleMeasurements' [value]="ruleMeasurement.key">
+                  {{ruleMeasurement.label}}</mat-option>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+            <i class="material-icons field-tooltip select-tooltip" matTooltip="Jour
+            &#13;Mois
+            &#13;Année" matTooltipClass="vitamui-tooltip">info</i>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
+          i18n="Finish rule creation button@@ruleCreateFinishButton">Terminer</button>
+        <button type="button" class="btn cancel" (click)="onCancel()"
+          i18n="Cancel rule creation@@ruleCreateCancelButton">Annuler</button>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>

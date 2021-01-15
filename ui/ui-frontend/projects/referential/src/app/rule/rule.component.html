@@ -1,0 +1,70 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+
+    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+        <app-rule-preview *ngIf="openedItem" (previewClose)="closePanel()" [rule]="openedItem"></app-rule-preview>
+    </mat-sidenav>
+
+
+    <mat-sidenav-content>
+
+        <div class="vitamui-header">
+            <div class="vitamui-container">
+                <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
+                </vitamui-common-navbar>
+
+                <h2 i18n="Search rules@@rulesSearchHeader">
+                    Paramétrer les <strong>Règles de gestion</strong>
+                </h2>
+
+                <div class="controls">
+
+                    <vitamui-common-search-bar name="rules-search" (search)="onSearchSubmit($event)"
+                        placeholder="Intitulé de règle" i18n-placeholder="@@rulesSearchPlaceholder">
+                    </vitamui-common-search-bar>
+
+                    <div class="actions">
+                        <button class="btn secondary" (click)="openCreateRuleDialog()">
+                            <i class="vitamui-icon vitamui-icon-rules btn-create"></i> <span
+                                i18n="Create a business rule button label@@RulesListCreateButton">Créer une règle de
+                                gestion</span>
+                        </button>
+
+                        <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
+                            <i class="material-icons">more_horiz</i> <span
+                                i18n="More actions button label@@customerListMoreActionsButton">Autres actions</span>
+                        </button>
+                        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu"
+                            xPosition="before">
+                            <button mat-menu-item i18n="Import@@RuleImportButton"
+                                (click)="openImportRuleDialog()">Importer</button>
+                            <button mat-menu-item i18n="Export@@RuleExportButton"
+                                (click)="exportRules()">Exporter</button>
+                        </mat-menu>
+                    </div>
+
+                </div>
+
+                <div>
+                    <form [formGroup]="typeFilterForm" class="filter-controls">
+                        <div class="filter-banner-container">
+                            <mat-form-field class="mat-form-field-filter">
+                                <mat-select class="mat-select-filter" placeholder="Filtres - Type de règle"
+                                    panelclass="vitamui-mat-select" formControlName="ruleTypes">
+                                    <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.key">
+                                        {{ruleType.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="vitamui-body vitamui-container">
+            <app-rule-list (ruleClick)="showRule($event)" [search]="search"></app-rule-list>
+        </div>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
