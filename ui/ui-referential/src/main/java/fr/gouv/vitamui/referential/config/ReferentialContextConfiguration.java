@@ -136,4 +136,9 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public ProfileExternalRestClient profileExternalRestClient(final ReferentialExternalRestClientFactory factory) {
         return factory.getProfileExternalRestClient();
     }
+
+    @Bean
+    public RuleExternalRestClient ruleExternalRestClient(final ReferentialExternalRestClientFactory factory) {
+        return factory.getRuleExternalRestClient();
+    }
 }
