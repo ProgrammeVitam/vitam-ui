@@ -17,6 +17,7 @@
 }
 
 .filing-holding-scheme-tree-node {
+    min-width: 30vh;
     border-bottom: 1px solid transparentize(#979797, 0.7);
     color: var(--vitamui-secondary-dark-5);
     cursor: pointer;
