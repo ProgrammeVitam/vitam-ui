@@ -186,7 +186,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-arrow-back:before {
   content: "\ea4e";
-  color: #757575;
 }
 .vitamui-icon-attribution-liste .path1:before {
   content: "\ea4f";
@@ -248,7 +247,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-close:before {
   content: "\ea83";
-  color: #757575;
 }
 .vitamui-icon-comment:before {
   content: "\ea86";
@@ -407,7 +405,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-repeat:before {
   content: "\eae7";
-  color: #757575;
 }
 .vitamui-icon-salle:before {
   content: "\eae8";
@@ -462,7 +459,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-versement:before {
   content: "\eb20";
-  color: #757575;
 }
 .vitamui-icon-visibility:before {
   content: "\eb24";
@@ -1805,11 +1801,9 @@ i.vitamui-icon {
 }
 .vitamui-icon-lock:before {
   content: "\e933";
-  color: #757575;
 }
 .vitamui-icon-refresh:before {
   content: "\e934";
-  color: #757575;
 }
 .vitamui-icon-cycle-gear:before {
   content: "\e931";
@@ -1825,7 +1819,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-chevron-right:before {
   content: "\e92c";
-  color: #757575;
 }
 .vitamui-icon-chevron-right-plus:before {
   content: "\e92d";
