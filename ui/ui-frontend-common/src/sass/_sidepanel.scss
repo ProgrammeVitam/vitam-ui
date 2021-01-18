@@ -7,7 +7,7 @@
 .vitamui-sidepanel-header {
     background-color: white;
     padding: 2px 20px 10px 10px;
-    height: 174px;
+    height: 100%;
 
     .cancel {
         > i {
@@ -21,7 +21,7 @@
         padding: 0 30px;
 
         > i {
-            color: var(--vitamui-grey-900);
+            color: var(--vitamui-grey-600);
             font-size: 35px;
         }
 
@@ -35,8 +35,9 @@
         }
 
         > div:first-of-type {
-            width: 76%;
+            width: 100%;
             padding-left: 2rem;
+            padding-right: 1rem;
 
             > h5 {
                 display: -webkit-box;
@@ -56,7 +57,7 @@
         }
 
         > .actions {
-            width: 15%;
+            width: auto;
         }
     }
 }
@@ -75,15 +76,7 @@
     .mat-tab-body-wrapper {
       height: 100%;
     }
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
-
-
 
 .mat-drawer-content {
     background-color: var(--vitamui-background);
