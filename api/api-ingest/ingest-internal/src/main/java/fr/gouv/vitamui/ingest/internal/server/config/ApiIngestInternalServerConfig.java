@@ -46,12 +46,14 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
+import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.security.WebSecurityConfig;
+import fr.gouv.vitamui.ingest.internal.server.service.IngestDocxGenerator;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -98,13 +100,26 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     public InternalSecurityService securityService() {
         return new InternalSecurityService();
     }
+    @Bean
+    public CustomerInternalRestClient customerInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getCustomerInternalRestClient();
+    }
+
+    @Bean
+    public IngestDocxGenerator ingestDocxGenerator() {
+        return new IngestDocxGenerator();
+    }
 
     @Bean
     public IngestInternalService ingestInternalService(
             final InternalSecurityService internalSecurityService,
-            LogbookService logbookService,
-            ObjectMapper objectMapper,
-            IngestService ingestService) {
-        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestService);
+            final LogbookService logbookService,
+            final ObjectMapper objectMapper,
+            final IngestExternalClient ingestExternalClient,
+            final IngestService ingestService,
+            final CustomerInternalRestClient customerInternalRestClient,
+            final IngestDocxGenerator ingestDocxGenerator) {
+        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService,
+            customerInternalRestClient, ingestDocxGenerator);
     }
 }

@@ -374,6 +374,11 @@
                 <artifactId>ui-portal</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-internal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- spring-boot -->
             <dependency>

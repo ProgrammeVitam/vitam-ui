@@ -4,6 +4,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
+import { IngestService } from '../ingest.service';
 
 fdescribe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
@@ -15,7 +16,8 @@ fdescribe('IngestPreviewComponent', () => {
       imports: [
         MatMenuModule
       ],
-      providers: [ { provide: LogbookService, useValue: {} } ],
+      providers: [ { provide: LogbookService, useValue: {} },
+         { provide: IngestService, useIngestServiceValue: {} } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
