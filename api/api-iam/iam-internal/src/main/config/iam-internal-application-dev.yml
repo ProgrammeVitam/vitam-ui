@@ -41,7 +41,7 @@ cas-client:
       key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
       key-password: changeme
     keystore:
-      key-path: src/main/config/keystore_iam-internal.jks
+      key-path:  ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
       key-password: changeme
       type: JKS
     hostname-verification: false

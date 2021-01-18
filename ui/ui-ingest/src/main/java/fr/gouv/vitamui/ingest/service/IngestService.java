@@ -48,6 +48,8 @@ import fr.gouv.vitamui.ingest.thread.IngestThread;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -92,6 +94,10 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
             new IngestThread(ingestExternalWebClient, context, in, contextId, action, originalFilename);
 
         ingestThread.start();
+    }
+
+     public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
+        return ingestExternalRestClient.generateDocX(context, id);
     }
 
     public IngestExternalRestClient getClient() {

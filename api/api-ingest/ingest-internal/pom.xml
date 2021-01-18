@@ -20,6 +20,18 @@
     </properties>
 
     <dependencies>
+
+        <!-- APACHE -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+
         <!-- VITAMUI -->
 
         <dependency>
@@ -188,6 +200,10 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>iam-internal</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -218,7 +234,9 @@
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
                         <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
-                        <argument>--spring.config.additional-location=file:${basedir}/src/main/config/ingest-internal-application-dev.yml</argument>
+                        <argument>
+                            --spring.config.additional-location=file:${basedir}/src/main/config/ingest-internal-application-dev.yml
+                        </argument>
                     </arguments>
                 </configuration>
             </plugin>
