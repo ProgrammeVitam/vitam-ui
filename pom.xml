@@ -103,9 +103,10 @@
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
         <jlibs.version>2.2.3</jlibs.version>
-        <junit.version>4.13</junit.version>
-        <junit.jupiter.version>5.5.0</junit.jupiter.version>
-        <junit.jupiter.platform.version>1.5.0</junit.jupiter.platform.version>
+        <junit.version>4.13.1</junit.version>
+        <junit.jupiter.version>5.7.0</junit.jupiter.version>
+        <junit.jupiter.platform.version>1.7.0</junit.jupiter.platform.version>
+        <junit.vintage.engine.version>5.7.0</junit.vintage.engine.version>
         <jruby.complete.version>1.7.26</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.3</logback.version>
@@ -972,6 +973,13 @@
                 <version>${junit.jupiter.platform.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${junit.vintage.engine.version}</version>
+                <scope>test</scope>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.easymock</groupId>
