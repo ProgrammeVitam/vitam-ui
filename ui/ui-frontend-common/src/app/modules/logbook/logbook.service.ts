@@ -100,6 +100,16 @@ export class LogbookService {
     );
   }
 
+  listOperationByResourcePathIdAndCollectionName(
+    resourcePath: string, identifier: string, collectionName: string, tenantIdentifier: number): Observable<Event[]> {
+    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+
+    return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
+      catchError(() => of({ $results: [] as Event[] })),
+      map((response) => response.$results.reduce(flattenChildEvents, []).filter(e => e.obIdReq === collectionName).sort(sortEventByDate))
+    );
+  }
+
   listHistoryForOwner(id: string, externalParamId: string, tenantIdentifier: number): Observable<Event[]> {
     const ownerEventsObservable = this.listOperationByIdAndCollectionName(id, 'owners', tenantIdentifier);
     const tenantEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'tenants', tenantIdentifier);

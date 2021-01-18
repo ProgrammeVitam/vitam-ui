@@ -110,8 +110,8 @@ export class LogbookApiService implements PaginatedApi<Event> {
     );
   }
 
-  findOperationByIdAndCollectionName(id: string, collectionName: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
-    return this.http.get<{ $results: ApiEvent[] }>(this.baseUrl +  '/' + collectionName + '/' + id + '/history' , { headers }).pipe(
+  findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<{ $results: Event[] }> {
+    return this.http.get<{ $results: ApiEvent[] }>(this.baseUrl +  '/' + resourcePath + '/' + id + '/history' , { headers }).pipe(
       map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) }))
     );
   }
