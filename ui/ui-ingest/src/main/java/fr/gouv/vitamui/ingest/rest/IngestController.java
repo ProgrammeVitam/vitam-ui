@@ -50,7 +50,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -108,6 +107,17 @@ public class IngestController extends AbstractUiRestController {
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
+    @ApiOperation(value = "download Docx Report for an ingest operation")
+    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> genereateDocX(final @PathVariable("id") String id) {
+        LOGGER.debug("download Docx report for the ingest with id :{}", id);
+        byte[] bytes = service.generateDocX(buildUiHttpContext(), id).getBody();
+        return ResponseEntity.ok()
+             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
+             .body(bytes);
+
+    }
+
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Produces(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -119,7 +129,7 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_CHUNK_OFFSET) final String chunkOffset,
         @RequestHeader(value = CommonConstants.X_SIZE_TOTAL) final String totalSize,
-        @RequestParam final MultipartFile file) {
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
 
         LOGGER.debug("[{}] Upload File : {} - {} bytes", requestId, file.getOriginalFilename(), totalSize);
         if (StringUtils.isEmpty(requestId)) {

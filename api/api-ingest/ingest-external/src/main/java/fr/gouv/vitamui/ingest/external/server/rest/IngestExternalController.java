@@ -49,7 +49,6 @@ import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -102,7 +101,7 @@ public class IngestExternalController {
     public Mono<RequestResponseOK> upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestParam("file") final MultipartFile file) {
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
         InputStream in = null;
         try {
             in = file.getInputStream();
@@ -114,5 +113,12 @@ public class IngestExternalController {
         }
 
         return ingestExternalService.upload(in, action, contextId);
+    }
+
+    @Secured(ServicesData.ROLE_GET_INGEST)
+    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateDocX(final @PathVariable("id") String id) {
+        LOGGER.debug("export docx report for ingest with id :{}", id);
+        return ingestExternalService.generateDocX(id);
     }
 }

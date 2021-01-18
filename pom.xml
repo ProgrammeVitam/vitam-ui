@@ -253,6 +253,13 @@
             </dependency>
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-commons</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>referential-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -366,6 +373,11 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>ui-portal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

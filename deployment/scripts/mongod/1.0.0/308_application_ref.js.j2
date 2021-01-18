@@ -1,0 +1,25 @@
+db = db.getSiblingDB('iam')
+
+print("START 308_application_ref.js");
+
+// -------- VITAM ADMINISTRATION -----
+
+db.applications.insert({
+    "identifier" : "RULES_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.referential.base_url }}/rule",
+{% else %}
+    "url": "{{ url_prefix }}/referential/rule",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-rules",
+    "name" : "Règles de gestion",
+    "category" : "referential",
+    "position" : NumberInt(11),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les règles de gestion",
+    "target" : "_self"
+});
+
+print("END 308_application_ref.js");

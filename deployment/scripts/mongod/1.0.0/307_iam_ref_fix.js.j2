@@ -1,0 +1,15 @@
+db = db.getSiblingDB('iam')
+
+print("START 307_iam_ref_fix.js");
+
+db.profiles.remove( {"_id": "auto_system_rules"}, true);
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.groups.updateOne( {
+	"_id": "admin_group"
+}, {
+    $pull: {
+        "profileIds": "auto_system_rules"
+    }
+})

@@ -41,4 +41,9 @@ export class IngestApiService extends BaseHttpClient<any> {
       tap(ev => ev.parsedData = (ev.data != null) ? JSON.parse(ev.data) : null)
     );
   }
+
+  downloadDocxReport(id : string) : Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/docxreport/${id}`, { responseType: 'blob' });
+  }
+
 }

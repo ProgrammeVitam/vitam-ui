@@ -36,6 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { LogbookService } from 'ui-frontend-common';
+import { IngestService } from '../ingest.service';
 
 @Component({
   selector: 'app-ingest-preview',
@@ -46,8 +47,9 @@ export class IngestPreviewComponent implements OnInit {
 
   @Input() ingest: any; // Make a type ?
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
+ 
 
-  constructor(private logbookService: LogbookService) { }
+  constructor(private logbookService: LogbookService, private ingestService : IngestService) { }
 
   ngOnInit() {
   }
@@ -73,5 +75,9 @@ export class IngestPreviewComponent implements OnInit {
 
   downloadATR() {
     this.logbookService.downloadATR(this.ingest.id);
+  }
+
+  generateDocX() {
+    this.ingestService.downloadDocxReport(this.ingest.id);
   }
 }

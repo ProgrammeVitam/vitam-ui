@@ -28,6 +28,10 @@
 			<artifactId>iam-external-client</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>referential-external-client</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>fr.gouv.vitamui.commons</groupId>
 			<artifactId>commons-api</artifactId>
 		</dependency>
@@ -38,6 +42,10 @@
 		<dependency>
 			<groupId>fr.gouv.vitamui.commons</groupId>
 			<artifactId>commons-vitam</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>referential-commons</artifactId>
 		</dependency>
 
 		<!-- Spring-Boot -->
@@ -92,6 +100,12 @@
 		<dependency>
 			<groupId>fr.gouv.vitamui</groupId>
 			<artifactId>iam-commons</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>fr.gouv.vitamui</groupId>
+			<artifactId>referential-commons</artifactId>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -264,6 +278,12 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>vitam-external</id>
+			<properties>
+				<test.runners>**/runners/ReferentialIntegrationTest.java</test.runners>
+			</properties>
 		</profile>
 		<profile>
 			<id>dev-it</id>
