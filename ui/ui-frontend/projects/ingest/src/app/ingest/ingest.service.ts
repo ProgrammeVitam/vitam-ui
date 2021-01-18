@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { SearchService } from 'ui-frontend-common';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -56,4 +56,27 @@ export class IngestService extends SearchService<any> {
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
   }
+
+
+  get(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+downloadDocxReport(id : string)  {
+  return this.ingestApiService.downloadDocxReport(id).subscribe(file => {
+
+    const element = document.createElement('a');
+    element.href = window.URL.createObjectURL(file);
+    element.download ='Bordereau-' + id + '.docx';
+    element.style.visibility = 'hidden';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  })
+
+}
 }

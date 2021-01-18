@@ -46,7 +46,6 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -81,5 +80,12 @@ public class IngestExternalRestClient extends BasePaginatingAndSortingRestClient
 
     @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
+    }
+
+    public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID );
+        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
+
     }
 }
