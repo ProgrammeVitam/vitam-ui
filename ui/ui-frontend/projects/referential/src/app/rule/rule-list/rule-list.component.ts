@@ -64,7 +64,7 @@ import {
 } from 'ui-frontend-common';
 import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
 import {RuleService} from '../rule.service';
-import {RULE_TYPES, RULE_MEASUREMENTS} from '../rules.constants';
+import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -187,8 +187,9 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.orderChange.next();
   }
 
+  // tslint:disable-next-line:ban-types
   getRuleType(input: String) {
-    var result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
+    const result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
     if (result) {
       return result.label;
     } else {
@@ -196,8 +197,9 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     }
   }
 
+  // tslint:disable-next-line:ban-types
   getRuleMeasurement(input: String) {
-    var result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
+    const result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
     if (result) {
       return result.label;
     } else {

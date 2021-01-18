@@ -39,6 +39,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
+  MatDividerModule,
   MatMenuModule,
   MatOptionModule,
   MatProgressSpinnerModule,
@@ -46,7 +47,6 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatDividerModule,
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
 

@@ -37,7 +37,6 @@
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Directive, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 import {
   Application,
   ApplicationId,
@@ -45,9 +44,11 @@ import {
   LoggerModule,
   StartupService,
   SUBROGRATION_REFRESH_RATE_MS
-} from "ui-frontend-common";
+} from 'ui-frontend-common';
+import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 
 @Directive({
+  // tslint:disable-next-line:directive-selector
   selector: '[vitamuiCommonTooltip]',
 })
 class TooltipStubDirective {
