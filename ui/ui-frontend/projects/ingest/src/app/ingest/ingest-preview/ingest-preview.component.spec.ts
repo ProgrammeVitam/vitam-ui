@@ -16,7 +16,7 @@ describe('IngestPreviewComponent', () => {
         MatMenuModule
       ],
       providers: [ { provide: LogbookService, useValue: {} },
-      {}provide: StartupService, useStartupServiceValue: {}},
+      {provide: StartupService, useStartupServiceValue: {}},
          { provide: IngestService, useIngestServiceValue: {} } ],
       schemas: [NO_ERRORS_SCHEMA]
     })

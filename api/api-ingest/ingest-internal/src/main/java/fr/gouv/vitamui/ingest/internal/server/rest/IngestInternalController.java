@@ -88,7 +88,6 @@ public class IngestInternalController {
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
-
     @GetMapping(CommonConstants.PATH_ID)
     public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
         LOGGER.debug("get Ingest Entities for id={} ", id);

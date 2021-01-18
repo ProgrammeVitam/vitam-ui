@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LogbookService } from 'ui-frontend-common';
+import { LogbookService, StartupService } from 'ui-frontend-common';
 import { IngestService } from '../ingest.service';
 
 @Component({
@@ -50,7 +50,7 @@ export class IngestPreviewComponent implements OnInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
 
-  constructor(private logbookService: LogbookService, private ingestService : IngestService) { }
+  constructor(private startupService : StartupService, private logbookService: LogbookService, private ingestService : IngestService) { }
 
   ngOnInit() {
   }

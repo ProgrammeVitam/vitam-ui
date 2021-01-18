@@ -17,7 +17,8 @@ export class IngestPopupComponent implements OnInit {
   customer: Customer;
 
   constructor(private route: ActivatedRoute, private customerService: CustomerService) {
-    this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
+    this.customerService.getMyCustomer().subscribe(
+      (customer) => this.customer = customer);
     this.ingest = this.route.snapshot.data.ingest;
 
   }

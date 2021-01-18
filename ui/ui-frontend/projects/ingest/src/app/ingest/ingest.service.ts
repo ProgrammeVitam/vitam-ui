@@ -63,10 +63,6 @@ export class IngestService extends SearchService<any> {
     return this.ingestApiService.getOne(id);
   }
 
-  getIngestOperation(id: string): Observable<any> {
-    return this.ingestApiService.getOne(id);
-  }
-
 downloadDocxReport(id : string)  {
   return this.ingestApiService.downloadDocxReport(id).subscribe(file => {
 
