@@ -6,11 +6,7 @@
     </h2>
 
     <div class="controls">
-      <vitamui-common-search-bar
-          name="user-search"
-          (search)="onSearchSubmit($event)"
-          i18n-placeholder="subrogation profileSearch@@SearchSubrogationProfile" placeholder="Saisissez le nom du profil de subrogation">
-      </vitamui-common-search-bar>
+      <app-user-search></app-user-search>
 
       <div class="actions">
         <button class="btn secondary" (click)="openUserSubrogationDialog()">
@@ -29,6 +25,6 @@
 </div>
 
 <div class="vitamui-body vitamui-container">
-  <app-subrogate-user-list [search]="search" [emailDomains]="customer?.emailDomains"></app-subrogate-user-list>
+  <app-subrogate-user-list [emailDomains]="customer?.emailDomains"></app-subrogate-user-list>
 </div>
 

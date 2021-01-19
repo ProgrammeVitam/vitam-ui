@@ -51,8 +51,8 @@ describe('AuditInformationTabComponent', () => {
       agId: 'agId',
       agIdApp: 'agIdApp',
       agIdExt: 'agIdExt',
-      rightsStatementIdentifier: 'rightsStatementIdentifier',
-      obIdReq: 'obIdReq'
+      obIdReq: 'obIdReq',
+      rightsStatementIdentifier: 'rightsStatementIdentifier'
     }]
 
   };

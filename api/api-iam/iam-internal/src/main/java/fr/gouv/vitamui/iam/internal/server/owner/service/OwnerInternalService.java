@@ -214,10 +214,6 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
                     logbooks.add(new EventDiffDto(OwnerConverter.COMPANY_NAME_KEY, owner.getCompanyName(), entry.getValue()));
                     owner.setCompanyName(CastUtils.toString(entry.getValue()));
                     break;
-                case "internalCode" :
-                    logbooks.add(new EventDiffDto(OwnerConverter.INTERNAL_CODE_KEY, owner.getInternalCode(), entry.getValue()));
-                    owner.setInternalCode(CastUtils.toString(entry.getValue()));
-                    break;
                 case "address" :
                     Address address;
                     if (owner.getAddress() == null) {

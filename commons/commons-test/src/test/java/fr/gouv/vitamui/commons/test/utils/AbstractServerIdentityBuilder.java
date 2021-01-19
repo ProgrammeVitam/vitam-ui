@@ -2,13 +2,6 @@ package fr.gouv.vitamui.commons.test.utils;
 
 import org.junit.BeforeClass;
 
-/**
- * @deprecated Do not use this class if you are using JUnit5
- * No longer need to redefine the server identity.
- * A JUnit Server Identity extension is globally registered {@link fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension }) in the application.
- * It initializes a Server Identity before each test class.
- */
-@Deprecated
 public abstract class AbstractServerIdentityBuilder {
 
     @BeforeClass

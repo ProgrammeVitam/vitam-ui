@@ -29,8 +29,6 @@ import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 
-import lombok.val;
-
 /**
  * Tests {@link IamSurrogateAuthenticationService}.
  */

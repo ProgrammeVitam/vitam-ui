@@ -38,7 +38,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import {
-  AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard
+  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
 } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
@@ -55,7 +55,6 @@ const routes: Routes = [
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' }
   },
   // =====================================================
@@ -65,7 +64,6 @@ const routes: Routes = [
     path: 'customer',
     loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'CUSTOMERS_APP' }
   },
 
@@ -76,7 +74,6 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then(m => m.UserModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'USERS_APP' }
   },
   // =====================================================
@@ -86,7 +83,6 @@ const routes: Routes = [
     path: 'group',
     loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'GROUPS_APP' }
   },
   // =====================================================
@@ -96,7 +92,6 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'PROFILES_APP' },
   },
   // =====================================================
@@ -106,7 +101,6 @@ const routes: Routes = [
     path: 'profile-hierarchy',
     loadChildren: () => import('./hierarchy/hierarchy.module').then(m => m.HierarchyModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'HIERARCHY_PROFILE_APP' }
   },
   // =====================================================
@@ -116,7 +110,6 @@ const routes: Routes = [
     path: 'subrogation',
     loadChildren: () => import('./subrogation/subrogation.module').then(m => m.SubrogationModule),
     canActivate: [AuthGuard, AppGuard],
-    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'SUBROGATIONS_APP' }
   },
   // =====================================================

@@ -1,5 +1,4 @@
 const svgToMiniDataURI = require('mini-svg-data-uri');
-const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
     module: {
@@ -32,9 +31,4 @@ module.exports = {
         },
       ],
     },
-    plugins: [
-      new MomentLocalesPlugin({
-        localesToKeep: ['fr']
-      })
-    ]
   };

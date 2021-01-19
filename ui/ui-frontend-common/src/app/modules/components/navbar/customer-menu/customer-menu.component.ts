@@ -38,7 +38,6 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { CustomerSelectionService } from '../../../customer-selection.service';
 
 import { CommonMenuComponent } from '../common-menu/common-menu.component';
 import { MenuType } from '../menu-type.enum';
@@ -62,7 +61,6 @@ export class CustomerMenuComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private customerMenuService: CustomerMenuService,
-    private customerSelectionService: CustomerSelectionService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -72,7 +70,6 @@ export class CustomerMenuComponent implements OnInit, OnDestroy {
     this.customerSelection = this.customerMenuService.getSelectedCustomer().subscribe((customerId) => {
       if (customerId !== this.activeCustomerId) {
         this.activeCustomerId = customerId;
-        this.customerSelectionService.setCustomerId(customerId);
         this.emitCustomerIdChange(customerId);
       }
     });

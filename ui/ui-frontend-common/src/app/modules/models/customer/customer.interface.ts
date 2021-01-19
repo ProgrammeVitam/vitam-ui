@@ -50,7 +50,6 @@ export interface Customer extends Id {
   otp: OtpState;
   idp?: boolean;
   address: Address;
-  internalCode?: string;
   language: string;
   emailDomains: string[];
   defaultEmailDomain: string;

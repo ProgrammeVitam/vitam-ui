@@ -1,3 +1,4 @@
+
 ---
 # tasks file for vitam-service-uninstall
 - name: Stop vitam service
@@ -19,6 +20,7 @@
     - app
     - bin
     - conf
+    - data
     - defaults
     - lib
     - log

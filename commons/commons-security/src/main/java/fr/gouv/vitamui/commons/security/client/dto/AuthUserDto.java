@@ -39,7 +39,6 @@ package fr.gouv.vitamui.commons.security.client.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -117,7 +116,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setNbFailedAttempts(user.getNbFailedAttempts());
         setPasswordExpirationDate(user.getPasswordExpirationDate());
         setGroupId(user.getGroupId());
-        setAnalytics(user.getAnalytics());
         setSiteCode(user.getSiteCode());
     }
 
@@ -227,9 +225,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
                     case GROUP_ID_ATTRIBUTE :
                         setGroupId((String) value);
                         break;
-                    case ANALYTICS_ATTRIBUTE :
-                        setAnalytics((AnalyticsDto) parseJson(value, new TypeReference<AnalyticsDto>() {}));
-                        break;
                     case AUTHTOKEN_ATTRIBUTE :
                         setAuthToken((String) value);
                         break;
@@ -305,7 +300,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setNbFailedAttempts(getNbFailedAttempts());
         user.setPasswordExpirationDate(getPasswordExpirationDate());
         user.setGroupId(getGroupId());
-        user.setAnalytics(getAnalytics());
         user.setSiteCode(getSiteCode());
         return user;
     }

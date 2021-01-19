@@ -71,7 +71,7 @@ public class CustomerDto extends IdDto {
     private static final long serialVersionUID = 997428479132350296L;
 
     @NotNull
-    @Length(min = 4, max = 25)
+    @Length(min = 6, max = 20)
     private String code;
 
     @NotNull
@@ -102,8 +102,6 @@ public class CustomerDto extends IdDto {
 
     @NotNull
     private AddressDto address;
-
-    private String internalCode;
 
     private boolean subrogeable = false;
 

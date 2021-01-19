@@ -1,36 +1,30 @@
-:host {
-    .profile-select-inputs {
-        margin-bottom: 24px;
-    }
-    
-    .table-container {
-        overflow: auto;
-        max-height: 20vh;
-    }
-    
-    .vitamui-option {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .margin {
-        margin-left: 10px;
-    }
-    
-    .mb-10 {
-        margin-bottom: 10px;
-    }
-    
-    .mt-30 {
-        margin-top: 30px;
-    }
-    
-    .text-center {
-        text-align: center;
-    }
+.profile-select-inputs {
+    margin-bottom: 24px;
 }
 
-::ng-deep .content {
-    max-height: 90vh;
+.table-container {
+    overflow: auto;
+    max-height: 30vh;
+}
+
+.vitamui-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.margin {
+    margin-left: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
+
+.text-center {
+    text-align: center;
 }

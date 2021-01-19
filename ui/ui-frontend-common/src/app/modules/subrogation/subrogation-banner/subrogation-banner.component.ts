@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import * as moment_ from 'moment';
-import { filter } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { AuthService } from '../../auth.service';
+import { ConfirmDialogService } from '../../components/confirm-dialog/confirm-dialog.service';
 import { Subrogation } from '../../models';
 import { SubrogationService } from '../subrogation.service';
 
@@ -52,6 +53,8 @@ const moment = moment_;
 })
 export class SubrogationBannerComponent implements OnInit {
 
+  @ViewChild('stopConfirmDialog', { static: true }) stopConfirmDialogTemplateRef: TemplateRef<SubrogationBannerComponent>;
+
   show = false;
   hidden = false;
   endDate: Date;
@@ -60,7 +63,8 @@ export class SubrogationBannerComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private subrogationService: SubrogationService
+    private subrogationService: SubrogationService,
+    private confirmDialogService: ConfirmDialogService
   ) { }
 
   ngOnInit() {
@@ -80,7 +84,10 @@ export class SubrogationBannerComponent implements OnInit {
   }
 
   onStopSubrogation() {
-    this.subrogationService.decline(this.subrogation.id).subscribe(() => {
+    this.confirmDialogService.confirm(this.stopConfirmDialogTemplateRef).pipe(
+      switchMap(() => this.subrogationService.decline(this.subrogation.id))
+    )
+      .subscribe(() => {
         this.show = false;
         this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser);
       });

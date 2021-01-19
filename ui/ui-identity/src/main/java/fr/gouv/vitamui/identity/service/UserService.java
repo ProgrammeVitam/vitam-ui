@@ -130,5 +130,4 @@ public class UserService extends AbstractPaginateService<UserDto> {
     public List<String> getLevels(final ExternalHttpContext context, final Optional<String> criteria) {
         return getClient().getLevels(context, criteria);
     }
-
 }

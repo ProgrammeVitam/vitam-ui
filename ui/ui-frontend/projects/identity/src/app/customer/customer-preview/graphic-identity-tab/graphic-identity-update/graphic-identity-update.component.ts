@@ -87,19 +87,19 @@ export class GraphicIdentityUpdateComponent implements OnInit {
     this.graphicIdentityForm.get('hasCustomGraphicIdentity').setValue(this.customer.hasCustomGraphicIdentity);
     this.hasCustomGraphicIdentity = this.graphicIdentityForm.get('hasCustomGraphicIdentity').value;
 
-    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
 
+    const customerTheme = this.themeService.getThemeColors(this.customer.themeColors);
     this.lastColors = {
-      'vitamui-primary': customerTheme['vitamui-primary'],
-      'vitamui-secondary': customerTheme['vitamui-secondary']
+      primary: customerTheme['vitamui-primary'],
+      secondary: customerTheme['vitamui-secondary']
     };
     if (this.hasCustomGraphicIdentity) {
       this.graphicIdentityForm.get('themeColors').setValue(this.lastColors);
     } else {
       const defaultTheme = this.themeService.getThemeColors();
       this.graphicIdentityForm.get('themeColors').setValue({
-        'vitamui-primary': defaultTheme['vitamui-primary'],
-        'vitamui-secondary': defaultTheme['vitamui-secondary']
+        primary: defaultTheme['vitamui-primary'],
+        secondary: defaultTheme['vitamui-secondary']
       });
     }
 
@@ -117,8 +117,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         this.lastColors = this.graphicIdentityForm.get('themeColors').value;
         const defaultTheme = this.themeService.getThemeColors();
         this.graphicIdentityForm.get('themeColors').setValue({
-          'vitamui-primary': defaultTheme['vitamui-primary'],
-          'vitamui-secondary': defaultTheme['vitamui-secondary']
+          primary: defaultTheme['vitamui-primary'],
+          secondary: defaultTheme['vitamui-secondary']
         });
         this.lastImageUploaded = this.imageToUpload;
         this.lastUploadedImageUrl = this.imageUrl;
@@ -126,6 +126,9 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         this.imageUrl = null;
       }
     });
+
+
+
   }
 
   onCancel() {
@@ -195,8 +198,8 @@ export class GraphicIdentityUpdateComponent implements OnInit {
       id : this.customer.id,
       hasCustomGraphicIdentity: this.graphicIdentityForm.get('hasCustomGraphicIdentity').value,
       themeColors: this.themeService.getThemeColors({
-        'vitamui-primary': colorValues['vitamui-primary'],
-        'vitamui-secondary': colorValues['vitamui-secondary']
+        'vitamui-primary': colorValues.primary,
+        'vitamui-secondary': colorValues.secondary
       })
     };
     this.customerService.patch(formData, this.imageToUpload)
@@ -210,23 +213,14 @@ export class GraphicIdentityUpdateComponent implements OnInit {
         });
   }
 
-  private isThemeColorsFormValid(): boolean {
-    const value = this.graphicIdentityForm.get('themeColors').value;
-    for (const key of Object.keys(value)) {
-      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public isGraphicIdentityFormValid(): boolean {
-    return this.isThemeColorsFormValid() &&
+  isGraphicIdentityFormValid() {
+    return this.graphicIdentityForm.get('themeColors').value.primary.match(this.hexPattern) &&
+    this.graphicIdentityForm.get('themeColors').value.secondary.match(this.hexPattern) &&
     (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === false ||
         (this.graphicIdentityForm.get('hasCustomGraphicIdentity').value === true &&
           (this.data.logo || this.imageUrl)
         )
-    );
+      );
   }
 
 }

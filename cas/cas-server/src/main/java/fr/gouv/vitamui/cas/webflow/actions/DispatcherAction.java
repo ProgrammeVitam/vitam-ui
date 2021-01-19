@@ -95,15 +95,15 @@ public class DispatcherAction extends AbstractAction {
     protected Event doExecute(final RequestContext requestContext) throws IOException {
 
         val credential = WebUtils.getCredential(requestContext, UsernamePasswordCredential.class);
-        val username = credential.getUsername().toLowerCase().trim();
+        val username = credential.getUsername().toLowerCase();
         String dispatchedUser = username;
         String surrogate = null;
         if (username.contains(surrogationSeparator)) {
-            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator).trim();
+            dispatchedUser = StringUtils.substringAfter(username, surrogationSeparator);
             if (username.startsWith(surrogationSeparator)) {
                 WebUtils.putCredential(requestContext, new UsernamePasswordCredential(dispatchedUser, null));
             } else {
-                surrogate = StringUtils.substringBefore(username, surrogationSeparator).trim();
+                surrogate = StringUtils.substringBefore(username, surrogationSeparator);
             }
         }
         LOGGER.debug("Dispatching user: {} / surrogate: {}", dispatchedUser, surrogate);

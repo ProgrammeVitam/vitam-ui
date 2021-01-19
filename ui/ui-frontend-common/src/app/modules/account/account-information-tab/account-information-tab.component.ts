@@ -64,7 +64,7 @@ export class AccountInformationTabComponent implements OnInit {
       firstname: [{ value: null, disabled: true}, Validators.required],
       lastname: [{ value: null, disabled: true}, Validators.required],
       email: [{ value: null, disabled: true}, [Validators.required, Validators.email]],
-      language: [{ value: null, disabled: true}, Validators.required],
+      language: [{ value: null, disabled: false}, Validators.required],
       level : [{ value: null, disabled: true}],
       otp: [{ value: null, disabled: true}],
       mobile: [{ value: null, disabled: true}, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
@@ -77,7 +77,7 @@ export class AccountInformationTabComponent implements OnInit {
 
   ngOnInit() {
     this.form.valueChanges.subscribe((values: Account) => {
-      this.accountService.patchMe(values).subscribe();
+      this.accountService.patch(values).subscribe();
     });
   }
 

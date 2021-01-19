@@ -41,11 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
 
-
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ApplicationSelectContentModule } from 'ui-frontend-common';
-import { ApplicationListModule } from '../components/application-list/application-list.module';
-import { WelcomeMessageModule } from '../components/welcome-message/welcome-message.module';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { PortalComponent } from './portal.component';
 
 @NgModule({
@@ -55,10 +51,7 @@ import { PortalComponent } from './portal.component';
     MatMenuModule,
     ReactiveFormsModule,
     RouterModule,
-    ApplicationSelectContentModule,
-    WelcomeMessageModule,
-    ApplicationListModule,
-    MatProgressSpinnerModule,
+    VitamUICommonModule,
   ],
   declarations: [PortalComponent]
 })

@@ -41,7 +41,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -120,7 +119,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
         Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
         Map<String, PortalCategoryConfig> categories = properties.getPortalCategories();
-        categories.keySet().forEach(category -> categories.get(category).setIdentifier(category));
 
         Map<String, Object> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
@@ -141,10 +139,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
-        configurationData.put(CommonConstants.WELCOME_TITLE, properties.getWelcomeTitle());
-        configurationData.put(CommonConstants.WELCOME_DESCRIPTION, properties.getWelcomeDescription());
-        configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
-
         if(properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
         } else {

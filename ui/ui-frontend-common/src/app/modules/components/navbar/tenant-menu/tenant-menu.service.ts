@@ -36,9 +36,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { User } from './../../../models/user/user.interface';
 
-import { UserApiService } from '../../../api/user-api.service';
 import { ApplicationId } from '../../../application-id.enum';
 import { AuthService } from '../../../auth.service';
 import { Tenant } from '../../../models';
@@ -53,7 +51,8 @@ export class TenantMenuService {
   activeTenantIdentifier: number;
   private selectedTenantSubject = new Subject<number>();
 
-  constructor(private authService: AuthService, private userApiService: UserApiService) { }
+  constructor(
+    private authService: AuthService) { }
 
   set appId(appId: ApplicationId) {
     if (this.authService.user && this.authService.user.hasOwnProperty('tenantsByApp')) {
@@ -72,15 +71,11 @@ export class TenantMenuService {
     return (this._tenants || []).find((tenant) => tenant.identifier === this.activeTenantIdentifier);
   }
 
-  public setDefaultTenant(tenantIdentifier: number): Observable<User> {
-    return this.userApiService.analytics({lastTenantIdentifier: tenantIdentifier});
-  }
-
-  public sendSelectedTenant(tenantIdentifier: number): void {
+  sendSelectedTenant(tenantIdentifier: number) {
     this.selectedTenantSubject.next(tenantIdentifier);
   }
 
-  public getSelectedTenant(): Observable<number> {
+  getSelectedTenant(): Observable<number> {
     return this.selectedTenantSubject.asObservable();
   }
 

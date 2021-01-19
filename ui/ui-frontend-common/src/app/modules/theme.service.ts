@@ -7,14 +7,6 @@ import {getColorFromMaps, hexToRgbString, ThemeColors} from './utils';
 })
 export class ThemeService {
 
-  private baseColors: {[colorId: string]: string} = {
-    'vitamui-primary': 'Couleur principale',
-    'vitamui-secondary': 'Couleur secondaire'
-  };
-
-
-  constructor() { }
-
   // Default theme
   defaultMap: ThemeColors = {
     'vitamui-primary': '#702382',
@@ -29,17 +21,12 @@ export class ThemeService {
   };
 
   // Theme for current app configuration
-  applicationColorMap: {[colorId: string]: string};
+  applicationColorMap;
 
-  public getBaseColors(): { [p: string]: string } {
-    return this.baseColors;
+  constructor() {
   }
 
-  public getVariationColorsNames(baseName: string): string[] {
-    return Object.keys(this.defaultMap).filter((colorName) => colorName.startsWith(baseName));
-  }
-
-  public init(appMap): void {
+  init(appMap) {
     this.applicationColorMap = appMap;
   }
 
@@ -48,9 +35,9 @@ export class ThemeService {
    * Setting base colors (primary, secondary) will return updated variations (primary-light etc..)
    * @param customerColors Entries to override
    */
-  public getThemeColors(customerColors: {[colorId: string]: string} = null): {[colorId: string]: string} {
-
+  getThemeColors(customerColors = null): {[colorId: string]: string} {
     const colors = {};
+
     for (const key in this.defaultMap) {
       if (this.defaultMap.hasOwnProperty(key)) {
         colors[key] = getColorFromMaps(key, this.defaultMap, this.applicationColorMap, customerColors);
@@ -59,15 +46,17 @@ export class ThemeService {
     return colors;
   }
 
-  public overrideTheme(customerThemeMap, selector= 'body'): void {
+  overrideTheme(customerThemeMap, selector= 'body') {
+
     const element: HTMLElement = document.querySelector(selector);
     const themeColors = this.getThemeColors(customerThemeMap);
     for (const key in themeColors) {
       if (themeColors.hasOwnProperty(key)) {
-        element.style.setProperty('--' + key, themeColors[key]);
-        element.style.setProperty('--' + key + '-rgb', hexToRgbString(themeColors[key]));
+          element.style.setProperty('--' + key, themeColors[key]);
+          element.style.setProperty('--' + key + '-rgb', hexToRgbString(themeColors[key]));
       }
     }
+
   }
 
 }

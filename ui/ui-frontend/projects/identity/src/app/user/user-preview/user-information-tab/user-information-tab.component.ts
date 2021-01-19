@@ -86,8 +86,7 @@ export class UserInfoTabComponent implements OnChanges {
       city: string,
       country: string,
     },
-    siteCode: string,
-    internalCode: string
+    siteCode: string
   };
   clientEmailDomains: string[];
 
@@ -119,7 +118,6 @@ export class UserInfoTabComponent implements OnChanges {
         country: [null, Validators.required],
       }),
       siteCode: [null],
-      internalCode: [null],
     });
 
     this.form.get('mobile').valueChanges.subscribe(() => {

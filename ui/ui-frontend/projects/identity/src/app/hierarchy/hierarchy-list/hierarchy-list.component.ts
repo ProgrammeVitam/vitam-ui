@@ -123,12 +123,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
 
   search() {
     const defaultCriteria: Criterion[] = [
-      {
-        key: 'applicationName',
-        value: [ApplicationId.USERS_APP],
-        operator: Operators.notin
-      },
-      { key: 'externalParamId', value: null, operator: Operators.equals },
+      { key: 'applicationName', value: [ApplicationId.USERS_APP], operator: Operators.notin },
       { key: 'tenantIdentifier', value: this.tenantIdentifier, operator: Operators.equals }
     ];
 

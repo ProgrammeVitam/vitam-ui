@@ -35,30 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { Tenant } from 'ui-frontend-common';
 
 @Injectable()
 export class CustomerDataService {
 
-  private tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
+  private tenantsUpdatedSource = new Subject<Tenant[]>();
 
-  // tslint:disable-next-line: variable-name
-  private _tenants: Tenant[] = [];
-
-  get tenants(): Tenant[] {
-    return this._tenants;
-  }
-
-  set tenants(tenant: Tenant[]) {
-    this._tenants = tenant;
-  }
+  tenants: Tenant[] = [];
 
   constructor() { }
 
   addTenants(tenants: Tenant[]) {
-    this._tenants = Array.from(new Set([...this.tenants, ...tenants]));
+    this.tenants = Array.from(new Set([...this.tenants, ...tenants]));
     this.tenantsUpdatedSource.next(this.tenants);
   }
 

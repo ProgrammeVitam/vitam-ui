@@ -9,11 +9,8 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/identity",
             "index": "projects/identity/src/index.html",
             "main": "projects/identity/src/main.ts",
@@ -55,9 +52,7 @@
                   "replace": "projects/identity/src/environments/environment.ts",
                   "with": "projects/identity/src/environments/environment.prod.ts"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/identity/ngsw-config.json"
+              ]
             },
             "en": {
               "aot": true,
@@ -69,7 +64,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "identity:build",
             "host": "dev.vitamui.com",
@@ -130,14 +125,10 @@
       "root": "projects/portal/",
       "sourceRoot": "projects/portal/src",
       "projectType": "application",
-      "prefix": "portal",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "outputPath": "dist/portal",
             "index": "projects/portal/src/index.html",
             "main": "projects/portal/src/main.ts",
@@ -179,9 +170,7 @@
                   "replace": "projects/portal/src/environments/environment.ts",
                   "with": "projects/portal/src/environments/environment.prod.ts"
                 }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/portal/ngsw-config.json"
+              ]
             },
             "en": {
               "aot": true,
@@ -193,7 +182,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "portal:build",
             "host": "dev.vitamui.com",
@@ -202,7 +191,16 @@
           "configurations": {
             "production": {
               "browserTarget": "portal:build:production"
+            },
+            "en": {
+              "browserTarget": "portal:build:en"
             }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "portal:build"
           }
         },
         "test": {
@@ -249,11 +247,8 @@
       "prefix": "demo",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "./extra-webpack.config.js"
-            },
             "preserveSymlinks": true,
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
@@ -298,7 +293,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "demo:build"
           },
@@ -624,5 +619,14 @@
       }
     }
   },
-  "defaultProject": "portal"
+  "defaultProject": "portal",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
 }

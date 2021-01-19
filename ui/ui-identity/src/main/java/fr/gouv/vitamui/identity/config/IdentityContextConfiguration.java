@@ -42,7 +42,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -59,7 +58,7 @@ public class IdentityContextConfiguration extends AbstractContextConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties, final WebClient.Builder webClientBuilder) {
-        return new IamExternalWebClientFactory(uiProperties.getIamExternalClient(), webClientBuilder);
+    public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties) {
+        return new IamExternalWebClientFactory(uiProperties.getIamExternalClient());
     }
 }

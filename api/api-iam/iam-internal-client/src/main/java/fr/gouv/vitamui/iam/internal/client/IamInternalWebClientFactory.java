@@ -36,39 +36,18 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import org.springframework.web.reactive.function.client.WebClient;
-
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
 public class IamInternalWebClientFactory extends BaseWebClientFactory {
 
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfiguration
-     */
-    @Deprecated
     public IamInternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
     }
 
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfig
-     * @param httpPoolConfig
-     */
-    @Deprecated
     public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
         super(restClientConfig, httpPoolConfig);
-    }
-
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
-        super(restClientConfiguration, webClientBuilder);
-    }
-
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
-        super(restClientConfig, httpPoolConfig, webClientBuilder);
     }
 
     public CustomerInternalWebClient getCustomerInternalRestClient() {

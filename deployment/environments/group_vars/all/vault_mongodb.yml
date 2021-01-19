@@ -10,10 +10,8 @@ mongodb:
         password: azerty
         roles:  '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
     localadmin:
-        db: admin
-        user: "mongod_dbuser_localadmin"
-        password: "mongod_dbpwd_localadmin"
-        roles:  '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
+        user: "vitamdb-localadmin"
+        password: qwerty
     system:
         user: "vitamdb-system"
         password: azerty

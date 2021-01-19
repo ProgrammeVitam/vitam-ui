@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import {BASE_URL, BaseHttpClient, Group, PageRequest, PaginatedResponse, SearchQuery} from 'ui-frontend-common';
+import { BASE_URL, BaseHttpClient, Group, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'
@@ -77,12 +77,4 @@ export class GroupApiService extends BaseHttpClient<Group> {
     return super.patch(groupPartial, headers);
   }
 
-  getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
-    if (query) {
-      params = params.set('criteria', JSON.stringify(query));
-    }
-
-    return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
-  }
 }

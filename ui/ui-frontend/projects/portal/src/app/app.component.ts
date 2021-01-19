@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
+
 import { Logger, StartupService } from 'ui-frontend-common';
 
 @Component({
@@ -45,10 +46,7 @@ import { Logger, StartupService } from 'ui-frontend-common';
 export class AppComponent implements OnInit {
   title = 'Portal App';
 
-  constructor(
-    private startupService: StartupService,
-    private logger: Logger
-  ) {}
+  constructor(private startupService: StartupService, private logger: Logger) { }
 
   ngOnInit() {
 
@@ -61,4 +59,5 @@ export class AppComponent implements OnInit {
     }
 
   }
+
 }

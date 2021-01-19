@@ -1,4 +1,3 @@
-import { OnDestroy } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -37,7 +36,6 @@ import { OnDestroy } from '@angular/core';
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { Customer, diff, OtpState } from 'ui-frontend-common';
@@ -53,15 +51,32 @@ const UPDATE_DEBOUNCE_TIME = 200;
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss']
 })
-export class InformationTabComponent implements OnInit, OnDestroy {
-  public readonly form: FormGroup;
+export class InformationTabComponent implements OnInit {
+
+  form: FormGroup;
+  previousValue: {
+    code: string,
+    identifier: string,
+    name: string,
+    companyName: string,
+    passwordRevocationDelay: number,
+    otp: OtpState,
+    address: {
+        street: string,
+        zipCode: string,
+        city: string,
+        country: string,
+      },
+    language: string,
+    emailDomains: string[],
+    defaultEmailDomain: string
+  };
 
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
     this.resetForm(this.customer);
   }
-
   get customer(): Customer { return this._customer; }
   // tslint:disable-next-line:variable-name
   private _customer: Customer;
@@ -76,27 +91,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  private previousValue: {
-    code: string,
-    identifier: string,
-    name: string,
-    companyName: string,
-    passwordRevocationDelay: number,
-    otp: OtpState,
-    address: {
-        street: string,
-        zipCode: string,
-        city: string,
-        country: string,
-    },
-    internalCode: string,
-    language: string,
-    emailDomains: string[],
-    defaultEmailDomain: string
-  };
-
-  private sub: Subscription;
-
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
@@ -107,7 +101,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       identifier: [{value: null, disabled: true}, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
         this.customerCreateValidators.uniqueCode(),
       ],
       name: [null, Validators.required],
@@ -120,30 +114,24 @@ export class InformationTabComponent implements OnInit, OnDestroy {
         city: [null, Validators.required],
         country: [null, Validators.required],
       }),
-      internalCode: [null],
       language: [null, Validators.required],
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required]
     });
+
+    merge(this.form.statusChanges, this.form.valueChanges)
+      .pipe(
+        debounceTime(UPDATE_DEBOUNCE_TIME),
+        filter(() => this.form.valid),
+        map(() => diff(this.form.value, this.previousValue)),
+        filter((formData) => !isEmpty(formData)),
+        map((formData) => extend({ id: this.customer.id }, formData)),
+        switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null))))
+      )
+      .subscribe((customer: Customer) => this.resetForm(customer));
   }
 
   ngOnInit() {
-    this.sub = merge(this.form.statusChanges, this.form.valueChanges)
-    .pipe(
-      debounceTime(UPDATE_DEBOUNCE_TIME),
-      filter(() => this.form.valid),
-      map(() => diff(this.form.value, this.previousValue)),
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this.customer.id }, formData)),
-      switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null))))
-    )
-    .subscribe((customer: Customer) => this.resetForm(customer));
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 
   private resetForm(customer: Customer) {
