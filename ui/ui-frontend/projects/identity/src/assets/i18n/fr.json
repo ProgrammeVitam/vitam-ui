@@ -5,7 +5,14 @@
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications",
     "NEXT": "Suivant",
-    "REQUIRED" :"Champ requis"
+    "REQUIRED" :"Champ requis",
+    "LANGUAGE": {
+      "TITLE" : "Langue",
+      "ENGLISH" :"Anglais",
+      "FRENCH" : "Français",
+      "GERMAN": "Allemand"
+
+    }
   },
   "MISC": {
     "NO_DESC": "Aucune description"
@@ -44,10 +51,13 @@
       "TITLE": "Personnalisation du message d'accueil",
       "PORTAL_TITLE": "Titre du portail",
       "DEFAULT_PORTAL_TITLE": "Titre par défaut",
+      "LANGUAGE_TITLE": "Titre langue",
       "PORTAL_MESSAGE": "Message d'accueil du portail",
       "DEFAULT_PORTAL_MESSAGE": "Message d'accueil par défaut",
+      "LANGUAGE_PORTAL_MESSAGE": "Message d'accueil langue",
       "PORTAL_MESSAGE_LENGTH": "/500 caractères max restants",
-      "ADD_LANGUAGE" : "Ajouter une langue"
+      "ADD_LANGUAGE" : "Ajouter une langue",
+      "DELETE_LANGUAGE" : "Supprimer la langue"
     }
   }
 }
