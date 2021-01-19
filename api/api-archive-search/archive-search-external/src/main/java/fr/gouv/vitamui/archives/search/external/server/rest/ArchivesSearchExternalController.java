@@ -32,7 +32,9 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -75,6 +77,8 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
         LOGGER.info("Calling search archive Units By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
         return archivesSearchExternalService.searchArchiveUnitsByCriteria(query);
     }
 
@@ -88,6 +92,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
         LOGGER.info("Download the Archive Unit Object with id {} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return archivesSearchExternalService.downloadObjectFromUnit(id);
     }
 
@@ -95,6 +100,7 @@ public class ArchivesSearchExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
         LOGGER.info("the UA by id {} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return archivesSearchExternalService.findUnitById(id);
     }
 

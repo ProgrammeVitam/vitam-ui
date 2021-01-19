@@ -34,11 +34,9 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeHeaderException;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeParameterException;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpHeaders;
 
 import java.io.File;
 import java.io.FileNotFoundException;

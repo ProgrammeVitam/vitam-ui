@@ -46,6 +46,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -140,6 +141,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
+            SafeFileChecker.checkSafeFilePath(valueMultipartFile.getOriginalFilename());
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
         }
@@ -163,6 +165,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
+            SafeFileChecker.checkSafeFilePath(valueMultipartFile.getOriginalFilename());
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
         }
@@ -267,6 +270,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (filePath.isPresent()) {
             final String paramName = filePath.get().getKey();
             final Path path = filePath.get().getValue();
+            SafeFileChecker.checkSafeFilePath(path.toString());
             final String contentDisposition = buildContentDisposition(paramName, path.getFileName().toString());
             builder.asyncPart(paramName, DataBufferUtils.readAsynchronousFileChannel(() -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
                     BUFFER_FACTORY, CommonConstants.INPUT_STREAM_BUFFER_SIZE), DataBuffer.class).header(RestUtils.CONTENT_DISPOSITION, contentDisposition);

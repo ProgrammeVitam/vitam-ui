@@ -36,81 +36,19 @@
  */
 package fr.gouv.vitamui.commons.api.exception;
 
-import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * VitamUI Base Exception class.
- *
- *
+ * Invalid sanitizing file
  */
-@Getter
-public abstract class VitamUIException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+public class InvalidFileSanitizeException extends VitamUIException {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -8392328557296005386L;
+    private static final long serialVersionUID = 2453818866974343655L;
 
-    private final String key;
-
-    private final List<String> args;
-
-    public VitamUIException(final String message) {
+    public InvalidFileSanitizeException(final String message) {
         super(message);
-        key = null;
-        args = null;
-    }
-
-    public VitamUIException(final String message, final Throwable e) {
-        super(message, e);
-        key = null;
-        args = null;
-        populateSuppressed(e);
-    }
-
-    public VitamUIException(final Throwable e) {
-        super(e);
-        key = null;
-        args = null;
-        populateSuppressed(e);
-    }
-
-    public VitamUIException(final String message, final String key) {
-        super(message);
-        this.key = key;
-        args = new ArrayList<>();
-    }
-
-    public VitamUIException(final String message, final String key, final Throwable e) {
-        super(message, e);
-        this.key = key;
-        args = new ArrayList<>();
-        populateSuppressed(e);
-    }
-
-    public VitamUIException(final String message, final String key, final List<String> args) {
-        super(message);
-        this.key = key;
-        this.args = args;
-    }
-
-    public void addArg(final String value) {
-        args.add(value);
-    }
-
-    /**
-     * Add suppressed exceptions.
-     * @param e
-     */
-    private void populateSuppressed(final Throwable e) {
-        if (e != null) {
-            for (final Throwable suppressed : e.getSuppressed()) {
-                addSuppressed(suppressed);
-            }
-        }
     }
 
 }

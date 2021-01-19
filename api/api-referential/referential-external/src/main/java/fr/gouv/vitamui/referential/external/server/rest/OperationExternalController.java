@@ -39,12 +39,15 @@ package fr.gouv.vitamui.referential.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
@@ -102,6 +105,8 @@ public class OperationExternalController {
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
     public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id, final @PathVariable("type") ReportType type) {
         LOGGER.debug("export logbook for {} operation with id :{}", type, id);
+        EnumUtils.checkValidEnum(ReportType.class, Optional.of(type.name()));
+        ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
         return operationExternalService.export(id, type);
     }
 
@@ -110,6 +115,8 @@ public class OperationExternalController {
     @PostMapping
     public boolean create(final @Valid @RequestBody AuditOptions auditOptions) {
         LOGGER.debug("Create {}", auditOptions);
+        ParameterChecker.checkParameter("Audit Options is mandatory parameter : " , auditOptions);
+        SanityChecker.sanitizeCriteria(Optional.of(auditOptions.getQuery().toString()));
         return operationExternalService.runAudit(auditOptions);
     }
 
@@ -126,6 +133,7 @@ public class OperationExternalController {
     @PostMapping("/probativeValue")
     public boolean runProbativeValue(final @Valid @RequestBody ProbativeValueRequest probativeValueRequest) {
         LOGGER.debug("Run {}", probativeValueRequest);
+        SanityChecker.sanitizeCriteria(Optional.of(probativeValueRequest.getDslQuery().toString()));
         return operationExternalService.runProbativeValue(probativeValueRequest);
     }
 
@@ -133,6 +141,7 @@ public class OperationExternalController {
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId) {
         LOGGER.debug("export logbook for operation with id :{}", operationId);
+        ParameterChecker.checkParameter("Operation Identifier is mandatory : " , operationId);
         return operationExternalService.exportProbativeValue(operationId);
     }
 }

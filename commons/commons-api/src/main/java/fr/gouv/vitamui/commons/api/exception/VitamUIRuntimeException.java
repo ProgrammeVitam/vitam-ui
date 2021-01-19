@@ -36,81 +36,18 @@
  */
 package fr.gouv.vitamui.commons.api.exception;
 
-import lombok.Getter;
+public class VitamUIRuntimeException extends VitamUIException {
+    private static final long serialVersionUID = -6574816923689373032L;
 
-import java.util.ArrayList;
-import java.util.List;
+    public VitamUIRuntimeException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-/**
- * VitamUI Base Exception class.
- *
- *
- */
-@Getter
-public abstract class VitamUIException extends RuntimeException {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -8392328557296005386L;
-
-    private final String key;
-
-    private final List<String> args;
-
-    public VitamUIException(final String message) {
+    public VitamUIRuntimeException(String message) {
         super(message);
-        key = null;
-        args = null;
     }
 
-    public VitamUIException(final String message, final Throwable e) {
-        super(message, e);
-        key = null;
-        args = null;
-        populateSuppressed(e);
+    public VitamUIRuntimeException(Throwable cause) {
+        super(cause);
     }
-
-    public VitamUIException(final Throwable e) {
-        super(e);
-        key = null;
-        args = null;
-        populateSuppressed(e);
-    }
-
-    public VitamUIException(final String message, final String key) {
-        super(message);
-        this.key = key;
-        args = new ArrayList<>();
-    }
-
-    public VitamUIException(final String message, final String key, final Throwable e) {
-        super(message, e);
-        this.key = key;
-        args = new ArrayList<>();
-        populateSuppressed(e);
-    }
-
-    public VitamUIException(final String message, final String key, final List<String> args) {
-        super(message);
-        this.key = key;
-        this.args = args;
-    }
-
-    public void addArg(final String value) {
-        args.add(value);
-    }
-
-    /**
-     * Add suppressed exceptions.
-     * @param e
-     */
-    private void populateSuppressed(final Throwable e) {
-        if (e != null) {
-            for (final Throwable suppressed : e.getSuppressed()) {
-                addSuppressed(suppressed);
-            }
-        }
-    }
-
 }
