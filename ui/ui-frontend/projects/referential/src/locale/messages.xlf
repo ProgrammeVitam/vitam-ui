@@ -3168,6 +3168,64 @@
         </context-group>
         <note priority="1" from="description">Clear Response adminDsl button</note>
       </trans-unit>
+      <trans-unit id="ImportDialogMainTitle" datatype="html">
+        <source>Nouveau versement</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <note priority="1" from="description">Import dialog title</note>
+      </trans-unit>
+      <trans-unit id="ImportDialogAgencyTitle" datatype="html">
+        <source>
+                    Import d&apos;un référentiel de service agent
+                </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <note priority="1" from="description">Import dialog title</note>
+      </trans-unit>
+      <trans-unit id="importDialogDragAndDrop" datatype="html">
+        <source>Glisser-déposer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <note priority="1" from="description">Import dialog drag</note>
+      </trans-unit>
+      <trans-unit id="importDialogOr" datatype="html">
+        <source>ou</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">Import dialog drag</note>
+      </trans-unit>
+      <trans-unit id="importDialogBrowse" datatype="html">
+        <source> cliquer pour Parcourir</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">Import dialog drag</note>
+      </trans-unit>
+      <trans-unit id="importFinishButton" datatype="html">
+        <source>Terminer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <note priority="1" from="description">Finish import button</note>
+      </trans-unit>
+      <trans-unit id="importCancelButton" datatype="html">
+        <source>Annuler</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <note priority="1" from="description">Cancel import button</note>
+      </trans-unit>
     </body>
   </file>
 </xliff>

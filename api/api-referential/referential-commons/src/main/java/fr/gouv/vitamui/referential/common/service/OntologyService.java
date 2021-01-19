@@ -60,6 +60,7 @@ import fr.gouv.vitamui.referential.common.dto.ContextResponseDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -91,10 +92,16 @@ public class OntologyService {
         return jsonResponse;
     }
 
-    public RequestResponse importOntologies(VitamContext vitamContext, List<OntologyModel> ontologies) throws InvalidParseOperationException, AccessExternalClientException, IOException {
+    public RequestResponse<?> importOntologies(VitamContext vitamContext, List<OntologyModel> ontologies) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeOntologies(ontologies)) {
             return adminExternalClient.importOntologies(true,vitamContext,byteArrayInputStream);
         }
+    }
+    
+    public RequestResponse<?> importOntologies(VitamContext vitamContext, String fileName, MultipartFile file) 
+        	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        	LOGGER.debug("Import ontology file {}", fileName);
+        	return adminExternalClient.importOntologies(false, vitamContext, file.getInputStream());
     }
 
     private ByteArrayInputStream serializeOntologies(List<OntologyModel> ontologiesModel) throws IOException {

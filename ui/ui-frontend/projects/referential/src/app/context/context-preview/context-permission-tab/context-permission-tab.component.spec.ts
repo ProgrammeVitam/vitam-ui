@@ -19,7 +19,17 @@ xdescribe('ContextPermissionTabComponent', () => {
     ingestContracts: ['IC-000001', 'IC-000002']
   };
   const contextValue = {
-    permissions: contextPermission
+    id: 'id',
+    name: '',
+    identifier: '',
+    status: '',
+    creationDate: '',
+    lastUpdate: '',
+    activationDate: '',
+    deactivationDate: '',
+    enableControl: '',
+    securityProfile: '',
+    permissions: [contextPermission]
   };
 
   const previousValue: Context = {
@@ -56,7 +66,7 @@ xdescribe('ContextPermissionTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPermissionTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue(contextValue);
+    component.context = contextValue;
     component.previousValue = (): Context => previousValue;
     fixture.detectChanges();
   });

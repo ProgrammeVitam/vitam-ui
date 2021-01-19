@@ -68,9 +68,17 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public ReferentialExternalRestClientFactory referentialWebClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
         return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(), restTemplateBuilder);
     }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalWebClientFactory referentialWebClientFactory(final ReferentialApplicationProperties uiProperties) {
+    	return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    }
+
 
     @Bean
     public AccessContractExternalRestClient accessContractExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
@@ -140,5 +148,20 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public RuleExternalRestClient ruleExternalRestClient(final ReferentialExternalRestClientFactory factory) {
         return factory.getRuleExternalRestClient();
+    }
+    
+    @Bean
+    public AgencyExternalWebClient agencyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getAgencyExternalWebClient();
+    }
+    
+    @Bean
+    public FileFormatExternalWebClient fileFormatWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getFileFormatExternalWebClient();
+    }
+    
+    @Bean
+    public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
     }
 }

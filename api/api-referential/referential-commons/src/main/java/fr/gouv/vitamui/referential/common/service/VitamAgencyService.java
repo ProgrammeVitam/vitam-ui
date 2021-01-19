@@ -48,6 +48,7 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -126,6 +127,12 @@ public class VitamAgencyService {
         }
 
         return adminExternalClient.downloadAgenciesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
+    }
+    
+    public RequestResponse<?> importAgencies(VitamContext vitamContext, String fileName, MultipartFile file) 
+    	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+    	LOGGER.debug("Import agency file {}", fileName);
+    	return this.importAgencies(vitamContext, file.getInputStream(), fileName);
     }
 
     public RequestResponse<?> patchAgency(final VitamContext vitamContext, final String id, AgencyModelDto patchAgency)

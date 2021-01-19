@@ -43,9 +43,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -168,12 +173,23 @@ public class AgencyController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "get exported csv for agencies")
-    @GetMapping("/export")
+    @GetMapping(CommonConstants.PATH_EXPORT)
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> export() {
         LOGGER.debug("export agencies");
         return service.export(buildUiHttpContext());
     }
-
-
+    
+    /***
+     * Import agencies from a csv file
+     * @param request HTTP request
+     * @param input the agency csv file
+     * @return the Vitam response
+     */
+    @ApiOperation(value = "import an agency file")
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importAgencies(@Context HttpServletRequest request, MultipartFile file) {
+        LOGGER.debug("Import agency file {}", file != null ? file.getOriginalFilename() : null);
+        return service.importAgencies(buildUiHttpContext(), file);
+    }
 }

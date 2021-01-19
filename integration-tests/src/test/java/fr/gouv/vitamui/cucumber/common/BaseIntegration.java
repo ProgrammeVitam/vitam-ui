@@ -61,8 +61,15 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.utils.TestConstants;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -93,10 +100,18 @@ public abstract class BaseIntegration {
     private IamExternalWebClientFactory iamExternalWebClientFactory;
 
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
+    
+    private ReferentialExternalWebClientFactory webReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
 
     private CustomerExternalWebClient customerWebClient;
+    
+    private AgencyExternalWebClient agencyWebClient;
+    
+    private OntologyExternalWebClient ontologyWebClient;
+    
+    private FileFormatExternalWebClient fileFormatWebClient;
 
     private IdentityProviderExternalRestClient identityProviderRestClient;
 
@@ -331,7 +346,6 @@ public abstract class BaseIntegration {
                 getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)), webClientBuilder);
         return webClientFactory;
     }
-
     private ReferentialExternalRestClientFactory getReferentialRestClientFactory() {
         if (restReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
@@ -342,6 +356,18 @@ public abstract class BaseIntegration {
             restReferentialClientFactory.setRestClientInterceptor(interceptors);
         }
         return restReferentialClientFactory;
+    }
+    
+    private ReferentialExternalWebClientFactory getReferentialWebClientFactory() {
+        if (webReferentialClientFactory == null) {
+            LOGGER.debug("Instantiating referential web client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
+            webReferentialClientFactory = new ReferentialExternalWebClientFactory(
+            	getRestClientConfiguration(referentialServerHost, referentialServerPort, true,
+            		getSSLConfiguration(referentialKeystoreFilePath, referentialKeystorePassword, referentialTrustStoreFilePath, referentialTruststorePassword)
+            	)
+            );
+        }
+        return webReferentialClientFactory;
     }
 
     protected CustomerExternalRestClient getCustomerRestClient() {
@@ -357,7 +383,28 @@ public abstract class BaseIntegration {
         }
         return customerWebClient;
     }
-
+    
+    protected AgencyExternalWebClient getAgencyWebClient() {
+        if (agencyWebClient == null) {
+            agencyWebClient = getReferentialWebClientFactory().getAgencyExternalWebClient();
+        }
+        return agencyWebClient;
+    }
+    
+    protected OntologyExternalWebClient getOntologyWebClient() {
+        if (ontologyWebClient == null) {
+            ontologyWebClient = getReferentialWebClientFactory().getOntologyExternalWebClient();
+        }
+        return ontologyWebClient;
+    }
+    
+    protected FileFormatExternalWebClient getFileFormatWebClient() {
+        if (fileFormatWebClient == null) {
+            fileFormatWebClient = getReferentialWebClientFactory().getFileFormatExternalWebClient();	
+        }
+        return fileFormatWebClient;
+    }
+    
     protected IamExternalWebClientFactory getIamWebClientFactory(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
         prepareGenericContext(fullAccess, tenants, roles);
         final IamExternalWebClientFactory restClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
@@ -593,7 +640,7 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-
+    
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();

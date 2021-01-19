@@ -31,9 +31,9 @@ pipeline {
         )
     }
 
-    triggers {
-        cron('45 2 * * *')
-    }
+//    triggers {
+//        cron('45 2 * * *')
+//    }
 
     stages {
         stage('Activate steps') {
