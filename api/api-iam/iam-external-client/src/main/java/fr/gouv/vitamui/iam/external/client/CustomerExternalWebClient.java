@@ -100,7 +100,7 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto dto, final Optional<Path> multipartFile) {
         if (multipartFile.isPresent()) {
             return multipartDataFromFile(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", dto),
-                    Optional.of(new AbstractMap.SimpleEntry<>("logo", multipartFile.get())), CustomerDto.class);
+                Optional.of(new AbstractMap.SimpleEntry<>("logo", multipartFile.get())), CustomerDto.class);
         }
         else {
             return multipartDataFromFile(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", dto), Optional.empty(), CustomerDto.class);

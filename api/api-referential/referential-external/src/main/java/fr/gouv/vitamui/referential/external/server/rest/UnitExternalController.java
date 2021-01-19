@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitam.common.dsl.schema.Dsl;
+import fr.gouv.vitam.common.dsl.schema.DslSchema;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +57,8 @@ import fr.gouv.vitamui.referential.external.server.service.UnitExternalService;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(RestApi.UNITS_PATH)
 @Getter
@@ -64,11 +70,14 @@ public class UnitExternalController {
 
     @PostMapping(CommonConstants.PATH_ID)
     public VitamUISearchResponseDto searchById(final @PathVariable("id") String id) {
+        ParameterChecker.checkParameter("The archive unit id is mandatory : ", id);
         return unitExternalService.findUnitById(id);
     }
 
     @PostMapping(RestApi.DSL_PATH)
-    public JsonNode searchByDsl(final @RequestBody JsonNode dsl) {
+    public JsonNode searchByDsl(final @RequestBody @Dsl(value = DslSchema.SELECT_MULTIPLE) JsonNode dsl) {
+        ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
+        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitExternalService.findUnitByDsl(dsl);
     }
 

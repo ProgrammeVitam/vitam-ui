@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.iam.security.client;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
@@ -67,6 +55,16 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.Assert;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Class for ExternalVitamUICrudService

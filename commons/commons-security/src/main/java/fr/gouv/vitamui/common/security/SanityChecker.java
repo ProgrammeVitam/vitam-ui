@@ -34,13 +34,12 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.logging.SysErrLogger;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeHeaderException;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeParameterException;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.IntrusionException;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.reference.DefaultValidator;
-import org.springframework.util.MultiValueMap;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,7 +48,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -204,6 +202,16 @@ public class SanityChecker {
                 throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + c);
             }
         });
+    }
+
+    public static void sanitizeCriteria(Object query) {
+        JsonNode jsonNode = JsonUtils.toJsonNode(query);
+        try {
+            SanityChecker.checkJsonAll(jsonNode);
+        }
+        catch (InvalidParseOperationException e) {
+            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + jsonNode.toPrettyString());
+        }
     }
 
     /**

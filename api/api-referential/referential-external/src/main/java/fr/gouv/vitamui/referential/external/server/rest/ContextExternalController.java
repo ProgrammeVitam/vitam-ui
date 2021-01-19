@@ -36,12 +36,21 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.external.server.service.ContextExternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,20 +68,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ContextExternalService;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.CONTEXTS_URL)
@@ -111,18 +110,19 @@ public class ContextExternalController {
 
     @Secured({ ServicesData.ROLE_GET_CONTEXTS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ContextDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist context = {}", accessContractDto);
-        final boolean exist = contextExternalService.check(accessContractDto);
+    public ResponseEntity<Void> check(@Valid @RequestBody ContextDto contextDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("check exist context = {}", contextDto);
+        ApiUtils.checkValidity(contextDto);
+        final boolean exist = contextExternalService.check(contextDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @Secured(ServicesData.ROLE_CREATE_CONTEXTS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ContextDto create(final @Valid @RequestBody ContextDto accessContractDto) {
-        LOGGER.debug("Create {}", accessContractDto);
-        return contextExternalService.create(accessContractDto);
+    public ContextDto create(final @Valid @RequestBody ContextDto contextDto) {
+        LOGGER.debug("Create {}", contextDto);
+        return contextExternalService.create(contextDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
@@ -137,6 +137,7 @@ public class ContextExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for context with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return contextExternalService.findHistoryById(id);
     }
 
