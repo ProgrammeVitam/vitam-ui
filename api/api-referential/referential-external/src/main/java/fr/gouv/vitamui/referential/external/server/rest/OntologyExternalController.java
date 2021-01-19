@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -118,15 +119,16 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_CREATE_ONTOLOGIES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public OntologyDto create(final @Valid @RequestBody OntologyDto accessContractDto) {
-        LOGGER.debug("Create {}", accessContractDto);
-        return ontologyExternalService.create(accessContractDto);
+    public OntologyDto create(final @Valid @RequestBody OntologyDto ontologyDto) {
+        LOGGER.debug("Create {}", ontologyDto);
+        return ontologyExternalService.create(ontologyDto);
     }
 
     @Secured(ServicesData.ROLE_GET_ONTOLOGIES)
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for accessContract with id :{}", id);
+        LOGGER.debug("get logbook for ontology with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return ontologyExternalService.findHistoryById(id);
     }
 
@@ -134,6 +136,7 @@ public class OntologyExternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete ontology with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         ontologyExternalService.delete(id);
     }
 }

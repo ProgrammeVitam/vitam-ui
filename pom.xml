@@ -653,7 +653,11 @@
                 <artifactId>logbook-common</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>common-dsl-schema</artifactId>
+                <version>${vitam.version}</version>
+            </dependency>
             <!-- swagger -->
             <dependency>
                 <groupId>io.springfox</groupId>

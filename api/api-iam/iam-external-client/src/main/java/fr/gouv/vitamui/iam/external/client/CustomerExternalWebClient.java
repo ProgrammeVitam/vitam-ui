@@ -83,11 +83,11 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
 
         if (customerCreationFormData.getLogo().isPresent()) {
             return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
-                    Optional.of(new AbstractMap.SimpleEntry<>("logo", customerCreationFormData.getLogo().get())), CustomerDto.class);
+                Optional.of(new AbstractMap.SimpleEntry<>("logo", customerCreationFormData.getLogo().get())), CustomerDto.class);
         }
         else {
             return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
-                    Optional.empty(), CustomerDto.class);
+                Optional.empty(), CustomerDto.class);
         }
     }
 
@@ -101,7 +101,7 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto dto, final Optional<Path> multipartFile) {
         if (multipartFile.isPresent()) {
             return multipartDataFromFile(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", dto),
-                    Optional.of(new AbstractMap.SimpleEntry<>("logo", multipartFile.get())), CustomerDto.class);
+                Optional.of(new AbstractMap.SimpleEntry<>("logo", multipartFile.get())), CustomerDto.class);
         }
         else {
             return multipartDataFromFile(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", dto), Optional.empty(), CustomerDto.class);
@@ -112,12 +112,12 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
         LOGGER.debug("Patch {}", customerPatchFormData);
         if (customerPatchFormData.getLogo().isPresent()) {
             return multipartData(getUrl() + '/' + id, HttpMethod.PATCH, context,
-                    Collections.singletonMap("partialCustomerDto", customerPatchFormData.getPartialCustomerDto()),
-                    Optional.of(new AbstractMap.SimpleEntry<>("logo", customerPatchFormData.getLogo().get())), CustomerDto.class);
+                Collections.singletonMap("partialCustomerDto", customerPatchFormData.getPartialCustomerDto()),
+                Optional.of(new AbstractMap.SimpleEntry<>("logo", customerPatchFormData.getLogo().get())), CustomerDto.class);
         }
         else {
             return multipartData(getUrl() + '/' + id, HttpMethod.PATCH, context,
-                    Collections.singletonMap("partialCustomerDto", customerPatchFormData.getPartialCustomerDto()), Optional.empty(), CustomerDto.class);
+                Collections.singletonMap("partialCustomerDto", customerPatchFormData.getPartialCustomerDto()), Optional.empty(), CustomerDto.class);
         }
     }
 

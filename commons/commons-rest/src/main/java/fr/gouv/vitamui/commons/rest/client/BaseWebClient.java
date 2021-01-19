@@ -36,15 +36,17 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.io.IOException;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.function.Consumer;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -59,19 +61,16 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import lombok.ToString;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * A Web client to check existence, read, create, update or delete  an object.
@@ -133,6 +132,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (multipartFile.isPresent()) {
             final String paramName = multipartFile.get().getKey();
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
+            SafeFileChecker.checkSafeFilePath(valueMultipartFile.getOriginalFilename());
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
         }
@@ -218,6 +218,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (filePath.isPresent()) {
             final String paramName = filePath.get().getKey();
             final Path path = filePath.get().getValue();
+            SafeFileChecker.checkSafeFilePath(path.toString());
             final String contentDisposition = buildContentDisposition(paramName, path.getFileName().toString());
             builder.asyncPart(paramName, DataBufferUtils.readAsynchronousFileChannel(() -> AsynchronousFileChannel.open(path, StandardOpenOption.READ),
                     BUFFER_FACTORY, CommonConstants.INPUT_STREAM_BUFFER_SIZE), DataBuffer.class).header(RestUtils.CONTENT_DISPOSITION, contentDisposition);

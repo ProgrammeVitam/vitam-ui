@@ -13,6 +13,11 @@
     </parent>
 
     <dependencies>
+        <!-- VITAM DSL Schema Validator -->
+        <dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>common-dsl-schema</artifactId>
+        </dependency>
         <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>

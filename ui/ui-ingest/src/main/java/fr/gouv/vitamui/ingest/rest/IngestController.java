@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.ingest.rest;
 
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -121,6 +123,8 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_SIZE_TOTAL) final String totalSize,
         @RequestParam final MultipartFile file) {
 
+        ParameterChecker.checkParameter("The requestId, tenantId, xAction and contextId are mandatory parameters : ", requestId, tenantId, xAction, contextId);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         LOGGER.debug("[{}] Upload File : {} - {} bytes", requestId, file.getOriginalFilename(), totalSize);
         if (StringUtils.isEmpty(requestId)) {
             throw new BadRequestException("Unable to start the upload of the file: request identifer is not set.");

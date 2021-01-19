@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
@@ -155,6 +156,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public D update(final C context, final D dto) {
         LOGGER.debug("Update {}", dto);
+        ApiUtils.checkValidity(dto);
         final String dtoId = dto.getId();
         final HttpEntity<D> request = new HttpEntity<>(dto, buildHeaders(context));
         final ResponseEntity<D> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.PUT,
@@ -165,6 +167,7 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public D patch(final C context, final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {}", partialDto);
+        ApiUtils.checkValidity(partialDto);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_ID);
         final String id = (String) partialDto.get("id");
