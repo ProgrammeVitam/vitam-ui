@@ -1,10 +1,10 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CustomerService } from 'projects/identity/src/app/core/customer.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'ui-frontend-common';
+import { CustomerService } from '../../../../core/customer.service';
 
 @Component({
   selector: 'app-homepage-message-update',
@@ -21,7 +21,7 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   public get customForm(): FormGroup { return this._customForm; }
   public set customForm(form: FormGroup) {
     this._customForm = form;
-    this.disabled = !(this._customForm && this._customForm.valid);
+    this.disabled = !(this._customForm && this._customForm.valid && this._customForm.value.messageTranslationValid);
   }
 
   public disabled = true;
@@ -48,7 +48,8 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   }
 
   public updateHomepageMessage(): void {
-    if (this.customForm.valid) {
+    if (this.customForm.valid && this.customForm.value.messageTranslationValid) {
+      console.log(this.customForm.value)
       this.customerService.patch(this.customForm.value)
       .pipe(takeUntil(this.destroy))
       .subscribe(

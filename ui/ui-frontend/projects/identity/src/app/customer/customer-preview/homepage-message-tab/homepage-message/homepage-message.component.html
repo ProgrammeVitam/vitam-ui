@@ -19,10 +19,10 @@
           'CUSTOMER.HOMEPAGE_MESSAGE.DEFAULT_PORTAL_MESSAGE' | translate
         " [maxlength]="500">
         <vitamui-common-input-error *ngIf="
-        homepageMessageForm.get('portalMessage')?.touched &&
-        !!homepageMessageForm.get('portalMessage')?.errors?.required
-      ">
-      {{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error>
+            homepageMessageForm.get('portalMessage')?.touched &&
+            !!homepageMessageForm.get('portalMessage')?.errors?.required
+          ">
+          {{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error>
       </vitamui-common-textarea>
       <small class="d-flex justify-content-end">{{ homepageMessageForm.get("portalMessage")?.value?.length }}
         {{
@@ -30,8 +30,13 @@
         }}</small>
 
     </div>
-    <button class="pl-4 btn link uppercase" (click)="onClick()">
+    <div *ngFor="let messageTranslation of messageTranslations">
+      <app-homepage-message-translation [messageTranslation]="messageTranslation"
+        (formChange)="updateTranslation($event)" (formRemove)="removeTranslation($event)">
+      </app-homepage-message-translation>
+    </div>
+    <button class="pl-4 btn link uppercase" [disabled]="messageTranslations.length ==2" (click)="onAdd()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
-  </button>
+    </button>
   </div>
 </form>

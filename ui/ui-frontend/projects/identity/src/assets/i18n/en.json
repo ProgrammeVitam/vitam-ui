@@ -5,7 +5,13 @@
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
     "NEXT": "Next",
-    "REQUIRED" :"Required param"
+    "REQUIRED" :"Required param",
+    "LANGUAGE": {
+      "TITLE" : "Language",
+      "ENGLISH" :"English",
+      "FRENCH" : "French",
+      "GERMAN": "German"
+    }
   },
   "MISC": {
     "NO_DESC": "No description"
@@ -44,10 +50,13 @@
       "TITLE": "Homepage message personalization",
       "PORTAL_TITLE": "Portal title",
       "DEFAULT_PORTAL_TITLE": "Default title",
+      "LANGUAGE_TITLE": "Title language",
       "PORTAL_MESSAGE": "Portal homepage message",
       "DEFAULT_PORTAL_MESSAGE": "Default Portal message",
+      "LANGUAGE_PORTAL_MESSAGE": "Portal message language",
       "PORTAL_MESSAGE_LENGTH": "/500 characters max left",
-      "ADD_LANGUAGE" : "Add a language"
+      "ADD_LANGUAGE" : "Add a language",
+      "DELETE_LANGUAGE" : "Delete the language"
     }
   }
 
