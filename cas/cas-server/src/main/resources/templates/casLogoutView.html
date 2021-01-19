@@ -19,14 +19,10 @@
 	<div class="login">
     </div>
     <div class="centered">
-        <div class="flex-justify-end-margin">
-            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
-        </div>
-        <div class="login-box login-padding  step-email">
-        <div>
+        <div class="flex-justify-content-center">
             <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
-
+        <div class="login-box login-padding  step-email">
         <div class="alert alert-success">
             <h4 th:utext="#{screen.logout.header}">Logout successful</h4>
             <div class="text large medium" th:utext="#{screen.logout.success}">You have successfully logged out of the Central Authentication

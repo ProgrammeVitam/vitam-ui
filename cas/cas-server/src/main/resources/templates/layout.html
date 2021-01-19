@@ -24,20 +24,17 @@
 	<div class="login">
     </div>
     <div class="centered">
-        <div class="flex-justify-end-margin">
-            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+        <div class="flex-justify-content-center">
+            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding  step-email">
-                <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
-
-
             <div layout:fragment="content" id="content">
                 <h1/>
                 <p/>
             </div>
 
             <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
-                <i class="material-icons">arrow_back</i> Retour
+                <i class="material-icons">chevron_left</i> RETOUR
             </button>
         </div>
     </div>

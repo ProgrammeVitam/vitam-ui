@@ -13,19 +13,13 @@
 
     <div class="mfa-login">
 
-        <p class="text1" th:utext="#{screen.mfa.sms.login.text1(${mobile})}"/>
-
-        <div class="information">
-            <div class="bckicon">
-                <span class="icon">i</span>
-            </div>
-            <div>
-                <p class="text2" th:utext="#{screen.mfa.sms.login.text2}"/>
-            </div>
+        <h4  th:utext="#{screen.mfa.sms.login.text1(${mobile})}"></h4>
+        <div>
+            <div class="text large"  th:utext="#{screen.mfa.sms.login.text2}"/>
         </div>
 
         <form method="post" id="loginForm" th:object="${credential}">
-            <div class="formfields">
+            <div class="formfields flex-align-center marging-top-form">
                 <div class="textfield">
                     <input type="text" autofocus class="required" id="token" name="token" size="4" tabindex="1"
                        autocomplete="off" maxlength="4" />
@@ -38,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="buttonbckgrnd">
+                <div class="buttonbckgrnd flex-justify-content-center">
                     <a class="submittoken" th:utext="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
                 </div>
                 <div class="countdown">

@@ -153,7 +153,7 @@ server-identity:
 theme:
   primary: '#ff4a54'
   secondary: '#241f63'
-  background: '#0F0D2D'
+  background: '#FFFFFF'
 
 logging:
   config: src/main/config/logback-dev.xml
