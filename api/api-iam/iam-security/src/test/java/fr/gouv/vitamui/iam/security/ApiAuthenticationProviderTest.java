@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.security;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
@@ -26,7 +25,6 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import java.security.cert.X509Certificate;
 import java.util.*;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,6 +46,8 @@ public final class ApiAuthenticationProviderTest extends AbstractServerIdentityB
     private static final String USER_ID = "userId";
 
     private static final Integer TENANT_IDENTIFIER = 10;
+
+    private static final String APPLICATION_ID = "applicationId";
 
     private static final String REQUEST_ID = "requestId";
 

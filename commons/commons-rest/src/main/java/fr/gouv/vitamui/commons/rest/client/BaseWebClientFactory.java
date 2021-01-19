@@ -89,37 +89,18 @@ public class BaseWebClientFactory implements WebClientFactory {
 
     private final String baseUrl;
 
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfiguration
-     */
-    @Deprecated
     public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration) {
-        this(restClientConfiguration, null, WebClient.builder());
+        this(restClientConfiguration, null);
     }
 
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfiguration
-     * @param httpPoolConfig
-     */
-    @Deprecated
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig) {
-        this(restClientConfiguration, httpPoolConfig, WebClient.builder());
-    }
-
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
-        this(restClientConfiguration, null, webClientBuilder);
-    }
-
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
         final boolean useSSL = restClientConfig.isSecure();
         baseUrl = RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
 
         final ClientHttpConnector httpConnector = createClientHttpConnector(restClientConfig);
 
-        webClient = webClientBuilder.baseUrl(baseUrl).clientConnector(httpConnector).build();
+        webClient = WebClient.builder().baseUrl(baseUrl).clientConnector(httpConnector).build();
     }
 
     private ClientHttpConnector createClientHttpConnector(final RestClientConfiguration restClientConfig) {

@@ -39,7 +39,6 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Customer } from 'ui-frontend-common';
 
 import { Owner } from 'ui-frontend-common';
 import { OwnerFormValidators } from './owner-form.validators';
@@ -68,33 +67,24 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     if (!this.form) { return; }
     this.form.get('customerId').setValue(customerId);
   }
-
   get customerId() { return this._customerId; }
-
   // tslint:disable-next-line:variable-name
   private _customerId: string;
 
   @Input()
-  set customerInfo(customerInfo: Customer) {
+  set customerInfo(customerInfo: any) {
     this._customerInfo = customerInfo;
     if (customerInfo && this.form) {
-      this.form.patchValue({
-          code: customerInfo.code,
-          name: customerInfo.name,
-          companyName: customerInfo.companyName,
-        });
+      this.form.patchValue({ code: customerInfo.code, name: customerInfo.name, companyName: customerInfo.companyName });
     }
   }
-
   get customerInfo() { return this._customerInfo; }
-
   // tslint:disable-next-line:variable-name
   private _customerInfo: any;
 
   constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators) {}
 
   onChange = (_: any) => {};
-
   onTouched = () => {};
 
   ngOnInit() {
@@ -109,7 +99,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       ],
       name: [null, Validators.required],
       companyName: [null, Validators.required],
-      internalCode: [null],
       address: this.formBuilder.group({
         street: null,
         zipCode: null,
@@ -118,7 +107,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       }),
       readonly: false
     });
-
     this.subscribeToValueChanges();
   }
 
@@ -136,7 +124,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
       code: null,
       name: null,
       companyName: null,
-      internalCode: null,
       address: {
         street: null,
         zipCode: null,

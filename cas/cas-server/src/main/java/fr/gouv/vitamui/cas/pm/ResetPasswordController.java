@@ -110,7 +110,7 @@ public class ResetPasswordController {
             LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
             return false;
         }
-        val usernameLower = username.toLowerCase().trim();
+        val usernameLower = username.toLowerCase();
         val email = passwordManagementService.findEmail(usernameLower);
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");

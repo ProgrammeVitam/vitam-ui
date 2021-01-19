@@ -60,7 +60,7 @@ public final class CriteriaUtils {
     }
 
     public static void checkFormat(final String criteriaJson) {
-        final QueryDto criteriaDto = fromJson(criteriaJson);
+        QueryDto criteriaDto = fromJson(criteriaJson);
         checkFormat(criteriaDto);
     }
 
@@ -71,7 +71,7 @@ public final class CriteriaUtils {
         }
     }
 
-    private static void checkCriterionList(final Collection<Criterion> criteria) {
+    private static void checkCriterionList(Collection<Criterion> criteria) {
         if (!CollectionUtils.isEmpty(criteria)) {
             final Set<String> keys = criteria.stream().map(Criterion::getKey).collect(Collectors.toSet());
             if (criteria.size() != keys.size()) {
@@ -83,31 +83,33 @@ public final class CriteriaUtils {
 
 
     private static void checkCriterion(final Criterion criterion) {
-        final CriterionOperator operator = criterion.getOperator();
+        CriterionOperator operator = criterion.getOperator();
         if (operator == null) {
             throw new BadRequestException("Operator not defined for criterion : " + criterion.getKey());
         }
         if (criterion.getKey() == null) {
             throw new BadRequestException("Key not defined for criterion : " + criterion.toString());
         }
-        if (criterion.getValue() == null && !CriterionOperator.EQUALS.equals(criterion.getOperator())) {
+        if (criterion.getValue() == null) {
             throw new BadRequestException("Value not defined for criterion : " + criterion.getKey());
         }
         switch (operator) {
             case BETWEEN :
                 try {
-                    final Map<String, Object> c = (Map<String, Object>) criterion.getValue();
+                    Map<String, Object> c = (Map<String, Object>) criterion.getValue();
                     if (!(c.containsKey("start") && c.containsKey("end"))) {
                         throw new BadRequestException("Can't determine start or end value for operator BETWEEN for criterion : " + criterion.getKey());
                     }
-                } catch (final ClassCastException e) {
+                }
+                catch (ClassCastException e) {
                     throw new BadRequestException("Value is not defined as a map with operator BETWEEN for criterion : " + criterion.getKey(), e);
                 }
                 break;
             case IN :
                 try {
-                    final List<Object> c = (List<Object>) criterion.getValue();
-                } catch (final ClassCastException e) {
+                    List<Object> c = (List<Object>) criterion.getValue();
+                }
+                catch (ClassCastException e) {
                     throw new BadRequestException("Value is not defined as an array with operator IN for criterion : " + criterion.getKey(), e);
                 }
                 break;
@@ -168,7 +170,8 @@ public final class CriteriaUtils {
     public static String toJson(final QueryDto criteria) {
         try {
             return JsonUtils.toJson(criteria);
-        } catch (final JsonProcessingException e) {
+        }
+        catch (JsonProcessingException e) {
             throw new InvalidFormatException(e.getMessage(), e);
 
         }

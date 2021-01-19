@@ -12,7 +12,6 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 import {SharedModule} from '../../../shared/shared.module';
 import {OwnerFormModule} from '../../owner-form/owner-form.module';
 import {CustomerColorsInputComponent} from './customer-colors-input.component';
-import { InputColorComponent } from './input-color/input-color.component';
 
 @NgModule({
   imports: [
@@ -30,8 +29,7 @@ import { InputColorComponent } from './input-color/input-color.component';
     ColorPickerModule
   ],
   declarations: [
-    CustomerColorsInputComponent,
-    InputColorComponent
+    CustomerColorsInputComponent
   ],
   exports: [
     CustomerColorsInputComponent

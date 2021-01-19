@@ -41,8 +41,6 @@ import java.time.OffsetDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import org.hibernate.validator.constraints.Length;
 
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -85,7 +83,6 @@ public class UserDto extends CustomerIdDto {
     @NotNull
     @Length(min = 4, max = 100)
     @Email
-    @JsonDeserialize(converter = ToLowerCaseConverter.class)
     private String email;
 
     private boolean otp;
@@ -113,10 +110,6 @@ public class UserDto extends CustomerIdDto {
     private OffsetDateTime passwordExpirationDate;
 
     private AddressDto address = new AddressDto();
-
-    private String internalCode;
-
-    private AnalyticsDto analytics;
 
     private String siteCode;
 }

@@ -37,16 +37,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import {
-  AppRootComponent,
-  Customer,
-  CustomerSelectionService,
-  GlobalEventService,
-  MenuOption,
-  SubrogationModalService
-} from 'ui-frontend-common';
+import { map, switchMap, tap } from 'rxjs/operators';
+
+import { AppRootComponent, Customer, GlobalEventService, MenuOption, SubrogationModalService } from 'ui-frontend-common';
+import { CustomerService } from '../../core/customer.service';
 import { CustomerSelectService } from '../customer-select.service';
 
 @Component({
@@ -56,43 +50,33 @@ import { CustomerSelectService } from '../customer-select.service';
 })
 export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
-  public customer: Customer;
-  public customers: MenuOption[];
-  public search: string;
-
-  private destroyer$ = new Subject();
+  customer: Customer;
+  customers: MenuOption[];
 
   constructor(
     public dialog: MatDialog,
     public globalEventService: GlobalEventService,
     private router: Router,
     private route: ActivatedRoute,
+    private customerService: CustomerService,
     private subrogationModalService: SubrogationModalService,
     private customerSelectService: CustomerSelectService,
-    private customerSelectionService: CustomerSelectionService
   ) {
     super(route);
   }
 
   ngOnInit() {
-    this.customerSelectService.getAll(true).pipe(switchMap((options) => {
-      this.customers = options;
-      this.customerSelectionService.setCustomers(options);
-      return this.route.paramMap;
-     })).subscribe((paramMap) => {
-       const routeCustomerId = paramMap.get('customerId');
-       const currentCustomerId = this.customerSelectionService.getSelectedCustomerId();
+    const customerIdChange = this.route.paramMap.pipe(
+      tap((paramMap) =>  {
+        // emit tenant change event
+        this.globalEventService.customerEvent.next(paramMap.get('customerId'));
+      }),
+      map((paramMap) => paramMap.get('customerId'))
+    );
+    const customerChange = customerIdChange.pipe(switchMap((customerId) => this.customerService.get(customerId)));
 
-       if (!currentCustomerId || currentCustomerId !== routeCustomerId) {
-         this.customerSelectionService.setCustomerId(routeCustomerId);
-       }
-
-       this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$)).subscribe((customerId: string) => {
-         if (!this.customer || this.customer.identifier !== customerId) {
-           this.changeCustomer(customerId);
-         }
-       });
-     });
+    customerChange.subscribe((customer) => this.customer = customer);
+    this.customerSelectService.getAll(true).subscribe((option: MenuOption[]) => this.customers = option);
   }
 
   openUserSubrogationDialog() {
@@ -101,10 +85,6 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
   changeCustomer(customerId: string) {
     this.router.navigate(['..', customerId], { relativeTo: this.route });
-  }
-
-  onSearchSubmit(search: string) {
-    this.search = search;
   }
 
 }

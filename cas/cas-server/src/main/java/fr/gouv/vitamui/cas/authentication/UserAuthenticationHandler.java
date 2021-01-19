@@ -97,7 +97,7 @@ public class UserAuthenticationHandler extends AbstractUsernamePasswordAuthentic
     protected AuthenticationHandlerExecutionResult authenticateUsernamePasswordInternal(final UsernamePasswordCredential transformedCredential,
                                                                                         final String originalPassword) throws GeneralSecurityException, PreventedException {
 
-        val username = transformedCredential.getUsername().toLowerCase().trim();
+        val username = transformedCredential.getUsername().toLowerCase();
         val requestContext = RequestContextHolder.getRequestContext();
         String surrogate = null;
         String ip = null;

@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import java.util.Map;
+
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
 import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -72,12 +72,6 @@ public class UIPropertiesImpl implements UIProperties {
     private String assets;
 
     private String platformName;
-
-    private  String welcomeTitle;
-
-    private String welcomeDescription;
-
-    private Map<String, String> customer;
 
     /**
      * Map of application categories (key: category ID, value: category properties)

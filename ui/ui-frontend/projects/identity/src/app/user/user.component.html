@@ -4,7 +4,7 @@
     <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"></app-user-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none">
+  <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>

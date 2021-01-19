@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -47,7 +47,7 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss']
 })
-export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, OnDestroy {
+export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
 
   tenantIdentifier: number;
   profiles: Profile[];

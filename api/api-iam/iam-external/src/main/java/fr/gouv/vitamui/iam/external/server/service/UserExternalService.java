@@ -232,8 +232,4 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
         return getClient().getLevels(getInternalHttpContext(), checkAuthorization(criteria));
     }
 
-    public UserDto patchAnalytics(final Map<String, Object> partialDto) {
-        return getClient().patchAnalytics(getInternalHttpContext(), partialDto);
-    }
-
 }

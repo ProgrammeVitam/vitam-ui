@@ -66,7 +66,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity_admin.server_name }};
-
+    
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
@@ -83,31 +83,6 @@ server {
     	proxy_set_header X-Forwarded-For $remote_addr;
 
     }
-
-    location /identity/ {
-        rewrite ^/identity/(.*)$  https://{{ vitamui.identity_admin.server_name }}/$1 break;
-    }
-
-    location /ngsw.json {
-        proxy_pass https://ui_identity_admin;
-
-        gunzip on;
-        proxy_set_header Accept-Encoding "";
-        sub_filter_types *;
-        sub_filter /identity/ '';
-        sub_filter_once off;
-
-        proxy_set_header Host            $host;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Authorization $http_authorization;
-
-        proxy_set_header  X-Forwarded-Ssl on;
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header  X-Forwarded-Proto $scheme;
-
-    }
-
 }
 
 
@@ -126,7 +101,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name {{ vitamui.identity.server_name }};
-
+    
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }
@@ -144,30 +119,6 @@ server {
         proxy_set_header Authorization $http_authorization;
 
         proxy_hide_header X-Frame-Options;
-        proxy_set_header  X-Forwarded-Ssl on;
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header  X-Forwarded-Proto $scheme;
-
-    }
-
-    location /identity/ {
-        rewrite ^/identity/(.*)$  https://{{ vitamui.identity.server_name }}/$1 break;
-    }
-
-    location /ngsw.json {
-        proxy_pass https://ui_identity;
-
-        gunzip on;
-        proxy_set_header Accept-Encoding "";
-        sub_filter_types *;
-        sub_filter /identity/ https://{{ vitamui.identity.server_name }}/;
-        sub_filter_once off;
-
-        proxy_set_header Host            $host;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Authorization $http_authorization;
-
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -212,10 +163,6 @@ server {
         proxy_set_header  X-Forwarded-Proto $scheme;
 
     }
-
-    location = /favicon.ico {
-        alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
-    }
 }
 
 
@@ -240,7 +187,7 @@ server {
         return 302 $scheme://$host/login;
     }
 
-    location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0|clientredirect) {
+    location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0) {
         proxy_pass https://cas;
         proxy_set_header Host            $host;
     	proxy_set_header X-Forwarded-For $remote_addr;
@@ -270,7 +217,7 @@ server {
     include {{ reverse_conf_dir }}/ssl/ssl.conf;
 
     server_name "{{ vitamui.portal.server_name }}";
-
+    
     location = /favicon.ico {
         alias {{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico;
     }

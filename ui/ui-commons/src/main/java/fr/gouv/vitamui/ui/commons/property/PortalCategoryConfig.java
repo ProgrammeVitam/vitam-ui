@@ -6,9 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PortalCategoryConfig {
-
-    public String identifier;
-
     public String title;
 
     public Boolean displayTitle;

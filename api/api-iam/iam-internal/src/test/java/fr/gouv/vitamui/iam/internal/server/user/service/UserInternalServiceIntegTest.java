@@ -50,7 +50,6 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -150,9 +149,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
     @Mock
     private VitamUILogger logger;
 
-    @MockBean
-    private ApplicationInternalService applicationInternalService;
-
     @Before
     public void setUp() throws NoSuchFieldException, SecurityException, Exception {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -166,7 +162,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
         internalUserService = new UserInternalService(sequenceRepository, userRepository, groupInternalService, internalProfileService,
                 mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
-                iamLogbookService, userConverter, null, null, addressService, applicationInternalService);
+                iamLogbookService, userConverter, null, null, addressService);
 
         iamAuthentificationService = new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
         iamAuthentificationService.setTokenAdditionalTtl(15);
@@ -342,7 +338,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Type\":\"NOMINATIVE\","
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
-                + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
                 + "\"Code du site\":\"001\","
                 + "\"Nom de la rue\":\"-\","

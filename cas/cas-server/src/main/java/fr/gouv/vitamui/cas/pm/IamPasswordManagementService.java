@@ -140,7 +140,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val username = upc.getUsername();
         Assert.notNull(username, "username can not be null");
         // username to lowercase
-        val usernameLowercase = username.toLowerCase().trim();
+        val usernameLowercase = username.toLowerCase();
         LOGGER.debug("username: {}", usernameLowercase);
         val identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
         Assert.isTrue(identityProvider.isPresent(), "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
@@ -163,7 +163,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @Override
     public String findEmail(final String username) {
         String email = null;
-        val usernameWithLowercase = username.toLowerCase().trim();
+        val usernameWithLowercase = username.toLowerCase();
         try {
             val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
             if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {

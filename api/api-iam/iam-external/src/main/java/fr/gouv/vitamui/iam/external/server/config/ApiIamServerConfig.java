@@ -36,17 +36,6 @@
  */
 package fr.gouv.vitamui.iam.external.server.config;
 
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.MultipartFilter;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
@@ -134,8 +123,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamInternalWebClientFactory internalWebClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties, final WebClient.Builder webClientBuilder) {
-        return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient(), webClientBuilder);
+    public IamInternalWebClientFactory internalWebClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties) {
+        return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient());
 
     }
 

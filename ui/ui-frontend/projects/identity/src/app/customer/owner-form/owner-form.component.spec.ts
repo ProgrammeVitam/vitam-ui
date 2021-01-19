@@ -112,7 +112,6 @@ describe('OwnerFormComponent', () => {
         city: 'Paris',
         country: 'FR'
       },
-      internalCode: null,
       readonly : false
     };
 
@@ -174,7 +173,6 @@ describe('OwnerFormComponent', () => {
         city: 'Paris',
         country: 'FR'
       },
-      internalCode: null,
       readonly : false
     };
 

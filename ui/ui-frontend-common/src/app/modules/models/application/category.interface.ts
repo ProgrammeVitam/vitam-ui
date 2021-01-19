@@ -36,7 +36,6 @@
  */
 
 export interface Category {
-  identifier: string;
   title: string;
   displayTitle: boolean;
   order: number;

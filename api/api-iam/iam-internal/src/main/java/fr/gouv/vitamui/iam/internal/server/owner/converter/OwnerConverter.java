@@ -56,8 +56,6 @@ public class OwnerConverter implements Converter<OwnerDto, Owner> {
 
     public static final String COMPANY_NAME_KEY = "Raison sociale";
 
-    public static final String INTERNAL_CODE_KEY = "Code interne";
-
     private final AddressConverter addressConverter;
 
     public OwnerConverter(final AddressConverter addressConverter) {
@@ -70,7 +68,6 @@ public class OwnerConverter implements Converter<OwnerDto, Owner> {
         ownerLogbookData.put(CODE_KEY, LogbookUtils.getValue(owner.getCode()));
         ownerLogbookData.put(NAME_KEY, LogbookUtils.getValue(owner.getName()));
         ownerLogbookData.put(COMPANY_NAME_KEY, LogbookUtils.getValue(owner.getCompanyName()));
-        ownerLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(owner.getInternalCode()));
         AddressDto address = owner.getAddress() != null ? owner.getAddress() : new AddressDto();
         addressConverter.addAddress(address, ownerLogbookData);
         return ApiUtils.toJson(ownerLogbookData);

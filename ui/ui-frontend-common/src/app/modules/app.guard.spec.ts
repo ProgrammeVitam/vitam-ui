@@ -77,8 +77,8 @@ describe('AppGuard', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AppGuard,
-        { provide: AuthService, useValue: { user: { profileGroup: { profiles: [{ applicationName: 'USERS_APP' }] } } } },
-        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => { } } },
+        { provide: AuthService, useValue: {user: { profileGroup: { profiles: [{applicationName: 'USERS_APP'}] }}} },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
         { provide: WINDOW_LOCATION, useValue: {} }
       ]

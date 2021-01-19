@@ -56,6 +56,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   connectedUserInfo: AdminUserProfile;
   customer: Customer;
   search: string;
+  searchText: string;
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
 

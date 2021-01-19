@@ -33,8 +33,6 @@ ui-prefix : ${ui-portal.prefix}
 ui-portal:
   #theme-logo: /path/to/logo.png
   platform-name: VITAM-UI
-  welcome-title: Portail des applications de l'archivage
-  welcome-description: Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics.
   theme-colors:
     vitamui-primary: "#ff4a54"
     vitamui-secondary: "#241f63"
@@ -54,16 +52,11 @@ ui-portal:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-    admin-identity: "https://dev.vitamui.com:4201/identity"
-    identity: "https://dev.vitamui.com:4201/identity"
-  customer:
-    technical-referent-email: contact@programmevitam.fr
-    website-url: http://www.programmevitam.fr
   portal-categories:
-    users:
-      title: "Utilisateur"
-      displayTitle: false
-      order: 1
+    ingests:
+      title: "Suivi des Versements"
+      displayTitle: true
+      order: 4
     administrators:
       title: "Management"
       displayTitle: true
@@ -73,21 +66,21 @@ ui-portal:
       displayTitle: true
       order: 3
     referential:
-      title: "Référentiels"
-      displayTitle: true
-      order: 4
-    opaudit:
-      title: "Audits et opérations"
+      title: Référentiels
       displayTitle: true
       order: 5
-    techadmin:
-      title: "Administration technique"
+    opaudit:
+      title: Audits et Opérations
       displayTitle: true
       order: 6
-    ingests:
-      title: "Suivi des Versements"
+    techadmin:
+      title: Administration Technique
       displayTitle: true
       order: 7
+    users:
+      title: ""
+      displayTitle: false
+      order: 1
 
 ui:
   url: "https://dev.vitamui.com:4200"

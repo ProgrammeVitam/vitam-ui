@@ -52,12 +52,12 @@ export class AccountService {
   constructor(private accountApi: AccountApiService, private securityApi: SecurityApiService, private snackBar: VitamUISnackBar) {
   }
 
-  public getMyAccount(): Observable<Account> {
+  getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();
   }
 
-  public patchMe(accountPartial: { [key: string]: any }): Observable<Account> {
-    return this.accountApi.patchMe(accountPartial).pipe(
+  patch(accountPartial: { id: string, [key: string]: any }): Observable<Account> {
+    return this.accountApi.patch(accountPartial).pipe(
       tap(
         () => {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {

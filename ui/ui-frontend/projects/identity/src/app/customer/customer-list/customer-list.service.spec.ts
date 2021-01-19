@@ -93,7 +93,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
-      internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
@@ -150,7 +149,6 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
-      internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
@@ -215,7 +213,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
-      internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
@@ -272,7 +269,6 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
-      internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',

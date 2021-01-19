@@ -77,9 +77,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class AbstractResourceClientService<E extends IdDto, I extends IdDto> extends AbstractInternalClientService {
-
-    protected static final String EXTERNAL_PARAM_ID_KEY = "externalParamId";
+public abstract class AbstractResourceClientService<E extends IdDto, I extends IdDto>
+extends AbstractInternalClientService {
 
     protected static final String TENANT_IDENTIFIER_KEY = "tenantIdentifier";
 

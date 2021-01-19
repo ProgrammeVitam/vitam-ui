@@ -73,7 +73,7 @@ public class Customer extends IdDocument {
     private String identifier;
 
     @NotNull
-    @Length(min = 4, max = 25)
+    @Length(min = 6, max = 20)
     @Indexed(name = "idx_customer_code", unique = true, background = true)
     private String code;
 
@@ -106,8 +106,6 @@ public class Customer extends IdDocument {
 
     @NotNull
     private Address address;
-
-    private String internalCode;
 
     private boolean readonly = false;
 
