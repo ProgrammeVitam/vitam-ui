@@ -61,7 +61,7 @@ import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
 @ActiveProfiles("test")
 public class ApiReferentialServerConfigTest {
 
-    @MockBean(name = "adminExternalClient")
+    @MockBean(name ="adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
     @MockBean(name = "accessExternalClient")

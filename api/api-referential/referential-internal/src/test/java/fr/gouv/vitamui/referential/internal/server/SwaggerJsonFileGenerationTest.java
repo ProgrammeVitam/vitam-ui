@@ -79,9 +79,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @TestPropertySource(properties = { "spring.config.name=referential-internal-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
-
-
-
     @MockBean
     private RestExceptionHandler restExceptionHandler;
 

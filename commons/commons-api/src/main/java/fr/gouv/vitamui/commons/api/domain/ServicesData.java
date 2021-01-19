@@ -47,6 +47,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
@@ -247,6 +248,8 @@ public class ServicesData {
     public static final String ROLE_DELETE_AGENCIES = DELETE_ROLE_PREFIX + SERVICE_AGENCIES;
 
     public static final String ROLE_EXPORT_AGENCIES = EXPORT_ROLE_PREFIX + SERVICE_AGENCIES;
+    
+    public static final String ROLE_IMPORT_AGENCIES = IMPORT_ROLE_PREFIX + SERVICE_AGENCIES;
 
     //---------------------------------- FILE FORMATS --------------------------------------------
 
@@ -261,6 +264,8 @@ public class ServicesData {
     public static final String ROLE_DELETE_FILE_FORMATS = DELETE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     public static final String ROLE_EXPORT_FILE_FORMATS = EXPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    
+    public static final String ROLE_IMPORT_FILE_FORMATS = IMPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     //------------------------------------ CONTEXTS -----------------------------------------
 
@@ -307,6 +312,8 @@ public class ServicesData {
     public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+    
+    public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     //------------------------------------- OPERATIONS --------------------------------------------
 

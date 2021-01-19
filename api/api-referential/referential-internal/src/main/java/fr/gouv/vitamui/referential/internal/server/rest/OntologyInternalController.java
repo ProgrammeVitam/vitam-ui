@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -54,11 +55,15 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -142,5 +147,12 @@ public class OntologyInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for ontology with id :{}", id);
         return ontologyInternalService.findHistoryByIdentifier(vitamContext, id);
+    }
+    
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("import ontology file {}", fileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        return ontologyInternalService.importOntologies(vitamContext, fileName, file);
     }
 }

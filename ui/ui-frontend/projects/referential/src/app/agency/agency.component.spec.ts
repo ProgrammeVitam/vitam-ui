@@ -1,6 +1,6 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, Input} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialogModule, MatSidenavModule} from '@angular/material';
+import {MatDialogModule, MatMenuModule, MatSidenavModule} from '@angular/material';
 import {RouterTestingModule} from '@angular/router/testing';
 import {InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -39,7 +39,8 @@ describe('AgencyComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        MatDialogModule
+        MatDialogModule,
+        MatMenuModule
       ],
       providers: [
         {provide: AgencyService, useValue: {}}

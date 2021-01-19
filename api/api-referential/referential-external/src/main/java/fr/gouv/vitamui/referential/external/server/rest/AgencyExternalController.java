@@ -41,11 +41,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -60,6 +63,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -150,9 +154,21 @@ public class AgencyExternalController {
     }
 
     @Secured(ServicesData.ROLE_EXPORT_AGENCIES)
-    @GetMapping("/export")
+    @GetMapping(CommonConstants.PATH_EXPORT)
     public ResponseEntity<Resource> export() {
         return agencyExternalService.export();
     }
-
+    
+    /***
+     * Import agencies from a csv file
+     * @param fileName the file name
+     * @param file the agency csv file to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_IMPORT_AGENCIES)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("Import agency file {}", fileName);
+        return agencyExternalService.importAgencies(fileName, file);
+    }
 }

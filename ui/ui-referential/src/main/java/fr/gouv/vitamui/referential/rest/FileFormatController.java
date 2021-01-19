@@ -43,9 +43,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -174,6 +179,17 @@ public class FileFormatController extends AbstractUiRestController {
         LOGGER.debug("export file formats");
         return service.export(buildUiHttpContext());
     }
-
-
+    
+    /***
+     * Import file format from a csv file
+     * @param request HTTP request
+     * @param input the agency csv file
+     * @return the Vitam response
+     */
+    @ApiOperation(value = "import a file format xml file")
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importFileFormats(@Context HttpServletRequest request, MultipartFile file) {
+        LOGGER.debug("Import file format file {}", file != null ? file.getOriginalFilename() : null);
+        return service.importFileFormats(buildUiHttpContext(), file);
+    }
 }
