@@ -22,6 +22,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
  *
  */
+@Deprecated
 public abstract class AbstractSwaggerJsonFileGenerationTest {
 
     @Autowired
@@ -40,7 +41,8 @@ public abstract class AbstractSwaggerJsonFileGenerationTest {
     public void swaggerJsonExists() throws Exception {
         final String contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v2/api-docs").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        try (Writer writer = new FileWriter(new File("target/generated-sources/swagger.json"))) {
+        Writer writer = new FileWriter(new File("target/generated-sources/swagger.json"));
+        try (writer) {
             IOUtils.write(contentAsString, writer);
         }
     }

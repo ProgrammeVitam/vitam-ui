@@ -4,7 +4,7 @@
        <app-hierarchy-detail *ngIf="openedItem" (previewClose)="closePanel()" [id]="openedItem?.id"></app-hierarchy-detail>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content class="overflow-none">
       <div class="vitamui-header">
         <div class="vitamui-container">
           <vitamui-common-navbar [appId]="appId" [hideCustomerMenu]="true" (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>

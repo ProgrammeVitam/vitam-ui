@@ -343,7 +343,7 @@
         </context-group>
         <note priority="1" from="description">Customer graphical identity title</note>
       </trans-unit><trans-unit id="customerCreateVisualIdentityToggleLabel" datatype="html">
-        <source>Afficher l'identité graphique personnalisée</source><target state="new"/>
+        <source>Afficher le logo du client</source><target state="new"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
           <context context-type="linenumber">162</context>
@@ -375,6 +375,20 @@
           <context context-type="linenumber">12</context>
         </context-group>
         <note priority="1" from="description">Customer graphical identity max size label</note>
+      </trans-unit><trans-unit id="customerCreateColorNamePlaceholder" datatype="html">
+        <source>Color ID</source><target state="new"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <note priority="1" from="description">Customer color name input placeholder</note>
+      </trans-unit><trans-unit id="customerCreateColorValuePlaceholder" datatype="html">
+        <source>Hexadecimal color value</source><target state="new"/>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
+        <note priority="1" from="description">Customer color value input placeholder</note>
       </trans-unit>
       <trans-unit id="customerCreateCreateOwnerButton" datatype="html">
         <source>

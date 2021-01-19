@@ -1,0 +1,58 @@
+{
+    "FOOTER": {
+        "HELP": "Aide",
+        "LEGAL_NOTICE": "Mentions légales",
+        "TECHNICAL_REFERENT": "Référent technique"
+    },
+    "HEADER": {
+        "LOGOUT": "Déconnexion",
+        "NAVIGATE_AS": "Activer le mode subrogation",
+        "MY_ACCOUNT": "Mon compte",
+        "PROFILE": "Profil"
+    },
+    "MENU" : {
+        "GRAB_APPLICATION": "Saisir le nom de l'application",
+        "MY_APPLICATIONS": "Mes applications",
+        "RESULT": "Résultat(s)",
+		"settings": "Paramétrage",
+		"administrators": "Management",
+		"users": "Utilisateur",
+		"referential": "Référentiels",
+		"opaudit": "Audits et opérations",
+		"techadmin": "Administration technique",
+		"lastusedapps": "Dernières utilisées",
+        "ingest_and_consultation": "Versement & consultation",
+        "supervision_and_audits": "Supervision & Audits",
+        "security_and_application_rights": "Sécurité & droits applicatifs",
+        "organization_and_user_rights": "Organisation & droits utilisateurs"
+    },
+    "MENU-APPLICATION-TILE": {
+        "ENTER_APPLICATION": "Entrée pour lancer l'application"
+    },
+    "SELECT-TENANT": {
+        "SELECTED": "Coffre sélectionné",
+        "SELECT" : "Sélectionner un coffre",
+        "DIALOG_TITLE" : "Bienvenue sur ",
+        "DIALOG_SUBTITLE" : "Le portail des applications de l'archivage",
+        "DIALOG_INSTRUCTIONS" : "Veuillez sélectionner votre coffre par défaut",
+        "DIALOG_MESSAGE" : "Votre coffre par défaut pourra être modifié depuis votre compte",
+        "DIALOG_BUTTON_LABEL" : "Accéder à "
+    },
+    "SELECT-CUSTOMER": {
+        "SELECTED": "Client sélectionné",
+        "SELECT" : "Sélectionner un client"
+    },
+    "SELECT-LANGUAGE": {
+        "LANGUAGE": "Langue",
+        "ENGLISH" : "Anglais",
+        "FRENCH" : "Français"
+    },
+    "SLIDE-TOGGLE": {
+        "YES": "OUI",
+        "NO": "NON"
+    },
+    "LEVEL-INPUT": {
+        "SUBLEVEL": "Sous niveau"
+    }
+
+}

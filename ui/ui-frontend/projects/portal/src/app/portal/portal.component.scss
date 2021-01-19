@@ -1,27 +1,32 @@
-@import '~ui-frontend-common/sass/variables/colors';
+.content {
+  padding: 3.5rem 20rem;
+}
 
-.vitamui-header {
-    background: none;
-
-    .vitamui-container {
-        padding-bottom: 0px;
-    }
+mat-spinner {
+  margin: 2rem auto;
 
 }
 
-.vitamui-navbar-logo img {
-    // width: 135px;
-    display: block;
+@media screen and (min-width: 1501px) and (max-width: 1750px) {
+  .content {
+    padding: 0 15rem;
+  }
 }
 
-.account-picture {
-    margin-right: 20px;
+@media screen and (min-width: 1301px) and (max-width: 1500px) {
+  .content {
+    padding: 0 6rem;
+  }
 }
 
-.account {
-    display:flex;
-    align-items: center;
-    padding-top: 5px;
-    cursor:pointer
+@media screen and (max-width: 1300px) {
+  .content {
+    padding: 0 3rem;
+  }
 }
 
+@media screen and (max-width: 500px) {
+  .content {
+    padding: 0 1rem;
+  }
+}

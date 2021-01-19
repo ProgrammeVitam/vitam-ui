@@ -69,6 +69,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBU
 import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
+import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
 
 import java.util.*;
 
@@ -79,7 +80,11 @@ import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.authentication.principal.*;
+import org.apereo.cas.authentication.principal.ClientCredential;
+import org.apereo.cas.authentication.principal.NullPrincipal;
+import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.PrincipalFactory;
+import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.JEEContext;
@@ -222,6 +227,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(PASSWORD_EXPIRATION_DATE_ATTRIBUTE, Collections.singletonList(user.getPasswordExpirationDate()));
         attributes.put(GROUP_ID_ATTRIBUTE, Collections.singletonList(user.getGroupId()));
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
+        attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
             final UserDto superUser = casExternalRestClient.getUserByEmail(utils.buildContext(superUsername), superUsername, Optional.empty());

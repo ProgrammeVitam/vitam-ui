@@ -36,11 +36,11 @@
  */
 
 /* tslint:disable:no-magic-numbers no-use-before-declare max-classes-per-file */
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -65,6 +65,10 @@ let page: Page;
 
 @Component({ selector: 'app-group-list', template: '' })
 class GroupListStubComponent {
+
+  // tslint:disable-next-line:no-input-rename
+  @Input('search') searchText: string;
+
   search() { }
 }
 
@@ -87,6 +91,7 @@ describe('GroupComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
         InjectorModule,
+        SearchBarModule,
         LoggerModule.forRoot()
       ],
       declarations: [

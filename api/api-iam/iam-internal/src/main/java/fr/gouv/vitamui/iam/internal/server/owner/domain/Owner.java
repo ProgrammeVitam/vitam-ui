@@ -83,5 +83,7 @@ public class Owner extends CustomerIdDocument {
 
     private Address address;
 
+    private String internalCode;
+
     private boolean readonly;
 }

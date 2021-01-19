@@ -36,6 +36,7 @@
  */
 import { Address } from '../customer';
 import { Id } from '../id.interface';
+import { Analytics } from './analytics.interface';
 
 export interface User extends Id {
 
@@ -57,6 +58,8 @@ export interface User extends Id {
   lastConnection: string;
   readonly: boolean;
   address: Address;
+  internalCode?: string;
+  analytics?: Analytics;
   siteCode: string;
 
 }

@@ -36,13 +36,12 @@
  */
 /* tslint:disable:component-selector max-classes-per-file */
 
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, TestBed  } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-
 import { AuthService, StartupService } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
@@ -59,7 +58,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatSidenavModule,
-        NoopAnimationsModule,
+        NoopAnimationsModule
       ],
       declarations: [
         AppComponent,
@@ -70,7 +69,8 @@ describe('AppComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
   }));
 

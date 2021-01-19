@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import {
-  ApplicationId, AuthService, AuthUser, DEFAULT_PAGE_SIZE, Direction, Group, InfiniteScrollTable,
-  Operators, PageRequest, Profile, SearchQuery, SubrogationModalService, SubrogationUser
+  ApplicationId, AuthService, AuthUser, buildCriteriaFromSearch, Criterion, DEFAULT_PAGE_SIZE, Direction,
+  Group, InfiniteScrollTable, Operators, PageRequest, Profile, SearchQuery, SubrogationModalService, SubrogationUser
 } from 'ui-frontend-common';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -59,11 +59,31 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
   @Input() emailDomains: string[];
 
+  // tslint:disable-next-line:no-input-rename
+  @Input('search')
+  set searchText(searchText: string) {
+    this._searchText = searchText;
+    this.searchChange.next(searchText);
+  }
+  // tslint:disable-next-line:variable-name
+  private _searchText: string;
+
   private groups: Array<{id: string, group: any}> = [];
   overridePendingChange: true;
   loaded = false;
   customerId: string;
   currenteUser: AuthUser;
+
+  private readonly searchChange = new Subject<string>();
+  private readonly searchKeys = [
+    'firstname',
+    'lastname',
+    'email',
+    'mobile',
+    'phone',
+    'identifier'
+  ];
+
 
   constructor(
     public subrogationService: SubrogationService,
@@ -76,12 +96,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   }
 
   ngOnInit() {
-    // this.customerId = this.activatedRoute.snapshot.paramMap.get('customerId')
+
     this.currenteUser = this.authService.user;
     this.refreshDataList();
     this.activatedRoute.params.subscribe(() => this.refreshDataList());
 
-    // When the list is reloaded, we retrieve the groups .
+    // when the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
 
       // get the groupId of every user
@@ -98,7 +118,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
       if (observables && observables.length > 0) {
         // fetch remaining groups
-        forkJoin([forkJoin(observables), this.subrogationService.getAllByCustomerId(this.getCustomerId())]).subscribe((results) => {
+        forkJoin([forkJoin(observables), this.subrogationService.getAllByCustomerId(this._getCustomerId())]).subscribe((results) => {
           results[0].forEach((group) => {
             this.groups.push({ id: group.id, group });
           });
@@ -129,38 +149,55 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
         this.pending = false;
       }
     });
+
+    this._onSearchChange();
   }
 
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
-  }
-
-  refreshDataList() {
-    const criterionArray = [];
-    criterionArray.push({
-      key: 'customerId',
-      value: this.getCustomerId(),
-      operator: Operators.equals
-    });
-
-    const query: SearchQuery = { criteria: criterionArray };
-
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT, JSON.stringify(query)));
-  }
-
-  openUserSubrogationDialog(subrogateUser: SubrogationUser) {
+  openUserSubrogationDialog(subrogateUser: SubrogationUser): void {
     this.subrogationModalService.open(this.emailDomains, subrogateUser);
   }
 
-  getGroup(subrogateUser: SubrogationUser) {
+  getGroup(subrogateUser: SubrogationUser): any {
     const subrogateUserGroup = this.groups.find((group) => group.id === subrogateUser.groupId);
 
     return subrogateUserGroup ? subrogateUserGroup.group : undefined;
   }
 
-  getCustomerId(): string {
+  refreshDataList(): void {
+    this._search({ criteria: this._getCriterionArrayToCustomer() });
+  }
+
+  private _getCriterionArrayToCustomer(): Array<Criterion> {
+    const criterionArray = [];
+    criterionArray.push({
+      key: 'customerId',
+      value: this._getCustomerId(),
+      operator: Operators.equals
+    });
+    return criterionArray;
+  }
+
+  private _onSearchChange(): void {
+    this.searchChange.subscribe(() => {
+      const query: SearchQuery = {
+        criteria: [
+          ...this._getCriterionArrayToCustomer(),
+          ...buildCriteriaFromSearch(this._searchText, this.searchKeys)
+        ]
+      };
+
+      this._search(query);
+    });
+  }
+
+  private _search(query: SearchQuery): void {
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT, JSON.stringify(query)));
+  }
+
+  private _getCustomerId(): string {
     return this.activatedRoute.snapshot.paramMap.get('customerId');
   }
+
   private computeCriticality(profiles: Profile[]): number {
     let criticality = MINIMUM_CRITICALITY;
     for (const profile of profiles) {
@@ -179,4 +216,9 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
     return criticality;
   }
+
+  ngOnDestroy(): void {
+    this.updatedData.unsubscribe();
+  }
+
 }

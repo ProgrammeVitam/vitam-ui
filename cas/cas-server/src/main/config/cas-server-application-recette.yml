@@ -70,7 +70,7 @@ cas.ticket.tst.timeToKillInSeconds: 86400
 
 
 cas.authn.pm.enabled: true
-cas.authn.pm.policyPattern: '^(?=.*[$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
+cas.authn.pm.policyPattern: '^(?=.*[$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
@@ -90,6 +90,14 @@ cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
 cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
 cas.authn.mfa.simple.mail.text: xxx
 
+cas.authn.mfa.simple.sms.from: 'changeme'
+cas.authn.mfa.simple.sms.text: 'Code : %s'
+cas.authn.mfa.simple.sms.attributeName: mobile
+cas.authn.mfa.simple.timeToKillInSeconds: 3600
+cas.authn.mfa.simple.tokenLength: 4
+cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
+cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
+cas.authn.mfa.simple.mail.text: xxx
 
 spring.mail.host: localhost
 spring.mail.port: 2525

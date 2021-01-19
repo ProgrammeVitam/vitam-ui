@@ -36,18 +36,39 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
+import org.springframework.web.reactive.function.client.WebClient;
+
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
 public class IamExternalWebClientFactory extends BaseWebClientFactory {
 
+    /**
+     * This method don't use WebBuilder configured by spring boot
+     * @param restClientConfiguration
+     */
+    @Deprecated
     public IamExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
     }
 
+    /**
+     * This method don't use WebBuilder configured by spring boot
+     * @param restClientConfig
+     * @param httpPoolConfig
+     */
+    @Deprecated
     public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
         super(restClientConfig, httpPoolConfig);
+    }
+
+    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
+        super(restClientConfiguration, webClientBuilder);
+    }
+
+    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+        super(restClientConfig, httpPoolConfig, webClientBuilder);
     }
 
     public CustomerExternalWebClient getCustomerWebClient() {
