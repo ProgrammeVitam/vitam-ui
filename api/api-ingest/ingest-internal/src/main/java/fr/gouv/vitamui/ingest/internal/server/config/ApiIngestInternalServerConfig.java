@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ingest.internal.server.config;
 
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -64,7 +65,7 @@ import org.springframework.context.annotation.Import;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
-@Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class, VitamIngestConfig.class,
+@Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class, VitamIngestConfig.class,
     VitamAdministrationConfig.class})
 public class ApiIngestInternalServerConfig extends AbstractContextConfiguration {
 
