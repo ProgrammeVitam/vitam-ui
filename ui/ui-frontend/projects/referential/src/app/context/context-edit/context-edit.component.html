@@ -12,7 +12,6 @@
   
           <div class="form-group">
             <app-context-edit-permission formControlName="permissions" 
-              [tenants]="tenants" 
               (changeOrganisations)="onChangeOrganisations($event)"></app-context-edit-permission>
             <div *ngIf="isPermissionsOnMultipleOrganisations">
               <span class="error-message" i18n="Multiple organisation warning hint@@formWarningMultipleOrganisations">Attention vous avez renseigné deux organisations différentes</span>

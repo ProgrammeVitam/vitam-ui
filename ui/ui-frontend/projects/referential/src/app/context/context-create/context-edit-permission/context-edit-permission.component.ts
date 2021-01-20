@@ -72,9 +72,9 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
 
 
   @Input() editMode = false;
-  @Input() tenants: Tenant[] = [];
   @Output() changeOrganisations: EventEmitter<string[]> = new EventEmitter<string[]>();
 
+  tenants: Tenant[] = [];
   disabled: boolean;
 
   customers: Customer[] = [];
