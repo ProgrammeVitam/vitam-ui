@@ -46,11 +46,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitam.common.client.VitamContext;
@@ -64,7 +61,6 @@ import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -77,7 +73,6 @@ import fr.gouv.vitamui.iam.internal.server.owner.converter.OwnerConverter;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
-import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
@@ -196,9 +191,10 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     protected void processPatch(final Owner owner, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-if(vitamContext != null) {
-    LOGGER.info("Patch Owner EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-}
+        if(vitamContext != null) {
+            LOGGER.info("Patch Owner EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :

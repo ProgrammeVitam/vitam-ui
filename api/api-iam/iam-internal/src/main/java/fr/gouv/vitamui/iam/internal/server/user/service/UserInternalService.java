@@ -336,9 +336,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
+
             final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
             if(vitamContext != null) {
-                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId()); }
+                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            }
+
             LOGGER.info("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);

@@ -257,7 +257,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         final VitamContext vitamContext =
             internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-        LOGGER.info("Patching Customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        if(vitamContext != null) {
+              LOGGER.info("Patching Customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
             switch (entry.getKey()) {
                 case "id":

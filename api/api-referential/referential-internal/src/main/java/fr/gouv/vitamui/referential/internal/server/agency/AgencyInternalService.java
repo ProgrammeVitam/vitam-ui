@@ -112,8 +112,7 @@ public class AgencyInternalService {
 
     public AgencyDto getOne(VitamContext vitamContext, String identifier) {
         try {
-            LOGGER.info("Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencyById(vitamContext, identifier);
+              RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencyById(vitamContext, identifier);
             final AgencyResponseDto accessContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
             if(accessContractResponseDto.getResults().size() == 0){
@@ -129,9 +128,7 @@ public class AgencyInternalService {
     public List<AgencyDto> getAll(VitamContext vitamContext) {
         final RequestResponse<AgenciesModel> requestResponse;
         try {
-            LOGGER.info("All Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            requestResponse = agencyService
-                    .findAgencies(vitamContext, new Select().getFinalSelect());
+            requestResponse = agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
             final AgencyResponseDto agencyResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class);
 
@@ -144,7 +141,10 @@ public class AgencyInternalService {
     public PaginatedValuesDto<AgencyDto> getAllPaginated(final Integer pageNumber, final Integer size,
             final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
             Optional<String> criteria) {
-        LOGGER.info("All Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        if(vitamContext != null) {
+            LOGGER.info("All Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        }
+
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
@@ -170,7 +170,6 @@ public class AgencyInternalService {
     private AgencyResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<AgenciesModel> requestResponse;
         try {
-            LOGGER.info("All Agencies EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = agencyService.findAgencies(vitamContext, query);
 
             final AgencyResponseDto agencyResponseDto = objectMapper
@@ -184,7 +183,7 @@ public class AgencyInternalService {
 
     public Boolean check(VitamContext vitamContext, AgencyDto agencyDto) {
         try {
-            LOGGER.info("Check Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
             Integer agencyCheckedTenant = vitamAgencyService.checkAbilityToCreateAgencyInVitam(converter.convertDtosToVitams(Arrays.asList(agencyDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(agencyCheckedTenant);
         } catch (ConflictException e) {
@@ -196,7 +195,6 @@ public class AgencyInternalService {
 
     public AgencyDto create(VitamContext vitamContext, AgencyDto accessContractDto) {
         try {
-            LOGGER.info("Create Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse<?> requestResponse = vitamAgencyService.create(vitamContext, converter.convertDtoToVitam(accessContractDto));
             final AgencyModelDto accessContractVitamDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AgencyModelDto.class);
@@ -208,7 +206,7 @@ public class AgencyInternalService {
 
     public AgencyDto patch(VitamContext vitamContext,final Map<String, Object> partialDto){
         final AgencyDto accessContractDto = this.getOne(vitamContext, (String) partialDto.get("identifier"));
-        LOGGER.info("Patch Agency EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
         partialDto.forEach((key,value) ->
         {
             if (!"id".equals(key)) {
@@ -232,7 +230,7 @@ public class AgencyInternalService {
 
     public boolean delete(VitamContext context, String id) {
         try {
-            LOGGER.info("Delete Agency EvIdAppSession : {} " , context.getApplicationSessionId());
+            
             return vitamAgencyService.deleteAgency(context, id);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException e) {
             throw new InternalServerException("Unable to delete agency", e);
@@ -241,7 +239,6 @@ public class AgencyInternalService {
 
     public Response export(VitamContext context) {
         try {
-            LOGGER.info("Export Agency EvIdAppSession : {} " , context.getApplicationSessionId());
             return vitamAgencyService.export(context);
         } catch (InvalidParseOperationException | InvalidCreateOperationException | VitamClientException e) {
             throw new InternalServerException("Unable to export agencies", e);
@@ -250,13 +247,12 @@ public class AgencyInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
         try {
-            LOGGER.info("Agency History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
         	throw new InternalServerException("Unable to fetch history", e);
         }
     }
-    
+
     public JsonNode importAgencies(VitamContext context, String fileName, MultipartFile file) {
         try {
             return vitamAgencyService.importAgencies(context, fileName, file).toJsonNode();

@@ -311,9 +311,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     protected void processPatch(final Tenant tenant, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-    if(vitamContext != null) {
-        LOGGER.info("Patch Tenant EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-    }
+        if(vitamContext != null) {
+            LOGGER.info("Patch Tenant EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
