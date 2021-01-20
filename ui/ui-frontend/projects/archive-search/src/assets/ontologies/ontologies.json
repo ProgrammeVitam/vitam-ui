@@ -1626,5 +1626,95 @@
         "CreationDate": "2020-11-02T12:25:58.059",
         "LastUpdate": "2020-11-02T14:21:48.257",
         "ShortName": "StorageRule StartDate"
+    },
+    {
+        "Label": "management.HoldRule.Inheritance.PreventInheritance",
+        "Value": "#management.HoldRule.Inheritance.PreventInheritance",
+        "Type": "BOOLEAN",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule PreventInheritance"
+    },
+    {
+        "Label": "management.HoldRule.Inheritance.PreventRulesId",
+        "Value": "#management.HoldRule.Inheritance.PreventRulesId",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule PreventRulesId"
+    },
+    {
+        "Label": "management.HoldRule.Rules.EndDate",
+        "Value": "#management.HoldRule.Rules.EndDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule EndDate"
+    },
+    {
+        "Label": "management.HoldRule.Rules.HoldEndDate",
+        "Value": "#management.HoldRule.Rules.HoldEndDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule HoldEndDate"
+    },
+    {
+        "Label": "management.HoldRule.Rules.HoldOwner",
+        "Value": "#management.HoldRule.Rules.HoldOwner",
+        "Type": "TEXT",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule HoldOwner"
+    },
+    {
+        "Label": "management.HoldRule.Rules.HoldReassessingDate",
+        "Value": "#management.HoldRule.Rules.HoldReassessingDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule HoldReassessingDate"
+    },
+    {
+        "Label": "management.HoldRule.Rules.HoldReason",
+        "Value": "#management.HoldRule.Rules.HoldReason",
+        "Type": "TEXT",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule HoldReason"
+    },
+    {
+        "Label": "management.HoldRule.Rules.Rule",
+        "Value": "#management.HoldRule.Rules.Rule",
+        "Type": "KEYWORD",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule.Rules.Rule"
+    },
+    {
+        "Label": "management.HoldRule.Rules.StartDate",
+        "Value": "#management.HoldRule.Rules.StartDate",
+        "Type": "DATE",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "HoldRule StartDate"
+    },
+    {
+        "Label": "management.NeedAuthorization",
+        "Value": "#management.NeedAuthorization",
+        "Type": "BOOLEAN",
+        "Origin": "INTERNAL",
+        "CreationDate": "2020-11-02T12:25:58.059",
+        "LastUpdate": "2020-11-02T14:21:48.257",
+        "ShortName": "NeedAuthorization"
     }
 ]
