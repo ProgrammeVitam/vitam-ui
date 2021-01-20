@@ -267,7 +267,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public fourthStepValid(): boolean {
-    return !this.homepageMessageForm || (this.homepageMessageForm && this.homepageMessageForm.valid);
+    return !this.homepageMessageForm ||
+    (this.homepageMessageForm
+      && this.homepageMessageForm.valid
+      && this.homepageMessageForm.value.isFormValid
+    );
   }
 
   lastStepIsInvalid(): boolean {
