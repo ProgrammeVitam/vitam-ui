@@ -153,12 +153,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             val webContext = new JEEContext(request, response, sessionStore);
-            String providerName = (String) sessionStore.get(webContext, Constants.PROVIDER_TECHNICAL_NAME).orElse(null);
-            // no provider name in session, we didn't go through DispatcherAction
-            // it means we have an idp parameter in request or cookie
-            if (providerName == null) {
-                providerName = utils.getIdpValue(request);
-            }
+            val clientCredential = (ClientCredential) credential;
+            val providerName = clientCredential.getClientName();
             val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
             val mailAttribute = provider.getMailAttribute();
             if (CommonHelper.isNotBlank(mailAttribute)) {
