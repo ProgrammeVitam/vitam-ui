@@ -21,7 +21,11 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   public get customForm(): FormGroup { return this._customForm; }
   public set customForm(form: FormGroup) {
     this._customForm = form;
-    this.disabled = !(this._customForm && this._customForm.valid && this._customForm.value.isFormValid);
+
+    setTimeout(() => {
+      this.disabled = !(this._customForm && this._customForm.valid && this._customForm.value.isFormValid);
+  }, 0);
+
   }
 
   public disabled = true;

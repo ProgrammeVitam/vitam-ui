@@ -214,7 +214,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
       customer = {...formValue, ...{
-        id : this.customerForm.get('id').value,
         hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
         themeColors: this.customerForm.get('themeColors').value,
       }};
@@ -222,7 +221,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
     if (this.homepageMessageForm) {
       customer = {...customer, ...{
-        id : this.customerForm.get('id').value,
+        id : this.homepageMessageForm.get('id').value,
         portalTitle: this.homepageMessageForm.get('portalTitle').value,
         portalMessage: this.homepageMessageForm.get('portalMessage').value,
       }};
@@ -267,11 +266,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public fourthStepValid(): boolean {
-    return !this.homepageMessageForm ||
-    (this.homepageMessageForm
-      && this.homepageMessageForm.valid
-      && this.homepageMessageForm.value.isFormValid
-    );
+    let isValid = true;
+    setTimeout(() => {
+      isValid = !(this.homepageMessageForm && this.homepageMessageForm.valid && this.homepageMessageForm.value.isFormValid);
+  }, 0);
+
+    return isValid;
   }
 
   lastStepIsInvalid(): boolean {
