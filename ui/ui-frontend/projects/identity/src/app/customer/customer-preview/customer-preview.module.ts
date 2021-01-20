@@ -57,6 +57,7 @@ import { GraphicIdentityFormComponent } from './graphic-identity-tab/graphic-ide
 import { GraphicIdentityComponent } from './graphic-identity-tab/graphic-identity/graphic-identity.component';
 import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
 import { HomepageMessageUpdateComponent } from './homepage-message-tab/homepage-message-update/homepage-message-update.component';
+// tslint:disable-next-line: max-line-length
 import { HomepageMessageTranslationComponent } from './homepage-message-tab/homepage-message/homepage-message-translation/homepage-message-translation';
 import { HomepageMessageComponent } from './homepage-message-tab/homepage-message/homepage-message.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';

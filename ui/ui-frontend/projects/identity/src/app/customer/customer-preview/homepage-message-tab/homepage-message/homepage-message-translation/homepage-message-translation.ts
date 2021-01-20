@@ -11,7 +11,7 @@ export class HomepageMessageTranslationComponent implements OnInit {
     public form: FormGroup;
 
     @Input()
-    public messageTranslation: {id: number, language: string, title: string, description: string };
+    public messageTranslation: {id: number, index: number, language: string, title: string, description: string };
 
     @Output()
     public formChange = new EventEmitter<{form: FormGroup}>();
@@ -25,16 +25,19 @@ export class HomepageMessageTranslationComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             id: [null],
+            index: [null],
             language: ['', Validators.required],
             portalTitle: ['', [Validators.required]],
             portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
         });
 
-        console.log(this.messageTranslation.id);
         this.form.get('id').setValue(this.messageTranslation.id);
+        this.form.get('index').setValue(this.messageTranslation.index);
         this.form.get('language').setValue(this.messageTranslation.language);
         this.form.get('portalTitle').setValue(this.messageTranslation.title);
         this.form.get('portalMessage').setValue(this.messageTranslation.description);
+
+        this.formChange.emit({form: this.form});
 
         this.form.valueChanges.subscribe(() => {
             this.formChange.emit({form: this.form});

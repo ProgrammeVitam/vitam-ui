@@ -30,12 +30,13 @@
         }}</small>
 
     </div>
-    <div *ngFor="let messageTranslation of messageTranslations">
+    
+    <div *ngFor="let messageTranslation of homepageMessageForm.get('messageTranslations').value">
       <app-homepage-message-translation [messageTranslation]="messageTranslation"
         (formChange)="updateTranslation($event)" (formRemove)="removeTranslation($event)">
       </app-homepage-message-translation>
     </div>
-    <button class="pl-4 btn link uppercase" [disabled]="messageTranslations.length ==2" (click)="onAdd()">
+    <button class="pl-4 btn link uppercase" [disabled]="homepageMessageForm.get('messageTranslations').value.length >=2" (click)="onAdd()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
     </button>
   </div>

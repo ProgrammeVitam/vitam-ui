@@ -36,15 +36,18 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
   private defaultTheme: Theme = this.themeService.defaultTheme;
 
-  public messageTranslations: {
+  private messageTranslations: {
     id: number;
+    index: number;
     language: string;
     title: string;
     description: string;
-    isValid: boolean;
   }[] = [];
 
-  public messageTranslationValid = true;
+  private validTranslations: {
+    id: number;
+    isValid: boolean;
+  }[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<HomepageMessageComponent>,
@@ -62,7 +65,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
       portalTitle: ['', [Validators.required]],
       portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
       messageTranslations: [null],
-      messageTranslationValid: [true]
+      isFormValid: true,
     });
 
     this.portalMessage =
@@ -76,11 +79,13 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
     this.homepageMessageForm.get('portalTitle').setValue(this.portalTitle);
     this.homepageMessageForm.get('portalMessage').setValue(this.portalMessage);
-    this.homepageMessageForm.get('messageTranslations').setValue([]);
+    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
 
     if (this.customer && this.customer.id) {
       this.homepageMessageForm.get('id').setValue(this.customer.id);
     }
+
+    this.formToSend.emit({ form: this.homepageMessageForm });
 
     this.homepageMessageForm.valueChanges.subscribe(() => {
       this.formToSend.emit({ form: this.homepageMessageForm });
@@ -88,80 +93,74 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
   }
 
   public onAdd(): void {
-    console.log('add');
     this.messageTranslations = this.homepageMessageForm.get('messageTranslations').value;
 
+    let newId = 1;
+    const itemsLength = this.messageTranslations?.length;
+
+    if (itemsLength > 0) {
+      newId = this.messageTranslations[itemsLength - 1].id + 1;
+    }
+
     const emptyTranslation = {
-      id: this.messageTranslations?.length + 1,
+      id: newId,
+      index: itemsLength,
       language: '',
       title: '',
-      description: '',
-      isValid : false,
+      description: ''
     };
 
     this.messageTranslations.push(emptyTranslation);
-    this.messageTranslationValid = false;
-
-    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
-    this.homepageMessageForm.get('messageTranslationValid').setValue(this.messageTranslationValid);
   }
 
-
   public updateTranslation(data: { form: FormGroup }): void {
-    console.log('update');
-  
-    const idValue =  data.form.get('id')?.value;
-    const oldTranslations = [...this.homepageMessageForm.get('messageTranslations').value];
+    const idValue = data.form.get('id')?.value;
 
-    console.log(idValue);
-    console.log(oldTranslations);
+    this.messageTranslations = this.homepageMessageForm.get('messageTranslations').value;
 
-    const newTranslation = {
+    this.messageTranslations.filter(f => f.id === idValue).map(t => {
+      t.language = data.form.get('language')?.value;
+      t.title = data.form.get('portalTitle')?.value;
+      t.description = data.form.get('portalMessage')?.value;
+      return t;
+    });
+
+    const validationForm = {
       id: idValue,
-      language: data.form.get('language')?.value,
-      title: data.form.get('portalTitle')?.value,
-      description: data.form.get('portalMessage')?.value,
-      isValid : data.form.valid
+      isValid: data.form.valid
     };
 
-    const i = oldTranslations.findIndex((item: { id: any; }) => item.id === idValue);
-    console.log('index');
-    console.log(idValue);
-    if (i > -1) { oldTranslations[i] = newTranslation; } else { oldTranslations.push(newTranslation); }
+    const i = this.validTranslations.findIndex((item: { id: any; }) => item.id === idValue);
+    if (i > -1) { this.validTranslations[i] = validationForm; } else { this.validTranslations.push(validationForm); }
 
-    console.log(oldTranslations);
-    
-    this.homepageMessageForm.get('messageTranslations').setValue(oldTranslations);
-    this.homepageMessageForm.get('messageTranslationValid').setValue(data.form.valid);
+    this.checkValidation();
 
-    console.log(this.homepageMessageForm.get('messageTranslations').value);
+    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
   }
 
   public removeTranslation(data: { form: FormGroup }): void {
+    const idValue = data.form.get('id')?.value;
 
-    console.log('form translation');
-    const idValue =  data.form.get('id')?.value;
-    let oldTranslations = [...this.homepageMessageForm.get('messageTranslations').value];
+    this.messageTranslations = this.homepageMessageForm.get('messageTranslations').value;
 
-    let isTranslationValid = true;
+    this.messageTranslations = this.messageTranslations.filter(f => f.id !== idValue).map((t, index) => {
+      t.index = index;
+      return t;
+    });
 
-    console.log(idValue);
-    console.log(oldTranslations);
+    this.validTranslations = [];
+    this.validTranslations = this.validTranslations.filter(f => f.id !== idValue);
 
-    oldTranslations = oldTranslations.filter(f => f.id !== idValue).map((t, index) => {
-        t.id = index + 1;
-        if (!t.isValid) {isTranslationValid = false; }
-        return t;
-      });
+    this.checkValidation();
 
-    this.messageTranslations = oldTranslations;
-    this.messageTranslationValid = isTranslationValid;
-    this.homepageMessageForm.get('messageTranslations').setValue(oldTranslations);
-    this.homepageMessageForm.get('messageTranslationValid').setValue(isTranslationValid);
+    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
+  }
 
-    console.log('new translations');
-    console.log(oldTranslations);
-    console.log('form translation');
-    console.log(this.homepageMessageForm.get('messageTranslations').value);
+  private checkValidation() {
+    if (this.validTranslations.some((v) => !v.isValid)) {
+      this.homepageMessageForm.get('isFormValid').setValue(false);
+    } else {
+      this.homepageMessageForm.get('isFormValid').setValue(true);
+    }
   }
 }
