@@ -46,7 +46,14 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
+
 const IMAGE_TYPE_PREFIX = 'image';
+
+interface CustomerInfo {
+   code: string;
+   name: string;
+   companyName: string;
+}
 
 @Component({
   selector: 'app-customer-create',
@@ -54,22 +61,27 @@ const IMAGE_TYPE_PREFIX = 'image';
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
+  @ViewChild('fileSearch', { static: false }) public fileSearch: any;
 
-  form: FormGroup;
-  stepIndex = 0;
-  customerInfo: { code: string, name: string, companyName: string } = { code: '', name: '', companyName: '' };
-  hasCustomGraphicIdentity = false;
-  hasDropZoneOver = false;
-  imageToUpload: File = null;
-  lastImageUploaded: File = null;
-  imageUrl: any;
-  lastUploadedImageUrl: any;
-  lastColors: {[key: string]: string};
-  hasError = true;
-  message: string;
-  creating = false;
-
-  hexPattern = /#([0-9A-Fa-f]{6})/;
+  public form: FormGroup;
+  public stepIndex = 0;
+  public hasCustomGraphicIdentity = false;
+  public hasDropZoneOver = false;
+  public imageToUpload: File = null;
+  public lastImageUploaded: File = null;
+  public imageUrl: any;
+  public lastUploadedImageUrl: any;
+  public lastColors: {[key: string]: string};
+  public hasError = true;
+  public message: string;
+  public creating = false;
+  public JSON = JSON;
+  public hexPattern = /#([0-9A-Fa-f]{6})/;
+  public customerInfo: CustomerInfo = {
+    code: null,
+    name: null,
+    companyName: null,
+  };
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -77,8 +89,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 4;
   private keyPressSubscription: Subscription;
-
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -97,7 +107,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       enabled: [true, Validators.required],
       code: [
         null,
-        [Validators.required, Validators.pattern(/^[0-9]{6,20}$/)],
+        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
         this.customerCreateValidators.uniqueCode(),
       ],
       name: [null, Validators.required],
@@ -108,13 +118,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         street: [null, Validators.required],
         zipCode: [null, Validators.required],
         city: [null, Validators.required],
-        country: ['FR', Validators.required],
+        country: ['FR', Validators.required]
       }),
+      internalCode: [null],
       language: ['FRENCH', Validators.required],
       emailDomains: [null, Validators.required],
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
-      themeColors: null,
+      themeColors: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ]),
@@ -127,10 +138,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
     const colors = this.themeService.getThemeColors();
     this.form.get('themeColors').setValue({
-      primary: colors['vitamui-primary'],
-      secondary: colors['vitamui-secondary']
+      'vitamui-primary': colors['vitamui-primary'],
+      'vitamui-secondary': colors['vitamui-secondary']
     });
-
     this.onChanges();
     this.form.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
       this.hasCustomGraphicIdentity = this.form.get('hasCustomGraphicIdentity').value;
@@ -143,8 +153,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       } else {
         this.lastColors = this.form.get('themeColors').value;
         this.form.get('themeColors').setValue({
-          primary: colors['vitamui-primary'],
-          secondary: colors['vitamui-secondary']
+          'vitamui-primary': colors['vitamui-primary'],
+          'vitamui-secondary': colors['vitamui-secondary']
         });
         this.lastUploadedImageUrl = this.imageUrl;
         this.imageToUpload = null;
@@ -164,14 +174,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     merge(
       this.form.get('code').valueChanges,
       this.form.get('name').valueChanges,
-      this.form.get('companyName').valueChanges
+      this.form.get('companyName').valueChanges,
     )
     .subscribe(() => {
       // reset object to trigger customerInfo input update in child component
       this.customerInfo = {
         code: this.form.get('code').value,
         name: this.form.get('name').value,
-        companyName: this.form.get('companyName').value
+        companyName: this.form.get('companyName').value,
       };
     });
   }
@@ -189,9 +199,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) { return; }
+    if (this.lastStepIsInvalid()) { return; }
     this.creating = true;
-
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
     this.customerService.create(customer, this.imageToUpload).subscribe(
@@ -207,8 +216,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   updateForCustomerModel(formValue: any): Customer {
     const { themeColors, ...customer } = formValue;
     const customerTheme =  {
-      'vitamui-primary': themeColors.primary,
-      'vitamui-secondary': themeColors.secondary
+      'vitamui-primary': themeColors['vitamui-primary'],
+      'vitamui-secondary': themeColors['vitamui-secondary']
     };
     if (customer.hasCustomGraphicIdentity) {
       customer.themeColors = customerTheme;
@@ -273,7 +282,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
       this.form.get('address.city').invalid || this.form.get('address.city').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending;
+      this.form.get('address.country').invalid || this.form.get('address.country').pending ||
+      this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
   }
 
   secondStepInvalid(): boolean {
@@ -284,11 +294,25 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   thirdStepValid(): boolean {
-    return this.form.get('themeColors').value.primary.match(this.hexPattern) &&
-        this.form.get('themeColors').value.secondary.match(this.hexPattern) &&
+    return this.isThemeColorsFormValid() &&
         (this.form.get('hasCustomGraphicIdentity').value === false ||
               (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
         );
+  }
+
+  lastStepIsInvalid(): boolean {
+      const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
+      return this.form.pending || this.form.invalid || invalid || this.creating;
+  }
+
+  private isThemeColorsFormValid(): boolean {
+    const value = this.form.get('themeColors').value;
+    for (const key of Object.keys(value)) {
+      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   get stepProgress() {

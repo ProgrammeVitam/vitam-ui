@@ -14,14 +14,3 @@
     keyboard_arrow_up
   </i>
 </div>
-
-<ng-template #stopConfirmDialog>
-  <vitamui-common-confirm-dialog
-    i18n="@@stopSubrogationConfirmDialogContent"
-    dialogTitle="Arrêter la subrogation ?" i18n-dialogTitle="@@stopSubrogationConfirmDialogTitle"
-    confirmLabel="Arrêter" i18n-confirmLabel="@@stopSubrogationConfirmDialogConfirmLabel"
-    cancelLabel="Annuler" i18n-cancelLabel="@@stopSubrogationConfirmDialogCancelLabel"
-  >
-    Êtes vous sûr de vouloir arrêter la subrogation de l'utilisateur {{ authService?.user?.lastname }} {{ authService?.user?.firstname }} ?
-  </vitamui-common-confirm-dialog>
-</ng-template>

@@ -4,8 +4,6 @@
 @import '~ui-frontend-common/sass/icons/vitamui-icons.css';
 @import '~ui-frontend-common/sass/theme';
 
-@import 'login';
-
 @import '~bootstrap/scss/bootstrap-grid';
 
 body {
@@ -14,26 +12,7 @@ body {
     background: $pale-grey;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-.background {
-    position: absolute;
-    width: 100%;
-    height: 390px;
-    z-index: -1;
-}
-
-.primary {
-    color: var(--vitamui-primary);
-}
-
 h2 {
     color: $charcoal-grey;
     font-weight: 500;
-}
-
-.material-icons {
-    vertical-align: middle;
 }

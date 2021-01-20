@@ -70,8 +70,11 @@ public class OwnerDto extends CustomerIdDto {
 
     private AddressDto address;
 
+    private String internalCode;
+
     private boolean readonly;
 
     // no validations for identifier. Because during the creation step, the identifier is set by the backend.
     private String identifier;
+
 }

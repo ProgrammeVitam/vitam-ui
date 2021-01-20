@@ -130,5 +130,9 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
 
     private Address address = new Address();
 
+    private String internalCode;
+
     private String siteCode;
+
+    private Analytics analytics = new Analytics();
 }

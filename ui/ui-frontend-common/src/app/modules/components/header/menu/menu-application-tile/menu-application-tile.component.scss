@@ -1,0 +1,24 @@
+@import '../../../../../../sass/variables/colors';
+:host {
+    color: #747272!important;
+
+    .app-icon {
+        border-radius: 50%;
+        border: 2px solid var(--vitamui-primary);
+        width: 35px;
+        height: 35px;
+        padding: 5px;
+        box-shadow: 0px 0px 2px #888;
+    }
+
+    .tooltip {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mandatory {
+        max-width: 100%;
+    }
+}

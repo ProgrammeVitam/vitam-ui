@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import * as lodash from 'lodash';
+import { uniqueId } from 'lodash-es';
 import * as moment_ from 'moment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
@@ -97,7 +97,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
     }
     let requestId = request.headers.get('X-Request-Id');
     if (!requestId) {
-      requestId = lodash.uniqueId('' + Math.floor(Math.random() * Math.floor(moment().unix())));
+      requestId = uniqueId('' + Math.floor(Math.random() * Math.floor(moment().unix())));
     }
     let applicationId = request.headers.get('X-Application-Id');
     if (!applicationId) {

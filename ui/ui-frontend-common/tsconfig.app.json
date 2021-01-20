@@ -4,12 +4,7 @@
     "outDir": "./out-tsc/app",
     "module": "es2015",
     "types": [],
-    "baseUrl": "./",
-    "paths": {
-      "lodash": [
-        "node_modules/lodash/lodash.min.js"
-      ]
-    }
+    "baseUrl": "./"
   },
   "include": [
     "src/**/*.ts"

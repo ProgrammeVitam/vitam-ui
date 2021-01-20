@@ -31,11 +31,16 @@ ui-identity:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
+    admin-identity: "https://dev.vitamui.com:4201/"
+    identity: "https://dev.vitamui.com:4201/"
+  customer:
+    technical-referent-email: contact@programmevitam.fr
+    website-url: http://www.programmevitam.fr
   portal-categories:
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 4
+    users:
+      title: "Utilisateur"
+      displayTitle: false
+      order: 1
     administrators:
       title: "Management"
       displayTitle: true
@@ -45,21 +50,21 @@ ui-identity:
       displayTitle: true
       order: 3
     referential:
-      title: Référentiels
+      title: "Référentiels"
+      displayTitle: true
+      order: 4
+    opaudit:
+      title: "Audits et opérations"
       displayTitle: true
       order: 5
-    opaudit:
-      title: Audits et Opérations
+    techadmin:
+      title: "Administration technique"
       displayTitle: true
       order: 6
-    techadmin:
-      title: Administration Technique
+    ingests:
+      title: "Suivi des Versements"
       displayTitle: true
       order: 7
-    users:
-      title: ""
-      displayTitle: false
-      order: 1
 
 server:
   host: dev.vitamui.com

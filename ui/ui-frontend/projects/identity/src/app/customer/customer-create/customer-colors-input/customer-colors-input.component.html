@@ -1,34 +1,7 @@
 <div [formGroup]="colorForm">
-  <p>
-    <vitamui-common-input [colorPicker]="colors['vitamui-primary']" (colorPickerChange)="handlePicker('primary', $event)"
-                          (colorPickerOpen)="onPickerOpen()"
-                          [disabled]="disabled" (keyup)="forceHex()"
-                          cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
-                          cpPosition="top" class="field-primary-color" formControlName="primary" maxlength="7"
-                          placeholder="Couleur principale"
-                          i18n-placeholder="Customer primary theme color input placeholder@@customerUpdatePrimaryColorThemeInputPlaceholder">
-    </vitamui-common-input>
-    <span class="field-color-preview primary" (click)="openPicker(0)"></span>
-    <span class="field-color-preview primary-light"></span>
-    <span class="field-color-preview primary-light-20"></span>
-  </p>
-  <p>
-    <vitamui-common-input [colorPicker]="colors['vitamui-secondary']" (colorPickerChange)="handlePicker('secondary', $event)"
-                          (colorPickerOpen)="onPickerOpen()"
-                          [disabled]="disabled" (keyup)="forceHex()"
-                          cpAlphaChannel="disabled" cpDisableInput="true" cpOutputFormat="hex" cpFallbackColor="#000"
-                          cpPosition="top" class="field-secondary-color" formControlName="secondary" maxlength="7"
-                          placeholder="Couleur secondaire"
-                          i18n-placeholder="Customer secondary theme color input placeholder@@customerUpdateSecondaryColorThemeInputPlaceholder">
-
-    </vitamui-common-input>
-    <span class="field-color-preview secondary" (click)="openPicker(1)"></span>
-    <span class="field-color-preview secondary-light"></span>
-    <span class="field-color-preview secondary-light-8"></span>
-    <span class="field-color-preview secondary-dark-5"></span>
-  </p>
-</div>
-<div class="vitamui-input-errors">
-  <div *ngIf="colorForm?.get('primary')?.hasError('pattern')" i18n="Wrong format (primarycolor)@@colorInputErrorFormat">Format couleur primaire incorrect</div>
-  <div *ngIf="colorForm?.get('secondary')?.hasError('pattern')" i18n="Wrong format (primarycolor)@@colorInputErrorFormat">Format couleur secondaire incorrect</div>
+  <app-input-color *ngFor="let color of baseColorsNames"
+                   [colorVariationsClassNames]="this.variations[color]"
+                   [formControlName]="color"
+                   [placeholder]="baseColors[color]">
+  </app-input-color>
 </div>

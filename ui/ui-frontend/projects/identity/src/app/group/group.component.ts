@@ -51,6 +51,8 @@ export class GroupComponent extends SidenavPage<Group> implements OnInit {
 
   groups: Group[];
 
+  search: string;
+
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
   constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
@@ -70,5 +72,10 @@ export class GroupComponent extends SidenavPage<Group> implements OnInit {
   private refreshList() {
     if (!this.groupListComponent) { return; }
     this.groupListComponent.search();
+  }
+
+  onSearchSubmit(search: string) {
+      this.search = search;
+
   }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -31,6 +32,8 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 
 /**
  *
@@ -65,8 +68,6 @@ public final class IamServerUtilsTest {
     public static final String PROFILE_NAME = "profileName";
 
     public static final String PROFILE_IDENTIFIER = "1000";
-
-    public static final String APPLICATION_ID = "applicationId";
 
     public static final String APPLICATION_IDENTIFIER = "applicationIdentifier";
 

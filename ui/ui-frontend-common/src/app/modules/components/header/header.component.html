@@ -1,0 +1,57 @@
+<mat-toolbar color="primary" class="header">
+  <a href="{{portalUrl}}" >
+    <img class="header-logo" alt="header logo" src="../../../../assets/logo.svg">
+  </a>
+
+  <div class="spacer"></div>
+
+  <vitamui-common-select-language class="mx-3"></vitamui-common-select-language>
+
+  <div class="selection-component">
+    <vitamui-common-select-tenant
+      *ngIf="hasTenantSelection"
+      class="mx-4"
+      [tenants]="tenants"
+      [selectedTenant]="selectedTenant"
+      (tenantSelected)="updateTenant($event)">
+    </vitamui-common-select-tenant>
+
+    <vitamui-common-select-customer
+      *ngIf="hasCustomerSelection"
+      class="mx-4"
+      [customers]="customers"
+      [selectedCustomer]="selectedCustomer"
+      (customerSelected)="updateCustomer($event)">
+    </vitamui-common-select-customer>
+
+    <div class="separator"></div>
+  </div>
+
+  <div class="mx-3 d-flex account" [matMenuTriggerFor]="accountMenu">
+    <div class="person-icon">
+      <mat-icon>person</mat-icon>
+    </div>
+
+    <div class="account-info">
+      <span class="d-block username">{{currentUser?.firstname}}</span>
+      <span class="d-block username">{{currentUser?.lastname}}</span>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-center p-0">
+      <mat-icon>arrow_drop_down</mat-icon>
+    </div>
+    <div class="account-menu">
+      <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
+        <ng-container>
+          <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{'HEADER.MY_ACCOUNT' | translate}}</button>
+          <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!currentUser?.superUser">{{'HEADER.NAVIGATE_AS' | translate}}</button>
+          <button mat-menu-item (click)="logout()">{{'HEADER.LOGOUT' | translate}}</button>
+        </ng-container>
+      </mat-menu>
+    </div>
+  </div>
+
+  <button mat-mini-fab class="apps-button" (click)="openMenu()">
+    <i class="vitamui-icon vitamui-icon-apps-colored"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span></i>
+  </button>
+</mat-toolbar>

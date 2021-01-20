@@ -120,8 +120,8 @@ export class LogbookService {
       }));
   }
 
-  listOperationsBySelectQuery(query: VitamSelectQuery, tenantIdentifier: number): Observable<Event[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  listOperationsBySelectQuery(query: VitamSelectQuery, accessContract: string, tenantIdentifier: number): Observable<Event[]> {
+    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
 
     return this.logbookApi.findOperationsBySelectQuery(query, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
