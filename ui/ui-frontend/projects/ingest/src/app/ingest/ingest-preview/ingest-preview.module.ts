@@ -43,10 +43,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule, MatSnackBarModule, MatDialogModule,
   MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule } from '@angular/material';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
+import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
+import { EventDisplayHelperService } from './event-display-helper.service';
+import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
 
 
 @NgModule({
-  declarations: [IngestPreviewComponent, IngestInformationTabComponent],
+  declarations: [
+    IngestPreviewComponent,
+    IngestInformationTabComponent,
+    IngestEventDetailComponent,
+    EventDisplayComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -64,7 +71,12 @@ import { IngestInformationTabComponent } from './ingest-information-tab/ingest-i
   ],
   exports: [
     IngestPreviewComponent,
-    IngestInformationTabComponent
+    IngestInformationTabComponent,
+    IngestEventDetailComponent,
+    EventDisplayComponent
+  ],
+  providers: [
+    EventDisplayHelperService
   ]
 })
 export class IngestPreviewModule { }

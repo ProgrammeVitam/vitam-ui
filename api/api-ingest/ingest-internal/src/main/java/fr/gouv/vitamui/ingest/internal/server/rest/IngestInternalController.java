@@ -88,6 +88,12 @@ public class IngestInternalController {
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
+    @GetMapping(CommonConstants.PATH_ID)
+    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
+        LOGGER.debug("get Ingest Entities for id={} ", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestInternalService.getOne(vitamContext, id);
+    }
 
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RequestResponseOK upload(
@@ -99,7 +105,6 @@ public class IngestInternalController {
         SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }
-
 
     @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)

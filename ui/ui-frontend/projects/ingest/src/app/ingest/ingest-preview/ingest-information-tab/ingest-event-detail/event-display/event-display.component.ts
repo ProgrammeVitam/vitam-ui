@@ -34,54 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IngestService } from '../../ingest.service';
+import {Component, Input, OnInit} from '@angular/core';
+import { Event } from '../../../event';
 
 @Component({
-  selector: 'app-ingest-information-tab',
-  templateUrl: './ingest-information-tab.component.html',
-  styleUrls: ['./ingest-information-tab.component.scss']
+  selector: 'app-vitam-event-display',
+  templateUrl: './event-display.component.html',
+  styleUrls: ['./event-display.component.scss']
 })
-export class IngestInformationTabComponent implements OnInit, OnChanges {
-  @Input()
-  ingest: any;
+export class EventDisplayComponent implements OnInit {
 
-  ingestDetails: any;
-  constructor(private ingestService: IngestService) { }
+  @Input() event: Event;
+
+  public ingestEventRowStyle = '';
+  public showEvDetData = false;
+
+  constructor() { }
 
   ngOnInit() {
-    this.getIngestDetails(this.ingest);
+    this.init();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.ingest) {
-      this.getIngestDetails(changes.ingest.currentValue);
+  init() {
+    if (this.event.eventData && this.event.eventData.evType.toUpperCase().indexOf('.STARTED') === -1) {
+      this.setStepColorClass(this.event.eventData.outcome);
     }
   }
 
-  getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
-      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
-        this.ingestDetails = data;
-      });
-    } else {
-      this.ingestDetails = null;
+  private setStepColorClass(stepStatus: string) {
+    console.log('stepStatus', stepStatus);
+    switch (stepStatus.toUpperCase()) {
+      case 'KO':
+      case 'FATAL':
+        this.ingestEventRowStyle = 'errorRow';
+        break;
+      case 'WARNING':
+        this.ingestEventRowStyle = 'warningRow';
+        break;
+      default:
     }
-  }
-
-  ingestMessage(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessg :
-      ingest.outMessg;
-  }
-
-  ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].evDateTime :
-      ingest.evDateTime;
-  }
-
-  ingestStatus(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
   }
 }

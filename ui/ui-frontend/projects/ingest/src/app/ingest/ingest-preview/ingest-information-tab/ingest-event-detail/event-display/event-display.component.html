@@ -1,0 +1,13 @@
+<div class="col-g-1 ingestDetails">
+  <div style="height: 100%; background-color: white"></div>
+  <div class="history-event-title">
+    <vitamui-common-event-type-label [key]="event.eventData.evType"></vitamui-common-event-type-label>
+  </div>
+  <div class="no-padding" [ngClass]="[ingestEventRowStyle]">
+      {{event.eventData.outMessg}}
+  </div>
+</div>
+
+<div *ngFor="let task of event.subEvents" class="eventChild">
+  <app-vitam-event-display [event]="task"></app-vitam-event-display>
+</div>

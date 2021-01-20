@@ -34,54 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IngestService } from '../../ingest.service';
+import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
-@Component({
-  selector: 'app-ingest-information-tab',
-  templateUrl: './ingest-information-tab.component.html',
-  styleUrls: ['./ingest-information-tab.component.scss']
-})
-export class IngestInformationTabComponent implements OnInit, OnChanges {
-  @Input()
-  ingest: any;
+import {EventDisplayComponent} from './event-display.component';
+import { IngestService } from '../../../../ingest.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-  ingestDetails: any;
-  constructor(private ingestService: IngestService) { }
+describe('EventDisplayComponent', () => {
+  let component: EventDisplayComponent;
+  let fixture: ComponentFixture<EventDisplayComponent>;
 
-  ngOnInit() {
-    this.getIngestDetails(this.ingest);
-  }
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [EventDisplayComponent],
+      imports: [
+      ],
+      providers: [{ provide: IngestService, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.ingest) {
-      this.getIngestDetails(changes.ingest.currentValue);
-    }
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EventDisplayComponent);
+    component = fixture.componentInstance;
+    component.event = {
+      eventData: {
+        evId: 'aeeaaaaaaoem5l4iaa3lialtbt4j6yaaaaaq',
+        evType: 'STEP_FAKE_INGEST.STARTED',
+        outcome: 'OK',
+        outMessg: 'Success ingest'
+      },
+      subEvents: [] };
 
-  getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
-      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
-        this.ingestDetails = data;
-      });
-    } else {
-      this.ingestDetails = null;
-    }
-  }
+    fixture.detectChanges();
+  });
 
-  ingestMessage(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessg :
-      ingest.outMessg;
-  }
-
-  ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].evDateTime :
-      ingest.evDateTime;
-  }
-
-  ingestStatus(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

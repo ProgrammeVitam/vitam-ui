@@ -15,9 +15,10 @@
         <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
           <button mat-menu-item i18n="Ingest Download Mnifest@@ingestPreviewDownloadManifest"
             (click)="downloadManifest()" *ngIf="ingestStatus(ingest) !== 'KO'">Télécharger le manifest</button>
-          <button mat-menu-item i18n="Ingest Download ATR@@ingestPreviewDownloadATR" (click)="downloadATR()">Télécharger
-            l'ATR</button>
-            <button mat-menu-item i18n="Ingest Generate DocX@@ingestPreviewGenerateDocX" (click)="generateDocX()" *ngIf="ingestStatus(ingest) === 'OK' || ingestStatus(ingest) === 'WARNING'">Télécharger le bordereau de versement</button>
+          <button mat-menu-item i18n="Ingest Download ATR@@ingestPreviewDownloadATR"
+            (click)="downloadATR()">Télécharger l'ATR</button>
+          <button mat-menu-item i18n="Ingest Generate DocX@@ingestPreviewGenerateDocX"
+            (click)="generateDocX()" *ngIf="ingestStatus(ingest) === 'OK' || ingestStatus(ingest) === 'WARNING'">Télécharger le bordereau de versement</button>
         </mat-menu>
       </ng-container>
 

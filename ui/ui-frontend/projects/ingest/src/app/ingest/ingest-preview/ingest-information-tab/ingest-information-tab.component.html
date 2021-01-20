@@ -54,11 +54,18 @@
 
 <div class="row">
   <div class="col-12 mb-3">
-    <label>Informations complémentaires sur l’opération</label>
-    <div> {{ ingest?.evDetData | json }}</div>
+    <label>Message</label>
+    <div class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
+      <div *ngSwitchCase="'OK'" class="text-green">{{ ingestMessage(ingest) }}</div>
+      <div *ngSwitchCase="'WARNING'" class="text-orange">{{ ingestMessage(ingest) }}</div>
+      <div *ngSwitchCase="'KO'" class="text-red">{{ ingestMessage(ingest) }}</div>
+      <div *ngSwitchCase="'FATAL'" class="text-red">{{ ingestMessage(ingest) }}</div>
+    </div>
   </div>
   <div class="col-12 mb-3">
-    <label>Message</label>
-    <div>{{ ingestMessage(ingest) }}</div>
+    <label>Informations complémentaires sur l’opération</label>
+    <div *ngIf="ingestDetails">
+      <app-ingest-event-detail [ingest]="ingestDetails"></app-ingest-event-detail>
+    </div>
   </div>
 </div>
