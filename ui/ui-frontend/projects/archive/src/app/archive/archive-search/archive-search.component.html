@@ -197,7 +197,7 @@
             </vitamui-common-editable-input>
         </div>
         <div class="col-4 form-control">
-          <vitamui-common-editable-input formControlName="otherCriteriaValue"    *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT') "  [validator]="form?.get('otherCriteriaValue')?.validator"
+          <vitamui-common-editable-input formControlName="otherCriteriaValue"    *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT' || otherCriteriaValueType === 'LONG' || otherCriteriaValueType === 'DOUBLE' || otherCriteriaValueType === 'BOOLEAN') "  [validator]="form?.get('otherCriteriaValue')?.validator"
           label="Valeur du critère : {{selectedValueOntolonogy}}">
           </vitamui-common-editable-input>
 
