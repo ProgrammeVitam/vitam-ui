@@ -206,7 +206,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   firstStepInvalid(): boolean {
     return this.form.pending ||
-      this.form.get('email').invalid ||
+      this.form.get('email').invalid || this.form.get('email').pending ||
       this.form.get('firstname').invalid ||
       this.form.get('lastname').invalid ||
       this.form.get('domain').invalid ||

@@ -32,7 +32,7 @@
         <form [formGroup]="formEmail">
           <div class="d-flex">
             <vitamui-common-input class="col-6 p-0" formControlName="emailFirstPart" maxlength="50" required
-              placeholder="Adresse e-mail" [class.ng-invalid]="form?.get('email')?.errors"
+              placeholder="Adresse e-mail" [class.ng-pending]="form?.get('email')?.pending" [class.ng-invalid]="form?.get('email')?.errors"
               i18n-placeholder="user create email@@userCreateEmail">
               <ng-container *ngIf="formEmail.get('emailFirstPart')?.touched">
                 <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('required')"
