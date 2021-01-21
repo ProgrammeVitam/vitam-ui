@@ -6,9 +6,9 @@
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Create customer title@@customerCreateTitle1">Création d'un client</div>
+        <div class="text large bold" i18n="Create customer title@@customerCreateTitle1">Création d'une organisation</div>
 
-        <vitamui-common-input class="col-6 pl-0" formControlName="code" required placeholder="Code client (4 chiffres)"
+        <vitamui-common-input class="col-6 pl-0" formControlName="code" required placeholder="Code organisation (4 chiffres)"
           i18n-placeholder="Customer code@@customerCreateCustomerCodeInputPlaceholder">
 
           <ng-container *ngIf="form.get('code')?.touched">
@@ -23,7 +23,7 @@
         </vitamui-common-input>
 
         <div class="d-flex">
-          <vitamui-common-input class="col-6 pl-0" formControlName="name" maxlength="100" required placeholder="Client"
+          <vitamui-common-input class="col-6 pl-0" formControlName="name" maxlength="100" required placeholder="Organisation"
             i18n-placeholder="Customer name input placeholder@@customerCreateNameInputPlaceholder">
             <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
               i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
@@ -115,7 +115,7 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Customer access title@@customerCreateTitle2">Accès client</div>
+        <div class="text large bold" i18n="Customer access title@@customerCreateTitle2">Accès organisation</div>
 
         <div class="col-12 p-0 d-flex align-items-center">
           <div>
@@ -204,7 +204,7 @@
         <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
 
         <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
-          Ce propriétaire détiendra les éléments de preuve du client.
+          Ce propriétaire détiendra les éléments de preuve de l'organisation.
         </p>
       </div>
 

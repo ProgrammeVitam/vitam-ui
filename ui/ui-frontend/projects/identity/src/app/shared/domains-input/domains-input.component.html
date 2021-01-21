@@ -13,7 +13,7 @@
 <div class="vitamui-input-errors">
   <div *ngIf="control?.hasError('pattern')" i18n="Wrong format (domain.xyz)@@domainInputErrorFormat">Format incorrect (domaine.xyz)</div>
   <div *ngIf="domainExists" i18n="Domain already entered@@domainInputErrorDomainExists">Domaine déjà saisi</div>
-  <div *ngIf="!domainExists && control?.hasError('uniqueDomain')" i18n="Domain used by another customer@@domainInputErrorUniqueDomain">Domaine utilisé par un autre client</div>
+  <div *ngIf="!domainExists && control?.hasError('uniqueDomain')" i18n="Domain used by another customer@@domainInputErrorUniqueDomain">Domaine utilisé par une autre organisation</div>
 </div>
 
 <div class="vitamui-chip-list ml-4">

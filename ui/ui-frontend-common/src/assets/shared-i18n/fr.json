@@ -39,8 +39,8 @@
         "DIALOG_BUTTON_LABEL" : "Accéder à "
     },
     "SELECT-CUSTOMER": {
-        "SELECTED": "Client sélectionné",
-        "SELECT" : "Sélectionner un client"
+        "SELECTED": "Organisation sélectionnée",
+        "SELECT" : "Sélectionner une organisation"
     },
     "SELECT-LANGUAGE": {
         "LANGUAGE": "Langue",

@@ -3,15 +3,15 @@
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
 
     <ng-container *ngSwitchCase="'customerCreate'" i18n="@@notificationCustomerCreate">
-      <i class="vitamui-icon vitamui-icon-bank"></i> Le client {{ data?.code }} a bien été créé
+      <i class="vitamui-icon vitamui-icon-bank"></i> L'organisation {{ data?.code }} a bien été créé
     </ng-container>
 
     <ng-container *ngSwitchCase="'customerCreateError'" i18n="@@notificationCustomerCreateError">
-      <i class="vitamui-icon vitamui-icon-danger"></i> Le client n'a pas pu être créé, veuillez contacter un administrateur
+      <i class="vitamui-icon vitamui-icon-danger"></i> L'organisation n'a pas pu être créé, veuillez contacter un administrateur
     </ng-container>
 
     <ng-container *ngSwitchCase="'customerUpdate'" i18n="@@notificationCustomerUpdate">
-      <i class="vitamui-icon vitamui-icon-bank"></i> Le client {{ data?.code }} a bien été modifié
+      <i class="vitamui-icon vitamui-icon-bank"></i> L'organisation {{ data?.code }} a bien été modifié
     </ng-container>
 
     <ng-container *ngSwitchCase="'providerCreate'" i18n="@@notificationProviderCreate">
