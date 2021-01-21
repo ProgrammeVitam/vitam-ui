@@ -31,8 +31,8 @@
 
     </div>
     
-    <div *ngFor="let messageTranslation of homepageMessageForm.get('messageTranslations').value">
-      <app-homepage-message-translation [messageTranslation]="messageTranslation"
+    <div *ngFor="let messageTranslation of homepageMessageForm.get('messageTranslations').value; let index = index">
+      <app-homepage-message-translation [messageTranslation]="messageTranslation" [index]="index + 1"
         (formChange)="updateTranslation($event)" (formRemove)="removeTranslation($event)">
       </app-homepage-message-translation>
     </div>
