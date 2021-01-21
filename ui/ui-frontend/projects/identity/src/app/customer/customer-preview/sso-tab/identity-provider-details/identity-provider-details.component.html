@@ -93,4 +93,20 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-6 form-control">
+      <vitamui-common-editable-toggle-group
+      formControlName="authnRequestBinding"
+      label="Authentication Request Binding" i18n-label="AuthenticationRequestBinding@@idpFormLabelAuthenticationRequestBinding"
+      [validator]="form?.get('authnRequestBinding')?.validator"
+      [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
+    >
+      <vitamui-common-editable-button-toggle value="GET" content="GET" i18n-content="Authentication Request Binding Get button@@idpAuthenticationRequestBindingGetdButton"></vitamui-common-editable-button-toggle>
+      <vitamui-common-editable-button-toggle value="POST" content="POST" i18n-content="Authentication Request Binding Post button@@idpAuthenticationRequestBindingPostdButton"></vitamui-common-editable-button-toggle>
+      
+      <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+    </vitamui-common-editable-toggle-group>
+    </div>
+  </div>
+
 </form>

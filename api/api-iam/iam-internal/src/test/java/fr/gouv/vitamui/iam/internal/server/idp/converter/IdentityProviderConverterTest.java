@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -39,7 +40,7 @@ public class IdentityProviderConverterTest {
         idp.setSpMetadata("spMetadata");
         idp.setTechnicalName("technicalname");
         idp.setMailAttribute("mailAttribute");
-
+        idp.setAuthnRequestBinding(AuthnRequestBindingEnum.POST);
         IdentityProviderDto res = converter.convertEntityToDto(idp);
         assertThat(res).isEqualToIgnoringGivenFields(idp);
     }
@@ -62,7 +63,7 @@ public class IdentityProviderConverterTest {
         idp.setSpMetadata("spMetadata");
         idp.setTechnicalName("technicalname");
         idp.setMailAttribute("mailAttribute");
-
+        idp.setAuthnRequestBinding(AuthnRequestBindingEnum.POST);
         IdentityProvider res = converter.convertDtoToEntity(idp);
         assertThat(res).isEqualToIgnoringGivenFields(idp, "spMetadata");
     }
@@ -85,6 +86,7 @@ public class IdentityProviderConverterTest {
         idp.setSpMetadata("spMetadata");
         idp.setTechnicalName("technicalname");
         idp.setMailAttribute("mailAttribute");
+        idp.setAuthnRequestBinding(AuthnRequestBindingEnum.POST);
 
         String json = converter.convertToLogbook(idp);
 
@@ -96,6 +98,7 @@ public class IdentityProviderConverterTest {
         assertThat(jsonNode.get(IdentityProviderConverter.PATTERNS_KEY)).isNotNull();
         assertThat(jsonNode.get(IdentityProviderConverter.MAXIMUM_AUTHENTICATION_LIFE_TIME)).isNotNull();
         assertThat(jsonNode.get(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY)).isNotNull();
+        assertThat(jsonNode.get(IdentityProviderConverter.AUTHENTICATION_REQUEST_BINDING_KEY)).isNotNull();
     }
 
 }

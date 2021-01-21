@@ -39,7 +39,9 @@ package fr.gouv.vitamui.iam.common.utils;
 import java.util.Base64;
 import java.util.Optional;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.lang3.StringUtils;
+import org.opensaml.saml.common.xml.SAMLConstants;
 import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.util.CommonHelper;
@@ -94,6 +96,12 @@ public class Saml2ClientBuilder {
                 final Integer maximumAuthenticationLifetime = provider.getMaximumAuthenticationLifetime();
                 if (maximumAuthenticationLifetime != null) {
                     saml2Config.setMaximumAuthenticationLifetime(maximumAuthenticationLifetime);
+                }
+
+                if (provider.getAuthnRequestBinding() == AuthnRequestBindingEnum.GET) {
+                    saml2Config.setAuthnRequestBindingType(SAMLConstants.SAML2_REDIRECT_BINDING_URI);
+                } else {
+                    saml2Config.setAuthnRequestBindingType(SAMLConstants.SAML2_POST_BINDING_URI);
                 }
 
                 final SAML2Client saml2Client = new SAML2Client(saml2Config);

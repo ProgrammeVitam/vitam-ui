@@ -41,6 +41,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.hibernate.validator.constraints.Length;
 
 import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
@@ -99,4 +100,6 @@ public class IdentityProviderDto extends CustomerIdDto {
     private boolean readonly;
 
     private String mailAttribute;
+
+    private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 }

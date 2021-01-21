@@ -61,7 +61,8 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
       keystorePassword: identityProvider.keystorePassword,
       patterns: identityProvider.patterns,
       enabled: identityProvider.enabled,
-      mailAttribute: identityProvider.mailAttribute
+      mailAttribute: identityProvider.mailAttribute,
+      authnRequestBinding: identityProvider.authnRequestBinding
     }));
 
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });

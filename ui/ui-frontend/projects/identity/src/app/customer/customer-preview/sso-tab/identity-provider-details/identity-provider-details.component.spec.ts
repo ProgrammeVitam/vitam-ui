@@ -41,7 +41,7 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-import { IdentityProvider } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details.component';
@@ -108,7 +108,8 @@ class TestHostComponent {
     keystore: null,
     idpMetadata: null,
     readonly : false,
-    mailAttribute: 'mailAttribute'
+    mailAttribute: 'mailAttribute',
+    authnRequestBinding: AuthnRequestBindingEnum.POST
   };
   domains = [
     { value: 'test1.com', disabled: true },
@@ -164,7 +165,8 @@ describe('IdentityProviderDetailsComponent', () => {
         enabled: testhost.provider.enabled,
         name: testhost.provider.name,
         patterns: testhost.provider.patterns,
-        mailAttribute: testhost.provider.mailAttribute
+        mailAttribute: testhost.provider.mailAttribute,
+        authnRequestBinding: testhost.provider.authnRequestBinding,
       });
     });
 
@@ -186,6 +188,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('internal')).not.toBeNull();
       expect(testhost.component.form.get('patterns')).not.toBeNull();
       expect(testhost.component.form.get('mailAttribute')).not.toBeNull();
+      expect(testhost.component.form.get('authnRequestBinding')).not.toBeNull();
     });
 
     it('should have the required validator', () => {
@@ -196,7 +199,8 @@ describe('IdentityProviderDetailsComponent', () => {
         name: null,
         internal: null,
         patterns: null,
-        mailAttribute: null
+        mailAttribute: null,
+        authnRequestBinding: null
       });
       expect(testhost.component.form.get('id').valid).toBeFalsy('id');
       expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
@@ -205,6 +209,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('internal').valid).toBeFalsy('internal');
       expect(testhost.component.form.get('patterns').valid).toBeFalsy('patterns');
       expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
+      expect(testhost.component.form.get('authnRequestBinding').valid).toBeFalsy('authnRequestBinding');
     });
 
     it('should be valid and call patch()', waitForAsync(() => {
@@ -217,7 +222,8 @@ describe('IdentityProviderDetailsComponent', () => {
         name: testhost.provider.name,
         internal: testhost.provider.internal,
         patterns: testhost.provider.patterns,
-        mailAttribute: testhost.provider.mailAttribute
+        mailAttribute: testhost.provider.mailAttribute,
+        authnRequestBinding: testhost.provider.authnRequestBinding
       });
       expect(testhost.component.form.valid).toBeTruthy();
 

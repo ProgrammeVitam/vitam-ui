@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -265,6 +266,12 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                 case "mailAttribute" :
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
                     entity.setMailAttribute(CastUtils.toString(entry.getValue()));
+                    break;
+                case "authnRequestBinding" :
+                    final String authnRequestBindingAsString = CastUtils.toString(entry.getValue());
+                    final AuthnRequestBindingEnum newAuthnRequestBinding = EnumUtils.stringToEnum(AuthnRequestBindingEnum.class, authnRequestBindingAsString);
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTHENTICATION_REQUEST_BINDING_KEY, entity.getAuthnRequestBinding(), newAuthnRequestBinding));
+                    entity.setAuthnRequestBinding(newAuthnRequestBinding);
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");
