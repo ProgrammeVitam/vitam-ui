@@ -65,10 +65,6 @@ ui-referential:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
-  assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
-  theme-colors:
-    vitamui-primary: "{{ vitamui_platform_informations.theme_colors.vitamui_primary }}"
-    vitamui-secondary: "{{ vitamui_platform_informations.theme_colors.vitamui_secondary }}"
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
