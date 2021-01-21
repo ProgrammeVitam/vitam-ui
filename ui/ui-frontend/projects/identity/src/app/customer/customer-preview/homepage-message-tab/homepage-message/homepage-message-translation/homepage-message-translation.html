@@ -2,7 +2,7 @@
     <div class="col-12 d-flex align-items-center">
         <label for="language" class="mr-4 mb-0">
             <div class="text medium bold">
-                {{ "COMMON.LANGUAGE.TITLE" | translate }} {{form.get('index').value + 1}}
+                {{ "COMMON.LANGUAGE.TITLE" | translate }} {{index}}
                 <span class="text normal danger">*</span>
             </div>
            
@@ -33,7 +33,7 @@
    
     <div class="d-flex flex-column">
         <vitamui-common-input class="pb-2" formControlName="portalTitle" required
-            placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate}} {{form.get('index').value + 1}}">
+            placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate}} {{index}}">
             <vitamui-common-input-error *ngIf="
             form.get('portalTitle')?.touched &&
             !!form.get('portalTitle')?.errors?.required
@@ -42,7 +42,7 @@
         </vitamui-common-input>
 
         <vitamui-common-textarea class="pb-2" formControlName="portalMessage" required
-            placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate}} {{form.get('index').value + 1}}"
+            placeholder="{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate}} {{index}}"
             [maxlength]="500">
             <vitamui-common-input-error *ngIf="
         form.get('portalMessage')?.touched &&

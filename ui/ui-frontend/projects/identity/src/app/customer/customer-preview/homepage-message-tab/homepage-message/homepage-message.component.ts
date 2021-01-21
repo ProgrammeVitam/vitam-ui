@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -15,6 +16,7 @@ import { Customer, Theme, ThemeService } from 'ui-frontend-common';
   selector: 'app-homepage-message',
   templateUrl: './homepage-message.component.html',
   styleUrls: ['./homepage-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy {
   private destroy = new Subject();
@@ -38,7 +40,6 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
   private messageTranslations: {
     id: number;
-    index: number;
     language: string;
     title: string;
     description: string;
@@ -65,7 +66,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
       portalTitle: ['', [Validators.required]],
       portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
       messageTranslations: [null],
-      isFormValid: true,
+      isFormValid: null,
     });
 
     this.portalMessage =
@@ -80,6 +81,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     this.homepageMessageForm.get('portalTitle').setValue(this.portalTitle);
     this.homepageMessageForm.get('portalMessage').setValue(this.portalMessage);
     this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
+    this.homepageMessageForm.get('isFormValid').setValue(true);
 
     if (this.customer && this.customer.id) {
       this.homepageMessageForm.get('id').setValue(this.customer.id);
@@ -104,7 +106,6 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
     const emptyTranslation = {
       id: newId,
-      index: itemsLength,
       language: '',
       title: '',
       description: ''
@@ -116,7 +117,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
   public updateTranslation(data: { form: FormGroup }): void {
     const idValue = data.form.get('id')?.value;
 
-    this.messageTranslations = this.homepageMessageForm.get('messageTranslations').value;
+    this.messageTranslations = [...this.homepageMessageForm.get('messageTranslations').value];
 
     this.messageTranslations.filter(f => f.id === idValue).map(t => {
       t.language = data.form.get('language')?.value;
@@ -135,32 +136,26 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
     this.checkValidation();
 
-    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
+    this.homepageMessageForm.get('messageTranslations').patchValue(this.messageTranslations);
   }
 
   public removeTranslation(data: { form: FormGroup }): void {
     const idValue = data.form.get('id')?.value;
 
-    this.messageTranslations = this.homepageMessageForm.get('messageTranslations').value;
+    this.messageTranslations = [...this.homepageMessageForm.get('messageTranslations').value];
 
-    this.messageTranslations = this.messageTranslations.filter(f => f.id !== idValue).map((t, index) => {
-      t.index = index;
-      return t;
-    });
-
+    this.messageTranslations = this.messageTranslations.filter(f => f.id !== idValue);
     this.validTranslations = [];
     this.validTranslations = this.validTranslations.filter(f => f.id !== idValue);
 
-    this.checkValidation();
-
-    this.homepageMessageForm.get('messageTranslations').setValue(this.messageTranslations);
+    this.homepageMessageForm.get('messageTranslations').patchValue(this.messageTranslations);
   }
 
   private checkValidation() {
+    let valid = true;
     if (this.validTranslations.some((v) => !v.isValid)) {
-      this.homepageMessageForm.get('isFormValid').setValue(false);
-    } else {
-      this.homepageMessageForm.get('isFormValid').setValue(true);
+      valid = false;
     }
+    this.homepageMessageForm.get('isFormValid').patchValue(valid);
   }
 }
