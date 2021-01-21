@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material';
 import {RuleService} from '../rule.service';
 import {RulePreviewComponent} from './rule-preview.component';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('RulePreviewComponent', () => {
   let component: RulePreviewComponent;
   let fixture: ComponentFixture<RulePreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [RulePreviewComponent],
       providers: [

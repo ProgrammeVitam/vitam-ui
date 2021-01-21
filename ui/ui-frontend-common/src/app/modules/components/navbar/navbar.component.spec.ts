@@ -38,7 +38,7 @@
 /* tslint:disable:max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Directive, HostListener, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';

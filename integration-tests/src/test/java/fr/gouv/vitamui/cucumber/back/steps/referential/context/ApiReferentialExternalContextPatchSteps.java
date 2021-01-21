@@ -66,7 +66,6 @@ public class ApiReferentialExternalContextPatchSteps extends CommonSteps {
     public void un_utilisateur_avec_le_rôle_ROLE_UPDATE_CUSTOMERS_met_à_jour_partiellement_un_client_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_UPDATE_CUSTOMERS() {
         final Map<String, Object> dto = buildCustomerToPatch();
         final CustomerPatchFormData patchFormData = new CustomerPatchFormData();
-        patchFormData.setLogo(Optional.empty());
         patchFormData.setPartialCustomerDto(dto);
         try {
             testContext.basicCustomerDto = getCustomerWebClient().patch(getSystemTenantUserAdminContext(), dto.get("id").toString(), patchFormData);

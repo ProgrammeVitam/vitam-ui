@@ -42,6 +42,7 @@ import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -252,7 +253,7 @@ public class IngestInternalService {
          XWPFDocument document = new XWPFDocument();
 
          if(myCustomer.isHasCustomGraphicIdentity()) {
-             logo = customerInternalRestClient.getCustomerLogo(internalSecurityService.getHttpContext(), myCustomer.getId()).getBody();
+             logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
          }
 
 

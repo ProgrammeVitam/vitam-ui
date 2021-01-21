@@ -1,23 +1,26 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { LogbookService } from 'ui-frontend-common';
+import { BASE_URL, LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { IngestService } from '../ingest.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IngestPreviewComponent ],
       imports: [
+        HttpClientTestingModule,
         MatMenuModule
       ],
       providers: [ { provide: LogbookService, useValue: {} },
-         { provide: IngestService, useIngestServiceValue: {} } ],
+         { provide: IngestService, useIngestServiceValue: {} },
+         { provide: BASE_URL, useValue: '/fake-api' } ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

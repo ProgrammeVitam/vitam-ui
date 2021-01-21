@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IngestListComponent } from './ingest-list.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -14,7 +14,7 @@ describe('IngestListComponent', () => {
     getAllPaginated: () => of([])
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IngestListComponent ],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],

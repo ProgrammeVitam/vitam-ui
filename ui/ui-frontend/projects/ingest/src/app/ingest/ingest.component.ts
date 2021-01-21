@@ -37,11 +37,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
 import { UploadSipComponent } from './upload-sip/upload-sip.component';
 import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-ingest',

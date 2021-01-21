@@ -62,7 +62,6 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
     this.route.paramMap.subscribe((paramMap) => {
       this.tenantIdentifier = +paramMap.get('tenantIdentifier');
       });
-    });
   }
 
   public openHierarchyDuplicateDialog(): void {

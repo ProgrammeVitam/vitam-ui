@@ -36,11 +36,11 @@
  */
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BytesPipe, Logger } from 'ui-frontend-common';
 import { UploadSipService } from './upload-sip.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 

@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UploadSipComponent } from './upload-sip.component';
-import { MatProgressBarModule, MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule } from '@angular/material';
 import { of } from 'rxjs';
 import { UploadSipService } from './upload-sip.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoggerModule } from 'ui-frontend-common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('UploadSipComponent', () => {
   let component: UploadSipComponent;
@@ -53,7 +55,7 @@ describe('UploadSipComponent', () => {
 
   const uploadSipServiceSpy = jasmine.createSpyObj('UploadSipService', { create: of({}) });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,

@@ -36,18 +36,14 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import fr.gouv.vitamui.commons.api.enums.AttachmentType;
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
