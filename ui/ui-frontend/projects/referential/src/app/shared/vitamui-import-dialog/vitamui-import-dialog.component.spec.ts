@@ -41,8 +41,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatMenuModule, MatOptionModule, MatSidenavModule, MatSnackBarModule } from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BASE_URL, LoggerModule, VitamUICommonModule } from 'ui-frontend-common';
+import { BASE_URL, LoggerModule } from 'ui-frontend-common';
 import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 
 describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;
@@ -57,16 +59,18 @@ describe('VitamUIImportDialogComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         HttpClientTestingModule,
-        VitamUICommonModule,
+        VitamUICommonTestModule,
         MatSidenavModule,
         MatSnackBarModule,
         MatDialogModule,
         MatProgressBarModule,
         MatMenuModule,
-        MatOptionModule
+        MatOptionModule,
+        CdkStepperModule
       ],
       providers: [
         {provide: MatDialogRef, useValue: ''},
+        {provide: CdkStepper},
         {provide: MAT_DIALOG_DATA, value: ''},
         {provide: BASE_URL, useValue: ''}
       ]

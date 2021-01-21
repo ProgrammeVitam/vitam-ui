@@ -96,7 +96,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
         this.customers = customers ? customers : [];
         this.customers.sort((c1, c2) => c1.name.localeCompare(c2.name));
 
-        if (this.permissions !== null && this.permissions.length > 0) {
+        if (this.permissions && this.permissions.length > 0) {
           this.selectedOrganisations = new Array<string>();
           this.permissions.forEach(permission => {
             let tenant: Tenant;

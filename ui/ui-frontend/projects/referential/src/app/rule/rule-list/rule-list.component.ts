@@ -48,7 +48,7 @@ import {
 import {MatDialog} from '@angular/material/dialog';
 import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject, Subscription} from 'rxjs';
+import {merge, Subject} from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
 import {
   AdminUserProfile,
@@ -108,7 +108,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   genericUserRole: Readonly<{appId: ApplicationId, tenantIdentifier: number, roles: Role[]}>;
 
   private groups: Array<{id: string, group: any}> = [];
-  private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -170,7 +169,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   }
 
   ngOnDestroy() {
-    this.updatedUserSub.unsubscribe();
     this.updatedData.unsubscribe();
   }
 
