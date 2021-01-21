@@ -171,6 +171,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final CustomerDto dto = customerData.getCustomerDto();
         LOGGER.debug("Create {} with {}", getObjectName(), dto);
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
+        Assert.isTrue(StringUtils.isNotBlank(customerData.getTenantName()), "Tenant name is mandatory");
         beforeCreate(dto);
         dto.setId(generateSuperId());
         final Customer entity = convertFromDtoToEntity(dto);

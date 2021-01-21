@@ -7,7 +7,7 @@
 
     <div class="title">
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-green close" *ngIf="user?.status === 'ENABLED'"></i>
-      <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-gray" *ngIf="user?.status === 'DISABLED'"></i>
+      <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-grey" *ngIf="user?.status === 'DISABLED'"></i>
       <i class="vitamui-icon vitamui-icon-user vitamui-row-icon status-badge status-badge-orange" *ngIf="user?.status === 'BLOCKED'"></i>
       <div *ngIf="user?.status === 'ANONYM'"><i class="vitamui-icon vitamui-icon-user vitamui-row-icon parent"></i><span class="status-badge-anonym">x</span></div>
       <h2>{{ user?.lastname | uppercase }} {{ user?.firstname }} <small>({{user?.identifier}})</small></h2>
@@ -44,7 +44,7 @@
 
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
-    <p i18n="@@disabledUserConfirm">Êtes vous sur de vouloir désactiver l'utilisateur {{user?.firstname}}
+    <p i18n="@@disabledUserConfirm">Êtes-vous sûr de vouloir désactiver l'utilisateur {{user?.firstname}}
       {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
@@ -55,7 +55,7 @@
 
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
-    <p i18n="@@EnabledUserConfirm">Êtes vous sur de vouloir réactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
+    <p i18n="@@EnabledUserConfirm">Êtes-vous sûr de vouloir réactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button [matDialogClose]="true" class="btn primary btn-confirm-dialog" i18n="@@confirmDialogConfirmButton">Confirmer</button>
@@ -66,7 +66,7 @@
 <ng-template #confirmdeleteUserDialog>
   <mat-dialog-content>
     <p i18n="@@disabledUserConfirm"> Vous allez procéder à l'effacement des données personnelles de l'utilisateur
-      {{user?.firstname}} {{user?.lastname}}. Cette action ne peut pas être annulée, voulez-vous confirmer
+      {{user?.firstname}} {{user?.lastname}}. Cette action ne peut pas être annulée, voulez-vous confirmer ?
     </p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">

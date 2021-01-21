@@ -3177,7 +3177,7 @@
         },
         "gdprAlert":{
           "type":"boolean",
-          "description" : "Pour activer ou désactiver la récéeption des alertes"
+          "description" : "Pour activer ou désactiver la réception des alertes"
         },
         "code": {
           "type": "string",
