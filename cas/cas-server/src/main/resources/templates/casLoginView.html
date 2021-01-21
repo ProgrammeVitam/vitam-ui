@@ -24,11 +24,11 @@
     </div>
     <div class="login-box login-padding  step-email">
         <div class="flex-align-center">
-            <div><h3>Bienvenue</h3></div>
+            <div><h3 th:text="#{cas.welcome.header.msg}">Bienvenue</h3></div>
         </div>
-            <div th:if="${#strings.isEmpty(superUser)}" class="text large bold">
+            <div th:if="${#strings.isEmpty(superUser)}" th:text="#{cas.authentication.email.input}" class="text large bold">
             Veuillez saisir votre adresse mail <span class="text-red">*</span></div><br>
-            <div class="text medium">
+            <div class="text medium" th:text="#{cas.authentication.email.forgot}">
                 Vous avez oublié votre identifiant ? Contactez votre administrateur.
             </div>
             </p>
@@ -47,7 +47,8 @@
 	                   size="25"
 	                   tabindex="1"
 	                   type="text"
-                	   placeholder="Adresse e-mail *" name="email"
+                       th:placeholder="#{cas.authentication.email.placeholder}"
+                	    name="email"
 	                   th:disabled="${guaEnabled}"
 	                   th:field="*{username}"
 	                   th:accesskey="#{screen.welcome.label.netid.accesskey}"
@@ -87,9 +88,9 @@
 
             <button  type="submit" autofocus  class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
-        <div class="helper">Appuyez sur <strong>Entrée</strong> pour valider</div>
+        <div class="helper" th:utext="#{cas.authentication.connexion.helper}">Appuyez sur <strong>Entrée</strong> pour valider</div>
 		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
-			<i class="material-icons">arrow_back</i> Retour
+            <i class="material-icons" >arrow_back</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
 	    </button>
     </div>
 </div>

@@ -31,21 +31,21 @@
                     Bon retour parmi nous [[${superUser}]] !
                 </h5>
 
-                <h5 th:if="${#strings.isEmpty(superUser)}">
+                <h5 th:if="${#strings.isEmpty(superUser)}" th:utext="#{cas.authentication.welcomeback.msg (${credential.username})}">
                     Bon retour parmi nous [[${credential.username}]] !<br>
                 </h5>
             </div>
             <div class="marging-top-form line-height-medium" >
-                <div class="text medium bold"> Veuillez saisir votre mot de passe <span class="text-red">*</span></div>
+                <div class="text medium bold" th:text="#{cas.authentication.password.input}"> Veuillez saisir votre mot de passe <span class="text-red">*</span></div>
                 <div>
                     <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
                         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
                         <input type="hidden" name="_eventId" value="resetPassword"/>
                         <span class="fa fa-unlock"></span>
                         <div>
-                            <div class="text medium">Vous avez oubliez votre mot de passe ?
+                            <div class="text medium" th:text="#{cas.authentication.password.forgot}">Vous avez oubliez votre mot de passe ?
                             </div>
-                            <a class="flex-justify-content-center" href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();">
+                            <a class="flex-justify-content-center" href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();" th:text="#{cas.authentication.password.create}">
                                 CRÉER UN NOUVEAU MOT DE PASSE.</a>
                         </div>
                     </form>
@@ -57,7 +57,8 @@
 
                     <input class="required"
                            type="password"
-                           name="password" placeholder="Mot de passe *"
+                           name="password"
+                           th:placeholder="#{cas.authentication.password.placeholder}"
                            autofocus
                            id="password"
                            size="25"
@@ -84,7 +85,7 @@
             </form>
 
             <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
-                <i class="material-icons">chevron_left</i> RETOUR
+                <i class="material-icons">chevron_left</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
             </button>
         </div>
     </div>

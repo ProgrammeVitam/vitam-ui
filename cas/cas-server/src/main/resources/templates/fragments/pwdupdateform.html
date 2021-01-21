@@ -24,7 +24,7 @@
 
            <input required class="required"
                type="password"
-               name="password" placeholder="Nouveau mot de passe *"
+               name="password" th:placeholder="#{cas.authentication.password.new}"
                id="password"
                size="25"
                tabindex="2" oninput="checkRules();"
@@ -36,7 +36,7 @@
 
            <input required class="required"
                type="password"
-               name="confirmedPassword" placeholder="Confirmer le nouveau mot de passe *"
+               name="confirmedPassword" th:placeholder="#{cas.authentication.password.confirm}"
                id="confirmedPassword"
                size="25"
                tabindex="2" oninput="checkRules();"

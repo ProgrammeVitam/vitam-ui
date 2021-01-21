@@ -34,7 +34,7 @@
             </div>
 
             <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
-                <i class="material-icons">chevron_left</i> RETOUR
+                <i class="material-icons">chevron_left</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
             </button>
         </div>
     </div>
