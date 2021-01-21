@@ -140,6 +140,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     const firstname = "";
     const lastname = "";
     const siteCode = "";
+    const internalCode = "";
     const address = {
       street: "",
       zipCode: "",
@@ -152,7 +153,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     dialogRef.afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname, siteCode })
+        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname, siteCode, internalCode })
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

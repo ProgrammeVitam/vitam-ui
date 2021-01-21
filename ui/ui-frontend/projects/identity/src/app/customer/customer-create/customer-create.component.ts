@@ -313,8 +313,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid || this.form.get('address.city').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending || this.isDurationNotValid() ||
+      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||     
       this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending;
 

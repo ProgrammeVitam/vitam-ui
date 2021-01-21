@@ -2,7 +2,6 @@
   <div class="row">
     <div class="col-10 form-control">
       <p *ngIf="user?.status === 'ENABLED'" i18n="user info tab enabled@@userInfoTabEnabled">Compte actif</p>
-      <p *ngIf="user?.status === 'REMOVED'" i18n="user info tab deleted@@userInfoTabDeleted">Compte supprimé</p>
       <p *ngIf="user?.status === 'DISABLED'" i18n="user info tab disabled@@userInfoTabDisabled">Compte désactivé
       </p>
       <p class="status-warning" *ngIf="user?.status === 'BLOCKED'" i18n="user info tab blocked@@userInfoTabBlocked">
