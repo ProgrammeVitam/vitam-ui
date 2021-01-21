@@ -37,36 +37,36 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { UploadSipComponent } from './upload-sip.component';
-import { UploadSipService } from './upload-sip.service';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
+import { MatProgressBarModule } from '@angular/material';
+import { UploadModule } from '../core/common/upload.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
     VitamUICommonModule,
-    MatProgressBarModule
+    MatDialogModule,
+    MatMenuModule,
+    MatSidenavModule,
+    SharedModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    HoldingFillingSchemeRoutingModule,
+    MatProgressBarModule,
+    UploadModule
   ],
   declarations: [
-    UploadSipComponent,
+    HoldingFillingSchemeComponent
   ],
-  entryComponents: [UploadSipComponent],
-  providers: [UploadSipService]
+  providers: [
+  ]
 })
-export class UploadSipModule { }
+export class HoldingFillingSchemeModule { }

@@ -34,59 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
-} from 'ui-frontend-common';
-import { AppComponent } from './app.component';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import {  ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { UploadComponent } from '../core/common/upload.component';
 
-const routes: Routes = [
-  {
-    // we use PORTAL_APP as our appId so that the AppGuard won't find a profile with this appId
-    // and we'll be redirected to the Portal Application
-    path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PORTAL_APP' }
-  },
-  {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCOUNTS_APP' }
-  },
-  // =====================================================
-  //                      Ingests
-  // =====================================================
-  {
-    path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_MANAGEMENT_APP' }
-  },
-
-  // =====================================================
-  //                      TREES PLANS API
-  // =====================================================
-  {
-    path: 'holding-filling-scheme',
-    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
-  { path: '**', redirectTo: '' }
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
-  ]
+@Component({
+  selector: 'app-holding-filling-scheme',
+  templateUrl: './holding-filling-scheme.component.html',
+  styleUrls: ['./holding-filling-scheme.component.scss']
 })
-export class AppRoutingModule { }
+export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
+
+  tenantIdentifier: string;
+
+  constructor(private router: Router, private route: ActivatedRoute, globalEventService: GlobalEventService, public dialog: MatDialog) {
+    super(route, globalEventService);
+  }
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.tenantIdentifier = params.tenantIdentifier;
+    });
+  }
+
+  openImportTreePlanPopup(type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.panelClass = 'vitamui-modal';
+    dialogConfig.disableClose = false;
+
+    dialogConfig.data = {
+      tenantIdentifier: this.tenantIdentifier,
+      givenContextId: type
+    };
+
+    const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
+  }
+
+  changeTenant(tenantIdentifier: number) {
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+  }
+
+}

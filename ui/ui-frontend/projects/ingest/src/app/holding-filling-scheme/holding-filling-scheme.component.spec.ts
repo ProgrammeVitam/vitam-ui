@@ -36,29 +36,29 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatSidenavModule, MatMenuModule, MatDialog } from '@angular/material';
+import { MatSidenavModule, MatMenuModule, MatDialog, MatDialogModule } from '@angular/material';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { IngestComponent } from './ingest.component';
 import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { IngestService } from './ingest.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import { IngestService } from '../ingest/ingest.service';
 
 @Component({ selector: 'app-ingest-list', template: '' })
 class IngestListStubComponent {
 }
 
-describe('IngestComponent', () => {
-  let component: IngestComponent;
-  let fixture: ComponentFixture<IngestComponent>;
+describe('HoldingFilingSchemeComponent', () => {
+  let component: HoldingFillingSchemeComponent;
+  let fixture: ComponentFixture<HoldingFillingSchemeComponent>;
 
   const ingestServiceMock = {
     ingest: () => of('test ingest'),
@@ -81,26 +81,27 @@ describe('IngestComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule
+        SearchBarModule,
+        MatDialogModule,
       ],
       declarations: [
-        IngestComponent,
+        HoldingFillingSchemeComponent,
         IngestListStubComponent
       ],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) } },
+        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) } },
         { provide: environment, useValue: environment }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestComponent);
+    fixture = TestBed.createComponent(HoldingFillingSchemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -111,14 +112,14 @@ describe('IngestComponent', () => {
 
   it('should call open', () => {
     const matDialogSpy = TestBed.get(MatDialog);
-    component.openImportSipDialog('DEFULT_WORKFLOW');
+    component.openImportTreePlanPopup('HOLDING_SCHEME');
     expect(matDialogSpy.open).toHaveBeenCalled();
     expect(matDialogSpy.open.calls.count()).toBe(1);
   });
 
-  it('should open a modal with IngestComponent', () => {
+  it('should open a modal with HoldingFillingSchemeComponent', () => {
     const matDialogSpy = TestBed.get(MatDialog);
-    component.openImportSipDialog('DEFULT_WORKFLOW');
+    component.openImportTreePlanPopup('FILING_SCHEME');
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalled();
   });

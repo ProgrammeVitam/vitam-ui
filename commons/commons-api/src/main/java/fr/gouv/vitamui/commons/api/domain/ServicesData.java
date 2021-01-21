@@ -353,6 +353,16 @@ public class ServicesData {
     public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
     public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
 
+
+    //------------------------------------ API TREES & PLANS -----------------------------------------
+
+    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
+
+    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+
+
     //@formatter:off
 
     /**
@@ -438,7 +448,11 @@ public class ServicesData {
 
             ROLE_GET_ALL_INGEST,
             ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST
+            ROLE_CREATE_INGEST,
+
+            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
             );
 
     /**
@@ -548,7 +562,11 @@ public class ServicesData {
 
             ROLE_GET_ALL_INGEST,
             ROLE_GET_INGEST,
-            ROLE_CREATE_INGEST
+            ROLE_CREATE_INGEST,
+
+            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
 
             );
     //@formatter:on

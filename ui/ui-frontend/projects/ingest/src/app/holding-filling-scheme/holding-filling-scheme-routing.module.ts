@@ -35,58 +35,41 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
-} from 'ui-frontend-common';
-import { AppComponent } from './app.component';
+import { CommonModule } from '@angular/common';
+import { Route, RouterModule } from '@angular/router';
+import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
-const routes: Routes = [
+
+
+const routes: Route[] = [
   {
-    // we use PORTAL_APP as our appId so that the AppGuard won't find a profile with this appId
-    // and we'll be redirected to the Portal Application
     path: '',
-    component: AppComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'PORTAL_APP' }
+    redirectTo: 'tenant',
+    pathMatch: 'full'
   },
   {
-    path: 'account',
-    component: AccountComponent,
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'ACCOUNTS_APP' }
+    path: 'tenant',
+    component: VitamUITenantSelectComponent,
+    pathMatch: 'full',
+    canActivate: [TenantSelectionGuard]
   },
-  // =====================================================
-  //                      Ingests
-  // =====================================================
   {
-    path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'INGEST_MANAGEMENT_APP' }
-  },
-
-  // =====================================================
-  //                      TREES PLANS API
-  // =====================================================
-  {
-    path: 'holding-filling-scheme',
-    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
-    canActivate: [AuthGuard, AppGuard],
-    data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
-  },
-  // =====================================================
-  //                      unknown path
-  // =====================================================
-  { path: '**', redirectTo: '' }
+    path: 'tenant/:tenantIdentifier',
+    component: HoldingFillingSchemeComponent,
+    canActivate: [ActiveTenantGuard]
+  }
 ];
 
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
+  declarations: [],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes)
+  ],
+  exports: [
+    RouterModule
   ]
 })
-export class AppRoutingModule { }
+export class HoldingFillingSchemeRoutingModule { }
