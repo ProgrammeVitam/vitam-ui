@@ -266,11 +266,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public fourthStepValid(): boolean {
-    let isValid = true;
-    setTimeout(() => {
-      isValid = !(this.homepageMessageForm && this.homepageMessageForm.valid && this.homepageMessageForm.value.isFormValid);
-  }, 0);
+    return this.homepageMessageForm && this.homepageMessageForm.valid && this.checkValidation(this.homepageMessageForm.value.translations);
+  }
 
+  private checkValidation(forms: FormGroup[]): boolean {
+    let isValid = true;
+    forms.forEach(((x) => {if (!x.valid) { isValid = false; }}));
     return isValid;
   }
 

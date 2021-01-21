@@ -1,17 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-homepage-message-translation',
     templateUrl: './homepage-message-translation.html',
     styleUrls: ['./homepage-message-translation.scss']
 })
-export class HomepageMessageTranslationComponent implements OnInit {
-
-    public form: FormGroup;
+export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
 
     @Input()
-    public messageTranslation: {id: number, index: number, language: string, title: string, description: string };
+    public form: FormGroup;
 
     @Input()
     public index: number;
@@ -22,27 +21,20 @@ export class HomepageMessageTranslationComponent implements OnInit {
     @Output()
     public formRemove = new EventEmitter<{form: FormGroup}>();
 
-    constructor(private formBuilder: FormBuilder) { }
+    private subscription: Subscription;
+
+    constructor() { }
 
     ngOnInit() {
-
-        this.form = this.formBuilder.group({
-            id: [null],
-            language: ['', Validators.required],
-            portalTitle: ['', [Validators.required]],
-            portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
-        });
-
-        this.form.get('id').setValue(this.messageTranslation.id);
-        this.form.get('language').setValue(this.messageTranslation.language);
-        this.form.get('portalTitle').setValue(this.messageTranslation.title);
-        this.form.get('portalMessage').setValue(this.messageTranslation.description);
-
-        this.formChange.emit({form: this.form});
-
-        this.form.valueChanges.subscribe(() => {
+        this.subscription = this.form.valueChanges.subscribe(() => {
             this.formChange.emit({form: this.form});
           });
+    }
+
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
     public onRemove(): void {

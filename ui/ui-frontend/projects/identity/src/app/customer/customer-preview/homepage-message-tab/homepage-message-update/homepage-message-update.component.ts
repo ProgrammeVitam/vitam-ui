@@ -21,11 +21,7 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   public get customForm(): FormGroup { return this._customForm; }
   public set customForm(form: FormGroup) {
     this._customForm = form;
-
-    setTimeout(() => {
-      this.disabled = !(this._customForm && this._customForm.valid && this._customForm.value.isFormValid);
-  }, 0);
-
+    this.disabled = !(this._customForm && this._customForm.valid && this.checkValidation(this._customForm.value.translations));
   }
 
   public disabled = true;
@@ -44,7 +40,6 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    console.log(this.customForm);
     if (this.customForm.dirty) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
@@ -52,9 +47,14 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
     }
   }
 
+  private checkValidation(forms: FormGroup[]): boolean {
+    let isValid = true;
+    forms.forEach(((x) => {if (!x.valid) { isValid = false; }}));
+    return isValid;
+  }
+
   public updateHomepageMessage(): void {
-    if (this.customForm.valid) {
-      console.log(this.customForm.value);
+    if (this.customForm.valid && this.checkValidation(this.customForm.value.translations)) {
       this.customerService.patch(this.customForm.value)
       .pipe(takeUntil(this.destroy))
       .subscribe(

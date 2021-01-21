@@ -31,12 +31,11 @@
 
     </div>
     
-    <div *ngFor="let messageTranslation of homepageMessageForm.get('messageTranslations').value; let index = index">
-      <app-homepage-message-translation [messageTranslation]="messageTranslation" [index]="index + 1"
-        (formChange)="updateTranslation($event)" (formRemove)="removeTranslation($event)">
+    <div *ngFor="let item of homepageMessageForm.get('translations').value; let index = index">
+      <app-homepage-message-translation [form]="item" [index]="index + 1" (formChange)="update()" (formRemove)="remove(index)">
       </app-homepage-message-translation>
     </div>
-    <button class="pl-4 btn link uppercase" [disabled]="homepageMessageForm.get('messageTranslations').value.length >=2" (click)="onAdd()">
+    <button class="pl-4 btn link uppercase" [disabled]="homepageMessageForm.get('translations')?.value?.length >=2" (click)="onAdd()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
     </button>
   </div>
