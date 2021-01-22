@@ -38,43 +38,44 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BytesPipe, Logger } from 'ui-frontend-common';
-import { UploadSipService } from './upload-sip.service';
+import { UploadService } from './upload.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
+const action = 'RESUME';
 
 @Component({
-  selector: 'app-upload-sip',
-  templateUrl: './upload-sip.component.html',
-  styleUrls: ['./upload-sip.component.scss']
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.scss']
 })
-export class UploadSipComponent implements OnInit {
+export class UploadComponent implements OnInit {
 
   sipForm: FormGroup;
   hasSip: boolean;
   hasDropZoneOver = false;
-  sipToUpload: File = null;
+  fileToUpload: File = null;
   hasError = false;
   message: string;
   fileName: string;
   fileSize = 0;
   fileSizeString: string;
   extensions: string[];
-  contextId = 'DEFAULT_WORKFLOW';
-  action = 'RESUME';
-
+  contextId: string;
+  messageImportType: string;
+  messageLabelImportType: string;
   tenantIdentifier: string;
-
   uploadComplete = false;
+  isDisabled = true;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<UploadSipComponent>,
+    public dialogRef: MatDialogRef<UploadComponent>,
     private formBuilder: FormBuilder,
-    private uploadService: UploadSipService,
+    private uploadService: UploadService,
     private snackBar: MatSnackBar,
     public logger: Logger
   ) {
@@ -86,32 +87,53 @@ export class UploadSipComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.contextId = this.data.givenContextId;
+    this.initContextIdentifier(this.data.givenContextId);
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
     this.hasSip = this.sipForm.get('hasSip').value;
 
   }
+  initContextIdentifier(contextInput: string) {
+    switch (contextInput) {
+      case 'HOLDING_SCHEME':
+        this.messageImportType = 'Importer un arbre de positionnement';
+        this.messageLabelImportType = 'Nouvel arbre de positionnement';
+        break;
+      case 'FILING_SCHEME':
+        this.messageImportType = 'Importer un plan de classement';
+        this.messageLabelImportType = 'Nouveau plan de classement';
+        break;
+      case 'DEFAULT_WORKFLOW':
+        this.messageImportType = 'Verser un SIP';
+        this.messageLabelImportType = 'Nouveau versement';
+        break;
+      default:
+      console.error('unknown context identifier');
+    }
+  }
 
-  onSipDragOver(inDropZone: boolean) {
+  onDragOver(inDropZone: boolean) {
     this.hasDropZoneOver = inDropZone;
   }
 
-  onSipDragLeave(inDropZone: boolean) {
+  onDragLeave(inDropZone: boolean) {
     this.hasDropZoneOver = inDropZone;
   }
 
-  onSipDropped(files: FileList) {
+  onDropped(files: FileList) {
     this.hasDropZoneOver = false;
-    this.handleSipFile(files);
+    this.handleFile(files);
   }
 
-  handleSipFile(files: FileList) {
+  handleFile(files: FileList) {
+    this.isDisabled = false;
     this.hasError = false;
     this.message = null;
-    this.sipToUpload = files.item(0);
+    this.fileToUpload = files.item(0);
 
-    this.fileName = this.sipToUpload.name;
-    this.fileSize = this.sipToUpload.size;
+    this.fileName = this.fileToUpload.name;
+    this.fileSize = this.fileToUpload.size;
 
     const transformer = new BytesPipe(this.logger);
     this.fileSizeString = transformer.transform(this.fileSize);
@@ -128,13 +150,13 @@ export class UploadSipComponent implements OnInit {
   }
 
   handleFileInput(files: FileList) {
-    this.handleSipFile(files);
+    this.handleFile(files);
   }
 
   upload() {
     if (!this.isValidSIP) { return; }
 
-    this.uploadService.uploadFile(this.sipToUpload, this.contextId, this.action, this.tenantIdentifier)
+    this.uploadService.uploadFile(this.fileToUpload, this.contextId, action, this.tenantIdentifier)
       .subscribe(
         (res: boolean) => {
           this.uploadComplete = res;
@@ -152,7 +174,7 @@ export class UploadSipComponent implements OnInit {
   displaySnackBar(uploadComplete: boolean) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
-      data: { type: 'sipUploaded', name: uploadComplete },
+      data: { type: 'fileUploaded', name: uploadComplete },
       duration: 10000
     });
   }

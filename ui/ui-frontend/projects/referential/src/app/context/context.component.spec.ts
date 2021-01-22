@@ -4,9 +4,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
+import { ActivatedRoute } from '@angular/router';
+import { EMPTY } from 'rxjs';
 import {ContextComponent} from './context.component';
 
 @Component({selector: 'app-agency-preview', template: ''})
@@ -31,6 +33,10 @@ describe('ContextComponent', () => {
         ContextComponent,
         ContextListStub,
         ContextPreviewStub
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
+        { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } }
       ],
       imports: [
         VitamUICommonTestModule,

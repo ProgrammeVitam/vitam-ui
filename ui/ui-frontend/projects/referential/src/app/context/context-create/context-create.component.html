@@ -74,12 +74,17 @@
 
 
         <div class="form-group">
-          <app-context-edit-permission formControlName="permissions"></app-context-edit-permission>
+          <app-context-edit-permission formControlName="permissions"
+            (changeOrganisations)="onChangeOrganisations($event)"></app-context-edit-permission>
+          <div *ngIf="isPermissionsOnMultipleOrganisations">
+            <span class="error-message" i18n="Multiple organisation warning hint@@formWarningMultipleOrganisations">Attention vous avez renseigné deux organisations différentes</span>
+          </div>
           <ng-container>
             <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
                                         i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>
             <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions"
                                         i18n="Required permissions error hint@@formErrorRequiredField">Au moins une permission doit être renseignée</span>
+
           </ng-container>
         </div>
 

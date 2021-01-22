@@ -107,5 +107,4 @@ public class IamExternalRestClientFactory extends BaseRestClientFactory {
     public LogbookExternalRestClient getLogbookExternalRestClient() {
         return new LogbookExternalRestClient(getRestTemplate(), getBaseUrl());
     }
-
 }

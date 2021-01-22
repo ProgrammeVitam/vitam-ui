@@ -36,6 +36,21 @@
  */
 package fr.gouv.vitamui.referential;
 
+import fr.gouv.vitamui.referential.service.AccessContractService;
+import fr.gouv.vitamui.referential.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.service.AgencyService;
+import fr.gouv.vitamui.referential.service.ContextService;
+import fr.gouv.vitamui.referential.service.CustomerService;
+import fr.gouv.vitamui.referential.service.FileFormatService;
+import fr.gouv.vitamui.referential.service.IngestContractService;
+import fr.gouv.vitamui.referential.service.ManagementContractService;
+import fr.gouv.vitamui.referential.service.OntologyService;
+import fr.gouv.vitamui.referential.service.OperationService;
+import fr.gouv.vitamui.referential.service.ProfileService;
+import fr.gouv.vitamui.referential.service.RuleService;
+import fr.gouv.vitamui.referential.service.SecurityProfileService;
+import fr.gouv.vitamui.referential.service.TenantService;
+import fr.gouv.vitamui.referential.service.UnitService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -48,20 +63,6 @@ import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.referential.service.AccessContractService;
-import fr.gouv.vitamui.referential.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.service.AgencyService;
-import fr.gouv.vitamui.referential.service.ContextService;
-import fr.gouv.vitamui.referential.service.FileFormatService;
-import fr.gouv.vitamui.referential.service.IngestContractService;
-import fr.gouv.vitamui.referential.service.ManagementContractService;
-import fr.gouv.vitamui.referential.service.OntologyService;
-import fr.gouv.vitamui.referential.service.OperationService;
-import fr.gouv.vitamui.referential.service.ProfileService;
-import fr.gouv.vitamui.referential.service.RuleService;
-import fr.gouv.vitamui.referential.service.SecurityProfileService;
-import fr.gouv.vitamui.referential.service.TenantService;
-import fr.gouv.vitamui.referential.service.UnitService;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 
 /**
@@ -120,4 +121,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private RuleService ruleService;
+
+    @MockBean
+    private CustomerService customerService;
 }

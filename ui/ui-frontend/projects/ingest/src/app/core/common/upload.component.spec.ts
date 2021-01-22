@@ -36,24 +36,24 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { UploadSipComponent } from './upload-sip.component';
-import { of } from 'rxjs';
-import { UploadSipService } from './upload-sip.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { LoggerModule } from 'ui-frontend-common';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, LoggerModule } from 'ui-frontend-common';
+import { UploadComponent } from './upload.component';
+import { UploadService } from './upload.service';
 
-describe('UploadSipComponent', () => {
-  let component: UploadSipComponent;
-  let fixture: ComponentFixture<UploadSipComponent>;
+describe('UploadComponent', () => {
+  let component: UploadComponent;
+  let fixture: ComponentFixture<UploadComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
   matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const uploadSipServiceSpy = jasmine.createSpyObj('UploadSipService', { create: of({}) });
+  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}) });
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -62,12 +62,13 @@ describe('UploadSipComponent', () => {
         MatSnackBarModule,
         LoggerModule.forRoot()
       ],
-      declarations: [UploadSipComponent],
+      declarations: [UploadComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: UploadSipService, useValue: uploadSipServiceSpy }
+        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: UploadService, useValue: uploadServiceSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -75,12 +76,65 @@ describe('UploadSipComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadSipComponent);
+    fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('initContextIdentifier', () => {
+
+    beforeEach(() => {
+      spyOn(console, 'error');
+    });
+
+    it('should adapt the message with Holding scheme', () => {
+      component.initContextIdentifier('HOLDING_SCHEME');
+      expect(component.messageImportType).toEqual('Importer un arbre de positionnement');
+      expect(component.messageLabelImportType).toEqual('Nouvel arbre de positionnement');
+    });
+
+    it('should adapt the message with Filling scheme', () => {
+      component.initContextIdentifier('FILING_SCHEME');
+      expect(component.messageImportType).toEqual('Importer un plan de classement');
+      expect(component.messageLabelImportType).toEqual('Nouveau plan de classement');
+    });
+
+    it('should adapt the message with default ingest', () => {
+      component.initContextIdentifier('DEFAULT_WORKFLOW');
+      expect(component.messageImportType).toEqual('Verser un SIP');
+      expect(component.messageLabelImportType).toEqual('Nouveau versement');
+    });
+
+    it('should log error for unknown context', () => {
+      component.initContextIdentifier('XYZ');
+      expect(console.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('checkFileExtension', () => {
+
+    it('should return true when extension zip is correct', () => {
+      expect(component.checkFileExtension('correct.zip')).toBeTruthy();
+    });
+
+    it('should return true when extension tar is correct', () => {
+      expect(component.checkFileExtension('correct.tar')).toBeTruthy();
+    });
+
+    it('should return true when extension .tar.gz is correct', () => {
+      expect(component.checkFileExtension('correct.tar.gz')).toBeTruthy();
+    });
+
+    it('should return true when extension .tar.bz2 is correct', () => {
+      expect(component.checkFileExtension('correct.tar.bz2')).toBeTruthy();
+    });
+
+    it('should return true when extension is bad', () => {
+      expect(component.checkFileExtension('bad.json')).toBeFalsy();
+    });
   });
 });

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ENVIRONMENT, GlobalEventService } from 'ui-frontend-common';
+import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -56,7 +56,9 @@ describe('LogbookOperationComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        InjectorModule,
+        LoggerModule.forRoot()
       ],
       declarations: [LogbookOperationComponent],
       providers: [

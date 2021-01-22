@@ -29,10 +29,24 @@
 }
 
 .contractsSelect {
-  max-width: 190px;
+  max-width: 150px;
 }
+
+.delete {
+  padding-left: 0px !important;
+  padding-right: 10px;
+}
+
+.customers {
+  max-width: 150px;
+}
+
 .tenants {
   max-width: 150px;
+}
+
+.ingestContracts {
+  padding-right: 0px;
 }
 
 .editMode {
@@ -52,4 +66,8 @@ td{
   mat-form-field{
     padding-bottom: 0;
   }
+}
+
+.defaultTd {
+  padding-left: 0 !important;
 }

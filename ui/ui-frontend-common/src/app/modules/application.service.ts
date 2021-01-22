@@ -228,8 +228,8 @@ export class ApplicationService {
     return resultMap;
   }
 
-  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, 
-      applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  /* tslint:disable:max-line-length */
+  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;

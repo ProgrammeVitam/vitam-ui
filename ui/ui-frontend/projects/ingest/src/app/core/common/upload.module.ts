@@ -45,8 +45,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { UploadSipComponent } from './upload-sip.component';
-import { UploadSipService } from './upload-sip.service';
+import { UploadComponent } from './upload.component';
+import { UploadService } from './upload.service';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
@@ -64,9 +64,9 @@ import { SharedModule } from '../../shared/shared.module';
     MatProgressBarModule
   ],
   declarations: [
-    UploadSipComponent,
+    UploadComponent,
   ],
-  entryComponents: [UploadSipComponent],
-  providers: [UploadSipService]
+  entryComponents: [UploadComponent],
+  providers: [UploadService]
 })
-export class UploadSipModule { }
+export class UploadModule { }

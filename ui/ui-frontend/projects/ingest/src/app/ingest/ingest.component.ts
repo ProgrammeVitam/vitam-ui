@@ -40,9 +40,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { UploadSipComponent } from './upload-sip/upload-sip.component';
 import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { UploadComponent } from '../core/common/upload.component';
 
 @Component({
   selector: 'app-ingest',
@@ -112,20 +112,20 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
     this.openPanel(item);
   }
 
-  openImportSipDialog() {
+  openImportSipDialog(type: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'vitamui-modal';
     dialogConfig.disableClose = false;
 
     dialogConfig.data = {
-      tenantIdentifier: this.tenantIdentifier
+      tenantIdentifier: this.tenantIdentifier,
+      givenContextId: type
     };
 
-    const dialogRef = this.dialog.open(UploadSipComponent, dialogConfig);
+    const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.refresh();
       }
     });
   }
