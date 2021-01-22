@@ -140,8 +140,8 @@ emptyForm = {
     this.archiveService.getOntologiesFromJson().subscribe((data:any) =>{
       this.ontologies= data;
       this.ontologies.sort(function (a: any, b: any) {
-        var shortNameA = a.ShortName;
-        var shortNameB = b.ShortName;
+        var shortNameA = a.Label;
+        var shortNameB = b.Label;
         return (shortNameA < shortNameB) ? -1 : (shortNameA > shortNameB) ? 1 : 0;
       });
     })
@@ -231,9 +231,9 @@ emptyForm = {
      }else if(formData.otherCriteriaValue){
         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
         if(this.otherCriteriaValueType === 'DATE'){
-          this.addCriteria(ontologyElt.Value, ontologyElt.ShortName, this.form.value.otherCriteriaValue, this.datePipe.transform(this.form.value.otherCriteriaValue, 'dd/MM/yyyy') );
+          this.addCriteria(ontologyElt.Value, ontologyElt.Label, this.form.value.otherCriteriaValue, this.datePipe.transform(this.form.value.otherCriteriaValue, 'dd/MM/yyyy') );
         }else {
-          this.addCriteria(ontologyElt.Value, ontologyElt.ShortName, formData.otherCriteriaValue.trim(), formData.otherCriteriaValue.trim());
+          this.addCriteria(ontologyElt.Value, ontologyElt.Label, formData.otherCriteriaValue.trim(), formData.otherCriteriaValue.trim());
         }
        return true;
      }else{
@@ -330,7 +330,7 @@ emptyForm = {
           let selectedValueOntolonogyValue = this.form.get('otherCriteria').value;
           const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === selectedValueOntolonogyValue);
           if(selectedValueOntolonogyElt){
-            this.selectedValueOntolonogy =  selectedValueOntolonogyElt.ShortName;
+            this.selectedValueOntolonogy =  selectedValueOntolonogyElt.Label;
             this.otherCriteriaValueType = selectedValueOntolonogyElt.Type;
           }
         }
