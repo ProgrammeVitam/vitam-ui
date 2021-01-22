@@ -51,7 +51,7 @@ describe('GroupApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: GroupApiService = TestBed.get(GroupApiService);
+    const service: GroupApiService = TestBed.inject(GroupApiService);
     expect(service).toBeTruthy();
   });
 });

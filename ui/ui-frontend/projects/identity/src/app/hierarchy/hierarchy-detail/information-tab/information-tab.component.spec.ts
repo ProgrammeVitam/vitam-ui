@@ -182,7 +182,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
     // TODO FIXME
     // it('should update the name', fakeAsync(() => {
-    //   const service = TestBed.get(HierarchyService);
+    //   const service = TestBed.inject(HierarchyService);
     //   spyOn(service, 'update').and.returnValue(of(testhost.profile));
     //   testhost.component.form.get('name').setValue('New name');
     //   tick(400);

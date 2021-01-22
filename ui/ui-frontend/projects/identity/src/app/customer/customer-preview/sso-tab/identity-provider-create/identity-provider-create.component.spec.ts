@@ -98,20 +98,20 @@ describe('IdentityProviderCreateComponent', () => {
   describe('Class', () => {
 
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close).toHaveBeenCalled();
     });
 
     it('should not call idpService.create()', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
+      const idpService =  TestBed.inject(IdentityProviderService);
       component.onSubmit();
       expect(idpService.create).not.toHaveBeenCalled();
     });
 
     it('should call idpService.create()', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const idpService =  TestBed.inject(IdentityProviderService);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -146,9 +146,9 @@ describe('IdentityProviderCreateComponent', () => {
     });
 
     it('should set an error', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
-      idpService.create.and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
+      const idpService =  TestBed.inject(IdentityProviderService);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
+      idpService.create = jasmine.createSpy().and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',

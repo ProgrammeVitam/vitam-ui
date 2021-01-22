@@ -12,7 +12,8 @@
         "Disabled_label": "désactivé",
         "Disabled_outline": "Contour désactivé",
         "Disabled_contrast": "Contraste désactivé",
-        "Disabled_contrast_outline": "Contour contrasté désactivé"
+        "Disabled_contrast_outline": "Contour contrasté désactivé",
+        "CANCEL":"Annuler"
     },
     "SAMPLE-DIALOG": {
         "Open": "Ouvrir la popup d'exemple",
@@ -28,6 +29,7 @@
         "Green": "Couleur verte"
     },
     "ICONS":{
-        "Title": "Liste des icônes de Vitam-UI"
+        "Title": "Liste des icônes de Vitam-UI",
+        "Colors": "Couleurs disponibles" 
     }
 }

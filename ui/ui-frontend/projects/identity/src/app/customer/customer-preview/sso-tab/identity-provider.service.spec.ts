@@ -80,8 +80,8 @@ describe('IdentityProviderService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    identityProviderService = TestBed.get(IdentityProviderService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    identityProviderService = TestBed.inject(IdentityProviderService);
   });
 
   it('should be created', inject([IdentityProviderService], (service: IdentityProviderService) => {
@@ -91,7 +91,7 @@ describe('IdentityProviderService', () => {
   describe('create', () => {
 
     it('should call /fake-api/providers and display a succes message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.create(identityProviders[0]).subscribe(
         (response: IdentityProvider) => {
           expect(response).toEqual(identityProviders[0]);
@@ -110,7 +110,7 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.create(identityProviders[0]).subscribe(
         fail,
         () => {
@@ -146,7 +146,7 @@ describe('IdentityProviderService', () => {
   describe('update', () => {
 
     it('should call PATCH /fake-api/providers/42', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
       identityProviderService.patch(identityProviders[0]).subscribe(
         (provider: IdentityProvider) => {
@@ -167,7 +167,7 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.patch(identityProviders[0]).subscribe(
         fail,
         () => {
@@ -185,7 +185,7 @@ describe('IdentityProviderService', () => {
   describe('updateMetadataFile', () => {
 
     it('should call PATCH /fake-api/providers/42/idpMetadata', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       const expectedFile = new File([''], 'metadata.xml');
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
       identityProviderService.updateMetadataFile('42', expectedFile).subscribe(
@@ -210,7 +210,7 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.updateMetadataFile('42', new File([''], 'metadata.xml')).subscribe(
         fail,
         () => {
@@ -228,7 +228,7 @@ describe('IdentityProviderService', () => {
   describe('updateKeystore', () => {
 
     it('should call PATCH /fake-api/providers/42/keystore', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       const expectedFile = new File([''], 'keystore.jks');
       identityProviderService.updated.subscribe((provider: IdentityProvider) => expect(provider).toEqual(identityProviders[0]), fail);
       identityProviderService.updateKeystore('42', expectedFile, 'password').subscribe(
@@ -253,7 +253,7 @@ describe('IdentityProviderService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       identityProviderService.updateKeystore('42', new File([''], 'keystore.jks'), 'password').subscribe(
         fail,
         () => {

@@ -89,7 +89,7 @@ describe('TenantCreateComponent', () => {
   });
 
   it('should call dialogRef.close', () => {
-    const matDialogRef =  TestBed.get(MatDialogRef);
+    const matDialogRef =  TestBed.inject(MatDialogRef);
     component.onCancel();
     expect(matDialogRef.close).toHaveBeenCalled();
   });
@@ -101,7 +101,7 @@ describe('TenantCreateComponent', () => {
       ownerId: '42',
       enabled: true
     };
-    const tenantServiceSpy = TestBed.get(TenantService);
+    const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.setValue(tenant);
 
     component.onSubmit();
@@ -116,7 +116,7 @@ describe('TenantCreateComponent', () => {
   });
 
   it('should not call create()', () => {
-    const tenantServiceSpy = TestBed.get(TenantService);
+    const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.get('name').setValue(null);
     component.onSubmit();
     expect(tenantServiceSpy.create).not.toHaveBeenCalled();

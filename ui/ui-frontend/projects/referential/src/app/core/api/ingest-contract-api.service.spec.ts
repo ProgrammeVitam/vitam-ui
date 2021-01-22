@@ -19,7 +19,7 @@ describe('IngestContractApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: IngestContractApiService = TestBed.get(IngestContractApiService);
+    const service: IngestContractApiService = TestBed.inject(IngestContractApiService);
     expect(service).toBeTruthy();
   });
 });

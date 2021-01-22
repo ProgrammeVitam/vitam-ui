@@ -128,9 +128,9 @@ describe('GroupComponent', () => {
   });
 
   it('should open a modal with GroupCreateComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     page.createGroup.click();
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
   });
 

@@ -16,14 +16,14 @@ export class InputsComponent implements OnInit {
   public emailFirstPart = new FormControl('azerty', [Validators.maxLength(25)]);
   public email = new FormControl('azerty@test.fr', [Validators.maxLength(25)]);
   public domain = new FormControl('test.fr', [Validators.maxLength(10)]);
-  public emails = new FormControl(["azerty@test.fr" ,"azerty@test2.com"], [Validators.maxLength(30)]);
-  public list = new FormControl(["azerty1" ,"azerty2"], [Validators.maxLength(30)]);
+  public emails = new FormControl(['azerty@test.fr' , 'azerty@test2.com'], [Validators.maxLength(30)]);
+  public list = new FormControl(['azerty1' , 'azerty2'], [Validators.maxLength(30)]);
   public country = new FormControl('FR', [Validators.maxLength(10)]);
   public textarea = new FormControl('name\naddress\ncity', [Validators.maxLength((25))]);
   public level = new FormControl('LEVEL', [Validators.maxLength((10))]);
   public toggle = new FormControl('Value 3');
-  public duration = new FormControl( {days: 5, hours:10, minutes:5});
-  public file = new FormControl( new File(['test'],"test",{type: 'text/plain'}));
+  public duration = new FormControl( {days: 5, hours: 10, minutes: 5});
+  public file = new FormControl( new File(['test'], 'test', {type: 'text/plain'}));
 
   constructor() { }
 

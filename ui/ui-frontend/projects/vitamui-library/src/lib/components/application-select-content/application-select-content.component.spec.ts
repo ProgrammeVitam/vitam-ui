@@ -35,13 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, Input} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {AuthService, WINDOW_LOCATION} from 'ui-frontend-common';
 import {UpdatedApplicationSelectContentComponent} from './application-select-content.component';
-import {AuthService, WINDOW_LOCATION} from "ui-frontend-common";
 
 @Component({
-  selector: 'vitamui-common-menu-tile-updated',
+  selector: 'lib-vitamui-common-menu-tile-updated',
   template: ''
 })
 class VitamUIMenuTileStubComponent {

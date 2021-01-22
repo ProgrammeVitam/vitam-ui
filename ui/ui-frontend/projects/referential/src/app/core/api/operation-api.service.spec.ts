@@ -19,7 +19,7 @@ describe('OperationApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: OperationApiService = TestBed.get(OperationApiService);
+    const service: OperationApiService = TestBed.inject(OperationApiService);
     expect(service).toBeTruthy();
   });
 });

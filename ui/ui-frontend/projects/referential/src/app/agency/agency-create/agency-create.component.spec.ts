@@ -174,24 +174,24 @@ describe('AgencyCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const agencyService = TestBed.get(AgencyService);
+      const agencyService = TestBed.inject(AgencyService);
       component.onSubmit();
-      expect(agencyService.create.calls.count()).toBe(0);
+      expect(agencyService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const agencyService = TestBed.get(AgencyService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const agencyService = TestBed.inject(AgencyService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedAgency);
       component.onSubmit();
-      expect(agencyService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(agencyService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -76,7 +76,7 @@ describe('ProfileResolver', () => {
       ]
     });
 
-    profileResolver = TestBed.get(ProfileResolver);
+    profileResolver = TestBed.inject(ProfileResolver);
   });
 
   it('should be created', inject([ProfileResolver], (service: ProfileResolver) => {
@@ -87,8 +87,8 @@ describe('ProfileResolver', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
 
-    const rngProfileService = TestBed.get(ProfileService);
-    rngProfileService.get.and.returnValue(of(expectedProfile));
+    const rngProfileService = TestBed.inject(ProfileService);
+    rngProfileService.get = jasmine.createSpy().and.returnValue(of(expectedProfile));
     profileResolver.resolve(route).subscribe((profile) => {
       expect(profile).toEqual(expectedProfile);
     });
@@ -100,9 +100,9 @@ describe('ProfileResolver', () => {
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
-    const rngProfileService = TestBed.get(ProfileService);
-    rngProfileService.get.and.returnValue(of(null));
-    const router = TestBed.get(Router);
+    const rngProfileService = TestBed.inject(ProfileService);
+    rngProfileService.get = jasmine.createSpy().and.returnValue(of(null));
+    const router = TestBed.inject(Router);
     profileResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);
     });

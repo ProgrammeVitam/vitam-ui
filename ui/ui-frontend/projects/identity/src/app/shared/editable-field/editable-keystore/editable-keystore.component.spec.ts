@@ -232,7 +232,7 @@ describe('EditableKeystoreComponent', () => {
 
     describe('confirm', () => {
       it('should call updateKeystore', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.callThrough();
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
@@ -244,7 +244,7 @@ describe('EditableKeystoreComponent', () => {
       });
 
       it('should not call updateKeystore', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.callThrough();
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
@@ -258,7 +258,7 @@ describe('EditableKeystoreComponent', () => {
       });
 
       it('should set the error', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.returnValue(observableThrowError(null));
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');

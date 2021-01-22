@@ -205,20 +205,20 @@ describe('GroupCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const groupService =  TestBed.get(GroupService);
+      const groupService =  TestBed.inject(GroupService);
       component.onSubmit();
-      expect(groupService.create.calls.count()).toBe(0);
+      expect(groupService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const groupService =  TestBed.get(GroupService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const groupService =  TestBed.inject(GroupService);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.form.setValue({
         customerId: expectedGroup.customerId,
         name: expectedGroup.name,
@@ -228,8 +228,8 @@ describe('GroupCreateComponent', () => {
         profileIds: expectedGroup.profileIds
       });
       component.onSubmit();
-      expect(groupService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(groupService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

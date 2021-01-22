@@ -261,24 +261,24 @@ xdescribe('ContextCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const contextService = TestBed.get(ContextService);
+      const contextService = TestBed.inject(ContextService);
       component.onSubmit();
-      expect(contextService.create.calls.count()).toBe(0);
+      expect(contextService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const contextService = TestBed.get(ContextService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const contextService = TestBed.inject(ContextService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedContext);
       component.onSubmit();
-      expect(contextService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(contextService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -167,7 +167,7 @@ describe('Profile InformationTabComponent', () => {
     // });
 
     // it('should update the name', fakeAsync(() => {
-    //   const service = TestBed.get(ProfileService);
+    //   const service = TestBed.inject(ProfileService);
     //   spyOn(service, 'patch').and.returnValue(of(testhost.profile));
     //   testhost.component.form.get('name').setValue('New name');
     //   tick(400);
@@ -175,7 +175,7 @@ describe('Profile InformationTabComponent', () => {
     // }));
 
     // it('should not call update if nothing changes', fakeAsync(() => {
-    //   const service = TestBed.get(ProfileService);
+    //   const service = TestBed.inject(ProfileService);
     //   spyOn(service, 'patch').and.returnValue(of(testhost.profile));
     //   testhost.component.form.get('name').setValue('ProfileName');
     //   tick(400);

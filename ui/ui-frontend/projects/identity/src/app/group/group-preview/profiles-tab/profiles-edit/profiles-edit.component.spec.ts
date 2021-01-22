@@ -141,9 +141,9 @@ describe('ProfilesEditComponent', () => {
   describe('Component', () => {
 
     it('should call groupService.patch', () => {
-      const groupService = TestBed.get(GroupService);
+      const groupService = TestBed.inject(GroupService);
       spyOn(groupService, 'patch').and.callThrough();
-      const matDialogRefSpy = TestBed.get(MatDialogRef);
+      const matDialogRefSpy = TestBed.inject(MatDialogRef);
       component.form.setValue({ profileIds: ['1', '2', '3'] });
       component.form.markAsDirty();
       component.onSubmit();
@@ -152,7 +152,7 @@ describe('ProfilesEditComponent', () => {
     });
 
     it('should not call profileGroupService.patch', () => {
-      const profileGroupService = TestBed.get(GroupService);
+      const profileGroupService = TestBed.inject(GroupService);
       spyOn(profileGroupService, 'patch').and.callThrough();
       component.form.markAsDirty();
       component.onSubmit();
@@ -160,7 +160,7 @@ describe('ProfilesEditComponent', () => {
     });
 
     it('should not call profileGroupService.patch', () => {
-      const profileGroupService = TestBed.get(GroupService);
+      const profileGroupService = TestBed.inject(GroupService);
       spyOn(profileGroupService, 'patch').and.callThrough();
       component.form.setValue({ profileIds: ['1', '2', '3'] });
       component.onSubmit();
@@ -168,7 +168,7 @@ describe('ProfilesEditComponent', () => {
     });
 
     it('should call MatDialogRef.close', () => {
-      const matDialogRefSpy = TestBed.get(MatDialogRef);
+      const matDialogRefSpy = TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRefSpy.close).toHaveBeenCalledTimes(1);
     });

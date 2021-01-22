@@ -136,35 +136,35 @@ describe('OwnerCreateComponent', () => {
   });
 
   it('should call dialogRef.close', () => {
-    const matDialogRef =  TestBed.get(MatDialogRef);
+    const matDialogRef =  TestBed.inject(MatDialogRef);
     component.onCancel();
-    expect(matDialogRef.close.calls.count()).toBe(1);
+    expect(matDialogRef.close).toHaveBeenCalledTimes(1);
   });
 
   it('should not call ownerService.create()', () => {
-    const ownerService =  TestBed.get(OwnerService);
+    const ownerService =  TestBed.inject(OwnerService);
     component.onOwnerSubmit();
-    expect(ownerService.create.calls.count()).toBe(0);
+    expect(ownerService.create).toHaveBeenCalledTimes(0);
   });
 
   it('should call ownerService.create()', () => {
-    const ownerService =  TestBed.get(OwnerService);
-    const matDialogRef =  TestBed.get(MatDialogRef);
+    const ownerService =  TestBed.inject(OwnerService);
+    const matDialogRef =  TestBed.inject(MatDialogRef);
     component.ownerForm.setValue({ owner });
     component.onOwnerSubmit();
-    expect(ownerService.create.calls.count()).toBe(1);
-    expect(matDialogRef.close.calls.count()).toBe(1);
+    expect(ownerService.create).toHaveBeenCalledTimes(1);
+    expect(matDialogRef.close).toHaveBeenCalledTimes(1);
   });
 
   it('should not call tenantService.create()', () => {
-    const tenantService =  TestBed.get(TenantService);
+    const tenantService =  TestBed.inject(TenantService);
     component.onTenantSubmit();
     expect(tenantService.create).not.toHaveBeenCalled();
   });
 
   it('should call tenantService.create()', () => {
-    const tenantService =  TestBed.get(TenantService);
-    const matDialogRef =  TestBed.get(MatDialogRef);
+    const tenantService =  TestBed.inject(TenantService);
+    const matDialogRef =  TestBed.inject(MatDialogRef);
     component.ownerForm.setValue({ owner });
     const tenant = { name: 'tenant name', ownerId: owner.id, customerId: '42', enabled: true };
     component.tenantForm.setValue(tenant);
@@ -173,6 +173,6 @@ describe('OwnerCreateComponent', () => {
       { name: tenant.name, ownerId: tenant.ownerId, customerId: tenant.customerId, enabled: tenant.enabled },
       owner.name
     );
-    expect(matDialogRef.close.calls.count()).toBe(1);
+    expect(matDialogRef.close).toHaveBeenCalledTimes(1);
   });
 });

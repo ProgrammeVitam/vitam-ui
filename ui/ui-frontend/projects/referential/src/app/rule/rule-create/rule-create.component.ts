@@ -42,7 +42,7 @@ import {Subscription} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
 
 import {RuleService} from '../rule.service';
-import {RULE_TYPES, RULE_MEASUREMENTS} from '../rules.constants';
+import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
 import {RuleCreateValidators} from './rule-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;

@@ -52,7 +52,7 @@ describe('LogbookSearchService', () => {
   }));
 
   it('should be created', () => {
-    const service: LogbookSearchService = TestBed.get(LogbookSearchService);
+    const service: LogbookSearchService = TestBed.inject(LogbookSearchService);
     expect(service).toBeTruthy();
   });
 });

@@ -213,7 +213,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should call loadMore() on scroll', () => {
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     expect(page.infiniteScroll).toBeTruthy();
     const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
     directive.vitamuiScroll.next();

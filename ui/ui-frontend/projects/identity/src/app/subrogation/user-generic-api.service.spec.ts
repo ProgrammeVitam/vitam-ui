@@ -51,7 +51,7 @@ describe('UserGenericApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: UserGenericApiService = TestBed.get(UserGenericApiService);
+    const service: UserGenericApiService = TestBed.inject(UserGenericApiService);
     expect(service).toBeTruthy();
   });
 });

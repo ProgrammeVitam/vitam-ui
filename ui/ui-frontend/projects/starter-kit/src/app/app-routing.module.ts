@@ -41,13 +41,13 @@ import { ApplicationId } from 'ui-frontend-common';
 import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
+import { ColorsComponent } from './components/colors/colors.component';
+import { IconsComponent } from './components/icons/icons.component';
 import { InputsComponent } from './components/inputs/inputs.component';
 import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { TooltipComponent } from './components/tooltip/tooltip.component';
 import { TypographyComponent } from './components/typography/typography.component';
-import { ColorsComponent } from './components/colors/colors.component';
-import { IconsComponent } from './components/icons/icons.component';
 import { StarterKitComponent } from './starter-kit/starter-kit.component';
 
 

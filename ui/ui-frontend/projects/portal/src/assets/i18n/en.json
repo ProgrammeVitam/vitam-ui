@@ -5,6 +5,7 @@
 		"users": "User",
 		"referential": "Referential",
 		"opaudit": "Audits & operations",
-		"techadmin": "Technical administration"
+		"techadmin": "Technical administration",
+		"lastusedapps": "Lastly used"
 	}
 }

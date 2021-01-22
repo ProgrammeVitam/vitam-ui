@@ -192,24 +192,24 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const securityProfileService = TestBed.get(SecurityProfileService);
+      const securityProfileService = TestBed.inject(SecurityProfileService);
       component.onSubmit();
-      expect(securityProfileService.create.calls.count()).toBe(0);
+      expect(securityProfileService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const securityProfileService = TestBed.get(SecurityProfileService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const securityProfileService = TestBed.inject(SecurityProfileService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedSecurityProfile);
       component.onSubmit();
-      expect(securityProfileService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(securityProfileService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

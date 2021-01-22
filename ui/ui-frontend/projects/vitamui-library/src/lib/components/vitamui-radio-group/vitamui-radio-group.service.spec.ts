@@ -8,7 +8,7 @@ describe('VitamUIRadioGroupService', () => {
   }));
 
   it('should be created', () => {
-    const service: VitamUIRadioGroupService = TestBed.get(VitamUIRadioGroupService);
+    const service: VitamUIRadioGroupService = TestBed.inject(VitamUIRadioGroupService);
     expect(service).toBeTruthy();
   });
 });

@@ -86,7 +86,7 @@ describe('CustomerResolver', () => {
       ]
     });
 
-    customerResolver = TestBed.get(CustomerResolver);
+    customerResolver = TestBed.inject(CustomerResolver);
   });
 
   it('should be created', inject([CustomerResolver], (service: CustomerResolver) => {
@@ -97,8 +97,8 @@ describe('CustomerResolver', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
 
-    const customerService = TestBed.get(CustomerService);
-    customerService.get.and.returnValue(of(expectedCustomer));
+    const customerService = TestBed.inject(CustomerService);
+    customerService.get = jasmine.createSpy().and.returnValue(of(expectedCustomer));
     customerResolver.resolve(route).subscribe((customer) => {
       expect(customer).toEqual(expectedCustomer);
     });
@@ -110,9 +110,9 @@ describe('CustomerResolver', () => {
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
-    const customerService = TestBed.get(CustomerService);
-    customerService.get.and.returnValue(of(null));
-    const router = TestBed.get(Router);
+    const customerService = TestBed.inject(CustomerService);
+    customerService.get = jasmine.createSpy().and.returnValue(of(null));
+    const router = TestBed.inject(Router);
     customerResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);
     });

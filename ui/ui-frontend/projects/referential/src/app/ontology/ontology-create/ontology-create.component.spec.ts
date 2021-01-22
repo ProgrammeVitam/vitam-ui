@@ -192,24 +192,24 @@ xdescribe('OntologyCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const customerService = TestBed.get(OntologyService);
+      const customerService = TestBed.inject(OntologyService);
       component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(0);
+      expect(customerService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const customerService = TestBed.get(OntologyService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const customerService = TestBed.inject(OntologyService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedOntology);
       component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(customerService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

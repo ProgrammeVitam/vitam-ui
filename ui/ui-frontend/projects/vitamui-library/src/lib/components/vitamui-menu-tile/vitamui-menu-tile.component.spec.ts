@@ -37,7 +37,6 @@
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Directive, Input, NO_ERRORS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 import {
   Application,
   ApplicationId,
@@ -45,13 +44,14 @@ import {
   LoggerModule,
   StartupService,
   SUBROGRATION_REFRESH_RATE_MS
-} from "ui-frontend-common";
+} from 'ui-frontend-common';
+import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 
 @Directive({
-  selector: '[vitamuiCommonTooltip]',
+  selector: '[libVitamuiCommonTooltip]',
 })
 class TooltipStubDirective {
-  @Input() vitamuiCommonTooltip: any;
+  @Input() libVitamuiCommonTooltip: any;
 }
 
 describe('UpdatedVitamUIMenuTileComponent', () => {

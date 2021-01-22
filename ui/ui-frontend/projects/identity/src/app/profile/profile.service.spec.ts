@@ -58,8 +58,8 @@ describe('ProfileService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    rngProfileService = TestBed.get(ProfileService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    rngProfileService = TestBed.inject(ProfileService);
   });
 
   it('should be created', inject([ProfileService], (service: ProfileService) => {
@@ -93,7 +93,7 @@ describe('ProfileService', () => {
 
   describe('patch', () => {
     it('should call PATCH /fake-api/profiles/42', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',
@@ -134,7 +134,7 @@ describe('ProfileService', () => {
     });
 
     it('should display an error message', () => {
-      const snackBar = TestBed.get(VitamUISnackBar);
+      const snackBar = TestBed.inject(VitamUISnackBar);
       const expectedRequest = {
         id: '42',
         name: 'Profile Group Name',

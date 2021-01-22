@@ -74,7 +74,7 @@ describe('OwnerResolver', () => {
       ],
     });
 
-    ownerResolver = TestBed.get(OwnerResolver);
+    ownerResolver = TestBed.inject(OwnerResolver);
   });
 
   it('should be created', inject([OwnerResolver], (service: OwnerResolver) => {
@@ -85,8 +85,8 @@ describe('OwnerResolver', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
 
-    const ownerService = TestBed.get(OwnerService);
-    ownerService.get.and.returnValue(of(expectedOwner));
+    const ownerService = TestBed.inject(OwnerService);
+    ownerService.get = jasmine.createSpy().and.returnValue(of(expectedOwner));
     ownerResolver.resolve(route).subscribe((customer) => {
       expect(customer).toEqual(expectedOwner);
     });
@@ -98,9 +98,9 @@ describe('OwnerResolver', () => {
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
-    const ownerService = TestBed.get(OwnerService);
-    ownerService.get.and.returnValue(of(null));
-    const router = TestBed.get(Router);
+    const ownerService = TestBed.inject(OwnerService);
+    ownerService.get = jasmine.createSpy().and.returnValue(of(null));
+    const router = TestBed.inject(Router);
     ownerResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);
     });

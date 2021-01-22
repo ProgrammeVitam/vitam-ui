@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {Rule} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {AuthService, BASE_URL, VitamUISnackBar} from 'ui-frontend-common';
 import {RuleService} from '../rule.service';
 import {RuleListComponent} from './rule-list.component';
-import { MatDialog } from '@angular/material/dialog';
 
 
 describe('RuleListComponent', () => {

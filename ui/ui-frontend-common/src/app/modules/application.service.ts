@@ -214,7 +214,7 @@ export class ApplicationService {
 
   private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
     const resultMap = new Map<Category, Application[]>();
-    let categories: Category[] = Object.values(categoriesByIds);
+    const categories: Category[] = Object.values(categoriesByIds);
     categories.sort((a, b) => {
       return a.order > b.order ? 1 : -1;
     });
@@ -228,7 +228,8 @@ export class ApplicationService {
     return resultMap;
   }
 
-  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, 
+      applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;

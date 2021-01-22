@@ -200,24 +200,24 @@ describe('AccessContractCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const accessContractService = TestBed.get(AccessContractService);
+      const accessContractService = TestBed.inject(AccessContractService);
       component.onSubmit();
-      expect(accessContractService.create.calls.count()).toBe(0);
+      expect(accessContractService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const accessContractService = TestBed.get(AccessContractService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const accessContractService = TestBed.inject(AccessContractService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedAccessContract);
       component.onSubmit();
-      expect(accessContractService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(accessContractService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

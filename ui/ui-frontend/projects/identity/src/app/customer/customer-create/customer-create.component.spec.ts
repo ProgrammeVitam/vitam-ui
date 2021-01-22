@@ -281,15 +281,15 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const customerService =  TestBed.get(CustomerService);
+      const customerService =  TestBed.inject(CustomerService);
       component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(0);
+      expect(customerService.create).toHaveBeenCalledTimes(0);
     });
 
   });

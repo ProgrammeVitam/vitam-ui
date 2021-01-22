@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconsComponent } from './icons.component';
+import { NgModule } from '@angular/core';
 import { VitamUICommonModule } from 'ui-frontend-common';
+import { IconsComponent } from './icons.component';
 
 
 
@@ -11,6 +11,6 @@ import { VitamUICommonModule } from 'ui-frontend-common';
     CommonModule,
     VitamUICommonModule
   ],
-  exports:[IconsComponent]
+  exports: [IconsComponent]
 })
 export class IconsModule { }

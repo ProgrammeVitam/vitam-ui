@@ -208,7 +208,7 @@ describe('IdentityProviderDetailsComponent', () => {
     });
 
     it('should be valid and call patch()', waitForAsync(() => {
-      const providerService = TestBed.get(IdentityProviderService);
+      const providerService = TestBed.inject(IdentityProviderService);
       spyOn(providerService, 'patch').and.returnValue(of(null));
       testhost.component.form.setValue({
         id: testhost.provider.id,

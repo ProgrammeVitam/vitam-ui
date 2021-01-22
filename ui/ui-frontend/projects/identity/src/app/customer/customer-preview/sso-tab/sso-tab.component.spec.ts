@@ -182,7 +182,7 @@ describe('SsoTabComponent', () => {
   });
 
   it('should call open', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     testhost.component.openCreateIDPDialog();
     expect(matDialogSpy.open).toHaveBeenCalled();
   });

@@ -135,8 +135,8 @@ describe('TenantService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    tenantService = TestBed.get(TenantService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    tenantService = TestBed.inject(TenantService);
   });
 
   it('should be created', inject([TenantService], (service: TenantService) => {
@@ -162,7 +162,7 @@ describe('TenantService', () => {
   });
 
   it('should call /fake-api/tenants and display a success message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe(
       (response: Tenant) => {
         expect(response).toEqual(expectedTenant);
@@ -181,7 +181,7 @@ describe('TenantService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     tenantService.create(expectedTenant, expectedOwner.name).subscribe(
       fail,
       () => {
