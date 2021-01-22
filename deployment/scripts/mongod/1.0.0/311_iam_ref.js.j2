@@ -54,30 +54,6 @@ db.profiles.update(
 });
 
 db.profiles.update(
-{"_id" : "auto_agencies"},
-{$set: {"roles" : [ 
-    {
-        "name": "ROLE_GET_AGENCIES"
-    },
-    {
-        "name": "ROLE_CREATE_AGENCIES"
-    },
-    {
-        "name": "ROLE_UPDATE_AGENCIES"
-    },
-    {
-        "name": "ROLE_DELETE_AGENCIES"
-    },
-    {
-        "name": "ROLE_EXPORT_AGENCIES"
-    },
-	{
-        "name": "ROLE_IMPORT_AGENCIES"
-    }
-]}
-});
-
-db.profiles.update(
 {"_id" : "system_file_format"},
 {$set: {"roles" : [ 
     {
