@@ -34,31 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Rule} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-
-import {RuleService} from '../rule.service';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
-import {RuleCreateValidators} from './rule-create.validators';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ContextPermission } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { ContextCreateValidators } from '../context-create/context-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
-  selector: 'app-rule-create',
-  templateUrl: './rule-create.component.html',
-  styleUrls: ['./rule-create.component.scss']
+  selector: 'app-context-edit',
+  templateUrl: './context-edit.component.html',
+  styleUrls: ['./context-edit.component.scss']
 })
-export class RuleCreateComponent implements OnInit, OnDestroy {
+
+export class ContextEditComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   stepIndex = 0;
-  hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
+  isPermissionsOnMultipleOrganisations = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -67,32 +65,34 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   private stepCount = 1;
   private keyPressSubscription: Subscription;
 
-  ruleTypes = RULE_TYPES;
-  ruleMeasurements = RULE_MEASUREMENTS;
-
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
-  tenantIdentifier: number;
+  private permissions: ContextPermission[];
 
   constructor(
-    public dialogRef: MatDialogRef<RuleCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<ContextEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ContextPermission[],
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
-    private ruleService: RuleService,
-    private ruleCreateValidator: RuleCreateValidators
+    private contextCreateValidators: ContextCreateValidators,
   ) {
+    this.permissions = data;
+
+    let permissions: any[] = new Array();
+    if (this.permissions) {
+      permissions = this.permissions.map(permission => {
+        return {
+          tenant: permission.tenant,
+          accessContracts: permission.accessContracts,
+          ingestContracts: permission.ingestContracts
+        };
+      });
+    }
+
+    this.form = this.formBuilder.group({
+      permissions: [permissions, null, this.contextCreateValidators.permissionInvalid()]
+    });
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      ruleId: [null, [Validators.required, this.ruleCreateValidator.ruleIdPattern()], this.ruleCreateValidator.uniqueRuleId()],
-      ruleType: [null, Validators.required],
-      ruleValue: [null, Validators.required],
-      ruleDescription: [null],
-      ruleDuration: [null, Validators.required],
-      ruleMeasurement: [null, Validators.required]
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -108,25 +108,41 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  isPermissionsInvalid(): boolean {
+    return this.form.get('permissions').invalid;
+  }
+
+  onChangeOrganisations(organisations: string[]) {
+    this.isPermissionsOnMultipleOrganisations = false;
+    if (organisations && organisations.length > 1) {
+      let idx = 0;
+      let organisationId: string = null;
+      while (idx < organisations.length && !this.isPermissionsOnMultipleOrganisations) {
+        if (idx === 0) {
+          organisationId = organisations[0];
+        } else if (organisations[idx] != null && organisations[idx] !== organisationId) {
+          this.isPermissionsOnMultipleOrganisations = true;
+        }
+        idx++;
+      }
+    }
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       return;
     }
 
-    const format: Rule = this.form.value;
+    // Update the context permissions
+    this.permissions = this.form.value.permissions.map((item:
+      { tenant: string; accessContracts: string[]; ingestContracts: string[]; }) =>
+      new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts)
+    );
 
-    this.ruleService.create(format).subscribe(
-      () => {
-        this.dialogRef.close({success: true});
-      },
-      (error: any) => {
-        this.dialogRef.close({success: false});
-        console.error(error);
-      });
+    this.dialogRef.close({ permissions: this.permissions });
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

@@ -34,44 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cucumber.back.steps.referential.context;
+package fr.gouv.vitamui.referential.service;
 
-import io.cucumber.java.en.When;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.utils.TestConstants;
+import java.util.Collection;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
 
 /**
- * Teste l'API Contextes dans Referential admin : opérations de vérification.
  *
  *
  */
-public class ApiReferentialExternalContextCheckSteps extends CommonSteps {
+@Service
+public class CustomerService {
 
-    @When("^un utilisateur vérifie l'existence d'un contexte par son identifiant$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_identifiant() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
+    private final CustomerExternalRestClient client;
+
+    @Autowired
+    public CustomerService(final CustomerExternalRestClient client) {
+        this.client = client;
     }
 
-    @When("^un utilisateur vérifie l'existence d'un contexte par son code et son nom$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_code_et_son_nom() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            dto.setName(TestConstants.CONTEXT_NAME);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
+    public Collection<CustomerDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
+        return client.getAll(context, criteria);
     }
+
 }

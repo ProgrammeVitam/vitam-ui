@@ -1,0 +1,41 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+$field-spacing: 15px;
+
+.header {
+    padding: 30px 60px 0 60px;
+}
+
+.content {
+    padding: 0px 60px 60px 60px;
+}
+
+h2 {
+    font-size: 26px;
+    line-height: 46px;
+    margin-top: 23px;
+    margin-bottom: 37px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+}
+
+.actions > button:not(:last-child) {
+    margin-right: 20px;
+}
+
+.form-group {
+    padding-bottom: 30px;
+}
+
+button.primary {
+    margin-right: 20px;
+}
+
+.error-message {
+    color: $red;
+    font-size: 14px;
+    margin-bottom: 30px;
+}

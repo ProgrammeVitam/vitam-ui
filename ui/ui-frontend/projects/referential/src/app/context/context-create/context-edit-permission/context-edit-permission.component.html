@@ -2,7 +2,8 @@
   <table class="vitamui-table form-group">
     <thead>
     <tr  class="ng-tns-c10-3 ">
-      <th ></th><!-- Delete ? -->
+      <th class="delete"></th><!-- Delete ? -->
+      <th >Organisations</th>
       <th >Tenants</th>
       <th >Contrats d'accès</th>
       <th >Contrats d'entrée</th>
@@ -11,16 +12,16 @@
     </thead>
     <tbody >
     <tr class="dlab-table-row ng-tns-c10-3 ng-star-inserted no-hover" *ngFor="let permission of permissions; let i = index">
-      <td style="padding-left: 25px" [ngClass]="editMode ? 'editTd' : ''">
+      <td class="delete" [ngClass]="editMode ? 'editTd' : ''">
         <i (click)="onDelete(i)" class="vitamui-icon vitamui-icon-cross clickable-icon"></i>
       </td>
-      <td [ngClass]="editMode ? 'editTd' : ''">
-        <mat-form-field class="vitamui-mat-select tenants selectorPosition" [ngClass]="editMode? 'editMode' : ''">
-          <mat-select [(value)]="permission.tenant" placeholder="Tenant" (selectionChange)="onTenantSelect()"
-                      i18n-placeholder="Application@@tenantsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
+      <td [ngClass]="editMode ? 'editTd' : 'defaultTd'" *ngIf="selectedOrganisations?.length > i">
+        <mat-form-field class="vitamui-mat-select customers selectorPosition" [ngClass]="editMode? 'editMode' : ''">
+          <mat-select [(value)]="selectedOrganisations[i]" placeholder="Organisation" (selectionChange)="onCustomerSelect(permission)"
+                      i18n-placeholder="Application@@customersFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                       required>
-            <mat-option *ngFor='let tenant of tenants' [value]="tenant.key">
-              {{tenant.label}}
+            <mat-option *ngFor='let customer of customers' [value]="customer.id">
+              {{customer.name}}
             </mat-option>
           </mat-select>
           <div class="select-arrow">
@@ -28,7 +29,22 @@
           </div>
         </mat-form-field>
       </td>
-      <td *ngIf="permission.tenant" style="padding-left: 0" [ngClass]="editMode ? 'editTd' : ''">
+      <td *ngIf="selectedOrganisations?.length > i && selectedOrganisations[i] !== null" [ngClass]="editMode ? 'editTd' : 'defaultTd'">
+        <mat-form-field class="vitamui-mat-select tenants selectorPosition" [ngClass]="editMode? 'editMode' : ''">
+          <mat-select [(value)]="permission.tenant" [compareWith]="compareTenantIds"
+                      placeholder="Tenant" (selectionChange)="onTenantSelect(permission)"
+                      i18n-placeholder="Application@@tenantsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
+                      required>
+            <mat-option *ngFor='let tenant of getTenantsForOrganisation(selectedOrganisations[i])' [value]="tenant.identifier">
+              {{tenant.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+      </td>
+      <td *ngIf="permission.tenant" [ngClass]="editMode ? 'editTd' : 'defaultTd'">
         <mat-form-field class="vitamui-mat-select contractsSelect selectorPosition" [ngClass]="editMode? 'editMode editContract' : ''">
           <mat-select [(value)]="permission.accessContracts" placeholder="Contrats d'accès" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
@@ -37,7 +53,7 @@
                                        title="Tous les contrats d'accès" i18n-title="Application@@accessContractsFormApplicationSelectAll"
                                        (toggleSelection)="permission.accessContracts = $event">
             </vitamui-select-all-option>
-            <mat-option *ngFor='let contract of accessContracts.get(permission.tenant)' [value]="contract.key">
+            <mat-option *ngFor="let contract of accessContracts.get('' + permission.tenant)" [value]="contract.key">
               {{contract.label}}
             </mat-option>
           </mat-select>
@@ -46,7 +62,7 @@
           </div>
         </mat-form-field>
       </td>
-      <td *ngIf="permission.tenant">
+      <td *ngIf="permission.tenant" class="ingestContracts" [ngClass]="editMode ? 'editTd' : 'defaultTd'">
         <mat-form-field class="vitamui-mat-select contractsSelect selectorPosition" [ngClass]="editMode? 'editMode' : ''"s>
           <mat-select [(value)]="permission.ingestContracts" placeholder="Contrats d'entrée" (selectionChange)="onContractSelect()"
                       i18n-placeholder="Application@@accessContractsFormApplicationPlaceholder" panelclass="vitamui-mat-select"
@@ -55,7 +71,7 @@
                                        title="Tous les contrats d'entrée" i18n-title="Application@@ingestContractsFormApplicationSelectAll"
                                        (toggleSelection)="permission.ingestContracts = $event">
             </vitamui-select-all-option>
-            <mat-option *ngFor='let contract of ingestContracts.get(permission.tenant)' [value]="contract.key">
+            <mat-option *ngFor="let contract of ingestContracts.get('' + permission.tenant)" [value]="contract.key">
               {{contract.label}}
             </mat-option>
           </mat-select>
@@ -66,7 +82,7 @@
       </td>
       <td *ngIf="!permission.tenant"></td>
       <td *ngIf="!permission.tenant"></td>
-      <td [ngClass]="editMode ? 'editTd' : ''">
+      <td *ngIf="permission.tenant" [ngClass]="editMode ? 'editTd' : 'defaultTd'">
         <i class="material-icons field-tooltip" matTooltip="Choisir pour chaque tenant les contrats qui vont s'appliquer" matTooltipClass="vitamui-tooltip">info</i>
       </td>
     </tr>

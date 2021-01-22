@@ -36,50 +36,79 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-// tslint:disable-next-line: max-line-length
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatMenuModule, MatOptionModule, MatSidenavModule, MatSnackBarModule } from '@angular/material';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatOptionModule, MatProgressBarModule, MatSelectModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BASE_URL, LoggerModule } from 'ui-frontend-common';
-import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
+import { EMPTY, of } from 'rxjs';
+import { BASE_URL, ConfirmDialogService, ENVIRONMENT, LoggerModule, InjectorModule } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment';
+import { ContextCreateValidators } from '../context-create/context-create.validators';
+import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
+import { ContextEditComponent } from './context-edit.component';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
+import { TenantApiService } from '../../core/api/tenant-api.service';
+import { CustomerApiService } from '../../core/api/customer-api.service';
+import { AccessContractService } from '../../access-contract/access-contract.service';
+import { IngestContractService } from '../../ingest-contract/ingest-contract.service';
 
-describe('VitamUIImportDialogComponent', () => {
-  let component: VitamUIImportDialogComponent;
-  let fixture: ComponentFixture<VitamUIImportDialogComponent>;
+describe('ContextEditComponent', () => {
+  let component: ContextEditComponent;
+  let fixture: ComponentFixture<ContextEditComponent>;
+
+  const tenantApiServiceMock = {
+    getAll: () => of([])
+  };
+
+  const customerApiServiceMock = {
+    getAll: () => of([])
+  };
+
+  const contractServiceMock = {
+    getAllForTenant: () => of([])
+  };
 
   beforeEach(async(() => {
+    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
+
     TestBed.configureTestingModule({
       declarations: [
-        VitamUIImportDialogComponent
+        ContextEditComponent
       ],
       imports: [
-        LoggerModule.forRoot(),
         NoopAnimationsModule,
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        MatSidenavModule,
-        MatSnackBarModule,
+        ReactiveFormsModule,
         MatDialogModule,
         MatProgressBarModule,
-        MatMenuModule,
+        MatSelectModule,
         MatOptionModule,
+        VitamUICommonTestModule,
+        RouterTestingModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        ContextEditPermissionModule,
         CdkStepperModule
       ],
       providers: [
-        {provide: MatDialogRef, useValue: ''},
+        ContextCreateValidators,
+        {provide: MatDialogRef, useValue: matDialogRefSpy},
         {provide: CdkStepper},
-        {provide: MAT_DIALOG_DATA, value: ''},
-        {provide: BASE_URL, useValue: ''}
+        {provide: MAT_DIALOG_DATA, value: {}},
+        {provide: BASE_URL, useValue: ''},
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
+        {provide: TenantApiService,  useValue: tenantApiServiceMock},
+        {provide: CustomerApiService,  useValue: customerApiServiceMock},
+        {provide: AccessContractService,  useValue: contractServiceMock},
+        {provide: IngestContractService,  useValue: contractServiceMock},
+        {provide: ENVIRONMENT, useValue: environment}
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUIImportDialogComponent);
+    fixture = TestBed.createComponent(ContextEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

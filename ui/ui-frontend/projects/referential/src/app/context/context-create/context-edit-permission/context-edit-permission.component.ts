@@ -36,12 +36,14 @@
  */
 /* tslint:disable:no-use-before-declare */
 
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ContextPermission } from 'projects/vitamui-library/src/public-api';
 import { AuthService, Option } from 'ui-frontend-common';
-import { Tenant } from 'ui-frontend-common/app/modules/models/customer';
+import { Customer, Tenant } from 'ui-frontend-common/app/modules/models/customer';
 import { AccessContractService } from '../../../access-contract/access-contract.service';
+import { CustomerApiService } from '../../../core/api/customer-api.service';
+import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
@@ -59,17 +61,23 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
 
   constructor(
+    private customerApiService: CustomerApiService,
+    private tenantApiService: TenantApiService,
+    private authService: AuthService,
     private accessService: AccessContractService,
-    private ingestService: IngestContractService,
-    private authService: AuthService) {
+    private ingestService: IngestContractService) {
   }
   permissions: ContextPermission[];
+  selectedOrganisations: string[];
+
 
   @Input() editMode = false;
+  @Output() changeOrganisations: EventEmitter<string[]> = new EventEmitter<string[]>();
 
+  tenants: Tenant[] = [];
   disabled: boolean;
 
-  tenants: Option[] = [];
+  customers: Customer[] = [];
   accessContracts: Map<string, Option[]> = new Map();
   ingestContracts: Map<string, Option[]> = new Map();
   // tslint:disable-next-line:variable-name
@@ -79,14 +87,39 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   }
 
   ngOnInit(): void {
+    // Get the list of all the organisations
+    // and find for each permission the tenant organisation
+    this.tenantApiService.getAll().subscribe(tenants => {
+      this.tenants = tenants ? tenants : [];
+
+      this.customerApiService.getAll().subscribe(customers => {
+        this.customers = customers ? customers : [];
+        this.customers.sort((c1, c2) => c1.name.localeCompare(c2.name));
+
+        if (this.permissions && this.permissions.length > 0) {
+          this.selectedOrganisations = new Array<string>();
+          this.permissions.forEach(permission => {
+            let tenant: Tenant;
+            if (permission.tenant != null) {
+              tenant = this.tenants.find(t => '' + t.identifier === permission.tenant);
+            }
+
+            if (tenant) {
+              this.selectedOrganisations.push(tenant.customerId);
+            } else {
+              this.selectedOrganisations.push(null);
+            }
+          });
+        }
+      });
+    });
+
     if (this.authService.user) {
+      // Get the access contracts
       const accessTenantsInfo = this.authService.user.tenantsByApp.find(
         appTenantInfo => appTenantInfo.name === 'ACCESS_APP');
       const accessTenants: Tenant[] = accessTenantsInfo ? accessTenantsInfo.tenants : [];
       accessTenants.forEach((tenant) => {
-        if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
-          this.tenants.push({ key: '' + tenant.identifier, label: tenant.name });
-        }
         this.accessService.getAllForTenant('' + tenant.identifier).subscribe(
           accessContracts => {
             this.accessContracts.set('' + tenant.identifier, accessContracts.map(x => ({
@@ -96,13 +129,11 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
           });
       });
 
+      // Get the ingest contracts
       const ingestTenantsInfo = this.authService.user.tenantsByApp.find(
         appTenantInfo => appTenantInfo.name === 'INGEST_APP');
       const ingestTenants: Tenant[] = ingestTenantsInfo ? ingestTenantsInfo.tenants : [];
       ingestTenants.forEach((tenant) => {
-        if (!this.tenants.find(appTenant => appTenant.key === '' + tenant.identifier)) {
-          this.tenants.push({ key: '' + tenant.identifier, label: tenant.name });
-        }
         this.ingestService.getAllForTenant('' + tenant.identifier).subscribe(
           ingestContracts => {
             this.ingestContracts.set('' + tenant.identifier, ingestContracts.map(x => ({
@@ -111,23 +142,44 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
             })));
           });
       });
-
-      this.tenants.sort((t1, t2) => t1.label.localeCompare(t2.label));
     }
   }
 
   onDelete(index: number) {
     this.permissions.splice(index, 1);
+    this.selectedOrganisations.splice(index, 1);
+    this.changeOrganisations.emit(this.selectedOrganisations);
+    if (this.onChange) {
+      this.onChange(this.permissions);
+    }
+
+  }
+
+  onAdd() {
+    this.permissions.push({ tenant: '', accessContracts: [], ingestContracts: [] });
+    this.selectedOrganisations.push(null);
+    this.changeOrganisations.emit(this.selectedOrganisations);
     if (this.onChange) {
       this.onChange(this.permissions);
     }
   }
 
-  onAdd() {
-    this.permissions.push({ tenant: '', accessContracts: [], ingestContracts: [] });
+  compareTenantIds(a: any, b: any) {
+    return '' + a === '' + b;
+  }
+
+  getTenantsForOrganisation(customerId: string): Tenant[] {
+    return this.tenants.filter(tenant => tenant.customerId === customerId);
+  }
+
+  onCustomerSelect(permission: ContextPermission) {
+    permission.tenant = '';
+    permission.accessContracts = [];
+    permission.ingestContracts = [];
     if (this.onChange) {
       this.onChange(this.permissions);
     }
+    this.changeOrganisations.emit(this.selectedOrganisations);
   }
 
   onTenantSelect() {
@@ -165,13 +217,13 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     this.disabled = isDisabled;
   }
 
-  getAccessContractKeys(tenant: string): string[] {
-    const contracts: Option[] = this.accessContracts.get(tenant);
-    return contracts != null ? contracts.map(item => item.key)  : [];
+  getAccessContractKeys(tenantId: number): string[] {
+    const contracts: Option[] = this.accessContracts.get('' + tenantId);
+    return contracts != null ? contracts.map(item => item.key) : [];
   }
 
-  getIngestContractKeys(tenant: string) {
-    const contracts: Option[] = this.ingestContracts.get(tenant);
-    return contracts != null ? contracts.map(item => item.key)  : [];
+  getIngestContractKeys(tenantId: number): string[] {
+    const contracts: Option[] = this.ingestContracts.get('' + tenantId);
+    return contracts != null ? contracts.map(item => item.key) : [];
   }
 }

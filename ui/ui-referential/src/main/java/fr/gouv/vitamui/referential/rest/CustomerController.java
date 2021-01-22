@@ -34,44 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cucumber.back.steps.referential.context;
+package fr.gouv.vitamui.referential.rest;
 
-import io.cucumber.java.en.When;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.utils.TestConstants;
+import java.util.Collection;
+import java.util.Optional;
 
-/**
- * Teste l'API Contextes dans Referential admin : opérations de vérification.
- *
- *
- */
-public class ApiReferentialExternalContextCheckSteps extends CommonSteps {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-    @When("^un utilisateur vérifie l'existence d'un contexte par son identifiant$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_identifiant() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.referential.service.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "customers")
+@RestController
+@RequestMapping("${ui-referential.prefix}/customers")
+public class CustomerController extends AbstractUiRestController {
+
+    private final CustomerService service;
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerController.class);
+
+    @Autowired
+    public CustomerController(final CustomerService service) {
+        this.service = service;
     }
 
-    @When("^un utilisateur vérifie l'existence d'un contexte par son code et son nom$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_code_et_son_nom() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            dto.setName(TestConstants.CONTEXT_NAME);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
+    @ApiOperation(value = "Get all customers")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<CustomerDto> getAll(final Optional<String> criteria) {
+        LOGGER.debug("Get all with criteria={}", criteria);
+        RestUtils.checkCriteria(criteria);
+        return service.getAll(buildUiHttpContext(), criteria);
     }
 }

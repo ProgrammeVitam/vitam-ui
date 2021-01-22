@@ -98,7 +98,7 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-
+    
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
     
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
@@ -477,8 +477,6 @@ public abstract class BaseIntegration {
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
         //@formatter:off
         try {
-        	LOGGER.debug("Get certificate : {}", genericCert);
-        	LOGGER.debug("Get passaword : {}", jksPassword);
             final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
@@ -507,9 +505,6 @@ public abstract class BaseIntegration {
         final Enumeration<?> enumeration = keyStore.aliases();
         while (enumeration.hasMoreElements()) {
             final String alias = (String) enumeration.nextElement();
-
-        	LOGGER.debug("Get certificate : {}", genericCert);
-        	LOGGER.debug("Get passaword : {}", jksPassword);
             final Certificate certificate = keyStore.getCertificate(alias);
             final byte[] encodedCertKey = certificate.getEncoded();
             result = Base64.getEncoder().encodeToString(encodedCertKey);

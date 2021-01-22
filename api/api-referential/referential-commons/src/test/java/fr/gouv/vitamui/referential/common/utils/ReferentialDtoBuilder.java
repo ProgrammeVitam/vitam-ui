@@ -56,7 +56,6 @@ public class ReferentialDtoBuilder {
         contextDto.setStatus(ContextStatus.ACTIVE.toString());
         contextDto.setEnableControl(true);
         contextDto.setSecurityProfile("securityProfile");
-        // contextDto.setPermissions(buildPermissions());
         return contextDto;
     }
 

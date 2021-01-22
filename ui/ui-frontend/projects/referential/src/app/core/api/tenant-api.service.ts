@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,44 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cucumber.back.steps.referential.context;
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { BASE_URL, BaseHttpClient, Tenant } from 'ui-frontend-common';
 
-import io.cucumber.java.en.When;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.utils.TestConstants;
+@Injectable({
+  providedIn: 'root'
+})
+export class TenantApiService extends BaseHttpClient<Tenant> {
 
-/**
- * Teste l'API Contextes dans Referential admin : opérations de vérification.
- *
- *
- */
-public class ApiReferentialExternalContextCheckSteps extends CommonSteps {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/tenants');
+  }
 
-    @When("^un utilisateur vérifie l'existence d'un contexte par son identifiant$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_identifiant() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
-    }
-
-    @When("^un utilisateur vérifie l'existence d'un contexte par son code et son nom$")
-    public void un_utilisateur_vérifie_l_existence_d_un_contexte_par_son_code_et_son_nom() {
-        try {
-            ContextDto dto = new ContextDto();
-            dto.setIdentifier(TestConstants.CONTEXT_IDENTIFIER);
-            dto.setName(TestConstants.CONTEXT_NAME);
-            testContext.bResponse = getContextRestClient().check(getSystemTenantUserAdminContext(), dto);
-        }
-        catch (final RuntimeException e) {
-            testContext.exception = e;
-        }
-    }
+  getAll() {
+    return super.getAllByParams(new HttpParams());
+  }
 }

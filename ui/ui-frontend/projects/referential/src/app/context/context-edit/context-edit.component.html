@@ -1,0 +1,36 @@
+<div class="header">
+    <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+  </div>
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+      <cdk-step>
+        <div class="content">
+          <h2 i18n="Edit context title@@contextEditTitle1">Modification d'un contexte applicatif</h2>
+          <h3 i18n="Edit context title@@contextEditTitle2">Permissions</h3>
+  
+  
+          <div class="form-group">
+            <app-context-edit-permission formControlName="permissions" 
+              (changeOrganisations)="onChangeOrganisations($event)"></app-context-edit-permission>
+            <div *ngIf="isPermissionsOnMultipleOrganisations">
+              <span class="error-message" i18n="Multiple organisation warning hint@@formWarningMultipleOrganisations">Attention vous avez renseigné deux organisations différentes</span>
+            </div>
+            <ng-container>
+              <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
+                                          i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>
+              <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions"
+                                          i18n="Required permissions error hint@@formErrorRequiredField">Au moins une permission doit être renseignée</span>
+  
+            </ng-container>
+          </div>
+  
+          <button type="submit" class="btn primary" [disabled]="isPermissionsInvalid()"
+                  i18n="Finish context edition button@@contextEditFinishButton">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()"
+                  i18n="Cancel context creation@@contextEditCancelButton">Annuler</button>
+        </div>
+      </cdk-step>
+    </vitamui-common-stepper>
+  </form>
+  
