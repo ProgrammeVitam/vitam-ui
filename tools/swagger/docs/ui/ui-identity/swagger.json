@@ -3168,15 +3168,33 @@
         "address": {
           "$ref": "#/definitions/AddressDto"
         },
+        "gdprAlertDelay":{
+          "type":"integer",
+          "format":"int32",
+          "minimum": 72,
+          "example" : "130",
+          "description" : "La durée d'alerte pour les notifications"
+        },
+        "gdprAlert":{
+          "type":"boolean",
+          "description" : "Pour activer ou désactiver la réception des alertes"
+        },
         "code": {
-          "type": "string"
+          "type": "string",
+          "example": "1",
+          "description": "Identifiant métier"
         },
         "companyName": {
-          "type": "string"
+          "type": "string",
+          "example": "archiveco",
+          "description": "Nom de la compagnie"
         },
         "defaultEmailDomain": {
-          "type": "string"
+          "type": "string",
+          "example": "@archiveco.fr",
+          "description": "Nom de domaine par défaut"
         },
+
         "emailDomains": {
           "type": "array",
           "items": {
@@ -3184,17 +3202,27 @@
           }
         },
         "enabled": {
-          "type": "boolean"
+          "type": "boolean",
+          "example": "true",
+          "description": "Actif ou inactif"
         },
+        "id": {
+          "type": "string",
+          "description": "Identifiant technique",
+          "example": "1",
+          "readOnly": true
+        },
+        "identifier": {
+          "type": "string",
+          "example": "1",
+          "description": "Identifiant métier",
+          "readOnly": true
+        },
+
         "hasCustomGraphicIdentity": {
           "type": "boolean"
         },
-        "id": {
-          "type": "string"
-        },
-        "identifier": {
-          "type": "string"
-        },
+
         "language": {
           "type": "string",
           "enum": [
@@ -3885,6 +3913,14 @@
         "customerId": {
           "type": "string"
         },
+        "desactivationDate":{
+          "type":"string",
+          "format":"date-time"
+        },
+        "removingDate":{
+          "type":"string",
+          "format":"date-time"
+        },
         "email": {
           "type": "string"
         },
@@ -3938,6 +3974,7 @@
           "enum": [
             "ENABLED",
             "DISABLED",
+            "REMOVED",
             "BLOCKED",
             "ANONYM"
           ]

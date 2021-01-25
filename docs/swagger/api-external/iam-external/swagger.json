@@ -3361,6 +3361,17 @@
         "address": {
           "$ref": "#/definitions/AddressDto"
         },
+        "gdprAlertDelay":{
+          "type":"integer",
+          "format":"int32",
+          "minimum": 72,
+          "example" : "130",
+          "description" : "La durée d'alerte pour les notifications"
+        },
+        "gdprAlert":{
+          "type":"boolean",
+          "description" : "Pour activer ou désactiver la réception des alertes"
+        },
         "code": {
           "type": "string",
           "example": "1",
@@ -4259,11 +4270,22 @@
           "example": true,
           "readOnly": true
         },
+        "desactivationDate":{
+          "type":"string",
+          "format":"date-time",
+          "description" : "Date de désactivation de l'utilisateur"
+        },
+        "removingDate":{
+          "type":"string",
+          "format":"date-time",
+          "description" : "Date de suppression de l'utilisateur"
+        },
         "status": {
           "type": "string",
           "enum": [
             "ENABLED",
             "DISABLED",
+            "REMOVED",
             "BLOCKED",
             "ANONYM"
           ],

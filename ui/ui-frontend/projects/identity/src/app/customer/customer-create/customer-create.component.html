@@ -9,7 +9,8 @@
       <div class="content">
         <h2 i18n="Create customer title@@customerCreateTitle1">Création d'un client</h2>
         <div>
-          <vitamui-common-input class="field-code" formControlName="code" required placeholder="Code client"
+          <vitamui-common-input class="field-code" formControlName="code" maxlength="20" required
+            placeholder="Code client"
             i18n-placeholder="Customer code input placeholder + format@@customerCreateCustomerCodeInputPlaceholder">
             <ng-container *ngIf="form.get('code')?.touched">
               <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
@@ -83,9 +84,26 @@
           </div>
         </ng-container>
 
-        <vitamui-common-input class="field-street" formControlName="internalCode" maxlength="20"
-          placeholder="Code interne" i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
-        </vitamui-common-input>
+        <div class="d-flex">
+
+          <label for="alerte" class="inline-label label-alerte">
+            Alerte pour les utilisateurs inactifs <span class="required-marker">*</span><br>
+          </label>
+          <vitamui-common-slide-toggle formControlName="gdprAlert" i18n="client create alerte account@@AlertedAccount">
+          </vitamui-common-slide-toggle>
+          <label for="duréealerte" class="inline-label label-alertDelay">
+            Durée d'alerte sur les utilisateurs inactifs (par mois) <span class="required-marker">*</span>
+          </label>
+          <vitamui-common-input [disabled]="!form.get('gdprAlert').value" formControlName="gdprAlertDelay"
+            maxlength="250" required placeholder="Durée d'alerte">
+            <vitamui-common-input-error
+              *ngIf="form.get('gdprAlert').value && form.get('gdprAlertDelay')?.touched && !!form.get('gdprAlertDelay')?.errors?.required"
+              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form.get('gdprAlert').value && !!form.get('gdprAlertDelay')?.errors?.min"
+              i18n="Required field error hint@@formErrorRequiredField">Il faut au moins 72 mois (6 ans)
+            </vitamui-common-input-error>
+          </vitamui-common-input>
+        </div>
 
         <div class="d-flex">
           <label for="language" class="inline-label label-language"
@@ -181,28 +199,26 @@
       </div>
     </cdk-step>
 
-    <cdk-step>
+      <cdk-step>
       <div class="content">
         <h2 i18n="Customer graphical identity title@@customerGraphicalIdentityTitle">Identité graphique du client</h2>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity"
-            i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique
-            personnalisée</vitamui-common-slide-toggle>
+          <vitamui-common-slide-toggle formControlName="hasCustomGraphicIdentity" i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">Afficher l'identité graphique personnalisée</vitamui-common-slide-toggle>
         </div>
 
         <div class="d-flex">
           <div class="upload-text">
-            <div class="upload" i18n="Customer graphical identity upload label@@customerGraphicalIdentityUploadLabel">
-              <span class="underline" (click)="addLogo()">Sélectionner</span> le logo du client</div>
-            <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max
-              280px * 100px)</div>
+            <div class="upload" i18n="Customer graphical identity upload label@@customerGraphicalIdentityUploadLabel"><span class="underline" (click)="addLogo()">Sélectionner</span> le logo du client</div>
+            <div i18n="Customer graphical identity max size label@@customerGraphicalIdentityMaxSizeLabel">(taille max 280px * 100px)</div>
           </div>
-          <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
-            (fileToUploadEmitter)="onImageDropped($event)" (fileDragOverEmitter)="onImageDragOver($event)"
+          <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}"
+            vitamuiCommonDragAndDrop
+            (fileToUploadEmitter)="onImageDropped($event)"
+            (fileDragOverEmitter)="onImageDragOver($event)"
             (fileDragLeaveEmitter)="onImageDragLeave($event)">
             <div *ngIf="imageUrl" class="image-container">
-              <img class="logo-image" [src]="imageUrl" />
+              <img class="logo-image" [src]="imageUrl"/>
             </div>
             <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)">
             <div class="drop-area">
@@ -214,8 +230,7 @@
         </div>
 
         <div class="customer-colors-input">
-          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity"
-            themeOverloadSelector="form#formCreateCustomer"></app-customer-colors-input>
+          <app-customer-colors-input formControlName="themeColors" [disabled]="!hasCustomGraphicIdentity" themeOverloadSelector="form#formCreateCustomer"></app-customer-colors-input>
         </div>
         <div class="error-message" *ngIf="hasError">
           {{ message }}
@@ -228,12 +243,12 @@
             i18n="@@customerCreateCancelButton">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
+          <i class="material-icons">arrow_back</i> <ng-container i18n="Previous step button label@@customerCreateBackButton">Retour</ng-container>
         </button>
       </div>
 
     </cdk-step>
+
 
     <cdk-step>
       <div class="content">

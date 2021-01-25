@@ -312,6 +312,8 @@ public class InitCustomerServiceIntegrationTest {
         owners.add(owner);
         dto.setOwners(owners);
         dto.setHasCustomGraphicIdentity(false);
+        dto.setGdprAlertDelay(72);
+        dto.setGdprAlert(false);
         return dto;
     }
 }

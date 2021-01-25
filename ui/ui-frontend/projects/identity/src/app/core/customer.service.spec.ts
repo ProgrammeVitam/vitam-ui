@@ -193,5 +193,7 @@ const expectedCustomer: Customer = {
     },
     readonly: false
   }],
-  themeColors: {}
+  themeColors: {},
+  gdprAlert : false,
+  gdprAlertDelay : 72
 };

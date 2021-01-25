@@ -87,7 +87,9 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: {}
+  themeColors: {},
+  gdprAlert : false,
+  gdprAlertDelay : 72
 };
 
 @Component({

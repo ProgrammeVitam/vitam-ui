@@ -58,5 +58,8 @@ export interface Customer extends Id {
   readonly: boolean;
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
+  gdprAlert : boolean;
+  gdprAlertDelay : number;
   tenantName?: string;
+
 }

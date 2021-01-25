@@ -86,7 +86,7 @@ import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
         TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
-    private static final String TOKEN_VALUE = "TOK-1-F8lEhVif0FWjgDF32ov73TtKhE6mflRu";
+    private static final String TOKEN_VALUE = "TOK1234567890";
 
     private static final String USER_ID = "userId";
 
@@ -311,7 +311,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
-        user.setSiteCode("001");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -344,14 +343,16 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Subrogeable\":\"false\","
                 + "\"Code interne\":\"\","
                 + "\"OTP\":\"true\","
-                + "\"Code du site\":\"001\","
+                + "\"Date de désactivation\":\"\","
+                + "\"Date de suppression\":\"\","
+                + "\"Code du site\":\"\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
                 + "\"Ville\":\"-\","
                 + "\"Pays\":\"-\""
                 + "}");
         //@formatter:on
-    }
+       }
 
     @Test
     public void testPatch() {
@@ -590,7 +591,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Event event = events.iterator().next();
         //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo(
-                "{\"diff\":{"
+            "{\"diff\":{"
                 + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
                 + "\"-Pays\":\"-\",\"+Pays\":\"-\","
                 + "\"-Ville\":\"-\",\"+Ville\":\"-\","

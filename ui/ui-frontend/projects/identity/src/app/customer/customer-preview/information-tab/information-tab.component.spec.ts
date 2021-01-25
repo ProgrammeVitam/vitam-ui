@@ -72,7 +72,9 @@ let expectedCustomer: Customer = {
     },
     internalCode: '1',
     owners: [],
-    themeColors: {}
+    themeColors: {},
+    gdprAlert : false,
+    gdprAlertDelay : 72
 };
 
 @Component({
@@ -150,7 +152,9 @@ describe('Customer InformationTabComponent', () => {
       },
       internalCode: '1',
       owners: [],
-      themeColors: {}
+      themeColors: {},
+      gdprAlert : false,
+      gdprAlertDelay : 72
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
@@ -225,7 +229,9 @@ describe('Customer InformationTabComponent', () => {
       internalCode: null,
       language: null,
       emailDomains: null,
-      defaultEmailDomain: null
+      defaultEmailDomain: null,
+      gdprAlert : null,
+      gdprAlertDelay : null
     });
     expect(testhost.component.form.get('id').valid).toBeFalsy('id');
     expect(testhost.component.form.get('code').valid).toBeFalsy('code');
@@ -272,7 +278,9 @@ describe('Customer InformationTabComponent', () => {
       internalCode: expectedCustomer.internalCode,
       language: expectedCustomer.language,
       emailDomains: expectedCustomer.emailDomains,
-      defaultEmailDomain: expectedCustomer.defaultEmailDomain
+      defaultEmailDomain: expectedCustomer.defaultEmailDomain,
+      gdprAlert : expectedCustomer.gdprAlert,
+      gdprAlertDelay : expectedCustomer.gdprAlertDelay
     });
     expect(testhost.component.form.valid).toBeTruthy();
   });

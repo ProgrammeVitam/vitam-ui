@@ -92,7 +92,9 @@ class TestHostComponent {
         country : 'DK'
     },
     owners: [],
-    themeColors: {}
+    themeColors: {},
+    gdprAlert : false,
+    gdprAlertDelay : 72
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

@@ -1,4 +1,3 @@
-import { OnDestroy } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,7 +34,7 @@ import { OnDestroy } from '@angular/core';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
@@ -55,6 +54,26 @@ const UPDATE_DEBOUNCE_TIME = 200;
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
   public readonly form: FormGroup;
+
+  previousValue: {
+    code: string,
+    identifier: string,
+    name: string,
+    companyName: string,
+    passwordRevocationDelay: number,
+    otp: OtpState,
+    address: {
+      street: string,
+      zipCode: string,
+      city: string,
+      country: string,
+    },
+    language: string,
+    emailDomains: string[],
+    defaultEmailDomain: string
+    gdprAlert: boolean,
+    gdprAlertDelay: number,
+  };
 
   @Input()
   set customer(customer: Customer) {
@@ -76,24 +95,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     }
   }
 
-  private previousValue: {
-    code: string,
-    identifier: string,
-    name: string,
-    companyName: string,
-    passwordRevocationDelay: number,
-    otp: OtpState,
-    address: {
-        street: string,
-        zipCode: string,
-        city: string,
-        country: string,
-    },
-    internalCode: string,
-    language: string,
-    emailDomains: string[],
-    defaultEmailDomain: string
-  };
 
   private sub: Subscription;
 
@@ -104,7 +105,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   ) {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
-      identifier: [{value: null, disabled: true}, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       code: [
         null,
         [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
@@ -123,7 +124,11 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       internalCode: [null],
       language: [null, Validators.required],
       emailDomains: [null, Validators.required],
-      defaultEmailDomain: [null, Validators.required]
+      defaultEmailDomain: [null, Validators.required],
+      gdprAlert: false,
+      gdprAlertDelay: [
+        72,
+        [Validators.required, Validators.min(72), Validators.pattern(/^[0-9]{1,20}$/)]]
     });
   }
 
@@ -139,6 +144,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
     )
     .subscribe((customer: Customer) => this.resetForm(customer));
   }
+
 
   ngOnDestroy() {
     if (this.sub) {

@@ -1,0 +1,10 @@
+<mat-dialog-content>
+    <p i18n="@@disabledGdprAlertConfirm"> Vous êtes sur le point de désactiver les alertes sur utilisateurs inactifs 
+        dont les données personnelles sont arrivées à échéance dans cette organisation. Voulez-vous continuer ?
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog"
+      i18n="@@confirmDialogConfirmButton">Confirmer</button>
+    <button matDialogClose class="btn cancel" i18n="@@confirmDialogCancelButton">Annuler</button>
+  </mat-dialog-actions>

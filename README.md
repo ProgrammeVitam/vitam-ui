@@ -211,6 +211,8 @@ Use the `rpm` and `webpack` maven profiles to build all artifacts and deploy to 
 To generate `swagger.json`:
 
     mvn test -Pswagger
+##### ATTENTION : #####
+`In case you change the model part of an object or an entity in one of the projects, it is not essential to regenerate the swagger.json file, you just have to modify it manually by adding the necessary information on the modifications we made on the model part.`
 
 To edit the file you can use [this website](https://editor.swagger.io/).
 

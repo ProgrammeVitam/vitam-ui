@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" *ngIf="user?.status !== 'REMOVED'">
   <div class="row">
     <div class="col-10 form-control">
       <p *ngIf="user?.status === 'ENABLED'" i18n="user info tab enabled@@userInfoTabEnabled">Compte actif</p>
@@ -180,3 +180,8 @@
     </div>
   </div>
 </form>
+
+<div *ngIf="user?.status === 'REMOVED'">
+  <h2>ATTENTION</h2>
+ L'utilisateur que vous cherchez est déja supprimé
+</div>
