@@ -83,7 +83,7 @@ public class OperationService {
         LOGGER.debug(r.toString());
     }
 
-    public void lauchRectificationAudit(final VitamContext context, final String evidenceAuditIdentifier) throws VitamClientException {
+    public void launchRectificationAudit(final VitamContext context, final String evidenceAuditIdentifier) throws VitamClientException {
         LOGGER.debug("Run rectificationAudit {}", evidenceAuditIdentifier);
         final RequestResponse r = this.adminExternalClient.rectificationAudit(context, evidenceAuditIdentifier);
         LOGGER.debug(r.toString());

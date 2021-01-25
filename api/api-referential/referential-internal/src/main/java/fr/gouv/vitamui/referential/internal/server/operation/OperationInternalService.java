@@ -144,7 +144,7 @@ public class OperationInternalService {
             if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions()))  {
                 operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
             } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions()))  {
-                operationService.lauchRectificationAudit(context, auditOptions.getAuditType());
+                operationService.launchRectificationAudit(context, auditOptions.getAuditType());
             } else {
                 auditOptions.setQuery(null);
                 operationService.runAudit(context, mapper.valueToTree(auditOptions));

@@ -78,17 +78,13 @@ export class AuditCreateComponent implements OnInit {
     });
 
     this.accessContractSelect.valueChanges.subscribe(accessContractId => {
-      console.log('AC ID: ', accessContractId);
       if (this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' ||
         this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY' ||
         this.form.controls.auditActions.value === 'AUDIT_FILE_RECTIFICATION') {
-        console.log('Integrité / Existance / Correctif');
         this.auditService.getAllAccessionRegister(accessContractId).subscribe(accessionRegisters => {
-          console.log('Services Producteurs: ', accessionRegisters);
           this.accessionRegisters = accessionRegisters;
         });
       } else {
-        console.log('Coherence');
         this.accessionRegisters = null;
       }
     });
@@ -116,7 +112,6 @@ export class AuditCreateComponent implements OnInit {
       } else {
         this.form.controls.query.setValue(this.getRootQuery(null));
       }
-      console.log('query: ', this.form.controls.query.value);
     });
 
     this.form.controls.evidenceAudit.valueChanges.subscribe(value => {
@@ -154,11 +149,9 @@ export class AuditCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Form invalid ? ', this.form.invalid);
     if (this.form.invalid) {
       return;
     }
-    console.log('data: ', this.form.value);
     this.auditService.create(this.form.value, new HttpHeaders({'X-Access-Contract-Id': this.accessContractSelect.value})).subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
