@@ -15,3 +15,17 @@
   <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE' | translate}}</label>
   {{portalMessage}}
 </div>
+
+<div *ngFor="let item of portalTitles | keyvalue;">
+  <div *ngIf="item.key !== language">
+  <div class="col-12 d-flex flex-column mt-4">
+    <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate}} {{ 'COMMON.LANGUAGE.'+item.key | translate}}</label>
+    <span>{{item.value}}</span>
+  </div>
+  <div *ngIf="portalMessages[item.key]" class="col-12 d-flex flex-column mt-4">
+    <label class="text normal light">{{'CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate}} {{ 'COMMON.LANGUAGE.'+item.key | translate}}</label>
+    {{portalMessages[item.key]}}
+  </div>  
+  </div>
+</div>
+

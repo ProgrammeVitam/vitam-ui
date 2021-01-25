@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.commons.security.client.dto;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -58,4 +61,7 @@ public class BasicCustomerDto extends IdDto {
 
     private GraphicIdentityDto graphicIdentity;
 
+    private Map<String, String> portalTitles = new HashMap<>();
+
+    private Map<String, String> portalMessages = new HashMap<>();
 }

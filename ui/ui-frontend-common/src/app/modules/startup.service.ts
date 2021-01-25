@@ -37,10 +37,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ApplicationService } from './application.service';
+
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
-import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
@@ -277,4 +278,21 @@ export class StartupService {
       return customer[CUSTOMER_WEBSITE_URL_KEY];
     }
   }
+
+  public getDefaultPortalTitle(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.PORTAL_TITLE;
+    }
+
+    return null;
+  }
+
+  public getDefaultPortalMessage(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.PORTAL_MESSAGE;
+    }
+
+    return null;
+  }
+
 }

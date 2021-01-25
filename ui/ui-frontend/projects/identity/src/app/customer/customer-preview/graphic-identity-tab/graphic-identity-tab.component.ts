@@ -70,9 +70,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
 
-  private portalMessage: string;
-  private portalTitle: string;
-
   public theme: Theme;
   public COLOR_NAME: {[colorId: string]: string};
   public THEME_COLORS = ThemeColorType;
@@ -88,30 +85,20 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     this.COLOR_NAME = this.themeService.getBaseColors();
   }
 
-  private majTheme(colors: {[colorId: string]: string}, portalMessage: string, portalTitle: string): Theme {
+  private majTheme(colors: {[colorId: string]: string}): Theme {
     return {
       colors,
-      portalMessage,
-      portalTitle,
     };
   }
 
   private resetTab(customer: Customer): void {
 
-    // cannot set them without the values. It needs to be separated in the service
-    this.portalMessage = this.customer && this.customer.portalMessage ? this.customer.portalMessage
-     : this.themeService.defaultTheme.portalMessage;
-    this.portalTitle =  this.customer && this.customer.portalTitle ? this.customer.portalTitle
-     : this.themeService.defaultTheme.portalTitle;
-
     if (customer.hasCustomGraphicIdentity) {
       const colors = this.themeService.getThemeColors(customer.themeColors);
-      this.theme = this.majTheme(colors, this.portalMessage, customer.portalTitle);
+      this.theme = this.majTheme(colors);
     } else {
       this.theme = this.majTheme(
-        this.themeService.getThemeColors(this.themeService.defaultTheme.colors),
-        this.portalMessage,
-        this.portalTitle
+        this.themeService.getThemeColors(this.themeService.defaultTheme.colors)
       );
       this.theme.headerUrl = this.themeService.defaultTheme.headerUrl;
       this.theme.portalUrl = this.themeService.defaultTheme.portalUrl;

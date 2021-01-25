@@ -118,10 +118,9 @@ public class CustomerDto extends IdDto {
 
     private Map<String, String> themeColors = new HashMap<>();
 
-    private String portalTitle;
+    private Map<String, String> portalTitles = new HashMap<>();
 
-    @Length(max = 500)
-    private String portalMessage;
+    private Map<String, String> portalMessages  = new HashMap<>();
     //****
 
     private boolean gdprAlert = false;

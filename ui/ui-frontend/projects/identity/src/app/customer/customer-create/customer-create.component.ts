@@ -87,6 +87,14 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this._homepageMessageForm = form;
   }
 
+  public portalTitles: {
+    [language: string]: string;
+  };
+
+  public portalMessages: {
+    [language: string]: string;
+  };
+
   public logos: Logo[];
 
   constructor(
@@ -127,8 +135,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
       themeColors: [null],
-      portalMessage: [null],
-      portalTitle: [null],
+      portalMessages: [null],
+      portalTitles: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ]),
@@ -222,8 +230,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     if (this.homepageMessageForm) {
       customer = {...customer, ...{
         id : this.homepageMessageForm.get('id').value,
-        portalTitle: this.homepageMessageForm.get('portalTitle').value,
-        portalMessage: this.homepageMessageForm.get('portalMessage').value,
+        portalTitles: this.portalTitles,
+        portalMessages: this.portalMessages,
       }};
     }
 

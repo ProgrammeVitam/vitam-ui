@@ -240,7 +240,7 @@
 
     <cdk-step>
       <div *ngIf="stepIndex===3" class="content mt-4">
-        <app-homepage-message (formToSend)="homepageMessageForm = $event.form"></app-homepage-message>
+        <app-homepage-message (formToSend)="homepageMessageForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages"></app-homepage-message>
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="!fourthStepValid()">

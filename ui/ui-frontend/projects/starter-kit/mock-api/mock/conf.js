@@ -1,5 +1,4 @@
 module.exports = {
-  PORTAL_TITLE: "Portail des applications de l'archivage",
   CAS_LOGOUT_URL: "https://dev.vitamui.com:8080/cas/logout",
   CAS_URL:
     "https://dev.vitamui.com:8080/cas/login?service=https://dev.vitamui.com:8888/identity-api/callback",

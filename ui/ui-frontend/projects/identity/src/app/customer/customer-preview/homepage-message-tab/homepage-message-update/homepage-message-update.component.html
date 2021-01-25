@@ -1,7 +1,7 @@
 <div class="content">
 
   <app-homepage-message [customer]="data.customer"
-    (formToSend)="customForm = $event.form">
+    (formToSend)="customForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages">
   </app-homepage-message>
 
     <div class="d-flex mt-4">

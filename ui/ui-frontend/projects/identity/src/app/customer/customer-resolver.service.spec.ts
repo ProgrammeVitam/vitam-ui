@@ -70,7 +70,10 @@ const expectedCustomer: Customer = {
   owners: [],
   themeColors: {},
   gdprAlert : false,
-  gdprAlertDelay : 72
+  gdprAlertDelay : 72,
+  themeColors: {},
+  portalMessages: {},
+  portalTitles: {}
 };
 
 describe('CustomerResolver', () => {

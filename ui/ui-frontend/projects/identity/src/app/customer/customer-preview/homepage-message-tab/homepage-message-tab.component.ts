@@ -1,7 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Customer, ThemeService } from 'ui-frontend-common';
+import { AuthService, Customer, StartupService } from 'ui-frontend-common';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
 
 @Component({
@@ -33,9 +33,18 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   public portalTitle: string;
   public portalMessage: string;
 
-  constructor(private dialog: MatDialog,
-              private themeService: ThemeService ) {
+  public portalTitles: {
+    [key: string]: string;
+  };
+  public portalMessages: {
+    [key: string]: string;
+  };
+
+  public language = this.authService.user.language;
+
+  constructor(private dialog: MatDialog, private startupService: StartupService, private authService: AuthService) {
   }
+
   ngOnDestroy(): void {
     this.destroy.next();
   }
@@ -44,18 +53,31 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   }
 
   private resetTab(customer: Customer): void {
-    this.portalMessage = customer && this.customer.portalMessage ? this.customer.portalMessage
-    : this.themeService.defaultTheme.portalMessage;
-    this.portalTitle =  customer && this.customer.portalTitle ? this.customer.portalTitle
-    : this.themeService.defaultTheme.portalTitle;
+    const title = this.startupService.getDefaultPortalTitle();
+    const message = this.startupService.getDefaultPortalMessage();
+
+    if (customer) {
+      if (customer.language) {
+        this.language = customer.language;
+      }
+      if (customer.portalMessages) {
+        this.portalMessages = customer.portalMessages;
+      }
+      if (customer.portalTitles) {
+        this.portalTitles = this.customer.portalTitles;
+      }
+    }
+
+    this.portalTitle = (this.portalTitles && this.portalTitles[this.language]) ? (this.portalTitles[this.language]) : title;
+    this.portalMessage = (this.portalMessages && this.portalMessages[this.language]) ? this.portalMessages[this.language] : message;
   }
 
   openUpdateHomepageMessage() {
-   const dialogRef = this.dialog.open(HomepageMessageUpdateComponent, {
+    const dialogRef = this.dialog.open(HomepageMessageUpdateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
       data: { customer: this.customer }
     });
-   dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe();
   }
 }
