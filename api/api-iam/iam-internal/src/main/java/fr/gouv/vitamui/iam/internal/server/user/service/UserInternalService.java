@@ -492,7 +492,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         final String groupId = CastUtils.toString(partialDto.get("groupId"));
-        if (groupId != null && !groupId.isEmpty()) {
+        if (!StringUtils.isEmpty(groupId)) {
             final GroupDto groupDto = getGroupDtoById(groupId, message);
             checkGroup(groupDto, customerId, message);
             if (!StringUtils.equals(user.getLevel(), groupDto.getLevel())) {
