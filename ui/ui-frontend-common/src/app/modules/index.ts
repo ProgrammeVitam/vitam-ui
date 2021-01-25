@@ -110,3 +110,4 @@ export * from './directives/tooltip/index';
 export * from './logger/index';
 export * from './helper/injector.module';
 export * from './vitamui-common.module';
+export * from './missing-translation-handler';

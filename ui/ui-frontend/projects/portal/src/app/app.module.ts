@@ -47,11 +47,7 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT,
-  InjectorModule, LoggerModule,
-  VitamUICommonModule,
-  VitamuiMissingTranslationHandler,
-  WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
