@@ -36,6 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
@@ -45,13 +52,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * All the services.
@@ -255,9 +255,9 @@ public class ServicesData {
 
     public static final String SERVICE_FILE_FORMATS = "FILE_FORMATS";
 
-    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX  + SERVICE_FILE_FORMATS;
 
-    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX+ SERVICE_FILE_FORMATS;
 
     public static final String ROLE_UPDATE_FILE_FORMATS = UPDATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
@@ -271,9 +271,9 @@ public class ServicesData {
 
     public static final String SERVICE_CONTEXTS = "CONTEXTS";
 
-    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX+ SERVICE_CONTEXTS;
 
-    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX  + SERVICE_CONTEXTS;
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
@@ -442,10 +442,10 @@ public class ServicesData {
             ROLE_CREATE_SECURITY_PROFILES,
             ROLE_DELETE_SECURITY_PROFILES,
 
-        ROLE_GET_RULES,
-        ROLE_CREATE_RULES,
-        ROLE_UPDATE_RULES,
-        ROLE_DELETE_RULES,
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
             ROLE_GET_ONTOLOGIES,
             ROLE_CREATE_ONTOLOGIES,
@@ -455,15 +455,14 @@ public class ServicesData {
             ROLE_GET_OPERATIONS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-        ROLE_GET_ALL_INGEST,
-        ROLE_GET_INGEST,
-        ROLE_CREATE_INGEST,
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST,
 
-        ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
-
-    );
+            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+            );
 
     /**
      * List of all the roles in the VITAMUI application (including the admin roles present in the ADMIN_VITAMUI_ROLES list)
@@ -570,17 +569,17 @@ public class ServicesData {
             ROLE_RUN_AUDITS,
             ROLE_RUN_PROBATIVE_VALUE,
 
-        ROLE_GET_ALL_INGEST,
-        ROLE_GET_INGEST,
-        ROLE_CREATE_INGEST,
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST,
 
-        ROLE_GET_ALL_ARCHIVE,
-        ROLE_GET_ARCHIVE,
-        ROLE_CREATE_ARCHIVE,
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE,
 
-        ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
 
             );
     //@formatter:on

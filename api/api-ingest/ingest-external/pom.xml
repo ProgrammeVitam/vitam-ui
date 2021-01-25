@@ -103,18 +103,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
-        <!-- PAC4J -->
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-saml-opensamlv3</artifactId>
-        </dependency>
-
-        <!-- Hibernate -->
-        <!-- <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency> -->
-
         <!-- UTIL -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -215,9 +203,7 @@
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
                         <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
-                        <argument>
-                            --spring.config.additional-location=file:${basedir}/src/main/config/ingest-external-application-dev.yml
-                        </argument>
+                        <argument>--spring.config.additional-location=file:${basedir}/src/main/config/ingest-external-application-dev.yml</argument>
                     </arguments>
                 </configuration>
             </plugin>

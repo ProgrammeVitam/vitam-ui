@@ -46,13 +46,13 @@ public class ArchiveExternalRestClientTest extends AbstractServerIdentityBuilder
 
     @Before
     public void setUp() {
-        archiveExternalRestClient = new ArchiveExternalRestClient(restTemplate, "/iam/v1/archive");
+        archiveExternalRestClient = new ArchiveExternalRestClient(restTemplate, "/v1/archive");
     }
 
     @Test
     public void sampleArchiveTest() {
         Assert.assertNotNull(archiveExternalRestClient);
-        Assert.assertEquals(archiveExternalRestClient.getPathUrl(), "/iam/v1/archive");
+        Assert.assertEquals(archiveExternalRestClient.getPathUrl(), "/v1/archive");
     }
 }
 

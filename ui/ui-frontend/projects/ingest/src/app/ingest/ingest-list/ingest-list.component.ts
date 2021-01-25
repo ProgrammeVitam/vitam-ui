@@ -65,6 +65,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   @Input('filters')
   set filters(filters: IngestFilters) {
+    console.log('Filters: ', filters);
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -75,7 +76,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   loaded = false;
 
-  orderBy = 'events.evDateTime';
+  orderBy = '#id';
   direction = Direction.ASCENDANT;
 
   private readonly searchChange = new Subject<string>();
@@ -88,7 +89,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   ngOnInit() {
     this.ingestService.search(
-      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.DESCENDANT,
+      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT,
         JSON.stringify(this.buildIngestCriteriaFromSearch()))
     ).subscribe((data: any[]) => {
       data.map((element: any) => {

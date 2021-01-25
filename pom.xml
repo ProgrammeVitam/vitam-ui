@@ -1415,6 +1415,7 @@
                     <version>${spring.boot.version}</version>
                     <configuration>
                         <addResources>false</addResources>
+                        <jvmArguments>-Xmx512m</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -1671,7 +1672,7 @@
                                     <executable>${main.basedir}/tools/packaging/publish.sh</executable>
                                     <workingDirectory>target</workingDirectory>
                                     <arguments>
-                                        <argument>${env.SERVICE_RPM_REPOSITORY_URL}/upload/${rpm.publication.env}/Packages</argument>
+                                        <argument>${rpm.publication.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -2023,4 +2024,3 @@
     </profiles>
 
 </project>
-

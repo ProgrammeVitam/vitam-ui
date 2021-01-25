@@ -39,6 +39,6 @@ package fr.gouv.vitamui.archive.common.rest;
 
 public class RestApi {
 
-    public static final String ARCHIVE = "/iam/v1/archive";
+    public static final String ARCHIVE = "/v1/archive";
 
 }

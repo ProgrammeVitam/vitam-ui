@@ -186,13 +186,9 @@ db.groups.insert({
 		"system_user_profile",
 		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
         "system_access_contract",
-        "auto_access_contract",
         "system_ingest_contract",
-        "auto_ingest_contract",
         "system_agencies",
-        "auto_agencies",
         "system_file_format",
-        "auto_file_format",
         "system_context",
         "system_security_profile",
         "system_ontology",
@@ -201,15 +197,8 @@ db.groups.insert({
         "system_dsl",
         "system_probative_value",
         "system_logbook_operation",
-        "system_holding_filling_scheme_profile"
-        "system_ingest_profile",
-<<<<<<< HEAD
+        "system_holding_filling_scheme_profile",
         "system_archive_profile"
-=======
-        "system_archive_profile",
-        "system_logbook_operation_profile",
-        "system_holding_filling_scheme_profile"
->>>>>>> resoudre conflit de merge
 	],
 	"readonly": false,
 	"level": "",
@@ -231,19 +220,7 @@ db.groups.insert({
 		"system_profile_profile",
 		"system_surrogate_profile",
 		"system_user_profile",
-		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
-    "system_access_contract",
-    "system_ingest_contract",
-    "system_agencies",
-    "system_file_format",
-    "system_context",
-    "system_security_profile",
-    "system_ontology",
-    "system_audit",
-    "system_secure",
-    "system_dsl",
-    "system_probative_value"
-
+		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c"
 	],
 	"readonly": false,
 	"level": "",
@@ -264,19 +241,7 @@ db.groups.insert({
 		"system_profile_profile",
 		"system_surrogate_profile",
 		"system_user_profile",
-		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
-    "system_access_contract",
-    "system_ingest_contract",
-    "system_agencies",
-    "system_file_format",
-    "system_context",
-    "system_security_profile",
-    "system_ontology",
-    "system_audit",
-    "system_secure",
-    "system_dsl",
-    "system_probative_value"
-
+		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c"
 	],
 	"readonly": false,
 	"level": "",

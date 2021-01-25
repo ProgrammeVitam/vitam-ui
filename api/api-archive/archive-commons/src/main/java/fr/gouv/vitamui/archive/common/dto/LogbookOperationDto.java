@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.archive.common.dto;
 
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
