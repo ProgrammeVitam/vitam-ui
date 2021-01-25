@@ -38,10 +38,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
 import { AdminUserProfile, AuthService, Customer, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
+
 import { UserApiService } from '../../core/api/user-api.service';
 import { UserService } from '../user.service';
-
 
 @Component({
   selector: 'app-user-preview',
@@ -58,12 +59,9 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
-  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
-
 
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
-
 
   constructor(
     private matDialog: MatDialog,
@@ -71,21 +69,13 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     private authService: AuthService,
     public userApi: UserApiService,
     private startupService: StartupService
-  ) { }
+  ) {}
 
-
-
-  refreshList() {
+  ngOnInit() {
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
       this.user = updatedUser;
     });
-
-  }
-
-  ngOnInit() {
-    this.refreshList();
-
   }
 
   ngOnDestroy() {
@@ -94,13 +84,11 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   openPopup() {
     window.open(this.startupService.getConfigStringValue('UI_URL')
-      + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
     this.emitClose();
   }
 
-
-  updateStatus(status: string) {
-
+  updateStatus( status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
       dialogToOpen = this.confirmEnabledUserDialog;
@@ -109,15 +97,14 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     }
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     dialogRef.afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.userService.patch({ id: this.user.id, status })
-          .subscribe((user) => {
-            this.user = user;
-          });
-
+    .pipe(filter((result) => !!result))
+    .subscribe(() => {
+      this.userService.patch({id: this.user.id, status })
+      .subscribe((user) => {
+        this.user = user;
       });
 
+    });
   }
 
   levelNotAllowed(): boolean {
@@ -140,36 +127,5 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE')
     );
   }
-
-    deleteUser(user: User, status: string) {
-
-    const emailadress  = user.email.split('@');
-    const email = "anonyme-"+user.identifier + "@"+emailadress[1];
-    const firstname = "";
-    const lastname = "";
-    const address = {
-      street: "",
-      zipCode: "",
-      city: "",
-      country: ""};
-
-      let dialogToOpen;
-    dialogToOpen = this.confirmdeleteUserDialog;
-
-    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, firstname })
-          .subscribe((user) => {
-            this.user = user;
-            this.emitClose();
-          });
-
-      });
-
-
-  }
-
 
 }

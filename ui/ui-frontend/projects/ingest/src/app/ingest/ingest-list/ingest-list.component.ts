@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
@@ -66,6 +65,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   @Input('filters')
   set filters(filters: IngestFilters) {
+    console.log('Filters: ', filters);
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -76,7 +76,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   loaded = false;
 
-  orderBy = 'events.evDateTime';
+  orderBy = '#id';
   direction = Direction.ASCENDANT;
 
   private readonly searchChange = new Subject<string>();
@@ -89,12 +89,12 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   ngOnInit() {
     this.ingestService.search(
-      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.DESCENDANT,
+      new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT,
         JSON.stringify(this.buildIngestCriteriaFromSearch()))
     ).subscribe((data: any[]) => {
       data.map((element: any) => {
-        if (element.data && element.data.length >= 2) {
-          element.data = JSON.parse(element.data);
+        if (element.evDetData && element.evDetData.length >= 2) {
+          element.evDetData = JSON.parse(element.evDetData);
         }
         if (element.agIdExt && element.agIdExt.length >= 2) {
           element.agIdExt = JSON.parse(element.agIdExt);
@@ -103,11 +103,8 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
           element.rightsStatementIdentifier = JSON.parse(element.rightsStatementIdentifier);
         }
       });
-
       this.dataSource = data;
-
     });
-
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -117,8 +114,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
-
-
   }
 
   buildIngestCriteriaFromSearch() {
@@ -162,6 +157,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
   }
 
   ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].dateTime : ingest.dateTime;
+    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].evDateTime : ingest.evDateTime;
   }
 }

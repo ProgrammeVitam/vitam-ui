@@ -71,18 +71,14 @@ export class IngestInformationTabComponent implements OnInit, OnChanges {
 
   ingestMessage(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessage :
-      ingest.outMessage;
+      ingest.events[ingest.events.length - 1].outMessg :
+      ingest.outMessg;
   }
 
   ingestEndDate(ingest: any): string {
     return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].dateTime :
-      ingest.dateTime;
-  }
-
-  ingestStatus(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+      ingest.events[ingest.events.length - 1].evDateTime :
+      ingest.evDateTime;
   }
 
   ingestStatus(ingest: any): string {

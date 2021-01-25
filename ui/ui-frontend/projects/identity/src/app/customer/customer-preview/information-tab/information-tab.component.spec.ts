@@ -72,9 +72,7 @@ let expectedCustomer: Customer = {
     },
     internalCode: '1',
     owners: [],
-    themeColors: {},
-    alerte : false,
-    alertDelay : 72
+    themeColors: {}
 };
 
 @Component({
@@ -152,9 +150,7 @@ describe('Customer InformationTabComponent', () => {
       },
       internalCode: '1',
       owners: [],
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(

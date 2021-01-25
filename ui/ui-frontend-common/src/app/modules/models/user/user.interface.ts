@@ -61,7 +61,5 @@ export interface User extends Id {
   internalCode?: string;
   analytics?: Analytics;
   siteCode: string;
-  desactivationDate : string;
-  alerte : boolean;
-  alerteDuration : number;
+
 }

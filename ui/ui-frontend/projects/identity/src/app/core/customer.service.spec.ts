@@ -193,7 +193,5 @@ const expectedCustomer: Customer = {
     },
     readonly: false
   }],
-  themeColors: {},
-  alerte : false,
-  alertDelay : 72
+  themeColors: {}
 };

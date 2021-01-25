@@ -92,9 +92,7 @@ class TestHostComponent {
         country : 'DK'
     },
     owners: [],
-    themeColors: {}, 
-    alerte : false,
-    alertDelay : 72
+    themeColors: {}
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

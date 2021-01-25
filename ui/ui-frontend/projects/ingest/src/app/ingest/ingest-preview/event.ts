@@ -1,6 +1,6 @@
 export class Event {
-    eventData: EventData;
-    subEvents: Event[];
+  eventData: EventData;
+  subEvents: Event[];
 
   constructor(eventData: any, subEvents: Event[]) {
     this.eventData = eventData;
