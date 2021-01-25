@@ -165,21 +165,6 @@ db.tenants.insert({
 });
 
 db.tenants.insert({
-  "_id": "auto_tenant",
-  "name": "Tenant Auto Referentiel",
-  "proof": true,
-  "enabled": true,
-  "readonly": false,
-  "identifier": NumberInt(2),
-  "ownerId": "system_owner",
-  "customerId": "system_customer",
-  "ingestContractHoldingIdentifier" : "IC-000001",
-  "itemIngestContractIdentifier" : "IC-000001",
-  "accessContractHoldingIdentifier" : "AC-000001",
-  "accessContractLogbookIdentifier" : "AC-000002"
-});
-
-db.tenants.insert({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,
@@ -929,36 +914,12 @@ db.profiles.insert({
     "name": "ROLE_GET_CUSTOMERS"
   },
   {
-    "name": "ROLE_GET_GROUPS_SUBROGATIONS",
+    "name": "ROLE_GET_GROUPS_SUBROGATIONS"
   },
   {
-    "name": "ROLE_GET_USERS_SUBROGATIONS",
+    "name": "ROLE_GET_USERS_SUBROGATIONS"
   }
   ]
-});
-
-db.profiles.insert({
-  "_id": "system_ingest_profile",
-  "identifier" : NumberInt(22),
-  "name": "Ingest Profile",
-  "description": "Ingest Profile",
-  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "INGEST_MANAGEMENT_APP",
-  "level": "",
-  "enabled": true,
-  "readonly": false,
-  "customerId": "system_customer",
-  "roles": [
-  {
-    "name": "ROLE_CREATE_INGEST"
-  },
-  {
-    "name": "ROLE_GET_INGEST"
-  },
-  {
-    "name": "ROLE_GET_ALL_INGEST"
-  }
-   ]
 });
 
 // ========================================= partie archive search ============================================
@@ -986,8 +947,6 @@ db.profiles.insert({
   }
    ]
 });
-
-//========================================== partie archive search =============================================
 
 // ========================================= GROUPS =========================================
 

@@ -84,5 +84,4 @@ export class AgencyApiService extends BaseHttpClient<Agency> {
   export(headers?: HttpHeaders): Observable<any> {
     return super.getHttp().get(super.getApiUrl() + '/export', {headers, responseType: 'text'});
   }
-
 }

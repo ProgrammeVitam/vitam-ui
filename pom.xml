@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
@@ -86,7 +86,7 @@
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
         <embedded.mongo.version>2.2.0</embedded.mongo.version>
-        <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
+		<fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
         <gson.version>2.8.6</gson.version>
         <guava.version>29.0-jre</guava.version>
@@ -103,10 +103,11 @@
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.impl.version>3.0.0-M1</jaxb.impl.version>
         <jlibs.version>2.2.3</jlibs.version>
-        <junit.version>4.13</junit.version>
-        <junit.jupiter.version>5.5.0</junit.jupiter.version>
-        <junit.jupiter.platform.version>1.5.0</junit.jupiter.platform.version>
-        <jruby.complete.version>9.2.13.0</jruby.complete.version>
+        <junit.version>4.13.1</junit.version>
+        <junit.jupiter.version>5.7.0</junit.jupiter.version>
+        <junit.jupiter.platform.version>1.7.0</junit.jupiter.platform.version>
+        <junit.vintage.engine.version>5.7.0</junit.vintage.engine.version>
+        <jruby.complete.version>1.7.26</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
         <logback.version>1.2.3</logback.version>
         <lombok.version>1.18.12</lombok.version>
@@ -133,8 +134,8 @@
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.4</xom.version>
-        <xdocreport.version>2.0.2</xdocreport.version>
-        <xerces.version>2.12.0</xerces.version>
+		<xdocreport.version>2.0.2</xdocreport.version>
+		<xerces.version>2.12.0</xerces.version>
         <esapi.version>2.1.0.1</esapi.version>
         <antisamy.version>1.5.8</antisamy.version>
         <json-sanitize.version>1.2.0</json-sanitize.version>
@@ -151,20 +152,21 @@
         <maven.dependencycheck.version>5.3.0</maven.dependencycheck.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
+        <maven.directory.plugin.version>0.1</maven.directory.plugin.version>
         <maven.failsafe.plugin.version>2.21.0</maven.failsafe.plugin.version>
         <maven.filtering.plugin.version>1.3</maven.filtering.plugin.version>
-        <maven.findbugs.plugin.version>3.0.4</maven.findbugs.plugin.version>
+        <maven.spotbugs.plugin.version>4.0.4</maven.spotbugs.plugin.version>
         <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
-        <maven.jacoco.plugin.version>0.8.0</maven.jacoco.plugin.version>
+        <maven.jacoco.plugin.version>0.8.6</maven.jacoco.plugin.version>
         <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
         <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <maven.jaxb2.plugin.version>2.5.0</maven.jaxb2.plugin.version>
         <maven.lombok.plugin.version>1.18.0.0</maven.lombok.plugin.version>
-        <maven.pmd.plugin.version>3.10.0</maven.pmd.plugin.version>
+        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
         <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
-        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
+        <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
         <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
         <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
@@ -248,6 +250,13 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>referential-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>referential-commons</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -391,6 +400,11 @@
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>ui-portal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-internal</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -649,8 +663,8 @@
                 <version>${vitam.version}</version>
             </dependency>
             <dependency>
-                <groupId>fr.gouv.vitam</groupId>
-                <artifactId>logbook-common</artifactId>
+				<groupId>fr.gouv.vitam</groupId>
+				<artifactId>logbook-common</artifactId>
                 <version>${vitam.version}</version>
             </dependency>
 
@@ -673,11 +687,11 @@
             </dependency>
 
             <!-- Utils -->
-            <dependency>
-                <groupId>org.synchronoss.cloud</groupId>
-                <artifactId>nio-multipart-parser</artifactId>
-                <version>${nio.multipart.parser.version}</version>
-            </dependency>
+			<dependency>
+			    <groupId>org.synchronoss.cloud</groupId>
+			    <artifactId>nio-multipart-parser</artifactId>
+			    <version>${nio.multipart.parser.version}</version>
+			</dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -891,12 +905,12 @@
                 <artifactId>jlibs-xsd</artifactId>
                 <version>${jlibs.version}</version>
             </dependency>
-            <!-- convert to PDF -->
+			<!-- convert to PDF -->
             <!-- Do not reuse Apache FOP since its usage is deprecated -->
-            <dependency>
-                <groupId>org.apache.xmlgraphics</groupId>
-                <artifactId>fop</artifactId>
-                <version>2.4</version>
+			<dependency>
+				<groupId>org.apache.xmlgraphics</groupId>
+				<artifactId>fop</artifactId>
+				<version>2.4</version>
                 <exclusions>
                     <exclusion>
                         <groupId>javax.media</groupId>
@@ -907,7 +921,7 @@
                         <artifactId>jai-codec</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
+			</dependency>
             <!-- Security -->
             <dependency>
                 <groupId>org.owasp.antisamy</groupId>
@@ -991,6 +1005,13 @@
                 <version>${junit.jupiter.platform.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${junit.vintage.engine.version}</version>
+                <scope>test</scope>
+            </dependency>
+
 
             <dependency>
                 <groupId>org.easymock</groupId>
@@ -1019,11 +1040,11 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-core</artifactId>
-                <version>${assertj.version}</version>
-                <scope>test</scope>
-            </dependency>
+			    <groupId>org.assertj</groupId>
+			    <artifactId>assertj-core</artifactId>
+			    <version>${assertj.version}</version>
+			    <scope>test</scope>
+			</dependency>
             <dependency>
                 <groupId>org.apache.pdfbox</groupId>
                 <artifactId>pdfbox</artifactId>
@@ -1228,6 +1249,24 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <!-- Directory plugin to find parent root directory absolute path -->
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+                <version>${maven.directory.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>directories</id>
+                        <goals>
+                            <goal>highest-basedir</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <property>main.basedir</property>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -1260,9 +1299,9 @@
                 </plugin>
                 <!-- find bugs in current project -->
                 <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>${maven.findbugs.plugin.version}</version>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${maven.spotbugs.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1270,7 +1309,7 @@
                     <version>${maven.pmd.plugin.version}</version>
                     <configuration>
                         <rulesets>
-                            <ruleset>${maven.multiModuleProjectDirectory}/pmd-rulesets.xml</ruleset>
+                            <ruleset>${main.basedir}/pmd-rulesets.xml</ruleset>
                         </rulesets>
                         <failOnViolation>false</failOnViolation>
                     </configuration>
@@ -1295,8 +1334,8 @@
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${maven.frontend.plugin.version}</version>
                     <configuration>
-                        <workingDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</workingDirectory>
-                        <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
+                        <workingDirectory>${main.basedir}/ui/ui-frontend</workingDirectory>
+                        <installDirectory>${main.basedir}/ui/ui-frontend</installDirectory>
                         <skip>${skipAllFrontend}</skip>
                     </configuration>
                     <executions>
@@ -1331,10 +1370,7 @@
                             <phase>process-sources</phase>
                             <configuration>
                                 <skip>${skipAllFrontend}</skip>
-                                <arguments>run build${angular.build.profile} -- --project=${angular.build.project}
-                                    --output-path=${project.basedir}/target/www --base-href=${angular.base.href}
-                                    --deploy-url=${angular.base.href}
-                                </arguments>
+                                <arguments>run build${angular.build.profile} -- --project=${angular.build.project} --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}</arguments>
                             </configuration>
                         </execution>
                         <execution>
@@ -1345,9 +1381,7 @@
                             </goals>
                             <configuration>
                                 <skip>${skipAllFrontendTests}</skip>
-                                <arguments>run test${angular.test.profile} -- --project=${angular.build.project}
-                                    ${angular.additional.test.informations}
-                                </arguments>
+                                <arguments>run test${angular.test.profile} -- --project=${angular.build.project} ${angular.additional.test.informations}</arguments>
                             </configuration>
                         </execution>
                     </executions>
@@ -1381,6 +1415,7 @@
                     <version>${spring.boot.version}</version>
                     <configuration>
                         <addResources>false</addResources>
+                        <jvmArguments>-Xmx512m</jvmArguments>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -1429,13 +1464,11 @@
                             </goals>
                         </execution>
                         <execution>
-                            <id>pre-integration-test</id>
+                            <id>jacoco-site</id>
+                            <phase>verify</phase>
                             <goals>
-                                <goal>prepare-agent-integration</goal>
+                                <goal>report</goal>
                             </goals>
-                            <configuration>
-                                <propertyName>itCoverageAgent</propertyName>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -1462,11 +1495,24 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
+                <artifactId>maven-site-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <rulesets>
+                        <ruleset>${maven.multiModuleProjectDirectory}/pmd-rulesets.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -1588,8 +1634,7 @@
                                     <skip>${rpm.skip}</skip>
                                     <arguments>
                                         <argument>-f</argument>
-                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile
-                                        </argument>
+                                        <argument>${main.basedir}/tools/packaging/Makefile</argument>
                                         <argument>rpm</argument>
                                         <argument>NAME=${project.artifactId}</argument>
                                         <argument>VERSION=${project.version}</argument>
@@ -1624,13 +1669,10 @@
                                 </goals>
                                 <configuration>
                                     <skip>${rpm.skip}</skip>
-                                    <executable>${maven.multiModuleProjectDirectory}/tools/packaging/publish.sh
-                                    </executable>
+                                    <executable>${main.basedir}/tools/packaging/publish.sh</executable>
                                     <workingDirectory>target</workingDirectory>
                                     <arguments>
-                                        <argument>
-                                            ${env.SERVICE_RPM_REPOSITORY_URL}/upload/${rpm.publication.env}/Packages
-                                        </argument>
+                                        <argument>${rpm.publication.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -1666,9 +1708,9 @@
             </properties>
         </profile>
 
-        <!-- This profile is used to update sonar informations.-->
+        <!-- This profile is used to generate sonar-metrics sonar informations.-->
         <profile>
-            <id>sonar</id>
+            <id>sonar-metrics</id>
             <build>
                 <resources>
                     <resource>
@@ -1686,27 +1728,49 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-site-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-project-info-reports-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>@{argLine}</argLine>
+                        </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${maven.spotbugs.plugin.version}</version>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <configuration>
+                            <rulesets>
+                                <ruleset>${main.basedir}/pmd-rulesets.xml</ruleset>
+                            </rulesets>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
@@ -1715,52 +1779,40 @@
                 <angular.test.profile>:sonar</angular.test.profile>
                 <!-- Set project configuration file for test coverage -->
                 <angular.additional.test.informations>
-                    --karma-config=${maven.multiModuleProjectDirectory}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js
+                    --karma-config=${main.basedir}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js
                 </angular.additional.test.informations>
                 <maven.test.failure.ignore>true</maven.test.failure.ignore>
+            </properties>
+        </profile>
+        <!-- This profile is used to update sonar informations.-->
+        <profile>
+            <id>sonar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonarsource.scanner.maven</groupId>
+                        <artifactId>sonar-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
                 <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
                 <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java, **/*spec.ts, **/*.scss,
                     **/*.css
                 </sonar.coverage.exclusions>
                 <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
+                <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
+                <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.host.url/>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.login/>
-                <sonar.typescript.lcov.reportPaths>
-                    ${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/archive-search/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/commons/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/flow/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/identity/lcov.info,${maven.multiModuleProjectDirectory}/ui/ui-frontend/target/coverage/portal/lcov.info
-                </sonar.typescript.lcov.reportPaths>
+                <sonar.typescript.lcov.reportPaths>${main.basedir}/ui/ui-frontend/target/coverage/commons/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/flow/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/identity/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/portal/lcov.info</sonar.typescript.lcov.reportPaths>
             </properties>
-        </profile>
 
-        <!-- This profile is used to build frontend project in Jenkins. -->
-        <profile>
-            <id>webpack</id>
-            <properties>
-                <angular.build.profile></angular.build.profile>
-                <angular.test.profile>:conf-ci</angular.test.profile>
-                <!--<npm.install.arguments>ci</npm.install.arguments>-->
-            </properties>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
 
         <!-- This profile is used to generate swagger documentation. -->
@@ -1801,17 +1853,15 @@
                                 <version>${maven.swagger2markup.plugin.version}</version>
                             </dependency>
                         </dependencies>
-                        <configuration>
-                            <swaggerInput>
-                                ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json
-                            </swaggerInput>
-                            <outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
-                            <config>
-                                <swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-                                <swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
-                                <swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
-                                <swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-                            </config>
+						<configuration>
+							<swaggerInput>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}/swagger.json</swaggerInput>
+							<outputDir>${project.build.directory}/generated-sources/swagger/</outputDir>
+							<config>
+								<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+								<swagger2markup.outputLanguage>FR</swagger2markup.outputLanguage>
+								<swagger2markup.generatedExamplesEnabled>TRUE</swagger2markup.generatedExamplesEnabled>
+								<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
+							</config>
                             <skip>${swagger.skip}</skip>
                         </configuration>
                         <executions>
@@ -1833,23 +1883,20 @@
                                 <artifactId>asciidoctorj-pdf</artifactId>
                                 <version>${asciidoctorj.pdf.version}</version>
                             </dependency>
-                            <dependency>
-                                <groupId>org.jruby</groupId>
-                                <artifactId>jruby-complete</artifactId>
-                                <version>${jruby.complete.version}</version>
-                            </dependency>
-                        </dependencies>
-                        <configuration>
-                            <sourceDirectory>${maven.multiModuleProjectDirectory}/tools/swagger/config/
-                            </sourceDirectory>
-                            <sourceDocumentName>index.adoc</sourceDocumentName>
-                            <backend>html5</backend>
-                            <outputDirectory>
-                                ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
-                            </outputDirectory>
-                            <attributes>
-                                <toc>left</toc>
-                                <toclevels>3</toclevels>
+							<dependency>
+								<groupId>org.jruby</groupId>
+								<artifactId>jruby-complete</artifactId>
+								<version>${jruby.complete.version}</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<sourceDirectory>${main.basedir}/tools/swagger/config/</sourceDirectory>
+							<sourceDocumentName>index.adoc</sourceDocumentName>
+							<backend>html5</backend>
+							<outputDirectory>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
+							<attributes>
+								<toc>left</toc>
+								<toclevels>3</toclevels>
                                 <numbered></numbered>
                                 <hardbreaks></hardbreaks>
                                 <sectlinks></sectlinks>
@@ -1874,9 +1921,7 @@
                                 </goals>
                                 <configuration>
                                     <backend>pdf</backend>
-                                    <outputDirectory>
-                                        ${maven.multiModuleProjectDirectory}/tools/swagger/docs/${swagger.dir}/${project.artifactId}
-                                    </outputDirectory>
+                                    <outputDirectory>${main.basedir}/tools/swagger/docs/${swagger.dir}/${project.artifactId}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
@@ -1917,6 +1962,10 @@
                     <id>snapshots</id>
                     <url>${env.SERVICE_NEXUS_URL}/repository/maven-snapshots/</url>
                 </snapshotRepository>
+                <site>
+                    <id>${project.artifactId}-site</id>
+                    <url>${project.baseUri}</url>
+                 </site>
             </distributionManagement>
 
 
@@ -1975,4 +2024,3 @@
     </profiles>
 
 </project>
-

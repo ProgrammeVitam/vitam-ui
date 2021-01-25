@@ -39,10 +39,10 @@ vitamui_defaults:
   reconstruction:
     log_level: INFO
   portal_categories:
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 4
+    users:
+      title: "Utilisateur"
+      displayTitle: false
+      order: 1
     administrators:
       title: "Management"
       displayTitle: true
@@ -51,20 +51,20 @@ vitamui_defaults:
       title: "Paramétrage"
       displayTitle: true
       order: 3
-    users:
-      title: ""
-      displayTitle: false
-      order: 1
     referential:
       title: "Référentiels"
       displayTitle: true
-      order: 5
+      order: 4
     opaudit:
-      title: "Opérations et Audits"
+      title: "Audits et opérations"
       displayTitle: true
-      order: 6
+      order: 5
     techadmin:
       title: "Administration technique"
+      displayTitle: true
+      order: 6
+    ingests:
+      title: "Suivi des Versements"
       displayTitle: true
       order: 7
 
@@ -393,7 +393,7 @@ vitamui_platform_informations:
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$5X2kf8hP52sA6HKe2t2vm.ulwx9bs3HI/QT/tg1k5/fQu0WFtSoUW' # Change-it0!
+  default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!
   address:
     street: change-it
     zip_code: change-it
@@ -406,6 +406,13 @@ vitamui_platform_informations:
     vitamui_primary: "#ff4a54"
     vitamui_secondary: "#241f63"
   platform_name: VITAM-UI
+  customer:
+    technical_referent_email: contact@programmevitam.fr
+    website_url: http://www.programmevitam.fr
+
+portal_informations:
+  welcome_title: Portail des applications de l'archivage
+  welcome_description: Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics.
 
 # backup specific collections before install and restore after install
 mongo_dump_folder: /backup/mongod/

@@ -90,7 +90,7 @@ public class ApplicationController extends AbstractUiRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/conf")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> getConfiguration() {
-        LOGGER.info("Get configuration");
+        LOGGER.debug("Get configuration");
         return service.getConf();
     }
 
@@ -105,7 +105,7 @@ public class ApplicationController extends AbstractUiRestController {
     @RequestMapping(method = RequestMethod.GET, value = "/asset")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> getAsset(@RequestParam() final String fileName) {
-        LOGGER.info("Get Asset {}", fileName);
+        LOGGER.debug("Get Asset {}", fileName);
         Map<String, Object> file = new HashMap<>();
         file.put(fileName, service.getBase64Asset(fileName));
         return file;

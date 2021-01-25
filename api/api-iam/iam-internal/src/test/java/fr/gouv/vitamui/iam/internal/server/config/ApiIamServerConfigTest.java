@@ -22,7 +22,6 @@ import fr.gouv.vitamui.commons.logbook.service.EventService;
 @TestPropertySource(properties = {"spring.config.name=iam-internal-application"})
 @ActiveProfiles("test")
 public class ApiIamServerConfigTest {
-
     @MockBean
     private AdminExternalClient adminExternalClient;
 

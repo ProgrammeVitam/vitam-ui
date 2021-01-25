@@ -47,6 +47,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -111,14 +112,24 @@ public class BaseRestClientFactory implements RestClientFactory {
         final boolean useSSL = restClientConfig.isSecure();
         baseUrl = RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
 
+        HttpPoolConfiguration myPoolConfig = httpPoolConfig;
+        // configure the pool from the restClientConfig if the value of poolMaxTotal is positive
+        if(restClientConfig.getPoolMaxTotal() >= 0) {
+            myPoolConfig = new HttpPoolConfiguration();
+            myPoolConfig.setMaxTotal(restClientConfig.getPoolMaxTotal());
+            myPoolConfig.setMaxPerRoute(restClientConfig.getPoolMaxPerRoute());
+        }
+
         final Registry<ConnectionSocketFactory> csfRegistry = useSSL ? buildRegistry(restClientConfig.getSslConfiguration()) : null;
-        final PoolingHttpClientConnectionManager connectionManager = buildConnectionManager(httpPoolConfig, csfRegistry);
+        final PoolingHttpClientConnectionManager connectionManager = buildConnectionManager(myPoolConfig, csfRegistry);
         final RequestConfig requestConfig = buildRequestConfig();
-        final CloseableHttpClient httpClient = HttpClientBuilder.create().setConnectionManager(connectionManager).setDefaultRequestConfig(requestConfig)
-                .build();
+        final CloseableHttpClient httpClient = HttpClientBuilder.create()
+            .setConnectionManager(connectionManager)
+            .setDefaultRequestConfig(requestConfig)
+            .build();
 
         restTemplate = restTemplateBuilder.errorHandler(new ErrorHandler()).build();
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new HttpComponentsClientHttpRequestFactory(httpClient)));
+        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())));
     }
 
     /*

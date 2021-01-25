@@ -43,6 +43,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -51,7 +54,9 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 
@@ -60,13 +65,16 @@ public class FileFormatService extends AbstractPaginateService<FileFormatDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(FileFormatService.class);
 
     private FileFormatExternalRestClient client;
+    
+    private FileFormatExternalWebClient webClient;
 
     private CommonService commonService;
 
     @Autowired
-    public FileFormatService(final CommonService commonService, final FileFormatExternalRestClient client) {
+    public FileFormatService(final CommonService commonService, final FileFormatExternalRestClient client, final FileFormatExternalWebClient webClient) {
         this.commonService = commonService;
         this.client = client;
+        this.webClient = webClient;
     }
 
     @Override
@@ -99,5 +107,8 @@ public class FileFormatService extends AbstractPaginateService<FileFormatDto> {
     public ResponseEntity<Resource> export(ExternalHttpContext context) {
         return client.export(context);
     }
-
+    
+    public JsonNode importFileFormats(ExternalHttpContext context, MultipartFile file) {
+        return webClient.importFileFormats(context, file);
+    }
 }

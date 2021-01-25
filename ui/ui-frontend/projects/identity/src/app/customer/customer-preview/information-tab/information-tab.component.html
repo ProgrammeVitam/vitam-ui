@@ -9,7 +9,7 @@
         [asyncValidator]="form?.get('code')?.asyncValidator"
       >
         <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern" i18n="Wrong format (4 digits minimum) error hint@@formError5DigitsField">Format incorrect (4 chiffres minimum)</vitamui-common-field-error>
         <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="row">
-      <div class="col-4 form-control">
+      <div class="col-5 form-control">
         <vitamui-common-editable-input
           formControlName="zipCode"
           maxlength="10"
@@ -77,7 +77,7 @@
           <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
-      <div class="col-6 form-control">
+      <div class="col-7 form-control">
         <vitamui-common-editable-input
           formControlName="city"
           maxlength="100"
@@ -98,8 +98,8 @@
           [validator]="form?.get('address.country')?.validator"
           [asyncValidator]="form?.get('address.country')?.asyncValidator"
         >
-          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
+          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="DK" content="Danemark"></vitamui-common-editable-option>
           <vitamui-common-editable-option value="ES" content="Espagne"></vitamui-common-editable-option>
@@ -108,6 +108,16 @@
       </div>
     </div>
   </ng-container>
+
+  <div class="row">
+    <div class="col-12 form-control">
+      <vitamui-common-editable-input
+        formControlName="internalCode"
+        maxlength="20"
+        label="Code interne" i18n-label="Internal code@@customerPreviewLabelInternalCode"
+      ></vitamui-common-editable-input>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-12 form-control">
@@ -166,5 +176,3 @@
     </div>
   </div>
 </form>
-
-

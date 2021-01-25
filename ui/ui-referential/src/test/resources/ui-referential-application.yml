@@ -1,0 +1,88 @@
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API for referential UI
+    description: DESCRIPTION HERE.
+    version: v1
+  profiles:
+    active: test
+  jmx:
+    default-domain: referential # Need to change endpoints bean name when there is multiple instance of spring boot
+  cloud:
+    consul:
+      discovery:
+        enabled: false
+        register: false
+
+ui-referential:
+  prefix: referential-api
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: false
+    ssl-configuration:
+      keystore:
+        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+        key-password: azerty
+      truststore:
+        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+        key-password: azerty
+      hostname-verification: true
+  referential-external-client:
+    server-host: localhost
+    server-port: 8085
+    secure: false
+    ssl-configuration:
+      keystore:
+        key-path: "@project.build.testOutputDirectory@/keystore_sae-app.p12"
+        key-password: azerty
+      truststore:
+        key-path: "@project.build.testOutputDirectory@/truststore_sae-app.jks"
+        key-password: azerty
+      hostname-verification: true
+  base-url:
+    portal: "https://localhost:4200"
+    referential: "${ui.url}"
+
+ui-prefix : referential-api
+
+server-identity:
+  identityName: vitamui
+  identityRole: ui-referential
+  identityServerId: 1
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+  host: dev-referential.vitamui.com
+  port: 8081
+  scheme: https
+  ssl:
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
+    key-store-password: changeme
+    key-password: changeme
+
+controller:
+  subrogation:
+    enabled: true
+  user:
+    enabled: true
+
+ui:
+  url: https://localhost:4201
+  redirect-url: ${ui.url}
+
+cas:
+  internal-url: https://dev.vitamui.com:8080
+  external-url: https://dev.vitamui.com:8080
+  callback-url: ${ui.url}/callback
+  ssl:
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
+
+debug: false
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG

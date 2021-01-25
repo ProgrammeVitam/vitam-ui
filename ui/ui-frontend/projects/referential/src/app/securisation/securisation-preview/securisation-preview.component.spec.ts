@@ -31,6 +31,7 @@ describe('SecurisationPreviewComponent', () => {
     agId: 'agId',
     agIdApp: 'agIdApp',
     agIdExt: 'agIdExt',
+    obIdReq: 'obIdReq',
     rightsStatementIdentifier: 'rightsStatementIdentifier',
     events: [{
       id: 'id2',
@@ -38,6 +39,7 @@ describe('SecurisationPreviewComponent', () => {
       idRequest: 'idRequest2',
       parentId: 'id',
       type: 'type',
+      obIdReq: 'obIdReq',
       typeProc: 'typeProc',
       dateTime: new Date('1995-12-17'),
       outcome: 'outcome',

@@ -39,43 +39,43 @@ import { EventDisplayHelperService } from '../../event-display-helper.service';
 import { Event } from '../../event';
 
 @Component({
-    selector: 'app-ingest-event-detail',
-    templateUrl: './ingest-event-detail.component.html',
-    styleUrls: ['./ingest-event-detail.component.scss']
+  selector: 'app-ingest-event-detail',
+  templateUrl: './ingest-event-detail.component.html',
+  styleUrls: ['./ingest-event-detail.component.scss']
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
 
-    @Input()
-    ingest: any;
+  @Input()
+  ingest: any;
 
-    events: Event[] = [];
-    isShown = false;
+  events: Event[] = [];
+  isShown = false;
 
-    constructor(private eventDisplayHelper: EventDisplayHelperService) { }
+  constructor(private eventDisplayHelper: EventDisplayHelperService) { }
 
-    ngOnInit() {
-        this.events = this.eventDisplayHelper.initEvents(this.ingest);
+  ngOnInit() {
+    this.events = this.eventDisplayHelper.initEvents(this.ingest);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.ingest) {
+      this.events = this.eventDisplayHelper.initEvents(changes.ingest.currentValue);
     }
+  }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if(changes.ingest) {
-            this.events = this.eventDisplayHelper.initEvents(changes.ingest.currentValue);
-        }
-    }
+  toggleShow() {
+    this.isShown = !this.isShown;
+  }
 
-    toggleShow() {
-        this.isShown = !this.isShown;
-    }
+  ingestMessage(ingest: any): string {
+    return (ingest.events !== undefined && ingest.events.length !== 0) ?
+      ingest.events[ingest.events.length - 1].outMessage :
+      ingest.outMessage;
+  }
 
-    ingestMessage(ingest: any): string {
-        return (ingest.events !== undefined && ingest.events.length !== 0) ?
-            ingest.events[ingest.events.length - 1].outMessage :
-            ingest.outMessage;
-    }
-
-    ingestEndDate(ingest: any): string {
-        return (ingest.events !== undefined && ingest.events.length !== 0) ?
-            ingest.events[ingest.events.length - 1].dateTime :
-            ingest.dateTime;
-    }
+  ingestEndDate(ingest: any): string {
+    return (ingest.events !== undefined && ingest.events.length !== 0) ?
+      ingest.events[ingest.events.length - 1].dateTime :
+      ingest.dateTime;
+  }
 }

@@ -69,21 +69,30 @@ const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
 
-  form: FormGroup;
-  formEmail: FormGroup;
-  customer: Customer;
-  groups: ProfileSelection[] = [];
-  groupName: string;
-  stepIndex = 0;
-  connectedUserInfo: AdminUserProfile;
-  addressEmpty = true;
-  creating = false;
+  public form: FormGroup;
+
+  public formEmail: FormGroup;
+
+  public customer: Customer;
+
+  public groups: ProfileSelection[] = [];
+
+  public groupName: string;
+
+  public stepIndex = 0;
+
+  public connectedUserInfo: AdminUserProfile;
+
+  public addressEmpty = true;
+
+  public creating = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 4;
+
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -114,7 +123,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
     this.form = this.formBuilder.group(
       {
-
         enabled: true,
         email: [null, [
           Validators.required,
@@ -142,6 +150,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
           city: [null],
           country: ['FR']
         }),
+        internalCode: [null],
         siteCode: [null],
       },
       { validator: UserValidators.missingPhoneNumber }
@@ -220,6 +229,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.get('lastname').invalid ||
       this.form.get('domain').invalid ||
       this.form.get('enabled').invalid;
+  }
+
+  public thirdStepInvalid(): boolean {
+    return this.form.get('address').pending || this.form.get('address').invalid ||
+    this.form.get('internalCode').pending || this.form.get('internalCode').invalid;
   }
 
   passGroupStep() {

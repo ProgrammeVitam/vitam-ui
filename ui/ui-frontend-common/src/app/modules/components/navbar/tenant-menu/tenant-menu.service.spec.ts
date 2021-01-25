@@ -34,16 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from '../../../auth.service';
-import { WINDOW_LOCATION } from '../../../injection-tokens';
+import { BASE_URL, WINDOW_LOCATION } from '../../../injection-tokens';
 import { TenantMenuService } from './tenant-menu.service';
 
 describe('TenantMenuService', () => {
   beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+      HttpClientTestingModule
+    ],
     providers: [
       { provide: WINDOW_LOCATION, useValue: {} },
+      { provide: BASE_URL, useValue: '/fake-api' },
       { provide: AuthService, useValue: {} },
     ]
   }));

@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import { HttpRequest, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { IngestApiService } from '../api/ingest-api.service';
 import { retry } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { IngestInfo, IngestList, IngestStatus } from './ingest-list';
+import { Observable, Subject } from 'rxjs';
+
 
 const BYTES_PER_CHUNK = 1024 * 1024; // 1MB request
 const tenantKey = 'X-Tenant-Id';
@@ -54,48 +54,34 @@ const MAX_RETRIES = 3;
 @Injectable()
 export class UploadService {
 
-  uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
+  uploadComplete = new Subject<boolean>();
 
   constructor( private ingestApiService: IngestApiService) {
   }
 
-  filesStatus(): BehaviorSubject<IngestList> {
-    return this.uploadStatus;
-  }
 
-  addNewUploadFile(requestId: string, ingest: IngestInfo): void {
-    const map: IngestList = this.uploadStatus.getValue();
-    map.add(requestId, ingest);
-    this.uploadStatus.next(map);
-  }
-
-  updateFileStatus(requestId: string, status?: IngestStatus): void {
-    const map: IngestList = this.uploadStatus.getValue();
-    map.update(requestId, status);
-  }
-
-  uploadFile(file: File, contextId: string, action: string, tenantIdentifier: string): Observable<IngestList> {
+  uploadFile(file: File, contextId: string, action: string, tenantIdentifier: string): Observable<boolean> {
     const totalSize = file.size;
     let start = 0;
     let end = (totalSize < BYTES_PER_CHUNK) ? totalSize : BYTES_PER_CHUNK;
-    const nbChunks = Math.ceil(totalSize / BYTES_PER_CHUNK);
 
     const request = this.generateIngestRequest(tenantIdentifier, contextId, action, start, end, totalSize, file);
 
     this.ingestApiService.upload(request)
-      .pipe( retry(MAX_RETRIES) )
+      .pipe(
+        retry(MAX_RETRIES))
       .subscribe(
         (event) => {
           if (event instanceof HttpResponse) {
             // We get the requestId with the first request.
             const requestId = event.headers.get(requestIdKey);
-            this.addNewUploadFile(requestId, new IngestInfo(file.name, totalSize, nbChunks, 1, IngestStatus.WIP));
             console.log('First API Request Id : ' + requestId);
             start = end;
             end = start + BYTES_PER_CHUNK;
 
             if (start >= totalSize) {
-              this.updateFileStatus(requestId, IngestStatus.FINISHED);
+              this.uploadComplete.next(true);
+
               return;
             }
 
@@ -103,31 +89,46 @@ export class UploadService {
               this.uploadChunks(file, requestId, pointer, pointer + BYTES_PER_CHUNK, totalSize, tenantIdentifier, contextId, action);
             }
 
+            this.uploadComplete.next(true);
+
           }
         },
         (error) => {
           console.log(error);
-          this.addNewUploadFile('error', new IngestInfo(file.name, totalSize, nbChunks, 1, IngestStatus.ERROR));
+          this.uploadComplete.next(false);
         }
       );
-    return this.uploadStatus;
+    return this.uploadComplete;
   }
 
-  private uploadChunks(file: File, requestId: any, start: number, end: number, totalSize: any, tenantIdentifier: string,
-                       contextId: string, action: string ) {
+    private uploadChunks(
+    file: File,
+    requestId: any,
+    start: number,
+    end: number,
+    totalSize: any,
+    tenantIdentifier: string,
+    contextId: string,
+    action: string
+  ) {
 
     const request = this.generateIngestRequest(tenantIdentifier, contextId, action, start, end, totalSize, file, requestId);
-    this.ingestApiService.upload(request).pipe(retry(MAX_RETRIES)).subscribe(
-      (event) => {
-        if (event instanceof HttpResponse) {
-          this.updateFileStatus(requestId);
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.updateFileStatus(requestId, IngestStatus.ERROR);
-      }
-    );
+
+    this.ingestApiService.upload(request)
+       .pipe(
+        retry(MAX_RETRIES))
+        .subscribe(
+          (event) => {
+            if (event instanceof HttpResponse) {
+              const requestIdd = event.headers.get(requestIdKey);
+              console.log('Request Id: ' + requestIdd);
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.uploadComplete.next(false);
+          }
+        );
   }
 
   private generateIngestRequest(

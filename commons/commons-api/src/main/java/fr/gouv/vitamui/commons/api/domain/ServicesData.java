@@ -47,6 +47,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
@@ -150,8 +151,7 @@ public class ServicesData {
 
     public static final String ROLE_DELETE_PROFILES = DELETE_ROLE_PREFIX + SERVICE_PROFILES;
 
-    public static final String ROLE_GET_PROFILES_ALL_TENANTS =
-        GET_ROLE_PREFIX + SERVICE_PROFILES + "_ALL_" + SERVICE_TENANTS;
+    public static final String ROLE_GET_PROFILES_ALL_TENANTS = GET_ROLE_PREFIX + SERVICE_PROFILES + "_ALL_" + SERVICE_TENANTS;
 
     //------------------------------------ SUBROGATIONS -------------------------------------------
 
@@ -237,7 +237,7 @@ public class ServicesData {
 
     public static final String SERVICE_AGENCIES = "AGENCIES";
 
-    public static final String ROLE_GET_AGENCIES = GET_ROLE_PREFIX + SERVICE_AGENCIES;
+    public static final String ROLE_GET_AGENCIES = GET_ROLE_PREFIX  + SERVICE_AGENCIES;
 
     public static final String ROLE_CREATE_AGENCIES = CREATE_ROLE_PREFIX + SERVICE_AGENCIES;
 
@@ -247,13 +247,15 @@ public class ServicesData {
 
     public static final String ROLE_EXPORT_AGENCIES = EXPORT_ROLE_PREFIX + SERVICE_AGENCIES;
 
+    public static final String ROLE_IMPORT_AGENCIES = IMPORT_ROLE_PREFIX + SERVICE_AGENCIES;
+
     //---------------------------------- FILE FORMATS --------------------------------------------
 
     public static final String SERVICE_FILE_FORMATS = "FILE_FORMATS";
 
-    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_GET_FILE_FORMATS = GET_ROLE_PREFIX  + SERVICE_FILE_FORMATS;
 
-    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+    public static final String ROLE_CREATE_FILE_FORMATS = CREATE_ROLE_PREFIX+ SERVICE_FILE_FORMATS;
 
     public static final String ROLE_UPDATE_FILE_FORMATS = UPDATE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
@@ -261,13 +263,15 @@ public class ServicesData {
 
     public static final String ROLE_EXPORT_FILE_FORMATS = EXPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
+    public static final String ROLE_IMPORT_FILE_FORMATS = IMPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+
     //------------------------------------ CONTEXTS -----------------------------------------
 
     public static final String SERVICE_CONTEXTS = "CONTEXTS";
 
-    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_GET_CONTEXTS = GET_ROLE_PREFIX+ SERVICE_CONTEXTS;
 
-    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX + SERVICE_CONTEXTS;
+    public static final String ROLE_CREATE_CONTEXTS = CREATE_ROLE_PREFIX  + SERVICE_CONTEXTS;
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
@@ -285,6 +289,18 @@ public class ServicesData {
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
 
+    //--------------------------------- REGLES DE GESTION -------------------------------------
+
+    public static final String SERVICE_RULES = "RULES";
+
+    public static final String ROLE_GET_RULES = GET_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_CREATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_UPDATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
+
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
@@ -294,6 +310,8 @@ public class ServicesData {
     public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     //------------------------------------- OPERATIONS --------------------------------------------
 
@@ -316,9 +334,7 @@ public class ServicesData {
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
 
 
-    /**
-     * Management Contracts and Profiles are used in IngestContract forms
-     **/
+    /** Management Contracts and Profiles are used in IngestContract forms **/
     //----------------------------------- MANAGEMENT CONTRACTS --------------------------------------
 
     public static final String ROLE_GET_MANAGEMENT_CONTRACTS = ROLE_PREFIX + "GET_MANAGEMENT_CONTRACTS";
@@ -349,12 +365,9 @@ public class ServicesData {
 
     public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
 
-    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE =
-        CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE =
-        GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE =
-        GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
 
     //@formatter:off
@@ -364,199 +377,207 @@ public class ServicesData {
      */
 
     private static final List<String> ADMIN_VITAMUI_ROLES = Arrays.asList(
-        ROLE_GET_CUSTOMERS,
-        ROLE_CREATE_CUSTOMERS,
-        ROLE_UPDATE_CUSTOMERS,
+            ROLE_GET_CUSTOMERS,
+            ROLE_CREATE_CUSTOMERS,
+            ROLE_UPDATE_CUSTOMERS,
 
-        ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
-        ROLE_GET_ALL_TENANTS,
-        ROLE_UPDATE_TENANTS_ALL_CUSTOMERS,
+            ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
+            ROLE_GET_ALL_TENANTS,
+            ROLE_UPDATE_TENANTS_ALL_CUSTOMERS,
 
-        ROLE_GET_PROVIDERS,
-        ROLE_CREATE_PROVIDERS,
-        ROLE_UPDATE_PROVIDERS,
-        ROLE_DELETE_PROVIDERS,
-
-
-        ROLE_GET_PROFILES_ALL_TENANTS,
-
-        ROLE_GET_OWNERS,
-        ROLE_CREATE_OWNERS,
-        ROLE_UPDATE_OWNERS,
-
-        ROLE_GET_SUBROGATIONS,
-        ROLE_CREATE_SUBROGATIONS,
-        ROLE_DELETE_SUBROGATIONS,
-        ROLE_GET_USERS_SUBROGATIONS,
-        ROLE_GET_GROUPS_SUBROGATIONS,
-
-        ROLE_CAS_LOGIN,
-        ROLE_CAS_LOGOUT,
-        ROLE_CAS_CHANGE_PASSWORD,
-        ROLE_CAS_USERS,
-        ROLE_CAS_SUBROGATIONS,
-
-        ROLE_CHECK_USERS,
-        ROLE_CHECK_TENANTS,
-
-        ROLE_CREATE_ACCESS_CONTRACTS,
-        ROLE_GET_ACCESS_CONTRACTS,
-        ROLE_UPDATE_ACCESS_CONTRACTS,
-
-        ROLE_CREATE_INGEST_CONTRACTS,
-        ROLE_GET_INGEST_CONTRACTS,
-        ROLE_UPDATE_INGEST_CONTRACTS,
-
-        ROLE_GET_AGENCIES,
-        ROLE_UPDATE_AGENCIES,
-        ROLE_CREATE_AGENCIES,
-        ROLE_DELETE_AGENCIES,
-        ROLE_EXPORT_AGENCIES,
-
-        ROLE_GET_FILE_FORMATS,
-        ROLE_DELETE_FILE_FORMATS,
-        ROLE_CREATE_FILE_FORMATS,
-        ROLE_UPDATE_FILE_FORMATS,
-
-        ROLE_GET_CONTEXTS,
-        ROLE_CREATE_CONTEXTS,
-        ROLE_UPDATE_CONTEXTS,
-
-        ROLE_GET_SECURITY_PROFILES,
-        ROLE_UPDATE_SECURITY_PROFILES,
-        ROLE_CREATE_SECURITY_PROFILES,
-        ROLE_DELETE_SECURITY_PROFILES,
+            ROLE_GET_PROVIDERS,
+            ROLE_CREATE_PROVIDERS,
+            ROLE_UPDATE_PROVIDERS,
+            ROLE_DELETE_PROVIDERS,
 
 
-        ROLE_GET_ONTOLOGIES,
-        ROLE_CREATE_ONTOLOGIES,
-        ROLE_DELETE_ONTOLOGIES,
+            ROLE_GET_PROFILES_ALL_TENANTS,
 
-        ROLE_RUN_AUDITS,
-        ROLE_GET_OPERATIONS,
-        ROLE_RUN_PROBATIVE_VALUE,
+            ROLE_GET_OWNERS,
+            ROLE_CREATE_OWNERS,
+            ROLE_UPDATE_OWNERS,
 
-        ROLE_GET_ALL_INGEST,
-        ROLE_GET_INGEST,
-        ROLE_CREATE_INGEST,
+            ROLE_GET_SUBROGATIONS,
+            ROLE_CREATE_SUBROGATIONS,
+            ROLE_DELETE_SUBROGATIONS,
+            ROLE_GET_USERS_SUBROGATIONS,
+            ROLE_GET_GROUPS_SUBROGATIONS,
 
-        ROLE_GET_ALL_ARCHIVE,
-        ROLE_GET_ARCHIVE,
-        ROLE_CREATE_ARCHIVE,
+            ROLE_CAS_LOGIN,
+            ROLE_CAS_LOGOUT,
+            ROLE_CAS_CHANGE_PASSWORD,
+            ROLE_CAS_USERS,
+            ROLE_CAS_SUBROGATIONS,
 
-        ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
-        ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
-    );
+            ROLE_CHECK_USERS,
+            ROLE_CHECK_TENANTS,
+
+            ROLE_CREATE_ACCESS_CONTRACTS,
+            ROLE_GET_ACCESS_CONTRACTS,
+            ROLE_UPDATE_ACCESS_CONTRACTS,
+
+            ROLE_CREATE_INGEST_CONTRACTS,
+            ROLE_GET_INGEST_CONTRACTS,
+            ROLE_UPDATE_INGEST_CONTRACTS,
+
+            ROLE_GET_AGENCIES,
+            ROLE_UPDATE_AGENCIES,
+            ROLE_CREATE_AGENCIES,
+            ROLE_DELETE_AGENCIES,
+            ROLE_EXPORT_AGENCIES,
+
+            ROLE_GET_FILE_FORMATS,
+            ROLE_DELETE_FILE_FORMATS,
+            ROLE_CREATE_FILE_FORMATS,
+            ROLE_UPDATE_FILE_FORMATS,
+
+            ROLE_GET_CONTEXTS,
+            ROLE_CREATE_CONTEXTS,
+            ROLE_UPDATE_CONTEXTS,
+
+            ROLE_GET_SECURITY_PROFILES,
+            ROLE_UPDATE_SECURITY_PROFILES,
+            ROLE_CREATE_SECURITY_PROFILES,
+            ROLE_DELETE_SECURITY_PROFILES,
+
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
+
+            ROLE_GET_ONTOLOGIES,
+            ROLE_CREATE_ONTOLOGIES,
+            ROLE_DELETE_ONTOLOGIES,
+
+            ROLE_RUN_AUDITS,
+            ROLE_GET_OPERATIONS,
+            ROLE_RUN_PROBATIVE_VALUE,
+
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST,
+
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE,
+
+            ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
+            ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE
+            );
 
     /**
      * List of all the roles in the VITAMUI application (including the admin roles present in the ADMIN_VITAMUI_ROLES list)
      */
 
     private static final List<String> ROLE_NAMES = Arrays.asList(
-        ROLE_GET_USERS, ROLE_CREATE_USERS,
-        ROLE_UPDATE_USERS,
-        ROLE_UPDATE_STANDARD_USERS,
-        ROLE_GENERIC_USERS,
-        ROLE_MFA_USERS,
-        ROLE_ANONYMIZATION_USERS,
-        ROLE_UPDATE_ME_USERS,
+            ROLE_GET_USERS, ROLE_CREATE_USERS,
+            ROLE_UPDATE_USERS,
+            ROLE_UPDATE_STANDARD_USERS,
+            ROLE_GENERIC_USERS,
+            ROLE_MFA_USERS,
+            ROLE_ANONYMIZATION_USERS,
+            ROLE_UPDATE_ME_USERS,
 
 
-        ROLE_GET_CUSTOMERS,
-        ROLE_CREATE_CUSTOMERS,
-        ROLE_UPDATE_CUSTOMERS,
+            ROLE_GET_CUSTOMERS,
+            ROLE_CREATE_CUSTOMERS,
+            ROLE_UPDATE_CUSTOMERS,
 
-        ROLE_GET_TENANTS,
-        ROLE_CREATE_TENANTS,
-        ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
-        ROLE_UPDATE_TENANTS,
-        ROLE_GET_ALL_TENANTS,
-        ROLE_UPDATE_TENANTS_ALL_CUSTOMERS,
+            ROLE_GET_TENANTS,
+            ROLE_CREATE_TENANTS,
+            ROLE_CREATE_TENANTS_ALL_CUSTOMERS,
+            ROLE_UPDATE_TENANTS,
+            ROLE_GET_ALL_TENANTS,
+            ROLE_UPDATE_TENANTS_ALL_CUSTOMERS,
 
-        ROLE_GET_PROVIDERS,
-        ROLE_CREATE_PROVIDERS,
-        ROLE_UPDATE_PROVIDERS,
-        ROLE_DELETE_PROVIDERS,
+            ROLE_GET_PROVIDERS,
+            ROLE_CREATE_PROVIDERS,
+            ROLE_UPDATE_PROVIDERS,
+            ROLE_DELETE_PROVIDERS,
 
-        ROLE_GET_GROUPS,
-        ROLE_GET_ALL_GROUPS,
-        ROLE_CREATE_GROUPS,
-        ROLE_UPDATE_GROUPS,
-        ROLE_DELETE_GROUPS,
+            ROLE_GET_GROUPS,
+            ROLE_GET_ALL_GROUPS,
+            ROLE_CREATE_GROUPS,
+            ROLE_UPDATE_GROUPS,
+            ROLE_DELETE_GROUPS,
 
-        ROLE_GET_PROFILES,
-        ROLE_CREATE_PROFILES,
-        ROLE_UPDATE_PROFILES,
-        ROLE_DELETE_PROFILES,
-        ROLE_GET_PROFILES_ALL_TENANTS,
+            ROLE_GET_PROFILES,
+            ROLE_CREATE_PROFILES,
+            ROLE_UPDATE_PROFILES,
+            ROLE_DELETE_PROFILES,
+            ROLE_GET_PROFILES_ALL_TENANTS,
 
-        ROLE_GET_OWNERS,
-        ROLE_CREATE_OWNERS,
-        ROLE_UPDATE_OWNERS,
+            ROLE_GET_OWNERS,
+            ROLE_CREATE_OWNERS,
+            ROLE_UPDATE_OWNERS,
 
-        ROLE_GET_SUBROGATIONS,
-        ROLE_CREATE_SUBROGATIONS,
-        ROLE_DELETE_SUBROGATIONS,
-        ROLE_GET_USERS_SUBROGATIONS,
-        ROLE_GET_GROUPS_SUBROGATIONS,
+            ROLE_GET_SUBROGATIONS,
+            ROLE_CREATE_SUBROGATIONS,
+            ROLE_DELETE_SUBROGATIONS,
+            ROLE_GET_USERS_SUBROGATIONS,
+            ROLE_GET_GROUPS_SUBROGATIONS,
 
-        ROLE_CAS_LOGIN,
-        ROLE_CAS_LOGOUT,
-        ROLE_CAS_CHANGE_PASSWORD,
-        ROLE_CAS_USERS,
-        ROLE_CAS_SUBROGATIONS,
+            ROLE_CAS_LOGIN,
+            ROLE_CAS_LOGOUT,
+            ROLE_CAS_CHANGE_PASSWORD,
+            ROLE_CAS_USERS,
+            ROLE_CAS_SUBROGATIONS,
 
-        ROLE_CHECK_USERS, ROLE_CHECK_TENANTS,
-        ROLE_GET_ALL_ACCESS_CONTRACTS,
+            ROLE_CHECK_USERS, ROLE_CHECK_TENANTS,
+            ROLE_GET_ALL_ACCESS_CONTRACTS,
 
-        ROLE_GET_OPERATIONS,
-        ROLE_GET_FILE_OPERATION,
+            ROLE_GET_OPERATIONS,
+            ROLE_GET_FILE_OPERATION,
 
-        ROLE_CREATE_ACCESS_CONTRACTS,
-        ROLE_GET_ACCESS_CONTRACTS,
-        ROLE_UPDATE_ACCESS_CONTRACTS,
+            ROLE_CREATE_ACCESS_CONTRACTS,
+            ROLE_GET_ACCESS_CONTRACTS,
+            ROLE_UPDATE_ACCESS_CONTRACTS,
 
-        ROLE_CREATE_INGEST_CONTRACTS,
-        ROLE_GET_INGEST_CONTRACTS,
-        ROLE_UPDATE_INGEST_CONTRACTS,
+            ROLE_CREATE_INGEST_CONTRACTS,
+            ROLE_GET_INGEST_CONTRACTS,
+            ROLE_UPDATE_INGEST_CONTRACTS,
 
-        ROLE_GET_AGENCIES,
-        ROLE_UPDATE_AGENCIES,
-        ROLE_CREATE_AGENCIES,
-        ROLE_DELETE_AGENCIES,
-        ROLE_EXPORT_AGENCIES,
+            ROLE_GET_AGENCIES,
+            ROLE_UPDATE_AGENCIES,
+            ROLE_CREATE_AGENCIES,
+            ROLE_DELETE_AGENCIES,
+            ROLE_EXPORT_AGENCIES,
 
-        ROLE_GET_FILE_FORMATS,
-        ROLE_DELETE_FILE_FORMATS,
-        ROLE_CREATE_FILE_FORMATS,
-        ROLE_UPDATE_FILE_FORMATS,
-
-
-        ROLE_GET_CONTEXTS,
-        ROLE_CREATE_CONTEXTS,
-        ROLE_UPDATE_CONTEXTS,
-
-        ROLE_GET_SECURITY_PROFILES,
-        ROLE_UPDATE_SECURITY_PROFILES,
-        ROLE_CREATE_SECURITY_PROFILES,
-        ROLE_DELETE_SECURITY_PROFILES,
+            ROLE_GET_FILE_FORMATS,
+            ROLE_DELETE_FILE_FORMATS,
+            ROLE_CREATE_FILE_FORMATS,
+            ROLE_UPDATE_FILE_FORMATS,
 
 
-        ROLE_GET_ONTOLOGIES,
-        ROLE_CREATE_ONTOLOGIES,
-        ROLE_DELETE_ONTOLOGIES,
+            ROLE_GET_CONTEXTS,
+            ROLE_CREATE_CONTEXTS,
+            ROLE_UPDATE_CONTEXTS,
 
-        ROLE_RUN_AUDITS,
-        ROLE_RUN_PROBATIVE_VALUE,
+            ROLE_GET_SECURITY_PROFILES,
+            ROLE_UPDATE_SECURITY_PROFILES,
+            ROLE_CREATE_SECURITY_PROFILES,
+            ROLE_DELETE_SECURITY_PROFILES,
 
-        ROLE_GET_ALL_INGEST,
-        ROLE_GET_INGEST,
-        ROLE_CREATE_INGEST,
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
-        ROLE_GET_ALL_ARCHIVE,
-        ROLE_GET_ARCHIVE,
-        ROLE_CREATE_ARCHIVE,
+            ROLE_GET_ONTOLOGIES,
+            ROLE_CREATE_ONTOLOGIES,
+            ROLE_DELETE_ONTOLOGIES,
+
+            ROLE_RUN_AUDITS,
+            ROLE_RUN_PROBATIVE_VALUE,
+
+            ROLE_GET_ALL_INGEST,
+            ROLE_GET_INGEST,
+            ROLE_CREATE_INGEST,
+
+            ROLE_GET_ALL_ARCHIVE,
+            ROLE_GET_ARCHIVE,
+            ROLE_CREATE_ARCHIVE,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -590,7 +611,6 @@ public class ServicesData {
     }
 
     public static List<String> getServicesByName(final String... serviceName) {
-        return ROLE_NAMES.stream().filter(role -> StringUtils.endsWithAny(role, serviceName))
-            .collect(Collectors.toList());
+        return ROLE_NAMES.stream().filter(role -> StringUtils.endsWithAny(role, serviceName)).collect(Collectors.toList());
     }
 }

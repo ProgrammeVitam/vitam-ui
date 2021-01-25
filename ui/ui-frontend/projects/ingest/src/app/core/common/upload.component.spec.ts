@@ -44,7 +44,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { LoggerModule, ConfirmDialogService } from 'ui-frontend-common';
 
-fdescribe('UploadComponent', () => {
+describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
 
@@ -85,7 +85,7 @@ fdescribe('UploadComponent', () => {
 
   describe('initContextIdentifier', () => {
 
-    beforeEach( () => {
+    beforeEach(() => {
       spyOn(console, 'error');
     });
 

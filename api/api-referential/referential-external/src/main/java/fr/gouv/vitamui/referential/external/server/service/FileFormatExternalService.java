@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -59,19 +60,22 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.internal.client.FileFormatInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.referential.internal.client.FileFormatInternalWebClient;
 
-@Getter
-@Setter
 @Service
 public class FileFormatExternalService extends AbstractResourceClientService<FileFormatDto, FileFormatDto> {
-
-    @Autowired
     private FileFormatInternalRestClient fileFormatInternalRestClient;
-
-    public FileFormatExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+   
+    private FileFormatInternalWebClient fileFormatInternalWebClient;
+    
+    @Autowired
+    public FileFormatExternalService(
+    	ExternalSecurityService externalSecurityService, 
+    	FileFormatInternalRestClient fileFormatInternalRestClient, 
+    	FileFormatInternalWebClient fileFormatInternalWebClient) {
         super(externalSecurityService);
+        this.fileFormatInternalRestClient = fileFormatInternalRestClient;
+        this.fileFormatInternalWebClient = fileFormatInternalWebClient;
     }
 
     public List<FileFormatDto> getAll(final Optional<String> criteria) {
@@ -134,5 +138,8 @@ public class FileFormatExternalService extends AbstractResourceClientService<Fil
     public ResponseEntity<Resource> export() {
         return fileFormatInternalRestClient.export(getInternalHttpContext());
     }
-
+    
+    public JsonNode importFileFormats(String fileName, MultipartFile file) {
+        return fileFormatInternalWebClient.importFileFormats(getInternalHttpContext(), fileName, file);
+    }
 }

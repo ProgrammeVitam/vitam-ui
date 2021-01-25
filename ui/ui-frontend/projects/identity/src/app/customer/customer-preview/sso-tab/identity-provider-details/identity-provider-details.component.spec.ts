@@ -138,7 +138,7 @@ describe('IdentityProviderDetailsComponent', () => {
         EditablePatternStubComponent,
       ],
       providers: [
-        { provide: IdentityProviderService, useValue: { update: () => of(null), updateMetadataFile: () => of(null) } },
+        { provide: IdentityProviderService, useValue: { patch: () => of(null), updateMetadataFile: () => of(null) } },
       ]
     })
     .compileComponents();
@@ -207,9 +207,9 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
     });
 
-    it('should be valid and call update()', async(() => {
+    it('should be valid and call patch()', async(() => {
       const providerService = TestBed.get(IdentityProviderService);
-      spyOn(providerService, 'update').and.returnValue(of(null));
+      spyOn(providerService, 'patch').and.returnValue(of(null));
       testhost.component.form.setValue({
         id: testhost.provider.id,
         identifier: testhost.provider.identifier,

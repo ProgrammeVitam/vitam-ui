@@ -1,5 +1,9 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
+.label {
+  font-weight: bold;
+}
+
 .side-form {
   height: 100%;
   display: flex;
@@ -7,11 +11,14 @@
 
   .bottom {
     margin-top: auto;
+    padding-top: 20px;
   }
 }
 
-.error-message {
-  color: $red;
-  font-size: 14px;
-  margin-bottom: 30px;
+.permission {
+  padding-bottom: 10px;
+}
+
+.actions {
+  padding-top: 10px;
 }

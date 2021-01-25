@@ -1,14 +1,35 @@
-<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
-  <app-context-edit-permission formControlName="permissions" [editMode]="true"></app-context-edit-permission>
-  <ng-container>
-      <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant"
-            i18n="Required tenant error hint@@formErrorRequiredField">Un tenant doit être sélectionné pour chaque permission</span>
-      <span class="error-message" *ngIf="!!form.get('permissions')?.errors?.noPermissions"
-            i18n="Required permissions error hint@@formErrorRequiredField">Au moins une permission doit être renseignée</span>
-  </ng-container>
-
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="isInvalidOrUnchanged() || submited">Enregistrer</button>
+<div class="side-form" *ngIf="dataLoaded">
+  <div class="permission" *ngFor="let permission of updatedPermissions">
+    <ul>
+      <li>
+        <span class="label">Organisation : </span>
+        {{ getOrganisationName(permission.tenant) }}
+      </li>
+      <li>
+        <span class="label">Tenant : </span>
+        {{ tenants?.get(permission.tenant)?.name }}
+      </li>
+      <li *ngIf="permission.accessContracts?.length > 0">
+        <span class="label">Contrat(s) d'entrée</span>
+        {{ getAccessContractNames(permission.accessContracts) }}</li>
+      <li *ngIf="permission.ingestContracts?.length > 0">
+        <span class="label">Contrat(s) d'accès : </span>
+        {{ getIngestContractNames(permission.ingestContracts) }}
+      </li>
+    </ul>
+    <mat-divider></mat-divider>
   </div>
-</form>
+
+  <div class="actions" *ngIf="!readOnly">
+    <button class="btn secondary" (click)="openEditContextDialog()">
+      <i class="btn-create"></i>
+      <span i18n="Update context modify permission button label@@contextUpdatePermissionModifyButton">Modifier</span>
+    </button>
+  </div>
+
+  <div class="bottom">
+    <button type="submit" class="btn secondary" [disabled]="readOnly || unchanged || submited" (click)="onSubmit()">
+      <span i18n="Update context save permission button label@@contextUpdatePermissionSaveButton">Enregistrer</span>
+    </button>
+  </div>
+</div>

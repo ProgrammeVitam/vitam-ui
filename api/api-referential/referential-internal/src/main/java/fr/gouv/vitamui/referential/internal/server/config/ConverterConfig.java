@@ -44,6 +44,7 @@ import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContract
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractConverter;
 import fr.gouv.vitamui.referential.internal.server.profile.ProfileConverter;
+import fr.gouv.vitamui.referential.internal.server.rule.RuleConverter;
 import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -95,4 +96,10 @@ public class ConverterConfig {
     public ProfileConverter profileConverter() {
         return new ProfileConverter();
     }
+
+    @Bean
+    public RuleConverter ruleConverter() {
+        return new RuleConverter();
+    }
+
 }

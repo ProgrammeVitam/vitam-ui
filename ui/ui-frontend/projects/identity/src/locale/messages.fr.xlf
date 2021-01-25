@@ -2,9 +2,6 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="fr" datatype="plaintext" original="ng2.template" target-language="fr">
     <body>
-
-
-
       <trans-unit id="customerListCustomerCodeHeader" datatype="html">
         <source>Code Client</source>
 
@@ -409,7 +406,7 @@
         </context-group>
         <note priority="1" from="description">Customer graphical identity title</note>
       </trans-unit><trans-unit id="customerCreateVisualIdentityToggleLabel" datatype="html">
-        <source>Afficher l'identité graphique personnalisée</source><target state="final">Afficher l'identité graphique personnalisée</target>
+        <source>Afficher le logo du client</source><target state="final">Afficher le logo du client</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
           <context context-type="linenumber">162</context>
@@ -442,6 +439,20 @@
           <context context-type="linenumber">12</context>
         </context-group>
         <note priority="1" from="description">Customer graphical identity max size label</note>
+      </trans-unit><trans-unit id="customerCreateColorNamePlaceholder" datatype="html">
+        <source>Identifiant de Couleur</source><target state="final">Identifiant de Couleur</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">193</context>
+        </context-group>
+        <note priority="1" from="description">Customer color name input placeholder</note>
+      </trans-unit><trans-unit id="customerCreateColorValuePlaceholder" datatype="html">
+        <source>Couleur RGB</source><target state="final">Couleur hexadécimale</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/customer/customer-create/customer-create.component.html</context>
+          <context context-type="linenumber">200</context>
+        </context-group>
+        <note priority="1" from="description">Customer color value input placeholder</note>
       </trans-unit>
 
       <trans-unit id="customerCreateCreateOwnerButton" datatype="html">
@@ -2988,42 +2999,6 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
 
         <note priority="1" from="description">Create a profile</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/hierarchy/hierarchy.component.html</context><context context-type="linenumber">27</context></context-group></trans-unit></body>
-
-
-
-<trans-unit id="notificationUserDelete" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur "<x id="INTERPOLATION" equiv-text="{{ data?.firstname }}"/>"  "<x id="INTERPOLATION" equiv-text="{{ data?.lastname }}"/>"  a bien été supprimé
-    </source>
-
-        <target state="final">
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur "<x id="INTERPOLATION" equiv-text="{{ data?.firstname }}"/>"  "<x id="INTERPOLATION" equiv-text="{{ data?.lastname }}"/>"  a bien été supprimé
-    </target>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">88</context></context-group></trans-unit>
-    
-
-    <trans-unit id="notificationUserAlreadyDelete" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur que vous cherchez est déja supprimé
-    </source>
-
-        <target state="final">
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  L'utilisateur que vous cherchez est déja supprimé
-    </target>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">92</context></context-group></trans-unit>
-    
-
-<trans-unit id="notificationUsersToDelete" datatype="html">
-        <source>
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles
-    </source>
-
-        <target state="final">
-      <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/>  Un ou plusieurs utilisateur(s) inactif (s) dans votre organisation qui nécessitent l'effacement de leurs données personnelles
-    </target>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-snack-bar/vitamui-snack-bar.component.html</context><context context-type="linenumber">96</context></context-group></trans-unit>
-    
-
 
 
   </file>

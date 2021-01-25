@@ -38,18 +38,19 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { CollapseDirectiveModule } from 'ui-frontend-common';
+import {CollapseDirectiveModule, SearchBarModule} from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionComponent } from './group-attribution.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatTooltipModule,
-    CollapseDirectiveModule,
-  ],
+    imports: [
+        CommonModule,
+        SharedModule,
+        MatTooltipModule,
+        CollapseDirectiveModule,
+        SearchBarModule,
+    ],
   declarations: [
     GroupAttributionComponent,
     GroupDetailComponent,

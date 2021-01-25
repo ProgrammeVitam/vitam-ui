@@ -14,7 +14,7 @@
         <div class="controls">
           <div class="search-bar-filters">
             <vitamui-common-search-bar #searchBar name="ingtest-search" (search)="onSearchSubmit($event)"
-              placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
+                                       placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
             </vitamui-common-search-bar>
             <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
           </div>
@@ -64,9 +64,6 @@
           </form>
         </div>
       </div>
-    </div>
-    <div class="vitamui-container">
-      <app-upload-tracking></app-upload-tracking>
     </div>
 
     <div class="vitamui-body vitamui-container">

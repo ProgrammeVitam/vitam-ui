@@ -54,6 +54,7 @@ import { CustomerService } from '../../core/customer.service';
 import { DomainsInputModule } from '../../shared/domains-input';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
+import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
@@ -105,6 +106,7 @@ const expectedCustomer = {
     city: 'New York',
     country: 'US',
   },
+  internalCode: '1',
   language: 'en',
   emailDomains: ['test.com', 'toto.co.uk'],
   defaultEmailDomain: 'test.com',
@@ -120,8 +122,7 @@ const expectedCustomer = {
     }
   }],
   themeColors: {},
-  alerte : false,
-  alertDelay : 72
+  tenantName: 'tenantName'
 };
 
 let component: CustomerCreateComponent;
@@ -148,6 +149,9 @@ describe('CustomerCreateComponent', () => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
+    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
+      uniqueName: () => of(null)
+    });
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -174,6 +178,7 @@ describe('CustomerCreateComponent', () => {
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -225,8 +230,8 @@ describe('CustomerCreateComponent', () => {
         it('should check the code format', () => {
           expect(setControlValue('code', '').invalid).toBeTruthy();
           expect(setControlValue('code', 'A1A1AazZ').invalid).toBeTruthy();
-          expect(setControlValue('code', '1234567890123456789012345').invalid).toBeTruthy();
-          expect(setControlValue('code', '123456789012345678901').invalid).toBeTruthy();
+          expect(setControlValue('code', '12345678901234567890123455').invalid).toBeTruthy();
+          expect(setControlValue('code', '1234567890123456789011513666').invalid).toBeTruthy();
           expect(setControlValue('code', '12345678901234567890').valid).toBeTruthy('12345678901234567890');
           expect(setControlValue('code', '000000000').valid).toBeTruthy('000000000');
           expect(setControlValue('code', '999999').valid).toBeTruthy('999999');

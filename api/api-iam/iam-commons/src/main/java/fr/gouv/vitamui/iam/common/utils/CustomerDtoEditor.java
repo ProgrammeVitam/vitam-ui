@@ -60,7 +60,7 @@ public class CustomerDtoEditor extends PropertyEditorSupport {
         if (StringUtils.hasText(text)) {
             try {
                 final ObjectMapper mapper = new ObjectMapper();
-                final CustomerDto customerDto = mapper.readValue(text, new TypeReference<CustomerDto>() {
+                final CustomerDto customerDto = mapper.readValue(text, new TypeReference<>() {
                 });
                 setValue(customerDto);
             }

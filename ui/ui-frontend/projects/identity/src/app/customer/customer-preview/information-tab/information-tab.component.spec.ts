@@ -70,10 +70,9 @@ let expectedCustomer: Customer = {
         city: 'paris',
         country: 'france'
     },
+    internalCode: '1',
     owners: [],
-    themeColors: {},
-    alerte : false,
-    alertDelay : 72
+    themeColors: {}
 };
 
 @Component({
@@ -149,10 +148,9 @@ describe('Customer InformationTabComponent', () => {
         city: 'paris',
         country: 'france'
       },
+      internalCode: '1',
       owners: [],
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     };
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { patch: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
@@ -203,6 +201,7 @@ describe('Customer InformationTabComponent', () => {
     expect(testhost.component.form.get('address.zipCode')).not.toBeNull();
     expect(testhost.component.form.get('address.city')).not.toBeNull();
     expect(testhost.component.form.get('address.country')).not.toBeNull();
+    expect(testhost.component.form.get('internalCode')).not.toBeNull();
     expect(testhost.component.form.get('language')).not.toBeNull();
     expect(testhost.component.form.get('emailDomains')).not.toBeNull();
     expect(testhost.component.form.get('defaultEmailDomain')).not.toBeNull();
@@ -223,6 +222,7 @@ describe('Customer InformationTabComponent', () => {
         city: null,
         country: null
       },
+      internalCode: null,
       language: null,
       emailDomains: null,
       defaultEmailDomain: null
@@ -250,9 +250,7 @@ describe('Customer InformationTabComponent', () => {
     expect(codeControl.valid).toBeFalsy();
     codeControl.setValue('aaaaaa');
     expect(codeControl.valid).toBeFalsy();
-    codeControl.setValue('12345');
-    expect(codeControl.valid).toBeFalsy();
-    codeControl.setValue('123456');
+    codeControl.setValue('1234');
     expect(codeControl.valid).toBeTruthy();
   });
 
@@ -271,6 +269,7 @@ describe('Customer InformationTabComponent', () => {
         city: expectedCustomer.address.city,
         country: expectedCustomer.address.country,
       },
+      internalCode: expectedCustomer.internalCode,
       language: expectedCustomer.language,
       emailDomains: expectedCustomer.emailDomains,
       defaultEmailDomain: expectedCustomer.defaultEmailDomain

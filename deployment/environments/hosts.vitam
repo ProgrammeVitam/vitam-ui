@@ -223,6 +223,7 @@ vitam-env-vitamuibo-app-01.vitam-env
 [hosts_ingest_external]
 vitam-env-vitamuibo-app-02.vitam-env
 
+
 [hosts_access_external]
 vitam-env-vitamuibo-app-02.vitam-env
 

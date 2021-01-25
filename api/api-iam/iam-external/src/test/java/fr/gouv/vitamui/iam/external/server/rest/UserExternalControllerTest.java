@@ -1,5 +1,22 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Map;
+import java.util.Optional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -71,6 +88,14 @@ public class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
         ResultActions result = super.performPatch(CommonConstants.PATH_ME, asJsonString(ImmutableMap.of("id", "id")));
         result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchMe(null)));
         Mockito.verify(userExternalService, Mockito.times(1)).patchMe(ArgumentMatchers.any());
+    }
+
+    @Test
+    public void patchAnalytics_thenOk() throws Exception {
+        Map<String, Object> analytics = ImmutableMap.of(APPLICATION_ID, "API_SUPERVISION_APP");
+        ResultActions result = this.performPost(getUriBuilder(CommonConstants.PATH_ANALYTICS), asJsonString(analytics), status().isOk());
+        result.andExpect(MockMvcResultMatchers.handler().methodCall(userExternalController.patchAnalytics(analytics)));
+        Mockito.verify(userExternalService).patchAnalytics(analytics);
     }
 
     @Override

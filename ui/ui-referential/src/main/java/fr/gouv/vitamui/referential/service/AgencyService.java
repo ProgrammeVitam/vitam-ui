@@ -43,7 +43,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -52,6 +56,7 @@ import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 
@@ -60,13 +65,16 @@ public class AgencyService extends AbstractPaginateService<AgencyDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyService.class);
 
     private AgencyExternalRestClient client;
+    
+    private AgencyExternalWebClient webClient;
 
     private CommonService commonService;
 
     @Autowired
-    public AgencyService(final CommonService commonService, final AgencyExternalRestClient client) {
+    public AgencyService(final CommonService commonService, final AgencyExternalRestClient client, final AgencyExternalWebClient webClient) {
         this.commonService = commonService;
         this.client = client;
+        this.webClient = webClient;
     }
 
     @Override
@@ -99,5 +107,8 @@ public class AgencyService extends AbstractPaginateService<AgencyDto> {
     public ResponseEntity<Resource> export(ExternalHttpContext context) {
         return client.export(context);
     }
-
+    
+    public JsonNode importAgencies(ExternalHttpContext context, MultipartFile file) {
+        return webClient.importAgencies(context, file);
+    }
 }

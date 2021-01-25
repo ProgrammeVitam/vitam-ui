@@ -89,7 +89,7 @@ public class OwnerController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public OwnerDto getOne(final @PathVariable String id) {
-        LOGGER.info("Get owner={}", id);
+        LOGGER.debug("Get owner={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 
@@ -97,7 +97,7 @@ public class OwnerController extends AbstractUiRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OwnerDto create(@RequestBody final OwnerDto entityDto) {
-        LOGGER.info("create class={}", entityDto.getClass().getName());
+        LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
 
@@ -105,7 +105,7 @@ public class OwnerController extends AbstractUiRestController {
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public OwnerDto update(final @PathVariable("id") String id, @RequestBody final OwnerDto entityDto) {
-        LOGGER.info("update class={}", entityDto.getClass().getName());
+        LOGGER.debug("update class={}", entityDto.getClass().getName());
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);

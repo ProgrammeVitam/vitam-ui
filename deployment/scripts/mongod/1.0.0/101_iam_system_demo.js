@@ -74,7 +74,7 @@ db.owners.insert({
 	"_class": "owners"
 });
 
-db.tenants.update({"identifier": 1},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
+db.tenants.update({"identifier": NumberInt({{ vitamui_platform_informations.proof_tenant }})},{"$set" : {"itemIngestContractIdentifier" : "IC-000005"}});
 
 db.tenants.insert({
 	"_id": "5c7927537884583d1ebb6e682b0f33f74d9c4483b7b3b12c8a075dc2e21fa771",
@@ -186,13 +186,9 @@ db.groups.insert({
 		"system_user_profile",
 		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
         "system_access_contract",
-        "auto_access_contract",
         "system_ingest_contract",
-        "auto_ingest_contract",
         "system_agencies",
-        "auto_agencies",
         "system_file_format",
-        "auto_file_format",
         "system_context",
         "system_security_profile",
         "system_ontology",
@@ -200,10 +196,9 @@ db.groups.insert({
         "system_secure",
         "system_dsl",
         "system_probative_value",
-        "system_ingest_profile",
-        "system_archive_search_profile",
-        "system_logbook_operation_profile",
-        "system_holding_filling_scheme_profile"
+        "system_logbook_operation",
+        "system_holding_filling_scheme_profile",
+        "system_archive_search_profile"
 	],
 	"readonly": false,
 	"level": "",
@@ -225,19 +220,7 @@ db.groups.insert({
 		"system_profile_profile",
 		"system_surrogate_profile",
 		"system_user_profile",
-		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
-    "system_access_contract",
-    "system_ingest_contract",
-    "system_agencies",
-    "system_file_format",
-    "system_context",
-    "system_security_profile",
-    "system_ontology",
-    "system_audit",
-    "system_secure",
-    "system_dsl",
-    "system_probative_value"
-
+		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c"
 	],
 	"readonly": false,
 	"level": "",
@@ -258,19 +241,7 @@ db.groups.insert({
 		"system_profile_profile",
 		"system_surrogate_profile",
 		"system_user_profile",
-		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c",
-    "system_access_contract",
-    "system_ingest_contract",
-    "system_agencies",
-    "system_file_format",
-    "system_context",
-    "system_security_profile",
-    "system_ontology",
-    "system_audit",
-    "system_secure",
-    "system_dsl",
-    "system_probative_value"
-
+		"5c7927537884583d1ebb6e769fcbc58f86f148a3ba96a58759b4befcdadb171c"
 	],
 	"readonly": false,
 	"level": "",

@@ -34,44 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Event } from '../../../event';
 
 @Component({
-    selector: 'app-vitam-event-display',
-    templateUrl: './event-display.component.html',
-    styleUrls: ['./event-display.component.scss']
+  selector: 'app-vitam-event-display',
+  templateUrl: './event-display.component.html',
+  styleUrls: ['./event-display.component.scss']
 })
 export class EventDisplayComponent implements OnInit {
 
-    @Input() event: Event;
+  @Input() event: Event;
 
-    public ingestEventRowStyle = '';
-    public showEvDetData = false;
+  public ingestEventRowStyle = '';
+  public showEvDetData = false;
 
-    constructor() { }
+  constructor() { }
 
-    ngOnInit() {
-        this.init();
+  ngOnInit() {
+    this.init();
+  }
+
+  init() {
+    if (this.event.eventData && this.event.eventData.evType.toUpperCase().indexOf('.STARTED') === -1) {
+      this.setStepColorClass(this.event.eventData.outcome);
     }
+  }
 
-    init() {
-        if(this.event.eventData && this.event.eventData.evType.toUpperCase().indexOf('.STARTED') === -1) {
-            this.setStepColorClass(this.event.eventData.outcome);
-        }
+  private setStepColorClass(stepStatus: string) {
+    console.log('stepStatus', stepStatus);
+    switch (stepStatus.toUpperCase()) {
+      case 'KO':
+      case 'FATAL':
+        this.ingestEventRowStyle = 'errorRow';
+        break;
+      case 'WARNING':
+        this.ingestEventRowStyle = 'warningRow';
+        break;
+      default:
     }
-
-    private setStepColorClass(stepStatus: string) {
-        console.log('stepStatus', stepStatus);
-        switch(stepStatus.toUpperCase()) {
-            case 'KO':
-            case 'FATAL':
-                this.ingestEventRowStyle = 'errorRow';
-                break;
-            case 'WARNING':
-                this.ingestEventRowStyle = 'warningRow';
-                break;
-            default:
-        }
-    }
+  }
 }

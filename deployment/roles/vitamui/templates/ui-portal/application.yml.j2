@@ -45,6 +45,11 @@ server-identity:
 
 ui-portal:
   platform-name: "{{ vitamui_platform_informations.platform_name }}"
+  welcome-title: "{{ portal_informations.welcome_title}}"
+  welcome-description: "{{ portal_informations.welcome_description}}"
+  customer:
+    technical-referent-email: "{{ vitamui_platform_informations.customer.technical_referent_email }}"
+    website-url: "{{ vitamui_platform_informations.customer.website_url }}"
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}

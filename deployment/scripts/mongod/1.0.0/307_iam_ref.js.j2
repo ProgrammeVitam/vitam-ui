@@ -1,0 +1,61 @@
+db = db.getSiblingDB('iam')
+
+print("START 307_iam_ref.js");
+
+// ========================================= PROFILES =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
+
+db.profiles.insert({
+	"_id" : "system_rules",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Rules Profile",
+	"description" : "Rules Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "RULES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_RULES"
+        },
+        {
+            "name": "ROLE_CREATE_RULES"
+        },
+        {
+            "name": "ROLE_UPDATE_RULES"
+        },
+        {
+            "name": "ROLE_DELETE_RULES"
+         }
+	 ]
+});
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
+});
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+db.groups.updateOne( {
+	"_id": "admin_group"
+}, {
+    $addToSet: {
+        "profileIds":  {
+            $each: [
+            	"system_rules"
+        	]
+        }
+    }
+});
+
+print("END 307_iam_ref.js");

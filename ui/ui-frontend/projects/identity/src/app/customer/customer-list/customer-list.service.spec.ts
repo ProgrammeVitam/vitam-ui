@@ -75,8 +75,7 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
             city: 'Paris',
             country: 'France'
           },
-          readonly: false,
-      
+          readonly: false
         },
         {
           id: '2',
@@ -94,15 +93,14 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
+      internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -152,15 +150,14 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
           readonly: false
         },
       ],
+      internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     },
   ],
   pageNum: 0,
@@ -218,15 +215,14 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
+      internalCode: '1',
       address: {
         street: '73 rue du Faubourg Poissonnière ',
         zipCode: '75009',
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -276,15 +272,14 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
           readonly: false
         },
       ],
+      internalCode: '1',
       address: {
         street: '22-30 Avenue de WAGRAM',
         zipCode: '75008',
         city: 'Paris',
         country: 'France'
       },
-      themeColors: {},
-      alerte : false,
-      alertDelay : 72
+      themeColors: {}
     },
   ],
   pageNum: 0,

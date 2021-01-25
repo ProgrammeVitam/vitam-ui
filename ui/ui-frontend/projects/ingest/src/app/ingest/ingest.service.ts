@@ -58,35 +58,25 @@ export class IngestService extends SearchService<any> {
     return this.ingestApiService.getBaseUrl();
   }
 
-  downloadManifest(id: string) {
-    this.ingestApiService.downloadManifest(id).subscribe((blob) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(blob);
-      element.download = id + '-manifest.xml';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    });
-  }
 
   get(id: string): Observable<any> {
     return this.ingestApiService.getOne(id);
   }
 
-  downloadATR(id: string) {
-    this.ingestApiService.downloadATR(id).subscribe((blob) => {
+  getIngestOperation(id: string): Observable<any> {
+    return this.ingestApiService.getOne(id);
+  }
+
+  downloadDocxReport(id : string)  {
+    return this.ingestApiService.downloadDocxReport(id).subscribe(file => {
+
       const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(blob);
-      element.download = id + '-atr.xml';
+      element.href = window.URL.createObjectURL(file);
+      element.download ='Bordereau-' + id + '.docx';
       element.style.visibility = 'hidden';
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
     });
-  }
-
-  getIngestOperation(id: string): Observable<any> {
-    return this.ingestApiService.getOne(id);
   }
 }

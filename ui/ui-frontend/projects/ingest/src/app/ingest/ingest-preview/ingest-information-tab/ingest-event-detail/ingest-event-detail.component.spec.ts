@@ -45,44 +45,44 @@ import { Event } from '../../event';
 import { of } from 'rxjs';
 
 describe('IngestEventDetailComponent', () => {
-    let component: IngestEventDetailComponent;
-    let fixture: ComponentFixture<IngestEventDetailComponent>;
+  let component: IngestEventDetailComponent;
+  let fixture: ComponentFixture<IngestEventDetailComponent>;
 
-    const eventDisplayHelperServiceSpy = jasmine.createSpyObj('EventDisplayHelperService', {
-        initEvents: of([])
-    });
+  const eventDisplayHelperServiceSpy = jasmine.createSpyObj('EventDisplayHelperService', {
+    initEvents: of([])
+  });
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [IngestEventDetailComponent],
-            imports: [
-                MatMenuModule
-            ],
-            providers: [{ provide: IngestService, useValue: {} }, { provide: EventDisplayHelperService, useValue: eventDisplayHelperServiceSpy }],
-            schemas: [NO_ERRORS_SCHEMA]
-        })
-            .compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [IngestEventDetailComponent],
+      imports: [
+        MatMenuModule
+      ],
+      providers: [{ provide: IngestService, useValue: {} }, { provide: EventDisplayHelperService, useValue: eventDisplayHelperServiceSpy }],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(IngestEventDetailComponent);
-        component = fixture.componentInstance;
-        component.ingest = {
-            id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
-            data: {},
-            agIdExt: {},
-            events: [{ data: {} }]
-        };
-        component.events = [
-            new Event({ eventData: '{"some": "data1"}' }, []),
-            new Event({ eventData: '{"some": "data2"}' }, [new Event({ eventData: '{"some": "data2"}' }, [])])
-        ];
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IngestEventDetailComponent);
+    component = fixture.componentInstance;
+    component.ingest = {
+      id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
+      data: {},
+      agIdExt: {},
+      events: [{ data: {} }]
+    };
+    component.events = [
+      new Event({ eventData: '{"some": "data1"}' }, []),
+      new Event({ eventData: '{"some": "data2"}' }, [ new Event({ eventData: '{"some": "data2"}' }, []) ])
+    ];
 
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

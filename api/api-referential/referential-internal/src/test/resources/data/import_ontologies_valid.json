@@ -1,0 +1,4191 @@
+[
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Geogname",
+      "SedaField":"Geogname",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Nom géographique. Références : ead.geogname",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:09.991",
+      "ShortName":"Nom géographique",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PostalCode",
+      "SedaField":"PostalCode",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Code postal.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.009",
+      "ShortName":"Code postal",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Address",
+      "SedaField":"Address",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Adresse. Références : ead.address",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.026",
+      "ShortName":"Addresse",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Region",
+      "SedaField":"Region",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Région.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.042",
+      "ShortName":"Région",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":0,
+      "Identifier":"matib2110",
+      "Description":"une description de l'ontologie",
+      "Type":"DOUBLE",
+      "Origin":"EXTERNAL",
+      "CreationDate":"2020-10-21T10:03:09.956",
+      "LastUpdate":"2020-10-21T10:03:09.956",
+      "ShortName":"testmatib",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Identifier",
+      "SedaField":"Identifier",
+      "Description":"Mapping : unit-es-mapping.json. UNITE ARCHIVISTIQUE : Dans le PersonGroup, Identifiant de type numéro matricule. Dans le EntityGroup, Identifiant de l'entité. REFERENTIELS : identifiant.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.150",
+      "ShortName":"Identifiant",
+      "Collections":[
+         "Unit",
+         "AccessContract",
+         "Agencies",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "SecurityProfile",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchivalAgencyArchiveUnitIdentifier",
+      "SedaField":"ArchivalAgencyArchiveUnitIdentifier",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant métier attribué à l'ArchiveUnit par le service d'archives. Peut être comparé à une cote.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.168",
+      "ShortName":"Identifiant métier (Service d'archives)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Country",
+      "SedaField":"Country",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Pays.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.064",
+      "ShortName":"Pays",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchiveUnitProfile",
+      "SedaField":"ArchiveUnitProfile",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.183",
+      "ShortName":"Profil d'unité archivistique",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"City",
+      "SedaField":"City",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Ville.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.085",
+      "ShortName":"Ville",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"AcquiredDate",
+      "SedaField":"AcquiredDate",
+      "Description":"Mapping : unit-es-mapping.json. Références : ARKMS.DateAcquired",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.101",
+      "ShortName":"Date de numérisation",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Juridictional",
+      "SedaField":"Juridictional",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.198",
+      "ShortName":"Couverture administrative",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"BirthDate",
+      "SedaField":"BirthDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.119",
+      "ShortName":"Date de naissance",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Description",
+      "SedaField":"Description",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.300",
+      "ShortName":"Description",
+      "Collections":[
+         "Unit",
+         "AccessContract",
+         "Agencies",
+         "ArchiveUnitProfile",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectGroupReferenceId",
+      "SedaField":"DataObjectGroupReferenceId",
+      "Description":"Mapping : unit-es-mapping.json. Référence à un groupe d'objets-données listé dans les métadonnées de transport.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.315",
+      "ShortName":"Référence à un groupe d'objets",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CustodialHistoryItem",
+      "SedaField":"CustodialHistoryItem",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.333",
+      "ShortName":"Historique de propriété, de responsabilité et de conservation",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DescriptionLanguage",
+      "SedaField":"DescriptionLanguage",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.349",
+      "ShortName":"Langue des descriptions",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DeathDate",
+      "SedaField":"DeathDate",
+      "Description":"Mapping : unit-es-mapping.json. Date de décès d'une personne.",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.213",
+      "ShortName":"Date de décès",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GivenName",
+      "SedaField":"GivenName",
+      "Description":"Mapping : unit-es-mapping.json. Nom d'usage d'une personne.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.237",
+      "ShortName":"Nom d'usage",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FirstName",
+      "SedaField":"FirstName",
+      "Description":"Mapping : unit-es-mapping.json. Prénom d'une personne.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.252",
+      "ShortName":"Prénom",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"BirthName",
+      "SedaField":"BirthName",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.135",
+      "ShortName":"Nom de naissance",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Corpname",
+      "SedaField":"Corpname",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.414",
+      "LastUpdate":"2020-10-21T10:03:10.270",
+      "ShortName":"Nom d'une entité",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FilePlanPosition",
+      "SedaField":"FilePlanPosition",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.453",
+      "ShortName":"Position dans le plan de classement",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EndDate",
+      "SedaField":"EndDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.468",
+      "ShortName":"Date de fin",
+      "Collections":[
+         "Unit",
+         "AccessionRegisterDetail",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreatedDate",
+      "SedaField":"CreatedDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.364",
+      "ShortName":"Date de création",
+      "Collections":[
+         "Unit",
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DescriptionLevel",
+      "SedaField":"DescriptionLevel",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.388",
+      "ShortName":"Niveau de description",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsAltitudeRef",
+      "SedaField":"GpsAltitudeRef",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.483",
+      "ShortName":"Niveau de la mer",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsLatitudeRef",
+      "SedaField":"GpsLatitudeRef",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.501",
+      "ShortName":"Référence",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Spatial",
+      "SedaField":"Spatial",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.404",
+      "ShortName":"Couverture géographique",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DocumentType",
+      "SedaField":"DocumentType",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.419",
+      "ShortName":"Type de document",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Temporal",
+      "SedaField":"Temporal",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.437",
+      "ShortName":"Couverture temporelle",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OriginatingAgencyArchiveUnitIdentifier",
+      "SedaField":"OriginatingAgencyArchiveUnitIdentifier",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.603",
+      "ShortName":"Identifiant métier (Service producteur)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OriginatingSystemId",
+      "SedaField":"OriginatingSystemId",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.618",
+      "ShortName":"Identifiant système (Service producteur)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsVersionID",
+      "SedaField":"GpsVersionID",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.634",
+      "ShortName":"Identifiant de version du GPS",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"KeywordReference",
+      "SedaField":"KeywordReference",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.649",
+      "ShortName":"Référence",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsDateStamp",
+      "SedaField":"GpsDateStamp",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.517",
+      "ShortName":"Heure et date",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsLongitude",
+      "SedaField":"GpsLongitude",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.541",
+      "ShortName":"Longitude",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Nationality",
+      "SedaField":"Nationality",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.285",
+      "ShortName":"Nationalité",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsLatitude",
+      "SedaField":"GpsLatitude",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.556",
+      "ShortName":"Latitude",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evTypeDetail",
+      "SedaField":"EventDetail",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.571",
+      "ShortName":"Détail",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RepositoryObjectPID",
+      "SedaField":"RepositoryObjectPID",
+      "Description":"Mapping : unit-es-mapping.json. Référence à un un objet-données ou à un groupe d'objets-données déjà conservé(s) dans un système d'archivage.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.752",
+      "ShortName":"Référence à un objet ou à un groupe d'objets déjà conservé(s)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ExternalReference",
+      "SedaField":"ExternalReference",
+      "Description":"Mapping : unit-es-mapping.json. Référence à un objet externe, présent ni dans le message, ni dans le SAE",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.770",
+      "ShortName":"Référence à un objet externe, présent ni dans le message, ni dans le SAE",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RepositoryArchiveUnitPID",
+      "SedaField":"RepositoryArchiveUnitPID",
+      "Description":"Mapping : unit-es-mapping.json. Référence à un ArchiveUnit déjà conservé dans un système d'archivage.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.786",
+      "ShortName":"Référence à une ArchiveUnit déjà conservée",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectReferenceId",
+      "SedaField":"DataObjectReferenceId",
+      "Description":"Mapping : unit-es-mapping.json. Référence à un objet-données ou à un groupe d'objets-données interne(s).",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.802",
+      "ShortName":"Référence à un objet ou à un groupe d'objets interne(s)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsLongitudeRef",
+      "SedaField":"GpsLongitudeRef",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.666",
+      "ShortName":"Référence",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ReceivedDate",
+      "SedaField":"ReceivedDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.688",
+      "ShortName":"Date de réception",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Language",
+      "SedaField":"Language",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.706",
+      "ShortName":"Langue des documents",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"KeywordContent",
+      "SedaField":"KeywordContent",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.722",
+      "ShortName":"Mot clé",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GpsAltitude",
+      "SedaField":"GpsAltitude",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:10.586",
+      "ShortName":"Altitude",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ExecutableVersion",
+      "SedaField":"ExecutableVersion",
+      "Description":"Mapping : griffin-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : ExecutableVersion.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.822",
+      "ShortName":"ExecutableVersion",
+      "Collections":[
+         "Griffin"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ExecutableName",
+      "SedaField":"ExecutableName",
+      "Description":"Mapping : griffin-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : ExecutableName.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.846",
+      "ShortName":"ExecutableName",
+      "Collections":[
+         "Griffin"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchiveUnitRefId",
+      "SedaField":"ArchiveUnitRefId",
+      "Description":"Mapping : unit-es-mapping.json. Référence à une ArchiveUnit interne.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.862",
+      "ShortName":"Référence à une ArchiveUnit interne",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Activity",
+      "SedaField":"Activity",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Activité.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.883",
+      "ShortName":"Activité",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Function",
+      "SedaField":"Function",
+      "Description":"Mapping : unit-es-mapping.json. En plus des balises Tag et Keyword, il est possible d'indexer les objets avec des éléments pré-définis : Fonction.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.915",
+      "ShortName":"Fonction",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Algorithm",
+      "SedaField":"Algorithm",
+      "Description":"Mapping : unit-es-mapping.json. Attribut SEDA.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:10.934",
+      "ShortName":"Algorithme",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SignedObjectId",
+      "SedaField":"SignedObjectId",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant de l'objet-données signé.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:10.949",
+      "ShortName":"Identifiant",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Position",
+      "SedaField":"Position",
+      "Description":"Mapping : unit-es-mapping.json. Intitulé du poste de travail occupé par la personne.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.964",
+      "ShortName":"Intitulé du poste",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RegisteredDate",
+      "SedaField":"RegisteredDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.900",
+      "ShortName":"Date d'enregistrement",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"TransferringAgencyArchiveUnitIdentifier",
+      "SedaField":"TransferringAgencyArchiveUnitIdentifier",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.069",
+      "ShortName":"ID métier (Service versant)",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Status",
+      "SedaField":"Status",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.083",
+      "ShortName":"Statut",
+      "Collections":[
+         "Unit",
+         "AccessContract",
+         "AccessionRegisterDetail",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Profile",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"StartDate",
+      "SedaField":"StartDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.102",
+      "ShortName":"Date de début",
+      "Collections":[
+         "Unit",
+         "AccessionRegisterDetail",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SystemId",
+      "SedaField":"SystemId",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant attribué aux objets. Il est attribué par le SAE et correspond à un identifiant interne.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.117",
+      "ShortName":"GUID",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Mandate",
+      "SedaField":"Mandate",
+      "Description":"Mapping : unit-es-mapping.json. Mandat octroyé à la personne.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:10.980",
+      "ShortName":"Mandat octroyé à la personne",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Role",
+      "SedaField":"Role",
+      "Description":"Mapping : unit-es-mapping.json. Droits avec lesquels un utilisateur a réalisé une opération, notamment dans une application.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:11.005",
+      "ShortName":"Droits",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SigningTime",
+      "SedaField":"SigningTime",
+      "Description":"Mapping : unit-es-mapping.json. Date de signature",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.021",
+      "ShortName":"Date",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FullName",
+      "SedaField":"FullName",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.036",
+      "ShortName":"Nom / Nom + Prénom",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SentDate",
+      "SedaField":"SentDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.053",
+      "ShortName":"Date d'envoi",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PreventInheritance",
+      "SedaField":"PreventInheritance",
+      "Description":"Mapping : unit-es-mapping.json. Indique si les règles de gestion héritées des ArchiveUnit parents doivent être ignorées pour l'ArchiveUnit concerné.",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.222",
+      "ShortName":"Ignorer l'héritage",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_max",
+      "ApiField":"#max",
+      "Description":"Mapping : unit-es-mapping.json. Profondeur maximale de l’unité archivistique par rapport à une racine.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.238",
+      "ShortName":"Profondeur maximale",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_glpd",
+      "ApiField":"#graph_last_persisted_date",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.253",
+      "ShortName":"_glpd",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Source",
+      "SedaField":"Source",
+      "Description":"Mapping : unit-es-mapping.json. En cas de substitution numérique, permet de faire référence au papier.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.133",
+      "ShortName":"Source",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"TransactedDate",
+      "SedaField":"TransactedDate",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.156",
+      "ShortName":"Date de la transaction",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PreventRulesId",
+      "SedaField":"RefNonRuleId",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.270",
+      "ShortName":"Bloquer la règle",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ValidationTime",
+      "SedaField":"ValidationTime",
+      "Description":"Mapping : unit-es-mapping.json. Date de la validation de la signature.",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.173",
+      "ShortName":"Date",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"KeywordType",
+      "SedaField":"KeywordType",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.416",
+      "LastUpdate":"2020-10-21T10:03:10.737",
+      "ShortName":"Type",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Gender",
+      "SedaField":"Gender",
+      "Description":"Mapping : unit-es-mapping.json. Sexe de la personne.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.415",
+      "LastUpdate":"2020-10-21T10:03:11.188",
+      "ShortName":"Sexe",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ClassificationAudience",
+      "SedaField":"ClassificationAudience",
+      "Description":"Mapping : unit-es-mapping.json. Permet de gérer les questions de 'diffusion restreinte', de 'spécial France' et de 'Confidentiel Industrie'.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.379",
+      "ShortName":"Audience de la classification",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ClassificationOwner",
+      "SedaField":"ClassificationOwner",
+      "Description":"Mapping : unit-es-mapping.json. Propriétaire de la classification. Service émetteur au sens de l'IGI 1300.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.394",
+      "ShortName":"Service émetteur / Propriétaire de la classification",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"NeedReassessingAuthorization",
+      "SedaField":"NeedReassessingAuthorization",
+      "Description":"Mapping : unit-es-mapping.json. Indique si une autorisation humaine est nécessaire pour réévaluer la classification.",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.410",
+      "ShortName":"Autorisation",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"NeedAuthorization",
+      "SedaField":"NeedAuthorization",
+      "Description":"Mapping : unit-es-mapping.json. Indique si une autorisation humaine est nécessaire pour vérifier ou valider les opérations de gestion des ArchiveUnit.",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.426",
+      "ShortName":"Autorisation",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Type",
+      "SedaField":"Type",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.286",
+      "ShortName":"Type",
+      "Collections":[
+         "Unit",
+         "Ontology",
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Version",
+      "SedaField":"Version",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.310",
+      "ShortName":"Version",
+      "Collections":[
+         "Unit",
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FinalAction",
+      "SedaField":"FinalAction",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.325",
+      "ShortName":"Sort final",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Rule",
+      "SedaField":"Rule",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.341",
+      "ShortName":"Règle de gestion",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_graph",
+      "ApiField":"#graph",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.361",
+      "ShortName":"_graph",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_tenant",
+      "ApiField":"#tenant",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant du tenant.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.529",
+      "ShortName":"Tenant",
+      "Collections":[
+         "Unit",
+         "ObjectGroup",
+         "AccessContract",
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary",
+         "AccessionRegisterSymbolic",
+         "Agencies",
+         "ArchiveUnitProfile",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "FileRules",
+         "LogbookOperation",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_sps",
+      "ApiField":"#originating_agencies",
+      "Description":"Mapping : unit-es-mapping.json. Services producteurs liés à l’unité archivistique suite à un rattachement et ayant des droits d’accès sur celle-ci.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.548",
+      "ShortName":"Services producteurs liés à l’unité archivistique",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_sp",
+      "SedaField":"OriginatingAgencyIdentifier",
+      "ApiField":"#originating_agency",
+      "Description":"Mapping : unit-es-mapping.json. Service producteur d’origine déclaré lors de la prise en charge de l’unité archivistique par la solution logicielle Vitam.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.563",
+      "ShortName":"Service producteur",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ClassificationReassessingDate",
+      "SedaField":"ClassificationReassessingDate",
+      "Description":"Mapping : unit-es-mapping.json. Date de réévaluation de la classification.",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.443",
+      "ShortName":"Date de réévaluation",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_unitType",
+      "ApiField":"#unitType",
+      "Description":"Mapping : unit-es-mapping.json. Type d’unité archivistique concerné : SIP, plan de classement, arbre de positionnement.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.579",
+      "ShortName":"Type d'unité archivistique",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_og",
+      "ApiField":"#object",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant du groupe d’objets représentant cette unité archivistique.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.465",
+      "ShortName":"Identifiant du groupe d’objets",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_nbc",
+      "ApiField":"_nbc",
+      "Description":"Mapping : unit-es-mapping.json. Nombre d’objets correspondant à un usage ou à un groupe d'objets.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.482",
+      "ShortName":"Nombre d’objets",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ClassificationLevel",
+      "SedaField":"ClassificationLevel",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.497",
+      "ShortName":"Niveau de classification",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_min",
+      "ApiField":"#min",
+      "Description":"Mapping : unit-es-mapping.json. Profondeur minimum de l’unité archivistique par rapport à une racine.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.512",
+      "ShortName":"Profondeur minimale",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_v",
+      "ApiField":"#version",
+      "Description":"Mapping : unit-es-mapping.json. Version de l’enregistrement décrit.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.687",
+      "ShortName":"Version",
+      "Collections":[
+         "Unit",
+         "ObjectGroup",
+         "AccessContract",
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary",
+         "AccessionRegisterSymbolic",
+         "Agencies",
+         "ArchiveUnitProfile",
+         "Context",
+         "FileFormat",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "FileRules",
+         "SecurityProfile",
+         "LogbookOperation",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_us",
+      "ApiField":"#allunitups",
+      "Description":"Mapping : unit-es-mapping.json. Tableau contenant la parentalité, c’est à dire l’ensemble des unités archivistiques parentes, indexé de la manière suivante : [ GUID1, GUID2, … ].",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.707",
+      "ShortName":"Identifiant(s) des unités archivistiques parentes",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_up",
+      "ApiField":"#unitups",
+      "Description":"Mapping : unit-es-mapping.json. Pour une unité archivistique, identifiant(s) des unités archivistiques parentes (parents immédiats). Pour un groupe d'objets, identifiant(s) des unités archivistiques représentées par ce groupe d’objets.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.723",
+      "ShortName":"Identifiant(s) des unités archivistiques parentes (parents immédiats)",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreatingOsVersion",
+      "SedaField":"CreatingOsVersion",
+      "Description":"Mapping : og-es-mapping.json. Version du système d'exploitation utilisé pour créer le fichier.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.738",
+      "ShortName":"Version du système d'exploitation",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_opi",
+      "ApiField":"#opi",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant de l’opération à l’origine de la création de cette unité archivistique.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.599",
+      "ShortName":"Opération initiale",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_ops",
+      "ApiField":"#operations",
+      "Description":"Mapping : unit-es-mapping.json. Identifiants d’opérations auxquelles cette unité archivistique a participé.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.621",
+      "ShortName":"Opérations",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_opts",
+      "ApiField":"#opts",
+      "Description":"Mapping : unit-es-mapping.json. Identifiants de l’opération dans laquelle l'unité archivistique est en cours de transfert",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.639",
+      "ShortName":"Opérations de transfert",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"offerIds",
+      "ApiField":"offerIds",
+      "Description":"Mapping : unit-es-mapping.json. Deprecated.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.656",
+      "ShortName":"offerIds",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"strategyId",
+      "ApiField":"strategyId",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.671",
+      "ShortName":"strategyId",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_profil",
+      "ApiField":"_profil",
+      "Description":"Mapping : og-es-mapping.json. Catégorie de l’objet. Valeurs possibles : Audio, Document, Text, Image et Video. Des extensions seront possibles (Database, Plan3D, …).",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.862",
+      "ShortName":"Catégorie d'objet",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreatingApplicationName",
+      "SedaField":"CreatingApplicationName",
+      "Description":"Mapping : og-es-mapping.json. Version de l'application utilisée pour créer le fichier.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.754",
+      "ShortName":"Nom de l'application",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DateCreatedByApplication",
+      "SedaField":"DateCreatedByApplication",
+      "Description":"Mapping : og-es-mapping.json. Date de création du fichier.",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.783",
+      "ShortName":"Date de création",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectGroupId",
+      "SedaField":"DataObjectGroupId",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.879",
+      "ShortName":"Identifiant du groupe d'objets techniques",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreatingApplicationVersion",
+      "SedaField":"CreatingApplicationVersion",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.805",
+      "ShortName":"Version de l'application",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectVersion",
+      "SedaField":"DataObjectVersion",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.900",
+      "ShortName":"Usage",
+      "Collections":[
+         "ObjectGroup",
+         "AccessContract",
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreatingOs",
+      "SedaField":"CreatingOs",
+      "Description":"Mapping : og-es-mapping.json. Système d'exploitation utilisé pour créer le fichier.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.822",
+      "ShortName":"Système d'exploitation",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Filename",
+      "SedaField":"Filename",
+      "Description":"Mapping : og-es-mapping.json. Nom du fichier d'origine.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.924",
+      "ShortName":"Nom du fichier",
+      "Collections":[
+         "ObjectGroup",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_av",
+      "ApiField":"_av",
+      "Description":"Version interne de l’enregistrement décrit.",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.418",
+      "LastUpdate":"2020-10-21T10:03:11.841",
+      "ShortName":"Version",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PhysicalId",
+      "SedaField":"PhysicalId",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.049",
+      "ShortName":"Identifiant d'objet physique",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MessageDigest",
+      "SedaField":"MessageDigest",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.069",
+      "ShortName":"Empreinte",
+      "Collections":[
+         "Unit",
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Size",
+      "SedaField":"Size",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.086",
+      "ShortName":"Taille (en octets)",
+      "Collections":[
+         "ObjectGroup",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"LastModified",
+      "SedaField":"LastModified",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.947",
+      "ShortName":"Dernière modification",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MimeType",
+      "SedaField":"MimeType",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.101",
+      "ShortName":"Type Mime",
+      "Collections":[
+         "ObjectGroup",
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FormatLitteral",
+      "SedaField":"FormatLitteral",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.977",
+      "ShortName":"Nom litteral",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FormatId",
+      "SedaField":"FormatId",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:11.993",
+      "ShortName":"PUID du format",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Encoding",
+      "SedaField":"Encoding",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.010",
+      "ShortName":"Encodage",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"qualifier",
+      "ApiField":"qualifier",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.027",
+      "ShortName":"Usage",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_id",
+      "ApiField":"#id",
+      "Description":"Mapping : og-es-mapping.json. Identifiant du groupe d’objets",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.207",
+      "ShortName":"Identifiant du groupe d'objets",
+      "Collections":[
+         "ObjectGroup",
+         "Griffin",
+         "PreservationScenario",
+         "Unit",
+         "AccessContract",
+         "ArchiveUnitProfile",
+         "Profile",
+         "Ontology",
+         "Context",
+         "IngestContract",
+         "LogbookOperation",
+         "LogbookLifeCycleUnit",
+         "LogbookLifeCycleObjectGroup",
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary",
+         "AccessionRegisterSymbolic",
+         "Agencies",
+         "SecurityProfile",
+         "FileRules",
+         "FileFormat",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CreationDate",
+      "ApiField":"CreationDate",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.226",
+      "ShortName":"Date de création",
+      "Collections":[
+         "AccessContract",
+         "AccessionRegisterSummary",
+         "AccessionRegisterDetail",
+         "AccessionRegisterSymbolic",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "FileRules",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"LastUpdate",
+      "ApiField":"LastUpdate",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.242",
+      "ShortName":"Dernière modification",
+      "Collections":[
+         "AccessContract",
+         "AccessionRegisterDetail",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Ontology",
+         "Profile",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DeactivationDate",
+      "ApiField":"DeactivationDate",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.258",
+      "ShortName":"Date de désactivation",
+      "Collections":[
+         "AccessContract",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Profile",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"NumberOfPage",
+      "SedaField":"NumberOfPage",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.120",
+      "ShortName":"Nombre de pages",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"dValue",
+      "SedaField":"Value",
+      "ApiField":"dValue",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"DOUBLE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.142",
+      "ShortName":"Valeur",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Shape",
+      "SedaField":"Shape",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.161",
+      "ShortName":"Forme",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"unit",
+      "SedaField":"unit",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.176",
+      "ShortName":"Unité",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Title",
+      "SedaField":"Title",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:11.206",
+      "ShortName":"Intitulé",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Name",
+      "ApiField":"Name",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.369",
+      "ShortName":"Intitulé",
+      "Collections":[
+         "AccessContract",
+         "Agencies",
+         "ArchiveUnitProfile",
+         "Context",
+         "FileFormat",
+         "IngestContract",
+         "Profile",
+         "SecurityProfile",
+         "Griffin",
+         "PreservationScenario",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"WritingRestrictedDesc",
+      "ApiField":"WritingRestrictedDesc",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.389",
+      "ShortName":"Restriction d'écriture aux métadonnées de description",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ActivationDate",
+      "ApiField":"ActivationDate",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.278",
+      "ShortName":"Date d'activation",
+      "Collections":[
+         "AccessContract",
+         "ArchiveUnitProfile",
+         "Context",
+         "IngestContract",
+         "Profile",
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"AcquisitionInformation",
+      "SedaField":"AcquisitionInformation",
+      "ApiField":"AcquisitionInformation",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.407",
+      "ShortName":"Modalités d'entrée",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleCategoryToFilter",
+      "ApiField":"RuleCategoryToFilter",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.422",
+      "ShortName":"Liste des catégories de règles à filtrer",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EveryDataObjectVersion",
+      "ApiField":"EveryDataObjectVersion",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.302",
+      "ShortName":"Tous les usages",
+      "Collections":[
+         "AccessContract",
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EveryOriginatingAgency",
+      "ApiField":"EveryOriginatingAgency",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.319",
+      "ShortName":"Tous les services producteurs",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ExcludedRootUnits",
+      "ApiField":"ExcludedRootUnits",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.338",
+      "ShortName":"Noeuds inaccessibles",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"AccessLog",
+      "ApiField":"AccessLog",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.353",
+      "ShortName":"Log des accès",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchivalAgreement",
+      "SedaField":"ArchivalAgreement",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.439",
+      "ShortName":"Contrat d'entrée",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OriginatingAgencies",
+      "ApiField":"OriginatingAgencies",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.464",
+      "ShortName":"Liste blanche des services producteurs",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"deleted",
+      "ApiField":"deleted",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.480",
+      "ShortName":"Supprimé",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"remained",
+      "ApiField":"remained",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.530",
+      "ShortName":"Restant",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GriffinIdentifier",
+      "SedaField":"GriffinIdentifier",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.545",
+      "ShortName":"GriffinIdentifier",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ingested",
+      "ApiField":"ingested",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.563",
+      "ShortName":"Total",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"WritingPermission",
+      "ApiField":"WritingPermission",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.498",
+      "ShortName":"Droit d'écriture",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RootUnits",
+      "ApiField":"RootUnits",
+      "Description":"Mapping : accesscontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.513",
+      "ShortName":"Noeuds de consultation",
+      "Collections":[
+         "AccessContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ActionList",
+      "SedaField":"ActionList",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.579",
+      "ShortName":"ActionList",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Opc",
+      "ApiField":"Opc",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Identifiant de l’opération courante (Ingest, Elimination,...) ayant modifié les archives recensées dans ce détail du registre des fonds",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.683",
+      "ShortName":"Identifiant de l'opération courante",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OriginatingAgency",
+      "SedaField":"OriginatingAgencyIdentifier",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.700",
+      "ShortName":"Service producteur",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "AccessionRegisterSummary",
+         "AccessionRegisterSymbolic"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Units",
+      "ApiField":"Units",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Total des unités archivistiques modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.717",
+      "ShortName":"Total des unités archivistiques",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ObjSize",
+      "ApiField":"ObjSize",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Total de poids d'objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.737",
+      "ShortName":"Total des poids d'objets",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FormatList",
+      "SedaField":"FormatList",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.594",
+      "ShortName":"FormatList",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Args",
+      "SedaField":"Args",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.611",
+      "ShortName":"Extension",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Timeout",
+      "SedaField":"Timeout",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.632",
+      "ShortName":"Timeout",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MaxSize",
+      "SedaField":"MaxSize",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.647",
+      "ShortName":"MaxSize",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Debug",
+      "SedaField":"Debug",
+      "Description":"Mapping : preservationscenario-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.666",
+      "ShortName":"Debug",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Opi",
+      "ApiField":"Opi",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Identifiant de l’opération d’entrée ayant versé les archives recensées dans ce détail du registre des fonds",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.752",
+      "ShortName":"Identifiant de l'opération",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Gots",
+      "ApiField":"Gots",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Total des groupes d'objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.778",
+      "ShortName":"Total des groupes d'objets",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Objects",
+      "ApiField":"Objects",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Total des objets modifiant le register des fonds suite à une opération (ingest, élimination, ...)",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.793",
+      "ShortName":"Total des objets",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SubmissionAgency",
+      "SedaField":"SubmissionAgencyIdentifier",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.843",
+      "ShortName":"Service versant",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"LegalStatus",
+      "SedaField":"LegalStatus",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.858",
+      "ShortName":"Statut légal",
+      "Collections":[
+         "AccessionRegisterDetail",
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OperationIds",
+      "ApiField":"OperationIds",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.810",
+      "ShortName":"Identifiant de l'opération",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OpType",
+      "ApiField":"OpType",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json. Le type de l'opération (Ingest, Elimination, ...)",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.420",
+      "LastUpdate":"2020-10-21T10:03:12.826",
+      "ShortName":"Type de l'opération",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ControlSchema",
+      "ApiField":"ControlSchema",
+      "Description":"Mapping : archiveunitprofile-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.873",
+      "ShortName":"Schéma de contrôle",
+      "Collections":[
+         "ArchiveUnitProfile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"IngestContracts",
+      "ApiField":"IngestContracts",
+      "Description":"Mapping : context-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.889",
+      "ShortName":"Liste contrats d'entrée",
+      "Collections":[
+         "Context"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"HasPriorityOverFileFormatID",
+      "ApiField":"HasPriorityOverFileFormatID",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.993",
+      "ShortName":"Priorité sur les versions précédentes",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CheckParentLink",
+      "ApiField":"CheckParentLink",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.015",
+      "ShortName":"Contrôle sur noeud de rattachement",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchiveProfiles",
+      "ApiField":"ArchiveProfiles",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.030",
+      "ShortName":"Profils d'archivage",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Extension",
+      "ApiField":"Extension",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.046",
+      "ShortName":"Extension(s)",
+      "Collections":[
+         "FileFormat",
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"AccessContracts",
+      "ApiField":"AccessContracts",
+      "Description":"Mapping : context-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.907",
+      "ShortName":"Liste contrats d'accès",
+      "Collections":[
+         "Context"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EnableControl",
+      "ApiField":"EnableControl",
+      "Description":"Mapping : context-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.929",
+      "ShortName":"Activation des contrôles",
+      "Collections":[
+         "Context"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SecurityProfile",
+      "ApiField":"SecurityProfile",
+      "Description":"Mapping : context-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.948",
+      "ShortName":"Profil de sécurité",
+      "Collections":[
+         "Context"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Fields",
+      "ApiField":"Fields",
+      "Description":"Mapping : archiveunitprofile-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.963",
+      "ShortName":"Fields",
+      "Collections":[
+         "ArchiveUnitProfile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"tenant",
+      "ApiField":"tenant",
+      "Description":"Mapping : context-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:12.977",
+      "ShortName":"Tenant",
+      "Collections":[
+         "Context"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ComputeInheritedRulesAtIngest",
+      "ApiField":"ComputeInheritedRulesAtIngest",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.147",
+      "ShortName":"Execute ComputedInheritedRules at ingest",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FormatUnidentifiedAuthorized",
+      "ApiField":"FormatUnidentifiedAuthorized",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.165",
+      "ShortName":"Formats non identifiés autorisés",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ManagementContractId",
+      "ApiField":"ManagementContractId",
+      "Description":"Mapping : ingestcontract-es-mapping.json.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.180",
+      "ShortName":"Identifiant du contrat de gestion",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_lastPersistedDate",
+      "ApiField":"#lastPersistedDate",
+      "Description":"Mapping : logbook-es-mapping.json. Date technique de sauvegarde en base.",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.194",
+      "ShortName":"Date de sauvegarde",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"VersionPronom",
+      "ApiField":"VersionPronom",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.066",
+      "ShortName":"Version de Pronom",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Comment",
+      "SedaField":"Comment",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.088",
+      "ShortName":"Commentaire",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Alert",
+      "ApiField":"Alert",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.103",
+      "ShortName":"Alerte",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Group",
+      "ApiField":"Group",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.119",
+      "ShortName":"Groupe",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PUID",
+      "ApiField":"PUID",
+      "Description":"Mapping : format-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.133",
+      "ShortName":"PUID",
+      "Collections":[
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MasterMandatory",
+      "ApiField":"MasterMandatory",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.209",
+      "ShortName":"Présence obligatoire d'un Master",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evId",
+      "SedaField":"EventIdentifier",
+      "ApiField":"evId",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.294",
+      "ShortName":"Identifiant de l'événement",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evIdReq",
+      "ApiField":"evIdReq",
+      "Description":"Mapping : logbook-es-mapping.json. Identifiant de la requête déclenchant l’opération",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.309",
+      "ShortName":"Identifiant de la requête",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"agId",
+      "ApiField":"agId",
+      "Description":"Mapping : logbook-es-mapping.json. Identifiant de l’agent interne réalisant l’évènement.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.233",
+      "ShortName":"Identifiant de l'agent interne",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evDateTime",
+      "SedaField":"EventDateTime",
+      "ApiField":"evDateTime",
+      "Description":"Mapping : logbook-es-mapping.json. Date de lancement de l’opération",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.327",
+      "ShortName":"Date",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evParentId",
+      "ApiField":"evParentId",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.341",
+      "ShortName":"Identifiant de l'événement parent",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"LinkParentId",
+      "ApiField":"LinkParentId",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.248",
+      "ShortName":"Noeud de rattachement",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EveryFormatType",
+      "ApiField":"EveryFormatType",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.265",
+      "ShortName":"Tous les formats",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FormatType",
+      "ApiField":"FormatType",
+      "Description":"Mapping : ingestcontract-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.280",
+      "ShortName":"Liste blanche des formats",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evTypeProc",
+      "SedaField":"EventTypeCode",
+      "ApiField":"evTypeProc",
+      "Description":"Mapping : logbook-es-mapping.json. Type de processus. Equivaut à la traduction du code du type de l'opération.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.442",
+      "ShortName":"Catégorie d'opération",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EvDetailReq",
+      "ApiField":"EvDetailReq",
+      "Description":"Mapping : logbook-es-mapping.json. Précisions sur la demande de transfert. Chaîne de caractères. Reprend le champ « Comment » du message ArchiveTransfer.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.458",
+      "ShortName":"Précisions",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"EvDateTimeReq",
+      "ApiField":"EvDateTimeReq",
+      "Description":"Mapping : logbook-es-mapping.json. Date de la demande de transfert inscrit dans le champ evDetData",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.473",
+      "ShortName":"Date de la demande de transfert",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"TransferringAgency",
+      "SedaField":"TransferringAgency",
+      "Description":"Mapping : logbook-es-mapping.json. Service en charge du transfert.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.491",
+      "ShortName":"Service versant",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SecurisationVersion",
+      "ApiField":"SecurisationVersion",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.356",
+      "ShortName":"SecurisationVersion",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MaxEntriesReached",
+      "ApiField":"MaxEntriesReached",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.380",
+      "ShortName":"MaxEntriesReached",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ServiceLevel",
+      "SedaField":"ServiceLevel",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.411",
+      "ShortName":"Niveau de service",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evIdProc",
+      "ApiField":"evIdProc",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.397",
+      "ShortName":"Identifiant du processus",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evDetData",
+      "SedaField":"eventDetailData",
+      "ApiField":"evDetData",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.428",
+      "ShortName":"Détails techniques",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MinusOneMonthLogbookTraceabilityDate",
+      "ApiField":"MinusOneMonthLogbookTraceabilityDate",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.595",
+      "ShortName":"Date de l’opération de sécurisation passée d’un mois",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MinusOneYearLogbookTraceabilityDate",
+      "ApiField":"MinusOneYearLogbookTraceabilityDate",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.610",
+      "ShortName":"date de l’opération de sécurisation passée d’un an",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"PreviousLogbookTraceabilityDate",
+      "ApiField":"PreviousLogbookTraceabilityDate",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.627",
+      "ShortName":"Date de la précédente opération de sécurisation",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"evType",
+      "SedaField":"EventType",
+      "ApiField":"evType",
+      "Description":"Mapping : logbook-es-mapping.json. Code du type de l’opération",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.506",
+      "ShortName":"Type d'opération",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchivalAgency",
+      "SedaField":"ArchivalAgency",
+      "ApiField":"ArchivalAgency",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.421",
+      "LastUpdate":"2020-10-21T10:03:13.532",
+      "ShortName":"Service d'archives",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"LogType",
+      "ApiField":"LogType",
+      "Description":"Mapping : logbook-es-mapping.json. Type de logbook sécurisé : OPERATION ou LIFECYCLE.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.547",
+      "ShortName":"Type de journal",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"TimeStampToken",
+      "ApiField":"TimeStampToken",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.642",
+      "ShortName":"Tampon d'horodatage",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Hash",
+      "ApiField":"Hash",
+      "Description":"Mapping : logbook-es-mapping.json. Empreinte de la racine de l’arbre de Merkle.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.562",
+      "ShortName":"Empreinte",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"AgIfTrans",
+      "ApiField":"AgIfTrans",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.577",
+      "ShortName":"AgIfTrans",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"obId",
+      "ApiField":"obId",
+      "Description":"Mapping : logbook-es-mapping.json. Identifiant Vitam du lot d’objets auquel s’applique l’opération (lot correspondant à une liste).",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.747",
+      "ShortName":"Identifiant du lot d'objets",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"outDetail",
+      "SedaField":"OutcomeDetail",
+      "ApiField":"outDetail",
+      "Description":"Mapping : logbook-es-mapping.json. Code correspondant au résultat de l’événement.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.765",
+      "ShortName":"Code technique",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"outMessg",
+      "SedaField":"OutcomeDetailMessage",
+      "ApiField":"outMessg",
+      "Description":"Mapping : logbook-es-mapping.json. Détail du résultat de l’événement.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.781",
+      "ShortName":"Message",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Origin",
+      "ApiField":"Origin",
+      "Description":"Mapping : ontology-es-mapping.json. Liste de valeurs : Interne (élément défini par VITAM) ou Externe (extension au SEDA)",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.798",
+      "ShortName":"Contexte de création",
+      "Collections":[
+         "Ontology"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"NumberOfElements",
+      "ApiField":"NumberOfElements",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.660",
+      "ShortName":"Nombre d'éléments",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"loadingURI",
+      "ApiField":"loadingURI",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.682",
+      "ShortName":"loadingURI",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"diff",
+      "ApiField":"diff",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.701",
+      "ShortName":"Différentiel",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"reports",
+      "ApiField":"reports",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.716",
+      "ShortName":"reports",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"errors",
+      "ApiField":"errors",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.730",
+      "ShortName":"Erreurs",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleMeasurement",
+      "ApiField":"RuleMeasurement",
+      "Description":"Mapping : rule-es-mapping.json. Mesure associée à une règle de gestion. Correspond aux valeurs : année, mois, jour. Mesure devant être associée à une durée.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.904",
+      "ShortName":"Mesure",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleValue",
+      "ApiField":"RuleValue",
+      "Description":"Mapping : rule-es-mapping.json. Identifiant, code ou clé définissant une règle de gestion. Doit être unique.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.922",
+      "ShortName":"Identifiant",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Collections",
+      "ApiField":"Collections",
+      "Description":"Mapping : ontology-es-mapping.json. Collection(s) de la base de données associée(s) à un vocabulaire ontologique",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.816",
+      "ShortName":"Collections",
+      "Collections":[
+         "Ontology"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ShortName",
+      "ApiField":"ShortName",
+      "Description":"Mapping : ontology-es-mapping.json. Correspond au label, ou traduction d'un enregistrement de la base de données.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.938",
+      "ShortName":"Traduction",
+      "Collections":[
+         "Ontology"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleDuration",
+      "ApiField":"RuleDuration",
+      "Description":"Mapping : rule-es-mapping.json. Durée associée à une règle de gestion, correspond à un entier.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.952",
+      "ShortName":"Durée",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ApiField",
+      "ApiField":"ApiField",
+      "Description":"Mapping : ontology-es-mapping.json. Correspond au nom donné au vocabulaire ontologique côté API.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.839",
+      "ShortName":"Intitulé",
+      "Collections":[
+         "Ontology"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"outcome",
+      "SedaField":"Outcome",
+      "ApiField":"outcome",
+      "Description":"Mapping : logbook-es-mapping.json. Statut de l’événement",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.854",
+      "ShortName":"Statut",
+      "Collections":[
+         "LogbookOperation",
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"SedaField",
+      "ApiField":"SedaField",
+      "Description":"Mapping : ontology-es-mapping.json. Elémént XML issu du SEDA.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.873",
+      "ShortName":"Intitulé",
+      "Collections":[
+         "Ontology"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"pointer",
+      "SedaField":"pointer",
+      "ApiField":"pointer",
+      "Description":"Mapping : logbook-es-mapping.json",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.888",
+      "ShortName":"pointer",
+      "Collections":[
+         "LogbookOperation"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"NonDestroyableOriginatingAgencies",
+      "ApiField":"NonDestroyableOriginatingAgencies",
+      "Description":"Mapping : unit-es-mapping.json. Services producteurs non éliminables",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.069",
+      "ShortName":"NonDestroyableOriginatingAgencies",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DestroyableOriginatingAgencies",
+      "ApiField":"DestroyableOriginatingAgencies",
+      "Description":"Mapping : unit-es-mapping.json. Services producteurs éliminables",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.087",
+      "ShortName":"DestroyableOriginatingAgencies",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FullAccess",
+      "ApiField":"FullAccess",
+      "Description":"Mapping : securityprofile-es-mapping.json. Mode super-administrateur donnant toutes les permissions.",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.104",
+      "ShortName":"Tous les droits",
+      "Collections":[
+         "SecurityProfile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"UpdateDate",
+      "ApiField":"UpdateDate",
+      "Description":"Mapping : rule-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.120",
+      "ShortName":"Dernière modification",
+      "Collections":[
+         "FileRules",
+         "FileFormat"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleDescription",
+      "ApiField":"RuleDescription",
+      "Description":"Mapping : rule-es-mapping.json. Description associée à une règle de gestion.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.969",
+      "ShortName":"Description",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleId",
+      "ApiField":"RuleId",
+      "Description":"Mapping : rule-es-mapping.json. Identifiant associé à une règle de gestion.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:13.999",
+      "ShortName":"Identifiant",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RuleType",
+      "ApiField":"RuleType",
+      "Description":"Mapping : rule-es-mapping.json. Type associé à une règle de gestion.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.020",
+      "ShortName":"Type",
+      "Collections":[
+         "FileRules"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Path",
+      "ApiField":"Path",
+      "Description":"Mapping : profile-es-mapping.json. Lien vers le profil d'archivage RNG ou XSD.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.036",
+      "ShortName":"Fichier",
+      "Collections":[
+         "Profile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Format",
+      "ApiField":"Format",
+      "Description":"Mapping : profile-es-mapping.json. Liste de valeurs : RNG ou XSD.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.053",
+      "ShortName":"Format",
+      "Collections":[
+         "Profile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OriginatingAgenciesInConflict",
+      "ApiField":"OriginatingAgenciesInConflict",
+      "Description":"Mapping : unit-es-mapping.json. Services producteurs en conflit",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.224",
+      "ShortName":"OriginatingAgenciesInConflict",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ObjectGroup",
+      "ApiField":"ObjectGroup",
+      "Description":"Nombre de groupes d'objets techniques de fonds symboliques",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.240",
+      "ShortName":"Nombre de groupes d'objets techniques",
+      "Collections":[
+         "AccessionRegisterSymbolic"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"BinaryObjectSize",
+      "ApiField":"BinaryObjectSize",
+      "Description":"Volumétrie des objets de fonds symboliques",
+      "Type":"DOUBLE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.255",
+      "ShortName":"Volumétrie des objets",
+      "Collections":[
+         "AccessionRegisterSymbolic"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_implementationVersion",
+      "ApiField":"#implementationVersion",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.273",
+      "ShortName":"_implementationVersion",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ExtendedInfoType",
+      "ApiField":"ExtendedInfoType",
+      "Description":"Mapping : unit-es-mapping.json. Type d'informations étendues",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.136",
+      "ShortName":"ExtendedInfoType",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Permissions",
+      "ApiField":"Permissions",
+      "Description":"Mapping : securityprofile-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.163",
+      "ShortName":"Permissions",
+      "Collections":[
+         "SecurityProfile"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"GlobalStatus",
+      "ApiField":"GlobalStatus",
+      "Description":"Mapping : unit-es-mapping.json. Statut global de l'indexation.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.178",
+      "ShortName":"GlobalStatus",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"OperationId",
+      "ApiField":"OperationId",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant de l'operation.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.193",
+      "ShortName":"OperationId",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ud",
+      "ApiField":"ud",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.210",
+      "ShortName":"Dernière modification",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FilteredExtractedObjectGroupData",
+      "ApiField":"FilteredExtractedObjectGroupData",
+      "Description":"Métadonnées à extraire dans le groupe d'objets techniques",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.374",
+      "ShortName":"Métadonnées à extraire dans le groupe d'objets techniques",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"FilteredExtractedUnitData",
+      "ApiField":"FilteredExtractedUnitData",
+      "Description":"Métadonnées à extraire dans les unités archivistiques",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.389",
+      "ShortName":"Métadonnées à extraire dans les unités archivistiques",
+      "Collections":[
+         "PreservationScenario"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"CheckParentId",
+      "ApiField":"CheckParentId",
+      "Description":"Déclaration d’un ou plusieurs cônes de positionnement des rattachements",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.403",
+      "ShortName":"Déclaration d’un ou plusieurs cônes de positionnement des rattachements",
+      "Collections":[
+         "IngestContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchivalProfile",
+      "SedaField":"ArchivalProfile",
+      "Description":"Mapping : accessionregisterdetail-es-mapping.json.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.418",
+      "ShortName":"Profile d'archivage",
+      "Collections":[
+         "AccessionRegisterDetail"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"BinaryObject",
+      "ApiField":"BinaryObject",
+      "Description":"Nombre d'objets de fonds symboliques",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.288",
+      "ShortName":"Nombre d'objets",
+      "Collections":[
+         "AccessionRegisterSymbolic"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Compressed",
+      "SedaField":"Compressed",
+      "Description":"Indique si l’objet-données est compressé et doit être décompressé.",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.312",
+      "ShortName":"Objet compressé",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"RawMetadata",
+      "ApiField":"RawMetadata",
+      "Description":"Métadonnées brutes, issues d'une extraction de métadonnées",
+      "Type":"TEXT",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.327",
+      "ShortName":"Métadonnées extraites",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ParentUnitId",
+      "ApiField":"ParentUnitId",
+      "Description":"Mapping : unit-es-mapping.json. Identifiant de l'unité parente",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.422",
+      "LastUpdate":"2020-10-21T10:03:14.341",
+      "ShortName":"ParentUnitId",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_sedaVersion",
+      "ApiField":"#sedaVersion",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.356",
+      "ShortName":"_sedaVersion",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ObjectGroupStrategy",
+      "ApiField":"ObjectGroupStrategy",
+      "Description":"Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les métadonnées de type groupe d'objet technique",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.563",
+      "ShortName":"ObjectGroupStrategy",
+      "Collections":[
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"UnitStrategy",
+      "ApiField":"UnitStrategy",
+      "Description":"Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les métadonnées de type unité archivistique",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.549",
+      "ShortName":"UnitStrategy",
+      "Collections":[
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectGroupSystemId",
+      "SedaField":"DataObjectGroupSystemId",
+      "Description":"Mapping : og-es-mapping.json.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.435",
+      "ShortName":"Identifiant du groupe d'objet",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ArchiveUnit",
+      "ApiField":"ArchiveUnit",
+      "Description":"Nombre d'unités archivistiques de fonds symboliques",
+      "Type":"LONG",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.456",
+      "ShortName":"Nombre d'unités archivistiques",
+      "Collections":[
+         "AccessionRegisterSymbolic"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"DataObjectSystemId",
+      "SedaField":"DataObjectSystemId",
+      "Description":"Mapping : og-es-mapping.json.",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.473",
+      "ShortName":"Identifiant de l'objet",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"_validComputedInheritedRules",
+      "Description":"Indique si les règles calculées sont valides",
+      "Type":"BOOLEAN",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.489",
+      "ShortName":"validComputedInheritedRules",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"indexationDate",
+      "Description":"Date d'indexation'",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.534",
+      "ShortName":"indexationDate",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"MaxEndDate",
+      "Description":"Date de fin maximale",
+      "Type":"DATE",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.504",
+      "ShortName":"MaxEndDate",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Uri",
+      "SedaField":"Uri",
+      "Description":"Mapping : og-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.419",
+      "LastUpdate":"2020-10-21T10:03:12.191",
+      "ShortName":"Uri",
+      "Collections":[
+         "ObjectGroup"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"Tag",
+      "SedaField":"Tag",
+      "Description":"Mapping : unit-es-mapping.json",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.417",
+      "LastUpdate":"2020-10-21T10:03:14.518",
+      "ShortName":"Tag",
+      "Collections":[
+         "Unit"
+      ]
+   },
+   {
+      "#tenant":1,
+      "#version":2,
+      "Identifier":"ObjectStrategy",
+      "ApiField":"ObjectStrategy",
+      "Description":"Mapping : managementcontract-es-mapping.json. Stratégie de stockage pour les objets",
+      "Type":"KEYWORD",
+      "Origin":"INTERNAL",
+      "CreationDate":"2020-09-18T13:46:50.423",
+      "LastUpdate":"2020-10-21T10:03:14.579",
+      "ShortName":"ObjectStrategy",
+      "Collections":[
+         "ManagementContract"
+      ]
+   },
+   {
+      "#tenant":1,
+      "Identifier":"777",
+      "Description":"TEST",
+      "Type":"DATE",
+      "Origin":"EXTERNAL",
+      "ShortName":"ONTOLOGY_TEST",
+      "Collections":[
+         "Unit"
+      ]
+   }
+]

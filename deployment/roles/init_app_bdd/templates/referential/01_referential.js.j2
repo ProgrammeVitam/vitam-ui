@@ -80,7 +80,8 @@ db.profiles.update(
             "roles" : [
                 { "name": "ROLE_GET_ONTOLOGIES" },
                 { "name": "ROLE_CREATE_ONTOLOGIES" },
-                { "name": "ROLE_DELETE_ONTOLOGIES" }
+                { "name": "ROLE_DELETE_ONTOLOGIES" },
+				{ "name": "ROLE_IMPORT_ONTOLOGIES" }
             ]
         },
         "$setOnInsert": {
@@ -108,7 +109,8 @@ db.profiles.update(
                 { "name": "ROLE_CREATE_AGENCIES" },
                 { "name": "ROLE_UPDATE_AGENCIES" },
                 { "name": "ROLE_DELETE_AGENCIES" },
-                { "name": "ROLE_EXPORT_AGENCIES" }
+				{ "name": "ROLE_IMPORT_AGENCIES" },
+				{ "name": "ROLE_EXPORT_AGENCIES" }
             ]
         },
         "$setOnInsert": {
@@ -135,7 +137,8 @@ db.profiles.update(
                 { "name": "ROLE_GET_FILE_FORMATS" },
                 { "name": "ROLE_CREATE_FILE_FORMATS" },
                 { "name": "ROLE_UPDATE_FILE_FORMATS" },
-                { "name": "ROLE_DELETE_FILE_FORMATS" }
+                { "name": "ROLE_DELETE_FILE_FORMATS" },
+				{ "name": "ROLE_IMPORT_FILE_FORMATS" }
             ]
         },
         "$setOnInsert": {
@@ -752,9 +755,9 @@ db.contexts.update(
             "roleNames" : [
                 "ROLE_GET_ACCESS_CONTRACTS", "ROLE_CREATE_ACCESS_CONTRACTS", "ROLE_UPDATE_ACCESS_CONTRACTS",
                 "ROLE_GET_INGEST_CONTRACTS", "ROLE_CREATE_INGEST_CONTRACTS", "ROLE_UPDATE_INGEST_CONTRACTS", "ROLE_GET_MANAGEMENT_CONTRACTS", "ROLE_GET_ARCHIVE_PROFILES",
-                "ROLE_GET_ONTOLOGIES", "ROLE_CREATE_ONTOLOGIES", "ROLE_DELETE_ONTOLOGIES",
-                "ROLE_GET_AGENCIES", "ROLE_UPDATE_AGENCIES", "ROLE_CREATE_AGENCIES", "ROLE_DELETE_AGENCIES", "ROLE_EXPORT_AGENCIES",
-                "ROLE_GET_FILE_FORMATS", "ROLE_UPDATE_FILE_FORMATS", "ROLE_CREATE_FILE_FORMATS", "ROLE_DELETE_FILE_FORMATS",
+                "ROLE_GET_ONTOLOGIES", "ROLE_CREATE_ONTOLOGIES", "ROLE_DELETE_ONTOLOGIES", "ROLE_IMPORT_ONTOLOGIES",
+                "ROLE_GET_AGENCIES", "ROLE_UPDATE_AGENCIES", "ROLE_CREATE_AGENCIES", "ROLE_DELETE_AGENCIES", "ROLE_IMPORT_AGENCIES", "ROLE_EXPORT_AGENCIES",
+                "ROLE_GET_FILE_FORMATS", "ROLE_UPDATE_FILE_FORMATS", "ROLE_CREATE_FILE_FORMATS", "ROLE_DELETE_FILE_FORMATS", "ROLE_IMPORT_FILE_FORMATS"
                 "ROLE_GET_CONTEXTS", "ROLE_UPDATE_CONTEXTS", "ROLE_CREATE_CONTEXTS",
                 "ROLE_GET_SECURITY_PROFILES", "ROLE_UPDATE_SECURITY_PROFILES", "ROLE_CREATE_SECURITY_PROFILES", "ROLE_DELETE_SECURITY_PROFILES",
                 "ROLE_GET_OPERATIONS", "ROLE_RUN_AUDITS", "ROLE_RUN_PROBATIVE_VALUE"

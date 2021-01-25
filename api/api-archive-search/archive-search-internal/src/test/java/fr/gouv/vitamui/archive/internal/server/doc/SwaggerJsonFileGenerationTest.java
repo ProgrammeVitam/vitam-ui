@@ -38,6 +38,8 @@ import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -48,13 +50,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * Swagger JSON Generation.
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
+ *
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class})
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
+@Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
+@TestPropertySource(properties = { "spring.config.name=archive-search-internal-application" })
 @ActiveProfiles("test, swagger")
-public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
+public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest{
 
     @MockBean
     private RestExceptionHandler restExceptionHandler;

@@ -18,11 +18,6 @@ h2 {
     margin-bottom: 37px;
 }
 
-i.icon-error {
-    color: red;
-    font-size: 40px;
-}
-
 .actions {
     margin-top: 20px;
     display: flex;
@@ -150,7 +145,7 @@ button > small {
     padding: 34px 0px 34px 34px;
 }
 .success-icon {
-    color:#74c41c;
+    color: $green;
     font-size: 40px;
 }
 
@@ -182,4 +177,8 @@ button > small {
     small {
         color: #a5a5a5;
     }
+}
+
+.font-class-file {
+font-size: 13px;
 }

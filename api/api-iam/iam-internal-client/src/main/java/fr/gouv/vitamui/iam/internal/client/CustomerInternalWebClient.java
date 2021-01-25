@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.client;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -82,12 +83,16 @@ public class CustomerInternalWebClient extends BaseWebClient<ExternalHttpContext
             throw new BadRequestException("Customer data not found.");
         }
 
+        final Map data = new HashMap();
+        data.put("customerDto", customerData.getCustomerDto());
+        data.put("tenantName", customerData.getTenantName());
+
         if (customerData.getLogo().isPresent()) {
-            return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerData.getCustomerDto()),
+            return multipartData(getUrl(), HttpMethod.POST, context, data,
                     Optional.of(new AbstractMap.SimpleEntry<>("logo", customerData.getLogo().get())), CustomerDto.class);
         }
         else {
-            return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerData.getCustomerDto()), Optional.empty(),
+            return multipartData(getUrl(), HttpMethod.POST, context, data, Optional.empty(),
                     CustomerDto.class);
         }
 

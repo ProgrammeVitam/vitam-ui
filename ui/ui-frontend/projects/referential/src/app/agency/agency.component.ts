@@ -35,11 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {Agency} from '../../../../vitamui-library/src/lib/models/agency';
+import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
 import {AgencyCreateComponent} from './agency-create/agency-create.component';
 import {AgencyListComponent} from './agency-list/agency-list.component';
 import {AgencyService} from './agency.service';
@@ -72,6 +74,20 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       }
       if (result.action === 'restart') {
         this.openCreateAgencyDialog();
+      }
+    });
+  }
+
+  openAgencyImportDialog() {
+    const dialogRef = this.dialog.open(
+      VitamUIImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        data: Referential.AGENCY,
+        disableClose: true
+      });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        this.refreshList();
       }
     });
   }
