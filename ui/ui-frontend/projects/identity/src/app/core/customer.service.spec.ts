@@ -193,6 +193,8 @@ const expectedCustomer: Customer = {
     readonly: false
   }],
   themeColors: {},
+  portalTitles: {},
+  portalMessages: {},
   gdprAlert : false,
   gdprAlertDelay : 72
 };

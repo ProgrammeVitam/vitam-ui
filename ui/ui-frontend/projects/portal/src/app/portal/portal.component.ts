@@ -66,11 +66,20 @@ export class PortalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.applicationService.getActiveTenantAppsMap().subscribe((appMap) => {
-        this.applications = appMap;
-        this.loading = false;
+      this.applications = appMap;
+      this.loading = false;
     });
-    this.welcomeTitle = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_TITLE) as string;
-    this.welcomeMessage = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_MESSAGE) as string;
+
+    const basicCustomer = this.authService.user.basicCustomer;
+
+    const title = this.startupService.getDefaultPortalTitle();
+    const message = this.startupService.getDefaultPortalMessage();
+
+    this.welcomeTitle = (basicCustomer && basicCustomer.portalTitles && basicCustomer.portalTitles[this.authService.user.language]) ?
+    basicCustomer.portalTitles[this.authService.user.language] : title;
+    this.welcomeMessage = (basicCustomer && basicCustomer.portalMessages && basicCustomer.portalMessages[this.authService.user.language]) ?
+     basicCustomer.portalMessages[this.authService.user.language] : message;
+
     this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
   }

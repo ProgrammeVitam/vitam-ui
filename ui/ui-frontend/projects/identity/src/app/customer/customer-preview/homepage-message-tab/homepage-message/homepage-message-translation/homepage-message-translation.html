@@ -15,8 +15,9 @@
 
         <mat-form-field class="mt-4 mb-4 vitamui-mat-select">
             <mat-select formControlName="language" required panelClass="vitamui-mat-select">
-                <mat-option value="ENGLISH">{{ "COMMON.LANGUAGE.ENGLISH" | translate }}</mat-option>
-                <mat-option value="GERMAN">{{ "COMMON.LANGUAGE.GERMAN" | translate }}</mat-option>
+                <mat-option *ngFor="let option of languages" [value]="option.key">
+                    {{ 'COMMON.LANGUAGE.'+option.key | translate}}
+                  </mat-option>
             </mat-select>
             <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_up</i>

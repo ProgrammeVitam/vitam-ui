@@ -3516,6 +3516,8 @@ module.exports = {
     identifier: "1",
     name: "system_customer",
     companyName: "system_company",
+    portalTitles: null,
+    portalMessages: null,
     graphicIdentity: {
       hasCustomGraphicIdentity: false,
       "logoDataBase64": null,

@@ -118,7 +118,10 @@ let expectedCustomer: Customer = {
   }],
   themeColors: {},
   gdprAlert : false,
-  gdprAlertDelay : 72
+  gdprAlertDelay : 72,
+  themeColors: {},
+  portalMessages: {},
+  portalTitles: {}
 };
 
 let expectedUserInfo: AdminUserProfile = {
@@ -228,7 +231,10 @@ describe('UserInfoTabComponent', () => {
       }],
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      themeColors: {},
+      portalMessages: {},
+      portalTitles: {}
     };
     expectedUserInfo = {
       multifactorAllowed: true,

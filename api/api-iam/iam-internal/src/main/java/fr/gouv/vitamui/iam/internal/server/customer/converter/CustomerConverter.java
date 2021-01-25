@@ -125,6 +125,9 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         logbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(customer.isSubrogeable()));
         logbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(customer.getInternalCode()));
         logbookData.put(CUSTOM_GRAPHIC_IDENTITY_KEY, LogbookUtils.getValue(customer.isHasCustomGraphicIdentity()));
+        logbookData.put(PORTAL_TITLE, LogbookUtils.getValue(customer.getPortalMessages()));
+        logbookData.put(PORTAL_MESSAGE, LogbookUtils.getValue(customer.getPortalTitles()));
+
         return ApiUtils.toJson(logbookData);
     }
 
@@ -147,8 +150,6 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         customer.setGraphicIdentity(new GraphicIdentity());
         customer.getGraphicIdentity().setHasCustomGraphicIdentity(dto.isHasCustomGraphicIdentity());
         customer.getGraphicIdentity().setThemeColors(dto.getThemeColors());
-        customer.getGraphicIdentity().setPortalMessage(dto.getPortalMessage());
-        customer.getGraphicIdentity().setPortalTitle(dto.getPortalTitle());
 
         return customer;
     }
@@ -174,8 +175,6 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
             dto.setHasCustomGraphicIdentity(graphicalIdentity.isHasCustomGraphicIdentity());
             dto.setThemeColors(graphicalIdentity.getThemeColors());
-            dto.setPortalMessage(graphicalIdentity.getPortalMessage());
-            dto.setPortalTitle(graphicalIdentity.getPortalTitle());
         }
 
         final List<Owner> owners = ownerRepository.findAll(Query.query(Criteria.where("customerId").is(dto.getId())));

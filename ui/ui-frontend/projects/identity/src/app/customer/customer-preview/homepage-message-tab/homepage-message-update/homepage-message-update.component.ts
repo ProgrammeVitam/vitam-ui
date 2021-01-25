@@ -26,6 +26,14 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
 
   public disabled = true;
 
+  public portalTitles: {
+    [language: string]: string;
+  };
+
+  public portalMessages: {
+    [language: string]: string;
+  };
+
   constructor(
     public dialogRef: MatDialogRef<HomepageMessageUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { customer: Customer },
@@ -55,7 +63,13 @@ export class HomepageMessageUpdateComponent implements OnInit, OnDestroy {
 
   public updateHomepageMessage(): void {
     if (this.customForm.valid && this.checkValidation(this.customForm.value.translations)) {
-      this.customerService.patch(this.customForm.value)
+      const form = {...{
+        id : this.customForm.get('id').value,
+        portalTitles: this.portalTitles,
+        portalMessages: this.portalMessages
+      }};
+
+      this.customerService.patch(form)
       .pipe(takeUntil(this.destroy))
       .subscribe(
         () => {

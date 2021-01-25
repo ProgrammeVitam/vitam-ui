@@ -1,6 +1,8 @@
+
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Option } from 'ui-frontend-common';
 
 @Component({
     selector: 'app-homepage-message-translation',
@@ -14,6 +16,9 @@ export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
 
     @Input()
     public index: number;
+
+    @Input()
+    public languages: Option[];
 
     @Output()
     public formChange = new EventEmitter<{form: FormGroup}>();

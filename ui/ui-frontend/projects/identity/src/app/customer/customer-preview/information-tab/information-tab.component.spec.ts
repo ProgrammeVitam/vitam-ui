@@ -73,6 +73,8 @@ let expectedCustomer: Customer = {
     internalCode: '1',
     owners: [],
     themeColors: {},
+    portalTitles: {},
+    portalMessages: {},
     gdprAlert : false,
     gdprAlertDelay : 72
 };
@@ -154,6 +156,8 @@ describe('Customer InformationTabComponent', () => {
       internalCode: '1',
       owners: [],
       themeColors: {},
+      portalMessages: {},
+      portalTitles: {},
       gdprAlert : false,
       gdprAlertDelay : 72
     };

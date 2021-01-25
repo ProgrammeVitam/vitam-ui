@@ -52,9 +52,6 @@ public class GraphicIdentityDto implements Serializable {
     String footerDataBase64;
     String portalDataBase64;
 
-    String portalMessage;
-    String portalTitle;
-
     Map<String, String> themeColors;
 
 }
