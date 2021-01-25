@@ -82,7 +82,7 @@ public class DeleteSynchronizedEventsTasks {
 
     @PostConstruct
     public void init() {
-        LOGGER.info(
+        LOGGER.debug(
                 "deleteSynchronizedEventsTasks is running with cron expression {}, deleting events synchronized from {} days ",
                 cronExpression, ttlInDays);
     }

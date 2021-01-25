@@ -127,7 +127,6 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.refresh();
       }
     });
   }

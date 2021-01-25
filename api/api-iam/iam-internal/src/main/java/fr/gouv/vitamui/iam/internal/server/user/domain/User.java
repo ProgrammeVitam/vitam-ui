@@ -69,7 +69,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = { "password", "oldPasswords" })
 public class User extends CustomerIdDocument implements BaseIdentifierDocument {
 
     @Length(max = 100)
@@ -130,9 +130,9 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
 
     private Address address = new Address();
 
+    private String internalCode;
+
     private String siteCode;
 
-    private OffsetDateTime desactivationDate;
-
-    private OffsetDateTime removingDate;
+    private Analytics analytics = new Analytics();
 }

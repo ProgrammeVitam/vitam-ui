@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,7 +157,7 @@ public class ApplicationInternalServiceTest {
 
     private List<TenantInformationDto> getTenantInformationByApp() {
         TenantInformationDto tenantForApp = new TenantInformationDto();
-        tenantForApp.setName(IamServerUtilsTest.APPLICATION_ID);
+        tenantForApp.setName(CommonConstants.APPLICATION_ID);
         tenantForApp.setTenants(new HashSet<>());
 
         return Arrays.asList(tenantForApp);

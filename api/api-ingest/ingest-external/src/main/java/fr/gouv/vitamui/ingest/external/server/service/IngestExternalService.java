@@ -40,15 +40,15 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -94,6 +94,15 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
                 result.getPageNum(),
                 result.getPageSize(),
                 result.isHasMore());
+    }
+
+    public LogbookOperationDto getOne(final String id) {
+        return ingestInternalRestClient.getOne(getInternalHttpContext(), id);
+
+    }
+
+     public ResponseEntity<byte[]> generateDocX(String id) {
+        return ingestInternalRestClient.generateDocX(getInternalHttpContext(), id);
     }
 
     @Override

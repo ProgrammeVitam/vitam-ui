@@ -100,4 +100,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private UnitExternalController unitExternalController;
+
+    @MockBean
+    private RuleExternalController ruleExternalController;
 }

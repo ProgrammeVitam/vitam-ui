@@ -47,6 +47,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
 import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
@@ -248,6 +249,8 @@ public class ServicesData {
 
     public static final String ROLE_EXPORT_AGENCIES = EXPORT_ROLE_PREFIX + SERVICE_AGENCIES;
 
+    public static final String ROLE_IMPORT_AGENCIES = IMPORT_ROLE_PREFIX + SERVICE_AGENCIES;
+
     //---------------------------------- FILE FORMATS --------------------------------------------
 
     public static final String SERVICE_FILE_FORMATS = "FILE_FORMATS";
@@ -261,6 +264,8 @@ public class ServicesData {
     public static final String ROLE_DELETE_FILE_FORMATS = DELETE_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     public static final String ROLE_EXPORT_FILE_FORMATS = EXPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
+
+    public static final String ROLE_IMPORT_FILE_FORMATS = IMPORT_ROLE_PREFIX + SERVICE_FILE_FORMATS;
 
     //------------------------------------ CONTEXTS -----------------------------------------
 
@@ -286,6 +291,18 @@ public class ServicesData {
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
 
+    //--------------------------------- REGLES DE GESTION -------------------------------------
+
+    public static final String SERVICE_RULES = "RULES";
+
+    public static final String ROLE_GET_RULES = GET_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_CREATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_UPDATE_RULES = CREATE_ROLE_PREFIX + SERVICE_RULES;
+
+    public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
+
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
@@ -295,6 +312,8 @@ public class ServicesData {
     public static final String ROLE_CREATE_ONTOLOGIES = GET_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     public static final String ROLE_DELETE_ONTOLOGIES = DELETE_ROLE_PREFIX + SERVICE_ONTOLOGIES;
+
+    public static final String ROLE_IMPORT_ONTOLOGIES = IMPORT_ROLE_PREFIX + SERVICE_ONTOLOGIES;
 
     //------------------------------------- OPERATIONS --------------------------------------------
 
@@ -335,16 +354,6 @@ public class ServicesData {
     public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
 
 
-    //------------------------------------ API TREES & PLANS -----------------------------------------
-
-    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
-
-    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
-
-
-
     //------------------------------------ ARCHIVES -----------------------------------------
 
     public static final String SERVICE_ARCHIVE = "ARCHIVE";
@@ -352,6 +361,15 @@ public class ServicesData {
     public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
+
+
+    //------------------------------------ API TREES & PLANS -----------------------------------------
+
+    public static final String SERVICE_HOLDING_FILLING_SCHEME_ROLE = "HOLDING_FILLING_SCHEME";
+
+    public static final String ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE = CREATE_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
+    public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
 
     //@formatter:off
@@ -424,6 +442,10 @@ public class ServicesData {
             ROLE_CREATE_SECURITY_PROFILES,
             ROLE_DELETE_SECURITY_PROFILES,
 
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
             ROLE_GET_ONTOLOGIES,
             ROLE_CREATE_ONTOLOGIES,
@@ -539,6 +561,10 @@ public class ServicesData {
             ROLE_CREATE_SECURITY_PROFILES,
             ROLE_DELETE_SECURITY_PROFILES,
 
+            ROLE_GET_RULES,
+            ROLE_CREATE_RULES,
+            ROLE_UPDATE_RULES,
+            ROLE_DELETE_RULES,
 
             ROLE_GET_ONTOLOGIES,
             ROLE_CREATE_ONTOLOGIES,

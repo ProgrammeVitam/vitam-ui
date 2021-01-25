@@ -39,6 +39,8 @@ package fr.gouv.vitamui.iam.external.client;
 import java.nio.file.Path;
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpMethod;
@@ -81,12 +83,16 @@ public class CustomerExternalWebClient extends BaseWebClient<ExternalHttpContext
             throw new BadRequestException("Customer data not found.");
         }
 
+        final Map data = new HashMap();
+        data.put("customerDto", customerCreationFormData.getCustomerDto());
+        data.put("tenantName", customerCreationFormData.getTenantName());
+
         if (customerCreationFormData.getLogo().isPresent()) {
-            return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
+            return multipartData(getUrl(), HttpMethod.POST, context, data,
                     Optional.of(new AbstractMap.SimpleEntry<>("logo", customerCreationFormData.getLogo().get())), CustomerDto.class);
         }
         else {
-            return multipartData(getUrl(), HttpMethod.POST, context, Collections.singletonMap("customerDto", customerCreationFormData.getCustomerDto()),
+            return multipartData(getUrl(), HttpMethod.POST, context, data,
                     Optional.empty(), CustomerDto.class);
         }
     }

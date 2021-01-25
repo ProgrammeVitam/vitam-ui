@@ -1,0 +1,38 @@
+.mat-button-wrapper {
+    justify-content: center;
+    display: flex!important;
+}
+
+img {
+    width: 25px;
+}
+
+span img {
+    margin-left: 0.75rem;
+}
+
+span {
+    display: inline-flex;
+}
+
+.flag-button {
+    background-color: white;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+::ng-deep.mat-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+::ng-deep.mat-menu-panel {
+    min-width: 0!important;
+}
+
+::ng-deep.mat-menu-content {
+    padding: 0!important;
+}
+    

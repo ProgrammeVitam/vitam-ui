@@ -7,6 +7,7 @@ import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
+import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,15 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;	
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
 
 public class FactoryDto {
-    
+
     private static Integer proofTenantIdentitfier = 10;
-    
+
     @Autowired
     public FactoryDto(Environment env) {
         proofTenantIdentitfier = Integer.valueOf(env.getProperty("vitamui_platform_informations.proof_tenant"));
@@ -54,6 +57,12 @@ public class FactoryDto {
         }
         else if (clazz.equals(IdentityProviderDto.class)) {
             dto = (T) buildIdentityProviderDto();
+        }
+        else if (clazz.equals(ContextDto.class)) {
+            dto = (T) buildContextDto();
+        }
+        else if (clazz.equals(RuleDto.class)) {
+            dto = (T) buildRuleDto();
         }
         else {
             throw new InvalidArgumentException("build method not implemented for class " + clazz);
@@ -96,6 +105,14 @@ public class FactoryDto {
                 "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363", SYSTEM_CUSTOMER_ID, ADMIN_LEVEL);
         user.setIdentifier(null);
         return user;
+    }
+    
+    private static ContextDto buildContextDto() {
+        return ReferentialDtoBuilder.buildContextDto(null);
+    }
+
+    private static RuleDto buildRuleDto() {
+        return ReferentialDtoBuilder.buildRuleDto(null, randomString(), "StorageRule", "Rule value", "Rule Description", "1", "DAY");
     }
 
 }

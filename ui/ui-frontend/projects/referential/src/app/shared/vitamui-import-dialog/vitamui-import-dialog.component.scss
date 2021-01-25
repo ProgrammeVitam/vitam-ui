@@ -1,0 +1,71 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+$field-spacing: 15px;
+
+.header {
+    padding: 30px 60px 0 60px;
+}
+
+.content {
+    padding: 0px 60px 60px 60px;
+}
+
+h2 {
+    font-size: 26px;
+    line-height: 46px;
+    margin-top: 23px;
+    margin-bottom: 37px;
+}
+
+.drag-and-drop-area {
+    width: 100%;
+    height: 180px;
+    border: 2px dashed var(--vitamui-secondary);
+    border-radius: 6px;
+    background: $white;
+    margin-bottom: 37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .drop-area {
+        color: var(--vitamui-secondary);
+        font-size: 26px;
+        line-height: 12px;
+        font-weight: bold;
+        a {
+            color: var(--vitamui-secondary);
+            text-decoration: underline;
+        }
+    }
+    .input-file {
+        display: none;
+    }
+}
+
+.on-over {
+    background: var(--vitamui-secondary);
+
+    .drop-area {
+        color: $white;
+        a {
+            color: $white;
+        }
+    }
+}
+
+.error-message {
+    color: $red;
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+}
+
+.actions > button:not(:last-child) {
+    margin-right: 20px;
+}

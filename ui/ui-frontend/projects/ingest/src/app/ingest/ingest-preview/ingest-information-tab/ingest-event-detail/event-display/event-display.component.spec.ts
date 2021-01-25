@@ -34,44 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
-import { EventDisplayComponent } from './event-display.component';
+import {EventDisplayComponent} from './event-display.component';
 import { IngestService } from '../../../../ingest.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('EventDisplayComponent', () => {
-    let component: EventDisplayComponent;
-    let fixture: ComponentFixture<EventDisplayComponent>;
+  let component: EventDisplayComponent;
+  let fixture: ComponentFixture<EventDisplayComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [EventDisplayComponent],
-            imports: [
-            ],
-            providers: [{ provide: IngestService, useValue: {} }],
-            schemas: [NO_ERRORS_SCHEMA]
-        })
-            .compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [EventDisplayComponent],
+      imports: [
+      ],
+      providers: [{ provide: IngestService, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(EventDisplayComponent);
-        component = fixture.componentInstance;
-        component.event = {
-            eventData: {
-                evId: 'aeeaaaaaaoem5l4iaa3lialtbt4j6yaaaaaq',
-                evType: 'STEP_FAKE_INGEST.STARTED',
-                outcome: 'OK',
-                outMessg: 'Success ingest'
-            },
-            subEvents: []
-        };
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EventDisplayComponent);
+    component = fixture.componentInstance;
+    component.event = {
+      eventData: {
+        evId: 'aeeaaaaaaoem5l4iaa3lialtbt4j6yaaaaaq',
+        evType: 'STEP_FAKE_INGEST.STARTED',
+        outcome: 'OK',
+        outMessg: 'Success ingest'
+      },
+      subEvents: [] };
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

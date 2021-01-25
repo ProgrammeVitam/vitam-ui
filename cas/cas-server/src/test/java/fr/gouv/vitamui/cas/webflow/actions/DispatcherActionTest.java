@@ -3,6 +3,8 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -95,6 +97,17 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         final Event event = action.doExecute(context);
 
         assertEquals(USERNAME, ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
+        assertEquals("success", event.getId());
+    }
+
+    @Test
+    public void testInternalSuccess_when_spaceBeforeAndAfterUsername() throws IOException {
+        flowParameters.put("credential", new UsernamePasswordCredential(" " + USERNAME + "  ", PASSWORD));
+
+        final Event event = action.doExecute(context);
+        verify((casExternalRestClient), times(1))
+                .getUserByEmail(any(ExternalHttpContext.class), eq(USERNAME), any(Optional.class));
+
         assertEquals("success", event.getId());
     }
 

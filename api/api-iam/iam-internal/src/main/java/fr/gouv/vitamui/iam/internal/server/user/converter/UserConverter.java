@@ -46,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
@@ -86,9 +87,7 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String GROUP_IDENTIFIER_KEY = "Groupe de profils";
 
-    public static final String DESACTIVATION_DATE = "desactivationDate";
-
-    public static final String REMOVING_DATE = "removingDate";
+    public static final String INTERNAL_CODE_KEY = "Code interne";
 
     /**
      * Used for described user's blocked duration
@@ -118,9 +117,8 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(TYPE_KEY, LogbookUtils.getValue(user.getType().toString()));
         userLogbookData.put(STATUS_KEY, LogbookUtils.getValue(user.getStatus().toString()));
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
+        userLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(user.getInternalCode()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
-        userLogbookData.put(DESACTIVATION_DATE, LogbookUtils.getValue(user.getDesactivationDate()));
-        userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
         AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
         addressConverter.addAddress(address, userLogbookData);
@@ -147,6 +145,9 @@ public class UserConverter implements Converter<UserDto, User> {
         VitamUIUtils.copyProperties(user, userDto);
         if (user.getAddress() != null) {
             userDto.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
+        }
+        if (user.getAnalytics() != null) {
+            userDto.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
         }
         return userDto;
     }

@@ -1,0 +1,11 @@
+<div *ngIf="hasLangSelection">
+  <button class="flag-button" mat-mini-fab [matMenuTriggerFor]="menu"><img [src]="'../../../assets/country/' + currentLang + '.svg'"></button>
+  <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+    <span mat-menu-item (click)="use('fr')">
+      FR<img src="../../../assets/country/fr.svg">
+    </span>
+    <span mat-menu-item (click)="use('en')">
+      EN<img src="../../../assets/country/en.svg">
+    </span>
+  </mat-menu>
+</div>

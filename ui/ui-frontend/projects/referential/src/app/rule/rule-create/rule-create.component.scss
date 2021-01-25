@@ -1,0 +1,203 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+$field-spacing: 15px;
+
+.header {
+    padding: 30px 60px 0 60px;
+}
+
+.content {
+    padding: 0px 60px 60px 60px;
+}
+
+h2 {
+    font-size: 26px;
+    line-height: 46px;
+    margin-top: 23px;
+    margin-bottom: 37px;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+}
+
+.actions > button:not(:last-child) {
+    margin-right: 20px;
+}
+
+.form-group {
+    padding-bottom: 30px;
+}
+
+.field-tooltip {
+  cursor: default;
+  margin-left: 10px;
+  color: var(--vitamui-secondary);
+}
+
+.select-tooltip {
+  top: 15px;
+  position: relative;
+}
+
+.radio-tooltip {
+  top: -10px;
+  position: relative;
+}
+
+label {
+    color: $charcoal-grey;
+    font-size: 15px;
+    line-height: normal;
+    margin-bottom: 10px;
+    display: block;
+
+    .required-marker {
+        color: var(--vitamui-primary);
+    }
+
+    small {
+        color: #a5a5a5;
+        font-size: inherit;
+    }
+}
+
+.underline {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.input-file {
+    display: none;
+}
+
+.inline-label {
+    padding-top: 5px;
+}
+
+// STEP 1
+.field-name {
+  width: 300px;
+}
+
+.field-description {
+  width: 630px;
+}
+
+// STEP 2
+.label-password-revocation-delay {
+    width: 255px;
+    margin-right: 40px;
+}
+
+.field-password-revocation-delay {
+    width: 180px;
+}
+
+.field-domains {
+    max-width: 460px;
+}
+
+button.primary {
+    margin-right: 20px;
+}
+
+button.back {
+    margin-top: 60px;
+}
+
+button > small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.hint {
+    color: #a5a5a5;
+    font-size: 15px;
+}
+
+.drag-and-drop-area {
+    margin-left: 10%;
+    width: 300px;
+    height: 120px;
+    border: 2px dashed var(--vitamui-secondary);
+    border-radius: 6px;
+    box-shadow: 0px 0px 80px rgba(163, 163, 163, 0.3);
+    background: $white;
+    margin-bottom: 60px;
+
+    p {
+        padding-top: 20px;
+    }
+}
+
+.on-over {
+    border: 2px solid var(--vitamui-secondary);
+
+    p {
+        color: $white;
+    }
+
+    .drop-area {
+        background: $dark-grey;
+        opacity: 0.9;
+        color: $white;
+    }
+}
+
+.image-container {
+    position: absolute;
+    width: 300px;
+    height: 120px;
+    vertical-align: middle;
+}
+
+.logo-image {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.drop-area {
+    position: absolute;
+    width: 296px;
+    height: 116px;
+}
+
+.upload-text {
+    padding-top: 5%;
+    font-size: 15px;
+    line-height: 18px;
+    color: #a5a5a5;
+
+    .upload {
+        color: var(--vitamui-secondary);
+    }
+
+}
+
+.logo-drop {
+    font-size: 14px;
+    line-height: 20px;
+    color: $charcoal-grey;
+    text-align: center;
+
+    small {
+        color: #a5a5a5;
+    }
+}
+
+.error-message {
+    color: $red;
+    font-size: 14px;
+    margin-bottom: 30px;
+}

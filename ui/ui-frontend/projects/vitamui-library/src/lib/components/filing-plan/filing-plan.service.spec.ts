@@ -5,9 +5,9 @@ import {BASE_URL} from 'ui-frontend-common';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Type} from '@angular/core';
 import {inject, TestBed} from '@angular/core/testing';
-import {FilingPlanService} from './filing-plan.service';
 import {FileType, Node} from 'projects/vitamui-library/src/public-api';
-import {DescriptionLevel} from "../../models/description-level.enum";
+import {DescriptionLevel} from '../../models/description-level.enum';
+import {FilingPlanService} from './filing-plan.service';
 
 describe('FilingPlanService', () => {
   let httpTestingController: HttpTestingController;

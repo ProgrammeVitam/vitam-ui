@@ -4,7 +4,7 @@
     <app-group-preview *ngIf="openedItem" (previewClose)="closePanel()" [group]="openedItem"></app-group-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content class="overflow-none">
     <div class="vitamui-header">
       <div class="vitamui-container">
         <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
@@ -13,10 +13,11 @@
         </h2>
         <div class="controls">
 
-          <div class="search disabled">
-            <input type="search" placeholder="Nom du groupe" i18n-placeholder="Group name@@profileGroupSearchInputPlaceholder" disabled>
-            <button type="submit" class="btn-circle primary btn-search"><i class="material-icons">search</i></button>
-          </div>
+          <vitamui-common-search-bar
+            name="group-search"
+            (search)="onSearchSubmit($event)"
+            placeholder="Nom du groupe" i18n-placeholder="Group name@@profileGroupSearchInputPlaceholder"
+          ></vitamui-common-search-bar>
 
           <div class="actions">
             <button class="btn secondary" (click)="openCreateGroupDialog()">
@@ -35,7 +36,7 @@
     </div>
 
     <div class="vitamui-body vitamui-container">
-      <app-group-list (groupClick)="openPanel($event)"></app-group-list>
+      <app-group-list [search]="search" (groupClick)="openPanel($event)"></app-group-list>
     </div>
 
   </mat-sidenav-content>

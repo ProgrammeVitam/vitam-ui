@@ -40,6 +40,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
+import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {FileFormatCreateComponent} from './file-format-create/file-format-create.component';
 import {FileFormatListComponent} from './file-format-list/file-format-list.component';
 
@@ -85,4 +87,17 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
     this.openPanel(item);
   }
 
+  openFileFormatImportDialog() {
+    const dialogRef = this.dialog.open(
+      VitamUIImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        data: Referential.FILE_FORMAT,
+        disableClose: true
+      });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        this.refreshList();
+      }
+    });
+  }
 }

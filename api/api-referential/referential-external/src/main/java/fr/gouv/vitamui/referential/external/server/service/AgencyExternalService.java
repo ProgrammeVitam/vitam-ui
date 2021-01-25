@@ -46,9 +46,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -58,6 +60,7 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.internal.client.AgencyInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -66,11 +69,15 @@ import lombok.Setter;
 @Service
 public class AgencyExternalService extends AbstractResourceClientService<AgencyDto, AgencyDto> {
 
-    @Autowired
     private AgencyInternalRestClient agencyInternalRestClient;
+    
+    private AgencyInternalWebClient agencyInternalWebClient;
 
-    public AgencyExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public AgencyExternalService(ExternalSecurityService externalSecurityService, AgencyInternalRestClient agencyInternalRestClient, AgencyInternalWebClient agencyInternalWebClient) {
         super(externalSecurityService);
+        this.agencyInternalRestClient = agencyInternalRestClient;
+        this.agencyInternalWebClient = agencyInternalWebClient;
     }
 
     public List<AgencyDto> getAll(final Optional<String> criteria) {
@@ -125,5 +132,8 @@ public class AgencyExternalService extends AbstractResourceClientService<AgencyD
     public ResponseEntity<Resource> export() {
         return agencyInternalRestClient.export(getInternalHttpContext());
     }
-
+    
+    public JsonNode importAgencies(String fileName, MultipartFile file) {
+        return agencyInternalWebClient.importAgencies(getInternalHttpContext(), fileName, file);
+    }
 }

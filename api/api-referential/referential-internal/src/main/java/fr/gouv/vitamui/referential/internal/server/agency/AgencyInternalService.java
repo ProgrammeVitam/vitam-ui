@@ -61,14 +61,26 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -233,6 +245,15 @@ public class AgencyInternalService {
             return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
         } catch (InvalidCreateOperationException e) {
         	throw new InternalServerException("Unable to fetch history", e);
+        }
+    }
+    
+    public JsonNode importAgencies(VitamContext context, String fileName, MultipartFile file) {
+        try {
+            return vitamAgencyService.importAgencies(context, fileName, file).toJsonNode();
+        } catch (InvalidParseOperationException |AccessExternalClientException |VitamClientException | IOException e) {
+            LOGGER.error("Unable to import agency file {}: {}", fileName, e.getMessage());
+            throw new InternalServerException("Unable to import agency file " + fileName + " : ", e);
         }
     }
 

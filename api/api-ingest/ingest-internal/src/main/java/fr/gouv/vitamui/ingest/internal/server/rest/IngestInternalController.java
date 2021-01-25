@@ -44,8 +44,7 @@ import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,16 +56,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
-import javax.ws.rs.core.Response;
-import java.io.InputStream;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.V1_INGEST)
 @Getter
 @Setter
-@Api(tags = "ingest", value = "Ingest a SIP", description = "Ingest an SIP")
+@Api(tags = "ingest", value = "Ingest an SIP", description = "Ingest an SIP")
 public class IngestInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
@@ -90,6 +88,13 @@ public class IngestInternalController {
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
+    @GetMapping(CommonConstants.PATH_ID)
+    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
+        LOGGER.debug("get Ingest Entities for id={} ", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return ingestInternalService.getOne(vitamContext, id);
+    }
+
     @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RequestResponseOK upload(
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
@@ -99,5 +104,21 @@ public class IngestInternalController {
         LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
         SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
+    }
+
+    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)
+        throws IOException {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+      try {
+          LOGGER.debug("export docx report for operation with id :{}", id);
+          ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+       byte[] response =  this.ingestInternalService.generateDocX(vitamContext, id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+      }
+       catch(IOException | JSONException e) {
+           LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            throw new IOException ("Unable to generate the ingest report " + e.getMessage());
+      }
     }
 }

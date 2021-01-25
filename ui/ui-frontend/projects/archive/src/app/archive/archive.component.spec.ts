@@ -83,6 +83,7 @@ describe('ArchiveComponent', () => {
       ],
       declarations: [
         ArchiveComponent
+
       ],
       providers: [
         FormBuilder,

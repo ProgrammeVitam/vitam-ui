@@ -21,7 +21,7 @@
                 <exclude>environments/hosts.vitam</exclude>
                 <exclude>environments/hosts.vitamui</exclude>
                 <exclude>environments/hosts.example</exclude>
-                <!-- We exclude information about CA/certs/keystores and vault linked to them. 
+                <!-- We exclude information about CA/certs/keystores and vault linked to them.
                 They must be generated during a deployment or loaded - and stored oustide sources. -->
                 <exclude>environments/group_vars/all/vault-keystores.yml.example</exclude>
                 <exclude>environments/group_vars/all/vault-keystores.yml</exclude>

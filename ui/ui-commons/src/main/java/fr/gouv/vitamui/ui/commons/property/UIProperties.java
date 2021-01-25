@@ -58,5 +58,11 @@ public interface UIProperties {
 
     public String getPlatformName();
 
+    public String getWelcomeTitle();
+
+    public String getWelcomeDescription();
+
+    public Map<String, String> getCustomer();
+
     public Map<String, PortalCategoryConfig> getPortalCategories();
 }

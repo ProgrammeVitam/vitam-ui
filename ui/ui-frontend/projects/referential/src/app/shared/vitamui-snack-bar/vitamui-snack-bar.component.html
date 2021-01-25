@@ -36,12 +36,24 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Export des services agent en cours...
     </ng-container>
 
+    <ng-container *ngSwitchCase="'agencyImportInProgress'" i18n="@@notificationAgencyImportInProgress">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des services agent en cours...
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyImportSuccessed'" i18n="@@notificationAgencyImportSuccessed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des services agent terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'agencyImportFailed'" i18n="@@notificationAgencyImportFailed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des services agent a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
+    </ng-container>
+
     <ng-container *ngSwitchCase="'fileFormatCreate'" i18n="@@notificationFileFormatCreate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été créé
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatUpdate'" i18n="@@notificationFileFormatUpdate">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le formet de fichier {{ data?.name }} a bien été mis à jour.
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le format de fichier {{ data?.name }} a bien été mis à jour.
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatDelete'" i18n="@@notificationFileFormatDelete">
@@ -52,6 +64,38 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Suppression du format de fichier {{ data?.name }} en cours...
     </ng-container>
 
+    <ng-container *ngSwitchCase="'ruleCreate'" i18n="@@notificationRuleCreate">
+      <i class="vitamui-icon vitamui-icon-rules"></i> La règle de gestion {{ data?.name }} a bien été créée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleUpdate'" i18n="@@notificationRuleUpdate">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été mise à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDelete'" i18n="@@notificationRuleDelete">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été supprimée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDeleteStart'" i18n="@@notificationRuleDeleteStart">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> Suppression de la règle de gestion {{ data?.name }} en
+      cours...
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleExportAll'" i18n="@@notificationRuleCreate">
+      <i class="vitamui-icon vitamui-icon-rules"></i> Export des règles de gestion en cours...
+    </ng-container>
+    
+    <ng-container *ngSwitchCase="'fileformatImportInProgress'" i18n="@@notificationFileFormatImportInProgress">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des formats de fichier en cours...
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileformatImportSuccessed'" i18n="@@notificationFileFormatImportSuccessed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des formats de fichier terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'fileformatImportFailed'" i18n="@@notificationFileFormatImportFailed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des formats de fichier a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
+    </ng-container>
 
     <ng-container *ngSwitchCase="'contextCreate'" i18n="@@notificationContextCreate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le contexte applicatif {{ data?.name }} a bien été créé
@@ -85,6 +129,18 @@
 
     <ng-container *ngSwitchCase="'ontologyDelete'" i18n="@@notificationOntologyDelete">
       <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été supprimé.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ontologyImportInProgress'" i18n="@@notificationOntologyImportInProgress">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des ontologies en cours...
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ontologyImportSuccessed'" i18n="@@notificationOntologyImportSuccessed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des ontologies terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ontologyImportFailed'" i18n="@@notificationOntologyImportFailed">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des ontologies a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'auditRun'" i18n="@@notificationAuditRun">

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.config;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
@@ -68,9 +69,17 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public ReferentialExternalRestClientFactory referentialWebClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
         return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(), restTemplateBuilder);
     }
+    
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalWebClientFactory referentialWebClientFactory(final ReferentialApplicationProperties uiProperties) {
+    	return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    }
+
 
     @Bean
     public AccessContractExternalRestClient accessContractExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
@@ -111,6 +120,11 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public TenantExternalRestClient tenantCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
         return iamExternalRestClientFactory.getTenantExternalRestClient();
     }
+    
+    @Bean
+    public CustomerExternalRestClient customerCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
+        return iamExternalRestClientFactory.getCustomerExternalRestClient();
+    }
 
     @Bean
     public OperationExternalRestClient auditCrudRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
@@ -135,5 +149,25 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public ProfileExternalRestClient profileExternalRestClient(final ReferentialExternalRestClientFactory factory) {
         return factory.getProfileExternalRestClient();
+    }
+
+    @Bean
+    public RuleExternalRestClient ruleExternalRestClient(final ReferentialExternalRestClientFactory factory) {
+        return factory.getRuleExternalRestClient();
+    }
+    
+    @Bean
+    public AgencyExternalWebClient agencyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getAgencyExternalWebClient();
+    }
+    
+    @Bean
+    public FileFormatExternalWebClient fileFormatWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getFileFormatExternalWebClient();
+    }
+    
+    @Bean
+    public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
     }
 }

@@ -23,6 +23,7 @@ export * from './lib/models/ingest-contract';
 export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
+export * from './lib/models/rule';
 export * from './lib/models/precise-date-query.interface';
 export * from './lib/models/search-criteria.interface';
 export * from './lib/models/search-query.interface';

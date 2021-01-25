@@ -1,13 +1,11 @@
 <div class="row">
 
-    <i class="vitamui-icon caret arrow clickable" (click)="toggleShow()" [ngClass]="{'vitamui-icon-circle-up': isShown, 
-  'vitamui-icon-circle-down':!isShown}"></i>
+  <i class="material-icons caret arrow" (click)="toggleShow()">{{ isShown ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</i>
 
-    <div *ngIf="isShown" class="column container-fluid">
-
-        <div *ngFor="let event of events; let i=index">
-            <app-vitam-event-display [event]="event"></app-vitam-event-display>
-        </div>
+  <div *ngIf="isShown" class="row container-fluid">
+    <div *ngFor="let event of events; let i=index">
+      <app-vitam-event-display [event]="event" ></app-vitam-event-display>
     </div>
-
+  </div>
+  
 </div>

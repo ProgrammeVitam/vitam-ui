@@ -4,6 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {Ontology} from 'projects/vitamui-library/src/lib/models/ontology';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {Referential} from '../shared/vitamui-import-dialog/referential.enum';
+import {VitamUIImportDialogComponent} from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {OntologyCreateComponent} from './ontology-create/ontology-create.component';
 import {OntologyListComponent} from './ontology-list/ontology-list.component';
 
@@ -52,4 +54,20 @@ export class OntologyComponent extends SidenavPage<Ontology> implements OnInit {
     this.openPanel(item);
   }
 
+  openOntologyImportDialog() {
+    const dialogRef = this.dialog.open(
+      VitamUIImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        data: Referential.ONTOLOGY,
+        disableClose: true
+      });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('result : ', result);
+
+      if (result && result.success) {
+        console.log('refresh the list');
+        this.refreshList();
+      }
+    });
+  }
 }

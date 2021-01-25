@@ -73,7 +73,8 @@ export class InformationTabComponent implements OnChanges, OnInit {
       zipCode: string,
       city: string,
       country: 'FR',
-    }
+    },
+    internalCode: string
   };
   previousTenant: {
     id: string,
@@ -113,6 +114,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         city: null,
         country: 'FR',
       }),
+      internalCode: [null]
     });
 
     this.tenantForm = this.formBuilder.group({

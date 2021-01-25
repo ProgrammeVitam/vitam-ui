@@ -67,6 +67,7 @@ import fr.gouv.vitamui.referential.common.service.OperationService;
 import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
 import fr.gouv.vitamui.referential.common.service.VitamContextService;
 import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
+import fr.gouv.vitamui.referential.common.service.VitamRuleService;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
 import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
@@ -132,6 +133,11 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public VitamRuleService vitamRuleService(final AdminExternalClient adminClient, ObjectMapper objectMapper, final AccessExternalClient accessClient) {
+        return new VitamRuleService(adminClient, objectMapper, accessClient);
+    }
+
+    @Bean
     public VitamContextService vitamContextService(final AdminExternalClient adminClient, ObjectMapper objectMapper) {
         return new VitamContextService(adminClient, objectMapper);
     }
@@ -160,7 +166,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public UnitService unitService(final AccessExternalClient client) {
         return new UnitService(client);
     }
-    
+
     @Bean
     public VitamBatchReportService vitamBatchReportService(final AdminExternalClient adminExternalClient) {
         return new VitamBatchReportService(adminExternalClient);

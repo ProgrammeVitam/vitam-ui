@@ -1,0 +1,12 @@
+<div class="d-flex align-items-center">
+    <div class="d-flex align-items-center mandatory">
+        <i [ngClass]="application.icon" class="app-icon d-flex justify-content-center align-items-center"></i>
+        <span class="pl-2 appName" [innerHTML]="application.name | highlight: hlCriteria"></span>
+        <span class="hover-focus pl-2">-</span>
+        <span class="hover-focus pl-2 tooltip">{{application.tooltip}}</span>
+    </div>
+    <div class="ml-auto focus d-flex justify-content-end">
+        <span class="material-icons">keyboard_return</span>
+        <span class="pl-2">{{'MENU-APPLICATION-TILE.ENTER_APPLICATION' | translate}}</span>
+    </div>
+</div>

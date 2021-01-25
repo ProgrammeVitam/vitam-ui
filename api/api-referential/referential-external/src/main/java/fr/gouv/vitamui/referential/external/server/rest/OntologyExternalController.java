@@ -53,12 +53,16 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 
 import java.util.Collection;
 import java.util.Map;
@@ -135,5 +139,18 @@ public class OntologyExternalController {
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete ontology with id :{}", id);
         ontologyExternalService.delete(id);
+    }
+    
+    /***
+     * Import ontology from a json file
+     * @param fileName the file name
+     * @param file the agency csv file to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_IMPORT_ONTOLOGIES)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("Import ontology file {}", fileName);
+        return ontologyExternalService.importOntologies(fileName, file);
     }
 }

@@ -63,6 +63,8 @@ public class CommonConstants {
 
     public static final String PATH_ME = "/me";
 
+    public static final String PATH_ANALYTICS = "/analytics";
+
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 
     public static final String X_XSRF_TOKEN_HEADER = "X-XSRF-Token";
@@ -116,10 +118,16 @@ public class CommonConstants {
     public static final String UPLOAD_ROLE_PREFIX = ROLE_PREFIX + "UPLOAD_";
 
     public static final String EXPORT_ROLE_PREFIX = ROLE_PREFIX + "EXPORT_";
-
+    
+    public static final String IMPORT_ROLE_PREFIX = ROLE_PREFIX + "IMPORT_";
+    
     public static final String PATH_CHECK = "/check";
 
     public static final String PATH_LEVELS = "/levels";
+    
+    public static final String PATH_IMPORT = "/import";
+    
+    public static final String PATH_EXPORT = "/export";
 
     public static final String USER_ID_ATTRIBUTE = "id";
 
@@ -161,6 +169,8 @@ public class CommonConstants {
 
     public static final String GROUP_ID_ATTRIBUTE = "groupId";
 
+    public static final String ANALYTICS_ATTRIBUTE = "analytics";
+
     public static final String PROFILE_GROUP_ATTRIBUTE = "profileGroup";
 
     public static final String ROLES_ATTRIBUTE = "roles";
@@ -192,6 +202,12 @@ public class CommonConstants {
     public static final String THEME_COLORS = "THEME_COLORS";
 
     public static final String APP_LOGO = "APP_LOGO";
+
+    public static final String WELCOME_TITLE = "WELCOME_TITLE";
+
+    public static final String WELCOME_DESCRIPTION = "WELCOME_DESCRIPTION";
+
+    public static final String CUSTOMER = "CUSTOMER";
 
 
     /**
@@ -276,6 +292,8 @@ public class CommonConstants {
     public static final Integer INPUT_STREAM_BUFFER_SIZE = 4096;
 
     public static final String GPDR_DEFAULT_VALUE = "-";
+
+    public static final String APPLICATION_ID = "applicationId";
 
     /**
      * Constants of ingest operations

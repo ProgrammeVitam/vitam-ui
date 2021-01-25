@@ -51,8 +51,10 @@ import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 
+import lombok.val;
+
 /**
- * Specific surrogate REST based on the IAM API.
+ * Specific surrogate service based on the IAM API.
  *
  *
  */
@@ -65,7 +67,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     private final Utils utils;
 
     public IamSurrogateAuthenticationService(final CasExternalRestClient casExternalRestClient,
-                                                 final ServicesManager servicesManager, final Utils utils) {
+                                             final ServicesManager servicesManager, final Utils utils) {
         super(servicesManager);
         this.casExternalRestClient = casExternalRestClient;
         this.utils = utils;

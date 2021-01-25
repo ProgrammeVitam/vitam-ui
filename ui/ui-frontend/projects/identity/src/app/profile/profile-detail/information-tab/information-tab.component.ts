@@ -36,16 +36,14 @@
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { merge, of, Subscription } from 'rxjs';
-import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
 import { AuthService, buildValidators, diff, Profile, Role } from 'ui-frontend-common';
 
 import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
-
-const DEBOUNCE_TIME = 400;
 
 @Component({
   selector: 'app-information-tab',
@@ -91,9 +89,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     });
 
     // TODO FIXME GET CUSTOMERID FROM PROFILE
-    this.updateFormSub = merge(this.form.valueChanges, this.form.statusChanges)
+    this.updateFormSub = this.form.valueChanges
       .pipe(
-        debounceTime(DEBOUNCE_TIME),
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => this.completeRoles(formData)),
@@ -115,9 +112,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     if (data.roles) {
       const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
       const hasRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
-      if (hasRole) {
+      const hasUpdateUsersRole = data.roles.some((r: any) => r.name === Role.ROLE_UPDATE_USERS.toString());
+      if (hasRole && !hasUpdateUsersRole) {
         data.roles = data.roles.concat([{ name: Role.ROLE_UPDATE_USERS }]);
-      } else {
+      } else if (!hasRole) {
         data.roles = data.roles.filter((r: any) => Role.ROLE_UPDATE_USERS !== r.name);
       }
     }

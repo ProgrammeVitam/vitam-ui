@@ -39,6 +39,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatDialogModule,
+  MatDividerModule,
   MatMenuModule,
   MatOptionModule,
   MatProgressSpinnerModule,
@@ -73,7 +74,8 @@ import {ContextPreviewComponent} from './context-preview.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatOptionModule,
-    MatTabsModule
+    MatTabsModule,
+    MatDividerModule
   ],
   declarations: [
     ContextPreviewComponent,

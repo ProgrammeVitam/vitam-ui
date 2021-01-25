@@ -52,6 +52,7 @@ import javax.xml.bind.Marshaller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -167,8 +168,14 @@ public class VitamFileFormatService {
 
         return importFileFormats(vitamContext, actualFileFormats);
     }
+    
+    public RequestResponse<?> importFileFormats(VitamContext vitamContext, String fileName, MultipartFile file) 
+        	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        	LOGGER.debug("Import file format file {}", fileName);
+        	return adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
+    }
 
-    private RequestResponse importFileFormats(final VitamContext vitamContext, final List<FileFormatModel> fileFormatModels)
+    private RequestResponse<?> importFileFormats(final VitamContext vitamContext, final List<FileFormatModel> fileFormatModels)
             throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeFileFormats(fileFormatModels)) {
             return adminExternalClient.createFormats(vitamContext, byteArrayInputStream, "FileFormats.json");

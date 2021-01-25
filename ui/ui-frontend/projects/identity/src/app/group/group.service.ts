@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import { Criterion, Group, Operators, SearchQuery, SearchService } from 'ui-frontend-common';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -132,5 +132,12 @@ export class GroupService extends SearchService<Group> {
     }
 
     return this.groupApi.getAllByParams(params);
+  }
+
+  getNonEmptyLevels(query: SearchQuery) {
+    return this.groupApi.getLevels(query)
+      .pipe(
+        map((levels) => levels.filter((l) => !!l))
+      );
   }
 }

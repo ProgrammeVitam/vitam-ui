@@ -43,9 +43,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import {of, Subject} from 'rxjs';
 
-import { Group } from 'ui-frontend-common';
+import {Group, TableFilterModule} from 'ui-frontend-common';
+import {OrderByButtonModule} from 'ui-frontend-common';
 import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../group.service';
 import { GroupListComponent } from './group-list.component';
@@ -82,6 +83,7 @@ class Page {
 
 let page: Page;
 let groups: Group[];
+const levels: string[] = ['level1', 'level2'];
 
 describe('GroupListComponent', () => {
 
@@ -116,7 +118,8 @@ describe('GroupListComponent', () => {
       search: () => of(groups),
       canLoadMore: true,
       loadMore: () => of(groups),
-      updated: new Subject()
+      updated: new Subject(),
+      getNonEmptyLevels: () => of(levels)
     };
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
@@ -127,6 +130,8 @@ describe('GroupListComponent', () => {
         MatProgressSpinnerModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        TableFilterModule,
+        OrderByButtonModule
       ],
       declarations: [
         GroupListComponent,
@@ -145,6 +150,7 @@ describe('GroupListComponent', () => {
     const groupService = TestBed.get(GroupService);
     spyOn(groupService, 'search').and.callThrough();
     spyOn(groupService, 'loadMore').and.callThrough();
+    spyOn(groupService, 'getNonEmptyLevels').and.callFake(groupListServiceSpy.getNonEmptyLevels);
 
   }));
 
