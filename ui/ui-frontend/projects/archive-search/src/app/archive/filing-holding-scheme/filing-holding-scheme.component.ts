@@ -63,6 +63,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   node: string;
   nodeData: NodeData;
   hasResults = false;
+  linkOneToNotKeep = false;
+  linkTwoToNotKeep = true;
 
   constructor(private archiveService: ArchiveService, private route: ActivatedRoute,
               private archiveSharedDataServiceService: ArchiveSharedDataServiceService) {
@@ -152,11 +154,21 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     this.recursiveShow(this.nestedDataSource.data, false);
   }
 
+  showOnlyParentTreeNodes() {
+    
+    this.initFilingHoldingSchemeTree();
+    this.linkOneToNotKeep = false;
+    this.linkTwoToNotKeep = true;
+    
+  }
+
   recursiveShow(nodes: FilingHoldingSchemeNode[], show: boolean) {
     if (nodes.length === 0) { return; }
     for (const node of nodes) {
       node.hidden = show;
       this.recursiveShow(node.children, show);
+      this.linkOneToNotKeep = true;
+      this.linkTwoToNotKeep = false;
     }
   }
 

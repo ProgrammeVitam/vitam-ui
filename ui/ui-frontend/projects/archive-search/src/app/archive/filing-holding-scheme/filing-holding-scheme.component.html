@@ -27,9 +27,10 @@
         </ng-container>
       </mat-nested-tree-node>
     </mat-tree>
-  </div>
-  <div *ngIf="nestedDataSource.data.length <= 0"> Aucun Arbres ou Plans trouvés avec le contrat choisi  </div>
-  <a *ngIf="nestedDataSource.data.length > 0" class="tree-show-link" (click)="showAllTreeNodes()">Afficher l'arborescence au complet</a>
+    </div>
+    <div *ngIf="nestedDataSource.data.length <= 0"> Aucun Arbres ou Plans trouvés avec le contrat choisi  </div>
+   <a *ngIf="nestedDataSource.data.length > 0 && !linkOneToNotKeep " class="tree-show-link" (click)="showAllTreeNodes()">Afficher l'arborescence au complet</a>
+   <a *ngIf="nestedDataSource.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link" (click)="showOnlyParentTreeNodes()">Réduire l'arborescence</a>
 </div>
 
 <div class="" *ngIf="loadingHolding">
