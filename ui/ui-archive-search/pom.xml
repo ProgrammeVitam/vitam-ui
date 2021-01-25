@@ -225,7 +225,7 @@
                         <phase>process-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>run build -- --project=archive --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}
+                            <arguments>run build -- --project=archive-search --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}
                             </arguments>
                         </configuration>
                     </execution>
