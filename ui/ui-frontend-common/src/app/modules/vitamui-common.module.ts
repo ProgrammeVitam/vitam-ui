@@ -43,7 +43,6 @@ import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
-
 import { TranslateModule } from '@ngx-translate/core';
 import { AccountModule } from './account/account.module';
 import { ApplicationSelectContentModule } from './components/application-select-content/application-select-content.module';
@@ -94,10 +93,10 @@ import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-token
 import { LogbookModule } from './logbook/logbook.module';
 import { PipesModule } from './pipes/pipes.module';
 import { SecurityModule } from './security/security.module';
-import { SidenavPage } from './sidenav-page.class';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import { VitamuiMissingTranslationHandler } from './missing-translation-handler';
 import {ResizeSidebarModule} from "./directives/resize-sidebar/resize-sidebar.module";
 import {AutocompletePositionDirectiveModule} from "./directives/autocomplete-position/autocomplete-position.directive.module";
 

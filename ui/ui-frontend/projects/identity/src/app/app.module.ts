@@ -39,11 +39,11 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { environment } from '../environments/environment';
@@ -72,6 +72,7 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     QuicklinkModule,
     TranslateModule.forRoot({
+      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler},
       defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
