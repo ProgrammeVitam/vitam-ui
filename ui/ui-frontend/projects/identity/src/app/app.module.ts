@@ -39,7 +39,7 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';

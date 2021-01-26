@@ -46,7 +46,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT,
+  InjectorModule, LoggerModule,
+  VitamUICommonModule,
+  VitamuiMissingTranslationHandler,
+  WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -55,9 +59,9 @@ import { PortalModule } from './portal';
 registerLocaleData(localeFr, 'fr');
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-    return new MultiTranslateHttpLoader(httpClient,  [
-    {prefix: './assets/shared-i18n/', suffix: '.json'},
-    {prefix: './assets/i18n/', suffix: '.json'}
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/shared-i18n/', suffix: '.json' },
+    { prefix: './assets/i18n/', suffix: '.json' }
   ]);
 }
 
@@ -77,7 +81,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     QuicklinkModule,
     LoggerModule.forRoot(),
     TranslateModule.forRoot({
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler},
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
