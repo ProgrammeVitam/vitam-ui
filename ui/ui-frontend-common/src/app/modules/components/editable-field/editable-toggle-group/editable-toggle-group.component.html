@@ -1,9 +1,8 @@
 <div class="editable-field-wrapper" *ngIf="!disabled">
-
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
-    <div class="editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
+    <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-          <span class="editable-field-label">{{label}}</span>
+        <label>{{label}}</label>
           <span class="editable-field-text-content">{{content(control?.value)}}</span>
           <div class="editable-field-control">
             <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group">
@@ -24,8 +23,8 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
     [cdkConnectedOverlayOrigin]="origin"
-    [cdkConnectedOverlayPositions]="positions"
-  >
+    [cdkConnectedOverlayPositions]="positions">
+
     <div class="editable-field-actions">
       <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>

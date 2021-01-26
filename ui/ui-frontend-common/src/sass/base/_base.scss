@@ -1,0 +1,73 @@
+html, body {
+    height: 100%;
+}
+
+/* mulish-regular - latin */
+@font-face {
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    src: local('Mulish', sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format('woff2');
+    font-display: optional;
+  }
+
+body {
+    margin: 0;
+    font-family: 'Mulish', sans-serif;
+    background-color: var(--vitamui-background);
+    color: var(--vitamui-grey-900);
+}
+
+button, textarea, input {
+    font-family: 'Mulish', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.hidden {
+    visibility: hidden!important;
+}
+
+.text-primary {
+    color: var(--vitamui-primary)!important;
+}
+
+.text-primary-300 {
+    color: var(--vitamui-primary-300)!important;
+}
+
+.text-secondary {
+    color: var(--vitamui-secondary)!important;
+}
+
+.text-red {
+    color: $red!important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bg-primary {
+    background-color: var(--vitamui-primary)!important;
+}
+
+.bg-secondary {
+    background-color: var(--vitamui-secondary)!important;
+}
+
+.no-hover {
+    &:hover {
+      background-color: transparent!important;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}

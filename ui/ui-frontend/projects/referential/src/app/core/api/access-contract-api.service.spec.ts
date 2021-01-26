@@ -54,7 +54,7 @@ describe('AccessContractApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: AccessContractApiService = TestBed.get(AccessContractApiService);
+    const service: AccessContractApiService = TestBed.inject(AccessContractApiService);
     expect(service).toBeTruthy();
   });
 });

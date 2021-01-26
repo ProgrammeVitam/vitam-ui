@@ -1,0 +1,83 @@
+h1, h2, h3, h4, h5 {
+    color: var(--vitamui-grey-900);
+    margin: 10px 0;
+
+    &.light {
+        color: var(--vitamui-grey-600);
+    }
+}
+
+h1 {
+    font-size: 96px;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 60px;
+    font-weight: 900; 
+}
+
+h3 {
+    font-size: 42px;
+    font-weight: 800; 
+}
+
+h4 {
+    font-size: 30px;
+    font-weight: 600; 
+}
+
+h5 {
+    font-size: 24px;
+    font-weight: 800; 
+}
+
+.text {
+    color: var(--vitamui-grey-900);
+    font-weight: 400;
+
+    &.large {
+        font-size: 20px;
+    }
+
+    &.medium {
+        font-size: 16px;
+    }
+
+    &.normal {
+        font-size: 14px;
+    }
+
+    &.caption {
+        font-size: 12px;
+    }
+
+    &.bold {
+        font-weight: bold;
+    }
+
+    &.link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    &.spaced {
+        letter-spacing: 0.8px;
+    }
+
+    &.light {
+        color: var(--vitamui-grey-600);
+    }
+
+    &.success {
+        color: $green;
+    }
+
+    &.warning {
+        color: $orange;
+    }
+
+    &.danger {
+        color: $red;
+    }
+}

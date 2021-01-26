@@ -19,7 +19,7 @@ describe('AccessionRegisterApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: AccessionRegisterApiService = TestBed.get(AccessionRegisterApiService);
+    const service: AccessionRegisterApiService = TestBed.inject(AccessionRegisterApiService);
     expect(service).toBeTruthy();
   });
 });

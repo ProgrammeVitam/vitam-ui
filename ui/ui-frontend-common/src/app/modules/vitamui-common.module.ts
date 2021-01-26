@@ -35,11 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SelectTenantModule } from './components/header/select-tenant/select-tenant.module';
+import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { VitamuiBodyModule } from './components/vitamui-body/vitamui-body.module';
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { LoggerModule } from './logger/logger.module';
@@ -50,6 +50,7 @@ import { ApplicationSelectContentModule } from './components/application-select-
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { CollapseModule } from './components/collapse/collapse.module';
+import {CommonProgressBarModule} from './components/common-progress-bar/common-progress-bar.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CountryModule } from './components/country/country.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
@@ -58,7 +59,9 @@ import { EditableFieldModule } from './components/editable-field/editable-field.
 import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
+import { SelectLanguageModule } from './components/header/select-language/select-language.module';
 import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
+import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -67,12 +70,18 @@ import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
 import { VitamUIAutocompleteModule } from './components/vitamui-autocomplete/vitamui-autocomplete.module';
+import { VitamuiCommonBannerModule } from './components/vitamui-common-banner/vitamui-common-banner.module';
+import { VitamuiCommonSelectModule } from './components/vitamui-common-select/vitamui-common-select.module';
+import { VitamuiContentBreadcrumbModule } from './components/vitamui-content-breadcrumb/vitamui-content-breadcrumb.module';
 import { VitamUICustomerSelectModule } from './components/vitamui-customer-select/vitamui-customer-select.module';
+import { VitamuiDragDropFileModule } from './components/vitamui-drag-drop-file/vitamui-drag-drop-file.module';
 import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
 import { VitamUIFieldErrorModule } from './components/vitamui-field-error/vitamui-field-error.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
+import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
+import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
@@ -85,6 +94,7 @@ import { SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-token
 import { LogbookModule } from './logbook/logbook.module';
 import { PipesModule } from './pipes/pipes.module';
 import { SecurityModule } from './security/security.module';
+import { SidenavPage } from './sidenav-page.class';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
@@ -132,7 +142,6 @@ export function startupServiceFactory(startupService: StartupService) {
     LoggerModule,
     NavbarModule,
     HeaderModule,
-    SelectTenantModule,
     SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
@@ -144,10 +153,18 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
+    CommonProgressBarModule,
+    VitamuiCommonSelectModule,
+    VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
+    VitamuiContentBreadcrumbModule,
+    VitamuiCommonBannerModule,
+    UserPhotoModule,
+    VitamuiMenuButtonModule,
+    VitamuiSidenavHeaderModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -155,6 +172,7 @@ export function startupServiceFactory(startupService: StartupService) {
   exports: [
     AccountModule,
     TranslateModule,
+    SelectLanguageModule,
     ApplicationSelectContentModule,
     BlankComponent,
     ConfirmDialogModule,
@@ -176,7 +194,6 @@ export function startupServiceFactory(startupService: StartupService) {
     LoggerModule,
     NavbarModule,
     HeaderModule,
-    SelectTenantModule,
     SelectTenantDialogModule,
     OrderByButtonModule,
     OrderDropdownModule,
@@ -188,11 +205,20 @@ export function startupServiceFactory(startupService: StartupService) {
     SubrogationModule,
     TooltipModule,
     CountryModule,
+    VitamuiCommonSelectModule,
+    VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,
     ScrollTopModule,
     FooterModule,
     VitamuiBodyModule,
     PipesModule,
+    VitamuiContentBreadcrumbModule,
+    VitamuiCommonBannerModule,
+    UserPhotoModule,
+    CommonProgressBarModule,
+    CommonTooltipModule,
+    VitamuiSidenavHeaderModule,
+    VitamuiMenuButtonModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

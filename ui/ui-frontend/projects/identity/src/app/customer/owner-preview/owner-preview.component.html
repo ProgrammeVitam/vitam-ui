@@ -1,35 +1,18 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+<vitamui-common-sidenav-header
+  [title]="owner?.name"
+  [subtitle]="'(' +  owner?.code + ')'"
+  [icon]="tenant ? 'vitamui-icon-safe' : 'vitamui-icon-key'"
+  (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-    <div class="title">
-      <i *ngIf="tenant" class="vitamui-icon vitamui-icon-safe"></i>
-      <i *ngIf="!tenant" class="vitamui-icon vitamui-icon-key"></i>
-        <!-- {{ tenant ? 'layers' : 'vpn_key' }}</i>  -->
-      <h2>{{owner?.name}} <small>({{owner?.code}})</small></h2>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="Propriétaire" i18n-label="Owner tab@@ownerPreviewTabOwner">
+      <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="isPopup || tenant?.readonly || owner?.readonly"></app-information-tab>
+    </mat-tab>
 
-      <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
-        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
-          <button mat-menu-item i18n="Coming soon@@ownerPreviewComingSoon">Bientôt</button>
-        </mat-menu>
-      </ng-container>
-    </div>
-  </div>
-
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-      <mat-tab label="Propriétaire" i18n-label="Owner tab@@ownerPreviewTabOwner">
-        <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="isPopup || tenant?.readonly || owner?.readonly"></app-information-tab>
-      </mat-tab>
-
-      <mat-tab label="Historique" i18n-label="History tab@@ownerPreviewTabHistory">
-        <app-owner-operation-history-tab [id]="owner?.id" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
-      </mat-tab>
-
-    </mat-tab-group>
-  </div>
+    <mat-tab label="Historique" i18n-label="History tab@@ownerPreviewTabHistory">
+      <app-owner-operation-history-tab [id]="owner?.id" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>

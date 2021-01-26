@@ -1,0 +1,8 @@
+<div>
+  <div class="d-flex">
+    <div class="transition" [style.width]="progressValue +'%'"></div>
+    <div class="tooltip-custom">{{progressValue}}%</div>
+  </div>
+  <mat-progress-bar mode="determinate" [value]="progressValue">
+  </mat-progress-bar>
+</div>

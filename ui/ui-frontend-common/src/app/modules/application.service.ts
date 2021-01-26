@@ -34,14 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Observable, of, Subject } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
+import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
+import { GlobalEventService } from './global-event.service';
 import { ApplicationInfo } from './models/application/application.interface';
 import { Application } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
@@ -90,17 +92,18 @@ export class ApplicationService {
   // tslint:disable-next-line:variable-name
   _categories: { [categoryId: string]: Category };
 
-  private appMap$ = new BehaviorSubject(this.appMap);
+  private appMap$ = new BehaviorSubject(undefined);
 
   constructor(private applicationApi: ApplicationApiService, private authService: AuthService,
-              private tenantService: TenantSelectionService) { }
+              private tenantService: TenantSelectionService, private globalEventService: GlobalEventService) { }
 
   /**
    * Get Applications list for an user and save it in a property.
    */
   list(): Observable<ApplicationInfo> {
     const params = new HttpParams().set('filterApp', 'true');
-    return this.applicationApi.getAllByParams(params).pipe(
+    const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
+    return this.applicationApi.getAllByParams(params, headers).pipe(
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
@@ -184,26 +187,48 @@ export class ApplicationService {
       }
     });
   }
-  
+
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
   }
 
+  public getAppById(identifier: string): Application {
+    return this.applications.find(value => value.identifier === identifier);
+  }
+
+  /**
+   * Return an observable that notify if the current application has a tenant list or not.
+   */
+  public hasTenantList(): Observable<boolean> {
+    return new Observable((observer) => {
+      this.globalEventService.pageEvent.subscribe((appId: string) => {
+        if (appId === ApplicationId.PORTAL_APP) {
+          observer.next(true);
+        } else {
+          const app = this.applications.find(value => value.identifier === appId);
+          app ? observer.next(app.hasTenantList) : observer.next(false);
+        }
+      });
+    });
+  }
+
   private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
     const resultMap = new Map<Category, Application[]>();
-    let categories: Category[] = Object.values(categoriesByIds);
+    const categories: Category[] = Object.values(categoriesByIds);
     categories.sort((a, b) => {
       return a.order > b.order ? 1 : -1;
     });
 
     categories.forEach((category: Category) => {
-      if (applications.some(app =>  app.category === category.identifier)) {
-        resultMap.set(category, this.getSortedAppsOfCategory(category, applications));
+      const sortedAppsOfCategory = this.getSortedAppsOfCategory(category, applications);
+      if (sortedAppsOfCategory && sortedAppsOfCategory.length > 0) {
+        resultMap.set(category, sortedAppsOfCategory);
       }
     });
     return resultMap;
   }
 
+  /* tslint:disable:max-line-length */
   private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
@@ -234,7 +259,7 @@ export class ApplicationService {
 
         // Get 8 last used apps if there is more than 8
         if (lastUsedApps.length > max) {
-          lastUsedApps = lastUsedApps.slice(0, 7);
+          lastUsedApps = lastUsedApps.slice(0, 8);
         }
 
         return { category: lastUsedAppsCateg, apps: lastUsedApps };

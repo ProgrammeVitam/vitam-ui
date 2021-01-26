@@ -1,47 +1,67 @@
-@import '~ui-frontend-common/sass/variables/colors';
-@import '~ui-frontend-common/sass/mixins/elevation';
+@import "~ui-frontend-common/sass/variables/colors";
+@import "~ui-frontend-common/sass/mixins/elevation";
 
 .parent {
-    position: relative;
+  position: relative;
 }
 
 .status-badge-anonym {
-    @include elevation-1;
-    font-family: Helvetica, sans-serif;
-    font-size: 10px;
-    font-weight: 200;
-    color: $white;
-    width: 16px;
-    height: 16px;
-    display: block;
-    position: absolute;
-    left: 100%;
-    top: 100%;
-    margin-left: -8px;
-    margin-top: -8px;
-    padding: 2px 3px 3px 4px;
-    border-radius: 50%;
-    background-color: #696969;
-    border: solid 2px $white;
+  @include elevation-1;
+  font-family: Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 200;
+  color: $white;
+  width: 16px;
+  height: 16px;
+  display: block;
+  position: absolute;
+  left: 100%;
+  top: 100%;
+  margin-left: -8px;
+  margin-top: -8px;
+  padding: 2px 3px 3px 4px;
+  border-radius: 50%;
+  background-color: var(--vitamui-grey-600);
+  border: solid 2px $white;
 }
 
 span.email {
-    font-size: 13px;
-    text-align: left;
-    color: $greyish-two;
+  font-size: 14px;
+  text-align: left;
+  font-weight: normal;
+  color: var(--vitamui-grey-600);
 }
 
 vitamui-common-table-filter-option .vitamui-icon {
-    font-size: 24px;
-    color: #B7B7B7;
-    margin-right: 15px;
+  font-size: 24px;
+  color: var(--vitamui-grey);
+  margin-right: 15px;
 }
 
-
 .table-filter-icon {
+  display: flex;
+  align-items: center;
+  
+  span.badge-state {
+    color: var(--vitamui-grey-900);
+    margin-left: 18px;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.1px;
+  }
+}
+
+.vitamui-table-head{
+  > div {
     display: flex;
     align-items: center;
-    span.badge-state {
-        margin-left: 18px;
-    }
+    flex-wrap: nowrap;
+  }
+}
+.padding-user {
+ padding-left: 2.5rem;
+}
+
+.text-right {
+  text-align: right;
 }

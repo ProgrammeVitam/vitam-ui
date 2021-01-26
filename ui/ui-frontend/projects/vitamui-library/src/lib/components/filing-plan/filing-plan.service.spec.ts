@@ -24,7 +24,7 @@ describe('FilingPlanService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
   });
 
   it('should be created', inject([FilingPlanService], (service: FilingPlanService) => {

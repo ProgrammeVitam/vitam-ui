@@ -47,8 +47,7 @@ const moment = moment_;
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
-  templateUrl: './subrogation-banner.component.html',
-  styleUrls: ['./subrogation-banner.component.scss']
+  templateUrl: './subrogation-banner.component.html'
 })
 export class SubrogationBannerComponent implements OnInit {
 

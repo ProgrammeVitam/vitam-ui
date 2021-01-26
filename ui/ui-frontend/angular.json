@@ -266,7 +266,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/demo/src/sass/styles.scss"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           },
@@ -391,7 +391,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "13mb"
                 }
               ]
             }
@@ -504,6 +504,118 @@
         }
       }
     },
+    "starter-kit": {
+      "root": "projects/starter-kit/",
+      "sourceRoot": "projects/starter-kit/src",
+      "projectType": "application",
+      "prefix": "starter-kit",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/starter-kit",
+            "index": "projects/starter-kit/src/index.html",
+            "main": "projects/starter-kit/src/main.ts",
+            "tsConfig": "projects/starter-kit/tsconfig.app.json",
+            "polyfills": "projects/starter-kit/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
+            "assets": [
+              "projects/starter-kit/src/assets",
+              "projects/starter-kit/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ui-frontend-common/assets",
+                "output": "/assets"
+              }
+            ],
+            "styles": [
+              "projects/starter-kit/src/sass/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/starter-kit/src/environments/environment.ts",
+                  "with": "projects/starter-kit/src/environments/environment.prod.ts"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/starter-kit/ngsw-config.json"
+            },
+            "en": {
+              "aot": true,
+              "i18nFile": "projects/starter-kit/src/locale/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "i18nMissingTranslation": "warning"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "starter-kit:build",
+            "host": "dev.vitamui.com",
+            "port": 4201
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "starter-kit:build:production"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/starter-kit/src/test.ts",
+            "karmaConfig": "projects/starter-kit/karma.conf.ci.js",
+            "polyfills": "projects/starter-kit/src/polyfills.ts",
+            "tsConfig": "projects/starter-kit/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "projects/starter-kit/src/sass/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
+            "assets": [
+              "projects/starter-kit/src/assets",
+              "projects/starter-kit/src/favicon.ico"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/starter-kit/tsconfig.app.json",
+              "projects/starter-kit/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
     "ingest": {
       "projectType": "application",
       "schematics": {
@@ -554,7 +666,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "14mb"
                 }
               ]
             }
@@ -624,5 +736,8 @@
       }
     }
   },
-  "defaultProject": "portal"
+  "defaultProject": "portal",
+  "cli": {
+    "analytics": false
+  }
 }

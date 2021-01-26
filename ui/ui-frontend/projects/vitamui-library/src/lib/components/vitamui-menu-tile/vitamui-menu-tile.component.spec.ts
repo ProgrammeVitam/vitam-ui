@@ -36,7 +36,7 @@
  */
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {Directive, Input, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   Application,
   ApplicationId,
@@ -48,18 +48,17 @@ import {
 import {UpdatedVitamUIMenuTileComponent} from './vitamui-menu-tile.component';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
-  selector: '[vitamuiCommonTooltip]',
+  selector: '[libVitamuiCommonTooltip]',
 })
 class TooltipStubDirective {
-  @Input() vitamuiCommonTooltip: any;
+  @Input() libVitamuiCommonTooltip: any;
 }
 
 describe('UpdatedVitamUIMenuTileComponent', () => {
   let component: UpdatedVitamUIMenuTileComponent;
   let fixture: ComponentFixture<UpdatedVitamUIMenuTileComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       getPortalUrl: () => 'https://dev.vitamui.com',
       getConfigStringValue: () => 'https://dev.vitamui.com/identity'

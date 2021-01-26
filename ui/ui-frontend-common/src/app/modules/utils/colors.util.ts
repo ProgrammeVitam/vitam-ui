@@ -63,6 +63,12 @@ function getColorFromMap(colorName: string, colorMap: any) {
     return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
   }
 
+  DARKEN_PATTERN.lastIndex = 0;
+  match = DARKEN_PATTERN.exec(colorName);
+  if ( match && match.length === 2 && colorMap[colorName.substring(0, colorName.length - match[0].length)] ) {
+    return convertToDarkColor(colorMap[colorName.substring(0, colorName.length - match[0].length)], +match[1]);
+  }
+
   return null;
 }
 
@@ -86,12 +92,27 @@ function convertToLightColor(color: string, lightModificator: number = 10) {
   return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
 }
 
+export function convertLighten(rgbValue: RGB, lightModificator: number) {
+  const hslValue: HSL = rgbToHsl(rgbValue);
+
+  // lighten
+  hslValue.l = hslValue.l + lightModificator;
+  if (hslValue.l > 100) {
+    hslValue.l = 100;
+  } else if (hslValue.l < 0 ) {
+    hslValue.l = 0;
+  }
+  const lightRGBvalue: RGB = hslToRgb(hslValue);
+
+  return '#' + toHex(lightRGBvalue.r) + toHex(lightRGBvalue.g) + toHex(lightRGBvalue.b);
+}
+
 /**
  * Apply a -X to the color lightness.
  * @param color the color to darken. Must be hex color with #fff or #ffffff format
  * @param lightModificator the value of darken  operation. Default value to 10 if not set
  */
-function convertToDarkColor(color: string, lightModificator: number = 10) {
+export function convertToDarkColor(color: string, lightModificator: number = 10) {
   if (!color) {
     return color;
   }
@@ -111,7 +132,7 @@ function toHex(componentValue: number) {
   return hex.length === 1 ? '0' + hex : hex;
 }
 
-function hexToRgb(hex): RGB {
+export function hexToRgb(hex): RGB {
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, (m, r, g, b) =>  r + r + g + g + b + b );
 
@@ -156,7 +177,7 @@ function hslToRgb(inputHSL): RGB {
 
 }
 
-function rgbToHsl(inputRGB: RGB): HSL {
+export function rgbToHsl(inputRGB: RGB): HSL {
   const rgb: RGB = new RGB(inputRGB.r / 255, inputRGB.g / 255, inputRGB.b / 255);
   const hsl: HSL = new HSL(0, 0, 0);
 

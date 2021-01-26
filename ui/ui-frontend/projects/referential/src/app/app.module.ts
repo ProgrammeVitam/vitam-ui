@@ -1,7 +1,7 @@
 import {registerLocaleData} from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import {LOCALE_ID, NgModule} from '@angular/core';
-import {MatNativeDateModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material/core';
 import {BrowserModule, Title} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxFilesizeModule} from 'ngx-filesize';

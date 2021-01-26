@@ -34,26 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
+
+import { LoggerModule } from 'ui-frontend-common';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BASE_URL } from 'ui-frontend-common';
 import { CustomerApiService } from './customer-api.service';
 
+
 describe('CustomerApiService', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule,
+        LoggerModule.forRoot(),
+        HttpClientTestingModule
       ],
       providers: [
-        {provide: BASE_URL, useValue: ''},
-      ],
-    }).compileComponents();
+        {provide: BASE_URL, useValue: ''}
+      ]
+    })
+      .compileComponents();
   }));
 
   it('should be created', () => {
-    const service: CustomerApiService = TestBed.get(CustomerApiService);
+    const service: CustomerApiService = TestBed.inject(CustomerApiService);
     expect(service).toBeTruthy();
   });
 });

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {  ActivatedRoute, Router } from '@angular/router';
 import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
 import { UploadComponent } from '../core/common/upload.component';
@@ -72,10 +72,7 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
 
     const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-      }
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
   changeTenant(tenantIdentifier: number) {

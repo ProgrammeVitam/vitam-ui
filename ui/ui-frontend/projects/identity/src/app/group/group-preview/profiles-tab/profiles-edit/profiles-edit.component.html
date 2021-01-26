@@ -1,18 +1,21 @@
 <div class="header">
-  <mat-progress-bar mode="determinate" value="100" class="stepper-progress-bar"></mat-progress-bar>
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
+  <cdk-step>
+
   <div class="content">
-    <h2 i18n="Edit the profiles of the group@@profilesEditTitle">Modification des profils de "{{ data?.group?.name }}"</h2>
+    <div class="text large bold" i18n="Edit the profiles of the group@@profilesEditTitle">Modification des profils de "{{ data?.group?.name }}"</div>
 
-    <div class="form-group">
-      <app-profiles-form formControlName="profileIds"  [level]="data?.group?.level"></app-profiles-form>
-    </div>
-
+      <app-profiles-form formControlName="profileIds" [level]="data?.group?.level"></app-profiles-form>
+    
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid" i18n="Done@@profilesEditSubmitButton">Terminer</button>
-      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel@@profilesEditCancelButton">Annuler</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel@@profilesEditCancelButton">Annuler</button>
     </div>
   </div>
+  </cdk-step>
+</vitamui-common-stepper>
 </form>

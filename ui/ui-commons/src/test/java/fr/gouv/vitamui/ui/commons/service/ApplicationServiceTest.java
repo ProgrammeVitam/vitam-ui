@@ -2,6 +2,7 @@ package fr.gouv.vitamui.ui.commons.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -53,6 +55,9 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
     @Mock
     private ApplicationExternalRestClient client;
 
+    @Mock
+    private BuildProperties buildProperties;
+
     @Before
     public void setup() {
         Mockito.when(properties.getBaseUrl()).thenReturn(baseUrl);
@@ -63,7 +68,7 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
         Mockito.when(categoriesConfig.size()).thenReturn(2);
         Mockito.when(casLogoutUrl.getValueWithRedirection(any())).thenReturn("http://identity.vitamui.com");
         Mockito.when(factory.getApplicationExternalRestClient()).thenReturn(client);
-        service = new ApplicationService(properties, casLogoutUrl, factory);
+        service = new ApplicationService(properties, casLogoutUrl, factory, buildProperties);
     }
 
     @Test
@@ -91,9 +96,12 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
 
     @Test
     public void testGetConfiguration() {
+        Mockito.when(buildProperties.get("version.release")).thenReturn("0.0.0");
+
         final Map<String, Object> map = service.getConf();
         Assert.assertNotNull(map);
         Assert.assertEquals("http://portal.vitamui.com", map.get(CommonConstants.PORTAL_URL));
+        Assert.assertEquals("0.0", map.get(CommonConstants.VERSION_RELEASE));
     }
 
     @Test

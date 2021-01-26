@@ -37,6 +37,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { Component } from '@angular/core';
+import { transitionAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
   selector: 'vitamui-common-stepper',
@@ -46,12 +47,7 @@ import { Component } from '@angular/core';
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
   animations: [
-    trigger('stepTransition', [
-      state('previous', style({ height: '0px', visibility: 'hidden' })),
-      state('next', style({ height: '0px', visibility: 'hidden' })),
-      state('current', style({ height: '*', visibility: 'visible' })),
-      transition('* <=> current', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
+    transitionAnimation,
   ]
 })
 export class StepperComponent extends CdkStepper {

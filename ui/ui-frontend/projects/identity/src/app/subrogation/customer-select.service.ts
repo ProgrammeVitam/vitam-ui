@@ -36,7 +36,7 @@
  */
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { MenuOption, Operators, SearchQuery } from 'ui-frontend-common';
+import { Customer, MenuOption, Operators, SearchQuery } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -47,6 +47,8 @@ import { CustomerApiService } from '../core/api/customer-api.service';
   providedIn: 'root'
 })
 export class CustomerSelectService {
+
+  private customers: Customer[];
 
   constructor(private customerApi: CustomerApiService) { }
 
@@ -60,6 +62,7 @@ export class CustomerSelectService {
       .pipe(
         catchError(() => of([])),
         map((results) => {
+          this.customers = results;
           return (results || []).map((c: { id: string, code: string, name: string  }) => {
             const label = c.code + ' - ' + c.name;
 
@@ -69,4 +72,7 @@ export class CustomerSelectService {
       );
   }
 
+  getCustomers(): Customer[] {
+    return this.customers;
+  }
 }

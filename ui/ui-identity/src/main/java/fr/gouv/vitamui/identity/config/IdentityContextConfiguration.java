@@ -53,7 +53,7 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 
 @Configuration
 @EnableConfigurationProperties
-@Import(value = { SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class })
+@Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
 public class IdentityContextConfiguration extends AbstractContextConfiguration {
 
     @Bean
@@ -62,4 +62,5 @@ public class IdentityContextConfiguration extends AbstractContextConfiguration {
     public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties, final WebClient.Builder webClientBuilder) {
         return new IamExternalWebClientFactory(uiProperties.getIamExternalClient(), webClientBuilder);
     }
+
 }

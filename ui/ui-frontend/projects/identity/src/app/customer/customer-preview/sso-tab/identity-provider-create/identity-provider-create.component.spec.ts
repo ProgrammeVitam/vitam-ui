@@ -40,7 +40,7 @@ import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
 import { ConfirmDialogService, newFile } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -58,7 +58,7 @@ describe('IdentityProviderCreateComponent', () => {
   let keystore: File;
   let idpMetadata: File;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const identityProviderServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     keystore = newFile(['keystore content'], 'test.jks');
@@ -98,20 +98,20 @@ describe('IdentityProviderCreateComponent', () => {
   describe('Class', () => {
 
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close).toHaveBeenCalled();
     });
 
     it('should not call idpService.create()', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
+      const idpService =  TestBed.inject(IdentityProviderService);
       component.onSubmit();
       expect(idpService.create).not.toHaveBeenCalled();
     });
 
     it('should call idpService.create()', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const idpService =  TestBed.inject(IdentityProviderService);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -146,9 +146,9 @@ describe('IdentityProviderCreateComponent', () => {
     });
 
     it('should set an error', () => {
-      const idpService =  TestBed.get(IdentityProviderService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
-      idpService.create.and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
+      const idpService =  TestBed.inject(IdentityProviderService);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
+      idpService.create = jasmine.createSpy().and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -170,7 +170,7 @@ describe('IdentityProviderCreateComponent', () => {
   describe('DOM', () => {
 
     it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('h2');
+      const elTitle = fixture.nativeElement.querySelector('.large');
       expect(elTitle.textContent).toContain('Création d\'un IDP pour "OwnerName"');
     });
 

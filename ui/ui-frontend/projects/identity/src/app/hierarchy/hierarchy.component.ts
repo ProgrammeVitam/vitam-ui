@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
@@ -47,49 +46,44 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss']
 })
-export class HierarchyComponent extends SidenavPage<Profile> implements OnInit, OnDestroy {
+export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
 
-  tenantIdentifier: number;
-  profiles: Profile[];
-  search: string;
+  public profiles: Profile[];
+  public search: string;
+  private tenantIdentifier: number;
 
   @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, public globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
       this.tenantIdentifier = +paramMap.get('tenantIdentifier');
-    });
+      });
   }
 
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
-  }
-
-  openHierarchyDuplicateDialog() {
-    const dialogRef = this.dialog.open(HierarchyCreateComponent, {
+  public openHierarchyDuplicateDialog(): void {
+    this.dialog.open(HierarchyCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: {
-      tenantId: this.tenantIdentifier
-    }},
-    );
-    dialogRef.afterClosed().subscribe((result) => {
-        if (result) { this.refreshList(); }
+      data: { tenantId: this.tenantIdentifier }
+    }).afterClosed().subscribe((result) => {
+        if (result) {
+          this.refreshList();
+        }
     });
   }
 
-  onSearchSubmit(search: string) {
+  public onSearchSubmit(search: string): void {
     this.search = search;
   }
 
-  private refreshList() {
-    if (!this.hierarchyListComponent) { return; }
-
-    this.hierarchyListComponent.search();
+  private refreshList(): void {
+    if (this.hierarchyListComponent) {
+      this.hierarchyListComponent.search();
+    }
   }
 
 }

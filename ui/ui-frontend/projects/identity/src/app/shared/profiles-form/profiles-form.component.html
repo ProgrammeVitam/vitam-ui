@@ -1,70 +1,53 @@
-<div class="row profile-select-inputs">
-  <div class="col-9">
-    <div class="mb-10">
-      <vitamui-common-vitamui-autocomplete
-        [options]="applications"
-        [formControl]="appSelect"
-        placeholder="Application" i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-      ></vitamui-common-vitamui-autocomplete>
+<div class="d-flex align-items-center">
+  <div>
+    <div class="mb-3">
+      <vitamui-common-vitamui-autocomplete [options]="applications" [formControl]="appSelect"
+        placeholder="Application" i18n-placeholder="Application@@profilesFormApplicationPlaceholder">
+      </vitamui-common-vitamui-autocomplete>
     </div>
-
-    <div *ngIf="!tenantIdentifier" class="mb-10">
-      <vitamui-common-vitamui-autocomplete
-        [options]="filteredTenants"
-        [formControl]="tenantSelect"
-        #tenantInput
-        placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder"
-      ></vitamui-common-vitamui-autocomplete>
+    <div class="mb-3" *ngIf="!tenantIdentifier" >
+      <vitamui-common-vitamui-autocomplete [options]="filteredTenants" [formControl]="tenantSelect"
+        #tenantInput placeholder="Coffre" i18n-placeholder="Tenant@@profilesFormTenantPlaceholder">
+      </vitamui-common-vitamui-autocomplete>
     </div>
-
-    <div class="mb-10">
-      <vitamui-common-vitamui-autocomplete
-        [options]="filteredProfiles"
-        [formControl]="profileSelect"
-        placeholder="Profil" i18n-placeholder="Profile@@profilesFormProfilePlaceholder"
-        #profileInput
-      ></vitamui-common-vitamui-autocomplete>
+    <div class="mb-3">
+      <vitamui-common-vitamui-autocomplete [options]="filteredProfiles" [formControl]="profileSelect"
+        placeholder="Profil" i18n-placeholder="Profile@@profilesFormProfilePlaceholder" #profileInput>
+      </vitamui-common-vitamui-autocomplete>
     </div>
   </div>
 
-  <div class="col-3 mt-30">
-    <div class="mb-10 text-center">
-      <button type="button" class="btn secondary" (click)="add()" [disabled]="!canAddProfile" i18n="Add@@profilesFormAddButton" #addButton>Ajouter</button>
-    </div>
-    <div class="mt-30 text-center">
-      <button type="button" class="btn-link margin" (click)="resetTree()">
+  <div>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!canAddProfile" i18n="Add@@profilesFormAddButton" #addButton>Ajouter</button>
+      <button type="button" class="btn link" (click)="resetTree()">
         <i class="material-icons">replay</i>
       </button>
     </div>
   </div>
-
 </div>
 
-<div class="form-divider"></div>
-
-<div class="table-container">
-  <table class="vitamui-table">
-    <thead>
-      <tr>
-        <th i18n="Application@@profilesFormColumnHeaderApplication">Application</th>
-        <th *ngIf="!tenantIdentifier" i18n="Tenant@@profilesFormColumnHeaderTenant">Coffre</th>
-        <th i18n="Profile@@profilesFormColumnHeaderProfile">Profil</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let id of profileIds; let index=index" class="vitamui-table-row">
-        <td>{{ getApplicationFromId(id)?.name }}</td>
-        <td *ngIf="!tenantIdentifier">{{ getProfileFromId(id)?.tenantName }}</td>
-        <td>{{ getProfileFromId(id)?.name }}</td>
-        <td>
-          <div class="actions">
-            <button class="btn-link" (click)="remove(index)">
-              <i class="material-icons">clear</i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="vitamui-table mt-2">
+  <div class="vitamui-table-head">
+    <div class="col-3" i18n="Application@@profilesFormColumnHeaderApplication">Application</div>
+    <div *ngIf="!tenantIdentifier" class="col-3" i18n="Tenant@@profilesFormColumnHeaderTenant">Coffre</div>
+    <div class="col-5" i18n="Profile@@profilesFormColumnHeaderProfile">Profil</div>
+  </div>
+  <div *ngIf="!loading" class="vitamui-table-body">
+    <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index=index">
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-3">{{ getApplicationFromId(id)?.name }}</div>
+        <div *ngIf="!tenantIdentifier" class="col-3">{{ getProfileFromId(id)?.tenantName }}</div>
+        <div class="col-5">{{ getProfileFromId(id)?.name }}</div>
+        <div class="d-flex justify-content-end" [ngClass]="{'col-1': !tenantIdentifier, 'col-4': tenantIdentifier}">
+          <button class="btn link" (click)="remove(index)">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="loading" class="vitamui-min-content">
+  <mat-spinner class="vitamui-spinner medium"></mat-spinner>
 </div>

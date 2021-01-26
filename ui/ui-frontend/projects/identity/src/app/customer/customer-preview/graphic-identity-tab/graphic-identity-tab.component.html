@@ -1,37 +1,94 @@
-<div class="row">
-  <div class="col-12 form-control">
-    <button class="btn secondary mb-20" (click)="openUpdateCustomerLogo()" [disabled]="readonly">
-        <div i18n="customer graphic identity tab edit@@customerGraphicIdentityTabEditButton">
-            Modifier
-        </div>
+<div class="d-flex">
+  <div class="col-6 mr-4 d-flex justify-content-center align-items-center">
+    <button class="btn primary mb-20" (click)="openUpdateCustomerLogo()" [disabled]="readonly">
+      <div i18n="customer graphic identity tab edit@@customerGraphicIdentityTabEditButton">
+          Modifier
+      </div>
     </button>
   </div>
-</div>
-<div class="row"></div>
-<div class="row">
-  <div class="image-container" *ngIf="customer.hasCustomGraphicIdentity">
-    <img [src]="trustedUrlInline">
+  <div class="col-6">
+    <label i18n="@@labelLogoPortal">Logo portal</label>
+    <div class="image-area d-flex flex-column justify-content-center align-items-center"
+      [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"
+    >
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
+      <img *ngIf="!isLoading" [src]="theme?.portalUrl">
+    </div>
   </div>
-  <div class="image-container" *ngIf="!customer.hasCustomGraphicIdentity">
-    <p i18n="customer graphic identity tab no logo@@customerGraphicIdentityTabNoLogoLabel">Aucun logo n'a été sélectionné</p>
+</div>
+ 
+<div class="d-flex mt-4">
+  <div class="col-6 mr-4">
+    <label i18n="@@labelLogoHeader">Logo header</label>
+    <div class="image-area d-flex flex-column justify-content-center align-items-center"
+      [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
+    >
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
+      <img *ngIf="!isLoading" [src]="theme?.headerUrl">
+    </div>
   </div>
-</div>
-<p i18n="Organisation color theme@@customerGraphicIdentityTabColorTheme">Couleurs de l'organisation</p>
-<div class="row">
-  <p class="color">
-    <span class="label">Couleur principale</span>
-    {{themeColors['vitamui-primary']}}</p>
-    <span class="field-color-preview primary"></span>
-    <span class="field-color-preview primary-light"></span>
-    <span class="field-color-preview primary-light-20"></span>
-</div>
-<div class="row">
-  <p class="color">
-    <span class="label">Couleur secondaire</span>
-    {{themeColors['vitamui-secondary']}}</p>
-    <span class="field-color-preview secondary"></span>
-    <span class="field-color-preview secondary-light"></span>
-    <span class="field-color-preview secondary-light-8"></span>
-    <span class="field-color-preview secondary-dark-5"></span>
+
+  <div class="col-6">
+    <label i18n="@@labelLogoFooter">Logo footer</label>
+    <div class="image-area d-flex flex-column justify-content-center align-items-center"
+      [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
+    >
+      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner medium"></mat-spinner></div>
+      <img *ngIf="!isLoading" [src]="theme?.footerUrl">
+    </div>
+  </div>
 </div>
 
+<div class="col-12 d-flex flex-column mt-4">
+  <label i18n="@@labelTitlePortal">Titre du portail</label>
+  <span>{{theme.portalTitle}}</span>
+</div>
+
+<div class="col-12 d-flex flex-column mt-4">
+  <label i18n="@@labelMessagePortal">Message d'accueil du portail</label>
+  {{theme.portalMessage}}
+</div>
+
+<div *ngFor="let colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="col-12 d-flex mt-4">
+  <div class="label-color p-0 col-4">
+    <label>{{COLOR_NAME[colorName]}}</label>
+    {{theme.colors[colorName]}}
+  </div>
+  <div class="pl-2">
+    <span 
+      *ngFor="let light of ['-900','-800','-700','-600','','-400','-300','-200','-100','-50']"
+      class="field-color-preview"
+      [style.background-color]="theme.colors[colorName + light] | safeStyle">
+    </span>
+  </div>
+</div>
+  
+<div class="col-12 d-flex mt-4">
+  <div class="label-color p-0 col-4">
+    <label i18n="@@labelColorTertiary">Couleur tertiaire</label>
+    {{theme.colors[THEME_COLORS.VITAMUI_TERTIARY]}}
+  </div>
+  <div class="pl-2">
+    <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_TERTIARY] | safeStyle"></span>
+  </div>
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="label-color p-0 col-4">
+    <label i18n="@@labelColorHeaderFooter">Couleur header/footer</label>
+    {{theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER]}}
+  </div>
+  <div class="pl-2">
+    <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"></span>
+  </div>
+</div>
+
+<div class="col-12 d-flex mt-4">
+  <div class="label-color p-0 col-4">
+    <label i18n="@@labelColorBackground">Couleur background</label>
+    {{theme.colors[THEME_COLORS.VITAMUI_BACKGROUND]}}
+  </div>
+  <div class="pl-2">
+    <span class="field-color-preview" [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"></span>
+  </div>
+</div>

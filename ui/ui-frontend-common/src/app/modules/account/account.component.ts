@@ -34,35 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
+import { Subscription } from 'rxjs';
 import { AppRootComponent } from '../app-root-component.class';
 import { Account } from '../models/account/account.interface';
+import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
+  styleUrls: ['./account.component.scss'],
 })
-export class AccountComponent extends AppRootComponent implements OnInit {
+export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
 
-  account: Account;
   // TO HIDE TEMPORARILY THE APPLICATION TAB AND ASK FOR AN EDIT AND CONTACT THE ADMIN BUTTONS
-  displayAppTab: boolean;
-  displayEditionAndAdminContact: boolean;
+  public displayAppTab = false;
+  public displayEditionAndAdminContact = false;
+  public account: Account;
+  public dataBreadcrumb: BreadCrumbData[];
 
-  constructor(private accountService: AccountService, route: ActivatedRoute) {
+  private sub: Subscription;
+
+  constructor(private accountService: AccountService, public route: ActivatedRoute) {
     super(route);
   }
 
   ngOnInit() {
-    this.displayAppTab = false;
-    this.displayEditionAndAdminContact = false;
-    this.accountService.getMyAccount().subscribe((account) => {
+    this.sub = this.accountService.getMyAccount().subscribe((account) => {
       this.account = account;
     });
+    this.dataBreadcrumb = [{ label: 'Portail' }, { label: 'Mon compte' }];
   }
 
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 }

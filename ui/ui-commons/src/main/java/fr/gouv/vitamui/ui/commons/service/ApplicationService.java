@@ -36,29 +36,13 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.DatatypeConverter;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -67,9 +51,27 @@ import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.info.BuildProperties;
+
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- *
  *
  */
 @EnableConfigurationProperties
@@ -78,11 +80,19 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApplicationService.class);
 
+    private static final String DELIMITER = ".";
+
+    private static final String VERSION_RELEASE_KEY = "version.release";
+
+    private static String PLATFORM_NAME = "PLATFORM_NAME";
+
     private final UIProperties properties;
 
     private final ApplicationExternalRestClient client;
 
     private final CasLogoutUrl casLogoutUrl;
+
+    private final BuildProperties buildProperties;
 
     @Value("${cas.external-url}")
     @NotNull
@@ -100,15 +110,14 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
-    private static String PLATFORM_NAME = "PLATFORM_NAME";
-
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory) {
+    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
+            final BuildProperties buildProperties) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
+        this.buildProperties = buildProperties;
         if (this.properties == null) {
             LOGGER.warn("Properties not provided");
-        }
-        else if (this.properties.getBaseUrl() == null) {
+        } else if (this.properties.getBaseUrl() == null) {
             LOGGER.warn("base-url properties not provided");
         }
         client = factory.getApplicationExternalRestClient();
@@ -141,30 +150,23 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         configurationData.put(CommonConstants.UI_URL, uiUrl);
         configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
-        configurationData.put(CommonConstants.WELCOME_TITLE, properties.getWelcomeTitle());
-        configurationData.put(CommonConstants.WELCOME_DESCRIPTION, properties.getWelcomeDescription());
+        configurationData.put(CommonConstants.PORTAL_TITLE, properties.getPortalTitle());
+        configurationData.put(CommonConstants.PORTAL_MESSAGE, properties.getPortalMessage());
         configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
+        String versionRelease = properties.getVersionRelease();
+        if (StringUtils.isEmpty(versionRelease)) {
+            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER)).limit(2).map(Object::toString)
+                    .collect(Collectors.joining(DELIMITER));
 
-        if(properties.getPlatformName() != null) {
+        }
+        if (StringUtils.isNotEmpty(versionRelease)) {
+            configurationData.put(CommonConstants.VERSION_RELEASE, versionRelease);
+        }
+        if (properties.getPlatformName() != null) {
             configurationData.put(PLATFORM_NAME, properties.getPlatformName());
         } else {
             configurationData.put(PLATFORM_NAME, "VITAM-UI");
         }
-
-        String vitamLogoPath = properties.getThemeLogo();
-
-        if(vitamLogoPath != null) {
-            if( ! vitamLogoPath.startsWith( "/" ) ) {
-                vitamLogoPath = '/' + vitamLogoPath;
-            }
-            String logo = getBase64File(vitamLogoPath, "");
-            if(logo != null) {
-                configurationData.put(CommonConstants.APP_LOGO, logo);
-                return configurationData;
-            }
-        }
-
-        configurationData.put(CommonConstants.APP_LOGO, null);
         return configurationData;
     }
 
@@ -172,25 +174,47 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         return casExternalUrl + "/login?service=" + casCallbackUrl;
     }
 
+
     @Override
     public ApplicationExternalRestClient getClient() {
         return client;
     }
 
-    public String getBase64File(String fileName, String basePath) {
+    public String getBase64File(final String fileName, final String basePath) {
+        if (StringUtils.isBlank(fileName) || StringUtils.isBlank(basePath)) {
+            LOGGER.warn(String.format("Logo information missing : cannot load logo with name \"%s\" in path \"%s\"", fileName, basePath));
+            return null;
+        }
+
         final Path assetFile = Paths.get(basePath, Paths.get(fileName).getFileName().toString());
         String base64Asset = null;
         try {
             base64Asset = DatatypeConverter.printBase64Binary(Files.readAllBytes(assetFile));
-        }
-        catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error("Error while resolving logo path", e);
-            return  null;
+            return null;
         }
         return base64Asset;
     }
 
-    public String getBase64Asset(String fileName) {
-        return getBase64File(fileName, properties.getAssets());
+    public Map<String, Object> getBase64Assets(final List<AttachmentType> assets) {
+        final Map<String, Object> files = new HashMap<>();
+        assets.forEach(asset -> {
+            String file = null;
+            switch (asset) {
+                case HEADER:
+                    file = getBase64File(properties.getHeaderLogo(), properties.getAssets());
+                    break;
+                case FOOTER:
+                    file = getBase64File(properties.getFooterLogo(), properties.getAssets());
+                    break;
+                case PORTAL:
+                    file = getBase64File(properties.getPortalLogo(), properties.getAssets());
+                    break;
+            }
+            files.put(asset.value(), file);
+        });
+        return files;
     }
+
 }

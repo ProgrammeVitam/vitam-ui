@@ -36,7 +36,7 @@
  */
 import { GlobalEventService, Profile, SidenavPage } from 'ui-frontend-common';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -48,18 +48,14 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent extends SidenavPage<Profile> implements OnInit {
+export class ProfileComponent extends SidenavPage<Profile> {
 
-  profiles: Profile[];
-  search: string;
+  public search: string;
 
   @ViewChild(ProfileListComponent, { static: true }) profileListComponent: ProfileListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService) {
     super(route, globalEventService);
-  }
-
-  ngOnInit() {
   }
 
   openProfilAdminCreateDialog() {

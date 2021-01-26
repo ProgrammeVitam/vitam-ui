@@ -38,5 +38,5 @@ export * from './access-contract.util';
 export * from './diff.util';
 export * from './level.util';
 export * from './role.enum';
-export * from './theme-colors.interface';
+export * from './theme-color-type.enum';
 export * from './colors.util';

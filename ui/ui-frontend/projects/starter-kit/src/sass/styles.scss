@@ -1,0 +1,14 @@
+@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
+@import '~ui-frontend-common/sass/theme';
+@import '~bootstrap/scss/bootstrap-grid';
+
+body {
+    margin: 0;
+    color: var(--vitamui-grey-900);
+    background: $pale-grey;
+}
+
+h2 {
+    color: var(--vitamui-grey-900);
+    font-weight: 500;
+}

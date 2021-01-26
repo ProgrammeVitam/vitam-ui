@@ -37,7 +37,7 @@
 /* tslint:disable:max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -78,7 +78,7 @@ describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = { getPortalUrl: () => 'https://dev.vitamui.com',
     getConfigStringValue: () => 'https://dev.vitamui.com/identity' };
     TestBed.configureTestingModule({

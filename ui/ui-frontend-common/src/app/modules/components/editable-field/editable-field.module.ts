@@ -40,13 +40,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule} from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogModule } from '../confirm-dialog/confirm-dialog.module';
 import { EditableDurationInputComponent } from './editable-duration-input/editable-duration-input.component';
 import { HumanizedDurationPipe } from './editable-duration-input/humanized-duration.pipe';
 import { EditableEmailInputComponent } from './editable-email-input/editable-email-input.component';
+import { EditableFieldComponent } from './editable-field.component';
 import { EditableFileComponent } from './editable-file/editable-file.component';
 import { EditableInputComponent } from './editable-input/editable-input.component';
 import { EditableLevelInputComponent } from './editable-level-input/editable-level-input.component';
@@ -59,6 +62,7 @@ import { EditableToggleGroupComponent } from './editable-toggle-group/editable-t
 import { EmailsInputModule } from './emails-input/emails-input.module';
 import { LevelInputModule } from './level-input/level-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input/multiple-email-input.component';
+
 
 @NgModule({
   imports: [
@@ -73,6 +77,9 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     ConfirmDialogModule,
     EmailsInputModule,
     LevelInputModule,
+    MatInputModule,
+    MatFormFieldModule,
+    TranslateModule
   ],
   declarations: [
     EditableButtonToggleComponent,

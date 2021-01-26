@@ -4,6 +4,7 @@
     min-width: 584px;
     height: 100vh;
     background: white;
+    margin-top: 0px !important;
 
     .read-only-field {
         display: inline-block;
@@ -14,9 +15,10 @@
         margin-bottom: 20px;
 
         label {
-            font-size: 13px;
-            color: $greyish-two;
-            font-weight: normal;
+            
+            font-size: 12px;
+            color: var(--vitamui-primary);
+            font-weight: 700;
         }
     }
 
@@ -51,6 +53,7 @@
             font-size: 38px;
             line-height: 22px;
             width: 30px;
+            cursor: pointer;
         }
     }
 
@@ -100,10 +103,10 @@
 
 .vitamui-sidepanel-body {
     font-size: 15px;
-    color: $charcoal-grey-two;
+    color: var(--vitamui-grey-900);
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
-    top: 163px;
+    top: 200px;
 }

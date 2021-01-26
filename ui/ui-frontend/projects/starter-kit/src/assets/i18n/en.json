@@ -1,0 +1,35 @@
+{
+    "BUTTON": {
+        "Primary": "Primary default",
+        "Primary_outline": "Primary outline default",
+        "Primary_contrast": "Contrast Primary default",
+        "Primary_contrast_outline": "Contrast primary outline default",
+        "Secondary": "Secondary default",
+        "Secondary_outline": "Secondary outline default",
+        "Secondary_contrast": "Contrast Secondary default",
+        "Secondary_contrast_outline": "Contrast secondary outline default",
+        "Tertiary": "Tertiary default",
+        "Disabled_label": "disabled",
+        "Disabled_outline": "Outline disabled",
+        "Disabled_contrast": "Contrast disabled",
+        "Disabled_contrast_outline": "Contrast outline disabled",
+        "CANCEL":"Cancel"
+    },
+    "SAMPLE-DIALOG": {
+        "Open": "Open the sample dialog",
+        "Step-0": "First Step",
+        "Step-1": "Second Step"
+    },
+    "COLORS":{
+        "Primary": "Color primary",
+        "Secondary": "Color secondary",
+        "Grey": "Color grey",
+        "Red": "Color red",
+        "Orange": "Color orange",
+        "Green": "Color green"
+    },
+    "ICONS":{
+        "Title": "Vitam-UI icons list",
+        "Colors": "Available colors" 
+    }
+}

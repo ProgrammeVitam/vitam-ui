@@ -1,42 +1,52 @@
-<table
-  class="vitamui-table"
-  vitamuiCommonInfiniteScroll
-  (vitamuiScroll)="onScroll()"
->
-  <thead>
-    <tr>
-      <th><i class="vitamui-icon vitamui-icon-admin-key vitamui-row-icon"></i></th>
-      <th i18n="Profile name@@hierarchyListHeaderName">Nom du profil administrateur</th>
-      <th i18n="Profile identifier@@hierarchyListHeaderIdentifier">Identifiant</th>
-      <th i18n="Profile application@@hierarchyListHeaderApplication">Application</th>
-      <th i18n="Description@@hierarchyListHeaderDescription">Description</th>
-      <th i18n="Description@@hierarchyListHeaderLevel">Niveau</th>
-      <th i18n="Users count@@hierarchyListHeaderUsersCount">Nombre d'utilisateurs</th>
-    </tr>
-  </thead>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1"><i class="vitamui-icon vitamui-icon-admin-key" [style.fontSize.px]="30"></i></div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil</div>
+      <div class="col-2" i18n="Description@@profileListHeaderDescription">Application</div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
+      <div class="col-1" i18n="Level@@profileListHeaderLevel">Niveau</div>
+      <div class="col-1" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
+      <div class="col-1" i18n="Users count@@profileListHeaderUsersCount">Nombre d'utilisateurs</div>
+    </div>
 
-  <tbody>
-    <tr *ngFor="let profile of dataSource" class="clickable" (click)="profileClick.emit(profile)">
-      <td>
-        <i class="vitamui-icon vitamui-icon-admin-key vitamui-row-icon"
-            [class.status-badge-green]="profile.enabled"
-            [class.status-badge-grey]="!profile?.enabled"></i>
-      </td>
-      <td>{{ profile.name }}</td>
-      <td>{{ profile.identifier }}</td>
-      <td>{{ getApplicationName(profile.applicationName) }}</td>
-      <td>{{ profile.description | truncate:50 }}</td>
-      <td>{{ profile.level }}</td>
-      <td>{{ profile.usersCount }}</td>
-    </tr>
-  </tbody>
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="profileClick.emit(profile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i class="vitamui-icon vitamui-icon-admin-key"
+              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"
+              [style.fontSize.px]="30"
+            ></i>
+          </div>
+          <div class="col-3">{{ profile.name }}</div>
+          <div class="col-2">{{ getApplicationName(profile.applicationName) }}</div>
+          <div class="col-3">{{ profile.description | truncate:50 }}</div>
+          <div class="col-1">{{ profile.level }}</div>
+          <div class="col-1">{{ profile.identifier }}</div>
+          <div class="col-1">{{ profile.usersCount }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-</table>
-
-<div class="vitamui-table-footer">
-  <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && hierarchyService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
-    Afficher plus de résultats...
-  </button>
-  <span *ngIf="!pending && !hierarchyService.canLoadMore">Fin des résultats</span>
+  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && hierarchyService.canLoadMore && !pending then loadMore"></div>
 </div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+ </ng-template>
+
+ <ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="hierarchyService.loadMore()">
+    <span class="clickable">Afficher plus de résultats...</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

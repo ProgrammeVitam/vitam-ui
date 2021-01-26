@@ -39,34 +39,26 @@ vitamui_defaults:
   reconstruction:
       log_level: INFO
   portal_categories:
-    users:
-      title: "Utilisateur"
-      displayTitle: false
+    ingest_and_consultation:
+      title: "Versement & consultation"
+      displayTitle: true
       order: 1
-    administrators:
-      title: "Management"
-      displayTitle: true
-      order: 2
-    settings:
-      title: "Paramétrage"
-      displayTitle: true
-      order: 3
     referential:
       title: "Référentiels"
       displayTitle: true
+      order: 2
+    supervision_and_audits:
+      title: "Supervision & Audits"
+      displayTitle: true
+      order: 3
+    security_and_application_rights:
+      title: "Sécurité & droits applicatifs"
+      displayTitle: true
       order: 4
-    opaudit:
-      title: "Audits et opérations"
+    organization_and_user_rights:
+      title: "Organisation & droits utilisateurs"
       displayTitle: true
       order: 5
-    techadmin:
-      title: "Administration technique"
-      displayTitle: true
-      order: 6
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 7
 
 
 vitamui:
@@ -238,6 +230,7 @@ vitamui:
     port_service: 8001
     port_admin: 7001
     secure: true
+    hostname_verification: true
     jvm_log: false
     logging_level: "INFO"
     theme:
@@ -344,17 +337,22 @@ vitamui_platform_informations:
   proof_tenant: 1
   cas_tenant: -1
   first_customer_tenant: 9
-  theme_colors:
-    vitamui_primary: "#ff4a54"
-    vitamui_secondary: "#241f63"
+  theme:
+    portal_logo: logo_PORTAL.png
+    header_logo: logo_HEADER.png
+    footer_logo: logo_FOOTER.png
+    portal_message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
+    portal_title: "Portail des applications de l'archivage"
+    theme_colors:
+      vitamui_primary: "#702382"
+      vitamui_secondary: "#2563A9"
+      vitamui_tertiary: "#C22A40"
+      vitamui_header_footer: "#ffffff"
+      vitamui_background: "#F5F7FC"
   platform_name: VITAM-UI
   customer:
     technical_referent_email: contact@programmevitam.fr
     website_url: http://www.programmevitam.fr
-
-portal_informations:
-  welcome_title: Portail des applications de l'archivage
-  welcome_description: Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics.
 
 # backup specific collections before install and restore after install
 mongo_dump_folder: /backup/mongod/

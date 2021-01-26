@@ -36,10 +36,9 @@
  */
 import { Subscription } from 'rxjs';
 import {
-  ApplicationId, AuthService, AuthUser, buildValidators, ConfirmDialogService, Group, Profile, Role
+  ApplicationId, AuthService, AuthUser, buildValidators, collapseAnimation, ConfirmDialogService, Group, Profile, Role
 } from 'ui-frontend-common';
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -53,11 +52,7 @@ import { ProfileValidators } from '../profile.validators';
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
   ]
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {

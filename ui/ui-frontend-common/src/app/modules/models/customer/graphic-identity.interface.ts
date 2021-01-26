@@ -37,7 +37,11 @@
 export interface GraphicIdentity {
 
     hasCustomGraphicIdentity: boolean;
-    logoDataBase64: string;
-    themeColors: any;
+    headerDataBase64: string;
+    footerDataBase64: string;
+    portalDataBase64: string;
+    portalMessage: string;
+    portalTitle: string;
+    themeColors: {[colorId: string]: string};
 
 }

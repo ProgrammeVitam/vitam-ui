@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
@@ -41,7 +41,7 @@ describe('IngestContractObjectTabComponent', () => {
     managementContractId: 'MC-000001'
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestContractObjectTabComponent],
       providers: [

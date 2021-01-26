@@ -6,13 +6,13 @@ import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { Tenant } from './models/customer/tenant.interface';
 
+/** Keyword in url that indicate the selected tenant identifier */
+export const TENANT_SELECTION_URL_CONDITION = '/tenant/';
+
 @Injectable({
     providedIn: 'root'
 })
 export class TenantSelectionService {
-
-    /** Keyword in url that indicate the selected tenant identifier */
-    private readonly TENANT_SELECTION_URL_CONDITION = '/tenant/';
 
     public currentAppId$ = new BehaviorSubject(undefined);
 
@@ -132,8 +132,12 @@ export class TenantSelectionService {
 
     public saveTenantIdentifier(identifier?: number): Observable<number> {
         return new Observable((observer) => {
-            if (!identifier && this.selectedTenant) {
-                identifier = this.selectedTenant.identifier;
+            if (!identifier) {
+                if (this.selectedTenant) {
+                    identifier = this.selectedTenant.identifier;
+                } else {
+                    identifier = this.lastTenantIdentifier;
+                }
             }
 
             this.userApiService.analytics({lastTenantIdentifier: identifier})
@@ -142,12 +146,5 @@ export class TenantSelectionService {
                     observer.next(tenantIdentifier);
             });
         });
-    }
-
-    public hasTenantSelection(url: string): boolean {
-        if (!url) {
-            url = window.location.href;
-        }
-        return (url.includes(this.TENANT_SELECTION_URL_CONDITION) || this.currentAppId$.value === ApplicationId.PORTAL_APP);
     }
 }

@@ -71,7 +71,7 @@ import { ProfileService } from './profile.service';
     GroupAttributionModule,
     LevelInputModule,
     MatSidenavModule,
-    ProfileRoutingModule
+    ProfileRoutingModule,
   ],
   declarations: [ProfileComponent],
   providers: [

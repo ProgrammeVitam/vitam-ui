@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ThemeColors} from '../../utils';
 import { Id } from '../id.interface';
 import { Address } from './address.interface';
 import { OtpState } from './otp-state.enum';
@@ -56,6 +55,8 @@ export interface Customer extends Id {
   defaultEmailDomain: string;
   owners: Owner[];
   readonly: boolean;
+  portalMessage?: string;
+  portalTitle?: string;
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
   gdprAlert : boolean;

@@ -55,14 +55,18 @@
 	<div class="login">
     </div>
 
-    <div class="login-box step-email">
-        <header>
-            <img class="vitam-logo" th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+
+    <div class="centered">
+        <div class="flex-justify-end-margin">
+            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+        </div>
+        <div class="login-box login-padding step-email">
+        <div>
             <h1><img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
-        </header>
+        </div>
 
         <div>
-            <h2 th:utext="#{screen.logout.header}">Logout successful</h2>
+            <h4 th:utext="#{screen.logout.header}">Logout successful</h4>
             <p th:utext="#{screen.logout.fc.success}">You have successfully logged out of the Central Authentication
                 Service. Given single logout is enabled with CAS, \
                 the following list of applications are <strong> only notified</strong> to log you out and destroy your
@@ -76,9 +80,10 @@
             <button type="button" th:if="${logoutRedirectUrl}" class="vitamui-primary" name="submit" accesskey="l" onclick="redirectToApp();">[[${'Go to ' + logoutRedirectUrl}]]</button>
 
         </div>
+
     </div>
 
-
+    </div>
 
 	<div>
        	<ol style="list-style: none" start="a">

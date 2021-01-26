@@ -36,7 +36,7 @@
  */
 /* tslint:disable: max-classes-per-file directive-selector */
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
@@ -82,7 +82,7 @@ let page: Page;
 
 describe('RuleCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
       create: of({}),
@@ -200,24 +200,24 @@ describe('RuleCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const ruleService = TestBed.get(RuleService);
+      const ruleService = TestBed.inject(RuleService);
       component.onSubmit();
-      expect(ruleService.create.calls.count()).toBe(0);
+      expect(ruleService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const ruleService = TestBed.get(RuleService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const ruleService = TestBed.inject(RuleService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedRule);
       component.onSubmit();
-      expect(ruleService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(ruleService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

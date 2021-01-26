@@ -153,8 +153,9 @@ theme:
 #  vitamui-favicon: /absolute/path/to/favicon.ico
 #  vitam-logo: /absolute/path/to/logo.png
 #  vitamui-logo-large: /absolute/path/to/logo.png
-  primary: '#ff4a54'
+  primary: '#702382'
   secondary: '#241f63'
+  background: '#0F0D2D'
 
 debug: true
 logging:

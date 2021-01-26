@@ -1,5 +1,6 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatProgressSpinnerModule, MatSnackBar} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -11,7 +12,7 @@ describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
   let fixture: ComponentFixture<AccessContractListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AccessContractListComponent],
       imports: [

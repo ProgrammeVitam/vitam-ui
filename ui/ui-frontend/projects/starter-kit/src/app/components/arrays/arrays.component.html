@@ -1,0 +1,231 @@
+<div>
+  <h4>Basic array</h4>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-2"><i class="vitamui-icon vitamui-icon-gestion-de-profil"></i></div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
+      <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
+      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="handleClick(profile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-2">
+            <i class="vitamui-icon vitamui-icon-gestion-de-profil"
+              [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"></i>
+          </div>
+          <div class="col-3">{{ profile.name }}</div>
+          <div class="col-2">{{ profile.identifier }}</div>
+          <div class="col-3">{{ profile.description | truncate:50 }}</div>
+          <div class="col-2">{{ profile.level }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <h4>Array with filters</h4>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-2 d-flex align-items-center">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+
+        <ng-template #statusFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="this.filterMap['status']"
+            (filterChange)="onFilterChange('status', $event)">
+            <vitamui-common-table-filter-option value="ENABLED">
+              <div class="table-filter-icon" i18n="@@groupStatusEnabled">
+                <span class="badge-state">Actif</span>
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="DISABLED">
+              <div class="table-filter-icon" i18n="@@groupStatusDisabled">
+                <span class="badge-state">Désactivé</span>
+              </div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
+
+        <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
+        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction">
+        </vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-3 d-flex align-items-center">
+        <span i18n="Group name@@profileGroupListHeaderName">Nom du groupe</span>
+        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction">
+        </vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center">
+        <span i18n="Group ID@@profileGroupListHeaderID">Identifiant</span>
+        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction">
+        </vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-3 d-flex align-items-center">
+        <span i18n="Description@@profileGroupListHeaderDescription">Description</span>
+        <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction">
+        </vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="levelFilterTemplate"
+          [class.active]="filterMap['level'] && filterMap['level'].length > 0"
+          #levelFilterTrigger="vitamuiCommonTableFilter">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+
+        <ng-template #levelFilterTemplate>
+          <vitamui-common-table-filter-search [(filter)]="filterMap['level']" [options]="levelFilterOptions"
+            (filterChange)="onFilterChange('level', $event)" (filterClose)="levelFilterTrigger?.close()"
+            emptyValueOption="-Niveau vide-" i18n-emptyValueOption="@@groupsListLevelFilterEmpty">
+          </vitamui-common-table-filter-search>
+        </ng-template>
+
+        <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
+        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction">
+        </vitamui-common-order-by-button>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let group of dataSource" (click)="handleClick(group)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-2 d-flex align-items-center">
+            <i class="vitamui-icon vitamui-icon-keys pl-4"
+              [ngClass]=" group?.enabled ? 'status-badge-green' :'status-badge-grey'">
+            </i>
+          </div>
+          <div class="col-3">{{ group.name }}</div>
+          <div class="col-2">{{ group.identifier }}</div>
+          <div class="col-3">{{ group.description | truncate:50 }}</div>
+          <div class="col-2">{{ group.level }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <h4>Array with subtable</h4>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-2"><i class="vitamui-icon vitamui-icon-bank"></i></div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
+      <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
+      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows">
+        <ng-container *ngFor="let customer of dataSource">
+          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
+            <div class="d-flex align-items-center clickable">
+              <div class="col-2 d-flex"  (click)="row.toggle()">
+                <i class="vitamui-icon vitamui-icon-bank"></i>
+                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
+              </div>
+              <div [style.display]="'contents'">
+                <div class="col-3">{{ customer?.name }}</div>
+                <div class="col-2">{{ customer?.identifier }}</div>
+                <div class="col-3">{{ customer?.description }}</div>
+              </div>
+              <div class="col-2 actions">
+                <span>{{ customer?.level}}</span>
+                <div>
+                  <button class="btn btn-circle primary">
+                    <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="row.state === 'expanded' then subArray"></div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+<div>
+  <h4>Dialog array</h4>
+  <div class="vitamui-table">
+    <div class="vitamui-table-head p-0 py-3 d-flex align-items-center">
+      <div class="pl-4">Groupe de profil</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows">
+        <ng-container *ngFor="let group of dataSource">
+          <div class="vitamui-row p-0 px-4" [class.no-hover]="row.state === 'expanded'" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse">
+            <div class="d-flex justify-content-between align-items-center clickable">
+              <div class="row-label d-flex align-items-center" (click)="handleClick(group)">
+                {{group?.name}}</div>
+              <button class="btn link underline"
+                (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
+            </div>
+            <div *ngIf="row.state === 'expanded' then dialogSubArray"></div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #subArray>
+  <div class="vitamui-subtable p-0">
+    <div class="vitamui-table-head">
+      <div class="col-3"></div>
+      <div class="col-2">Code propriétaire</div>
+      <div class="col-3">Propriétaire</div>
+      <div class="col-2">Code coffre</div>
+      <div class="col-4"></div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows">
+        <ng-container *ngFor="let tenant of dataSource">
+          <div class="vitamui-row d-flex align-items-center clickable" (click)="handleClick(tenant)">
+            <div class="col-3 d-flex justify-content-center align-items-end">
+            </div>
+            <div class="col-2">{{ tenant.identifier }}</div>
+            <div class="col-3">{{ tenant.name }}</div>
+            <div class="col-2">{{ tenant.description }}</div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="footer-action">
+        <span class="clickable" i18n="Add owner@@OwnerListAddOwnerButton">
+          Ajouter un propriétaire
+        </span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dialogSubArray>
+  <div class="vitamui-subtable p-0">
+    <div class="vitamui-table-head">
+      <div class="col-4">Prop1</div>
+      <div class="col-4">Prop2</div>
+      <div class="col-4">Prop3</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-4">Value 1</div>
+          <div class="col-4">Value 2</div>
+          <div class="col-4">Value 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

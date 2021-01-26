@@ -54,7 +54,7 @@ describe('TenantMenuService', () => {
   }));
 
   it('should be created', () => {
-    const service: TenantMenuService = TestBed.get(TenantMenuService);
+    const service: TenantMenuService = TestBed.inject(TenantMenuService);
     expect(service).toBeTruthy();
   });
 });

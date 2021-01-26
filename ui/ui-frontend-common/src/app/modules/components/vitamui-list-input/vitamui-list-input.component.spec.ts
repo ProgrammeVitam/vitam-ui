@@ -36,17 +36,20 @@
  */
 /* tslint:disable: no-magic-numbers */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { input } from '../../../../../testing/src';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { VitamUIListInputComponent } from './vitamui-list-input.component';
 
 @Component({ template: '<vitamui-common-list-input [(ngModel)]="values" [validator]="validators"></vitamui-common-list-input>'})
 class TestHostComponent {
-  @ViewChild(VitamUIListInputComponent, { static: false }) component: VitamUIListInputComponent;
+  @ViewChild(VitamUIListInputComponent) component: VitamUIListInputComponent;
   values: string[];
   validators = Validators.maxLength(10);
 }
@@ -56,16 +59,20 @@ let fixture: ComponentFixture<TestHostComponent>;
 
 describe('VitamUIListInputComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         ReactiveFormsModule,
         MatProgressSpinnerModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [ TestHostComponent, VitamUIListInputComponent ],
-      providers: []
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ]
     })
     .compileComponents();
   }));
@@ -80,7 +87,7 @@ describe('VitamUIListInputComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
-  it('should have a list of domains', async(() => {
+  it('should have a list of domains', waitForAsync(() => {
     testhost.values = [
       'toto.titi',
       'titi.tutu',
@@ -140,7 +147,7 @@ describe('VitamUIListInputComponent', () => {
     expect(elButton.attributes.disabled).toBeTruthy();
   });
 
-  it('should remove the value', async(() => {
+  it('should remove the value', waitForAsync(() => {
     testhost.values = ['test.com', 'toto.co.uk', 'tata.fr'];
     fixture.detectChanges();
     fixture.whenStable().then(() => {

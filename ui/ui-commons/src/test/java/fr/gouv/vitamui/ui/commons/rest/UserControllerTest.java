@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -61,6 +62,10 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
+
+
+        @MockBean
+        private BuildProperties buildProperties;
 
     }
 

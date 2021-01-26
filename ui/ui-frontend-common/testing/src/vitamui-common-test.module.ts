@@ -36,7 +36,7 @@
  */
 // tslint:disable:max-classes-per-file
 import {
-  Component, Directive, EventEmitter, forwardRef, HostListener, Input, NgModule, Output, Pipe, PipeTransform
+  Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform
 } from '@angular/core';
 import {
   AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn
@@ -178,6 +178,8 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 // Editable fields
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class EditableFieldStubComponent implements ControlValueAccessor {
   @Input() validator: ValidatorFn;
   @Input() asyncValidator: AsyncValidatorFn;
@@ -299,6 +301,11 @@ export class TruncateStubPipe implements PipeTransform {
   transform(value: string = ''): any { return value; }
 }
 
+@Pipe({ name: 'translate' })
+export class TranslateStubPipe implements PipeTransform {
+  transform(value: string = ''): any { return value; }
+}
+
 @Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
 export class InfiniteScrollStubDirective {
   @Input() vitamuiCommonInfiniteScrollThreshold: any;
@@ -351,6 +358,7 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
+    TranslateStubPipe
   ],
   exports: [
     ApplicationSelectContentStubComponent,
@@ -380,6 +388,7 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
+    TranslateStubPipe
   ]
 })
 export class VitamUICommonTestModule {}

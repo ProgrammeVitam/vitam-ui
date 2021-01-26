@@ -1,56 +1,71 @@
+.mat-drawer {
+    border-left: none!important;
+    box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.1); 
+}
+
 .preview-tab-group.mat-tab-group {
     height: 100%;
-
     .mat-tab-header {
         border-bottom: none;
-        margin-left: 40px;
-        margin-right: 40px;
+        background-color: white;
+        height: 40px;
+        position: fixed;
+        width: 584px;
+        z-index: 10;
+
+        .mat-tab-header-pagination {
+            display: none;
+        }
     }
 
     .mat-tab-label {
+        color: var(--vitamui-grey-600);
+        align-items: baseline;
+        min-width: 130px;
         opacity: 1;
-        min-width: auto;
-        height: 37px;
-        background-color: rgba(255, 255, 255, 0.3);
-        margin: 0 1px;
-        padding: 0 14px;
-        font-size: 14px;
-        font-weight: normal;
-        color: $white;
-        text-transform: uppercase;
-        transition: background-color 200ms ease-out, color 200ms ease-out;
+        height: 40px;
+        padding-top: 3px;
 
         &:hover {
-            color: var(--vitamui-secondary);
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-
-        &:first-child {
-            margin-left: 0;
-        }
-
-        &:last-child {
-            margin-right: 0;
+            background-color: var(--vitamui-grey-300);
         }
 
         &:not(.mat-tab-disabled):focus {
-            background-color: rgba(255, 255, 255, 0.56);
-        }
-
-        &.mat-tab-label-active,
-        &.mat-tab-label-active:not(.mat-tab-disabled):focus {
-            background-color: $white;
-            font-weight: bold;
-            color: #5e5d5d;
+            background-color: var(--vitamui-grey-300);
         }
     }
 
-    .mat-ink-bar {
-        opacity: 0;
+    .mat-tab-label-active {
+        .mat-tab-label-content {
+            color: var(--vitamui-primary);
+            font-size: 16px;
+            font-weight: 400;
+        }
+    }
+
+    .mat-tab-labels {
+        padding: 0 30px;
     }
 
     .mat-tab-body-content {
-        padding: 30px 85px 30px 40px;
+        padding: 55px 30px 20px;
         overflow: visible;
+    }
+
+    .mat-ink-bar {
+        background-color: transparent!important;
+        height: 3px;
+
+        &::before {
+          content: '';
+          display: block;
+          width: 69%;
+          background-color: var(--vitamui-primary);
+          height: 6px;
+          border-bottom-right-radius: 70px;
+          border-bottom-left-radius: 70px;
+          left: 16%;
+          position: relative;
+        }
     }
 }

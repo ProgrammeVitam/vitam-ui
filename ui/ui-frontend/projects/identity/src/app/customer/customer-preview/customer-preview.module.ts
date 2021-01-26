@@ -41,6 +41,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
@@ -51,6 +52,9 @@ import {CustomerColorsInputModule} from '../customer-create/customer-colors-inpu
 import { CustomerPreviewComponent } from './customer-preview.component';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-tab/graphic-identity-update/graphic-identity-update.component';
+// tslint:disable-next-line: max-line-length
+import { GraphicIdentityFormComponent } from './graphic-identity-tab/graphic-identity/graphic-identity-form/graphic-identity-form.component';
+import { GraphicIdentityComponent } from './graphic-identity-tab/graphic-identity/graphic-identity.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-create/identity-provider-create.component';
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
@@ -70,7 +74,8 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     ReactiveFormsModule,
     MatProgressBarModule,
     MatTooltipModule,
-    VitamUICommonModule
+    MatProgressSpinnerModule,
+    VitamUICommonModule,
   ],
   declarations: [
     CustomerPreviewComponent,
@@ -79,9 +84,11 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     IdentityProviderDetailsComponent,
     InformationTabComponent,
     GraphicIdentityTabComponent,
-    GraphicIdentityUpdateComponent
+    GraphicIdentityUpdateComponent,
+    GraphicIdentityComponent,
+    GraphicIdentityFormComponent,
   ],
-  exports: [ CustomerPreviewComponent ],
+  exports: [ CustomerPreviewComponent, GraphicIdentityComponent ],
   entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent],
   providers: [IdentityProviderService]
 })

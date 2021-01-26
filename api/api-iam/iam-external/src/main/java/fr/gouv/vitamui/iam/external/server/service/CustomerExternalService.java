@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -91,8 +93,8 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
         return customerInternalV2RestClient.create(getInternalHttpContext(), customerData);
     }
 
-    public CustomerDto patch(final Map<String, Object> partialCustomer, final Optional<MultipartFile> logo) {
-        return customerInternalV2RestClient.patch(getInternalHttpContext(), partialCustomer, logo);
+    public CustomerDto patch(final CustomerPatchFormData customerData) {
+        return customerInternalV2RestClient.patch(getInternalHttpContext(), customerData);
     }
 
     @Override
@@ -173,8 +175,8 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
         }
     }
 
-    public ResponseEntity<Resource> getCustomerLogo(final String id) {
-        return getClient().getCustomerLogo(getInternalHttpContext(), id);
+    public ResponseEntity<Resource> getLogo(final String id, final AttachmentType type) {
+        return getClient().getLogo(getInternalHttpContext(), id, type);
     }
 
 }

@@ -1,0 +1,33 @@
+<div class="header">
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+</div>
+
+<form>
+  <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold">{{'SAMPLE-DIALOG.Step-0' | translate}}</div>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">Annuler</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold">{{'SAMPLE-DIALOG.Step-1' | translate}}</div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary" (click)="cancel()">Terminer</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">Annuler</button>
+        </div>
+        <button type="button" class="btn link" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <span class="underline">Retour</span>
+        </button>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>

@@ -19,7 +19,7 @@
 
   <h3>Input Positive Number</h3>
   <div class="demo-block">
-    <vitamui-common-input-positive-number placeholder="Number Input" [(ngModel)]="VitamUIInputPositiveNumberValue"
+    <vitamui-common-input-positive-number placeholder="Number Input" [(ngModel)]="vitamUIInputPositiveNumberValue"
        required (keypress)="onKeyPress($event)" #VitamUIInputPositiveNumber="ngModel" type="number" min="0">
     </vitamui-common-input-positive-number>
   </div>
@@ -153,7 +153,7 @@
     <div vitamuiCommonInfiniteScroll vitamuiCommonInfiniteScrollThreshold="0.5" [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
       (vitamuiScroll)="onScroll()">
       <div *ngFor="let value of infiniteValues">value {{value}}</div>
-      <mat-spinner diameter="40" *ngIf="infiniteScrollDisabled"></mat-spinner>
+      <mat-spinner *ngIf="infiniteScrollDisabled" class="vitamui-spinner medium"></mat-spinner>
     </div>
 
   </div>

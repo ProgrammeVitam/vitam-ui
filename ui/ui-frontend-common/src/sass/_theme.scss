@@ -1,6 +1,5 @@
 @import "variables";
 @import "mixins";
-
 @import "material";
 @import "app-loader";
 @import "badge";
@@ -10,6 +9,7 @@
 @import "file";
 @import "form";
 @import "icon";
+@import "input";
 @import "layout";
 @import "modal";
 @import "navbar";
@@ -19,26 +19,14 @@
 @import "table";
 @import "title";
 @import "tooltip";
-@import "explorer-banner";
+@import "spinner";
+@import "base/typography";
+@import "material/material-theme";
 
-html, body {
-    height: 100%;
-}
+@import url("https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap");
 
-@font-face {
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    src: local('Roboto'), url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap) format('woff2');
-    font-display: optional;
-}
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~@angular/material/theming';
 
-body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: $pale-grey;
-}
-
-* {
-    box-sizing: border-box;
-}
+@import "base/base";

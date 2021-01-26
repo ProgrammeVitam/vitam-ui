@@ -10,7 +10,7 @@
     .header {
         padding: 31px 40px 0px 40px;
         height: 200px;
-        background-color: var(--vitamui-secondary);
+        background-color: var(--vitamui-primary);
 
         .title {
             display: flex;
@@ -49,14 +49,14 @@
             border: none;
 
             i {
-                color: var(--vitamui-secondary);
+                color: var(--vitamui-primary);
                 font-size: 28px;
             }
         }
     }
 
     .content {
-        font-size: 15px;
+        font-size: 14px;
         color: $charcoal-grey-two;
         // font-weight: 500;
         position: absolute;
@@ -111,8 +111,9 @@
         margin-bottom: 20px;
 
         label {
-            font-size: 13px;
-            color: $greyish-two;
+            
+            font-size: 12px;
+            color: var(--vitamui-primary);
             font-weight: normal;
         }
     }

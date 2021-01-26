@@ -1,8 +1,8 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material';
+import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
@@ -23,7 +23,7 @@ describe('AdminDslComponent', () => {
     response: {}
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const adminDslServiceMock = {
       getByDsl: () => of({})

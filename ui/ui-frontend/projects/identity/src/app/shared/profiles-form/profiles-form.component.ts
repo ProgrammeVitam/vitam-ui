@@ -62,6 +62,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   profileIds: string[] = [];
   applicationsDetails: Application[] = [];
 
+  public loading = true;
+
   @Input()
   showLevel = false;
 
@@ -138,6 +140,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
       this.profiles = profiles;
       this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, this.applicationsDetails));
       this.updateApplicationTree();
+      this.loading = false;
     });
   }
 
@@ -181,7 +184,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
     if (profileToDisplay) {
       return this.applicationsDetails.find((app) => app.identifier === profileToDisplay.applicationName);
     } else {
-      return 'Non défini';
+      return { name: 'Non défini'};
     }
   }
 

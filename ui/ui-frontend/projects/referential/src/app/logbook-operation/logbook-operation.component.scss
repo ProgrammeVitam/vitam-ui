@@ -2,7 +2,8 @@
 
 .vitamui-header {
     background-image: none;
-
+    max-width: 1280px;
+    margin: auto;
     .controls {
         margin-top: 57.5px;
 
@@ -26,6 +27,6 @@
 }
 
 .custom-flex-controls{
-    text-align: right;
-    justify-content: space-between;
+    display: flex;
+    justify-content: flex-end;
 }

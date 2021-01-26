@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -40,6 +41,10 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
     private SubrogationService service;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationControllerTest.class);
+
+    @MockBean
+    private BuildProperties buildProperties;
+
 
     @Test
     public void testGetSubrogationById() {

@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers */
 
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +61,7 @@ let testhost: TesthostComponent;
 let fixture: ComponentFixture<TesthostComponent>;
 
 describe('OwnerFormComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
     const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', {
       uniqueCode: () => timer(10).pipe(map(() => null))

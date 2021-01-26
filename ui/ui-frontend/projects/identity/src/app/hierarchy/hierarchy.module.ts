@@ -38,7 +38,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUISnackBar } from './../shared/vitamui-snack-bar/vitamui-snack-bar.service';
@@ -62,7 +61,6 @@ import { HierarchyComponent } from './hierarchy.component';
     HierarchyDetailModule,
     HierarchyCreateModule,
     MatButtonToggleModule,
-    MatMenuModule,
     MatProgressBarModule,
     ReactiveFormsModule,
     MatSidenavModule,

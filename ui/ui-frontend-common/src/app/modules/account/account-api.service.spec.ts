@@ -49,7 +49,7 @@ describe('AccountApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: AccountApiService = TestBed.get(AccountApiService);
+    const service: AccountApiService = TestBed.inject(AccountApiService);
     expect(service).toBeTruthy();
   });
 });

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestContract} from 'projects/vitamui-library/src/lib/models/ingest-contract';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';

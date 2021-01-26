@@ -41,6 +41,7 @@ import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
+import { TENANT_SELECTION_URL_CONDITION } from './tenant-selection.service';
 import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
@@ -64,7 +65,7 @@ export class TenantSelectionGuard implements CanActivate, CanActivateChild {
       return true;
     } else if (this.tenantService.getSelectedTenant()) {
       const application = this.appService.applications.find((appFromService) => appFromService.identifier === route.data.appId);
-      this.location.href = application.url + '/tenant/' + this.tenantService.getSelectedTenant().identifier;
+      this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantService.getSelectedTenant().identifier;
     }
 
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);

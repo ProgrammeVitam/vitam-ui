@@ -75,8 +75,8 @@ describe('OwnerService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    ownerService = TestBed.get(OwnerService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    ownerService = TestBed.inject(OwnerService);
   });
 
   it('should be created', inject([OwnerService], (service: OwnerService) => {
@@ -91,7 +91,7 @@ describe('OwnerService', () => {
   });
 
   it('should call /fake-api/owners and display a success message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     ownerService.create(expectedOwner).subscribe(
       (response: Owner) => {
         expect(response).toEqual(expectedOwner);
@@ -110,7 +110,7 @@ describe('OwnerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     ownerService.create(expectedOwner).subscribe(
       fail,
       () => {

@@ -27,6 +27,7 @@
  * therefore means  that it is reserved for developers  and  experienced
  * professionals having in-depth computer knowledge. Users are therefore
  * encouraged to load and test the software's suitability as regards their
+ * encouraged to load and test the software's suitability as regards their
  * requirements in conditions enabling the security of their systems and/or
  * data to be ensured and,  more generally, to use and operate it in the
  * same conditions as regards security.
@@ -34,15 +35,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import {
-  AdminUserProfile, AuthService, ConfirmDialogService, Customer, isRootLevel, OtpState, ProfileSelection
-} from 'ui-frontend-common';
-
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import {
+  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState
+} from 'ui-frontend-common';
+import { GroupSelection } from './../group-selection.interface';
 
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { GroupService } from '../../group/group.service';
@@ -50,7 +50,6 @@ import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 const LAST_STEP_INDEX = 2;
 // tslint:disable-next-line:max-line-length
 const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -58,41 +57,21 @@ const emailValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.scss'],
-  animations: [
-    trigger('expansion', [
-      state('collapsed', style({ height: '0px', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-  ]
+  styleUrls: ['./user-create.component.scss']
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
-
   public formEmail: FormGroup;
-
   public customer: Customer;
-
-  public groups: ProfileSelection[] = [];
-
+  public groups: GroupSelection[] = [];
+  public fullGroup: Group[];
   public groupName: string;
-
   public stepIndex = 0;
-
   public connectedUserInfo: AdminUserProfile;
-
   public addressEmpty = true;
-
   public creating = false;
-
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
-
+  public stepCount = 4;
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -109,6 +88,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.groupService.getAll(true).subscribe((groups) => {
       this.groups = groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+      this.fullGroup = groups;
       if (!isRootLevel(this.authService.user)) {
         this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
       }
@@ -190,9 +170,10 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.updateValueAndValidity({ emitEvent: false });
     } else if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup
-        .map((group) => ({ id: group.id, name: group.name, description: group.description, selected: false }));
+        .map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
       this.groups.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     }
+
   }
 
   onCancel() {
@@ -245,26 +226,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     return this.form.pending || this.form.invalid;
   }
 
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-  }
-
-  updateGroupe(groupId: string, groupName: string) {
-    this.groupName = groupName;
-    this.unselectAllGroups();
-    const selectedGroup = this.groups.find((group) => group.id === groupId);
-    selectedGroup.selected = true;
+  updateGroup(event: any) {
+    const selectedGroup: GroupSelection = event;
+    this.groupName = selectedGroup.name;
+    const groupId = selectedGroup.id;
     this.form.patchValue({ groupId });
-  }
-
-  removeGroup() {
-    this.groupName = null;
-    this.unselectAllGroups();
-    this.form.patchValue({ groupId: null });
-  }
-
-  unselectAllGroups() {
-    this.groups.forEach((group) => group.selected = false);
   }
 
 }

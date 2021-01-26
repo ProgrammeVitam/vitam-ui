@@ -40,16 +40,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
+import { CustomerPreviewModule } from '../customer-preview/customer-preview.module';
 import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { CustomerColorsInputModule } from './customer-colors-input/customer-colors-input.module';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
+
 import { MatDialogModule } from '@angular/material/dialog';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 
@@ -61,19 +62,19 @@ import { CustomerAlertingComponent } from './customer-alerting/customer-alerting
     MatButtonToggleModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
     ReactiveFormsModule,
     OwnerFormModule,
     VitamUICommonModule,
+    CustomerPreviewModule,
     MatDialogModule
   ],
   declarations: [
     CustomerCreateComponent,
     CustomerAlertingComponent
   ],
-  entryComponents: [CustomerCreateComponent,CustomerAlertingComponent],
+  entryComponents: [CustomerCreateComponent, CustomerAlertingComponent],
   providers: [CustomerCreateValidators]
 })
 export class CustomerCreateModule { }

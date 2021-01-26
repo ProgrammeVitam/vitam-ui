@@ -59,6 +59,7 @@
 
 }
 
+// DEPRECATED : REMOVE AT THE END OF THE REDESIGN
 .vitamui-more-action-menu.mat-menu-panel {
     background: none;
     box-shadow: none;
@@ -103,7 +104,7 @@
         &.cdk-program-focused:not([disabled]),
         &.cdk-keyboard-focused:not([disabled]),
         &.mat-menu-item-highlighted:not([disabled]) {
-            background-color: var(--vitamui-secondary);
+            background-color: var(--vitamui-primary);
         }
     }
 
@@ -120,7 +121,7 @@
     }
 
     .mat-menu-item {
-        background-color: var(--vitamui-secondary);
+        background-color: var(--vitamui-primary);
         color: white;
         transition: background-color 200ms ease-out;
         font-size: 15px;
@@ -129,11 +130,11 @@
     }
 
     .mat-menu-item {
-        border-top: 1px solid var(--vitamui-secondary);
+        border-top: 1px solid var(--vitamui-primary);
     }
 
     .mat-menu-item:hover:not([disabled]):not(.menu-cancel-button) {
-        background-color: var(--vitamui-secondary-light);
+        background-color: var(--vitamui-primary-light);
     }
 
     .mat-menu-item[disabled] {
@@ -143,7 +144,7 @@
     .more-action-divider {
         height: 10px;
         width: 100%;
-        background-color: var(--vitamui-secondary-light-8);
+        background-color: var(--vitamui-primary-light-8);
 
         + .mat-menu-item {
             border-top-color: transparent;

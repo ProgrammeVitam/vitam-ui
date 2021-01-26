@@ -1,0 +1,41 @@
+@import '~ui-frontend-common/sass/variables/colors';
+.container{
+    margin-top: 40px;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+    justify-content: left;
+    padding-left: 0px !important;
+}
+.color {
+    width: auto;
+    height: 240px;
+    border-radius: 8px;
+    max-width: 1060px;
+}
+.shade {
+    width: 90px;
+    height: 90px;
+    border-radius: 4px;
+    margin-right: 18px;
+}
+
+.shade-text{
+    text-align: center;
+    margin-right: 18px;
+    margin-top: 10px;
+}
+
+.red{
+    background-color: $red;
+}
+
+.orange{
+    background-color: $orange;
+}
+
+.green{
+    background-color: $green;
+}

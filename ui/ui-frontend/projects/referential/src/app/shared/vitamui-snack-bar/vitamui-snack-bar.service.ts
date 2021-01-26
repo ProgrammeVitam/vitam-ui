@@ -40,7 +40,7 @@
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
-import {ComponentPortal, ComponentType, PortalInjector, TemplatePortal} from '@angular/cdk/portal';
+import {ComponentPortal, ComponentType, TemplatePortal} from '@angular/cdk/portal';
 import {
   ComponentRef,
   EmbeddedViewRef,
@@ -174,9 +174,10 @@ export class VitamUISnackBar {
                                    config: MatSnackBarConfig): MatSnackBarContainer {
 
     const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
-    const injector = new PortalInjector(userInjector || this._injector, new WeakMap([
-      [MatSnackBarConfig, config],
-    ]));
+    const injector = Injector.create({
+      parent: userInjector || this._injector,
+      providers: [{provide: MatSnackBarConfig, useValue: config}]
+    });
 
     const containerPortal =
       new ComponentPortal(MatSnackBarContainer, config.viewContainerRef, injector);
@@ -312,13 +313,16 @@ export class VitamUISnackBar {
    */
   private _createInjector<T>(
     config: MatSnackBarConfig,
-    snackBarRef: MatSnackBarRef<T>): PortalInjector {
+    snackBarRef: MatSnackBarRef<T>): Injector {
 
     const userInjector = config && config.viewContainerRef && config.viewContainerRef.injector;
 
-    return new PortalInjector(userInjector || this._injector, new WeakMap<any, any>([
-      [MatSnackBarRef, snackBarRef],
-      [MAT_SNACK_BAR_DATA, config.data],
-    ]));
+    return Injector.create({
+      parent: userInjector || this._injector,
+      providers: [
+        {provide: MatSnackBarRef, useValue: snackBarRef},
+        {provide: MAT_SNACK_BAR_DATA, useValue: config.data}
+      ]
+    });
   }
 }

@@ -1,0 +1,14 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+    
+    display: flex;
+
+    button {
+        margin: 1.5rem;
+    }
+    .contrast-container {
+        background-color: var(--vitamui-primary-600);
+        color: $white;
+    }
+}

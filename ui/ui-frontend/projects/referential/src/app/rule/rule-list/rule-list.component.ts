@@ -185,8 +185,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.orderChange.next();
   }
 
-  // tslint:disable-next-line:ban-types
-  getRuleType(input: String) {
+  getRuleType(input: string) {
     const result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
     if (result) {
       return result.label;
@@ -195,8 +194,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     }
   }
 
-  // tslint:disable-next-line:ban-types
-  getRuleMeasurement(input: String) {
+  getRuleMeasurement(input: string) {
     const result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
     if (result) {
       return result.label;

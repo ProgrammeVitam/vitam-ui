@@ -34,15 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
-  ApplicationId, buildCriteriaFromSearch, Criterion, DEFAULT_PAGE_SIZE, Direction,
-  InfiniteScrollTable, Operators, PageRequest, Profile, SearchQuery
+  ApplicationId,
+  buildCriteriaFromSearch,
+  Criterion,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  Operators,
+  PageRequest,
+  Profile,
+  SearchQuery
 } from 'ui-frontend-common';
-
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-
 import { ProfileService } from '../profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -82,7 +88,7 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
       if (profileIndex > -1) {
         this.dataSource[profileIndex] = {
           id: this.dataSource[profileIndex].id,
-          enabled: this.dataSource[profileIndex].enabled,
+          enabled: updatedProfile.enabled,
           name: updatedProfile.name,
           level: updatedProfile.level,
           customerId: updatedProfile.customerId,

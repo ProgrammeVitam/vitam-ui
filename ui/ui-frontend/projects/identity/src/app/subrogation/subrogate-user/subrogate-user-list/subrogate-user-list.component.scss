@@ -9,7 +9,7 @@
     width: 20px;
     height: 10px;
     border-radius: 3px;
-    background: #919191;
+    background: var(--vitamui-grey);
     margin-right: 5px;
 }
 
@@ -17,22 +17,8 @@
     width: 20px;
     height: 10px;
     border-radius: 3px;
-    background: #dedcdc;
+    background: var(--vitamui-grey-300);
     margin-right: 5px;
-}
-
-.btn-subrogation {
-    width: 120px;
-    height: 34px;
-    border-radius: 50px;
-    background-color: var(--vitamui-secondary);
-    color: $white;
-    text-align: center;
-    border: 1px solid var(--vitamui-secondary);
-    cursor: pointer;
-    &[disabled] {
-        opacity: 0.4;
-    }
 }
 
 .user-in-subrogation-label {

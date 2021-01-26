@@ -1,5 +1,3 @@
-<div>
-  <vitamui-common-slide-toggle [(ngModel)]="checked" (ngModelChange)="_checkedChange.next($event)" [disabled]="disabled || forceDisabled">
-    <ng-content></ng-content>
-  </vitamui-common-slide-toggle>
-</div>
+<vitamui-common-slide-toggle [(ngModel)]="checked" (ngModelChange)="_checkedChange.next($event)" [disabled]="disabled || forceDisabled">
+  <ng-content></ng-content>
+</vitamui-common-slide-toggle>

@@ -1,6 +1,6 @@
-import {AccessContract} from 'ui-frontend-common';
+import {AccessContract as IAccessContract} from 'ui-frontend-common';
 
-export interface AccessContract extends AccessContract {
+export interface AccessContract extends IAccessContract {
   creationDate: string;
   lastUpdate: string;
   activationDate: string;

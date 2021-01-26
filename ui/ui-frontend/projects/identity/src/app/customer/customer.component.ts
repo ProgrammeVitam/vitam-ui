@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -47,19 +47,17 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss']
 })
-export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
+export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> {
 
-  customers: Customer[];
-  previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
-  owner: Owner;
+  public customers: Customer[];
+  public previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
+  public owner: Owner;
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(private dialog: MatDialog, public route: ActivatedRoute, public globalEventService: GlobalEventService) {
     super(route, globalEventService);
   }
-
-  ngOnInit() { }
 
   openCreateCustomerDialog() {
     const dialogRef = this.dialog.open(CustomerCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });

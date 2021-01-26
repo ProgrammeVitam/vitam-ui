@@ -1,57 +1,49 @@
 <div class="header">
-    <mat-progress-bar mode="determinate" [value]="100" class="stepper-progress-bar"></mat-progress-bar>
+    <vitamui-common-progress-bar [index]= "0" [count]="1"></vitamui-common-progress-bar>
 </div>
 
 <form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
     <div class="content vitamui-form">
-        <h2 i18n="Admin profile create@@createAdminProfileTitle">Création d'un Profil Administrateur</h2>
+        <div class="text large bold" i18n="Admin profile create@@createAdminProfileTitle">Création d'un Profil Administrateur</div>
 
-        <div class="form-group">
+        <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="enabled">Profil <span *ngIf="!adminProfileForm.get('enabled').value" i18n="profile info in@@profileInfoIn">in</span>actif</vitamui-common-slide-toggle>
         </div>
 
-        <div class="d-flex">
-            <vitamui-common-input class="field-name" formControlName="name" minlength="2" maxlength="100" required placeholder="Nom du Profil Administrateur" i18n-placeholder="Admin profile name@@adminProfileName">
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà existant</vitamui-common-input-error>
-            </vitamui-common-input>
-        </div>
+        <vitamui-common-input class="col-9 px-0" formControlName="name" minlength="2" maxlength="100" required placeholder="Nom du Profil Administrateur" i18n-placeholder="Admin profile name@@adminProfileName">
+            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="adminProfileForm?.get('name')?.touched && !!adminProfileForm?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà existant</vitamui-common-input-error>
+        </vitamui-common-input>
+
+        <vitamui-common-input class="col-9 px-0" formControlName="description" minlength="2" maxlength="250" required placeholder="Description du Profil" i18n-placeholder="Admin profile description@@adminProfileDescription">
+            <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+        </vitamui-common-input>
 
         <div class="d-flex">
-            <vitamui-common-input class="description" formControlName="description" minlength="2" maxlength="250" required placeholder="Description du Profil" i18n-placeholder="Admin profile description@@adminProfileDescription">
-                <vitamui-common-input-error *ngIf="adminProfileForm?.get('description')?.touched && !!adminProfileForm?.get('description')?.errors?.required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-            </vitamui-common-input>
+            <div class="mr-4 p-2">
+                <div class="text normal light">Niveau</div>
+                <div class="text medium bold">{{authService.user.level}}RH</div>
+            </div>
+            <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
+                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
+                    requis</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)</vitamui-common-input-error>
+            </vitamui-common-level-input>
         </div>
 
-        <div class="profil-level d-flex">
-            <div class="level-label">
-                <label class="">Niveau du profil</label>
-                <div>{{authService.user.level}}</div>
-            </div>
-            <div>
-                <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-                    <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
-                        requis</vitamui-common-input-error>
-                    <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)</vitamui-common-input-error>
-                </vitamui-common-level-input>
-            </div>
-        </div>
-        <div class="role-toggle">
-        <vitamui-common-role-toggle formControlName="roles">
+        <vitamui-common-role-toggle class="d-flex flex-column" formControlName="roles">
             <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS" i18n="Strong authentication@@profileFormLabelStrongAuthentication">Authentification forte</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_CREATE_USERS" i18n="User creation@@profileFormLabeluserCreation">Création d'utilisateur</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_UPDATE_STANDARD_USERS" i18n="Standard attributes modification@@profileFormLabelStandardAttributesModification">Modification des informations standards</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_ANONYMIZATION_USERS" i18n="Anonymization@@profileFormLabelAnonymization">Anonymisation</vitamui-common-role>
             <vitamui-common-role [name]="roleEnum.ROLE_GENERIC_USERS" i18n="Generic users management@@profileFormLabelGenericUsersManagement"> Gestion des utilisateurs génériques</vitamui-common-role>
         </vitamui-common-role-toggle>
-        </div>
 
-        <div class="row actions">
-            <button type="submit" class="btn primary" [disabled]="firstStepInvalid()"
-                    i18n="Admin profile create finish@@adminProfileCreateFinishButton">
+        <div class="d-flex mt-4">
+            <button type="submit" class="btn primary mr-4" [disabled]="firstStepInvalid()" i18n="Admin profile create finish@@adminProfileCreateFinishButton">
                 Terminer
             </button>
-            <button type="button" class="btn cancel" (click)="onCancel()" i18n="Admin profile create cancel@@adminProfileCreateCancelButton">
+            <button type="button" class="btn link cancel" (click)="onCancel()" i18n="Admin profile create cancel@@adminProfileCreateCancelButton">
                 Annuler
             </button>
         </div>

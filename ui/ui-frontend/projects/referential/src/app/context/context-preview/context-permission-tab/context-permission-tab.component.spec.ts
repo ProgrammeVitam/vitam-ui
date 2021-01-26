@@ -1,5 +1,5 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {Context, ContextPermission} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -46,7 +46,7 @@ xdescribe('ContextPermissionTabComponent', () => {
     permissions: [contextPermission]
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports:
         [

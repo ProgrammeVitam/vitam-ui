@@ -37,7 +37,7 @@
 
 /* tslint:disable:no-magic-numbers no-use-before-declare max-classes-per-file */
 import {Component, Input} from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import {ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
@@ -57,7 +57,7 @@ let fixture: ComponentFixture<GroupComponent>;
 class Page {
 
   get groupList() { return fixture.nativeElement.querySelector('app-group-list'); }
-  get createGroup() { return fixture.nativeElement.querySelector('.actions button:first-child'); }
+  get createGroup() { return fixture.nativeElement.querySelector('button'); }
 
 }
 
@@ -80,7 +80,7 @@ class GroupPreviewStubComponent {
 
 describe('GroupComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
@@ -128,9 +128,9 @@ describe('GroupComponent', () => {
   });
 
   it('should open a modal with GroupCreateComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     page.createGroup.click();
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
   });
 

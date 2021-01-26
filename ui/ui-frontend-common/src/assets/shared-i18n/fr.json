@@ -11,20 +11,20 @@
         "PROFILE": "Profil"
     },
     "MENU" : {
-        "GRAB_APPLICATION": "Saisir le nom de l'application",
-        "MY_APPLICATIONS": "Mes applications",
-        "RESULT": "Résultat(s)",
-		"settings": "Paramétrage",
-		"administrators": "Management",
-		"users": "Utilisateur",
-		"referential": "Référentiels",
-		"opaudit": "Audits et opérations",
-		"techadmin": "Administration technique",
-		"lastusedapps": "Dernières utilisées",
-        "ingest_and_consultation": "Versement & consultation",
-        "supervision_and_audits": "Supervision & Audits",
-        "security_and_application_rights": "Sécurité & droits applicatifs",
-        "organization_and_user_rights": "Organisation & droits utilisateurs"
+      "GRAB_APPLICATION": "Saisir le nom de l'application",
+      "MY_APPLICATIONS": "Mes applications",
+      "RESULT": "Résultat(s)",
+      "settings": "Paramétrage",
+      "administrators": "Management",
+      "users": "Utilisateur",
+      "referential": "Référentiels",
+      "opaudit": "Audits et opérations",
+      "techadmin": "Administration technique",
+      "lastusedapps": "Dernières utilisées",
+      "ingest_and_consultation": "Versement & consultation",
+      "supervision_and_audits": "Supervision & Audits",
+      "security_and_application_rights": "Sécurité & droits applicatifs",
+      "organization_and_user_rights": "Organisation & droits utilisateurs"
     },
     "MENU-APPLICATION-TILE": {
         "ENTER_APPLICATION": "Entrée pour lancer l'application"
@@ -39,8 +39,8 @@
         "DIALOG_BUTTON_LABEL" : "Accéder à "
     },
     "SELECT-CUSTOMER": {
-        "SELECTED": "Client sélectionné",
-        "SELECT" : "Sélectionner un client"
+        "SELECTED": "Organisation sélectionnée",
+        "SELECT" : "Sélectionner une organisation"
     },
     "SELECT-LANGUAGE": {
         "LANGUAGE": "Langue",

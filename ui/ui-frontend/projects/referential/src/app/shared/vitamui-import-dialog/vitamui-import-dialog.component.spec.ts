@@ -34,12 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed,  waitForAsync  } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // tslint:disable-next-line: max-line-length
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef, MatMenuModule, MatOptionModule, MatSidenavModule, MatSnackBarModule } from '@angular/material';
+
+import { MatOptionModule } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BASE_URL, LoggerModule } from 'ui-frontend-common';
 import { VitamUIImportDialogComponent } from './vitamui-import-dialog.component';
@@ -50,7 +55,7 @@ describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;
   let fixture: ComponentFixture<VitamUIImportDialogComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         VitamUIImportDialogComponent
@@ -71,7 +76,7 @@ describe('VitamUIImportDialogComponent', () => {
       providers: [
         {provide: MatDialogRef, useValue: ''},
         {provide: CdkStepper},
-        {provide: MAT_DIALOG_DATA, value: ''},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: BASE_URL, useValue: ''}
       ]
     })

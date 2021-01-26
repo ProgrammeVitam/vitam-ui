@@ -9,9 +9,9 @@
       </div>
 
     <div class="vitamui-container">
-      <h2>
+      <h4>
         <img src="assets/mini-logo-vitam.png"> Recherche par <strong>Requêtes DSL</strong>
-      </h2>
+      </h4>
 
 
         <form [formGroup]="form" (ngSubmit)="search()" (keydown.enter)="$event.preventDefault()">
@@ -46,7 +46,7 @@
             <div class="form_textarea">
               <label for="dsl">Requête DSL (Format JSON)</label>
               <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
-              <div class="actions">
+              <div class="actions btn-container">
                 <button type="submit" [disabled]="form.pending || form.invalid" class="btn secondary"
                   [disabled]="form.pending || form.invalid"
                   i18n="Launch adminDsl button@@AdminDslLaunchButton">Recherche</button>
@@ -59,7 +59,7 @@
               <label for="response">Résultat de la requête DSL</label>
               <textarea class="textarea textarea__resultat" readonly="readonly" id="response" #responseText
                 formControlName="response"></textarea>
-              <div class="actions right">
+              <div class="actions right btn-container">
                 <button type="button" class="btn" (click)="copyToClipbord(responseText)"
                   i18n="Copy adminDsl button@@AdminDslCopyButton">Copier</button>
 

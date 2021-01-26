@@ -71,7 +71,7 @@ describe('GroupResolver', () => {
       ]
     });
 
-    groupResolver = TestBed.get(GroupResolver);
+    groupResolver = TestBed.inject(GroupResolver);
   });
 
   it('should be created', inject([GroupResolver], (service: GroupResolver) => {
@@ -82,8 +82,8 @@ describe('GroupResolver', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
 
-    const profileGroupService = TestBed.get(GroupService);
-    profileGroupService.get.and.returnValue(of(expectedGroup));
+    const profileGroupService = TestBed.inject(GroupService);
+    profileGroupService.get = jasmine.createSpy().and.returnValue(of(expectedGroup));
     groupResolver.resolve(route).subscribe((profileGroup) => {
       expect(profileGroup).toEqual(expectedGroup);
     });
@@ -95,9 +95,9 @@ describe('GroupResolver', () => {
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
     spyOn(route.paramMap, 'get').and.returnValue('42');
-    const profileGroupService = TestBed.get(GroupService);
-    profileGroupService.get.and.returnValue(of(null));
-    const router = TestBed.get(Router);
+    const profileGroupService = TestBed.inject(GroupService);
+    profileGroupService.get = jasmine.createSpy().and.returnValue(of(null));
+    const router = TestBed.inject(Router);
     groupResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);
     });

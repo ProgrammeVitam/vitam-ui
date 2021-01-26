@@ -57,15 +57,16 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   customer: Customer;
   search: string;
 
+
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
 
   constructor(
     public dialog: MatDialog,
     public userService: UserService,
+    public route: ActivatedRoute,
     public customerService: CustomerService,
     public globalEventService: GlobalEventService,
-    private authService: AuthService,
-    route: ActivatedRoute,
+    private authService: AuthService
   ) {
     super(route, globalEventService);
   }
@@ -94,4 +95,5 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     if (!this.userListComponent) { return; }
     this.userListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'lastname', Direction.ASCENDANT));
   }
+
 }

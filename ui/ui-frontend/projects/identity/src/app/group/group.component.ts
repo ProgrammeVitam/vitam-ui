@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -47,35 +47,30 @@ import { GroupListComponent } from './group-list/group-list.component';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss']
 })
-export class GroupComponent extends SidenavPage<Group> implements OnInit {
+export class GroupComponent extends SidenavPage<Group> {
 
-  groups: Group[];
-
-  search: string;
+  public groups: Group[];
+  public search: string;
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public route: ActivatedRoute, public globalEventService: GlobalEventService, private dialog: MatDialog) {
     super(route, globalEventService);
   }
 
-  ngOnInit() {
-  }
-
-  openCreateGroupDialog() {
+  public openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) { this.refreshList(); }
     });
   }
 
-  private refreshList() {
-    if (!this.groupListComponent) { return; }
-    this.groupListComponent.search();
+  public onSearchSubmit(search: string): void {
+      this.search = search;
   }
 
-  onSearchSubmit(search: string) {
-      this.search = search;
-
+  private refreshList(): void {
+    if (!this.groupListComponent) { return; }
+    this.groupListComponent.search();
   }
 }

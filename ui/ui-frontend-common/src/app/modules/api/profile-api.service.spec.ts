@@ -51,7 +51,7 @@ describe('ProfileApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: ProfileApiService = TestBed.get(ProfileApiService);
+    const service: ProfileApiService = TestBed.inject(ProfileApiService);
     expect(service).toBeTruthy();
   });
 });

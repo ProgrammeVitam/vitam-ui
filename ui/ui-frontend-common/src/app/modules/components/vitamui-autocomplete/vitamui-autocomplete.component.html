@@ -10,8 +10,8 @@
   >
   <i class="material-icons">keyboard_arrow_down</i>
 </div>
-<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(options)" autoActiveFirstOption class="vitamui-autocomplete-panel" panelWidth="500px">
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(options)" autoActiveFirstOption class="vitamui-autocomplete-panel">
   <mat-option *ngFor="let option of filteredOptions | async" [value]="option.key">
-    <span class="vitamui-option-label">{{ option.label }}</span> <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info</i>
+    <span class="vitamui-option-label">{{ option.label }}</span> <i class="material-icons" *ngIf="option.info" [matTooltip]="option.info" matTooltipClass="vitamui-tooltip">info_outline</i>
   </mat-option>
 </mat-autocomplete>

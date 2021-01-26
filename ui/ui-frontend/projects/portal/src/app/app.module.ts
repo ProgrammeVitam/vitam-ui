@@ -63,7 +63,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,14 @@
 <ng-container *ngIf="!disabled">
-    <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
-      <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
+    <div class="editable-field-wrapper" cdkOverlayOrigin #origin="cdkOverlayOrigin">
+      <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
         <div class="editable-field-content">
-            <span class="editable-field-label">{{label}}</span>
+          <label>{{label}}</label>
             <span class="editable-field-text-content">
               <div *ngFor="let email of control.value">
                 {{ email }}
               </div>
             </span>
-            <div class="editable-field-control">
+            <div class="editable-field-control" [ngStyle]="{'margin-top': (label) ? '15px' : '0'}">
               <vitamui-common-emails-input
                 class="domains-input-mini"
                 [formControl]="control"

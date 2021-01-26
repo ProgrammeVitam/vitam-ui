@@ -1,7 +1,9 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatDialog, MatSelectModule, MatSidenavModule} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of} from 'rxjs';
@@ -14,7 +16,7 @@ describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
   let fixture: ComponentFixture<ProbativeValueComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const activatedRouteMock = {
       params: of({tenantIdentifier: 1}),
       data: of({appId: 'PROBATIVE_VALUE_APP'})

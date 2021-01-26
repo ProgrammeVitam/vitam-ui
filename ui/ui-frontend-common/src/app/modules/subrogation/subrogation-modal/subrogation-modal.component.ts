@@ -36,7 +36,7 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '../../auth.service';
@@ -54,14 +54,14 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 })
 export class SubrogationModalComponent implements OnInit {
 
-  stepIndex = 0;
-  private stepCount = 2;
-  domains: string[];
-  user: { email: string, firstname: string, lastname: string };
-  form: FormGroup;
-  pending: boolean;
-  subrogation: Subrogation;
-  step: string;
+  public stepIndex = 0;
+  public stepCount = 2;
+  public domains: string[];
+  public user: { email: string, firstname: string, lastname: string };
+  public form: FormGroup;
+  public pending: boolean;
+
+  private subrogation: Subrogation;
 
   constructor(
     public dialogRef: MatDialogRef<SubrogationModalComponent>,
@@ -97,6 +97,7 @@ export class SubrogationModalComponent implements OnInit {
   // a. the subrogation exists, we retrieve it
   // b. we asks for a subrogation
   retrieveOrCreateSubrogation(surrogateEmail: string) {
+    this.pending = true;
     this.subrogationService.checkCurrentUserIsInSubrogation().subscribe((response: Subrogation) => {
       if (response.id) {
         if (response.surrogate === surrogateEmail) {

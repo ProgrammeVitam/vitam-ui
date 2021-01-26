@@ -1,5 +1,5 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
 import {SecurityProfile} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
@@ -29,7 +29,7 @@ describe('SecurityProfilePermissionsTabComponent', () => {
     permissions: []
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SecurityProfilePermissionsTabComponent],
       providers: [

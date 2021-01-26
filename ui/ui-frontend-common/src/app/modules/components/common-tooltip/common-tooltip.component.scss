@@ -1,0 +1,77 @@
+:host {
+  --color: var(--vitamui-primary);
+  --color-font: var(--vitamui-primary-font);
+
+  .tooltip-custom {
+    display: inline-flex;
+    padding: 4px;
+    border: 1px solid var(--vitamui-primary);
+    background-color: var(--color);
+    border-radius: 5px;
+    position: relative;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    color: var(--color-font);
+    left: 4px;
+    bottom: 0px;
+    max-width: 100px;
+
+    &:before {
+      content: "";
+      position: absolute;
+      background-color: var(--color);
+
+      border-style: solid;
+      width: 8px;
+      height: 8px;
+      transform: rotate(-45deg);
+      border-color: var(--vitamui-primary);
+    }
+
+    &.BOTTOM {
+      margin-top: 1rem;
+      &:before {
+        top: 0;
+        margin-top: -5px;
+        border-width: 1px 1px 0 0;
+        border-radius: 0 2px 0 0;
+        margin-left: 4px;
+      }
+    }
+    &.TOP {
+      margin-bottom: 1rem;
+      &:before {
+        bottom: 0;
+        margin-bottom: -5px;
+        border-width: 0 0 1px 1px;
+        border-radius: 0 0 0 2px;
+        margin-left: 4px;
+      }
+    }
+    &.LEFT {
+      margin-right: 1rem;
+      &:before {
+        right: 0;
+        margin-right: -5px;
+        border-width: 0 1px 1px 0;
+        border-radius: 0 0 2px 0;
+        margin-top: 4px;
+      }
+    }
+    &.RIGHT {
+      margin-left: 1rem;
+      &:before {
+        left: 0;
+        margin-left: -5px;
+        border-width: 1px 0 0 1px;
+        border-radius: 2px 0 0 0;
+        margin-top: 4px;
+      }
+    }
+  }
+  .tooltip-custom.outline {
+    --color: white;
+    --color-font: var(--vitamui-primary);
+  }
+}

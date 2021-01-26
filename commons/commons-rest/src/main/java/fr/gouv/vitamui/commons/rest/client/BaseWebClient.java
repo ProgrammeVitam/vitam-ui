@@ -40,11 +40,13 @@ import java.io.IOException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
@@ -110,6 +112,11 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         return multipartData(url, httpMethod, context, dto, multipartFile, null, clazz);
     }
 
+    protected <T> T multiparts(final String url, final HttpMethod httpMethod, final AbstractHttpContext context, final Map<String, Object> dto,
+                               final Optional<Entry<String, MultipartFile>> header, final Optional<Entry<String, MultipartFile>> footer, final Optional<Entry<String, MultipartFile>> portal, final Class<T> clazz) {
+        return multiparts(url, httpMethod, context, dto, header, footer, portal,null, clazz);
+    }
+
     /**
      * Send MultipartData.
      *
@@ -135,6 +142,48 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
             final MultipartFile valueMultipartFile = multipartFile.get().getValue();
             final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
             addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
+        }
+
+        final MultiValueMap<String, HttpEntity<?>> multiValueMap = builder.build();
+
+        if (HttpMethod.POST == httpMethod) {
+            return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context))).contentType(MediaType.MULTIPART_FORM_DATA)
+                    .syncBody(multiValueMap).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                    .block();
+        }
+        else {
+            return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context))).contentType(MediaType.MULTIPART_FORM_DATA)
+                    .syncBody(multiValueMap).retrieve().onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
+                    .block();
+        }
+
+    }
+
+    private void computeFile(final MultipartBodyBuilder  builder, final Optional<Entry<String, MultipartFile>> multipartFile) {
+        if (multipartFile.isPresent()) {
+            final String paramName = multipartFile.get().getKey();
+            final MultipartFile valueMultipartFile = multipartFile.get().getValue();
+            final String contentDisposition = buildContentDisposition(paramName, valueMultipartFile.getName());
+            addPartFile(builder, paramName, valueMultipartFile, contentDisposition);
+        }
+    }
+
+    protected <T> T multiparts(final String url, final HttpMethod httpMethod, final AbstractHttpContext context, final Map<String, Object> dto,
+                               final Optional<Entry<String, MultipartFile>> header, final Optional<Entry<String, MultipartFile>> footer, final Optional<Entry<String, MultipartFile>> portal, final MultiValueMap<String, String> headers, final Class<T> clazz) {
+        final MultipartBodyBuilder builder = new MultipartBodyBuilder();
+
+        checkHttpMethod(httpMethod);
+
+        addMapEntriesToBuilder(dto, builder);
+
+        if (header.isPresent()) {
+            this.computeFile(builder, header);
+        }
+        if (footer.isPresent()) {
+            this.computeFile(builder, footer);
+        }
+        if (portal.isPresent()) {
+            this.computeFile(builder, portal);
         }
 
         final MultiValueMap<String, HttpEntity<?>> multiValueMap = builder.build();

@@ -1,16 +1,16 @@
 <ng-container *ngIf="!disabled">
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
-    <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
+    <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-          <span class="editable-field-label">{{label}}</span>
+          <label>{{label}}</label>
           <span class="editable-field-text-content">
             <div *ngFor="let domain of control.value">
               {{domain}} <ng-container *ngIf="domain===defaultDomain" i18n="By default@@emailDomainInputByDefault">(par défaut)</ng-container>
             </div>
           </span>
-          <div class="editable-field-control">
+          <div class="editable-field-control" [ngStyle]="{'margin-top': (label) ? '15px' : '0'}">
             <app-domains-input
-              class="domains-input-mini"
+              [style.width.%]="100"
               [formControl]="control"
               [(selected)]="selected"
               placeholder="domaine.xyz" i18n-placeholder="Email domain input placeholder@@emailDomainInputPlaceholder"
@@ -21,7 +21,7 @@
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
-        <mat-spinner diameter="24" color="accent"></mat-spinner>
+         <mat-spinner class="vitamui-spinner small"></mat-spinner>
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@
   </ng-template>
 </ng-container>
 
-<div *ngIf="disabled" class="read-only-field">
+<div *ngIf="disabled" class="read-only-field disabled-input">
   <label>{{label}}</label>
   <div *ngFor="let domain of control?.value">
     {{domain}} <ng-container *ngIf="domain===defaultDomain" i18n="By default@@emailDomainInputByDefault">(par défaut)</ng-container>

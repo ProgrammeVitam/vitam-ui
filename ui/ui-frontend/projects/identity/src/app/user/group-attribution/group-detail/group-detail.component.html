@@ -1,23 +1,28 @@
-<table>
-  <thead>
-    <th i18n="profile group detail description@@groupDetailDescription">Description</th>
-    <th i18n="profile group detail description@@groupDetailLevel">Niveau</th>
-    <th i18n="profile group detail profils@@groupDetailProfiles">Profils</th>
-  </thead>
+<div class="vitamui-dialog-subtable">
+  <div class="vitamui-dialog-subtable-header d-flex">
+    <div class="col-4">Description</div>
+    <div class="col-3">Niveau</div>
+    <div class="col-5">Profils</div>
+  </div>
 
-  <tbody>
-    <tr>
-      <td>{{ displayedGroup?.description }}</td>
-      <td>{{ displayedGroup?.level }}</td>
-      <td>
-        <ul>
-            <li class="profile-tag" *ngFor="let profile of displayedGroup?.profiles; let index = index">
-              {{ profile.name }}
-              <i class="material-icons" matTooltip="{{ profile?.description }}" matTooltipPosition="right">info</i>
-            </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
+  <div class="vitamui-dialog-subtable-body">
+    <div class="vitamui-dialog-subtable-rows">
+      <div class="vitamui-dialog-subtable-row d-flex">
+        <div class="col-4">{{ displayedGroup?.description }}</div>
+        <div class="col-3">{{ displayedGroup?.level }}</div>
+        <div class="col-5">
+          <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2 vitamui-profile-list" *ngFor="let profile of displayedGroup?.profiles">
+            <div>
+              <div class="profile-value">{{ profile?.name | titlecase }}</div>
+            </div>
+            <div>
+              <div class="material-icons clickable text-primary" [matTooltip]="profile?.description" matTooltipClass="vitamui-tooltip">
+                info_outline
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

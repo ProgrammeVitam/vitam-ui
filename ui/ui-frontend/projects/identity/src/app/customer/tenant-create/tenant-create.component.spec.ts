@@ -38,7 +38,7 @@ import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -52,7 +52,7 @@ describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
   let fixture: ComponentFixture<TenantCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const tenantServiceSpy = jasmine.createSpyObj('TenantService', { create: of({}) });
     const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
@@ -89,7 +89,7 @@ describe('TenantCreateComponent', () => {
   });
 
   it('should call dialogRef.close', () => {
-    const matDialogRef =  TestBed.get(MatDialogRef);
+    const matDialogRef =  TestBed.inject(MatDialogRef);
     component.onCancel();
     expect(matDialogRef.close).toHaveBeenCalled();
   });
@@ -101,7 +101,7 @@ describe('TenantCreateComponent', () => {
       ownerId: '42',
       enabled: true
     };
-    const tenantServiceSpy = TestBed.get(TenantService);
+    const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.setValue(tenant);
 
     component.onSubmit();
@@ -116,7 +116,7 @@ describe('TenantCreateComponent', () => {
   });
 
   it('should not call create()', () => {
-    const tenantServiceSpy = TestBed.get(TenantService);
+    const tenantServiceSpy = TestBed.inject(TenantService);
     component.form.get('name').setValue(null);
     component.onSubmit();
     expect(tenantServiceSpy.create).not.toHaveBeenCalled();

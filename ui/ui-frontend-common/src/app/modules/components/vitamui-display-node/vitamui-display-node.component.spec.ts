@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { VitamUIDisplayNodeComponent } from './vitamui-display-node.component';
@@ -43,7 +43,7 @@ describe('VitamUIDisplayNodeComponent', () => {
   let component: VitamUIDisplayNodeComponent;
   let fixture: ComponentFixture<VitamUIDisplayNodeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         VitamUIDisplayNodeComponent,

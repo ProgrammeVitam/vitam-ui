@@ -39,9 +39,12 @@ import { VitamUICommonModule } from 'ui-frontend-common';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  MatDatepickerModule, MatMenuModule, MatNativeDateModule, MatProgressSpinnerModule, MatSidenavModule, MatTabsModule
-} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import {
   LogbookOperationDetailComponent

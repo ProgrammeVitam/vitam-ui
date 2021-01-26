@@ -34,49 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, ConfirmDialogService } from 'ui-frontend-common';
-
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService , rotateAnimation} from 'ui-frontend-common';
 
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
 
-const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
-  stepIndex = 0;
+  public stepIndex = 0;
+  public stepCount = 2;
   subLevelIsRequired: boolean;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 2;
+
   private keyPressSubscription: Subscription;
 
   constructor(
@@ -130,10 +119,6 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
 
   formValid(): boolean {
     return this.form.pending || this.form.invalid;
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
 }

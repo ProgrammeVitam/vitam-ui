@@ -103,7 +103,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
       },
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      portalMessage: 'message',
+      portalTitle: 'title'
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -162,7 +164,9 @@ const expectedCustomersPage: { values: Customer[], pageNum: number, pageSize: nu
       },
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      portalMessage: 'message',
+      portalTitle: 'title'
     },
   ],
   pageNum: 0,
@@ -229,7 +233,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
       },
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      portalMessage: 'message',
+      portalTitle: 'title'
     },
     {
       id: '5acc6bd8b75bfb2e46aeec41e0973280907b4bc7a918b07df78df36f501b3ba5',
@@ -288,7 +294,9 @@ const customersPage: { values: Customer[], pageNum: number, pageSize: number, ha
       },
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      portalMessage: 'message',
+      portalTitle: 'title'
     },
   ],
   pageNum: 0,
@@ -309,12 +317,12 @@ describe('CustomerListService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    customerListService = TestBed.get(CustomerListService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    customerListService = TestBed.inject(CustomerListService);
   });
 
   it('should be created', () => {
-    const service: CustomerListService = TestBed.get(CustomerListService);
+    const service: CustomerListService = TestBed.inject(CustomerListService);
     expect(service).toBeTruthy();
   });
 

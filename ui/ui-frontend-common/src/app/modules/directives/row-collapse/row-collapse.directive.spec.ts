@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers max-classes-per-file */
 
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { RowCollapseContainerDirective } from './row-collapse-container.directive';
@@ -80,7 +80,7 @@ let page: Page;
 
 describe('CollapseContainerDirective', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         TesthostComponent,

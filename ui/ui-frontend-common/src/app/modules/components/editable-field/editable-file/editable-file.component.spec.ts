@@ -36,14 +36,17 @@
  */
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { newFile } from '../../../models';
 import { VitamUIFieldErrorComponent } from '../../vitamui-field-error/vitamui-field-error.component';
 import { EditableFileComponent } from './editable-file.component';
@@ -66,7 +69,7 @@ class TesthostComponent {
   value: File;
   label = 'Test label';
   accept = '.txt';
-  @ViewChild(EditableFileComponent, {static: false}) component: EditableFileComponent;
+  @ViewChild(EditableFileComponent) component: EditableFileComponent;
 
   validator = Validators.required;
   asyncValidator = (control: AbstractControl) => {
@@ -79,7 +82,7 @@ describe('EditableFileComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -87,6 +90,11 @@ describe('EditableFileComponent', () => {
         OverlayModule,
         MatProgressSpinnerModule,
         NoopAnimationsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
       ],
       declarations: [
         TesthostComponent,
@@ -121,11 +129,11 @@ describe('EditableFileComponent', () => {
     });
 
     it('should display the label', () => {
-      const elLabel = fixture.nativeElement.querySelector('.editable-field .editable-field-content .editable-field-label');
+      const elLabel = fixture.nativeElement.querySelector('label');
       expect(elLabel.textContent).toContain('Test label');
     });
 
-    it('should display the value', async(() => {
+    it('should display the value', waitForAsync(() => {
       testhost.value = newFile([''], 'test-file.txt');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -214,7 +222,7 @@ describe('EditableFileComponent', () => {
 
   describe('Class', () => {
 
-    it('should set the control value', async(() => {
+    it('should set the control value', waitForAsync(() => {
       testhost.value = newFile([''], 'test-file.txt');
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -260,7 +268,7 @@ describe('EditableFileComponent', () => {
       });
     });
 
-    it('should emit a new value', async(() => {
+    it('should emit a new value', waitForAsync(() => {
       const originFile = newFile([''], 'origin-file.txt');
       const newFileTmp = newFile([''], 'new-file.txt');
       testhost.value = originFile;
@@ -278,7 +286,7 @@ describe('EditableFileComponent', () => {
       });
     }));
 
-    it('should reverse the changes', async(() => {
+    it('should reverse the changes', waitForAsync(() => {
       const originFile = newFile([''], 'origin-file.txt');
       const newFileTmp = newFile([''], 'new-file.txt');
       testhost.value = originFile;

@@ -1,12 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {
-  MatDialogModule,
-  MatMenuModule,
-  MatProgressSpinnerModule,
-  MatSidenavModule,
-  MatSnackBarModule
-} from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {RouterModule} from '@angular/router';
 import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
 import {SharedModule} from '../shared/shared.module';

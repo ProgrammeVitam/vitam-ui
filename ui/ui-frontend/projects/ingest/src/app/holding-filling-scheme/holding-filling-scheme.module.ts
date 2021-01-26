@@ -37,17 +37,17 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
-import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
-import { MatProgressBarModule } from '@angular/material';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { UploadModule } from '../core/common/upload.module';
+import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
 @NgModule({
   imports: [

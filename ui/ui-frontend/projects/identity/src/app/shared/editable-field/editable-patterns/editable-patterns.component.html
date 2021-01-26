@@ -1,18 +1,18 @@
 <ng-container *ngIf="!disabled">
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
-    <div class="editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
+    <div class="vitamui-input editable-field squarish" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-          <span class="editable-field-label">{{label}}</span>
+        <label>{{label}}</label>
           <span class="editable-field-text-content">
             <div *ngFor="let pattern of control.value">{{pattern}}</div>
           </span>
-          <div class="editable-field-control">
-            <app-pattern [vitamuiMiniMode]="true" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
+          <div class="mt-2 editable-field-control">
+            <app-pattern [style.width.%]="100" [formControl]="control" [options]="options" (click)="onPatternClick()"></app-pattern>
           </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
-        <mat-spinner diameter="24" color="accent"></mat-spinner>
+        <mat-spinner class="vitamui-spinner small"></mat-spinner>
       </div>
     </div>
   </div>

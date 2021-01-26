@@ -1,31 +1,5 @@
-// .profile-group-row {
-//     height: 60px;
-
-//     .actions {
-//         white-space: nowrap;
-//         visibility: hidden;
-//         text-align: right;
-//     }
-
-//     .actions {
-//         padding-right: 40px;
-
-//         button {
-//             box-shadow: 25px 25px 80px 0 rgba(121, 121, 121, 0.1);
-//             opacity: 0;
-//             transform: translateX(20%);
-//             transition: all 150ms ease-in;
-//         }
-//     }
-
-//     &:hover .actions {
-//         visibility: visible;
-
-//         button {
-//             opacity: 1;
-//             transform: translateX(0);
-//             transition-timing-function: ease-out;
-//         }
-//     }
-
-// }
+.vitamui-table-body {
+    .vitamui-icon-keys {
+        padding-left: 2rem;
+    }
+}

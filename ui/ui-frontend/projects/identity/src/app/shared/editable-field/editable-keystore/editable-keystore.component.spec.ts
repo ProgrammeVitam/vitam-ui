@@ -38,7 +38,7 @@
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError as observableThrowError } from 'rxjs';
@@ -77,7 +77,7 @@ describe('EditableKeystoreComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -163,7 +163,7 @@ describe('EditableKeystoreComponent', () => {
       expect(testhost.component.control.value).toBe('password1234');
     });
 
-    it('should display the file name', async(() => {
+    it('should display the file name', waitForAsync(() => {
       testhost.component.file = newFile([''], 'test.jks');
       testhost.component.editMode = true;
       fixture.detectChanges();
@@ -232,7 +232,7 @@ describe('EditableKeystoreComponent', () => {
 
     describe('confirm', () => {
       it('should call updateKeystore', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.callThrough();
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
@@ -244,7 +244,7 @@ describe('EditableKeystoreComponent', () => {
       });
 
       it('should not call updateKeystore', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.callThrough();
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
@@ -258,7 +258,7 @@ describe('EditableKeystoreComponent', () => {
       });
 
       it('should set the error', () => {
-        const idpService = TestBed.get(IdentityProviderService);
+        const idpService = TestBed.inject(IdentityProviderService);
         spyOn(idpService, 'updateKeystore').and.returnValue(observableThrowError(null));
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');

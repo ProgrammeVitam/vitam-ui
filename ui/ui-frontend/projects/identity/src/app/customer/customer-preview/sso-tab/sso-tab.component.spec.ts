@@ -36,7 +36,7 @@
  */
 /* tslint:disable:max-classes-per-file no-magic-numbers */
 import { Component, Directive, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of ,  Subject } from 'rxjs';
 
@@ -104,7 +104,7 @@ describe('SsoTabComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
   let providers: any[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     providers = [
       {
         id: '5ad5f14c894e6a414edc7b60c5397d744f4b4ed8bd86934d0a8e8311add40f3f',
@@ -184,7 +184,7 @@ describe('SsoTabComponent', () => {
   });
 
   it('should call open', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     testhost.component.openCreateIDPDialog();
     expect(matDialogSpy.open).toHaveBeenCalled();
   });
@@ -228,30 +228,21 @@ describe('SsoTabComponent', () => {
     describe('Providers List', () => {
 
       it('should display the list of providers', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li');
+        const elProviders = fixture.nativeElement.querySelectorAll('.provider-item-content');
         expect(elProviders.length).toBe(3);
         elProviders.forEach((elProvider: HTMLElement, index: number) => {
           expect(elProvider.textContent).toContain(providers[index].name);
           expect(elProvider.textContent).toContain(providers[index].internal ? 'Interne' : 'Externe');
           expect(elProvider.textContent).toContain(providers[index].enabled ? 'Actif' : 'Inactif');
-
-          const elPatterns = elProvider.querySelectorAll('.provider-item-column:nth-child(3) > span');
-          expect(elPatterns.length).toBe((providers[index].patterns || []).length);
         });
       });
 
       it('should select the provider on click', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li > .provider-item-content');
+        const elProviders = fixture.nativeElement.querySelectorAll('.provider-item-content');
         elProviders[0].click();
         fixture.detectChanges();
         expect(testhost.component.selectedIdentityProvider).toBe(testhost.component.providers[0]);
       });
-
-      it('should be disabled', () => {
-        const elProviders = fixture.nativeElement.querySelectorAll('ul.provider-list > li > .disabled');
-        expect(elProviders.length).toBe(2);
-      });
-
     });
 
     describe('Provider Details', () => {

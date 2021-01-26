@@ -34,23 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { merge, Subscription, Observable } from 'rxjs';
-import { ConfirmDialogService, Customer, OtpState, ThemeService } from 'ui-frontend-common';
+import { merge, Observable, Subject } from 'rxjs';
+import {ConfirmDialogService, Customer, Logo, OtpState } from 'ui-frontend-common';
 
-import { Component, Inject, OnDestroy, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
+import { ComponentType } from '@angular/cdk/portal';
+import { filter, takeUntil } from 'rxjs/operators';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
-import { CustomerCreateValidators } from './customer-create.validators';
-import { filter } from 'rxjs/operators';
-import { ComponentType } from '@angular/cdk/portal';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
-
-const PROGRESS_BAR_MULTIPLICATOR = 100;
-
-const IMAGE_TYPE_PREFIX = 'image';
+import { CustomerCreateValidators } from './customer-create.validators';
 
 interface CustomerInfo {
    code: string;
@@ -64,34 +60,27 @@ interface CustomerInfo {
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
-  @ViewChild('fileSearch', { static: false }) public fileSearch: any;
 
+  private destroy = new Subject();
   public form: FormGroup;
-  public stepIndex = 0;
-  public hasCustomGraphicIdentity = false;
-  public hasDropZoneOver = false;
-  public imageToUpload: File = null;
-  public lastImageUploaded: File = null;
-  public imageUrl: any;
-  public lastUploadedImageUrl: any;
-  public lastColors: {[key: string]: string};
   public hasError = true;
   public message: string;
   public creating = false;
-  public JSON = JSON;
-  public hexPattern = /#([0-9A-Fa-f]{6})/;
   public customerInfo: CustomerInfo = {
     code: null,
     name: null,
     companyName: null,
   };
+  public stepIndex = 0;
+  public stepCount = 5;
+  // tslint:disable-next-line: variable-name
+  private _customerForm: FormGroup;
+  public get customerForm(): FormGroup { return this._customerForm; }
+  public set customerForm(form: FormGroup) {
+    this._customerForm = form;
+  }
 
-  // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
-  // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
-  // "Expression has changed after it was checked" error so we instead manually define the value.
-  // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
-  private keyPressSubscription: Subscription;
+  public logos: Logo[];
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -100,7 +89,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
-    private themeService: ThemeService,
     private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
   ) {
@@ -142,44 +130,21 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       ]
     });
 
-    const colors = this.themeService.getThemeColors();
-    this.form.get('themeColors').setValue({
-      'vitamui-primary': colors['vitamui-primary'],
-      'vitamui-secondary': colors['vitamui-secondary']
-    });
-
     this.form.get('gdprAlert').valueChanges.subscribe(() => {
       if (!this.form.get('gdprAlert').value) {
         this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));
       }
-    })
-
-    this.onChanges();
-    this.form.get('hasCustomGraphicIdentity').valueChanges.subscribe(() => {
-      this.hasCustomGraphicIdentity = this.form.get('hasCustomGraphicIdentity').value;
-      this.message = null;
-      if (this.hasCustomGraphicIdentity) {
-        this.imageUrl = this.lastUploadedImageUrl;
-        if (this.lastColors) {
-          this.form.get('themeColors').setValue(this.lastColors);
-        }
-      } else {
-        this.lastColors = this.form.get('themeColors').value;
-        this.form.get('themeColors').setValue({
-          'vitamui-primary': colors['vitamui-primary'],
-          'vitamui-secondary': colors['vitamui-secondary']
-        });
-        this.lastUploadedImageUrl = this.imageUrl;
-        this.imageToUpload = null;
-        this.imageUrl = null;
-      }
     });
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    this.onChanges();
+
+    this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef)
+    .pipe(takeUntil(this.destroy))
+    .subscribe(() => this.onCancel());
   }
 
   ngOnDestroy() {
-    this.keyPressSubscription.unsubscribe();
+    this.destroy.next();
   }
 
   onChanges() {
@@ -211,18 +176,20 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
-    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' }).beforeClose().pipe(
+    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' }).beforeClosed().pipe(
       filter((result) => !result)
     );
 
   }
 
   onSubmit() {
-    if (this.lastStepIsInvalid()) { return; }
+    if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) { return; }
     this.creating = true;
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
-    this.customerService.create(customer, this.imageToUpload).subscribe(
+    this.customerService.create(customer, this.logos)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(
       () => {
         this.dialogRef.close(true);
       },
@@ -232,75 +199,27 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateForCustomerModel(formValue: any): Customer {
-    const { themeColors, ...customer } = formValue;
-    const customerTheme =  {
-      'vitamui-primary': themeColors['vitamui-primary'],
-      'vitamui-secondary': themeColors['vitamui-secondary']
-    };
-    if (customer.hasCustomGraphicIdentity) {
-      customer.themeColors = customerTheme;
+  private updateForCustomerModel(formValue: any): Customer {
+    let customer = formValue;
+    if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
+      customer = {...formValue, ...{
+        id : this.customerForm.get('id').value,
+        hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
+        themeColors: this.customerForm.get('themeColors').value,
+        portalTitle: this.customerForm.get('portalTitle').value,
+        portalMessage: this.customerForm.get('portalMessage').value,
+      }};
     }
 
     return customer;
   }
 
-  onImageDropped(files: FileList) {
-    this.hasDropZoneOver = false;
-    this.handleImage(files);
-  }
-
-  handleImage(files: FileList) {
-    this.lastImageUploaded = this.imageToUpload;
-    this.lastUploadedImageUrl = this.imageUrl;
-    this.message = null;
-    this.imageToUpload = files.item(0);
-    if (this.imageToUpload.type.split('/')[0] !== IMAGE_TYPE_PREFIX) {
-      this.message = 'Le fichier que vous essayez de déposer n\'est pas une image';
-      return;
-    }
-    const reader = new FileReader();
-    const logoImage = new Image();
-    reader.onload = () => {
-      const logoUrl: any = reader.result;
-      logoImage.src = logoUrl;
-      logoImage.onload = () => {
-        if (logoImage.width > 280 || logoImage.height > 100) {
-          this.imageToUpload = this.lastImageUploaded;
-          this.message = 'Les dimensions du fichier que vous essayez de déposer sont supérieures à 280px * 100px';
-        } else {
-          this.imageUrl = logoUrl;
-          this.hasCustomGraphicIdentity = true;
-          this.form.get('hasCustomGraphicIdentity').setValue(true, { emitEvent: false });
-        }
-      };
-    };
-    reader.readAsDataURL(this.imageToUpload);
-  }
-
-  onImageDragOver(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  onImageDragLeave(inDropZone: boolean) {
-    this.hasDropZoneOver = inDropZone;
-  }
-
-  addLogo() {
-    this.fileSearch.nativeElement.click();
-  }
-
-  handleFileInput(files: FileList) {
-    this.handleImage(files);
-  }
-
   isDurationNotValid(): boolean {
     if (this.form.get('gdprAlert').value) {
-      return this.form.get('gdprAlertDelay').invalid || this.form.get('gdprAlertDelay').pending
-    }
-    else {
+      return this.form.get('gdprAlertDelay').invalid || this.form.get('gdprAlertDelay').pending;
+    } else {
       this.form.get('gdprAlert').valueChanges.subscribe(() => {
-        this.form.get('gdprAlertDelay').setValue(72)
+        this.form.get('gdprAlertDelay').setValue(72);
       });
       return false;
     }
@@ -313,7 +232,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||     
+      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||
       this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending;
 
@@ -326,30 +245,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('defaultEmailDomain').invalid;
   }
 
-  thirdStepValid(): boolean {
-    return this.isThemeColorsFormValid() &&
-        (this.form.get('hasCustomGraphicIdentity').value === false ||
-              (this.form.get('hasCustomGraphicIdentity').value === true && this.imageUrl)
-        );
+  public thirdStepValid(): boolean {
+    return !this.customerForm || (this.customerForm && this.customerForm.valid);
   }
 
   lastStepIsInvalid(): boolean {
       const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
       return this.form.pending || this.form.invalid || invalid || this.creating;
-  }
-
-  private isThemeColorsFormValid(): boolean {
-    const value = this.form.get('themeColors').value;
-    for (const key of Object.keys(value)) {
-      if ( ! value[key].match(/#([0-9A-Fa-f]{6})/) ) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
 
 }

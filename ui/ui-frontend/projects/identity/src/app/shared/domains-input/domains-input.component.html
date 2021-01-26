@@ -1,17 +1,22 @@
-<div class="domain-input-control">
-  <span>@ </span>
-  <div class="domain-input-wrapper">
-    <input class="vitamui-input" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
-    <mat-spinner *ngIf="control.pending" [diameter]="spinnerDiameter" color="accent"></mat-spinner>
+<div class="domain-input-control d-flex align-items-center">
+  <div class="domain-input-wrapper d-flex align-items-center">
+      <h4 class="mr-3 light">@</h4>
+      <input class="vitamui-input" [style.width.px]="300" type="text" size="10" [formControl]="control" [attr.placeholder]="placeholder" (blur)="onTouched()" (keydown.enter)="add()">
+      <mat-spinner *ngIf="control.pending" class="ml-2" [diameter]="spinnerDiameter"></mat-spinner>
   </div>
-  <button type="button" class="btn secondary" (click)="add()" [disabled]="buttonAddDisabled()" i18n="Email domains input add button@@domainsInputAddButton">Ajouter</button>
+
+  <div>
+      <button type="button" class="btn primary ml-2" i18n="@@domainInputCreateNextButton"  (click)="add()" [disabled]="buttonAddDisabled()">Ajouter</button>
+  </div>
 </div>
+
 <div class="vitamui-input-errors">
-    <div *ngIf="control?.hasError('pattern')" i18n="Wrong format (domain.xyz)@@domainInputErrorFormat">Format incorrect (domaine.xyz)</div>
-    <div *ngIf="domainExists" i18n="Domain already entered@@domainInputErrorDomainExists">Domaine déjà saisi</div>
-    <div *ngIf="!domainExists && control?.hasError('uniqueDomain')" i18n="Domain used by another customer@@domainInputErrorUniqueDomain">Domaine utilisé par un autre client</div>
+  <div *ngIf="control?.hasError('pattern')" i18n="Wrong format (domain.xyz)@@domainInputErrorFormat">Format incorrect (domaine.xyz)</div>
+  <div *ngIf="domainExists" i18n="Domain already entered@@domainInputErrorDomainExists">Domaine déjà saisi</div>
+  <div *ngIf="!domainExists && control?.hasError('uniqueDomain')" i18n="Domain used by another customer@@domainInputErrorUniqueDomain">Domaine utilisé par une autre organisation</div>
 </div>
-<div class="vitamui-chip-list">
+
+<div class="vitamui-chip-list ml-4">
   <div *ngFor="let domain of domains" class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain===selected">
     <div class="vitamui-chip-content">{{domain}}</div>
     <div class="vitamui-remove-chip" (click)="remove(domain)">
@@ -19,3 +24,5 @@
     </div>
   </div>
 </div>
+
+

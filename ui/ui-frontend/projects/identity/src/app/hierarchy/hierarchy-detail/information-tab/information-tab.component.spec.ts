@@ -36,7 +36,7 @@
  */
 /* tslint:disable: no-magic-numbers max-classes-per-file */
 import { Component, Directive, forwardRef, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
@@ -113,7 +113,7 @@ describe('Hierarchy InformationTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const hierarchyServiceMock = { update: of({}), updated: new Subject() };
     const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
     const authServiceMock = { user : { level: ''}};
@@ -182,7 +182,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
     // TODO FIXME
     // it('should update the name', fakeAsync(() => {
-    //   const service = TestBed.get(HierarchyService);
+    //   const service = TestBed.inject(HierarchyService);
     //   spyOn(service, 'update').and.returnValue(of(testhost.profile));
     //   testhost.component.form.get('name').setValue('New name');
     //   tick(400);

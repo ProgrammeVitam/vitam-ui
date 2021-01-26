@@ -40,7 +40,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable: max-classes-per-file directive-selector */
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -141,7 +141,7 @@ let page: Page;
 
 describe('CustomerCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}) });
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
@@ -284,25 +284,17 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.get(MatDialogRef);
+      const matDialogRef =  TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const customerService =  TestBed.get(CustomerService);
+      const customerService =  TestBed.inject(CustomerService);
       component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(0);
+      expect(customerService.create).toHaveBeenCalledTimes(0);
     });
 
-    it('should call create()', () => {
-      const customerService =  TestBed.get(CustomerService);
-      const matDialogRef =  TestBed.get(MatDialogRef);
-      component.form.setValue(expectedCustomer);
-      component.onSubmit();
-      expect(customerService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
-    });
   });
 
 });

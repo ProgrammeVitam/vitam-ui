@@ -37,18 +37,18 @@
 /* tslint:disable:component-selector max-classes-per-file */
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTreeModule } from '@angular/material/tree';
-import { EMPTY, of } from 'rxjs';
-
-import { AuthService } from 'ui-frontend-common';
-import { FileType } from '../../models/file-type.enum';
-import { Node } from '../../models/node.interface';
+import {  ComponentFixture, TestBed , waitForAsync } from '@angular/core/testing';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTreeModule} from '@angular/material/tree';
+import {EMPTY, of} from 'rxjs';
+import {AuthService} from 'ui-frontend-common';
+import {FileType} from '../../models/file-type.enum';
+import {Node} from '../../models/node.interface';
 import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 
-@Component({ selector: 'vitamui-library-node', template: '' })
+
+@Component({ selector: 'lib-vitamui-library-node', template: '' })
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
   @Input() node: any;
@@ -66,7 +66,7 @@ describe('FilingPlanComponent', () => {
     loadTree: () => of([])
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatTreeModule,
@@ -74,8 +74,8 @@ describe('FilingPlanComponent', () => {
       ],
       declarations: [FilingPlanComponent, NodeStubComponent],
       providers: [
-        { provide: FilingPlanService, useValue: fillingPlanStub },
-        { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },
+        {provide: FilingPlanService, useValue: fillingPlanStub},
+        {provide: AuthService, useValue: {user: {profileGroup: {profiles: []}}}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -324,9 +324,9 @@ describe('FilingPlanComponent', () => {
         // Then: Check selected and all children checked (and children disabled)
         expect(nodes[0].children[0].checked && !nodes[0].children[0].disabled).toBeTruthy('Child 1 should be Checked and not Disabled');
         expect(nodes[0].children[0].children[0].checked && nodes[0].children[0].children[0].disabled)
-          .toBeTruthy('Leaf 1 should be Checked and Disabled');
+        .toBeTruthy('Leaf 1 should be Checked and Disabled');
         expect(nodes[0].children[0].children[1].checked && nodes[0].children[0].children[1].disabled)
-          .toBeTruthy('Leaf 2 should be Checked and Disabled');
+        .toBeTruthy('Leaf 2 should be Checked and Disabled');
 
         // Then: Check sibling and parent nodes not checked nor disabled
         expect(!nodes[0].checked && !nodes[0].disabled).toBeTruthy('Root node should not be Checked nor Disabled');

@@ -63,8 +63,8 @@ describe('CustomerService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    customerService = TestBed.get(CustomerService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    customerService = TestBed.inject(CustomerService);
   });
 
   it('should be created', inject([CustomerService], (service: CustomerService) => {
@@ -72,7 +72,7 @@ describe('CustomerService', () => {
   }));
 
   it('should call /fake-api/customers and display a success message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     customerService.create(expectedCustomer).subscribe(
       (response: Customer) => {
         expect(response).toEqual(expectedCustomer);
@@ -91,7 +91,7 @@ describe('CustomerService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     customerService.create(expectedCustomer).subscribe(
       fail,
       () => {

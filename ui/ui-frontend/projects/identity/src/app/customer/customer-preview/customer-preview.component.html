@@ -1,27 +1,8 @@
-<div class="vitamui-sidepanel">
-
-  <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
-
-    <div class="title">
-      <i class="vitamui-icon vitamui-icon-bank"></i>
-      <h2>{{customer?.name}} <small>({{customer?.code}})</small></h2>
-      <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
-        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
-          <button mat-menu-item i18n="Coming soon@@customerPreviewComingSoon">Bientôt</button>
-        </mat-menu>
-      </ng-container>
-    </div>
-  </div>
+  <vitamui-common-sidenav-header [title]="customer?.name" [subtitle]="'(' +  customer?.code + ')'" [icon]="'vitamui-icon-bank'"
+   (onclose)="emitClose()"></vitamui-common-sidenav-header>
 
   <div class="vitamui-sidepanel-body">
-
     <mat-tab-group class="preview-tab-group">
-
       <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
         <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-information-tab>
       </mat-tab>
@@ -30,13 +11,12 @@
         <app-sso-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-sso-tab>
       </mat-tab>
 
-      <mat-tab label="Identité graphique" i18n-label="Visual identity tab@@customerPreviewTabVisualIdentity">
+      <mat-tab label="ID. graphique" i18n-label="Visual identity tab@@customerPreviewTabVisualIdentity">
         <app-graphic-identity-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-graphic-identity-tab>
       </mat-tab>
+
       <mat-tab label="Historique" i18n-label="History tab@@customerPreviewTabHistory">
         <vitamui-common-operation-history-tab [id]="customer?.id" [identifier]="customer?.identifier" collectionName="customers" [filter]="filterEvents"></vitamui-common-operation-history-tab>
       </mat-tab>
-
     </mat-tab-group>
   </div>
-</div>

@@ -1,35 +1,22 @@
-<div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <ng-container *ngIf="!isPopup">
-      <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
-    </ng-container>
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+<vitamui-common-sidenav-header
+  [title]="group?.name"
+  [icon]="'vitamui-icon-keys'"
+  [badge]="group?.enabled ? 'green' : 'grey'"
+  (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-    <div class="title">
-      <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon status-badge"
-          [class.status-badge-green]="group?.enabled"
-          [class.status-badge-red]="!group?.enabled"
-        ></i>
-      <h2>{{ group?.name }}</h2>
-      <ng-container *ngIf="!isPopup">
-        <button class="btn-circle" [matMenuTriggerFor]="moreMenu"><i class="material-icons">more_horiz</i></button>
-        <mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
-          <button mat-menu-item i18n="Coming soon@@profileGroupPreviewComingSoon">Bientôt</button>
-        </mat-menu>
-      </ng-container>
-    </div>
-  </div>
-  <div class="vitamui-sidepanel-body">
-    <mat-tab-group class="preview-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@profileGroupPreviewTabInformation">
-        <app-information-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-information-tab>
-      </mat-tab>
-      <mat-tab label="Profils" i18n-label="Profiles@@profileGroupPreviewTabProfiles">
-        <app-profiles-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-profiles-tab>
-      </mat-tab>
-      <mat-tab label="Historique" i18n-label="History tab@@profileGroupPreviewTabHistory">
-        <vitamui-common-operation-history-tab [id]="group?.id" [identifier]="group?.identifier" collectionName="groups" [filter]="filterEvents"></vitamui-common-operation-history-tab>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="Informations" i18n-label="Information tab@@profileGroupPreviewTabInformation">
+      <app-information-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-information-tab>
+    </mat-tab>
+
+    <mat-tab label="Profils" i18n-label="Profiles@@profileGroupPreviewTabProfiles">
+      <app-profiles-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-profiles-tab>
+    </mat-tab>
+    
+    <mat-tab label="Historique" i18n-label="History tab@@profileGroupPreviewTabHistory">
+      <vitamui-common-operation-history-tab [id]="group?.id" [identifier]="group?.identifier" collectionName="groups" [filter]="filterEvents"></vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>

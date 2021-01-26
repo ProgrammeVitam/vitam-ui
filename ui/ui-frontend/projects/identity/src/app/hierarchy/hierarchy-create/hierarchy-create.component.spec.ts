@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -40,7 +41,7 @@ import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable:max-classes-per-file */
 import { Component, forwardRef, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -71,7 +72,7 @@ let component: HierarchyCreateComponent;
 
 describe('HierarchyCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const hierarchyServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
 
@@ -82,6 +83,7 @@ describe('HierarchyCreateComponent', () => {
           NoopAnimationsModule,
           VitamUICommonTestModule,
           LevelInputModule,
+          TranslateModule.forRoot(),
       ],
       declarations: [
         ProfilesFormStubComponent,

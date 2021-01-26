@@ -51,7 +51,7 @@ describe('OwnerApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: OwnerApiService = TestBed.get(OwnerApiService);
+    const service: OwnerApiService = TestBed.inject(OwnerApiService);
     expect(service).toBeTruthy();
   });
 });

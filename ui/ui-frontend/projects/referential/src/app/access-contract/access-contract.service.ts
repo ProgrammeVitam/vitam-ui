@@ -36,7 +36,7 @@
  */
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {Observable, Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';

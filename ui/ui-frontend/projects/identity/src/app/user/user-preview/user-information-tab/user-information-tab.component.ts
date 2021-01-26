@@ -59,13 +59,14 @@ export class UserInfoTabComponent implements OnChanges {
   @Input() readOnly: boolean;
   @Input() userInfo: AdminUserProfile;
 
-  form: FormGroup;
-  phoneForm: FormGroup;
-  isPhoneRequired: boolean;
-  showTooltip: boolean;
-  isPopup: boolean;
-  lastConnectionDate: Date;
-  previousValue: {
+  public form: FormGroup;
+  public phoneForm: FormGroup;
+  public isPhoneRequired: boolean;
+  public showTooltip: boolean;
+  public isPopup: boolean;
+  public lastConnectionDate: Date;
+  public customerEmailDomains: string[];
+  public previousValue: {
     firstname: string,
     lastname: string,
     email: string,
@@ -89,7 +90,6 @@ export class UserInfoTabComponent implements OnChanges {
     siteCode: string,
     internalCode: string
   };
-  clientEmailDomains: string[];
 
   constructor(
     private userService: UserService,
@@ -188,9 +188,9 @@ export class UserInfoTabComponent implements OnChanges {
   }
 
   private initFormActivationState(form: FormGroup, customer: Customer, userInfo: AdminUserProfile, readOnly: boolean) {
-    // get client email domains
-    this.clientEmailDomains = [];
-    customer.emailDomains.forEach((domain) => this.clientEmailDomains.push(domain.replace('*.', '')));
+    // get customer email domains
+    this.customerEmailDomains = [];
+    customer.emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
     if (readOnly || !userInfo.standardAttrsAllowed) {
       form.disable({ emitEvent: false });
 

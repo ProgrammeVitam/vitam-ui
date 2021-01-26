@@ -37,7 +37,7 @@
 /* tslint:disable: max-classes-per-file no-magic-numbers */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -114,7 +114,7 @@ describe('HierarchyDetailComponent', () => {
     readonly : false
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
@@ -155,15 +155,14 @@ describe('HierarchyDetailComponent', () => {
 
   describe('DOM', () => {
 
-    it('should have a title', () => {
-      const elTitle = fixture.nativeElement.querySelector('.vitamui-sidepanel > .vitamui-sidepanel-header > .title > h2');
+    it('should have a header', () => {
+      const elTitle = fixture.nativeElement.querySelector('vitamui-common-sidenav-header');
       expect(elTitle).toBeTruthy();
-      expect(elTitle.textContent).toContain('Profile Name');
     });
 
     it('should have a mat-tab-group', () => {
       const elTabGroup = fixture.nativeElement
-      .querySelector('.vitamui-sidepanel > .vitamui-sidepanel-body > mat-tab-group.preview-tab-group');
+      .querySelector('.mat-tab-group');
       expect(elTabGroup).toBeTruthy();
     });
 

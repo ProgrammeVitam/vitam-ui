@@ -1,0 +1,18 @@
+<vitamui-common-slide-toggle 
+  [formControl]="displayCustomGraphicIdentity"
+  i18n="Custom visual identity@@customerCreateVisualIdentityToggleLabel">
+</vitamui-common-slide-toggle>Identité graphique personnalisée
+
+<app-graphic-identity-form 
+  *ngIf="!displayCustomGraphicIdentity.value && defaultForm" 
+  [graphicIdentityForm]="defaultForm"
+  [disabled]="true">
+</app-graphic-identity-form>
+
+<app-graphic-identity-form 
+  *ngIf="displayCustomGraphicIdentity.value && customerForm" 
+  [graphicIdentityForm]="customerForm" 
+  (formChange)="sendForm($event)">
+</app-graphic-identity-form>
+
+

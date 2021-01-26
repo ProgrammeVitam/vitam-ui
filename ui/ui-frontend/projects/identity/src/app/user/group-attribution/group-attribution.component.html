@@ -1,55 +1,13 @@
-<div class="content">
-  <h2 i18n="Set group title@@setGroupTitle">Attribution de groupe</h2>
+<div class="header">
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+</div>
 
-
-  <div class="header-informations">
-    <div class="controls">
-      <vitamui-common-search-bar
-        placeholder="Filtrer par nom ou description"
-        i18-placeholder="Filter group filter@@filterGroup"
-        (search)="onSearch($event)">
-      </vitamui-common-search-bar>
-    </div>
-
-    <div class="actions" *ngIf="selectedGroupName">
-      <div>Groupe attribué : </div>&nbsp;{{ selectedGroupName }}
-    </div>
+<div class="mt-3 content">
+  <div>
+    <app-group-list [groups] = "activeGroups" (selectedGroupEvent)="updateGroup($event)"></app-group-list>
   </div>
-
-  <div class="table-container">
-    <table>
-        <thead>
-          <tr>
-            <th i18n="Set group header@@setGroupHeader">Groupe</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody vitamuiCommonCollapseContainer>
-          <ng-container *ngFor="let group of activeGroups; let index = index">
-
-            <tr class="profileGroup-row" *ngIf="!group.selected" [vitamuiCommonCollapseTriggerFor]="row">
-              <td class="clickable" (click)="updateGroup(group?.id, group?.name, group?.level, row)">
-                {{ group?.name }}
-              </td>
-              <td class="clickable">
-                <span class="btn-link" *ngIf="row.state === 'collapsed';else hideDetail" i18n="Profile group showDetails@@profileGroupShowDetails">Voir détail</span>
-                <ng-template #hideDetail><span class="btn-link" i18n="Profile group hideDetails@@profileGroupHideDetails">Masquer détail</span></ng-template>
-              </td>
-            </tr>
-
-            <tr class="sub-table">
-              <td>
-                <app-group-detail [group]="group" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [@expansion]="row.state" class="collapsable"></app-group-detail>
-              </td>
-              <td></td>
-            </tr>
-          </ng-container>
-        </tbody>
-    </table>
-  </div>
-
   <div class="actions">
     <button type="button" class="btn primary" (click)="saveUserUpdate()" [disabled]="!selectedGroupName" i18n="group attribution edit@@groupAttributionEdit">Modifier</button>
-    <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+    <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
   </div>
 </div>

@@ -47,7 +47,7 @@ import { ProfileListComponent } from './profile-list.component';
     CommonModule,
     SharedModule,
     MatProgressSpinnerModule,
-    VitamUICommonModule,
+    VitamUICommonModule
   ],
   declarations: [ProfileListComponent],
   exports: [ProfileListComponent]

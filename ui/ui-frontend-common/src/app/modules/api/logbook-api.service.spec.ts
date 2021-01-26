@@ -47,7 +47,7 @@ describe('LogbookApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: LogbookApiService = TestBed.get(LogbookApiService);
+    const service: LogbookApiService = TestBed.inject(LogbookApiService);
     expect(service).toBeTruthy();
   });
 });

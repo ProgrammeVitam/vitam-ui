@@ -38,12 +38,16 @@
 
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 
 // import { FlowValidators } from '../../../flow/flow.validators';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EmailsInputModule } from '../emails-input/emails-input.module';
 import { MultipleEmailInputComponent } from './multiple-email-input.component';
 
@@ -57,7 +61,7 @@ class TesthostComponent {
   defaultValue: string;
   label = 'Test label';
 
-  @ViewChild(MultipleEmailInputComponent, { static: false }) component: MultipleEmailInputComponent;
+  @ViewChild(MultipleEmailInputComponent) component: MultipleEmailInputComponent;
 }
 
 describe('MultipleEmailInputComponent', () => {
@@ -65,7 +69,7 @@ describe('MultipleEmailInputComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     // const flowValidatorsSpy = jasmine.createSpyObj(
     //   'FlowValidators',
@@ -79,12 +83,16 @@ describe('MultipleEmailInputComponent', () => {
         ReactiveFormsModule,
         MatProgressSpinnerModule,
         EmailsInputModule,
+        BrowserAnimationsModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [
         TesthostComponent,
         MultipleEmailInputComponent,
       ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
         // { provide: FlowValidators, useValue: flowValidatorsSpy },
       ]
     })
@@ -115,11 +123,11 @@ describe('MultipleEmailInputComponent', () => {
     });
 
     it('should display the label', () => {
-      const elLabel = fixture.nativeElement.querySelector('.editable-field .editable-field-content .editable-field-label');
+      const elLabel = fixture.nativeElement.querySelector('label');
       expect(elLabel.textContent).toContain('Test label');
     });
 
-    it('should display the list of domains', async(() => {
+    it('should display the list of domains', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -134,7 +142,7 @@ describe('MultipleEmailInputComponent', () => {
       });
     }));
 
-    it('should display "(par défaut)" next to the selected domain', async(() => {
+    it('should display "(par défaut)" next to the selected domain', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com', 'test4.com'];
       testhost.defaultValue = testhost.value[1];
       fixture.detectChanges();
@@ -201,7 +209,7 @@ describe('MultipleEmailInputComponent', () => {
 
   describe('Class', () => {
 
-    it('should set the control value', async(() => {
+    it('should set the control value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -247,7 +255,7 @@ describe('MultipleEmailInputComponent', () => {
       });
     });
 
-    it('should emit a new value', async(() => {
+    it('should emit a new value', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -263,7 +271,7 @@ describe('MultipleEmailInputComponent', () => {
       });
     }));
 
-    it('should reverse the changes', async(() => {
+    it('should reverse the changes', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {

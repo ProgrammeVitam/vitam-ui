@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
@@ -15,8 +15,15 @@ import { SessionStorageService } from '../../../services/session-storage.service
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
 
-  public currentLang = '';
+  /**
+   * This component have two display mode :
+   * select : displays a select box with the current selected lang as text.
+   * button : displays a circle button with the current selected lang as an image.
+   */
+  @Input() displayMode: 'select' | 'button' = 'button';
+
   public hasLangSelection = false;
+  public currentLang = '';
 
   private destroyer$ = new Subject();
 
@@ -73,6 +80,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
     } else {
       switch (appId) {
         case ApplicationId.PORTAL_APP:
+        case ApplicationId.STARTER_KIT_APP:
           return true;
         default:
           return false;

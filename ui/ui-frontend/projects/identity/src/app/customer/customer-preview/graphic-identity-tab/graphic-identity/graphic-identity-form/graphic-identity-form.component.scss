@@ -1,0 +1,74 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+:host {
+  h2 {
+    margin-top: 0;
+    color: var(--vitamui-grey-900);
+  }
+  
+  label {
+    font-size: 13px;
+    color: $greyish-two;
+    font-weight: normal;
+  }
+
+  ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
+    background-color: var(--vitamui-header-footer);
+  }
+
+  ::ng-deep .color-background > * > .drag-and-drop-area { 
+    background-color: var(--vitamui-background);
+  }
+
+  .form-group {
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .container-color {
+      min-width: 295px;
+  }
+  
+  .cancel {
+      margin-left: 10px;
+  }
+
+  span {
+      font-weight: bold;
+  }
+
+  vitamui-common-input {
+      width: 47%;
+  }
+
+  vitamui-common-textarea + small {
+      text-align: end;
+      color: var(--vitamui-grey-900);
+  }
+
+  .form-group {
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .container-color {
+      margin-right: 80px;
+  }
+  
+  .cancel {
+      margin-left: 10px;
+  }
+
+  span {
+      font-weight: bold;
+  }
+
+  vitamui-common-input {
+      width: 47%;
+  }
+
+  vitamui-common-textarea + small {
+      text-align: end;
+      color: var(--vitamui-grey-900);
+  }
+}

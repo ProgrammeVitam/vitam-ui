@@ -37,10 +37,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
 import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UploadComponent } from '../core/common/upload.component';
 
 @Component({

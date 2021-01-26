@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Event} from 'projects/vitamui-library/src/public-api';
 import {GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
@@ -53,7 +53,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
       panelClass: 'vitamui-modal',
       disableClose: true
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       if (result !== undefined && result.success) {
         this.refreshList();
       }

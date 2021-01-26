@@ -1,20 +1,29 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 // tslint:disable-next-line: max-line-length
-import {MatDialogModule, MatDialogRef, MatFormFieldModule, MatMenuModule, MatOptionModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule, MatTabsModule} from '@angular/material';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ActivatedRoute} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {EMPTY, of} from 'rxjs';
 // tslint:disable-next-line: max-line-length
 import {ApplicationService, AuthService, BASE_URL, ENVIRONMENT, GlobalEventService, HistoryModule, InjectorModule, LoggerModule, SearchBarModule, VitamUISnackBar} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import {Rule} from '../../../../vitamui-library/src/lib/models/rule';
 import {environment} from '../../environments/environment';
 import {RuleComponent} from './rule.component';
+
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 @Component({selector: 'app-rule-preview', template: ''})
 // tslint:disable-next-line:component-class-suffix
@@ -37,7 +46,7 @@ describe('RuleComponent', () => {
   let component: RuleComponent;
   let fixture: ComponentFixture<RuleComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 

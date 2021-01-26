@@ -103,7 +103,7 @@ export class EmailsInputComponent implements ControlValueAccessor {
   }
 
   buttonAddDisabled(): boolean {
-    return this.control.pending || this.control.invalid || this.emailExists;
+    return !this.control.value || this.control.pending || this.control.invalid || this.emailExists;
   }
 
   get emailExists(): boolean {

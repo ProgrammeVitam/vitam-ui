@@ -1,7 +1,7 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MatSelectModule} from '@angular/material';
+import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {VitamUIInputModule} from 'projects/vitamui-library/src/lib/components/vitamui-input/vitamui-input.module';
 import {IngestContract} from 'projects/vitamui-library/src/public-api';
@@ -54,7 +54,7 @@ describe('IngestContractInformationTabComponent', () => {
   };
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const ingestContractServiceMock = {
       create: of({}),

@@ -5,6 +5,17 @@
 export * from './lib/vitamui-library.service';
 export * from './lib/vitamui-library.module';
 export * from './lib/components/confirm-action/confirm-action.module';
+export * from './lib/components/card-group/card-group.module';
+export * from './lib/components/card/card.module';
+export * from './lib/components/card-select/card-select.module';
+export * from './lib/components/filing-plan/filing-plan.module';
+export * from './lib/components/application-select-content/application-select-content.module';
+export * from './lib/components/vitamui-menu-tile/vitamui-menu-tile.module';
+export * from './lib/components/vitamui-input/vitamui-input.module';
+export * from './lib/components/vitamui-radio-group/vitamui-radio-group.module';
+export * from './lib/components/vitamui-radio/vitamui-radio.module';
+export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.module';
+export * from './lib/components/filing-plan/filing-plan.module';
 
 /* MODELS */
 export * from './lib/models/access-contract';
@@ -46,6 +57,15 @@ export * from './lib/components/card-select/card-select.component';
 export * from './lib/components/filing-plan/filing-plan.component';
 export * from './lib/components/filing-plan/node.component';
 export * from './lib/components/confirm-action/confirm-action.component';
+export * from './lib/components/card-group/card-group.component';
+export * from './lib/components/card/card.component';
+export * from './lib/components/card-select/card-select.component';
+export * from './lib/components/application-select-content/application-select-content.component';
+export * from './lib/components/vitamui-menu-tile/vitamui-menu-tile.component';
+export * from './lib/components/vitamui-input/vitamui-input.component';
+export * from './lib/components/vitamui-radio-group/vitamui-radio-group.component';
+export * from './lib/components/vitamui-radio/vitamui-radio.component';
+export * from './lib/components/vitamui-select-all-option/vitamui-select-all-option.component';
 
 /* UTILS */
 export * from './lib/utils/download';

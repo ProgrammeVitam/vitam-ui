@@ -1,15 +1,21 @@
 .read-only-field {
     display: inline-block;
-    min-height: 50px;
+    min-height: 60px;
     width: 100%;
-    padding: 7px 20px 7px 25px;
+    padding: 5px;
     vertical-align: top;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
 
     label {
-        font-size: 13px;
-        color: $greyish-two;
-        font-weight: normal;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--vitamui-primary);
+    }
+
+    div {
+        color: var(--vitamui-grey-900);
+        font-weight: 700;
     }
 }
 
@@ -19,61 +25,51 @@
     font-size: 12px;
     font-weight: 400;
     color: $red;
-    font-family: 'Roboto';
 }
 
 input[type=text].vitamui-input,
 input[type=password].vitamui-input,
 input[type=email].vitamui-input {
-    border: none;
     outline: none;
-    border-radius: 25px;
-    transition: border-color 200ms ease-out;
-    height: 50px;
     padding: 0 30px;
-    border: 1px solid transparent;
     width: 100%;
     max-width: 300px;
-    @include elevation-1;
-
-    &:focus {
-        border-color: $greyish-two;
-    }
+    border: none;
+    box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
 
     &.ng-valid.ng-touched {
-        border-color: #43ea2a;
+        border: 1px solid $green;
     }
 
     &.ng-invalid.ng-touched {
-        border-color: $red;
+        border: 1px solid $red;
     }
-
-    &[disabled] {
-        opacity: 0.4;
-    }
-
+    
     &.vitamui-small {
         height: 34px;
-        border-radius: 17px;
+        border-radius: 4px;
     }
 
     &::-webkit-input-placeholder {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
         font-weight: 400;
     }
 
     &::-moz-placeholder {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
         font-weight: 400;
     }
 
     &:-ms-input-placeholder {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
         font-weight: 400;
     }
 
     &:-moz-placeholder {
-        color: $greyish-two;
+        color: var(--vitamui-grey-600);
         font-weight: 400;
     }
 }

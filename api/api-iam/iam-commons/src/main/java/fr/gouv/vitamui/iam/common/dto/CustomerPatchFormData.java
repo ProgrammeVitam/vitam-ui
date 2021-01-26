@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -55,12 +53,20 @@ public class CustomerPatchFormData {
     @NotNull
     private Map<String, Object> partialCustomerDto;
 
-    private Optional<MultipartFile> logo;
+    private Optional<MultipartFile> header;
+    private Optional<MultipartFile> footer;
+    private Optional<MultipartFile> portal;
 
     /**
      * Default Constructor for ModelAttribute creation.
      */
     public CustomerPatchFormData() {
-        logo = Optional.empty();
+        header = Optional.empty();
+        footer = Optional.empty();
+        portal = Optional.empty();
+    }
+
+    public CustomerPatchFormData(final Map<String, Object> partialCustomerDto) {
+        this.partialCustomerDto = partialCustomerDto;
     }
 }

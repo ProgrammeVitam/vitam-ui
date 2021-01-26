@@ -47,6 +47,8 @@ export class SearchBarComponent implements OnInit {
 
   @Input() name: string;
 
+  @Input() disabled = false;
+
   @Output() search = new EventEmitter<string>();
 
   @Output() searchChanged = new EventEmitter<string>();

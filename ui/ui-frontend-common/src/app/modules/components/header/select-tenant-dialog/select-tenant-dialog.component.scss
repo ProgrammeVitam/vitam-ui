@@ -8,34 +8,7 @@
     padding: 2rem;
 }
 
-h1 {
-    margin: 0;
-    font-weight: 500;
-}
-
-h2 {
-    margin: 1rem auto 3.5rem auto;
-}
-
-p:last-of-type {
-    margin: 2rem auto 0 auto;
-}
-
-vitamui-common-select-tenant {
-    margin: 1rem auto 4rem auto;
-}
-
 .asterix {
     color: $red;
     font-weight: bold;
-}
-
-button {
-    background-color: var(--vitamui-primary);
-    color: $white;
-    border-radius: 50px;
-}
-
-button:disabled {
-    background-color: var(--vitamui-primary-light)!important;
 }

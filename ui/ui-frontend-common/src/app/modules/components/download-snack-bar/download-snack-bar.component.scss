@@ -4,7 +4,7 @@
 
 :host {
     width: 100%;
-    background: var(--vitamui-secondary);
+    background: var(--vitamui-primary);
     padding: 14px 24px;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .download-bar-content {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     color: white;
     display: flex;
@@ -48,6 +48,6 @@
     outline: none;
     cursor: pointer;
     padding: 10px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
 }

@@ -1,13 +1,16 @@
 import { animate, keyframes, query, stagger, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MatSelectionList, MatTabChangeEvent } from '@angular/material';
+import { MatSelectionList } from '@angular/material/list';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { opacityAnimation , slideAnimation} from '../../../animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
 import { TenantSelectionService } from '../../../tenant-selection.service';
+import { MenuOption } from '../../navbar';
 import { Tenant } from './../../../models/customer/tenant.interface';
 import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
@@ -17,64 +20,23 @@ import { MenuOverlayRef } from './menu-overlay-ref';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   animations: [
-    trigger('opacityAnimation', [
-      state('close', style({})),
-      transition(':enter', [
-        animate('500ms cubic-bezier(0, 0, 0.2, 1)', keyframes([
-          style({ opacity: 0 }),
-          style({ opacity: 1 }),
-        ])),
-      ]),
-      transition('* => close', [
-        animate('500ms cubic-bezier(0, 0, 0.2, 1)', keyframes([
-          style({ opacity: 1 }),
-          style({ opacity: 0 }),
-        ])),
-      ]),
-    ]),
-    trigger('slideLeftRight', [
-      transition(':enter', [
-        query('*', [
-          style({ opacity: 0, transform: 'translateX(-20px)' }),
-          stagger(50, [
-            animate(
-              '50ms',
-              style({ opacity: 1, transform: 'none' })
-            )
-          ])
-        ])
-      ]),
-      transition(':leave', [
-        animate(
-          '250ms',
-          style({ opacity: 0, transform: 'translateX(+100px)' })
-        )
-      ])
-    ])
+    opacityAnimation,
+    slideAnimation,
   ]
 })
-export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
+export class MenuComponent implements OnInit, AfterViewInit {
 
   public state = '';
-
   public appMap: Map<Category, Application[]>;
-
   public filteredApplications: Application[] = null;
-
   public criteria: string;
-
   public tabSelectedIndex = 0;
-
   public selectedCategory: Category;
+  public selectedTenant: MenuOption;
+  public tenants: MenuOption[];
 
   private firstResult: any;
-
   private firstResultFocused = false;
-
-  public selectedTenant: Tenant;
-
-  public tenants: Tenant[];
-
   private destroyer$ = new Subject();
 
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
@@ -106,26 +68,24 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.dialogRef.overlay.backdropClick().subscribe(() => this.onClose());
-    this.tenants = this.tenantService.getTenants();
+    this.tenants = this.tenantService.getTenants().map((tenant: Tenant) => {
+      return {value: tenant, label: tenant.name};
+    });
 
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
-    this.selectedTenant = this.tenantService.getSelectedTenant();
+    this.selectedTenant = {value: this.tenantService.getSelectedTenant(), label: this.tenantService.getSelectedTenant().name};
     if (this.selectedTenant) {
       this.updateApps(this.selectedTenant);
     } else {
       this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
-        this.updateApps(this.tenants.find(value => value.identifier === identifier));
+        this.updateApps(this.tenants.find(option => option.value.identifier === identifier));
       });
     }
   }
 
   ngAfterViewInit(): void {
     this.changeTabFocus();
-  }
-
-  ngOnDestroy() {
-    this.destroyer$.next();
   }
 
   public onSearch(value: string): void {
@@ -175,13 +135,13 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public openApplication(app: Application) {
     this.onClose();
     this.applicationService.
-      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.identifier);
+      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.value.identifier);
   }
 
-  public updateApps(tenant: Tenant) {
+  public updateApps(tenant: MenuOption) {
     if (tenant) {
       this.selectedTenant = tenant;
-      this.appMap = this.applicationService.getTenantAppMap(tenant);
+      this.appMap = this.applicationService.getTenantAppMap(tenant.value);
     }
   }
 }

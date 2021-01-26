@@ -1,0 +1,19 @@
+.breadcrumb {
+    display: inline-flex;
+    align-items: center;
+
+    span {
+        font-size: 14px;;
+    }
+
+    span:not(:last-child) {
+        cursor: pointer;
+        color: var(--vitamui-primary);
+        font-weight: 400;
+    }
+    
+    span:last-child {
+        color: var(--vitamui-grey-900);
+        font-weight: 700;
+    }
+}

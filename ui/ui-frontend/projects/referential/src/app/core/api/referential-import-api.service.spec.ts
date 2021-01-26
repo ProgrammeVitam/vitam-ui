@@ -55,7 +55,7 @@ describe('ReferentialImportApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: ReferentialImportApiService = TestBed.get(ReferentialImportApiService);
+    const service: ReferentialImportApiService = TestBed.inject(ReferentialImportApiService);
     expect(service).toBeTruthy();
   });
 });

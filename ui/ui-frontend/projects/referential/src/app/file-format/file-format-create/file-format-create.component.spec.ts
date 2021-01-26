@@ -36,7 +36,7 @@
  */
 /* tslint:disable: max-classes-per-file directive-selector */
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -80,7 +80,7 @@ let page: Page;
 
 describe('FileFormatCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', {create: of({})});
     const fileFormatCreateValidatorsSpy = jasmine.createSpyObj(
@@ -180,24 +180,24 @@ describe('FileFormatCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const fileFormatService = TestBed.get(FileFormatService);
+      const fileFormatService = TestBed.inject(FileFormatService);
       component.onSubmit();
-      expect(fileFormatService.create.calls.count()).toBe(0);
+      expect(fileFormatService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const fileFormatService = TestBed.get(FileFormatService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const fileFormatService = TestBed.inject(FileFormatService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedFileFormat);
       component.onSubmit();
-      expect(fileFormatService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(fileFormatService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

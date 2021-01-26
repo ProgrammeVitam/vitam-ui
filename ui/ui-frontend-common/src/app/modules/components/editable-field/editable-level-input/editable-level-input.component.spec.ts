@@ -35,9 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputModule } from '../level-input/level-input.module';
 import { EditableLevelInputComponent } from './editable-level-input.component';
 import { SubLevelPipe } from './sub-level.pipe';
@@ -46,16 +48,24 @@ describe('EditableLevelInputComponent', () => {
   let component: EditableLevelInputComponent;
   let fixture: ComponentFixture<EditableLevelInputComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         OverlayModule,
         LevelInputModule,
+        HttpClientTestingModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
       ],
-      declarations: [ EditableLevelInputComponent, SubLevelPipe ]
+      declarations: [
+        EditableLevelInputComponent,
+        SubLevelPipe],
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

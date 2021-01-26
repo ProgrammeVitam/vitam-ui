@@ -62,7 +62,7 @@ describe('SearchService', () => {
       providers: [TestSearchService]
     });
 
-    testService = TestBed.get(TestSearchService);
+    testService = TestBed.inject(TestSearchService);
   });
 
   describe('search', () => {

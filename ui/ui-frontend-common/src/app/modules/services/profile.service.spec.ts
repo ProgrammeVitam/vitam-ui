@@ -54,8 +54,8 @@ describe('ProfileService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    rngProfileService = TestBed.get(ProfileService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    rngProfileService = TestBed.inject(ProfileService);
   });
 
   it('should be created', inject([ProfileService], (service: ProfileService) => {

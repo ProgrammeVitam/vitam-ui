@@ -2,13 +2,11 @@
 
 <mat-dialog-content><ng-content></ng-content></mat-dialog-content>
 
-<mat-dialog-actions align="start">
+<mat-dialog-actions>
   <button class="btn primary" [matDialogClose]="true" cdkFocusInitial>
-    <ng-container *ngIf="confirmLabel; else defaultConfirmLabel">{{ confirmLabel }}</ng-container>
-    <ng-template #defaultConfirmLabel i18n="@@confirmDialogConfirmLabel">Confimer</ng-template>
+    <ng-container>{{ confirmLabel ? confirmLabel : 'Confirmer' }}</ng-container>
   </button>
-  <button class="btn cancel" [matDialogClose]="false">
-    <ng-container *ngIf="cancelLabel; else defaultCancelLabel">{{ cancelLabel }}</ng-container>
-    <ng-template #defaultCancelLabel i18n="@@confirmDialogCancelLabel">Retour</ng-template>
+  <button class="btn link" [matDialogClose]="false">
+    <ng-container>{{ cancelLabel ? cancelLabel : 'Retour' }}</ng-container>
   </button>
 </mat-dialog-actions>

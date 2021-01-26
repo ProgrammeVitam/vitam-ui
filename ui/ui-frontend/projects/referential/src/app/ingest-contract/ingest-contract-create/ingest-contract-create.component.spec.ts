@@ -1,8 +1,8 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
 import {AccessContractService} from '../../access-contract/access-contract.service';
@@ -17,7 +17,7 @@ describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
   let fixture: ComponentFixture<IngestContractCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const ingestContractCreateValidatorsSpy = jasmine.createSpyObj('IngestContractCreateValidators', {
       uniqueName: () => of(null)
     });

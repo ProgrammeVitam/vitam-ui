@@ -60,8 +60,8 @@ describe('GroupService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    groupService = TestBed.get(GroupService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    groupService = TestBed.inject(GroupService);
   });
 
   it('should be created', inject([GroupService], (service: GroupService) => {
@@ -141,7 +141,7 @@ describe('GroupService', () => {
   });
 
   it('should call /fake-api/groups and display a success message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedGroup: Group = {
         id: '1',
         customerId: '4242442',
@@ -171,7 +171,7 @@ describe('GroupService', () => {
   });
 
   it('should display an error message', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedProfileGroup: Group = {
         id: '1',
         customerId: '4242442',
@@ -245,7 +245,7 @@ describe('GroupService', () => {
   });
 
   it('should call PATCH /fake-api/groups/42', () => {
-    const snackBar = TestBed.get(VitamUISnackBar);
+    const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedProfileGroup: Group = {
         id: '1',
         customerId: '4242442',

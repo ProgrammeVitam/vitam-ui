@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
@@ -10,7 +10,7 @@ xdescribe('AccessContractWriteAccessTabComponent', () => {
   let component: AccessContractWriteAccessTabComponent;
   let fixture: ComponentFixture<AccessContractWriteAccessTabComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

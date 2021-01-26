@@ -1,5 +1,5 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {FileType} from '../../models/file-type.enum';
 import {NodeComponent} from './node.component';
@@ -8,7 +8,7 @@ describe('NodeComponent', () => {
   let component: NodeComponent;
   let fixture: ComponentFixture<NodeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [NodeComponent],
       providers: [],

@@ -1,5 +1,5 @@
 <div class="search">
-  <input [(ngModel)]="searchValue" (ngModelChange)="searchChanged.emit(searchValue)" [name]="name" type="text" [placeholder]="placeholder">
-  <button *ngIf="searchValue" type="button" class="btn-reset" (click)="reset()"><i class="material-icons">clear</i></button>
-  <button type="button" class="btn-circle primary btn-search" (click)="onSearch()"><i class="material-icons">search</i></button>
+  <input [(ngModel)]="searchValue" (ngModelChange)="searchChanged.emit(searchValue)" [name]="name" type="text" [placeholder]="placeholder" [disabled]="disabled">
+  <button *ngIf="searchValue" type="button" class="btn-reset" (click)="reset()" [disabled]="disabled"><i class="material-icons">clear</i></button>
+  <button type="button" class="btn btn-circle btn-search secondary small" (click)="onSearch()" [disabled]="disabled"><i class="material-icons">search</i></button>
 </div>

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-
 import { Group } from 'ui-frontend-common';
 import { GroupService } from '../../../group/group.service';
 
@@ -47,15 +46,17 @@ import { GroupService } from '../../../group/group.service';
 export class GroupDetailComponent implements OnInit {
 
   @Input() group: Group;
-  displayedGroup: Group;
+  public displayedGroup: Group;
 
   constructor(private groupService: GroupService) { }
 
   ngOnInit() {
-    this.groupService.get(this.group.id).subscribe((data: Group) => {
-      this.displayedGroup = data;
-    });
-
+    if (this.group && this.group.identifier) {
+      this.displayedGroup = this.group;
+    } else {
+      this.groupService.get(this.group.id).subscribe((data: Group) => {
+        this.displayedGroup = data;
+      });
+    }
   }
-
 }

@@ -4,7 +4,9 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -21,6 +23,9 @@ public class SecurityControllerTest extends UiIdentityRestControllerTest<UserDto
     private final String PREFIX = "/security";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SecurityControllerTest.class);
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testGetUserConnected() throws Exception {

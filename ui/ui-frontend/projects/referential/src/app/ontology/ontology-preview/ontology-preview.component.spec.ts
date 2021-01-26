@@ -1,6 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MatDialog} from '@angular/material';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatDialog} from '@angular/material/dialog';
 
 import {OntologyService} from '../ontology.service';
 import {OntologyPreviewComponent} from './ontology-preview.component';
@@ -10,7 +10,7 @@ xdescribe('OntologyPreviewComponent', () => {
   let component: OntologyPreviewComponent;
   let fixture: ComponentFixture<OntologyPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [OntologyPreviewComponent],
       providers: [

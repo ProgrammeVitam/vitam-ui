@@ -1,17 +1,7 @@
-
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~material-design-icons/iconfont/material-icons.css";
-
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
-
 @import "~ui-frontend-common/sass/icons/vitamui-icons.css";
 @import "~ui-frontend-common/sass/theme";
+@import '~bootstrap/scss/bootstrap-grid';
 
-$grid-gutter-width: 20px;
-
-@import "~bootstrap/scss/bootstrap-grid";
-
-@import "material-theme";
 @import "form";
 @import "login";
 @import "sidepanel";
@@ -39,4 +29,36 @@ vitamui-common-slide-toggle {
 }
 .mat-tab-body-wrapper {
   flex-grow: 1;
+}
+.preview-tab-group{
+  height: 100%;
+}
+.vitamui-mat-select{
+  padding-bottom: 30px;
+}
+.btn.more-actions{
+  background-color: transparent;
+  color: var(--vitamui-secondary);
+  border-color: var(--vitamui-secondary) !important;
+}
+.btn-container{
+  display: flex;
+}
+.custom-flex-controls{
+  .btn{
+    background-color: transparent;
+    color: var(--vitamui-secondary);
+    border-color: var(--vitamui-secondary) !important;
+  }
+}
+.btn.cancel {
+  background-color: transparent;
+  color: var(--vitamui-grey-900);
+  border: 1px solid transparent;
+}
+.vitamui-container{
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
 }

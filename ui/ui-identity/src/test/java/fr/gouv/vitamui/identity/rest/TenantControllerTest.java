@@ -42,6 +42,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -69,6 +70,9 @@ public class TenantControllerTest extends UiIdentityRestControllerTest<TenantDto
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TenantControllerTest.class);
 
     private static final String PREFIX = "/tenants";
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testCreateTenant() {

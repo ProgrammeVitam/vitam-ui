@@ -2,7 +2,7 @@
 import {HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FilingPlanMode} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
 import {ConfirmDialogService, Option} from 'ui-frontend-common';

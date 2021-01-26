@@ -46,7 +46,7 @@ describe('NoLogService', () => {
   }));
 
   it('should be created', () => {
-    const service: NoLogService = TestBed.get(NoLogService);
+    const service: NoLogService = TestBed.inject(NoLogService);
     expect(service).toBeTruthy();
   });
 });

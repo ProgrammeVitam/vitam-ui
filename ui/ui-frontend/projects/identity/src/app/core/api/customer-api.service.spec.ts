@@ -56,7 +56,7 @@ describe('CustomerApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: CustomerApiService = TestBed.get(CustomerApiService);
+    const service: CustomerApiService = TestBed.inject(CustomerApiService);
     expect(service).toBeTruthy();
   });
 });

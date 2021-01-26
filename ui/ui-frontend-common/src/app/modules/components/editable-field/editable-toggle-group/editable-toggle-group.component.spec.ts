@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -59,7 +59,7 @@ class TesthostComponent {
   label = 'Test label';
   maxlength = 42;
 
-  @ViewChild(EditableToggleGroupComponent, { static: false }) component: EditableToggleGroupComponent;
+  @ViewChild(EditableToggleGroupComponent) component: EditableToggleGroupComponent;
 }
 
 describe('EditableSelectComponent', () => {
@@ -67,7 +67,7 @@ describe('EditableSelectComponent', () => {
   let fixture: ComponentFixture<TesthostComponent>;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         OverlayModule,
@@ -109,11 +109,11 @@ describe('EditableSelectComponent', () => {
     });
 
     it('should display the label', () => {
-      const elLabel = fixture.nativeElement.querySelector('.editable-field .editable-field-content .editable-field-label');
+      const elLabel = fixture.nativeElement.querySelector('label');
       expect(elLabel.textContent).toContain('Test label');
     });
 
-    it('should display the value', async(() => {
+    it('should display the value', waitForAsync(() => {
       testhost.value = 'value2';
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -176,7 +176,7 @@ describe('EditableSelectComponent', () => {
 
   describe('Class', () => {
 
-    it('should set the control value', async(() => {
+    it('should set the control value', waitForAsync(() => {
       testhost.value = 'value1';
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -222,7 +222,7 @@ describe('EditableSelectComponent', () => {
       });
     });
 
-    it('should emit a new value', async(() => {
+    it('should emit a new value', waitForAsync(() => {
       testhost.value = 'value1';
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -238,7 +238,7 @@ describe('EditableSelectComponent', () => {
       });
     }));
 
-    it('should reverse the changes', async(() => {
+    it('should reverse the changes', waitForAsync(() => {
       testhost.value = 'value1';
       fixture.detectChanges();
       fixture.whenStable().then(() => {

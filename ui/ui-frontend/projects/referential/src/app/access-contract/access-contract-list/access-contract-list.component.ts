@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AccessContract} from 'projects/vitamui-library/src/public-api';
 import {merge, Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import {collapseAnimation, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, rotateAnimation} from 'ui-frontend-common';
 
 import {AccessContractService} from '../access-contract.service';
 
@@ -50,17 +49,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
   animations: [
-    trigger('expansion', [
-      state('collapsed', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
-
-    trigger('arrow', [
-      state('collapsed', style({transform: 'rotate(180deg)'})),
-      state('expanded', style({transform: 'none'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4,0.0,0.2,1)')),
-    ]),
+    collapseAnimation,
+    rotateAnimation,
   ]
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {

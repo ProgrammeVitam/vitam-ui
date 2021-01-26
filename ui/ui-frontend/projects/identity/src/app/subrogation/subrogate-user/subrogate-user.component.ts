@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -54,7 +54,7 @@ import { CustomerSelectService } from '../customer-select.service';
   templateUrl: './subrogate-user.component.html',
   styleUrls: ['./subrogate-user.component.scss']
 })
-export class SubrogateUserComponent extends AppRootComponent implements OnInit {
+export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
 
   public customer: Customer;
   public customers: MenuOption[];
@@ -85,6 +85,9 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
 
        if (!currentCustomerId || currentCustomerId !== routeCustomerId) {
          this.customerSelectionService.setCustomerId(routeCustomerId);
+         this.updateCustomer(routeCustomerId);
+       } else {
+        this.updateCustomer(currentCustomerId);
        }
 
        this.globalEventService.customerEvent.pipe(takeUntil(this.destroyer$)).subscribe((customerId: string) => {
@@ -95,16 +98,28 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit {
      });
   }
 
-  openUserSubrogationDialog() {
+  ngOnDestroy() {
+    this.destroyer$.next();
+    this.destroyer$.complete();
+  }
+
+  public openUserSubrogationDialog(): void {
     this.subrogationModalService.open(this.customer.emailDomains);
   }
 
-  changeCustomer(customerId: string) {
+  public onSearchSubmit(search: string): void {
+    this.search = search;
+  }
+
+  private changeCustomer(customerId: string): void {
     this.router.navigate(['..', customerId], { relativeTo: this.route });
   }
 
-  onSearchSubmit(search: string) {
-    this.search = search;
+  private updateCustomer(customerId: string): void {
+    const customers = this.customerSelectService.getCustomers();
+    if (customers) {
+      this.customer = customers.find(value => value.id === customerId);
+    }
   }
 
 }

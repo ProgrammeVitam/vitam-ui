@@ -1,0 +1,138 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.login-box {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: 800px;
+    margin: 120px auto;
+    padding: 48px 80px;
+    @include vitamui-modal;
+
+    h4 {
+        @include login-title;
+    }
+
+    header p {
+        margin-bottom: 30px;
+    }
+
+    p {
+        @include login-text-1;
+        line-height: 30px;
+
+        small {
+            @include login-text-2;
+            font-weight: 400;
+        }
+    }
+
+    strong {
+        font-weight: 500;
+    }
+
+    a {
+        @include vitamui-link;
+        text-decoration: underline;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=password] {
+        border: none;
+        outline: none;
+        border-radius: 25px;
+        box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+        transition: border-color 200ms ease-out;
+        height: 50px;
+        padding: 0 30px;
+        border: 1px solid transparent;
+
+        &:focus {
+            border-color: $greyish-two;
+        }
+
+        &.ng-valid.ng-touched {
+            border-color: $green;
+        }
+
+        &.ng-invalid.ng-touched {
+            border-color: $red;
+        }
+
+        &[disabled] {
+            opacity: 0.4;
+        }
+    }
+
+    .form-error {
+        @include login-error;
+
+        i {
+            font-size: 36px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+    }
+
+    button.vitamui-primary {
+        @include button-primary;
+        border: none;
+        height: 50px;
+        border-radius: 25px;
+        background-color: var(--vitamui-primary);
+        box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
+        padding: 0 30px;
+        transition: opacity 200ms ease-in-out;
+        border: 1px solid var(--vitamui-primary);
+
+
+
+        &:focus:not([disabled]),
+        &:hover:not([disabled]) {
+            cursor: pointer;
+            background-color: var(--vitamui-primary-light);
+            outline: none;
+        }
+
+        &[disabled] {
+            opacity: 0.4;
+        }
+    }
+
+    .helper {
+        @include login-helper;
+        text-align: right;
+        transition: opacity 200ms ease-in-out;
+        margin: 0;
+
+        &.hidden {
+            opacity: 0;
+        }
+    }
+
+    button.back {
+        display: flex;
+        align-items: center;
+        background: transparent;
+        color: var(--vitamui-primary);
+        font-size: 14px;
+        font-weight: normal;
+        border: none;
+        padding: 0;
+        margin-top: 40px;
+        cursor: pointer;
+
+        i {
+            display: block;
+            font-size: 18px;
+            color: var(--vitamui-primary);
+            background-color: #e7f5f2;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+    }
+}

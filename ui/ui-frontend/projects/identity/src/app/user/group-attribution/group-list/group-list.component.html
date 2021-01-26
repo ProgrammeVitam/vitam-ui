@@ -1,0 +1,28 @@
+<div class="text large bold" i18n="user create autorisationsTitle@@userCreateTitle">Autorisations</div>
+
+<vitamui-common-search-bar class="my-3" i18n-placeholder="user create search group@@userCreateSearchGroup"
+[placeholder]="'Filtrer par «nom», «id» ...'" (search)="onSearch($event)" [disabled]= "searchActiv"></vitamui-common-search-bar>
+
+<div class="d-flex mt-4 mb-3" *ngIf="groupName">
+  <div class="text medium bold">Groupe attribué : </div>&nbsp;<span class="text medium">{{ groupName }}</span>
+</div>
+
+<div class="vitamui-table">
+  <div class="vitamui-table-head p-0 py-3 d-flex align-items-center">
+    <div class="pl-4">Groupe de profil</div>
+  </div>
+
+  <div class="vitamui-table-body">
+    <div class="vitamui-table-rows">
+      <ng-container *ngFor="let group of groups">
+        <div class="vitamui-row p-0 px-4" [class.no-hover]="row.state === 'expanded'" *ngIf="!group?.selected" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse">
+          <div class="d-flex justify-content-between align-items-center clickable">
+            <div class="d-flex align-self-stretch align-items-center w-100" (click)="updateGroup(group?.id,group?.name, row)">{{group?.name}}</div>
+            <button class="btn link underline" (click)="row.toggle()">{{row.state === 'collapsed' ? "Voir detail" : "Masquer detail"}}</button>
+          </div>
+          <app-group-detail *ngIf="row.state === 'expanded'" [group]="group" [@collapseAnimation]></app-group-detail>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -32,7 +32,7 @@
     }
 
     .drop-area {
-        background: $dark-grey;
+        background: var(--vitamui-grey-900);
         opacity: 0.9;
         color: $white;
     }
@@ -62,7 +62,7 @@
 .logo-drop {
     font-size: 14px;
     line-height: 20px;
-    color: $charcoal-grey;
+    color: var(--vitamui-grey-900);
     text-align: center;
 }
 
@@ -91,12 +91,6 @@
     width: 296px;
     height: 116px;
 
-}
-
-.error-message {
-    color: $red;
-    font-size: 14px;
-    margin-bottom: 30px;
 }
 
 .cancel {

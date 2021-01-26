@@ -37,11 +37,12 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 
 import { of, Subject } from 'rxjs';
 import { ApplicationService, Group } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';
@@ -164,8 +165,9 @@ describe('ProfilesTabComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports : [ VitamUICommonTestModule ],
       declarations: [ ProfilesTabComponent, TesthostComponent, MatTooltipStubDirective ],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
@@ -188,7 +190,7 @@ describe('ProfilesTabComponent', () => {
 
   it('should open the profile edit dialog', () => {
     const elButton = fixture.nativeElement.querySelector('button');
-    const matDialog = TestBed.get(MatDialog);
+    const matDialog = TestBed.inject(MatDialog);
     expect(elButton).toBeTruthy();
     expect(elButton.textContent).toContain('Modifier');
     elButton.click();
@@ -271,13 +273,14 @@ describe('ProfilesTabComponent', () => {
       readonly: true
     };
     fixture.detectChanges();
-    const elList = fixture.nativeElement.querySelector('ul.profile-list');
+    const elList = fixture.nativeElement.querySelector('.vitamui-profile-list');
     expect(elList).toBeTruthy();
-    const elRows = elList.querySelectorAll('li');
+    const elRows = fixture.nativeElement.querySelectorAll('.medium');
     expect(elRows.length).toBe(3);
     testhost.group.profiles.forEach((profile: any, index: number) => {
-      const elDetails = elRows[index].querySelector('.profile-details');
-      expect(elDetails.textContent).toContain(profile.tenantName + ' : ' +  profile.name);
+      const elDetails = elRows[index];
+      expect(elDetails.textContent).toContain(profile.tenantName + ' : ' +
+        profile.name.charAt(0).toUpperCase() + profile.name.substr(1).toLowerCase());
     });
   });
 

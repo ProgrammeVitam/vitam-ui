@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatIconModule, MatToolbarModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { HeaderComponent } from './header.component';
-import { SelectTenantModule } from './select-tenant/select-tenant.module';
-
 import { TranslateModule } from '@ngx-translate/core';
+import { HeaderComponent } from './header.component';
+import { ItemSelectModule } from './item-select/item-select.module';
 import { MenuModule } from './menu/menu.module';
-import { SelectCustomerModule } from './select-customer/select-customer.module';
 import { SelectLanguageModule } from './select-language/select-language.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { UserPhotoModule } from './user-photo/user-photo.module';
+
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -20,14 +20,13 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenan
     CommonModule,
     RouterModule,
     MatMenuModule,
-    MatIconModule,
     MatToolbarModule,
     MatButtonModule,
-    SelectTenantModule,
-    SelectLanguageModule,
-    SelectCustomerModule,
+    ItemSelectModule,
+    UserPhotoModule,
     MenuModule.forRoot(),
-    TranslateModule
+    TranslateModule,
+    SelectLanguageModule
   ],
   exports : [
     HeaderComponent

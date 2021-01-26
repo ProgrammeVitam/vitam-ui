@@ -22,10 +22,11 @@ import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UICommonsAutoConfigurationTest {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
-            .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
-            .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
+
+    private final ApplicationContextRunner contextRunner =
+            new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(UICommonsAutoConfiguration.class))
+                    .withConfiguration(AutoConfigurations.of(UICommonsAutoSpringMockConfiguration.class))
+                    .withSystemProperties("controller.subrogation.enabled=true", "controller.user.enabled=true");
 
     @Test
     public void serviceNameCanBeConfigured() {
@@ -41,6 +42,7 @@ public class UICommonsAutoConfigurationTest {
     @Configuration
     static class UserConfiguration {
 
+
         @Bean
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
@@ -55,4 +57,5 @@ public class UICommonsAutoConfigurationTest {
         }
 
     }
+
 }

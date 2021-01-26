@@ -1,8 +1,9 @@
 @import 'indigo-pink.css';
 @import 'material-icons.css';
+
 @import 'theme';
 
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900');
 
 @import 'material-custom';
 @import 'login';
@@ -10,12 +11,25 @@
 @import 'step-email';
 @import 'step-password';
 @import 'mfa-sms';
+@import 'typography';
+
+@font-face {
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    src: local('Mulish', sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format('woff2');
+    font-display: optional;
+  }
 
 body {
     margin: 0;
-    color: $charcoal-grey;
-    font-family: 'Roboto', sans-serif;
-    background: $pale-grey;
+    font-family: 'Mulish', sans-serif;
+    background-color: var(--vitamui-background);
+    color: var(--vitamui-grey-900);
+}
+
+button, textarea, input {
+    font-family: 'Mulish', sans-serif;
 }
 
 * {

@@ -34,21 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { NotificationSnackBarComponent } from './notification-snack-bar.component';
 
 describe('NotificationSnackBarComponent', () => {
   let component: NotificationSnackBarComponent;
   let fixture: ComponentFixture<NotificationSnackBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+      ],
       declarations: [
         NotificationSnackBarComponent,
       ],
       providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: {} },
       ]

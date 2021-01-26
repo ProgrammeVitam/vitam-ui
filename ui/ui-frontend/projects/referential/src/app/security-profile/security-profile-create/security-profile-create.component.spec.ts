@@ -36,7 +36,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Component, forwardRef, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
@@ -99,7 +99,7 @@ let page: Page;
 
 describe('CustomerCreateComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const customerServiceSpy = jasmine.createSpyObj('SecurityProfileService', {create: of({})});
     const customerCreateValidatorsSpy = jasmine.createSpyObj(
@@ -192,24 +192,24 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const securityProfileService = TestBed.get(SecurityProfileService);
+      const securityProfileService = TestBed.inject(SecurityProfileService);
       component.onSubmit();
-      expect(securityProfileService.create.calls.count()).toBe(0);
+      expect(securityProfileService.create).toHaveBeenCalledTimes(0);
     });
 
     it('should call create()', () => {
-      const securityProfileService = TestBed.get(SecurityProfileService);
-      const matDialogRef = TestBed.get(MatDialogRef);
+      const securityProfileService = TestBed.inject(SecurityProfileService);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.form.setValue(expectedSecurityProfile);
       component.onSubmit();
-      expect(securityProfileService.create.calls.count()).toBe(1);
-      expect(matDialogRef.close.calls.count()).toBe(1);
+      expect(securityProfileService.create).toHaveBeenCalledTimes(1);
+      expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
 

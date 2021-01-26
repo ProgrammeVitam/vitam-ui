@@ -1,0 +1,83 @@
+<form *ngIf="graphicIdentityForm" [formGroup]="graphicIdentityForm" id="graphicIdentityForm">
+
+    <div class="d-flex justify-content-between">
+      <div class="container-color">
+        <div class="text large bold mb-4" i18n="graphicIdentityUpdate@@colorsParams">Paramètrage des couleurs</div>
+        <app-customer-colors-input class="d-inline-flex flex-column" 
+          [formGroup]="graphicIdentityForm.get('themeColors')"
+          [isUpdating]="true"
+          [disabled]="disabled" themeOverloadSelector="form#graphicIdentityForm" ></app-customer-colors-input>
+      </div>
+  
+      <div class="pl-4 d-flex flex-column">
+        <div class="text large bold mb-4" i18n="graphicIdentityUpdate@@colorsParams">Gestion des titres et logos</div>
+  
+        <vitamui-common-input
+          class="pb-2"
+          [disabled]="disabled"
+          formControlName="portalTitle"
+          i18n-placeholder="graphicIdentityUpdate@@titlePortal"
+          placeholder="Titre du portail"
+        ></vitamui-common-input>
+  
+        <div class="d-flex flex-column pb-1">
+          <vitamui-common-textarea
+            class="pb-2"
+            [disabled]="disabled"
+            formControlName="portalMessage"
+            i18n-placeholder="graphicIdentityUpdate@@messPortail"
+            [placeholder]="'Message d\'accueil du Portail'"
+            [maxlength]="500"></vitamui-common-textarea>
+          <small class="d-flex justify-content-end ">{{graphicIdentityForm.get('portalMessage')?.value?.length}}/500 caractères max restants</small>
+        </div>
+  
+        <div class="d-flex">
+          <div class="mr-4">
+            <label>Logo header</label>
+            <vitamui-common-drag-drop-file
+              class="color-header-footer"
+              [disabled]="disabled"
+              [fileUrl]="graphicIdentityForm.get('headerUrl')?.value"
+              [size]="logosSize"
+              [canDelete]="false"
+              (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Header, $event)"
+              i18n-content="graphicIdentityUpdate@@dropLogo"
+              i18n-pj="graphicIdentityUpdate@@joinLogo"
+              [messContent]="'Déposez votre logo'"
+              [messPj]="'Joindre un logo'"></vitamui-common-drag-drop-file>
+          </div>
+          <div>
+            <label>Logo footer</label>
+            <vitamui-common-drag-drop-file
+              class="color-header-footer"
+              [disabled]="disabled"
+              [fileUrl]="graphicIdentityForm.get('footerUrl')?.value"
+              [size]="logosSize"
+              [canDelete]="false"
+              (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Footer, $event)"
+              i18n-content="graphicIdentityUpdate@@dropLogo"
+              i18n-pj="graphicIdentityUpdate@@joinLogo"
+              [messContent]="'Déposez votre logo'"
+              [messPj]="'Joindre un logo'"></vitamui-common-drag-drop-file>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div>
+            <label>Logo portal</label>
+            <vitamui-common-drag-drop-file
+              class="color-background"
+              [disabled]="disabled"
+              [fileUrl]="graphicIdentityForm.get('portalUrl')?.value"
+              [size]="logosSize"
+              [canDelete]="false"
+              (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Portal, $event)"
+              i18n-content="graphicIdentityUpdate@@dropLogo"
+              i18n-pj="graphicIdentityUpdate@@joinLogo"
+              [messContent]="'Déposez votre logo'"
+              [messPj]="'Joindre un logo'"></vitamui-common-drag-drop-file>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  

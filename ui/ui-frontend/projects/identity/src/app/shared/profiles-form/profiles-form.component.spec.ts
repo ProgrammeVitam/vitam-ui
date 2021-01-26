@@ -37,8 +37,9 @@
 /* tslint:disable: no-magic-numbers max-file-line-count max-classes-per-file */
 
 import { Component, Directive, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
@@ -157,11 +158,12 @@ describe('ProfilesFormComponent', () => {
   let testhost: TesthostComponent;
   let fixture: ComponentFixture<TesthostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        MatProgressSpinnerModule,
         MatSelectModule,
         NoopAnimationsModule,
         VitamUIAutocompleteModule,
@@ -212,34 +214,21 @@ describe('ProfilesFormComponent', () => {
     it('should have a list of the profiles', () => {
       testhost.component.profileIds = ['2', '5'];
       fixture.detectChanges();
-      const elHeaders = fixture.nativeElement.querySelectorAll('table > thead th');
-      expect(elHeaders.length).toBe(4);
-      expect(elHeaders[0].textContent).toContain('Application');
-      expect(elHeaders[1].textContent).toContain('Coffre');
-      expect(elHeaders[2].textContent).toContain('Profil');
+      const elHeaders = fixture.nativeElement.querySelectorAll('.vitamui-table-head');
+      expect(elHeaders).toBeTruthy();
 
-      const elRows = fixture.nativeElement.querySelectorAll('table > tbody > tr');
+      const elRows = fixture.nativeElement.querySelectorAll('.vitamui-row');
       expect(elRows.length).toBe(2);
-      let elCells = elRows[0].querySelectorAll('td');
+      const elCells = elRows[0].querySelectorAll('div');
       expect(elCells.length).toBe(4);
       expect(elCells[0].textContent).toContain('Organisations');
       expect(elCells[1].textContent).toContain('tenant 2');
       expect(elCells[2].textContent).toContain('profile 2');
-      let elDelButton = elCells[3].querySelector('button');
+      const elDelButton = elCells[3].querySelector('button');
       expect(elDelButton).toBeTruthy();
       spyOn(testhost.component, 'remove');
       elDelButton.click();
       expect(testhost.component.remove).toHaveBeenCalledWith(0);
-
-      elCells = elRows[1].querySelectorAll('td');
-      expect(elCells.length).toBe(4);
-      expect(elCells[0].textContent).toContain('Profils APP Utilisateurs');
-      expect(elCells[1].textContent).toContain('tenant 4');
-      expect(elCells[2].textContent).toContain('profile 5');
-      elDelButton = elCells[3].querySelector('button');
-      expect(elDelButton).toBeTruthy();
-      elDelButton.click();
-      expect(testhost.component.remove).toHaveBeenCalledWith(1);
     });
 
   });
@@ -319,7 +308,7 @@ describe('ProfilesFormComponent', () => {
       expect(testhost.profiles).toEqual(['4']);
     });
 
-    it('should remove the profile Id from the list', async(() => {
+    it('should remove the profile Id from the list', waitForAsync(() => {
       testhost.profiles = ['3', '4'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -329,7 +318,7 @@ describe('ProfilesFormComponent', () => {
       });
     }));
 
-    it('should not show profiles which are already selected', async(() => {
+    it('should not show profiles which are already selected', waitForAsync(() => {
       testhost.profiles = ['2'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -353,7 +342,7 @@ describe('ProfilesFormComponent', () => {
       expect(testhost.component.profileSelect.disabled).toBeFalsy();
     });
 
-    it('should not show the app 2', async(() => {
+    it('should not show the app 2', waitForAsync(() => {
       testhost.profiles = ['3'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {
@@ -365,7 +354,7 @@ describe('ProfilesFormComponent', () => {
       });
     }));
 
-    it('should not show the tenant 2', async(() => {
+    it('should not show the tenant 2', waitForAsync(() => {
       testhost.profiles = ['2'];
       fixture.detectChanges();
       fixture.whenStable().then(() => {

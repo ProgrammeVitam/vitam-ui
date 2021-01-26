@@ -63,7 +63,7 @@ export class EditableSelectComponent extends EditableFieldComponent {
 
   @ContentChildren(EditableOptionComponent) options: QueryList<EditableOptionComponent>;
 
-  @ViewChild('select', { static: false }) select: MatSelect;
+  @ViewChild('select') select: MatSelect;
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<EditableFieldComponent>;
 
   @Input() showConfirmDialog = false;
@@ -121,6 +121,11 @@ export class EditableSelectComponent extends EditableFieldComponent {
     this.onChange(this.control.value);
     this.originValue = this.control.value;
     this.control.reset(this.originValue);
+  }
+
+  enterEditMode() {
+    super.enterEditMode();
+    setTimeout(() => this.select.open(), 0);
   }
 
 }

@@ -37,11 +37,13 @@
 /* tslint:disable:component-selector max-classes-per-file */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { BASE_URL, VitamUICommonModule } from 'ui-frontend-common';
+import { EMPTY, Observable, of } from 'rxjs';
+import { BASE_URL } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -62,7 +64,7 @@ class RouterOutletStubComponent { }
 
 describe('AppComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => { },
@@ -70,7 +72,8 @@ describe('AppComponent', () => {
       load: () => { },
       getPortalUrl: () => '',
       getCustomerTechnicalReferentEmail: () => '',
-      getCustomerWebsiteUrl: () => ''
+      getCustomerWebsiteUrl: () => '',
+      getConfigStringValue: () => '',
     };
 
     TestBed.configureTestingModule({
@@ -82,7 +85,7 @@ describe('AppComponent', () => {
         HttpClientTestingModule,
         MatSnackBarModule,
         InjectorModule,
-        VitamUICommonModule,
+        VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -94,12 +97,13 @@ describe('AppComponent', () => {
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => { }, events: of() } },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: BASE_URL, useValue: '/fake-api' }
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ActivatedRoute, useValue: { data: EMPTY } },
       ]
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app Portal', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     fixture.detectChanges();

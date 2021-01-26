@@ -1,45 +1,25 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
     <app-user-preview *ngIf="openedItem" (previewClose)="closePanel()" [user]="openedItem" [customer]="customer"></app-user-preview>
   </mat-sidenav>
 
-  <mat-sidenav-content class="overflow-none">
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
-        <h2 i18n="Search a user@@UserSearchHeader">
-          <img src="assets/mini-logo-vitam.png">Rechercher <strong>un utilisateur</strong>
-        </h2>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        Administrer mes utilisateurs
+      </vitamui-common-title-breadcrumb>
 
-        <div class="controls">
-
-          <vitamui-common-search-bar
-            name="user-search"
-            (search)="onSearchSubmit($event)"
-            placeholder="Nom, Prénom, ..." i18n-placeholder="@@userSearchPlaceholder"
-          ></vitamui-common-search-bar>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-              <i class="vitamui-icon vitamui-icon-user-plus"></i> <span>Créer un utilisateur</span>
-            </button>
-            <button class="btn more-actions" [matMenuTriggerFor]="moreMenu">
-              <i class="material-icons">more_horiz</i> <span i18n="More actions button label@@userListMoreActionsButton">Autres actions</span>
-            </button>
-            <mat-menu #moreMenu="matMenu" [overlapTrigger]="false" class="more-actions-menu" xPosition="before">
-              <button mat-menu-item i18n="Coming soon@@userComingSoon">Bientôt</button>
-            </mat-menu>
-          </div>
-
-        </div>
-      </div>
+      <vitamui-common-banner [searchbarPlaceholder]="'Nom, Prénom, Identifiant, Email'"
+        i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
+        <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
+          <span>Créer un Utilisateur</span>
+        </button>
+      </vitamui-common-banner>
     </div>
 
-    <div class="vitamui-body vitamui-container">
-      <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" (userClick)="openPanel($event)"></app-user-list>
+    <div class="vitamui-content">
+      <app-user-list [search]="search" [connectedUserInfo]="connectedUserInfo" (userClick)="openPanel($event)">
+      </app-user-list>
     </div>
-
   </mat-sidenav-content>
-
 </mat-sidenav-container>

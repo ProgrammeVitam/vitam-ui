@@ -34,14 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { NavbarStubComponent, VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
 import { EditableFieldModule } from '../../components/editable-field/editable-field.module';
 import { SlideToggleModule } from '../../components/slide-toggle/slide-toggle.module';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { AccountService } from '../account.service';
 import { AccountInformationTabComponent } from './account-information-tab.component';
 
@@ -53,12 +55,13 @@ describe('AccountInformationTabComponent', () => {
     getMyAccount: () => of({})
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         EditableFieldModule,
         SlideToggleModule,
+        TranslateModule.forRoot(),
         NoopAnimationsModule,
       ],
       declarations: [
@@ -66,7 +69,10 @@ describe('AccountInformationTabComponent', () => {
         VitamUIFieldErrorStubComponent,
         NavbarStubComponent,
       ],
-      providers: [{ provide: AccountService, useValue: accountServiceSpy }]
+      providers: [
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: AccountService, useValue: accountServiceSpy }
+      ],
     })
     .compileComponents();
   }));

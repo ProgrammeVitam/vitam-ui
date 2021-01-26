@@ -50,7 +50,7 @@ import {
 export class EditableKeystoreComponent extends EditableFieldComponent {
 
   @Input() identityProvider: IdentityProvider;
-  @Input() disabled: boolean;
+
   file: File;
   originValue = newFile([''], 'keystore.jks');
 

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {async, TestBed} from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AppComponent} from './app.component';
 
@@ -9,7 +9,7 @@ class SubrogationBannerStubComponent {
 }
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
@@ -28,7 +28,7 @@ describe('AppComponent', () => {
   });
 
 
-  it(`should have as title 'Referential App'`, async(() => {
+  it(`should have as title 'Referential App'`, waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     console.log('Title App: ', app);

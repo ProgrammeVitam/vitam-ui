@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,9 +29,9 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
-@WebMvcTest(controllers = { SubrogationController.class })
-@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class })
+@ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
+@WebMvcTest(controllers = {SubrogationController.class})
+@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class})
 public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> {
 
     @TestConfiguration
@@ -42,6 +43,8 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
             properties.setIamExternalClient(new RestClientConfiguration());
             return properties;
         }
+
+
     }
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationControllerTest.class);
@@ -56,6 +59,9 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
 
     @MockBean
     private SubrogationService service;
+
+    @MockBean
+    private BuildProperties buildProperties;
 
     @Test
     public void testSubrogationControllerEnabled() {
@@ -112,4 +118,5 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
         Mockito.when(service.create(any(), any(SubrogationDto.class))).thenReturn(new SubrogationDto());
         Mockito.when(service.getOne(any(), any(), any())).thenReturn(new SubrogationDto());
     }
+
 }

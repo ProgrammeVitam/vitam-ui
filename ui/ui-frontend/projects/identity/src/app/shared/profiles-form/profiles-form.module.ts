@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -47,6 +48,7 @@ import { ProfilesFormComponent } from './profiles-form.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatTooltipModule,
     VitamUICommonModule,

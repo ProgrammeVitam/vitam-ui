@@ -7,8 +7,8 @@
 
     <cdk-step>
       <div class="content">
-        <h3>Lancement d'un audit</h3>
-        <h2>Informations</h2>
+        <h5>Lancement d'un audit</h5>
+        <h4>Informations</h4>
         <div class="form-group">
           <div class="row">
             <div class="col-8 form-control">
@@ -70,20 +70,21 @@
             </div>
           </div>
         </div>
+        <div class="btn-container"> 
+          <button type="button" class="btn primary" cdkStepperNext *ngIf="!this.allNodes.value" [disabled]="!isStepValid()">Suivant</button>
 
-        <button type="button" class="btn primary" cdkStepperNext *ngIf="!this.allNodes.value" [disabled]="!isStepValid()">Suivant</button>
+          <button type="submit" class="btn primary" *ngIf="this.allNodes.value" [disabled]="!isStepValid()">Terminer</button>
 
-        <button type="submit" class="btn primary" *ngIf="this.allNodes.value" [disabled]="!isStepValid()">Terminer</button>
-
-        <button type="button" class="btn cancel" (click)="onCancel()"
-                i18n="Cancel ontology creation@@ontologyCreateCancelButton">Annuler</button>
+          <button type="button" class="btn cancel" (click)="onCancel()"
+                  i18n="Cancel ontology creation@@ontologyCreateCancelButton">Annuler</button>
+        </div>
       </div>
     </cdk-step>
 
     <cdk-step>
       <div class="content">
-        <h3>Lancement d'un audit</h3>
-        <h2> Noeud de rattachement (SIP) </h2>
+        <h5>Lancement d'un audit</h5>
+        <h4> Noeud de rattachement (SIP) </h4>
 
         <div class="form-group">
           <vitamui-library-filing-plan [formControl]="selectedNodes"

@@ -61,8 +61,8 @@ describe('CustomerSelectService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    searchService = TestBed.get(CustomerSelectService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    searchService = TestBed.inject(CustomerSelectService);
   });
 
   it('should be created', inject([CustomerSelectService], (service: CustomerSelectService) => {

@@ -116,9 +116,16 @@ public class CustomerDto extends IdDto {
     // no validations for identifier. Because during the creation step, the identifier is set by the backend.
     private String identifier;
 
+    //**** THEME, don't use GraphicIdentityDto to not send logos..
     private boolean hasCustomGraphicIdentity = false;
 
     private Map<String, String> themeColors = new HashMap<>();
+
+    private String portalTitle;
+
+    @Length(max = 500)
+    private String portalMessage;
+    //****
 
     private boolean gdprAlert = false;
 

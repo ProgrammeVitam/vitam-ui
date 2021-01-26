@@ -1,43 +1,43 @@
 <div *ngIf="user?.status !== 'REMOVED'">
 
-<button class="btn secondary mb-20" (click)="openAttributionGroupe()" *ngIf="showUpdateButton" [disabled]="userInfo.type === 'NONE'">
+<button class="btn primary mb-4" (click)="openAttributionGroupe()" *ngIf="showUpdateButton" [disabled]="userInfo.type === 'NONE'">
     <div i18n="user group tab edit@@userGroupTabEditButton">
         Modifier
     </div>
 </button>
 
 <div *ngIf="userGroup">
-
-    <div class="group-name">
-        <h3>Groupe attribué :</h3>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ userGroup?.name }}</span>
+    <div class="mb-3">
+        <p class="text normal spaced light mb-1">Groupe attribué</p>
+        <p class="text medium bold m-0">{{ userGroup?.name }}</p>
     </div>
 
-    <h3 i18n="user group tab level@@userGroupTabLevel">Niveau</h3>
-    <p>{{ userGroup.level }}</p>
+    <div class="mb-3">
+        <p class="text normal spaced light mb-1" i18n="user group tab level@@userGroupTabLevel">Niveau</p>
+        <p class="text medium bold m-0">{{ userGroup.level }}Support</p>
+    </div>
 
-    <h3 i18n="user group tab description@@userGroupTabDescription">Description</h3>
-
-    <p>{{ userGroup.description }}</p>
-
+    <div class="mb-3">
+        <p class="text normal spaced light mb-1" i18n="user group tab description@@userGroupTabDescription">Description</p>
+        <p class="text medium bold m-0">{{ userGroup.description }}</p>
+    </div>
 </div>
 
-<h3 i18n="user group tab profiles@@userGroupTabProfiles">Profils du groupe</h3>
-
-<div class="row">
-    <ul class="profile-list">
-        <li *ngFor="let profile of userGroup?.profiles">
-            <div class="profile-details">
-                <span>{{ profile?.name }}</span>
-                <i class="material-icons" matTooltip="{{ profile?.description }}" matTooltipClass="vitamui-tooltip">info</i>
-            </div>
-        </li>
-    </ul>
+<p class="text normal spaced light mt-5" i18n="user group tab profiles@@userGroupTabProfiles">Profils du groupe</p>
+<div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of userGroup?.profiles">
+    <div>
+        <div class="text medium">{{ profile?.name }}</div>
+    </div>
+    <div>
+        <div class="material-icons clickable text-primary" [matTooltip]="profile?.description" matTooltipClass="vitamui-tooltip">
+        info_outline
+        </div>
+    </div>
 </div>
 
 </div>
 
 <div *ngIf="user?.status === 'REMOVED'">
-        <h2>ATTENTION</h2>
-       L'utilisateur que vous cherchez est déja supprimé
-      </div>
+  <h2>ATTENTION</h2>
+ L'utilisateur que vous cherchez est déja supprimé
+</div>

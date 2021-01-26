@@ -34,25 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, keyframes, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 
-import { VITAMUI_TOOLTIP_MESSAGE, VitamUITooltipMessage } from '../../injection-tokens';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
+import { tooltipAnimation } from '../../animations';
+
+import { VitamUITooltipMessage, VITAMUI_TOOLTIP_MESSAGE } from '../../injection-tokens';
 
 @Component({
   selector: 'vitamui-common-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
   animations: [
-    trigger('tooltipAnimation', [
-      transition(':enter', [
-        animate('300ms cubic-bezier(0, 0, 0.2, 1)', keyframes([
-          style({ opacity: 0, transform: 'scale(0)', offset: 0 }),
-          style({ opacity: 0.5, transform: 'scale(1.1)', offset: 0.7 }),
-          style({ opacity: 1, transform: 'scale(1)', offset: 1 }),
-        ])),
-      ]),
-    ]),
+    tooltipAnimation,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

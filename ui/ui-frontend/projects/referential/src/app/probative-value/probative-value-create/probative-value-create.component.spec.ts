@@ -1,7 +1,9 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef, MatProgressBarModule, MatSelectModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
@@ -15,7 +17,7 @@ describe('ProbativeValueCreateComponent', () => {
   let component: ProbativeValueCreateComponent;
   let fixture: ComponentFixture<ProbativeValueCreateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     const accessContractServiceMock = {
       getAll: () => of([])

@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { UploadComponent } from './upload.component';
-import { MatProgressBarModule, MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule } from '@angular/material';
-import { of, EMPTY } from 'rxjs';
-import { UploadService } from './upload.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { LoggerModule, ConfirmDialogService } from 'ui-frontend-common';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, LoggerModule } from 'ui-frontend-common';
+import { UploadComponent } from './upload.component';
+import { UploadService } from './upload.service';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -53,7 +55,7 @@ describe('UploadComponent', () => {
 
   const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}) });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,

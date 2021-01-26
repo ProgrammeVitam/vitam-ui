@@ -42,6 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { CommonProgressBarModule } from '../components/common-progress-bar/common-progress-bar.module';
 
 import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog.module';
 import { StepperModule } from '../components/stepper/stepper.module';
@@ -67,7 +68,8 @@ import {
     StepperModule,
     ReactiveFormsModule,
     VitamUIInputModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CommonProgressBarModule
   ],
   declarations: [
     NotificationSnackBarComponent,

@@ -36,12 +36,16 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, LoggerModule, OtpState } from 'ui-frontend-common';
+
+
 import { VitamUISnackBar } from '../../../shared/vitamui-snack-bar';
+import { SafeStylePipe } from './../../../../../../../../ui-frontend-common/src/app/modules/pipes/safe-style.pipe';
 import { environment } from './../../../../environments/environment';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab.component';
 
@@ -105,7 +109,7 @@ describe('GraphicIdentityTabComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
     const matDialogSpy = jasmine.createSpyObj('MatDialog', { open: { afterClosed: () => of(true) } });
     expectedCustomer = {
@@ -157,7 +161,7 @@ describe('GraphicIdentityTabComponent', () => {
         HttpClientTestingModule,
         LoggerModule.forRoot()
       ],
-      declarations: [GraphicIdentityTabComponent, TestHostComponent],
+      declarations: [GraphicIdentityTabComponent, TestHostComponent, SafeStylePipe],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
@@ -165,7 +169,8 @@ describe('GraphicIdentityTabComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -177,7 +182,9 @@ describe('GraphicIdentityTabComponent', () => {
 
     testhost.customer = expectedCustomer;
   });
-  it('should create', () => {
+
+  it('should create', waitForAsync(() => {
     expect(testhost).toBeTruthy();
-  });
+  }));
+
 });

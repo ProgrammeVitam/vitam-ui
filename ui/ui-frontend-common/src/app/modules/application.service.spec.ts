@@ -51,7 +51,7 @@ describe('ApplicationService', () => {
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
   beforeEach(() => {
-    const authStubService = { token: 'fakeToken', user: {} };
+    const authStubService = { token: 'fakeToken', user: {}, getAnyTenantIdentifier: () => 10 };
     const startupServiceStub = {
       configurationLoaded: () => true,
       printConfiguration: () => {},
@@ -71,8 +71,8 @@ describe('ApplicationService', () => {
       ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController as Type<HttpTestingController>);
-    appService = TestBed.get(ApplicationService);
+    httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
+    appService = TestBed.inject(ApplicationService);
   });
 
   it('should be created', inject([ApplicationService], (service: ApplicationService) => {

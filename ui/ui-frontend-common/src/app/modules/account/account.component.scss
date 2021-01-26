@@ -1,23 +1,63 @@
-@import '../../../sass/variables/colors';
+@import "../../../sass/variables/colors";
 
 h2 {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    i {
-        margin-right: 15px;
-    }
+  i {
+    margin-right: 15px;
+  }
 }
 
-.vitamui-header {
-    background-image: url('/assets/account-header-bg.jpg');
-}
-
-.div-btn {
-    display: flex;
-    align-items: center;
-    margin-bottom: 47px;
-}
 .btn-header {
-    margin-right: 20px;
+  margin-right: 20px;
+}
+
+:host::ng-deep {
+  --radius: 20px;
+  
+  .mat-tab-body-wrapper {
+    border-top-right-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
+    background-color: $white;
+    border: 1px solid var(--vitamui-grey-400);
+    margin-top: -1px;
+  }
+
+  .mat-tab-label {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-right: 5px;
+    background-color: var(--vitamui-primary-100);
+  }
+
+  .mat-tab-label-active {
+    border: 1px solid var(--vitamui-grey-400);
+    border-bottom: none;
+  }
+
+  .mat-tab-header, .mat-tab-nav-bar {
+    border-bottom: 0;
+  }
+  .mat-ink-bar {
+    display: none;
+  }
+
+  &.mat-tab-label-active, &.mat-tab-label-active:not(.mat-tab-disabled):focus {
+    background-color: $white;
+    font-weight: bold;
+    color: var(--vitamui-grey-700);
+    opacity: 1;
+  }
+
+  .mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+  }
 }

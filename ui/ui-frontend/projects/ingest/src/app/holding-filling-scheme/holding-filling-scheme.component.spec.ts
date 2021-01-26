@@ -34,23 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatSidenavModule, MatMenuModule, MatDialog, MatDialogModule } from '@angular/material';
+
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import { environment } from '../../environments/environment';
 import { IngestService } from '../ingest/ingest.service';
+import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 
 @Component({ selector: 'app-ingest-list', template: '' })
 class IngestListStubComponent {
@@ -65,7 +68,7 @@ describe('HoldingFilingSchemeComponent', () => {
     search: () => of([])
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
@@ -111,16 +114,15 @@ describe('HoldingFilingSchemeComponent', () => {
   });
 
   it('should call open', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportTreePlanPopup('HOLDING_SCHEME');
     expect(matDialogSpy.open).toHaveBeenCalled();
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
   });
 
   it('should open a modal with HoldingFillingSchemeComponent', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
+    const matDialogSpy = TestBed.inject(MatDialog);
     component.openImportTreePlanPopup('FILING_SCHEME');
-    expect(matDialogSpy.open.calls.count()).toBe(1);
-    expect(matDialogSpy.open).toHaveBeenCalled();
+    expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
   });
 });

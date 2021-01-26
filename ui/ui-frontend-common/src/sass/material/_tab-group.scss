@@ -1,3 +1,5 @@
+/** TODO DEPRECATED : THIS CODE SEEMS TO BE UNSED, REMOVE IT AT THE END OF THE REDESIGN **/
+
 .account-tab-group.mat-tab-group {
     .mat-tab-header {
         border-bottom: none;
@@ -19,7 +21,7 @@
         transition: background-color 200ms ease-out, color 200ms ease-out;
 
         &:hover {
-            color: var(--vitamui-secondary);
+            color: var(--vitamui-primary);
             background-color: rgba(255, 255, 255, 0.8);
         }
 

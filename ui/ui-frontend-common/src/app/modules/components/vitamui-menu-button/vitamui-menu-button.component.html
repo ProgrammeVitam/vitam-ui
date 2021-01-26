@@ -1,0 +1,12 @@
+<button #trigger="matMenuTrigger" [matMenuTriggerFor]="moreMenu" class="btn outline secondary"
+  [ngClass]="{'btn-circle large' : icon && !label}" [class.hidden]="trigger.menuOpen">
+    <i *ngIf="icon" class="vitamui-icon {{icon}}" [class.mr-3]="label"></i>
+    {{label}}
+</button>
+
+<mat-menu #moreMenu="matMenu" xPosition="before" [overlapTrigger]="true" class="more-action-menu {{overlayPos}}">
+  <button mat-menu-item disableRipple class="menu-cancel-button">
+    <i class="vitamui-icon vitamui-icon-close"></i>
+  </button>
+  <ng-content></ng-content>
+</mat-menu>

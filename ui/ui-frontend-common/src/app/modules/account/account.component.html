@@ -1,31 +1,24 @@
-<div class="vitamui-header">
-  <div class="vitamui-container">
-    <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="true" [hideCustomerMenu]="true"></vitamui-common-navbar>
-    <h2 i18n="MyAccount@@MyAccountTitle">
-      <i class="vitamui-icon vitamui-icon-user"></i> Mon Compte
-    </h2>
-    <div class="div-btn">
-      <div>
-        <button class="btn secondary btn-header">Changer mon mot de passe</button>
-      </div>
-      <div>
-        <button *ngIf="displayAppTab" class="btn secondary btn-header">Demander une modification</button>
-      </div>
-      <div>
-        <button *ngIf="displayAppTab" class="btn secondary">Contacter l'administrateur</button>
-      </div>
+<div class="vitamui-heading">
+  <vitamui-common-title-breadcrumb [data]="dataBreadcrumb">
+    <div class="d-flex align-items-center d-flex">
+      <vitamui-common-user-photo class="mr-1" [photo]="account?.photo"></vitamui-common-user-photo>
+      <span class="pl-2" i18n="MyAccount@@MyAccountTitle">Mon Compte</span>
+    </div>
+  </vitamui-common-title-breadcrumb>
+
+  <div class="d-flex">
+    <button class="btn primary btn-header">Changer mon mot de passe</button>
+    <div *ngIf="displayAppTab">
+      <button class="btn primary btn-header">Demander une modification</button>
+      <button class="btn primary">Contacter l'administrateur</button>
     </div>
   </div>
 </div>
 
-<div class="vitamui-body">
-  <div class="vitamui-container">
-    <mat-tab-group class="account-tab-group">
-      <mat-tab label="Informations" i18n-label="Information tab@@accountrPreviewTabInformation">
-        <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>
-      </mat-tab>
-      <mat-tab *ngIf="displayAppTab" label="Application" i18n-label="Groupe tab@@accountPreviewTabApplication" class="no-padding">
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+<div class="vitamui-content">
+  <mat-tab-group>
+    <mat-tab label="Informations" i18n-label="Information tab@@profileDetailTabInformation">
+      <vitamui-common-account-information-tab [account]=account></vitamui-common-account-information-tab>
+    </mat-tab>
+  </mat-tab-group>
 </div>

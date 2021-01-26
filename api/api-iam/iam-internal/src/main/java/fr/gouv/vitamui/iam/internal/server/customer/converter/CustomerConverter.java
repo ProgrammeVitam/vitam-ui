@@ -76,6 +76,10 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String COMPANY_NAME_KEY = "Raison sociale";
 
+    public static final String PORTAL_TITLE = "Titre du portail";
+
+    public static final String PORTAL_MESSAGE = "Message du portail";
+
     public static final String LANGUAGE_KEY = "Langue";
 
     public static final String PASSWORD_RECOVATION_KEY = "Durée de révocation de mot de passe (en mois)";
@@ -143,6 +147,8 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         customer.setGraphicIdentity(new GraphicIdentity());
         customer.getGraphicIdentity().setHasCustomGraphicIdentity(dto.isHasCustomGraphicIdentity());
         customer.getGraphicIdentity().setThemeColors(dto.getThemeColors());
+        customer.getGraphicIdentity().setPortalMessage(dto.getPortalMessage());
+        customer.getGraphicIdentity().setPortalTitle(dto.getPortalTitle());
 
         return customer;
     }
@@ -165,8 +171,11 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
         if (customer.getGraphicIdentity() != null) {
             GraphicIdentity graphicalIdentity = customer.getGraphicIdentity();
+
             dto.setHasCustomGraphicIdentity(graphicalIdentity.isHasCustomGraphicIdentity());
             dto.setThemeColors(graphicalIdentity.getThemeColors());
+            dto.setPortalMessage(graphicalIdentity.getPortalMessage());
+            dto.setPortalTitle(graphicalIdentity.getPortalTitle());
         }
 
         final List<Owner> owners = ownerRepository.findAll(Query.query(Criteria.where("customerId").is(dto.getId())));

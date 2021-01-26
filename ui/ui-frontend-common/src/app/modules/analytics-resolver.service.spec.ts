@@ -32,7 +32,7 @@ describe('AnalyticsResolver', () => {
   }));
 
   it('should be created', () => {
-    const service: AnalyticsResolver = TestBed.get(AnalyticsResolver);
+    const service: AnalyticsResolver = TestBed.inject(AnalyticsResolver);
     expect(service).toBeTruthy();
   });
 });

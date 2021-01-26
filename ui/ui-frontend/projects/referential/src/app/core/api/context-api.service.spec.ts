@@ -54,7 +54,7 @@ describe('AgencyApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: AgencyApiService = TestBed.get(AgencyApiService);
+    const service: AgencyApiService = TestBed.inject(AgencyApiService);
     expect(service).toBeTruthy();
   });
 });

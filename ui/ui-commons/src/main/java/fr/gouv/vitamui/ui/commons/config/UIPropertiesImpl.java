@@ -65,17 +65,21 @@ public class UIPropertiesImpl implements UIProperties {
 
     private RestClientConfiguration iamExternalClient;
 
-    private String themeLogo;
+    private String portalLogo;
+
+    private String headerLogo;
+
+    private String footerLogo;
 
     private Map<String, String> themeColors;
+
+    private String portalTitle;
+
+    private String portalMessage;
 
     private String assets;
 
     private String platformName;
-
-    private  String welcomeTitle;
-
-    private String welcomeDescription;
 
     private Map<String, String> customer;
 
@@ -83,4 +87,6 @@ public class UIPropertiesImpl implements UIProperties {
      * Map of application categories (key: category ID, value: category properties)
      */
     private Map<String, PortalCategoryConfig> portalCategories;
+
+    private String versionRelease;
 }

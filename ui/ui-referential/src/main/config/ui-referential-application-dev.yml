@@ -26,12 +26,19 @@ management:
       enabled: false
 
 ui-referential:
-  #theme-logo: /path/to/logo.png
   platform-name: VITAM-UI
+  portal-logo: logo_PORTAL.png
+  header-logo: logo_HEADER.png
+  footer-logo: logo_FOOTER.png
+  portal-message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
+  portal-title: "Portail des applications de l'archivage"
   theme-colors:
-    vitamui-primary: "#ff4a54"
-    vitamui-secondary: "#241f63"
-  assets: src/main/config
+    vitamui-primary: "#604379"
+    vitamui-secondary: "#65B2E4"
+    vitamui-tertiary: "#E7304D"
+    vitamui-header-footer: "#ffffff"
+    vitamui-background: "#F5F7FC"
+  assets: src/main/resources/assets
   iam-external-client:
     server-host: localhost
     server-port: 8083
@@ -64,35 +71,26 @@ ui-referential:
     technical-referent-email: contact@programmevitam.fr
     website-url: http://www.programmevitam.fr
   portal-categories:
-    users:
-      title: "Utilisateur"
-      displayTitle: false
+    ingest_and_consultation:
+      title: "Versement & consultation"
+      displayTitle: true
       order: 1
-    administrators:
-      title: "Management"
-      displayTitle: true
-      order: 2
-    settings:
-      title: "Paramétrage"
-      displayTitle: true
-      order: 3
     referential:
       title: "Référentiels"
       displayTitle: true
+      order: 2
+    supervision_and_audits:
+      title: "Supervision & Audits"
+      displayTitle: true
+      order: 3
+    security_and_application_rights:
+      title: "Sécurité & droits applicatifs"
+      displayTitle: true
       order: 4
-    opaudit:
-      title: "Audits et opérations"
+    organization_and_user_rights:
+      title: "Organisation & droits utilisateurs"
       displayTitle: true
       order: 5
-    techadmin:
-      title: "Administration technique"
-      displayTitle: true
-      order: 6
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 7
-
 ui:
   url: "https://dev.vitamui.com:4202"
   redirect-url: https://dev.vitamui.com:9002/${ui-prefix}

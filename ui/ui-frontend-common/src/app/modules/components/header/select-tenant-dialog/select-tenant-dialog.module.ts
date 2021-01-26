@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { SelectTenantModule } from '../select-tenant/select-tenant.module';
+import { ItemSelectModule } from '../item-select/item-select.module';
 import { SelectTenantDialogComponent } from './select-tenant-dialog.component';
 
 @NgModule({
@@ -12,8 +12,8 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog.component';
   imports: [
     CommonModule,
     MatButtonModule,
-    SelectTenantModule,
-    TranslateModule
+    TranslateModule,
+    ItemSelectModule
   ],
   exports: [
     SelectTenantDialogComponent

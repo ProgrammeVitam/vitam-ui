@@ -38,9 +38,9 @@
 import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { EMPTY } from 'rxjs';
@@ -52,7 +52,7 @@ describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
@@ -65,7 +65,7 @@ describe('LogbookOperationComponent', () => {
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => { } } },
-        { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
+        GlobalEventService,
         { provide: ENVIRONMENT, useValue: environment }
       ],
       schemas: [NO_ERRORS_SCHEMA]

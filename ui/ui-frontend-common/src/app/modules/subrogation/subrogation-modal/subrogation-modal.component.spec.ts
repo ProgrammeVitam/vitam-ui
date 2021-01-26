@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SubrogationModalComponent } from './subrogation-modal.component';
 
@@ -42,7 +42,7 @@ describe('SubrogationModalComponent', () => {
   // let component: SubrogationModalComponent;
   let fixture: ComponentFixture<SubrogationModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SubrogationModalComponent ]
     })

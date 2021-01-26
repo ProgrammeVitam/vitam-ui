@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.external.client;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -116,6 +117,14 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
         final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
         checkResponse(response);
         return response;
+    }
 
+    public ResponseEntity<Resource> getLogo(final ExternalHttpContext context, final String id, final AttachmentType type) {
+        LOGGER.debug("Get logo for customer with id {}, type {}", id, type);
+        final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo?type=" + type);
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        checkResponse(response, 200, 204);
+        return response;
     }
 }

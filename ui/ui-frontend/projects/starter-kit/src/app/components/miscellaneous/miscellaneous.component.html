@@ -1,0 +1,75 @@
+<div>
+  <h4>Banner with searchbar & button</h4>
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+    [disableSearchBar]="true">
+    <button class="btn primary ml-5">
+      <span>Action1</span>
+    </button>
+  </vitamui-common-banner>
+</div>
+
+<div>
+  <h4>Banner with searchbar & buttons</h4>
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+    [disableSearchBar]="true">
+    <button class="btn primary ml-5">
+      <span>Action1</span>
+    </button>
+    <button class="btn primary ml-5">
+      <span>Action2</span>
+    </button>
+    <button class="btn primary ml-5">
+      <span>Action3</span>
+    </button>
+  </vitamui-common-banner>
+</div>
+
+<div>
+  <h4>Banner with searchbar only</h4>
+  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+    [disableSearchBar]="true"></vitamui-common-banner>
+</div>
+
+<div>
+  <h4>User photo with default picture</h4>
+  <vitamui-common-user-photo></vitamui-common-user-photo>
+</div>
+
+<div>
+  <h4>Action button menu with overlay</h4>
+  
+  <div class="d-flex">
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div class="mr-2">
+      <vitamui-common-menu-button [overlayPos]="'start'" [label]="'With text only'">
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+
+    <div>
+      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [label]="'With text & icon'">
+        <button mat-menu-item>Activer</button>
+        <button mat-menu-item>Désactiver</button>
+      </vitamui-common-menu-button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <h4>{{'SAMPLE-DIALOG.Open' | translate}}</h4>
+  <button class="btn primary" (click)="openDialog()">Open sample dialog</button>
+</div>

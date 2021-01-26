@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { LevelInputComponent } from './level-input.component';
 
@@ -44,6 +45,7 @@ import { LevelInputComponent } from './level-input.component';
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
   ],
   declarations: [LevelInputComponent],
   exports: [LevelInputComponent]

@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
@@ -11,7 +11,7 @@ describe('AuditPreviewComponent', () => {
   let component: AuditPreviewComponent;
   let fixture: ComponentFixture<AuditPreviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const accessContractServiceMock = {
       getAllForTenant: () => of([])
     };

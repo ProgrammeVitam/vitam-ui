@@ -36,7 +36,7 @@
  */
 // tslint:disable:max-classes-per-file
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
@@ -124,7 +124,7 @@ describe('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -207,8 +207,8 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
     });
 
-    it('should be valid and call patch()', async(() => {
-      const providerService = TestBed.get(IdentityProviderService);
+    it('should be valid and call patch()', waitForAsync(() => {
+      const providerService = TestBed.inject(IdentityProviderService);
       spyOn(providerService, 'patch').and.returnValue(of(null));
       testhost.component.form.setValue({
         id: testhost.provider.id,

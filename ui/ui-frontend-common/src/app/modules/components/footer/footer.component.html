@@ -1,27 +1,4 @@
-<div>
-  <img alt="compagny logo" src="/assets/footer-logo.svg" class="logo"/>
-</div>
-
-<div>
-  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank" class="plain">{{'FOOTER.HELP' | translate}}</a>
-</div>
-
-<div class="separator"></div>
-
-<div>
-  {{'FOOTER.TECHNICAL_REFERENT' | translate}}&nbsp;:
-  <a [href]="'mailto:' + customerTechnicalReferentEmail">{{customerTechnicalReferentEmail}}</a>
-</div>
-
-<div class="separator"></div>
-
-<div>
-  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank">{{customerWebsiteUrlTitle}}</a>
-</div>
-
-<div class="separator"></div>
-
-<div>
-  <a [href]="sanitizedCustomerWebsiteUrl" target="_blank"
-    class="plain">{{'FOOTER.LEGAL_NOTICE' | translate}}</a>
+<div class="d-flex flex-column align-items-center">
+  <div><img alt="compagny logo" [src]="footerLogoUrl" class="logo"/></div>
+  <div class="text normal letter-spacing text-primary-300">{{version}}</div>
 </div>

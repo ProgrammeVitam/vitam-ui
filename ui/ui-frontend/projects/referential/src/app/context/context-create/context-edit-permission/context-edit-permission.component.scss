@@ -26,7 +26,6 @@
 
 .selectorPosition {
   position: relative;
-  top: 13px;
 }
 
 .contractsSelect {
@@ -62,6 +61,11 @@
 .editTd {
   padding-left: 0;
   padding-right: 0;
+}
+td{
+  mat-form-field{
+    padding-bottom: 0;
+  }
 }
 
 .defaultTd {

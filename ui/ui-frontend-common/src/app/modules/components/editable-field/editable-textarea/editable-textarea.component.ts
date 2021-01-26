@@ -55,7 +55,7 @@ export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
 export class EditableTextareaComponent extends EditableFieldComponent {
 
   @Input() maxlength: number;
-  @ViewChild('input', { static: false }) private input: ElementRef;
+  @ViewChild('input') private input: ElementRef;
 
   constructor(elementRef: ElementRef) {
     super(elementRef);

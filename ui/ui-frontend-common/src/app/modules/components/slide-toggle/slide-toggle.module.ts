@@ -36,14 +36,16 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SlideToggleComponent } from './slide-toggle.component';
 
 @NgModule({
+  declarations: [SlideToggleComponent],
   imports: [
     CommonModule,
+    TranslateModule,
   ],
-  declarations: [SlideToggleComponent],
   exports: [SlideToggleComponent]
 })
 export class SlideToggleModule { }

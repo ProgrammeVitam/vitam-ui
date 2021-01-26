@@ -45,8 +45,8 @@ import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AuthUser } from './models';
-import { ThemeService } from './theme.service';
+import { AppConfiguration, AttachmentType, AuthUser, Color } from './models';
+import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
 const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
@@ -87,20 +87,21 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
-      .then(() => this.applicationApi.getAsset('logo.png').toPromise())
+      .then(() => this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.Portal]).toPromise())
       .then((data) => {
-        this.configurationData.LOGO = data['logo.png'];
+        this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
+        this.configurationData.FOOTER_LOGO = data[AttachmentType.Footer];
+        this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
+        this.configurationData.LOGO = data[AttachmentType.Portal];
       })
       .then(() => {
-        this.themeService.init(this.configurationData.THEME_COLORS);
 
         let customerColorMap = null;
 
         if (this.authService.user.basicCustomer.graphicIdentity.hasCustomGraphicIdentity) {
           customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
         }
-
-        this.themeService.overrideTheme(customerColorMap);
+        this.themeService.init(this.configurationData, customerColorMap);
       })
       .then(() => this.applicationService.list().toPromise());
   }
@@ -169,7 +170,7 @@ export class StartupService {
     if (this.authService.user) {
       const currentUser = this.authService.user;
       if (currentUser.basicCustomer) {
-        trustedInlineLogoUrl = currentUser.basicCustomer.graphicIdentity.logoDataBase64;
+        trustedInlineLogoUrl = currentUser.basicCustomer.graphicIdentity.portalDataBase64;
       }
     }
 
@@ -226,22 +227,6 @@ export class StartupService {
 
   getConfigNumberValue(key: string): number {
     return +this.getConfigStringValue(key);
-  }
-
-  getWelcomeTitle(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.WELCOME_TITLE;
-    }
-
-    return null;
-  }
-
-  getWelcomeMessage(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.WELCOME_DESCRIPTION;
-    }
-
-    return null;
   }
 
   /**

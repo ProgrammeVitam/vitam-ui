@@ -1,0 +1,12 @@
+<div class="d-flex">
+  <div *ngIf="photo then userPhoto else defaultUserPhoto" (click)="photoClicked.emit()"></div>
+  <span *ngIf="hasStatus" [ngClass]="statusCondition ? 'status-badge-green' :'status-badge-grey'"></span>
+</div>
+
+<ng-template #defaultUserPhoto>
+  <img class="user-photo" src="../../../../../assets/user_icon.png" [style.width.px]="size">
+</ng-template>
+
+<ng-template #userPhoto>
+  <img class="user-photo" [src]="photo" [style.width.px]="size">
+</ng-template>

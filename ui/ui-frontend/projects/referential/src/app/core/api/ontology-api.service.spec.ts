@@ -54,7 +54,7 @@ describe('OntologyApiService', () => {
   }));
 
   it('should be created', () => {
-    const service: OntologyApiService = TestBed.get(OntologyApiService);
+    const service: OntologyApiService = TestBed.inject(OntologyApiService);
     expect(service).toBeTruthy();
   });
 });

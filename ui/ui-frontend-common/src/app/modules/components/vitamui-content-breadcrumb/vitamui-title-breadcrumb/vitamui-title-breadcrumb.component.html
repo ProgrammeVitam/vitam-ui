@@ -1,0 +1,16 @@
+<div class="d-flex flex-column">
+    <div class="d-flex align-items-center">
+        <button class="btn link primary" (click)="location.back()">
+            <i class="vitamui-icon vitamui-icon-arrow-back"></i>
+        </button>
+    
+        <vitamui-common-breadcrumb
+            [data]="data"
+            (selected)="redirectTo($event)">
+        </vitamui-common-breadcrumb>
+    </div>
+
+    <h5 class="mt-0 mb-4">
+        <ng-content></ng-content>
+    </h5>
+</div>

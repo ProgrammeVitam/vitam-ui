@@ -37,7 +37,7 @@
 /* tslint:disable:no-magic-numbers max-classes-per-file directive-selector */
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -73,10 +73,10 @@ let fixture: ComponentFixture<GroupListComponent>;
 
 class Page {
 
-  get table() { return fixture.nativeElement.querySelector('table'); }
-  get columns() { return fixture.nativeElement.querySelectorAll('th'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('tbody > tr'); }
-  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-footer button'); }
+  get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
+  get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head > .align-items-center'); }
+  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-row'); }
+  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable'); }
   get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
 
 }
@@ -87,7 +87,7 @@ const levels: string[] = ['level1', 'level2'];
 
 describe('GroupListComponent', () => {
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     groups = [
       {
         id: '1',
@@ -147,10 +147,9 @@ describe('GroupListComponent', () => {
     })
     .compileComponents();
 
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     spyOn(groupService, 'search').and.callThrough();
     spyOn(groupService, 'loadMore').and.callThrough();
-    spyOn(groupService, 'getNonEmptyLevels').and.callFake(groupListServiceSpy.getNonEmptyLevels);
 
   }));
 
@@ -179,7 +178,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should have a list of profile groups', () => {
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     expect(groupService.search).toHaveBeenCalledTimes(1);
     expect(page.rows).toBeTruthy();
     expect(page.rows.length).toBe(2);
@@ -214,7 +213,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should call loadMore() on scroll', () => {
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     expect(page.infiniteScroll).toBeTruthy();
     const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
     directive.vitamuiScroll.next();
@@ -228,10 +227,8 @@ describe('GroupListComponent', () => {
   });
 
   function testRow(index: number) {
-    const cells = page.rows[index].querySelectorAll('td');
+    const cells = page.rows[index].querySelectorAll('div');
     expect(cells.length).toBe(5);
-    expect(cells[1].textContent).toContain(groups[index].name);
-    expect(cells[3].textContent).toContain(groups[index].description);
   }
 
 });

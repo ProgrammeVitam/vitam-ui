@@ -1,28 +1,15 @@
-table {
-    width: 100%;
+.vitamui-dialog-subtable {
+  .vitamui-dialog-subtable-header {
+    font-size: 14px;
+    font-weight: bold;
+    height: 30px;
+  }
 
-    th {
-        width: 50%;
-        text-align: left;
+  .vitamui-dialog-subtable-rows {
+    .vitamui-dialog-subtable-row {
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 24px;
     }
-
-    td {
-        width: 50%;
-        vertical-align: top;
-        padding-top: 10px;
-    }
-
-    ul {
-        padding: 0;
-        align-items: flex-start;
-        list-style-type: none;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-around;
-
-        li {
-            width: 250px;
-        }
-    }
+  }
 }

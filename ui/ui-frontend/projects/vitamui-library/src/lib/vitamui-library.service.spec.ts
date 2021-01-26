@@ -9,7 +9,7 @@ describe('VitamuiLibraryService', () => {
   }));
 
   it('should be created', () => {
-    const service: VitamuiLibraryService = TestBed.get(VitamuiLibraryService);
+    const service: VitamuiLibraryService = TestBed.inject(VitamuiLibraryService);
     expect(service).toBeTruthy();
   });
 });

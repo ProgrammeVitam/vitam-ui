@@ -1,43 +1,40 @@
 <div class="header">
-  <mat-progress-bar mode="determinate" [value]="100" class="stepper-progress-bar"></mat-progress-bar>
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="1"></vitamui-common-progress-bar>
 </div>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="content">
-    <h2 i18n="Profile Group Creation@@hierarchyCreateTitle">Duplication de profil</h2>
+    <div class="text large bold" i18n="Profile Group Creation@@hierarchyCreateTitle">Duplication de profil</div>
 
-    <div class="row">
-      <div class="col-4">
-        <vitamui-common-slide-toggle formControlName="enabled">Profils <span *ngIf="!form.get('enabled').value">in</span>actif</vitamui-common-slide-toggle>
+    <div class="d-flex justify-content-between">
+      <div class="mt-2">
+        <vitamui-common-slide-toggle formControlName="enabled">Profil <span *ngIf="!form.get('enabled').value">in</span>actif</vitamui-common-slide-toggle>
       </div>
-      <div class="col-8">
-        <div class="profil-level d-flex">
-          <div class="level-label">
-            <label class="">Niveau du profil</label>
-            <div>{{authService.user.level}}</div>
-          </div>
-          <vitamui-common-level-input [prefix]="authService.user.level" prefixLabel="Niveau du profil" i18n-prefixLabel="@@prefixLabelHiearchyCreateComponent"
-            formControlName="level">
-            <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">Champ
-              requis</vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)</vitamui-common-input-error>
-          </vitamui-common-level-input>
+
+      <div class="d-flex">
+        <div class="mr-4 mt-2">
+          <div class="text normal light">Niveau du profil</div>
+          <div class="text medium bold">{{authService.user.level}}</div>
         </div>
+
+        <vitamui-common-level-input [prefix]="authService.user.level" prefixLabel="Niveau du profil" i18n-prefixLabel="@@prefixLabelHiearchyCreateComponent" formControlName="level">
+          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')" i18n="Required field error hint@@formErrorRequiredField">
+            Champ requis
+          </vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">
+            Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)
+          </vitamui-common-input-error>
+        </vitamui-common-level-input>
       </div>
     </div>
 
-    <h2 i18n="Group Provisioning@@hierarchyCreateTitle2">Profil à dupliquer</h2>
-    <div class="form-group">
-      <app-profiles-form formControlName="profileIds" showLevel="true" [tenantIdentifier]="data.tenantId" [applicationNameExclude]="['USERS_APP','ARCHIVE_APP']"></app-profiles-form>
-    </div>
+    <div class="text medium bold mb-3" i18n="Group Provisioning@@hierarchyCreateTitle2">Profil à dupliquer</div>
+    
+    <app-profiles-form formControlName="profileIds" showLevel="true" [tenantIdentifier]="data.tenantId" [applicationNameExclude]="['USERS_APP','ARCHIVE_APP']"></app-profiles-form>
 
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="formValid()" i18n="Done@@hierarchyCreateSubmitButton">Terminer</button>
-      <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel@@hierarchyGroupCreateCancelButton">Annuler</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel@@hierarchyGroupCreateCancelButton">Annuler</button>
     </div>
-
-    <button type="button" class="back">
-      <i class="material-icons">arrow_back</i>
-      <ng-container i18n="Previous step button label@@hierarchyGroupCreateBackButton">Retour</ng-container>
-    </button>
   </div>
 </form>

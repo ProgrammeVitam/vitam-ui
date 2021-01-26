@@ -38,6 +38,7 @@ export * from './models/index';
 
 export * from './account/index';
 export * from './active-tenant.guard';
+export * from './animations/index';
 export * from './api/application-api.service';
 export * from './api/logbook-api.service';
 export * from './api/profile-api.service';

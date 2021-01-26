@@ -1,5 +1,5 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {of} from 'rxjs';
 
 import {ProbativeValueService} from '../probative-value.service';
@@ -9,7 +9,7 @@ describe('ProbativeValueListComponent', () => {
   let component: ProbativeValueListComponent;
   let fixture: ComponentFixture<ProbativeValueListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const probativeValueServiceMock = {
       search: () => of(null)
     };

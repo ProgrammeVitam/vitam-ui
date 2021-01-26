@@ -23,20 +23,12 @@
     .vitamui-remove-chip {
       display: flex;
       align-items: center;
-      border-left: 1px solid $greyish-two;
+      color: var(--vitamui-primary-300);
+      border-left: 1px solid var(--vitamui-primary-300);
       padding: 6px;
 
       i {
         font-size: 14px;
-      }
-    }
-
-    &.active {
-      color: var(--vitamui-secondary);
-      border-color: var(--vitamui-secondary);
-
-      .vitamui-remove-chip {
-        border-color: var(--vitamui-secondary);
       }
     }
   }
@@ -44,8 +36,17 @@
 
 .vitamui-chip {
   background-color: white;
-  border: 1px solid $greyish-two;
-  border-radius: 2px;
-  color: $greyish-two;
-  font-weight: 500;
+  border: 1px solid var(--vitamui-primary-300);
+  border-radius: 5px;
+  color: var(--vitamui-grey-900);
+  font-size:12px;
+  font-weight: bold;
+
+  &:hover {
+    @include elevation-1;
+  }
+
+  &:disabled {
+    border: 1px solid var(--vitamui-grey);
+  }
 }

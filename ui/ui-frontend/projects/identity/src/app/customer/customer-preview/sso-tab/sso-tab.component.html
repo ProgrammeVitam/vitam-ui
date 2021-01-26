@@ -1,52 +1,41 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
   <div class="vitamui-panel-content" *ngIf="!selectedIdentityProvider">
-    <div>
-      <button *ngIf="!readOnly" class="btn secondary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
-        <div
-          [matTooltipDisabled]="domainsAvailable"
-          matTooltip="Plus de domaines disponibles"
-          i18n-matTooltip="No more available domains@@idpNoMoreAvailableDomains"
-          matTooltipClass="vitamui-tooltip"
-          i18n="Create IDP@@idpCreateButton"
-        >
-            <i class="material-icons">lock_outline</i> Créer un IDP
+    <button *ngIf="!readOnly" class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
+      <div [matTooltipDisabled]="domainsAvailable" matTooltip="Plus de domaines disponibles"
+        i18n-matTooltip="No more available domains@@idpNoMoreAvailableDomains" matTooltipClass="vitamui-tooltip"
+        i18n="Create IDP@@idpCreateButton"> Créer un IDP
+      </div>
+    </button>
+
+    <div class="provider-list d-flex align-items-center mb-2" *ngFor="let provider of providers">
+      <div class="provider-item-content d-flex py-3 px-1" (click)="selectIdentityProvider(provider)">
+        <div class="col-3">
+          <label i18n="IDP Name@@idpListLabelName">Nom IDP</label>
+          <div>{{provider?.name}}</div>
         </div>
-      </button>
 
-      <ul class="provider-list">
-        <li *ngFor="let provider of providers">
-          <div class="provider-item-content" (click)="selectIdentityProvider(provider)">
+        <div class="col-2">
+          <label i18n="Type@@idpListLabelType">Type</label>
+          <div *ngIf="provider?.internal" i18n="Internal@@idpTypeInternal">Interne</div>
+          <div *ngIf="!provider?.internal" i18n="External@@idpTypeExternal">Externe</div>
+        </div>
 
-            <div class="provider-item-column provider-item-name">
-              <label i18n="IDP Name@@idpListLabelName">Nom IDP</label>
-              <span>{{provider?.name}}</span>
-            </div>
+        <div class="col-5">
+          <label i18n="Patterns@@idpListLabelPatterns">Patterns</label>
+          <div *ngFor="let pattern of provider?.patterns">{{pattern}}</div>
+        </div>
 
-            <div class="provider-item-column provider-item-type">
-              <label i18n="Type@@idpListLabelType">Type</label>
-              <span *ngIf="provider?.internal" i18n="Internal@@idpTypeInternal">Interne</span>
-              <span *ngIf="!provider?.internal" i18n="External@@idpTypeExternal">Externe</span>
-            </div>
+        <div class="col-2 d-flex align-items-center">
+          <div *ngIf="provider?.enabled" class="provider-status active" i18n="Active@@idpStatusActive">Actif</div>
+          <div *ngIf="!provider?.enabled" class="provider-status" i18n="Inactive@@idpStatusInactive">Inactif</div>
+        </div>
+      </div>
 
-            <div class="provider-item-column">
-              <label i18n="Patterns@@idpListLabelPatterns">Patterns</label>
-              <span *ngFor="let pattern of provider?.patterns">{{pattern}}</span>
-            </div>
-
-            <div class="provider-item-centered">
-              <div *ngIf="provider?.enabled" class="provider-status active" i18n="Active@@idpStatusActive">Actif</div>
-              <div *ngIf="!provider?.enabled" class="provider-status" i18n="Inactive@@idpStatusInactive">Inactif</div>
-            </div>
-
-          </div>
-
-          <a class="provider-item-link" [href]="!provider?.internal ? provider?.idpMetadataUrl : '#'" target="_blank" [class.disabled]="provider?.internal" >
-            <i class="material-icons">file_download</i>
-            <span i18n="Metadata CAS@@idpListMetadataDownloadLink">Metadata CAS</span>
-          </a>
-
-        </li>
-      </ul>
+      <a class="provider-item-link" [href]="!provider?.internal ? provider?.idpMetadataUrl : '#'" target="_blank"
+        [class.disabled]="provider?.internal">
+        <i class="material-icons">file_download</i>
+        <span i18n="Metadata CAS@@idpListMetadataDownloadLink" class="p-0">Metadata CAS</span>
+      </a>
     </div>
   </div>
 </div>
@@ -54,10 +43,12 @@
 <div class="vitamui-panel" [class.active]="selectedIdentityProvider">
   <div class="vitamui-panel-content" *ngIf="selectedIdentityProvider">
     <div>
-      <button type="button" class="back" (click)="selectedIdentityProvider=null">
-        <i class="material-icons">arrow_back</i> <ng-container i18n="Back button label@@idpBackButton">Retourner à la liste des IDP</ng-container>
+      <button type="button" class="btn link" (click)="selectedIdentityProvider=null">
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+        <ng-container i18n="Back button label@@idpBackButton"><span class="underline">Retourner à la liste des IDP</span></ng-container>
       </button>
-      <app-identity-provider-details [identityProvider]="selectedIdentityProvider" [domains]="domains" [readOnly]="readOnly || selectedIdentityProvider.readonly"></app-identity-provider-details>
+      <app-identity-provider-details [identityProvider]="selectedIdentityProvider" [domains]="domains"
+        [readOnly]="readOnly || selectedIdentityProvider.readonly"></app-identity-provider-details>
     </div>
   </div>
 </div>

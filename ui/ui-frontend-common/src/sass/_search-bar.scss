@@ -25,6 +25,12 @@
         &::placeholder {
             @include vitamui-input-placeholder;
             font-weight: normal;
+            
+        }
+
+        &:disabled {
+            background-color: var(--vitamui-grey-200);
+            cursor: not-allowed;
         }
     }
 
@@ -32,14 +38,6 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        width: 30px;
-        height: 30px;
-        background-color: var(--vitamui-primary);
-        color: $white;
-
-        > i {
-            font-size: 18px;
-        }
     }
 
     > button.btn-reset {

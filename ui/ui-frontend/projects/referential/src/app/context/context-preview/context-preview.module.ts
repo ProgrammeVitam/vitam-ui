@@ -37,17 +37,15 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {
-  MatDialogModule,
-  MatDividerModule,
-  MatMenuModule,
-  MatOptionModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSnackBarModule,
-  MatTabsModule,
-} from '@angular/material';
+import {MatOptionModule} from '@angular/material/core';
+import {MatDialogModule} from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatTabsModule} from '@angular/material/tabs';
 import {RouterModule} from '@angular/router';
 
 import {ConfirmActionModule, VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
