@@ -827,6 +827,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final List<String> profilesNotFound = profileIds.stream()
                     .filter((profileId) -> profiles.stream().filter((profile) -> profile.getId().equals(profileId)).count() == 0).collect(Collectors.toList());
             LOGGER.error("Unable to embed group {} for user {}, profiles {} don't exist.", groupId, userDto.getId(), profilesNotFound);
+            LOGGER.info("profile non trouvé {} ", profilesNotFound);
+            LOGGER.info("profile touvé {}", profileIds);
             throw new ApplicationServerException("Unable to embed group " + groupId + " for user " + userDto.getId() + " : one of the profiles does not exist");
         }
         groupDto.setProfiles(profiles);
