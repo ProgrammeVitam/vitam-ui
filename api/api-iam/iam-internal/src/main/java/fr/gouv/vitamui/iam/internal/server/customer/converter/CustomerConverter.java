@@ -96,6 +96,10 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
 
     public static final String CUSTOM_GRAPHIC_IDENTITY_KEY = "Identité graphique personnalisée";
 
+    public static final String GDPR_ALERT_DELAY_KEY = "GDPR Délai d'alerte";
+
+    public static final String GDPR_ALERT_KEY = "GDPR Alerte";
+
     public CustomerConverter(final AddressConverter addressConverter, final OwnerRepository ownerRepository, final OwnerConverter ownerConverter) {
         this.ownerRepository = ownerRepository;
         this.ownerConverter = ownerConverter;
@@ -107,6 +111,8 @@ public class CustomerConverter implements Converter<CustomerDto, Customer> {
         final Map<String, String> logbookData = new LinkedHashMap<>();
         logbookData.put(CODE_KEY, LogbookUtils.getValue(customer.getCode()));
         logbookData.put(NAME_KEY, LogbookUtils.getValue(customer.getName()));
+        logbookData.put(GDPR_ALERT_DELAY_KEY, LogbookUtils.getValue(customer.getGdprAlertDelay()));
+        logbookData.put(GDPR_ALERT_KEY, LogbookUtils.getValue(customer.isGdprAlert()));
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(customer.isEnabled()));
         logbookData.put(COMPANY_NAME_KEY, LogbookUtils.getValue(customer.getCompanyName()));
         final AddressDto address = customer.getAddress() != null ? customer.getAddress() : new AddressDto();

@@ -38,7 +38,7 @@ import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, Criterion, DEFAULT_PAGE_SIZE,
-  Direction, InfiniteScrollTable, Operators, PageRequest, Role, rotateAnimation, SearchQuery, User
+  Direction, InfiniteScrollTable, Operators, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBar
 } from 'ui-frontend-common';
 
 import { HttpParams } from '@angular/common/http';
@@ -50,6 +50,9 @@ import {
 import { GroupApiService } from '../../core/api/group-api.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { CustomerService } from '../../core/customer.service';
+
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -62,7 +65,10 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     rotateAnimation,
   ]
 })
+
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
+
+
 
   // tslint:disable-next-line:no-input-rename
   @Input('search')
@@ -82,7 +88,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   loaded = false;
   statusFilter: string[] = [];
   filterMap: { [key: string]: any[] } = {
-    status: ['ENABLED', 'BLOCKED'],
+    status: [],
     level: null,
     group: null,
   };
@@ -91,6 +97,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId, tenantIdentifier: number, roles: Role[] }>;
+  totalMonth: number;
+  isInactifUsers = false;
 
   private groups: Array<{ id: string, group: any }> = [];
   private updatedUserSub: Subscription;
@@ -115,6 +123,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
+    private customerService: CustomerService,
+    private snackBar: VitamUISnackBar,
     public userService: UserService,
     private groupApiService: GroupApiService,
     @Inject(LOCALE_ID) private locale: string,
@@ -171,6 +181,9 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
           // we change the pending after groups load
           this.pending = false;
         });
+
+        this.checkInactifUsers();
+
       } else {
         // we load everything before displaying data
         this.loaded = true;
@@ -198,7 +211,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       this.groupFilterOptions = groups.map((group) => ({ value: group.id, label: group.name }));
       this.groupFilterOptions.sort(sortByLabel(this.locale));
     });
-
   }
 
   refreshLevelOptions(query?: SearchQuery) {
@@ -226,6 +238,51 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  showUser(user: User) {
+    if (user.status === "REMOVED") {
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+        data: { type: 'useralreadyDeleted' },
+      });
+    }
+    else {
+
+      this.userClick.emit(user);
+    }
+  }
+
+
+  checkInactifUsers() {
+
+    this.customerService.getMyCustomer().subscribe((customer) => {
+      if (customer.gdprAlert) {
+
+        this.dataSource.filter((user: User) => user.status === "DISABLED" && user.disablingDate !== null).forEach((u: User) => {
+
+          this.totalMonth = ((new Date().getFullYear()) - (new Date(u.disablingDate)).getFullYear()) * 12 - (new Date(u.disablingDate)).getMonth() + (new Date().getMonth());
+
+          if (this.totalMonth > customer.gdprAlertDelay && u.email.split('@')[1] === customer.defaultEmailDomain) {
+
+            this.isInactifUsers = true;
+          }
+        })
+
+        if (this.isInactifUsers) {
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 60000,
+            data: { type: 'usersToDelete' },
+          });
+        }
+      }
+    });
+
+
+
   }
 
 }

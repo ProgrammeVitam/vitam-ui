@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { merge, Subject } from 'rxjs';
-import {ConfirmDialogService, Customer, Logo, OtpState} from 'ui-frontend-common';
+import { merge, Observable, Subject } from 'rxjs';
+import {ConfirmDialogService, Customer, Logo, OtpState } from 'ui-frontend-common';
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { takeUntil } from 'rxjs/operators';
+import { ComponentType } from '@angular/cdk/portal';
+import { filter, takeUntil } from 'rxjs/operators';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
+import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 interface CustomerInfo {
@@ -87,12 +89,15 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private customerCreateValidators: CustomerCreateValidators,
     private confirmDialogService: ConfirmDialogService,
+    private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
   ) {
   }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
+      gdprAlert: true,
+      gdprAlertDelay: [72, Validators.min(72)],
       enabled: [true, Validators.required],
       code: [
         null,
@@ -125,6 +130,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       ]
     });
 
+    this.form.get('gdprAlert').valueChanges.subscribe(() => {
+      if (!this.form.get('gdprAlert').value) {
+        this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));
+      }
+    });
 
     this.onChanges();
 
@@ -165,6 +175,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
+    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' }).beforeClosed().pipe(
+      filter((result) => !result)
+    );
+
+  }
+
   onSubmit() {
     if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) { return; }
     this.creating = true;
@@ -197,15 +214,28 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     return customer;
   }
 
+  isDurationNotValid(): boolean {
+    if (this.form.get('gdprAlert').value) {
+      return this.form.get('gdprAlertDelay').invalid || this.form.get('gdprAlertDelay').pending;
+    } else {
+      this.form.get('gdprAlert').valueChanges.subscribe(() => {
+        this.form.get('gdprAlertDelay').setValue(72);
+      });
+      return false;
+    }
+  }
+
   firstStepInvalid(): boolean {
+
     return this.form.get('code').invalid || this.form.get('code').pending ||
       this.form.get('name').invalid || this.form.get('name').pending ||
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid || this.form.get('address.city').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending ||
-      this.form.get('internalCode').invalid || this.form.get('internalCode').pending;
+      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||
+      this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
+      this.form.get('address.country').invalid || this.form.get('address.country').pending;
+
   }
 
   secondStepInvalid(): boolean {

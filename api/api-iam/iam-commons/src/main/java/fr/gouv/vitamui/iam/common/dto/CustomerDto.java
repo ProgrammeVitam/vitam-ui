@@ -126,4 +126,8 @@ public class CustomerDto extends IdDto {
     @Length(max = 500)
     private String portalMessage;
     //****
+
+    private boolean gdprAlert = false;
+
+    private int gdprAlertDelay;
 }

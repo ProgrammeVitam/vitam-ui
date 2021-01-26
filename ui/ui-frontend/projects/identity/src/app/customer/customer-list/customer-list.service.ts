@@ -85,6 +85,7 @@ export class CustomerListService extends SearchService<Customer> {
 
   private transformCustomer(customer: Customer): Customer {
     return {
+
       id: customer.id,
       identifier: customer.identifier,
       enabled: customer.enabled,
@@ -103,7 +104,10 @@ export class CustomerListService extends SearchService<Customer> {
       portalTitle: customer.portalTitle,
       readonly: customer.readonly,
       hasCustomGraphicIdentity: customer.hasCustomGraphicIdentity,
-      themeColors: customer.themeColors
+      themeColors: customer.themeColors,
+      gdprAlert : customer.gdprAlert,
+      gdprAlertDelay : customer.gdprAlertDelay,
+
     };
   }
 

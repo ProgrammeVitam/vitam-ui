@@ -61,4 +61,6 @@ export interface User extends Id {
   analytics?: Analytics;
   siteCode: string;
   photo?: string;
+  disablingDate : string;
+
 }

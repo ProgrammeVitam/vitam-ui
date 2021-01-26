@@ -1,3 +1,5 @@
+<div *ngIf="user?.status !== 'REMOVED'">
+
 <button class="btn primary mb-4" (click)="openAttributionGroupe()" *ngIf="showUpdateButton" [disabled]="userInfo.type === 'NONE'">
     <div i18n="user group tab edit@@userGroupTabEditButton">
         Modifier
@@ -31,4 +33,11 @@
         info_outline
         </div>
     </div>
+</div>
+
+</div>
+
+<div *ngIf="user?.status === 'REMOVED'">
+  <h2>ATTENTION</h2>
+ L'utilisateur que vous cherchez est déja supprimé
 </div>

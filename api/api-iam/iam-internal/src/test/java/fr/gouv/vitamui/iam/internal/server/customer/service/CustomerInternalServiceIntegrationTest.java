@@ -272,6 +272,8 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         owners.add(owner);
         dto.setOwners(owners);
         dto.setHasCustomGraphicIdentity(false);
+        dto.setGdprAlert(false);
+        dto.setGdprAlertDelay(72);
         return dto;
     }
 }

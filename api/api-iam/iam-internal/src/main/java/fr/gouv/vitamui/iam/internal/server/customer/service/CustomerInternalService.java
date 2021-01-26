@@ -301,6 +301,14 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     logbooks.add(new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(), entry.getValue()));
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
+                case "gdprAlertDelay" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(), entry.getValue()));
+                    customer.setGdprAlertDelay(CastUtils.toInt(entry.getValue()));
+                    break;
+                case "gdprAlert" :
+                    logbooks.add(new EventDiffDto(CustomerConverter.GDPR_ALERT_KEY, customer.isGdprAlert(), entry.getValue()));
+                    customer.setGdprAlert(CastUtils.toBoolean(entry.getValue()));
+                    break;
                 case "address":
                     final Address address = customer.getAddress();
                     if (address == null) {
@@ -465,9 +473,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
-        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
-        final VitamContext vitamContext = new VitamContext(tenantIdentifier)
-            .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
+        final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
+            .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
             .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);

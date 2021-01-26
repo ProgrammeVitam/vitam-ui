@@ -38,11 +38,10 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
 import { AdminUserProfile, AuthService, Customer, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
-
 import { UserApiService } from '../../core/api/user-api.service';
 import { UserService } from '../user.service';
+
 
 @Component({
   selector: 'app-user-preview',
@@ -59,9 +58,12 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
+  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
+
 
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
+
 
   constructor(
     private matDialog: MatDialog,
@@ -69,14 +71,17 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     private authService: AuthService,
     public userApi: UserApiService,
     private startupService: StartupService
-  ) {}
+  ) { }
 
   ngOnInit() {
+
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
       this.user = updatedUser;
     });
+
   }
+
 
   ngOnDestroy() {
     this.userUpdatedSub.unsubscribe();
@@ -126,6 +131,36 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
       event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE')
     );
+  }
+
+    deleteUser(user: User, status: string) {
+
+    const emailadress  = user.email.split('@');
+    const email = "anonyme-"+user.identifier + "@"+emailadress[1];
+    const firstname = "";
+    const lastname = "";
+    const siteCode = "";
+    const internalCode = "";
+    const groupId = "";
+    const address = {
+      street: "",
+      zipCode: "",
+      city: "",
+      country: ""};
+
+      let dialogToOpen;
+    dialogToOpen = this.confirmdeleteUserDialog;
+    const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    dialogRef.afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, groupId, firstname, siteCode, internalCode })
+          .subscribe((user) => {
+            this.user = user;
+            this.emitClose();
+          });
+
+      });
   }
 
 }

@@ -68,7 +68,9 @@ const expectedCustomer: Customer = {
     country: 'france'
   },
   owners: [],
-  themeColors: {}
+  themeColors: {},
+  gdprAlert : false,
+  gdprAlertDelay : 72
 };
 
 describe('CustomerResolver', () => {

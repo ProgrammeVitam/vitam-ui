@@ -51,6 +51,9 @@ import { CustomerColorsInputModule } from './customer-colors-input/customer-colo
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -64,12 +67,14 @@ import { CustomerCreateValidators } from './customer-create.validators';
     ReactiveFormsModule,
     OwnerFormModule,
     VitamUICommonModule,
-    CustomerPreviewModule
+    CustomerPreviewModule,
+    MatDialogModule
   ],
   declarations: [
     CustomerCreateComponent,
+    CustomerAlertingComponent
   ],
-  entryComponents: [CustomerCreateComponent],
+  entryComponents: [CustomerCreateComponent, CustomerAlertingComponent],
   providers: [CustomerCreateValidators]
 })
 export class CustomerCreateModule { }
