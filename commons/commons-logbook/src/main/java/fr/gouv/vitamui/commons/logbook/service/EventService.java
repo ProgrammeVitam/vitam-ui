@@ -36,12 +36,9 @@
  */
 package fr.gouv.vitamui.commons.logbook.service;
 
-import java.time.OffsetDateTime;
 import java.util.Collection;
 
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.logbook.common.*;
-import org.apache.commons.lang3.StringUtils;
+import fr.gouv.vitam.common.LocalDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +46,13 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.gouv.vitam.common.guid.GUID;
 import fr.gouv.vitam.common.guid.GUIDFactory;
 import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.logbook.common.EventLogable;
+import fr.gouv.vitamui.commons.logbook.common.EventMessages;
+import fr.gouv.vitamui.commons.logbook.common.EventStatus;
+import fr.gouv.vitamui.commons.logbook.common.EventTypeProc;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
@@ -167,10 +169,7 @@ public class EventService {
         event.setOutMessg(messages.getOutMessg().get(outDetail));
         event.setEvIdReq(evIdReq);
         event.setEvIdAppSession(evIdAppSession);
-        if (StringUtils.isBlank(event.getEvDateTime())) {
-            event.setEvDateTime(OffsetDateTime.now().toString());
-        }
-
+        event.setEvDateTime(LocalDateUtil.now().toString());
         event.setCreationDate(System.nanoTime());
         return repository.save(event);
     }
