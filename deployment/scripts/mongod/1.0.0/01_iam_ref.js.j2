@@ -562,34 +562,6 @@ db.profiles.insert({
   ]
 });
 
-// ========================================= partie archive search ============================================
-
-db.profiles.insert({
-  "_id": "system_archive_search_profile",
-  "identifier" : NumberInt(23),
-  "name": "Archive Search Profile",
-  "description": "Archive Search Profile",
-  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
-  "level": "",
-  "enabled": true,
-  "readonly": false,
-  "customerId": "system_customer",
-  "roles": [
-  {
-    "name": "ROLE_CREATE_ARCHIVE_SEARCH"
-  },
-  {
-    "name": "ROLE_GET_ARCHIVE_SEARCH"
-  },
-  {
-    "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
-  }
-   ]
-});
-
-//========================================== partie archive search =============================================
-
 // ========================================= GROUPS =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------
