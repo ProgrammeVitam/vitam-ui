@@ -74,7 +74,7 @@
           </vitamui-common-input>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish fileFormat creation button@@fileFormatCreateFinishButton">Terminer</button>
+        <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending" i18n="Finish fileFormat creation button@@fileFormatCreateFinishButton">Terminer</button>
         <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel fileFormat creation@@fileFormatCreateCancelButton">Annuler</button>
       </div>
     </cdk-step>
