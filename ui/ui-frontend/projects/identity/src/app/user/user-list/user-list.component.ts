@@ -37,17 +37,15 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, Criterion, DEFAULT_PAGE_SIZE,
-  Direction, InfiniteScrollTable, Operators, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBar
+  AdminUserProfile, ApplicationId, AuthService, buildCriteriaFromSearch, collapseAnimation, DEFAULT_PAGE_SIZE,
+  Direction, Group, InfiniteScrollTable, PageRequest, Role, rotateAnimation, SearchQuery, User, VitamUISnackBar
 } from 'ui-frontend-common';
 
-import { HttpParams } from '@angular/common/http';
 import {
   Component, ElementRef, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output,
   TemplateRef, ViewChild
 } from '@angular/core';
 
-import { GroupApiService } from '../../core/api/group-api.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
@@ -83,7 +81,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
-  loaded = false;
   statusFilter: string[] = [];
   filterMap: { [key: string]: any[] } = {
     status: [],
@@ -98,7 +95,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   totalMonth: number;
   isInactifUsers = false;
 
-  private groups: Array<{ id: string, group: any }> = [];
+  private userGroups: Array<{ id: string, group: any }> = [];
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
@@ -119,11 +116,26 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   }
   private _connectedUserInfo: AdminUserProfile;
 
+  @Input()
+  get groups(): Group[] { return this._groups; }
+  set groups(groupList: Group[]) {
+    this._groups = groupList;
+    if (groupList) {
+      this.updateData(groupList);
+
+      this.updatedData.subscribe(() => {
+        this.updateData(groupList);
+      });
+    }
+  }
+
+  // tslint:disable-next-line:variable-name
+  private _groups: Group[];
+
   constructor(
     private customerService: CustomerService,
     private snackBar: VitamUISnackBar,
     public userService: UserService,
-    private groupApiService: GroupApiService,
     @Inject(LOCALE_ID) private locale: string,
     private authService: AuthService
   ) {
@@ -148,39 +160,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       }
     });
 
-    this.updatedData.subscribe(() => {
-      const groupIds = new Set(this.dataSource.map((user: User) => user.groupId));
-
-      const idsToFetch = new Array<string>();
-      groupIds.forEach((groupId) => {
-        const existingGroup = this.groups.find((group) => group.id === groupId);
-        if (!existingGroup) {
-          idsToFetch.push(groupId);
-        }
-      });
-
-      if (idsToFetch && idsToFetch.length > 0) {
-        const criterionArray: Criterion[] = [];
-        criterionArray.push({ key: 'id', value: idsToFetch, operator: Operators.in });
-
-        const params = new HttpParams().set('embedded', 'ALL').set('criteria', JSON.stringify({ criteria: criterionArray }));
-
-        this.groupApiService.getAllByParams(params).subscribe((results) => {
-          results.forEach((group) => {
-            this.groups.push({ id: group.id, group });
-          });
-          this.loaded = true;
-          this.pending = false;
-        });
-
-        this.checkInactifUsers();
-
-      } else {
-        this.loaded = true;
-        this.pending = false;
-      }
-    });
-
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
@@ -195,11 +174,22 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
       this.search(pageRequest);
     });
+  }
 
-    this.groupApiService.getAllByParams(new HttpParams()).subscribe((groups) => {
-      this.groupFilterOptions = groups.map((group) => ({ value: group.id, label: group.name }));
-      this.groupFilterOptions.sort(sortByLabel(this.locale));
-    });
+  updateData(groups: Group[]) {
+    const groupIds = new Set(this.dataSource.map((user: User) => user.groupId));
+
+    groupIds.forEach((groupId) => {
+        const existingGroup =  this.userGroups.find((group) => group.id === groupId);
+        if (!existingGroup) {
+          const newGroup = groups.find((group) => group.id === groupId);
+          if (newGroup) {
+            this.userGroups.push({ id: newGroup.id, group: newGroup });
+          }
+        }
+      });
+    this.groupFilterOptions = this.userGroups.map((group) => ({ value: group.id, label: group.group.name }));
+    this.groupFilterOptions.sort(sortByLabel(this.locale));
   }
 
   refreshLevelOptions(query?: SearchQuery) {
@@ -216,8 +206,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
   getGroup(user: User) {
     const userGroup = this.groups.find((group) => group.id === user.groupId);
-
-    return userGroup ? userGroup.group : undefined;
+    return userGroup ? userGroup : undefined;
   }
 
   onFilterChange(key: string, values: any[]) {

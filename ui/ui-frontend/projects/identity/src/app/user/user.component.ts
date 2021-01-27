@@ -39,8 +39,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { AdminUserProfile, AuthService, Customer, DEFAULT_PAGE_SIZE, Direction, GlobalEventService,
+  Group,
   PageRequest, SidenavPage, User } from 'ui-frontend-common';
 import { CustomerService } from '../core/customer.service';
+import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './user.service';
@@ -56,7 +58,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   connectedUserInfo: AdminUserProfile;
   customer: Customer;
   search: string;
-
+  groups: Group[];
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
 
@@ -66,7 +68,8 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     public route: ActivatedRoute,
     public customerService: CustomerService,
     public globalEventService: GlobalEventService,
-    private authService: AuthService
+    private authService: AuthService,
+    public groupService: GroupService,
   ) {
     super(route, globalEventService);
   }
@@ -74,13 +77,14 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   ngOnInit() {
     this.customerService.getMyCustomer().subscribe((customer) => this.customer = customer);
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
+    this.groupService.getAll(true).subscribe((data: Group[]) => {this.groups = data; });
   }
 
   openCreateUserDialog() {
     const dialogRef = this.dialog.open(UserCreateComponent, {
       panelClass: 'vitamui-modal',
       disableClose: true,
-      data: { userInfo: this.connectedUserInfo, customer: this.customer }
+      data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups }
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) { this.refreshList(); }
