@@ -125,7 +125,6 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       criteria['agIdExt.TransferringAgency'] = this._searchText;
       criteria['agIdExt.originatingAgency'] = this._searchText;
       criteria['agIdExt.ArchivalAgreement'] = this._searchText;
-      criteria['evDetData.EvDetailReq'] = this._searchText;
     }
 
     if (this._filters) {
