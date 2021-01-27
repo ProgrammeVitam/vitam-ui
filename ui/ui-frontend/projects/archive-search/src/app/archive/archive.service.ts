@@ -71,6 +71,11 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.getAllAccessContracts(params, headers);
   }
 
+  public getOntologiesFromJson(): Observable<any> {
+    return this.http.get("assets/ontologies/ontologies.json")
+      .pipe(map(resp => resp));
+  }
+
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
