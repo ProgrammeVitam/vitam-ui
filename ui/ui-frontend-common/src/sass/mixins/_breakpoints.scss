@@ -8,7 +8,7 @@ $small-screen: 1200px;
 
 @mixin breakpoint($point) {
     @if $point == largeScreen {
-        @media screen and (max-width: #{$medium-screen}) {
+        @media screen and (max-width: #{$large-screen}) {
             @content;
         }
    }
