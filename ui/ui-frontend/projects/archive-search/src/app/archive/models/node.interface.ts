@@ -39,6 +39,7 @@ import {Id} from 'ui-frontend-common';
 export interface FilingHoldingSchemeNode extends Id {
   title: string;
   type: string;
+  label?: string;
   children: FilingHoldingSchemeNode[];
   parents: FilingHoldingSchemeNode[];
   vitamId: string;
