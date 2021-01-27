@@ -38,8 +38,10 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AdminUserProfile, AuthService, Customer, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
+import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
 import { UserApiService } from '../../core/api/user-api.service';
+import { GroupService } from '../../group/group.service';
+import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
 
@@ -63,14 +65,25 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
 
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
+  attribaGroups: GroupSelection[];
+
+  @Input()
+  get groups(): Group[] { return this._groups; }
+  set groups(groupList: Group[]) {
+    this._groups = groupList;
+  }
+
+    // tslint:disable-next-line:variable-name
+    private _groups: Group[];
 
 
-  constructor(
+    constructor(
     private matDialog: MatDialog,
     private userService: UserService,
     private authService: AuthService,
     public userApi: UserApiService,
-    private startupService: StartupService
+    private startupService: StartupService,
+    public groupService: GroupService
   ) { }
 
   ngOnInit() {

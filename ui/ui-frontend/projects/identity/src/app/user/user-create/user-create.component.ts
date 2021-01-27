@@ -45,7 +45,6 @@ import {
 import { GroupSelection } from './../group-selection.interface';
 
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { GroupService } from '../../group/group.service';
 import { UserService } from '../user.service';
 import { UserValidators } from '../user.validators';
 import { UserCreateValidators } from './user-create.validators';
@@ -76,26 +75,27 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile, customer: Customer },
+    @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile, customer: Customer, groups: Group[] },
     private formBuilder: FormBuilder,
     private userService: UserService,
     private authService: AuthService,
     private userCreateValidators: UserCreateValidators,
-    private groupService: GroupService,
     private confirmDialogService: ConfirmDialogService
   ) { }
 
   ngOnInit() {
-    this.groupService.getAll(true).subscribe((groups) => {
-      this.groups = groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
-      this.fullGroup = groups;
-      if (!isRootLevel(this.authService.user)) {
-        this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
-      }
-      this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
-    });
+
+    // tslint:disable-next-line: max-line-length
+    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+    this.fullGroup = this.data.groups;
+    if (!isRootLevel(this.authService.user)) {
+      this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
+    }
+    this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0);
+
     this.customer = this.data.customer;
     this.connectedUserInfo = this.data.userInfo;
+
     this.formEmail = this.formBuilder.group({
       emailFirstPart: null,
       domain: [this.customer.emailDomains[0]]
