@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.identity.service;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -57,9 +49,15 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Optional;
 
 /**
- *
  *
  */
 @Service
@@ -74,7 +72,8 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
     private final IamExternalWebClientFactory factoryWebClient;
 
     @Autowired
-    public CustomerService(final CommonService commonService, final IamExternalRestClientFactory factory, final IamExternalWebClientFactory factoryWebClient) {
+    public CustomerService(final CommonService commonService, final IamExternalRestClientFactory factory,
+        final IamExternalWebClientFactory factoryWebClient) {
         this.commonService = commonService;
         this.factory = factory;
         this.factoryWebClient = factoryWebClient;
@@ -90,7 +89,8 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
         return factoryWebClient.getCustomerWebClient().create(context, customerToCreate);
     }
 
-    public CustomerDto patch(final ExternalHttpContext context, final String id, final CustomerPatchFormData customerPatchFormData) {
+    public CustomerDto patch(final ExternalHttpContext context, final String id,
+        final CustomerPatchFormData customerPatchFormData) {
         super.beforePatch(customerPatchFormData.getPartialCustomerDto(), id);
         return factoryWebClient.getCustomerWebClient().patch(context, id, customerPatchFormData);
     }
@@ -101,8 +101,9 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
     }
 
     @Override
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
@@ -133,4 +134,9 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
     public ResponseEntity<Resource> getCustomerLogo(final ExternalHttpContext context, final String id) {
         return getClient().getCustomerLogo(context, id);
     }
+
+    public boolean getGdprSettingStatus(final ExternalHttpContext context) {
+        return getClient().getGdprSettingStatus(context);
+    }
+
 }

@@ -217,6 +217,7 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
+    gdpr_alert_readonly: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30

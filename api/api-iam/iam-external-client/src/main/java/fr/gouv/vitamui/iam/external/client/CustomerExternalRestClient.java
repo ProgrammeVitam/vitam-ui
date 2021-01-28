@@ -58,8 +58,6 @@ import java.util.List;
 
 /**
  * A REST client to check existence, read, create, update and delete customers.
- *
- *
  */
 public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClient<CustomerDto, ExternalHttpContext> {
 
@@ -75,7 +73,8 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_ME);
 
-        final ResponseEntity<CustomerDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, CustomerDto.class);
+        final ResponseEntity<CustomerDto> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, CustomerDto.class);
         checkResponse(response);
         return response.getBody();
     }
@@ -103,7 +102,8 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
     }
 
     @Override
-    @Deprecated // use {@link CustomerExternalWebClient} for customer creation which supports multipart for the graphical identity.
+    @Deprecated
+    // use {@link CustomerExternalWebClient} for customer creation which supports multipart for the graphical identity.
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto dto) {
         return super.create(context, dto);
     }
@@ -113,9 +113,24 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
         SanityChecker.check(id);
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo");
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
+        final ResponseEntity<Resource> response =
+            restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
         checkResponse(response);
         return response;
 
+    }
+
+    public boolean getGdprSettingStatus(final ExternalHttpContext context) {
+        LOGGER.debug("get Gdpr Setting Status");
+
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.GDPR_STATUS);
+
+        final ResponseEntity<Boolean> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Boolean.class);
+        checkResponse(response);
+        return response.getBody();
     }
 }

@@ -8,6 +8,7 @@ pour la partie suppression des données personnelles des utilisateurs, on a modi
 Pour cela nous avons ajouté deux attributs : 
    - **`gdprAlert`** :  Pour indiquer que le client créé recois ou non une alerte qui indique la présence des utilisateurs inactifs au niveau son organisation.
    - **`gdprAlertDelay` :**  c'est le délais d'alerte pour recevoir une notification qui indique la présence des utilisateurs inactifs à supprimer.
+   -  **Attention : ** Ces deux paramètres sont modifiables seulement si le paramètre de configuration `vitamui.iam_internal.gdpr_alert_readonly` est à `false`. Ce paramètre est géré par l'exploitant via le fichier de configuration `environments/group_vars/all/vitamui_vars.yml`. 
 
 * ### Modification au niveau du modèle des utilisateurs  :
 Pour cela nous avons ajouté 2 attributs : 
@@ -15,4 +16,4 @@ Pour cela nous avons ajouté 2 attributs :
    - Attribut **`RemovingDate`** : pour indiquer la date de suppression d'un utilisateur
 
 Toutes les données personnelles seront supprimées de la base à part l'email qui sera enregistré mais avec une adresse anonyme sous la forme `anonyme-identifier@nom de l'organisation`
-L'action de suppression est irréversible, donc pas de possiblité pour récupérer l'utilisateur / le réactiver ou le modifier après.
+L'action de suppression est irréversible, donc pas de possibilité pour récupérer l'utilisateur / le réactiver ou le modifier après.

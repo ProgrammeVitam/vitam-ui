@@ -53,6 +53,7 @@ import { CustomerPreviewComponent } from './customer-preview.component';
 export class InformationTabStubComponent {
   @Input() customer: Customer;
   @Input() readOnly: boolean;
+  @Input() gdprReadOnlyStatus: boolean;
 }
 
 @Component({ selector: 'app-sso-tab', template: '' })
@@ -67,7 +68,7 @@ export class GraphicIdentityTabStubComponent {
   @Input() readOnly: boolean;
 }
 
-@Component({ template: '<app-customer-preview [customer]="customer"></app-customer-preview>' })
+@Component({ template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>' })
 class TestHostComponent {
   customer: any;
 
@@ -77,6 +78,11 @@ class TestHostComponent {
 describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
+
+  const customerServiceSpy = {
+    updated: new Subject()
+  };
+
 
   beforeEach(async(() => {
     const startupServiceStub = { getPortalUrl: () => 'https://dev.vitamui.com',
@@ -99,7 +105,7 @@ describe('CustomerPreviewComponent', () => {
         GraphicIdentityTabStubComponent,
       ],
       providers: [
-        { provide: CustomerService, useValue: { updated: new Subject() } },
+        { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment }
@@ -116,7 +122,7 @@ describe('CustomerPreviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(testhost).toBeTruthy();
   });
 

@@ -38,8 +38,6 @@ package fr.gouv.vitamui.commons.api;
 
 /**
  * Global definition of constants like usual paths, values ...
- *
- *
  */
 public class CommonConstants {
 
@@ -64,6 +62,8 @@ public class CommonConstants {
     public static final String PATH_ME = "/me";
 
     public static final String PATH_ANALYTICS = "/analytics";
+
+    public static final String GDPR_STATUS = "/gdpr-status";
 
     public static final String X_TENANT_ID_HEADER = "X-Tenant-Id";
 
@@ -118,15 +118,15 @@ public class CommonConstants {
     public static final String UPLOAD_ROLE_PREFIX = ROLE_PREFIX + "UPLOAD_";
 
     public static final String EXPORT_ROLE_PREFIX = ROLE_PREFIX + "EXPORT_";
-    
+
     public static final String IMPORT_ROLE_PREFIX = ROLE_PREFIX + "IMPORT_";
-    
+
     public static final String PATH_CHECK = "/check";
 
     public static final String PATH_LEVELS = "/levels";
-    
+
     public static final String PATH_IMPORT = "/import";
-    
+
     public static final String PATH_EXPORT = "/export";
 
     public static final String USER_ID_ATTRIBUTE = "id";

@@ -92,8 +92,6 @@ import java.util.Optional;
  *
  * Endpoints of this controller have cross-customers and cross-tenant capacities. Only instance
  * administrators should be allowed to use this controller.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CUSTOMERS_URL)
@@ -136,17 +134,18 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     }
 
     @Override
-    @Secured({ ServicesData.ROLE_GET_CUSTOMERS })
+    @Secured({ServicesData.ROLE_GET_CUSTOMERS})
     @GetMapping(CommonConstants.PATH_ID)
     public CustomerDto getOne(final @PathVariable("id") String id) {
         LOGGER.debug("Get {}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         return customerExternalService.getOne(id);
     }
 
     /**
      * Retrieve Authenticated User Customer.
      * Everyone has a right to get his customer informations.
+     *
      * @return
      */
     @GetMapping(path = CommonConstants.PATH_ME)
@@ -155,11 +154,14 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     }
 
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         RestUtils.checkCriteria(criteria);
         return customerExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
@@ -177,9 +179,10 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.check(id);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update.");
         return customerExternalService.update(dto);
     }
 
@@ -187,8 +190,8 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     public CustomerDto patch(final @PathVariable("id") String id,
-            @RequestPart(value = "partialCustomerDto", required = true) @Valid final Map<String, Object> partialCustomer,
-            @RequestParam(value = "logo") final Optional<MultipartFile> logo) {
+        @RequestPart(value = "partialCustomerDto", required = true) @Valid final Map<String, Object> partialCustomer,
+        @RequestParam(value = "logo") final Optional<MultipartFile> logo) {
         LOGGER.debug("Patch customer with {} and logo {}", partialCustomer.get("id"), logo);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         SanityChecker.check(id);
@@ -224,4 +227,16 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
 
     }
 
+    /**
+     * Retrieve settings for GPDR.
+     *
+     * @return boolean
+     */
+    @ApiOperation(value = "Get Gdpr Setting Status")
+    @GetMapping(CommonConstants.GDPR_STATUS)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return customerExternalService.getGdprSettingStatus();
+    }
 }

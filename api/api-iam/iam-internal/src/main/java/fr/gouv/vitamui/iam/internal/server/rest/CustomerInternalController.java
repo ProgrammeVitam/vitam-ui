@@ -86,8 +86,6 @@ import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the customers.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CUSTOMERS_URL)
@@ -112,6 +110,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
 
     /**
      * Get All with criteria.
+     *
      * @param criteria
      * @return
      */
@@ -125,6 +124,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
 
     /**
      * Get paginated items with criteria.
+     *
      * @param page
      * @param size
      * @param criteria
@@ -132,17 +132,21 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
      * @param direction
      * @return
      */
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         RestUtils.checkCriteria(criteria);
         return internalCustomerService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     /**
      * GetOne with criteria and item id.
+     *
      * @param id
      * @param criteria
      * @return
@@ -170,6 +174,7 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     /**
      * Retrieve Authenticated User Customer.
      * Everyone has a right to get his customer informations.
+     *
      * @return
      */
     @GetMapping(path = CommonConstants.PATH_ME)
@@ -186,7 +191,8 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update.");
         return internalCustomerService.update(dto);
     }
 
@@ -198,11 +204,13 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public CustomerDto patch(final @PathVariable("id") String id, @RequestParam(value = "logo") final Optional<MultipartFile> logo,
-            @RequestPart(value = "partialCustomerDto", required = true) final Map<String, Object> partialCustomerDto) {
+    public CustomerDto patch(final @PathVariable("id") String id,
+        @RequestParam(value = "logo") final Optional<MultipartFile> logo,
+        @RequestPart(value = "partialCustomerDto", required = true) final Map<String, Object> partialCustomerDto) {
         LOGGER.debug("Patch customer {} {}", partialCustomerDto, logo);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
-        Assert.isTrue(StringUtils.equals(id, (String) partialCustomerDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, (String) partialCustomerDto.get("id")),
+            "The DTO identifier must match the path identifier for update.");
         return internalCustomerService.patch(partialCustomerDto, logo);
     }
 
@@ -227,6 +235,17 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
         LOGGER.debug("get logo for customer with id :{}", id);
         return internalCustomerService.getCustomerLogo(id);
 
+    }
+
+    /**
+     * get GDPR status (readonly/editable)
+     *
+     * @return (readonly / editable)
+     */
+    @GetMapping(path = CommonConstants.GDPR_STATUS)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return internalCustomerService.getGdprSettingStatus();
     }
 
 }

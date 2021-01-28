@@ -122,11 +122,14 @@ public class CustomerController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get entities paginated")
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction) {
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         RestUtils.checkCriteria(criteria);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -155,12 +158,14 @@ public class CustomerController extends AbstractUiRestController {
     public CustomerDto update(final @PathVariable("id") String id, @RequestBody final CustomerDto entityDto) {
         LOGGER.debug("update class={}", entityDto.getClass().getName());
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, entityDto.getId()),
+            "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);
     }
 
     /**
      * Retrieve Authenticated User Customer.
+     *
      * @return
      */
     @GetMapping(path = CommonConstants.PATH_ME)
@@ -172,11 +177,12 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto patch(final @PathVariable("id") String id, @ModelAttribute final CustomerPatchFormData customerPatchFormData) {
+    public CustomerDto patch(final @PathVariable("id") String id,
+        @ModelAttribute final CustomerPatchFormData customerPatchFormData) {
         LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
-                "Unable to patch customer : the DTO id must match the path id");
+            "Unable to patch customer : the DTO id must match the path id");
         return service.patch(buildUiHttpContext(), id, customerPatchFormData);
     }
 
@@ -195,6 +201,19 @@ public class CustomerController extends AbstractUiRestController {
         LOGGER.debug("Get customer logo={}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = service.getCustomerLogo(buildUiHttpContext(), id);
-        return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+        return RestUtils
+            .buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
+    }
+
+
+    /**
+     * Retrieve settings for GPDR.
+     *
+     * @return
+     */
+    @GetMapping(path = CommonConstants.GDPR_STATUS)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return service.getGdprSettingStatus(buildUiHttpContext());
     }
 }

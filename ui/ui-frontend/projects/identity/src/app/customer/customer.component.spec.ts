@@ -51,6 +51,7 @@ import { CustomerCreateComponent } from './customer-create/customer-create.compo
 import { CustomerComponent } from './customer.component';
 
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { CustomerService } from '../core/customer.service';
 
 let component: CustomerComponent;
 let fixture: ComponentFixture<CustomerComponent>;
@@ -73,6 +74,7 @@ class CustomerListStubComponent {
 class CustomerPreviewStubComponent {
   @Input() customer: any;
   @Output() previewClose = new EventEmitter();
+  @Input() gdprReadOnlySettingStatus: boolean;
 }
 
 @Component({ selector: 'app-owner-preview', template: '' })
@@ -83,6 +85,10 @@ class OwnerPreviewStubComponent {
 }
 
 describe('CustomerComponent', () => {
+  const customerServiceSpy = {
+    getGdprReadOnlySettingStatus: () => of(true)
+  };
+
 
   beforeEach(async(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -104,6 +110,7 @@ describe('CustomerComponent', () => {
         OwnerPreviewStubComponent,
       ],
       providers: [
+        { provide: CustomerService, useValue: customerServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment }

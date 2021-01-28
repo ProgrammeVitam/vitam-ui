@@ -88,9 +88,7 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
   }
 
 
-
-  ngOnInit() {
-       
+  ngOnInit() {      
      this.searchCustomersOrderedByCode();
      this.customerDataService.tenantsUpdated$.subscribe((tenants) => {
       this.tenants = tenants;

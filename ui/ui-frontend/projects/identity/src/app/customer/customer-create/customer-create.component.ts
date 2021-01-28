@@ -92,6 +92,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 4;
   private keyPressSubscription: Subscription;
+  gdprReadOnlyStatus: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
@@ -142,6 +143,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       ]
     });
 
+
+    if(this.data){
+      this.gdprReadOnlyStatus = this.data.gdprReadOnlySettingStatus;
+    }
     const colors = this.themeService.getThemeColors();
     this.form.get('themeColors').setValue({
       'vitamui-primary': colors['vitamui-primary'],
@@ -220,6 +225,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.lastStepIsInvalid()) { return; }
     this.creating = true;
+
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
     this.customerService.create(customer, this.imageToUpload).subscribe(
@@ -313,7 +319,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('companyName').invalid || this.form.get('companyName').pending ||
       this.form.get('address.street').invalid || this.form.get('address.street').pending ||
       this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||     
+      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||
       this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
       this.form.get('address.country').invalid || this.form.get('address.country').pending;
 

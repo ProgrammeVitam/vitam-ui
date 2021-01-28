@@ -72,3 +72,4 @@ logging:
     # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
     fr.gouv.vitamui.iam.security: INFO
 
+gdpr_alert_readonly: true

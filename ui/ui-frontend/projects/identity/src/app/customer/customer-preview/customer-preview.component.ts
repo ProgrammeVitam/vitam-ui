@@ -51,6 +51,9 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   @Input() isPopup: boolean;
   @Output() previewClose = new EventEmitter();
 
+  @Input() gdprReadOnlyStatus: boolean;
+
+
   customerUpdatedSub: Subscription;
 
   constructor(private customerService: CustomerService, private startupService: StartupService) {}

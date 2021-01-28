@@ -53,7 +53,8 @@ export class CustomerService {
 
   updated = new Subject<Customer>();
 
-  constructor(private customerApi: CustomerApiService, private snackBar: VitamUISnackBar) {}
+  constructor(private customerApi: CustomerApiService, private snackBar: VitamUISnackBar) {
+  }
 
   get(id: string): Observable<Customer> {
     return this.customerApi.getOne(id);
@@ -125,6 +126,11 @@ export class CustomerService {
 
   getCustomerLogo(id: string): Observable<HttpResponse<Blob>> {
     return this.customerApi.getCustomerLogo(id);
+  }
+
+
+  public getGdprReadOnlySettingStatus(): Observable<boolean> {
+    return this.customerApi.getGdprSettingStatus();
   }
 
 }

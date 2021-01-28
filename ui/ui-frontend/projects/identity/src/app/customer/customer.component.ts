@@ -39,6 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'ui-frontend-common';
+import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 
@@ -52,17 +53,28 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
   customers: Customer[];
   previewType: 'CUSTOMER' | 'OWNER' | 'TENANT';
   owner: Owner;
+  gdprReadOnlySettingStatus = true;
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService, public customerService: CustomerService) {
     super(route, globalEventService);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.customerService.getGdprReadOnlySettingStatus().subscribe(settingStatus => {
+      this.gdprReadOnlySettingStatus = settingStatus;
+    });
+   }
 
   openCreateCustomerDialog() {
-    const dialogRef = this.dialog.open(CustomerCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    const dialogRef = this.dialog.open(CustomerCreateComponent,
+       { 
+        data: {
+           gdprReadOnlySettingStatus: this.gdprReadOnlySettingStatus
+        },
+        panelClass: 'vitamui-modal', 
+        disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) { this.refreshList(); }
     });

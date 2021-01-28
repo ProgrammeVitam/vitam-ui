@@ -564,6 +564,57 @@
         }
       }
     },
+    "/customers/gdpr-status": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Get Gdpr Setting Status",
+        "operationId": "getGdprSettingStatusUsingGET",
+        "parameters": [
+          {
+            "name": "X-Application-Id",
+            "in": "header",
+            "description": "Identifiant unique utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ© la requÃªte",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "X-User-Token",
+            "in": "header",
+            "description": "Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l'authentification",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "401": {
+            "description": "La requÃªte n'est pas autorisÃ©e. Le X-User-Token n'est pas valide"
+          },
+          "403": {
+            "description": "L'utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration"
+          },
+          "404": {
+            "description": "Non trouvÃ©e"
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/customers/me": {
       "get": {
         "tags": [

@@ -261,7 +261,7 @@ describe('CustomerListComponent', () => {
       ],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
-        { provide: CustomerService, useValue: { updated: new Subject() } },
+        { provide: CustomerService, useValue: { updated: new Subject()} },
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
@@ -288,7 +288,7 @@ describe('CustomerListComponent', () => {
     page = new Page();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 

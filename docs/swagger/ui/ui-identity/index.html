@@ -459,12 +459,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_createusingpost">2.1.1. Create entity</a></li>
 <li><a href="#_getallusingget">2.1.2. Get all entities</a></li>
 <li><a href="#_checkexistusinghead">2.1.3. Check entity exist by criteria</a></li>
-<li><a href="#_getmycustomerusingget">2.1.4. getMyCustomer</a></li>
-<li><a href="#_getoneusingget">2.1.5. Get entity</a></li>
-<li><a href="#_updateusingput">2.1.6. Update entity</a></li>
-<li><a href="#_patchusingpatch">2.1.7. Patch entity</a></li>
-<li><a href="#_findhistorybyidusingget">2.1.8. get history by customer&#8217;s id</a></li>
-<li><a href="#_getcustomerlogousingget">2.1.9. Get entity logo</a></li>
+<li><a href="#_getgdprsettingstatususingget">2.1.4. getGdprSettingStatus</a></li>
+<li><a href="#_getmycustomerusingget">2.1.5. getMyCustomer</a></li>
+<li><a href="#_getoneusingget">2.1.6. Get entity</a></li>
+<li><a href="#_updateusingput">2.1.7. Update entity</a></li>
+<li><a href="#_patchusingpatch">2.1.8. Patch entity</a></li>
+<li><a href="#_findhistorybyidusingget">2.1.9. get history by customer&#8217;s id</a></li>
+<li><a href="#_getcustomerlogousingget">2.1.10. Get entity logo</a></li>
 </ul>
 </li>
 <li><a href="#_groups_resource">2.2. Groups</a>
@@ -1362,10 +1363,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getmycustomerusingget"><a class="anchor" href="#_getmycustomerusingget"></a><a class="link" href="#_getmycustomerusingget">2.1.4. getMyCustomer</a></h4>
+<h4 id="_getgdprsettingstatususingget"><a class="anchor" href="#_getgdprsettingstatususingget"></a><a class="link" href="#_getgdprsettingstatususingget">2.1.4. getGdprSettingStatus</a></h4>
 <div class="literalblock">
 <div class="content">
-<pre>GET /identity-api/customers/me</pre>
+<pre>GET /identity-api/customers/gdpr-status</pre>
 </div>
 </div>
 <div class="sect4">
@@ -1390,21 +1391,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
 <em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
 <em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
 <em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -1429,21 +1430,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_customerdto">CustomerDto</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvÃ©e</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
 </tr>
 </tbody>
@@ -1455,7 +1456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_requête_path_4"><a class="anchor" href="#_requête_path_4"></a><a class="link" href="#_requête_path_4">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre>/identity-api/customers/me</pre>
+<pre>/identity-api/customers/gdpr-status</pre>
 </div>
 </div>
 </div>
@@ -1474,55 +1475,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_réponse_200_2"><a class="anchor" href="#_réponse_200_2"></a><a class="link" href="#_réponse_200_2">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "address" : {
-    "city" : "string",
-    "country" : "string",
-    "street" : "string",
-    "zipCode" : "string"
-  },
-  "gdprAlertDelay" : 130,
-  "gdprAlert" : true,
-  "code" : "1",
-  "companyName" : "archiveco",
-  "defaultEmailDomain" : "@archiveco.fr",
-  "emailDomains" : [ "string" ],
-  "enabled" : true,
-  "id" : "1",
-  "identifier" : "1",
-  "hasCustomGraphicIdentity" : true,
-  "language" : "string",
-  "name" : "string",
-  "otp" : "string",
-  "owners" : [ {
-    "address" : {
-      "city" : "string",
-      "country" : "string",
-      "street" : "string",
-      "zipCode" : "string"
-    },
-    "code" : "string",
-    "companyName" : "string",
-    "customerId" : "string",
-    "id" : "string",
-    "identifier" : "string",
-    "name" : "string",
-    "readonly" : true
-  } ],
-  "passwordRevocationDelay" : 0,
-  "readonly" : true,
-  "subrogeable" : true
-}</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">true</code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getoneusingget"><a class="anchor" href="#_getoneusingget"></a><a class="link" href="#_getoneusingget">2.1.5. Get entity</a></h4>
+<h4 id="_getmycustomerusingget"><a class="anchor" href="#_getmycustomerusingget"></a><a class="link" href="#_getmycustomerusingget">2.1.5. getMyCustomer</a></h4>
 <div class="literalblock">
 <div class="content">
-<pre>GET /identity-api/customers/{id}</pre>
+<pre>GET /identity-api/customers/me</pre>
 </div>
 </div>
 <div class="sect4">
@@ -1562,13 +1525,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
 <em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -1619,7 +1575,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_requête_path_5"><a class="anchor" href="#_requête_path_5"></a><a class="link" href="#_requête_path_5">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre>/identity-api/customers/string</pre>
+<pre>/identity-api/customers/me</pre>
 </div>
 </div>
 </div>
@@ -1683,10 +1639,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.1.6. Update entity</a></h4>
+<h4 id="_getoneusingget"><a class="anchor" href="#_getoneusingget"></a><a class="link" href="#_getoneusingget">2.1.6. Get entity</a></h4>
 <div class="literalblock">
 <div class="content">
-<pre>PUT /identity-api/customers/{id}</pre>
+<pre>GET /identity-api/customers/{id}</pre>
 </div>
 </div>
 <div class="sect4">
@@ -1735,13 +1691,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>entityDto</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">entityDto</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_customerdto">CustomerDto</a></p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1785,16 +1734,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_consomme_3"><a class="anchor" href="#_consomme_3"></a><a class="link" href="#_consomme_3">Consomme</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code>application/json</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
 <h5 id="_exemple_de_requête_http_6"><a class="anchor" href="#_exemple_de_requête_http_6"></a><a class="link" href="#_exemple_de_requête_http_6">Exemple de requête HTTP</a></h5>
 <div class="sect5">
 <h6 id="_requête_path_6"><a class="anchor" href="#_requête_path_6"></a><a class="link" href="#_requête_path_6">Requête path</a></h6>
@@ -1809,52 +1748,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_body"><a class="anchor" href="#_requête_body"></a><a class="link" href="#_requête_body">Requête body</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "address" : {
-    "city" : "string",
-    "country" : "string",
-    "street" : "string",
-    "zipCode" : "string"
-  },
-  "gdprAlertDelay" : 130,
-  "gdprAlert" : true,
-  "code" : "1",
-  "companyName" : "archiveco",
-  "defaultEmailDomain" : "@archiveco.fr",
-  "emailDomains" : [ "string" ],
-  "enabled" : true,
-  "id" : "1",
-  "identifier" : "1",
-  "hasCustomGraphicIdentity" : true,
-  "language" : "string",
-  "name" : "string",
-  "otp" : "string",
-  "owners" : [ {
-    "address" : {
-      "city" : "string",
-      "country" : "string",
-      "street" : "string",
-      "zipCode" : "string"
-    },
-    "code" : "string",
-    "companyName" : "string",
-    "customerId" : "string",
-    "id" : "string",
-    "identifier" : "string",
-    "name" : "string",
-    "readonly" : true
-  } ],
-  "passwordRevocationDelay" : 0,
-  "readonly" : true,
-  "subrogeable" : true
-}</code></pre>
 </div>
 </div>
 </div>
@@ -1910,14 +1803,241 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_patchusingpatch"><a class="anchor" href="#_patchusingpatch"></a><a class="link" href="#_patchusingpatch">2.1.7. Patch entity</a></h4>
+<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.1.7. Update entity</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>PUT /identity-api/customers/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_7"><a class="anchor" href="#_paramètres_7"></a><a class="link" href="#_paramètres_7">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>entityDto</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">entityDto</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_customerdto">CustomerDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_7"><a class="anchor" href="#_réponses_7"></a><a class="link" href="#_réponses_7">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_customerdto">CustomerDto</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_3"><a class="anchor" href="#_consomme_3"></a><a class="link" href="#_consomme_3">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_7"><a class="anchor" href="#_exemple_de_requête_http_7"></a><a class="link" href="#_exemple_de_requête_http_7">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_7"><a class="anchor" href="#_requête_path_7"></a><a class="link" href="#_requête_path_7">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/identity-api/customers/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_7"><a class="anchor" href="#_requête_header_7"></a><a class="link" href="#_requête_header_7">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body"><a class="anchor" href="#_requête_body"></a><a class="link" href="#_requête_body">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "address" : {
+    "city" : "string",
+    "country" : "string",
+    "street" : "string",
+    "zipCode" : "string"
+  },
+  "gdprAlertDelay" : 130,
+  "gdprAlert" : true,
+  "code" : "1",
+  "companyName" : "archiveco",
+  "defaultEmailDomain" : "@archiveco.fr",
+  "emailDomains" : [ "string" ],
+  "enabled" : true,
+  "id" : "1",
+  "identifier" : "1",
+  "hasCustomGraphicIdentity" : true,
+  "language" : "string",
+  "name" : "string",
+  "otp" : "string",
+  "owners" : [ {
+    "address" : {
+      "city" : "string",
+      "country" : "string",
+      "street" : "string",
+      "zipCode" : "string"
+    },
+    "code" : "string",
+    "companyName" : "string",
+    "customerId" : "string",
+    "id" : "string",
+    "identifier" : "string",
+    "name" : "string",
+    "readonly" : true
+  } ],
+  "passwordRevocationDelay" : 0,
+  "readonly" : true,
+  "subrogeable" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_6"><a class="anchor" href="#_exemple_de_réponse_http_6"></a><a class="link" href="#_exemple_de_réponse_http_6">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_5"><a class="anchor" href="#_réponse_200_5"></a><a class="link" href="#_réponse_200_5">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "address" : {
+    "city" : "string",
+    "country" : "string",
+    "street" : "string",
+    "zipCode" : "string"
+  },
+  "gdprAlertDelay" : 130,
+  "gdprAlert" : true,
+  "code" : "1",
+  "companyName" : "archiveco",
+  "defaultEmailDomain" : "@archiveco.fr",
+  "emailDomains" : [ "string" ],
+  "enabled" : true,
+  "id" : "1",
+  "identifier" : "1",
+  "hasCustomGraphicIdentity" : true,
+  "language" : "string",
+  "name" : "string",
+  "otp" : "string",
+  "owners" : [ {
+    "address" : {
+      "city" : "string",
+      "country" : "string",
+      "street" : "string",
+      "zipCode" : "string"
+    },
+    "code" : "string",
+    "companyName" : "string",
+    "customerId" : "string",
+    "id" : "string",
+    "identifier" : "string",
+    "name" : "string",
+    "readonly" : true
+  } ],
+  "passwordRevocationDelay" : 0,
+  "readonly" : true,
+  "subrogeable" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_patchusingpatch"><a class="anchor" href="#_patchusingpatch"></a><a class="link" href="#_patchusingpatch">2.1.8. Patch entity</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>PATCH /identity-api/customers/{id}</pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_7"><a class="anchor" href="#_paramètres_7"></a><a class="link" href="#_paramètres_7">Paramètres</a></h5>
+<h5 id="_paramètres_8"><a class="anchor" href="#_paramètres_8"></a><a class="link" href="#_paramètres_8">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1980,7 +2100,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_7"><a class="anchor" href="#_réponses_7"></a><a class="link" href="#_réponses_7">Réponses</a></h5>
+<h5 id="_réponses_8"><a class="anchor" href="#_réponses_8"></a><a class="link" href="#_réponses_8">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -2032,9 +2152,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_7"><a class="anchor" href="#_exemple_de_requête_http_7"></a><a class="link" href="#_exemple_de_requête_http_7">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_8"><a class="anchor" href="#_exemple_de_requête_http_8"></a><a class="link" href="#_exemple_de_requête_http_8">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_7"><a class="anchor" href="#_requête_path_7"></a><a class="link" href="#_requête_path_7">Requête path</a></h6>
+<h6 id="_requête_path_8"><a class="anchor" href="#_requête_path_8"></a><a class="link" href="#_requête_path_8">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/customers/string</pre>
@@ -2042,7 +2162,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_7"><a class="anchor" href="#_requête_header_7"></a><a class="link" href="#_requête_header_7">Requête header</a></h6>
+<h6 id="_requête_header_8"><a class="anchor" href="#_requête_header_8"></a><a class="link" href="#_requête_header_8">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -2059,9 +2179,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_6"><a class="anchor" href="#_exemple_de_réponse_http_6"></a><a class="link" href="#_exemple_de_réponse_http_6">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_7"><a class="anchor" href="#_exemple_de_réponse_http_7"></a><a class="link" href="#_exemple_de_réponse_http_7">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_5"><a class="anchor" href="#_réponse_200_5"></a><a class="link" href="#_réponse_200_5">Réponse 200</a></h6>
+<h6 id="_réponse_200_6"><a class="anchor" href="#_réponse_200_6"></a><a class="link" href="#_réponse_200_6">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -2109,169 +2229,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_findhistorybyidusingget"><a class="anchor" href="#_findhistorybyidusingget"></a><a class="link" href="#_findhistorybyidusingget">2.1.8. get history by customer&#8217;s id</a></h4>
+<h4 id="_findhistorybyidusingget"><a class="anchor" href="#_findhistorybyidusingget"></a><a class="link" href="#_findhistorybyidusingget">2.1.9. get history by customer&#8217;s id</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /identity-api/customers/{id}/history</pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_paramètres_8"><a class="anchor" href="#_paramètres_8"></a><a class="link" href="#_paramètres_8">Paramètres</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_réponses_8"><a class="anchor" href="#_réponses_8"></a><a class="link" href="#_réponses_8">Réponses</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 70%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Code HTTP</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_logbookoperationsresponsedto">LogbookOperationsResponseDto</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_requête_http_8"><a class="anchor" href="#_exemple_de_requête_http_8"></a><a class="link" href="#_exemple_de_requête_http_8">Exemple de requête HTTP</a></h5>
-<div class="sect5">
-<h6 id="_requête_path_8"><a class="anchor" href="#_requête_path_8"></a><a class="link" href="#_requête_path_8">Requête path</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre>/identity-api/customers/string/history</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_8"><a class="anchor" href="#_requête_header_8"></a><a class="link" href="#_requête_header_8">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_réponse_http_7"><a class="anchor" href="#_exemple_de_réponse_http_7"></a><a class="link" href="#_exemple_de_réponse_http_7">Exemple de réponse HTTP</a></h5>
-<div class="sect5">
-<h6 id="_réponse_200_6"><a class="anchor" href="#_réponse_200_6"></a><a class="link" href="#_réponse_200_6">Réponse 200</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "$hits" : {
-    "limit" : 0,
-    "offset" : 0,
-    "size" : 0,
-    "total" : 0
-  },
-  "$results" : [ {
-    "evDateTime" : "string",
-    "evDetData" : "string",
-    "evId" : "string",
-    "evIdAppSession" : "string",
-    "evParentId" : "string",
-    "evType" : "string",
-    "events" : [ {
-      "evDateTime" : "string",
-      "evDetData" : "string",
-      "evId" : "string",
-      "evIdAppSession" : "string",
-      "evParentId" : "string",
-      "evType" : "string",
-      "obId" : "string",
-      "obIdReq" : "string",
-      "outDetail" : "string",
-      "outMessg" : "string",
-      "outcome" : "string"
-    } ],
-    "obId" : "string",
-    "obIdReq" : "string",
-    "outDetail" : "string",
-    "outMessg" : "string",
-    "outcome" : "string"
-  } ]
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getcustomerlogousingget"><a class="anchor" href="#_getcustomerlogousingget"></a><a class="link" href="#_getcustomerlogousingget">2.1.9. Get entity logo</a></h4>
-<div class="literalblock">
-<div class="content">
-<pre>GET /identity-api/customers/{id}/logo</pre>
 </div>
 </div>
 <div class="sect4">
@@ -2342,7 +2303,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_resource">Resource</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_logbookoperationsresponsedto">LogbookOperationsResponseDto</a></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
@@ -2368,7 +2329,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_requête_path_9"><a class="anchor" href="#_requête_path_9"></a><a class="link" href="#_requête_path_9">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre>/identity-api/customers/string/logo</pre>
+<pre>/identity-api/customers/string/history</pre>
 </div>
 </div>
 </div>
@@ -2385,6 +2346,165 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h5 id="_exemple_de_réponse_http_8"><a class="anchor" href="#_exemple_de_réponse_http_8"></a><a class="link" href="#_exemple_de_réponse_http_8">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_200_7"><a class="anchor" href="#_réponse_200_7"></a><a class="link" href="#_réponse_200_7">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "$hits" : {
+    "limit" : 0,
+    "offset" : 0,
+    "size" : 0,
+    "total" : 0
+  },
+  "$results" : [ {
+    "evDateTime" : "string",
+    "evDetData" : "string",
+    "evId" : "string",
+    "evIdAppSession" : "string",
+    "evParentId" : "string",
+    "evType" : "string",
+    "events" : [ {
+      "evDateTime" : "string",
+      "evDetData" : "string",
+      "evId" : "string",
+      "evIdAppSession" : "string",
+      "evParentId" : "string",
+      "evType" : "string",
+      "obId" : "string",
+      "obIdReq" : "string",
+      "outDetail" : "string",
+      "outMessg" : "string",
+      "outcome" : "string"
+    } ],
+    "obId" : "string",
+    "obIdReq" : "string",
+    "outDetail" : "string",
+    "outMessg" : "string",
+    "outcome" : "string"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getcustomerlogousingget"><a class="anchor" href="#_getcustomerlogousingget"></a><a class="link" href="#_getcustomerlogousingget">2.1.10. Get entity logo</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>GET /identity-api/customers/{id}/logo</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_10"><a class="anchor" href="#_paramètres_10"></a><a class="link" href="#_paramètres_10">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_10"><a class="anchor" href="#_réponses_10"></a><a class="link" href="#_réponses_10">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_resource">Resource</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_10"><a class="anchor" href="#_exemple_de_requête_http_10"></a><a class="link" href="#_exemple_de_requête_http_10">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_10"><a class="anchor" href="#_requête_path_10"></a><a class="link" href="#_requête_path_10">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/identity-api/customers/string/logo</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_10"><a class="anchor" href="#_requête_header_10"></a><a class="link" href="#_requête_header_10">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_9"><a class="anchor" href="#_exemple_de_réponse_http_9"></a><a class="link" href="#_exemple_de_réponse_http_9">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_8"><a class="anchor" href="#_réponse_200_8"></a><a class="link" href="#_réponse_200_8">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -2478,7 +2598,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_10"><a class="anchor" href="#_paramètres_10"></a><a class="link" href="#_paramètres_10">Paramètres</a></h5>
+<h5 id="_paramètres_11"><a class="anchor" href="#_paramètres_11"></a><a class="link" href="#_paramètres_11">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -2527,7 +2647,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_10"><a class="anchor" href="#_réponses_10"></a><a class="link" href="#_réponses_10">Réponses</a></h5>
+<h5 id="_réponses_11"><a class="anchor" href="#_réponses_11"></a><a class="link" href="#_réponses_11">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -2571,9 +2691,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_10"><a class="anchor" href="#_exemple_de_requête_http_10"></a><a class="link" href="#_exemple_de_requête_http_10">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_11"><a class="anchor" href="#_exemple_de_requête_http_11"></a><a class="link" href="#_exemple_de_requête_http_11">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_10"><a class="anchor" href="#_requête_path_10"></a><a class="link" href="#_requête_path_10">Requête path</a></h6>
+<h6 id="_requête_path_11"><a class="anchor" href="#_requête_path_11"></a><a class="link" href="#_requête_path_11">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups</pre>
@@ -2581,7 +2701,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_10"><a class="anchor" href="#_requête_header_10"></a><a class="link" href="#_requête_header_10">Requête header</a></h6>
+<h6 id="_requête_header_11"><a class="anchor" href="#_requête_header_11"></a><a class="link" href="#_requête_header_11">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -2629,7 +2749,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_9"><a class="anchor" href="#_exemple_de_réponse_http_9"></a><a class="link" href="#_exemple_de_réponse_http_9">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_10"><a class="anchor" href="#_exemple_de_réponse_http_10"></a><a class="link" href="#_exemple_de_réponse_http_10">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_201_2"><a class="anchor" href="#_réponse_201_2"></a><a class="link" href="#_réponse_201_2">Réponse 201</a></h6>
 <div class="listingblock">
@@ -2679,7 +2799,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_11"><a class="anchor" href="#_paramètres_11"></a><a class="link" href="#_paramètres_11">Paramètres</a></h5>
+<h5 id="_paramètres_12"><a class="anchor" href="#_paramètres_12"></a><a class="link" href="#_paramètres_12">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -2774,7 +2894,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_11"><a class="anchor" href="#_réponses_11"></a><a class="link" href="#_réponses_11">Réponses</a></h5>
+<h5 id="_réponses_12"><a class="anchor" href="#_réponses_12"></a><a class="link" href="#_réponses_12">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -2813,9 +2933,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_11"><a class="anchor" href="#_exemple_de_requête_http_11"></a><a class="link" href="#_exemple_de_requête_http_11">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_12"><a class="anchor" href="#_exemple_de_requête_http_12"></a><a class="link" href="#_exemple_de_requête_http_12">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_11"><a class="anchor" href="#_requête_path_11"></a><a class="link" href="#_requête_path_11">Requête path</a></h6>
+<h6 id="_requête_path_12"><a class="anchor" href="#_requête_path_12"></a><a class="link" href="#_requête_path_12">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups</pre>
@@ -2823,7 +2943,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_11"><a class="anchor" href="#_requête_header_11"></a><a class="link" href="#_requête_header_11">Requête header</a></h6>
+<h6 id="_requête_header_12"><a class="anchor" href="#_requête_header_12"></a><a class="link" href="#_requête_header_12">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -2847,9 +2967,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_10"><a class="anchor" href="#_exemple_de_réponse_http_10"></a><a class="link" href="#_exemple_de_réponse_http_10">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_11"><a class="anchor" href="#_exemple_de_réponse_http_11"></a><a class="link" href="#_exemple_de_réponse_http_11">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_8"><a class="anchor" href="#_réponse_200_8"></a><a class="link" href="#_réponse_200_8">Réponse 200</a></h6>
+<h6 id="_réponse_200_9"><a class="anchor" href="#_réponse_200_9"></a><a class="link" href="#_réponse_200_9">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -2902,7 +3022,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_12"><a class="anchor" href="#_paramètres_12"></a><a class="link" href="#_paramètres_12">Paramètres</a></h5>
+<h5 id="_paramètres_13"><a class="anchor" href="#_paramètres_13"></a><a class="link" href="#_paramètres_13">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -2951,7 +3071,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_12"><a class="anchor" href="#_réponses_12"></a><a class="link" href="#_réponses_12">Réponses</a></h5>
+<h5 id="_réponses_13"><a class="anchor" href="#_réponses_13"></a><a class="link" href="#_réponses_13">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -2995,9 +3115,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_12"><a class="anchor" href="#_exemple_de_requête_http_12"></a><a class="link" href="#_exemple_de_requête_http_12">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_13"><a class="anchor" href="#_exemple_de_requête_http_13"></a><a class="link" href="#_exemple_de_requête_http_13">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_12"><a class="anchor" href="#_requête_path_12"></a><a class="link" href="#_requête_path_12">Requête path</a></h6>
+<h6 id="_requête_path_13"><a class="anchor" href="#_requête_path_13"></a><a class="link" href="#_requête_path_13">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups/check</pre>
@@ -3005,7 +3125,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_12"><a class="anchor" href="#_requête_header_12"></a><a class="link" href="#_requête_header_12">Requête header</a></h6>
+<h6 id="_requête_header_13"><a class="anchor" href="#_requête_header_13"></a><a class="link" href="#_requête_header_13">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3032,7 +3152,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_13"><a class="anchor" href="#_paramètres_13"></a><a class="link" href="#_paramètres_13">Paramètres</a></h5>
+<h5 id="_paramètres_14"><a class="anchor" href="#_paramètres_14"></a><a class="link" href="#_paramètres_14">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3081,7 +3201,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_13"><a class="anchor" href="#_réponses_13"></a><a class="link" href="#_réponses_13">Réponses</a></h5>
+<h5 id="_réponses_14"><a class="anchor" href="#_réponses_14"></a><a class="link" href="#_réponses_14">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3120,9 +3240,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_13"><a class="anchor" href="#_exemple_de_requête_http_13"></a><a class="link" href="#_exemple_de_requête_http_13">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_14"><a class="anchor" href="#_exemple_de_requête_http_14"></a><a class="link" href="#_exemple_de_requête_http_14">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_13"><a class="anchor" href="#_requête_path_13"></a><a class="link" href="#_requête_path_13">Requête path</a></h6>
+<h6 id="_requête_path_14"><a class="anchor" href="#_requête_path_14"></a><a class="link" href="#_requête_path_14">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups/levels</pre>
@@ -3130,7 +3250,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_13"><a class="anchor" href="#_requête_header_13"></a><a class="link" href="#_requête_header_13">Requête header</a></h6>
+<h6 id="_requête_header_14"><a class="anchor" href="#_requête_header_14"></a><a class="link" href="#_requête_header_14">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3149,9 +3269,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_11"><a class="anchor" href="#_exemple_de_réponse_http_11"></a><a class="link" href="#_exemple_de_réponse_http_11">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_12"><a class="anchor" href="#_exemple_de_réponse_http_12"></a><a class="link" href="#_exemple_de_réponse_http_12">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_9"><a class="anchor" href="#_réponse_200_9"></a><a class="link" href="#_réponse_200_9">Réponse 200</a></h6>
+<h6 id="_réponse_200_10"><a class="anchor" href="#_réponse_200_10"></a><a class="link" href="#_réponse_200_10">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">[ "string" ]</code></pre>
@@ -3168,7 +3288,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_14"><a class="anchor" href="#_paramètres_14"></a><a class="link" href="#_paramètres_14">Paramètres</a></h5>
+<h5 id="_paramètres_15"><a class="anchor" href="#_paramètres_15"></a><a class="link" href="#_paramètres_15">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3231,7 +3351,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_14"><a class="anchor" href="#_réponses_14"></a><a class="link" href="#_réponses_14">Réponses</a></h5>
+<h5 id="_réponses_15"><a class="anchor" href="#_réponses_15"></a><a class="link" href="#_réponses_15">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3270,9 +3390,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_14"><a class="anchor" href="#_exemple_de_requête_http_14"></a><a class="link" href="#_exemple_de_requête_http_14">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_15"><a class="anchor" href="#_exemple_de_requête_http_15"></a><a class="link" href="#_exemple_de_requête_http_15">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_14"><a class="anchor" href="#_requête_path_14"></a><a class="link" href="#_requête_path_14">Requête path</a></h6>
+<h6 id="_requête_path_15"><a class="anchor" href="#_requête_path_15"></a><a class="link" href="#_requête_path_15">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups/string</pre>
@@ -3280,7 +3400,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_14"><a class="anchor" href="#_requête_header_14"></a><a class="link" href="#_requête_header_14">Requête header</a></h6>
+<h6 id="_requête_header_15"><a class="anchor" href="#_requête_header_15"></a><a class="link" href="#_requête_header_15">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3299,9 +3419,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_12"><a class="anchor" href="#_exemple_de_réponse_http_12"></a><a class="link" href="#_exemple_de_réponse_http_12">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_13"><a class="anchor" href="#_exemple_de_réponse_http_13"></a><a class="link" href="#_exemple_de_réponse_http_13">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_10"><a class="anchor" href="#_réponse_200_10"></a><a class="link" href="#_réponse_200_10">Réponse 200</a></h6>
+<h6 id="_réponse_200_11"><a class="anchor" href="#_réponse_200_11"></a><a class="link" href="#_réponse_200_11">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -3349,7 +3469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_15"><a class="anchor" href="#_paramètres_15"></a><a class="link" href="#_paramètres_15">Paramètres</a></h5>
+<h5 id="_paramètres_16"><a class="anchor" href="#_paramètres_16"></a><a class="link" href="#_paramètres_16">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3405,7 +3525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_15"><a class="anchor" href="#_réponses_15"></a><a class="link" href="#_réponses_15">Réponses</a></h5>
+<h5 id="_réponses_16"><a class="anchor" href="#_réponses_16"></a><a class="link" href="#_réponses_16">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3454,9 +3574,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_15"><a class="anchor" href="#_exemple_de_requête_http_15"></a><a class="link" href="#_exemple_de_requête_http_15">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_16"><a class="anchor" href="#_exemple_de_requête_http_16"></a><a class="link" href="#_exemple_de_requête_http_16">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_15"><a class="anchor" href="#_requête_path_15"></a><a class="link" href="#_requête_path_15">Requête path</a></h6>
+<h6 id="_requête_path_16"><a class="anchor" href="#_requête_path_16"></a><a class="link" href="#_requête_path_16">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups/string</pre>
@@ -3464,7 +3584,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_15"><a class="anchor" href="#_requête_header_15"></a><a class="link" href="#_requête_header_15">Requête header</a></h6>
+<h6 id="_requête_header_16"><a class="anchor" href="#_requête_header_16"></a><a class="link" href="#_requête_header_16">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3481,9 +3601,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_13"><a class="anchor" href="#_exemple_de_réponse_http_13"></a><a class="link" href="#_exemple_de_réponse_http_13">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_14"><a class="anchor" href="#_exemple_de_réponse_http_14"></a><a class="link" href="#_exemple_de_réponse_http_14">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_11"><a class="anchor" href="#_réponse_200_11"></a><a class="link" href="#_réponse_200_11">Réponse 200</a></h6>
+<h6 id="_réponse_200_12"><a class="anchor" href="#_réponse_200_12"></a><a class="link" href="#_réponse_200_12">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -3531,7 +3651,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_16"><a class="anchor" href="#_paramètres_16"></a><a class="link" href="#_paramètres_16">Paramètres</a></h5>
+<h5 id="_paramètres_17"><a class="anchor" href="#_paramètres_17"></a><a class="link" href="#_paramètres_17">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3580,7 +3700,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_16"><a class="anchor" href="#_réponses_16"></a><a class="link" href="#_réponses_16">Réponses</a></h5>
+<h5 id="_réponses_17"><a class="anchor" href="#_réponses_17"></a><a class="link" href="#_réponses_17">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3619,9 +3739,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_16"><a class="anchor" href="#_exemple_de_requête_http_16"></a><a class="link" href="#_exemple_de_requête_http_16">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_17"><a class="anchor" href="#_exemple_de_requête_http_17"></a><a class="link" href="#_exemple_de_requête_http_17">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_16"><a class="anchor" href="#_requête_path_16"></a><a class="link" href="#_requête_path_16">Requête path</a></h6>
+<h6 id="_requête_path_17"><a class="anchor" href="#_requête_path_17"></a><a class="link" href="#_requête_path_17">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/groups/string/history</pre>
@@ -3629,7 +3749,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_16"><a class="anchor" href="#_requête_header_16"></a><a class="link" href="#_requête_header_16">Requête header</a></h6>
+<h6 id="_requête_header_17"><a class="anchor" href="#_requête_header_17"></a><a class="link" href="#_requête_header_17">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3638,9 +3758,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_14"><a class="anchor" href="#_exemple_de_réponse_http_14"></a><a class="link" href="#_exemple_de_réponse_http_14">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_15"><a class="anchor" href="#_exemple_de_réponse_http_15"></a><a class="link" href="#_exemple_de_réponse_http_15">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_12"><a class="anchor" href="#_réponse_200_12"></a><a class="link" href="#_réponse_200_12">Réponse 200</a></h6>
+<h6 id="_réponse_200_13"><a class="anchor" href="#_réponse_200_13"></a><a class="link" href="#_réponse_200_13">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -3696,7 +3816,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_17"><a class="anchor" href="#_paramètres_17"></a><a class="link" href="#_paramètres_17">Paramètres</a></h5>
+<h5 id="_paramètres_18"><a class="anchor" href="#_paramètres_18"></a><a class="link" href="#_paramètres_18">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3745,7 +3865,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_17"><a class="anchor" href="#_réponses_17"></a><a class="link" href="#_réponses_17">Réponses</a></h5>
+<h5 id="_réponses_18"><a class="anchor" href="#_réponses_18"></a><a class="link" href="#_réponses_18">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3789,9 +3909,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_17"><a class="anchor" href="#_exemple_de_requête_http_17"></a><a class="link" href="#_exemple_de_requête_http_17">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_18"><a class="anchor" href="#_exemple_de_requête_http_18"></a><a class="link" href="#_exemple_de_requête_http_18">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_17"><a class="anchor" href="#_requête_path_17"></a><a class="link" href="#_requête_path_17">Requête path</a></h6>
+<h6 id="_requête_path_18"><a class="anchor" href="#_requête_path_18"></a><a class="link" href="#_requête_path_18">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners</pre>
@@ -3799,7 +3919,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_17"><a class="anchor" href="#_requête_header_17"></a><a class="link" href="#_requête_header_17">Requête header</a></h6>
+<h6 id="_requête_header_18"><a class="anchor" href="#_requête_header_18"></a><a class="link" href="#_requête_header_18">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3830,7 +3950,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_15"><a class="anchor" href="#_exemple_de_réponse_http_15"></a><a class="link" href="#_exemple_de_réponse_http_15">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_16"><a class="anchor" href="#_exemple_de_réponse_http_16"></a><a class="link" href="#_exemple_de_réponse_http_16">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_201_3"><a class="anchor" href="#_réponse_201_3"></a><a class="link" href="#_réponse_201_3">Réponse 201</a></h6>
 <div class="listingblock">
@@ -3863,7 +3983,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_18"><a class="anchor" href="#_paramètres_18"></a><a class="link" href="#_paramètres_18">Paramètres</a></h5>
+<h5 id="_paramètres_19"><a class="anchor" href="#_paramètres_19"></a><a class="link" href="#_paramètres_19">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3912,7 +4032,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_18"><a class="anchor" href="#_réponses_18"></a><a class="link" href="#_réponses_18">Réponses</a></h5>
+<h5 id="_réponses_19"><a class="anchor" href="#_réponses_19"></a><a class="link" href="#_réponses_19">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -3956,9 +4076,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_18"><a class="anchor" href="#_exemple_de_requête_http_18"></a><a class="link" href="#_exemple_de_requête_http_18">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_19"><a class="anchor" href="#_exemple_de_requête_http_19"></a><a class="link" href="#_exemple_de_requête_http_19">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_18"><a class="anchor" href="#_requête_path_18"></a><a class="link" href="#_requête_path_18">Requête path</a></h6>
+<h6 id="_requête_path_19"><a class="anchor" href="#_requête_path_19"></a><a class="link" href="#_requête_path_19">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners/check</pre>
@@ -3966,7 +4086,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_18"><a class="anchor" href="#_requête_header_18"></a><a class="link" href="#_requête_header_18">Requête header</a></h6>
+<h6 id="_requête_header_19"><a class="anchor" href="#_requête_header_19"></a><a class="link" href="#_requête_header_19">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -3993,7 +4113,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_19"><a class="anchor" href="#_paramètres_19"></a><a class="link" href="#_paramètres_19">Paramètres</a></h5>
+<h5 id="_paramètres_20"><a class="anchor" href="#_paramètres_20"></a><a class="link" href="#_paramètres_20">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4042,7 +4162,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_19"><a class="anchor" href="#_réponses_19"></a><a class="link" href="#_réponses_19">Réponses</a></h5>
+<h5 id="_réponses_20"><a class="anchor" href="#_réponses_20"></a><a class="link" href="#_réponses_20">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4081,9 +4201,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_19"><a class="anchor" href="#_exemple_de_requête_http_19"></a><a class="link" href="#_exemple_de_requête_http_19">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_20"><a class="anchor" href="#_exemple_de_requête_http_20"></a><a class="link" href="#_exemple_de_requête_http_20">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_19"><a class="anchor" href="#_requête_path_19"></a><a class="link" href="#_requête_path_19">Requête path</a></h6>
+<h6 id="_requête_path_20"><a class="anchor" href="#_requête_path_20"></a><a class="link" href="#_requête_path_20">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners/string</pre>
@@ -4091,7 +4211,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_19"><a class="anchor" href="#_requête_header_19"></a><a class="link" href="#_requête_header_19">Requête header</a></h6>
+<h6 id="_requête_header_20"><a class="anchor" href="#_requête_header_20"></a><a class="link" href="#_requête_header_20">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4100,9 +4220,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_16"><a class="anchor" href="#_exemple_de_réponse_http_16"></a><a class="link" href="#_exemple_de_réponse_http_16">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_17"><a class="anchor" href="#_exemple_de_réponse_http_17"></a><a class="link" href="#_exemple_de_réponse_http_17">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_13"><a class="anchor" href="#_réponse_200_13"></a><a class="link" href="#_réponse_200_13">Réponse 200</a></h6>
+<h6 id="_réponse_200_14"><a class="anchor" href="#_réponse_200_14"></a><a class="link" href="#_réponse_200_14">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -4133,7 +4253,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_20"><a class="anchor" href="#_paramètres_20"></a><a class="link" href="#_paramètres_20">Paramètres</a></h5>
+<h5 id="_paramètres_21"><a class="anchor" href="#_paramètres_21"></a><a class="link" href="#_paramètres_21">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4189,7 +4309,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_20"><a class="anchor" href="#_réponses_20"></a><a class="link" href="#_réponses_20">Réponses</a></h5>
+<h5 id="_réponses_21"><a class="anchor" href="#_réponses_21"></a><a class="link" href="#_réponses_21">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4238,9 +4358,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_20"><a class="anchor" href="#_exemple_de_requête_http_20"></a><a class="link" href="#_exemple_de_requête_http_20">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_21"><a class="anchor" href="#_exemple_de_requête_http_21"></a><a class="link" href="#_exemple_de_requête_http_21">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_20"><a class="anchor" href="#_requête_path_20"></a><a class="link" href="#_requête_path_20">Requête path</a></h6>
+<h6 id="_requête_path_21"><a class="anchor" href="#_requête_path_21"></a><a class="link" href="#_requête_path_21">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners/string</pre>
@@ -4248,7 +4368,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_20"><a class="anchor" href="#_requête_header_20"></a><a class="link" href="#_requête_header_20">Requête header</a></h6>
+<h6 id="_requête_header_21"><a class="anchor" href="#_requête_header_21"></a><a class="link" href="#_requête_header_21">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4279,9 +4399,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_17"><a class="anchor" href="#_exemple_de_réponse_http_17"></a><a class="link" href="#_exemple_de_réponse_http_17">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_18"><a class="anchor" href="#_exemple_de_réponse_http_18"></a><a class="link" href="#_exemple_de_réponse_http_18">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_14"><a class="anchor" href="#_réponse_200_14"></a><a class="link" href="#_réponse_200_14">Réponse 200</a></h6>
+<h6 id="_réponse_200_15"><a class="anchor" href="#_réponse_200_15"></a><a class="link" href="#_réponse_200_15">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -4312,7 +4432,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_21"><a class="anchor" href="#_paramètres_21"></a><a class="link" href="#_paramètres_21">Paramètres</a></h5>
+<h5 id="_paramètres_22"><a class="anchor" href="#_paramètres_22"></a><a class="link" href="#_paramètres_22">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4368,7 +4488,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_21"><a class="anchor" href="#_réponses_21"></a><a class="link" href="#_réponses_21">Réponses</a></h5>
+<h5 id="_réponses_22"><a class="anchor" href="#_réponses_22"></a><a class="link" href="#_réponses_22">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4417,9 +4537,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_21"><a class="anchor" href="#_exemple_de_requête_http_21"></a><a class="link" href="#_exemple_de_requête_http_21">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_22"><a class="anchor" href="#_exemple_de_requête_http_22"></a><a class="link" href="#_exemple_de_requête_http_22">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_21"><a class="anchor" href="#_requête_path_21"></a><a class="link" href="#_requête_path_21">Requête path</a></h6>
+<h6 id="_requête_path_22"><a class="anchor" href="#_requête_path_22"></a><a class="link" href="#_requête_path_22">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners/string</pre>
@@ -4427,7 +4547,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_21"><a class="anchor" href="#_requête_header_21"></a><a class="link" href="#_requête_header_21">Requête header</a></h6>
+<h6 id="_requête_header_22"><a class="anchor" href="#_requête_header_22"></a><a class="link" href="#_requête_header_22">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4444,9 +4564,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_18"><a class="anchor" href="#_exemple_de_réponse_http_18"></a><a class="link" href="#_exemple_de_réponse_http_18">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_19"><a class="anchor" href="#_exemple_de_réponse_http_19"></a><a class="link" href="#_exemple_de_réponse_http_19">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_15"><a class="anchor" href="#_réponse_200_15"></a><a class="link" href="#_réponse_200_15">Réponse 200</a></h6>
+<h6 id="_réponse_200_16"><a class="anchor" href="#_réponse_200_16"></a><a class="link" href="#_réponse_200_16">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -4477,7 +4597,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_22"><a class="anchor" href="#_paramètres_22"></a><a class="link" href="#_paramètres_22">Paramètres</a></h5>
+<h5 id="_paramètres_23"><a class="anchor" href="#_paramètres_23"></a><a class="link" href="#_paramètres_23">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4526,7 +4646,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_22"><a class="anchor" href="#_réponses_22"></a><a class="link" href="#_réponses_22">Réponses</a></h5>
+<h5 id="_réponses_23"><a class="anchor" href="#_réponses_23"></a><a class="link" href="#_réponses_23">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4565,9 +4685,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_22"><a class="anchor" href="#_exemple_de_requête_http_22"></a><a class="link" href="#_exemple_de_requête_http_22">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_23"><a class="anchor" href="#_exemple_de_requête_http_23"></a><a class="link" href="#_exemple_de_requête_http_23">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_22"><a class="anchor" href="#_requête_path_22"></a><a class="link" href="#_requête_path_22">Requête path</a></h6>
+<h6 id="_requête_path_23"><a class="anchor" href="#_requête_path_23"></a><a class="link" href="#_requête_path_23">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/owners/string/history</pre>
@@ -4575,7 +4695,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_22"><a class="anchor" href="#_requête_header_22"></a><a class="link" href="#_requête_header_22">Requête header</a></h6>
+<h6 id="_requête_header_23"><a class="anchor" href="#_requête_header_23"></a><a class="link" href="#_requête_header_23">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4584,9 +4704,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_19"><a class="anchor" href="#_exemple_de_réponse_http_19"></a><a class="link" href="#_exemple_de_réponse_http_19">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_20"><a class="anchor" href="#_exemple_de_réponse_http_20"></a><a class="link" href="#_exemple_de_réponse_http_20">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_16"><a class="anchor" href="#_réponse_200_16"></a><a class="link" href="#_réponse_200_16">Réponse 200</a></h6>
+<h6 id="_réponse_200_17"><a class="anchor" href="#_réponse_200_17"></a><a class="link" href="#_réponse_200_17">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -4642,7 +4762,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_23"><a class="anchor" href="#_paramètres_23"></a><a class="link" href="#_paramètres_23">Paramètres</a></h5>
+<h5 id="_paramètres_24"><a class="anchor" href="#_paramètres_24"></a><a class="link" href="#_paramètres_24">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4691,7 +4811,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_23"><a class="anchor" href="#_réponses_23"></a><a class="link" href="#_réponses_23">Réponses</a></h5>
+<h5 id="_réponses_24"><a class="anchor" href="#_réponses_24"></a><a class="link" href="#_réponses_24">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4735,9 +4855,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_23"><a class="anchor" href="#_exemple_de_requête_http_23"></a><a class="link" href="#_exemple_de_requête_http_23">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_24"><a class="anchor" href="#_exemple_de_requête_http_24"></a><a class="link" href="#_exemple_de_requête_http_24">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_23"><a class="anchor" href="#_requête_path_23"></a><a class="link" href="#_requête_path_23">Requête path</a></h6>
+<h6 id="_requête_path_24"><a class="anchor" href="#_requête_path_24"></a><a class="link" href="#_requête_path_24">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles</pre>
@@ -4745,7 +4865,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_23"><a class="anchor" href="#_requête_header_23"></a><a class="link" href="#_requête_header_23">Requête header</a></h6>
+<h6 id="_requête_header_24"><a class="anchor" href="#_requête_header_24"></a><a class="link" href="#_requête_header_24">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4781,7 +4901,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_20"><a class="anchor" href="#_exemple_de_réponse_http_20"></a><a class="link" href="#_exemple_de_réponse_http_20">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_21"><a class="anchor" href="#_exemple_de_réponse_http_21"></a><a class="link" href="#_exemple_de_réponse_http_21">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_201_4"><a class="anchor" href="#_réponse_201_4"></a><a class="link" href="#_réponse_201_4">Réponse 201</a></h6>
 <div class="listingblock">
@@ -4819,7 +4939,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_24"><a class="anchor" href="#_paramètres_24"></a><a class="link" href="#_paramètres_24">Paramètres</a></h5>
+<h5 id="_paramètres_25"><a class="anchor" href="#_paramètres_25"></a><a class="link" href="#_paramètres_25">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -4875,7 +4995,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_24"><a class="anchor" href="#_réponses_24"></a><a class="link" href="#_réponses_24">Réponses</a></h5>
+<h5 id="_réponses_25"><a class="anchor" href="#_réponses_25"></a><a class="link" href="#_réponses_25">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -4914,9 +5034,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_24"><a class="anchor" href="#_exemple_de_requête_http_24"></a><a class="link" href="#_exemple_de_requête_http_24">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_25"><a class="anchor" href="#_exemple_de_requête_http_25"></a><a class="link" href="#_exemple_de_requête_http_25">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_24"><a class="anchor" href="#_requête_path_24"></a><a class="link" href="#_requête_path_24">Requête path</a></h6>
+<h6 id="_requête_path_25"><a class="anchor" href="#_requête_path_25"></a><a class="link" href="#_requête_path_25">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles</pre>
@@ -4924,7 +5044,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_24"><a class="anchor" href="#_requête_header_24"></a><a class="link" href="#_requête_header_24">Requête header</a></h6>
+<h6 id="_requête_header_25"><a class="anchor" href="#_requête_header_25"></a><a class="link" href="#_requête_header_25">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -4944,9 +5064,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_21"><a class="anchor" href="#_exemple_de_réponse_http_21"></a><a class="link" href="#_exemple_de_réponse_http_21">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_22"><a class="anchor" href="#_exemple_de_réponse_http_22"></a><a class="link" href="#_exemple_de_réponse_http_22">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_17"><a class="anchor" href="#_réponse_200_17"></a><a class="link" href="#_réponse_200_17">Réponse 200</a></h6>
+<h6 id="_réponse_200_18"><a class="anchor" href="#_réponse_200_18"></a><a class="link" href="#_réponse_200_18">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">[ {
@@ -4979,136 +5099,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="literalblock">
 <div class="content">
 <pre>HEAD /identity-api/profiles/check</pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_paramètres_25"><a class="anchor" href="#_paramètres_25"></a><a class="link" href="#_paramètres_25">Paramètres</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_réponses_25"><a class="anchor" href="#_réponses_25"></a><a class="link" href="#_réponses_25">Réponses</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 70%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Code HTTP</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_consomme_13"><a class="anchor" href="#_consomme_13"></a><a class="link" href="#_consomme_13">Consomme</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code>application/json</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_requête_http_25"><a class="anchor" href="#_exemple_de_requête_http_25"></a><a class="link" href="#_exemple_de_requête_http_25">Exemple de requête HTTP</a></h5>
-<div class="sect5">
-<h6 id="_requête_path_25"><a class="anchor" href="#_requête_path_25"></a><a class="link" href="#_requête_path_25">Requête path</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre>/identity-api/profiles/check</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_25"><a class="anchor" href="#_requête_header_25"></a><a class="link" href="#_requête_header_25">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_query_10"><a class="anchor" href="#_requête_query_10"></a><a class="link" href="#_requête_query_10">Requête query</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "criteria" : "string"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getlevelsusingget_1"><a class="anchor" href="#_getlevelsusingget_1"></a><a class="link" href="#_getlevelsusingget_1">2.4.4. getLevels</a></h4>
-<div class="literalblock">
-<div class="content">
-<pre>GET /identity-api/profiles/levels</pre>
 </div>
 </div>
 <div class="sect4">
@@ -5153,7 +5143,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>optionnel</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -5162,6 +5152,136 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect4">
 <h5 id="_réponses_26"><a class="anchor" href="#_réponses_26"></a><a class="link" href="#_réponses_26">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_13"><a class="anchor" href="#_consomme_13"></a><a class="link" href="#_consomme_13">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_26"><a class="anchor" href="#_exemple_de_requête_http_26"></a><a class="link" href="#_exemple_de_requête_http_26">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_26"><a class="anchor" href="#_requête_path_26"></a><a class="link" href="#_requête_path_26">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/identity-api/profiles/check</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_26"><a class="anchor" href="#_requête_header_26"></a><a class="link" href="#_requête_header_26">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query_10"><a class="anchor" href="#_requête_query_10"></a><a class="link" href="#_requête_query_10">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getlevelsusingget_1"><a class="anchor" href="#_getlevelsusingget_1"></a><a class="link" href="#_getlevelsusingget_1">2.4.4. getLevels</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>GET /identity-api/profiles/levels</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_27"><a class="anchor" href="#_paramètres_27"></a><a class="link" href="#_paramètres_27">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_27"><a class="anchor" href="#_réponses_27"></a><a class="link" href="#_réponses_27">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5200,9 +5320,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_26"><a class="anchor" href="#_exemple_de_requête_http_26"></a><a class="link" href="#_exemple_de_requête_http_26">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_27"><a class="anchor" href="#_exemple_de_requête_http_27"></a><a class="link" href="#_exemple_de_requête_http_27">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_26"><a class="anchor" href="#_requête_path_26"></a><a class="link" href="#_requête_path_26">Requête path</a></h6>
+<h6 id="_requête_path_27"><a class="anchor" href="#_requête_path_27"></a><a class="link" href="#_requête_path_27">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles/levels</pre>
@@ -5210,7 +5330,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_26"><a class="anchor" href="#_requête_header_26"></a><a class="link" href="#_requête_header_26">Requête header</a></h6>
+<h6 id="_requête_header_27"><a class="anchor" href="#_requête_header_27"></a><a class="link" href="#_requête_header_27">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -5229,9 +5349,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_22"><a class="anchor" href="#_exemple_de_réponse_http_22"></a><a class="link" href="#_exemple_de_réponse_http_22">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_23"><a class="anchor" href="#_exemple_de_réponse_http_23"></a><a class="link" href="#_exemple_de_réponse_http_23">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_18"><a class="anchor" href="#_réponse_200_18"></a><a class="link" href="#_réponse_200_18">Réponse 200</a></h6>
+<h6 id="_réponse_200_19"><a class="anchor" href="#_réponse_200_19"></a><a class="link" href="#_réponse_200_19">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">[ "string" ]</code></pre>
@@ -5248,7 +5368,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_27"><a class="anchor" href="#_paramètres_27"></a><a class="link" href="#_paramètres_27">Paramètres</a></h5>
+<h5 id="_paramètres_28"><a class="anchor" href="#_paramètres_28"></a><a class="link" href="#_paramètres_28">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -5304,7 +5424,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_27"><a class="anchor" href="#_réponses_27"></a><a class="link" href="#_réponses_27">Réponses</a></h5>
+<h5 id="_réponses_28"><a class="anchor" href="#_réponses_28"></a><a class="link" href="#_réponses_28">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5343,9 +5463,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_27"><a class="anchor" href="#_exemple_de_requête_http_27"></a><a class="link" href="#_exemple_de_requête_http_27">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_28"><a class="anchor" href="#_exemple_de_requête_http_28"></a><a class="link" href="#_exemple_de_requête_http_28">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_27"><a class="anchor" href="#_requête_path_27"></a><a class="link" href="#_requête_path_27">Requête path</a></h6>
+<h6 id="_requête_path_28"><a class="anchor" href="#_requête_path_28"></a><a class="link" href="#_requête_path_28">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles/string</pre>
@@ -5353,7 +5473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_27"><a class="anchor" href="#_requête_header_27"></a><a class="link" href="#_requête_header_27">Requête header</a></h6>
+<h6 id="_requête_header_28"><a class="anchor" href="#_requête_header_28"></a><a class="link" href="#_requête_header_28">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -5372,9 +5492,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_23"><a class="anchor" href="#_exemple_de_réponse_http_23"></a><a class="link" href="#_exemple_de_réponse_http_23">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_24"><a class="anchor" href="#_exemple_de_réponse_http_24"></a><a class="link" href="#_exemple_de_réponse_http_24">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_19"><a class="anchor" href="#_réponse_200_19"></a><a class="link" href="#_réponse_200_19">Réponse 200</a></h6>
+<h6 id="_réponse_200_20"><a class="anchor" href="#_réponse_200_20"></a><a class="link" href="#_réponse_200_20">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -5410,7 +5530,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_28"><a class="anchor" href="#_paramètres_28"></a><a class="link" href="#_paramètres_28">Paramètres</a></h5>
+<h5 id="_paramètres_29"><a class="anchor" href="#_paramètres_29"></a><a class="link" href="#_paramètres_29">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -5466,7 +5586,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_28"><a class="anchor" href="#_réponses_28"></a><a class="link" href="#_réponses_28">Réponses</a></h5>
+<h5 id="_réponses_29"><a class="anchor" href="#_réponses_29"></a><a class="link" href="#_réponses_29">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5515,9 +5635,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_28"><a class="anchor" href="#_exemple_de_requête_http_28"></a><a class="link" href="#_exemple_de_requête_http_28">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_29"><a class="anchor" href="#_exemple_de_requête_http_29"></a><a class="link" href="#_exemple_de_requête_http_29">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_28"><a class="anchor" href="#_requête_path_28"></a><a class="link" href="#_requête_path_28">Requête path</a></h6>
+<h6 id="_requête_path_29"><a class="anchor" href="#_requête_path_29"></a><a class="link" href="#_requête_path_29">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles/string</pre>
@@ -5525,7 +5645,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_28"><a class="anchor" href="#_requête_header_28"></a><a class="link" href="#_requête_header_28">Requête header</a></h6>
+<h6 id="_requête_header_29"><a class="anchor" href="#_requête_header_29"></a><a class="link" href="#_requête_header_29">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -5542,9 +5662,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_24"><a class="anchor" href="#_exemple_de_réponse_http_24"></a><a class="link" href="#_exemple_de_réponse_http_24">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_25"><a class="anchor" href="#_exemple_de_réponse_http_25"></a><a class="link" href="#_exemple_de_réponse_http_25">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_20"><a class="anchor" href="#_réponse_200_20"></a><a class="link" href="#_réponse_200_20">Réponse 200</a></h6>
+<h6 id="_réponse_200_21"><a class="anchor" href="#_réponse_200_21"></a><a class="link" href="#_réponse_200_21">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -5580,7 +5700,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_29"><a class="anchor" href="#_paramètres_29"></a><a class="link" href="#_paramètres_29">Paramètres</a></h5>
+<h5 id="_paramètres_30"><a class="anchor" href="#_paramètres_30"></a><a class="link" href="#_paramètres_30">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -5629,7 +5749,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_29"><a class="anchor" href="#_réponses_29"></a><a class="link" href="#_réponses_29">Réponses</a></h5>
+<h5 id="_réponses_30"><a class="anchor" href="#_réponses_30"></a><a class="link" href="#_réponses_30">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5668,9 +5788,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_29"><a class="anchor" href="#_exemple_de_requête_http_29"></a><a class="link" href="#_exemple_de_requête_http_29">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_30"><a class="anchor" href="#_exemple_de_requête_http_30"></a><a class="link" href="#_exemple_de_requête_http_30">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_29"><a class="anchor" href="#_requête_path_29"></a><a class="link" href="#_requête_path_29">Requête path</a></h6>
+<h6 id="_requête_path_30"><a class="anchor" href="#_requête_path_30"></a><a class="link" href="#_requête_path_30">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/profiles/string/history</pre>
@@ -5678,7 +5798,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_29"><a class="anchor" href="#_requête_header_29"></a><a class="link" href="#_requête_header_29">Requête header</a></h6>
+<h6 id="_requête_header_30"><a class="anchor" href="#_requête_header_30"></a><a class="link" href="#_requête_header_30">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -5687,9 +5807,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_25"><a class="anchor" href="#_exemple_de_réponse_http_25"></a><a class="link" href="#_exemple_de_réponse_http_25">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_26"><a class="anchor" href="#_exemple_de_réponse_http_26"></a><a class="link" href="#_exemple_de_réponse_http_26">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_21"><a class="anchor" href="#_réponse_200_21"></a><a class="link" href="#_réponse_200_21">Réponse 200</a></h6>
+<h6 id="_réponse_200_22"><a class="anchor" href="#_réponse_200_22"></a><a class="link" href="#_réponse_200_22">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -5745,7 +5865,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_30"><a class="anchor" href="#_paramètres_30"></a><a class="link" href="#_paramètres_30">Paramètres</a></h5>
+<h5 id="_paramètres_31"><a class="anchor" href="#_paramètres_31"></a><a class="link" href="#_paramètres_31">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -5801,7 +5921,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_30"><a class="anchor" href="#_réponses_30"></a><a class="link" href="#_réponses_30">Réponses</a></h5>
+<h5 id="_réponses_31"><a class="anchor" href="#_réponses_31"></a><a class="link" href="#_réponses_31">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5840,9 +5960,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_30"><a class="anchor" href="#_exemple_de_requête_http_30"></a><a class="link" href="#_exemple_de_requête_http_30">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_31"><a class="anchor" href="#_exemple_de_requête_http_31"></a><a class="link" href="#_exemple_de_requête_http_31">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_30"><a class="anchor" href="#_requête_path_30"></a><a class="link" href="#_requête_path_30">Requête path</a></h6>
+<h6 id="_requête_path_31"><a class="anchor" href="#_requête_path_31"></a><a class="link" href="#_requête_path_31">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/providers</pre>
@@ -5850,7 +5970,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_30"><a class="anchor" href="#_requête_header_30"></a><a class="link" href="#_requête_header_30">Requête header</a></h6>
+<h6 id="_requête_header_31"><a class="anchor" href="#_requête_header_31"></a><a class="link" href="#_requête_header_31">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -5870,9 +5990,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_26"><a class="anchor" href="#_exemple_de_réponse_http_26"></a><a class="link" href="#_exemple_de_réponse_http_26">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_27"><a class="anchor" href="#_exemple_de_réponse_http_27"></a><a class="link" href="#_exemple_de_réponse_http_27">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_22"><a class="anchor" href="#_réponse_200_22"></a><a class="link" href="#_réponse_200_22">Réponse 200</a></h6>
+<h6 id="_réponse_200_23"><a class="anchor" href="#_réponse_200_23"></a><a class="link" href="#_réponse_200_23">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">[ {
@@ -5905,7 +6025,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_31"><a class="anchor" href="#_paramètres_31"></a><a class="link" href="#_paramètres_31">Paramètres</a></h5>
+<h5 id="_paramètres_32"><a class="anchor" href="#_paramètres_32"></a><a class="link" href="#_paramètres_32">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -5968,7 +6088,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_31"><a class="anchor" href="#_réponses_31"></a><a class="link" href="#_réponses_31">Réponses</a></h5>
+<h5 id="_réponses_32"><a class="anchor" href="#_réponses_32"></a><a class="link" href="#_réponses_32">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -6007,9 +6127,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_31"><a class="anchor" href="#_exemple_de_requête_http_31"></a><a class="link" href="#_exemple_de_requête_http_31">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_32"><a class="anchor" href="#_exemple_de_requête_http_32"></a><a class="link" href="#_exemple_de_requête_http_32">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_31"><a class="anchor" href="#_requête_path_31"></a><a class="link" href="#_requête_path_31">Requête path</a></h6>
+<h6 id="_requête_path_32"><a class="anchor" href="#_requête_path_32"></a><a class="link" href="#_requête_path_32">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/providers/string</pre>
@@ -6017,7 +6137,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_31"><a class="anchor" href="#_requête_header_31"></a><a class="link" href="#_requête_header_31">Requête header</a></h6>
+<h6 id="_requête_header_32"><a class="anchor" href="#_requête_header_32"></a><a class="link" href="#_requête_header_32">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -6036,9 +6156,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_27"><a class="anchor" href="#_exemple_de_réponse_http_27"></a><a class="link" href="#_exemple_de_réponse_http_27">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_28"><a class="anchor" href="#_exemple_de_réponse_http_28"></a><a class="link" href="#_exemple_de_réponse_http_28">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_23"><a class="anchor" href="#_réponse_200_23"></a><a class="link" href="#_réponse_200_23">Réponse 200</a></h6>
+<h6 id="_réponse_200_24"><a class="anchor" href="#_réponse_200_24"></a><a class="link" href="#_réponse_200_24">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -6071,7 +6191,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_32"><a class="anchor" href="#_paramètres_32"></a><a class="link" href="#_paramètres_32">Paramètres</a></h5>
+<h5 id="_paramètres_33"><a class="anchor" href="#_paramètres_33"></a><a class="link" href="#_paramètres_33">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -6127,7 +6247,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_32"><a class="anchor" href="#_réponses_32"></a><a class="link" href="#_réponses_32">Réponses</a></h5>
+<h5 id="_réponses_33"><a class="anchor" href="#_réponses_33"></a><a class="link" href="#_réponses_33">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -6176,9 +6296,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_32"><a class="anchor" href="#_exemple_de_requête_http_32"></a><a class="link" href="#_exemple_de_requête_http_32">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_33"><a class="anchor" href="#_exemple_de_requête_http_33"></a><a class="link" href="#_exemple_de_requête_http_33">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_32"><a class="anchor" href="#_requête_path_32"></a><a class="link" href="#_requête_path_32">Requête path</a></h6>
+<h6 id="_requête_path_33"><a class="anchor" href="#_requête_path_33"></a><a class="link" href="#_requête_path_33">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/providers/string</pre>
@@ -6186,7 +6306,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_32"><a class="anchor" href="#_requête_header_32"></a><a class="link" href="#_requête_header_32">Requête header</a></h6>
+<h6 id="_requête_header_33"><a class="anchor" href="#_requête_header_33"></a><a class="link" href="#_requête_header_33">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -6203,9 +6323,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_28"><a class="anchor" href="#_exemple_de_réponse_http_28"></a><a class="link" href="#_exemple_de_réponse_http_28">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_29"><a class="anchor" href="#_exemple_de_réponse_http_29"></a><a class="link" href="#_exemple_de_réponse_http_29">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_24"><a class="anchor" href="#_réponse_200_24"></a><a class="link" href="#_réponse_200_24">Réponse 200</a></h6>
+<h6 id="_réponse_200_25"><a class="anchor" href="#_réponse_200_25"></a><a class="link" href="#_réponse_200_25">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -6238,7 +6358,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_33"><a class="anchor" href="#_paramètres_33"></a><a class="link" href="#_paramètres_33">Paramètres</a></h5>
+<h5 id="_paramètres_34"><a class="anchor" href="#_paramètres_34"></a><a class="link" href="#_paramètres_34">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -6294,7 +6414,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_33"><a class="anchor" href="#_réponses_33"></a><a class="link" href="#_réponses_33">Réponses</a></h5>
+<h5 id="_réponses_34"><a class="anchor" href="#_réponses_34"></a><a class="link" href="#_réponses_34">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -6333,9 +6453,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_33"><a class="anchor" href="#_exemple_de_requête_http_33"></a><a class="link" href="#_exemple_de_requête_http_33">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_34"><a class="anchor" href="#_exemple_de_requête_http_34"></a><a class="link" href="#_exemple_de_requête_http_34">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_33"><a class="anchor" href="#_requête_path_33"></a><a class="link" href="#_requête_path_33">Requête path</a></h6>
+<h6 id="_requête_path_34"><a class="anchor" href="#_requête_path_34"></a><a class="link" href="#_requête_path_34">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/providers/string/idpMetadata</pre>
@@ -6343,7 +6463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_33"><a class="anchor" href="#_requête_header_33"></a><a class="link" href="#_requête_header_33">Requête header</a></h6>
+<h6 id="_requête_header_34"><a class="anchor" href="#_requête_header_34"></a><a class="link" href="#_requête_header_34">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -6362,9 +6482,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_29"><a class="anchor" href="#_exemple_de_réponse_http_29"></a><a class="link" href="#_exemple_de_réponse_http_29">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_30"><a class="anchor" href="#_exemple_de_réponse_http_30"></a><a class="link" href="#_exemple_de_réponse_http_30">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_25"><a class="anchor" href="#_réponse_200_25"></a><a class="link" href="#_réponse_200_25">Réponse 200</a></h6>
+<h6 id="_réponse_200_26"><a class="anchor" href="#_réponse_200_26"></a><a class="link" href="#_réponse_200_26">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -6458,7 +6578,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_34"><a class="anchor" href="#_paramètres_34"></a><a class="link" href="#_paramètres_34">Paramètres</a></h5>
+<h5 id="_paramètres_35"><a class="anchor" href="#_paramètres_35"></a><a class="link" href="#_paramètres_35">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -6507,7 +6627,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_34"><a class="anchor" href="#_réponses_34"></a><a class="link" href="#_réponses_34">Réponses</a></h5>
+<h5 id="_réponses_35"><a class="anchor" href="#_réponses_35"></a><a class="link" href="#_réponses_35">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -6551,9 +6671,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_34"><a class="anchor" href="#_exemple_de_requête_http_34"></a><a class="link" href="#_exemple_de_requête_http_34">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_35"><a class="anchor" href="#_exemple_de_requête_http_35"></a><a class="link" href="#_exemple_de_requête_http_35">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_34"><a class="anchor" href="#_requête_path_34"></a><a class="link" href="#_requête_path_34">Requête path</a></h6>
+<h6 id="_requête_path_35"><a class="anchor" href="#_requête_path_35"></a><a class="link" href="#_requête_path_35">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/tenants</pre>
@@ -6561,7 +6681,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_34"><a class="anchor" href="#_requête_header_34"></a><a class="link" href="#_requête_header_34">Requête header</a></h6>
+<h6 id="_requête_header_35"><a class="anchor" href="#_requête_header_35"></a><a class="link" href="#_requête_header_35">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -6591,7 +6711,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_30"><a class="anchor" href="#_exemple_de_réponse_http_30"></a><a class="link" href="#_exemple_de_réponse_http_30">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_31"><a class="anchor" href="#_exemple_de_réponse_http_31"></a><a class="link" href="#_exemple_de_réponse_http_31">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_201_5"><a class="anchor" href="#_réponse_201_5"></a><a class="link" href="#_réponse_201_5">Réponse 201</a></h6>
 <div class="listingblock">
@@ -6620,155 +6740,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="literalblock">
 <div class="content">
 <pre>GET /identity-api/tenants</pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_paramètres_35"><a class="anchor" href="#_paramètres_35"></a><a class="link" href="#_paramètres_35">Paramètres</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_réponses_35"><a class="anchor" href="#_réponses_35"></a><a class="link" href="#_réponses_35">Réponses</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 70%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Code HTTP</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_tenantdto">TenantDto</a> &gt; array</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_requête_http_35"><a class="anchor" href="#_exemple_de_requête_http_35"></a><a class="link" href="#_exemple_de_requête_http_35">Exemple de requête HTTP</a></h5>
-<div class="sect5">
-<h6 id="_requête_path_35"><a class="anchor" href="#_requête_path_35"></a><a class="link" href="#_requête_path_35">Requête path</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre>/identity-api/tenants</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_35"><a class="anchor" href="#_requête_header_35"></a><a class="link" href="#_requête_header_35">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_query_16"><a class="anchor" href="#_requête_query_16"></a><a class="link" href="#_requête_query_16">Requête query</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "criteria" : "string"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_réponse_http_31"><a class="anchor" href="#_exemple_de_réponse_http_31"></a><a class="link" href="#_exemple_de_réponse_http_31">Exemple de réponse HTTP</a></h5>
-<div class="sect5">
-<h6 id="_réponse_200_26"><a class="anchor" href="#_réponse_200_26"></a><a class="link" href="#_réponse_200_26">Réponse 200</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">[ {
-  "accessContractHoldingIdentifier" : "string",
-  "accessContractLogbookIdentifier" : "string",
-  "customerId" : "string",
-  "enabled" : true,
-  "id" : "string",
-  "identifier" : 0,
-  "ingestContractHoldingIdentifier" : "string",
-  "itemIngestContractIdentifier" : "string",
-  "name" : "string",
-  "ownerId" : "string",
-  "proof" : true,
-  "readonly" : true
-} ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_checkexistusinghead_4"><a class="anchor" href="#_checkexistusinghead_4"></a><a class="link" href="#_checkexistusinghead_4">2.6.3. Check entity exist by criteria</a></h4>
-<div class="literalblock">
-<div class="content">
-<pre>HEAD /identity-api/tenants/check</pre>
 </div>
 </div>
 <div class="sect4">
@@ -6813,7 +6784,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>requis</em></p></td>
+<em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
@@ -6822,6 +6793,155 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="sect4">
 <h5 id="_réponses_36"><a class="anchor" href="#_réponses_36"></a><a class="link" href="#_réponses_36">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_tenantdto">TenantDto</a> &gt; array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_36"><a class="anchor" href="#_exemple_de_requête_http_36"></a><a class="link" href="#_exemple_de_requête_http_36">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_36"><a class="anchor" href="#_requête_path_36"></a><a class="link" href="#_requête_path_36">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/identity-api/tenants</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_36"><a class="anchor" href="#_requête_header_36"></a><a class="link" href="#_requête_header_36">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_query_16"><a class="anchor" href="#_requête_query_16"></a><a class="link" href="#_requête_query_16">Requête query</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "criteria" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_32"><a class="anchor" href="#_exemple_de_réponse_http_32"></a><a class="link" href="#_exemple_de_réponse_http_32">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_27"><a class="anchor" href="#_réponse_200_27"></a><a class="link" href="#_réponse_200_27">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "accessContractHoldingIdentifier" : "string",
+  "accessContractLogbookIdentifier" : "string",
+  "customerId" : "string",
+  "enabled" : true,
+  "id" : "string",
+  "identifier" : 0,
+  "ingestContractHoldingIdentifier" : "string",
+  "itemIngestContractIdentifier" : "string",
+  "name" : "string",
+  "ownerId" : "string",
+  "proof" : true,
+  "readonly" : true
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_checkexistusinghead_4"><a class="anchor" href="#_checkexistusinghead_4"></a><a class="link" href="#_checkexistusinghead_4">2.6.3. Check entity exist by criteria</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>HEAD /identity-api/tenants/check</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_37"><a class="anchor" href="#_paramètres_37"></a><a class="link" href="#_paramètres_37">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_37"><a class="anchor" href="#_réponses_37"></a><a class="link" href="#_réponses_37">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -6865,9 +6985,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_36"><a class="anchor" href="#_exemple_de_requête_http_36"></a><a class="link" href="#_exemple_de_requête_http_36">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_37"><a class="anchor" href="#_exemple_de_requête_http_37"></a><a class="link" href="#_exemple_de_requête_http_37">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_36"><a class="anchor" href="#_requête_path_36"></a><a class="link" href="#_requête_path_36">Requête path</a></h6>
+<h6 id="_requête_path_37"><a class="anchor" href="#_requête_path_37"></a><a class="link" href="#_requête_path_37">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/tenants/check</pre>
@@ -6875,7 +6995,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_36"><a class="anchor" href="#_requête_header_36"></a><a class="link" href="#_requête_header_36">Requête header</a></h6>
+<h6 id="_requête_header_37"><a class="anchor" href="#_requête_header_37"></a><a class="link" href="#_requête_header_37">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -6899,145 +7019,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="literalblock">
 <div class="content">
 <pre>GET /identity-api/tenants/{id}</pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_paramètres_37"><a class="anchor" href="#_paramètres_37"></a><a class="link" href="#_paramètres_37">Paramètres</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_réponses_37"><a class="anchor" href="#_réponses_37"></a><a class="link" href="#_réponses_37">Réponses</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 70%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Code HTTP</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_tenantdto">TenantDto</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_requête_http_37"><a class="anchor" href="#_exemple_de_requête_http_37"></a><a class="link" href="#_exemple_de_requête_http_37">Exemple de requête HTTP</a></h5>
-<div class="sect5">
-<h6 id="_requête_path_37"><a class="anchor" href="#_requête_path_37"></a><a class="link" href="#_requête_path_37">Requête path</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre>/identity-api/tenants/string</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_37"><a class="anchor" href="#_requête_header_37"></a><a class="link" href="#_requête_header_37">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_exemple_de_réponse_http_32"><a class="anchor" href="#_exemple_de_réponse_http_32"></a><a class="link" href="#_exemple_de_réponse_http_32">Exemple de réponse HTTP</a></h5>
-<div class="sect5">
-<h6 id="_réponse_200_27"><a class="anchor" href="#_réponse_200_27"></a><a class="link" href="#_réponse_200_27">Réponse 200</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "accessContractHoldingIdentifier" : "string",
-  "accessContractLogbookIdentifier" : "string",
-  "customerId" : "string",
-  "enabled" : true,
-  "id" : "string",
-  "identifier" : 0,
-  "ingestContractHoldingIdentifier" : "string",
-  "itemIngestContractIdentifier" : "string",
-  "name" : "string",
-  "ownerId" : "string",
-  "proof" : true,
-  "readonly" : true
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_updateusingput_2"><a class="anchor" href="#_updateusingput_2"></a><a class="link" href="#_updateusingput_2">2.6.5. Update entity</a></h4>
-<div class="literalblock">
-<div class="content">
-<pre>PUT /identity-api/tenants/{id}</pre>
 </div>
 </div>
 <div class="sect4">
@@ -7086,6 +7067,145 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_38"><a class="anchor" href="#_réponses_38"></a><a class="link" href="#_réponses_38">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_tenantdto">TenantDto</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">La requête n&#8217;est pas autorisée. Le X-User-Token n&#8217;est pas valide</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possède pas les droits pour effectuer cette opération</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvée</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_38"><a class="anchor" href="#_exemple_de_requête_http_38"></a><a class="link" href="#_exemple_de_requête_http_38">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_38"><a class="anchor" href="#_requête_path_38"></a><a class="link" href="#_requête_path_38">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/identity-api/tenants/string</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_header_38"><a class="anchor" href="#_requête_header_38"></a><a class="link" href="#_requête_header_38">Requête header</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_33"><a class="anchor" href="#_exemple_de_réponse_http_33"></a><a class="link" href="#_exemple_de_réponse_http_33">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_28"><a class="anchor" href="#_réponse_200_28"></a><a class="link" href="#_réponse_200_28">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "accessContractHoldingIdentifier" : "string",
+  "accessContractLogbookIdentifier" : "string",
+  "customerId" : "string",
+  "enabled" : true,
+  "id" : "string",
+  "identifier" : 0,
+  "ingestContractHoldingIdentifier" : "string",
+  "itemIngestContractIdentifier" : "string",
+  "name" : "string",
+  "ownerId" : "string",
+  "proof" : true,
+  "readonly" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updateusingput_2"><a class="anchor" href="#_updateusingput_2"></a><a class="link" href="#_updateusingput_2">2.6.5. Update entity</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>PUT /identity-api/tenants/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_39"><a class="anchor" href="#_paramètres_39"></a><a class="link" href="#_paramètres_39">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transférer utilisé dans la génération des logs et des journaux VITAM</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit être exécutée la requête</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token généré par le serveur CAS lors de l&#8217;autentification</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>entityDto</strong><br>
@@ -7097,7 +7217,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_38"><a class="anchor" href="#_réponses_38"></a><a class="link" href="#_réponses_38">Réponses</a></h5>
+<h5 id="_réponses_39"><a class="anchor" href="#_réponses_39"></a><a class="link" href="#_réponses_39">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -7146,9 +7266,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_38"><a class="anchor" href="#_exemple_de_requête_http_38"></a><a class="link" href="#_exemple_de_requête_http_38">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_39"><a class="anchor" href="#_exemple_de_requête_http_39"></a><a class="link" href="#_exemple_de_requête_http_39">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_38"><a class="anchor" href="#_requête_path_38"></a><a class="link" href="#_requête_path_38">Requête path</a></h6>
+<h6 id="_requête_path_39"><a class="anchor" href="#_requête_path_39"></a><a class="link" href="#_requête_path_39">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/tenants/string</pre>
@@ -7156,7 +7276,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_38"><a class="anchor" href="#_requête_header_38"></a><a class="link" href="#_requête_header_38">Requête header</a></h6>
+<h6 id="_requête_header_39"><a class="anchor" href="#_requête_header_39"></a><a class="link" href="#_requête_header_39">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -7186,9 +7306,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_33"><a class="anchor" href="#_exemple_de_réponse_http_33"></a><a class="link" href="#_exemple_de_réponse_http_33">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_34"><a class="anchor" href="#_exemple_de_réponse_http_34"></a><a class="link" href="#_exemple_de_réponse_http_34">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_28"><a class="anchor" href="#_réponse_200_28"></a><a class="link" href="#_réponse_200_28">Réponse 200</a></h6>
+<h6 id="_réponse_200_29"><a class="anchor" href="#_réponse_200_29"></a><a class="link" href="#_réponse_200_29">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -7218,7 +7338,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_39"><a class="anchor" href="#_paramètres_39"></a><a class="link" href="#_paramètres_39">Paramètres</a></h5>
+<h5 id="_paramètres_40"><a class="anchor" href="#_paramètres_40"></a><a class="link" href="#_paramètres_40">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -7274,7 +7394,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_39"><a class="anchor" href="#_réponses_39"></a><a class="link" href="#_réponses_39">Réponses</a></h5>
+<h5 id="_réponses_40"><a class="anchor" href="#_réponses_40"></a><a class="link" href="#_réponses_40">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -7323,9 +7443,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_39"><a class="anchor" href="#_exemple_de_requête_http_39"></a><a class="link" href="#_exemple_de_requête_http_39">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_40"><a class="anchor" href="#_exemple_de_requête_http_40"></a><a class="link" href="#_exemple_de_requête_http_40">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_39"><a class="anchor" href="#_requête_path_39"></a><a class="link" href="#_requête_path_39">Requête path</a></h6>
+<h6 id="_requête_path_40"><a class="anchor" href="#_requête_path_40"></a><a class="link" href="#_requête_path_40">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/tenants/string</pre>
@@ -7333,7 +7453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_39"><a class="anchor" href="#_requête_header_39"></a><a class="link" href="#_requête_header_39">Requête header</a></h6>
+<h6 id="_requête_header_40"><a class="anchor" href="#_requête_header_40"></a><a class="link" href="#_requête_header_40">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -7350,9 +7470,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_34"><a class="anchor" href="#_exemple_de_réponse_http_34"></a><a class="link" href="#_exemple_de_réponse_http_34">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_35"><a class="anchor" href="#_exemple_de_réponse_http_35"></a><a class="link" href="#_exemple_de_réponse_http_35">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_29"><a class="anchor" href="#_réponse_200_29"></a><a class="link" href="#_réponse_200_29">Réponse 200</a></h6>
+<h6 id="_réponse_200_30"><a class="anchor" href="#_réponse_200_30"></a><a class="link" href="#_réponse_200_30">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -7388,7 +7508,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_40"><a class="anchor" href="#_paramètres_40"></a><a class="link" href="#_paramètres_40">Paramètres</a></h5>
+<h5 id="_paramètres_41"><a class="anchor" href="#_paramètres_41"></a><a class="link" href="#_paramètres_41">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -7437,7 +7557,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_40"><a class="anchor" href="#_réponses_40"></a><a class="link" href="#_réponses_40">Réponses</a></h5>
+<h5 id="_réponses_41"><a class="anchor" href="#_réponses_41"></a><a class="link" href="#_réponses_41">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -7481,9 +7601,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_40"><a class="anchor" href="#_exemple_de_requête_http_40"></a><a class="link" href="#_exemple_de_requête_http_40">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_41"><a class="anchor" href="#_exemple_de_requête_http_41"></a><a class="link" href="#_exemple_de_requête_http_41">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_40"><a class="anchor" href="#_requête_path_40"></a><a class="link" href="#_requête_path_40">Requête path</a></h6>
+<h6 id="_requête_path_41"><a class="anchor" href="#_requête_path_41"></a><a class="link" href="#_requête_path_41">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users</pre>
@@ -7491,7 +7611,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_40"><a class="anchor" href="#_requête_header_40"></a><a class="link" href="#_requête_header_40">Requête header</a></h6>
+<h6 id="_requête_header_41"><a class="anchor" href="#_requête_header_41"></a><a class="link" href="#_requête_header_41">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -7536,7 +7656,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_35"><a class="anchor" href="#_exemple_de_réponse_http_35"></a><a class="link" href="#_exemple_de_réponse_http_35">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_36"><a class="anchor" href="#_exemple_de_réponse_http_36"></a><a class="link" href="#_exemple_de_réponse_http_36">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
 <h6 id="_réponse_201_6"><a class="anchor" href="#_réponse_201_6"></a><a class="link" href="#_réponse_201_6">Réponse 201</a></h6>
 <div class="listingblock">
@@ -7583,7 +7703,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_41"><a class="anchor" href="#_paramètres_41"></a><a class="link" href="#_paramètres_41">Paramètres</a></h5>
+<h5 id="_paramètres_42"><a class="anchor" href="#_paramètres_42"></a><a class="link" href="#_paramètres_42">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -7660,7 +7780,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_41"><a class="anchor" href="#_réponses_41"></a><a class="link" href="#_réponses_41">Réponses</a></h5>
+<h5 id="_réponses_42"><a class="anchor" href="#_réponses_42"></a><a class="link" href="#_réponses_42">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -7699,9 +7819,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_41"><a class="anchor" href="#_exemple_de_requête_http_41"></a><a class="link" href="#_exemple_de_requête_http_41">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_42"><a class="anchor" href="#_exemple_de_requête_http_42"></a><a class="link" href="#_exemple_de_requête_http_42">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_41"><a class="anchor" href="#_requête_path_41"></a><a class="link" href="#_requête_path_41">Requête path</a></h6>
+<h6 id="_requête_path_42"><a class="anchor" href="#_requête_path_42"></a><a class="link" href="#_requête_path_42">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users</pre>
@@ -7709,7 +7829,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_41"><a class="anchor" href="#_requête_header_41"></a><a class="link" href="#_requête_header_41">Requête header</a></h6>
+<h6 id="_requête_header_42"><a class="anchor" href="#_requête_header_42"></a><a class="link" href="#_requête_header_42">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -7732,9 +7852,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_36"><a class="anchor" href="#_exemple_de_réponse_http_36"></a><a class="link" href="#_exemple_de_réponse_http_36">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_37"><a class="anchor" href="#_exemple_de_réponse_http_37"></a><a class="link" href="#_exemple_de_réponse_http_37">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_30"><a class="anchor" href="#_réponse_200_30"></a><a class="link" href="#_réponse_200_30">Réponse 200</a></h6>
+<h6 id="_réponse_200_31"><a class="anchor" href="#_réponse_200_31"></a><a class="link" href="#_réponse_200_31">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -7784,7 +7904,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_42"><a class="anchor" href="#_paramètres_42"></a><a class="link" href="#_paramètres_42">Paramètres</a></h5>
+<h5 id="_paramètres_43"><a class="anchor" href="#_paramètres_43"></a><a class="link" href="#_paramètres_43">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -7833,7 +7953,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_42"><a class="anchor" href="#_réponses_42"></a><a class="link" href="#_réponses_42">Réponses</a></h5>
+<h5 id="_réponses_43"><a class="anchor" href="#_réponses_43"></a><a class="link" href="#_réponses_43">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -7877,9 +7997,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_42"><a class="anchor" href="#_exemple_de_requête_http_42"></a><a class="link" href="#_exemple_de_requête_http_42">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_43"><a class="anchor" href="#_exemple_de_requête_http_43"></a><a class="link" href="#_exemple_de_requête_http_43">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_42"><a class="anchor" href="#_requête_path_42"></a><a class="link" href="#_requête_path_42">Requête path</a></h6>
+<h6 id="_requête_path_43"><a class="anchor" href="#_requête_path_43"></a><a class="link" href="#_requête_path_43">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/check</pre>
@@ -7887,7 +8007,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_42"><a class="anchor" href="#_requête_header_42"></a><a class="link" href="#_requête_header_42">Requête header</a></h6>
+<h6 id="_requête_header_43"><a class="anchor" href="#_requête_header_43"></a><a class="link" href="#_requête_header_43">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -7914,7 +8034,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_43"><a class="anchor" href="#_paramètres_43"></a><a class="link" href="#_paramètres_43">Paramètres</a></h5>
+<h5 id="_paramètres_44"><a class="anchor" href="#_paramètres_44"></a><a class="link" href="#_paramètres_44">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -7963,7 +8083,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_43"><a class="anchor" href="#_réponses_43"></a><a class="link" href="#_réponses_43">Réponses</a></h5>
+<h5 id="_réponses_44"><a class="anchor" href="#_réponses_44"></a><a class="link" href="#_réponses_44">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -8002,9 +8122,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_43"><a class="anchor" href="#_exemple_de_requête_http_43"></a><a class="link" href="#_exemple_de_requête_http_43">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_44"><a class="anchor" href="#_exemple_de_requête_http_44"></a><a class="link" href="#_exemple_de_requête_http_44">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_43"><a class="anchor" href="#_requête_path_43"></a><a class="link" href="#_requête_path_43">Requête path</a></h6>
+<h6 id="_requête_path_44"><a class="anchor" href="#_requête_path_44"></a><a class="link" href="#_requête_path_44">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/levels</pre>
@@ -8012,7 +8132,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_43"><a class="anchor" href="#_requête_header_43"></a><a class="link" href="#_requête_header_43">Requête header</a></h6>
+<h6 id="_requête_header_44"><a class="anchor" href="#_requête_header_44"></a><a class="link" href="#_requête_header_44">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -8031,9 +8151,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_37"><a class="anchor" href="#_exemple_de_réponse_http_37"></a><a class="link" href="#_exemple_de_réponse_http_37">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_38"><a class="anchor" href="#_exemple_de_réponse_http_38"></a><a class="link" href="#_exemple_de_réponse_http_38">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_31"><a class="anchor" href="#_réponse_200_31"></a><a class="link" href="#_réponse_200_31">Réponse 200</a></h6>
+<h6 id="_réponse_200_32"><a class="anchor" href="#_réponse_200_32"></a><a class="link" href="#_réponse_200_32">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">[ "string" ]</code></pre>
@@ -8050,7 +8170,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_44"><a class="anchor" href="#_paramètres_44"></a><a class="link" href="#_paramètres_44">Paramètres</a></h5>
+<h5 id="_paramètres_45"><a class="anchor" href="#_paramètres_45"></a><a class="link" href="#_paramètres_45">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -8099,7 +8219,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_44"><a class="anchor" href="#_réponses_44"></a><a class="link" href="#_réponses_44">Réponses</a></h5>
+<h5 id="_réponses_45"><a class="anchor" href="#_réponses_45"></a><a class="link" href="#_réponses_45">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -8138,9 +8258,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_44"><a class="anchor" href="#_exemple_de_requête_http_44"></a><a class="link" href="#_exemple_de_requête_http_44">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_45"><a class="anchor" href="#_exemple_de_requête_http_45"></a><a class="link" href="#_exemple_de_requête_http_45">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_44"><a class="anchor" href="#_requête_path_44"></a><a class="link" href="#_requête_path_44">Requête path</a></h6>
+<h6 id="_requête_path_45"><a class="anchor" href="#_requête_path_45"></a><a class="link" href="#_requête_path_45">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/string</pre>
@@ -8148,7 +8268,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_44"><a class="anchor" href="#_requête_header_44"></a><a class="link" href="#_requête_header_44">Requête header</a></h6>
+<h6 id="_requête_header_45"><a class="anchor" href="#_requête_header_45"></a><a class="link" href="#_requête_header_45">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -8157,9 +8277,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_38"><a class="anchor" href="#_exemple_de_réponse_http_38"></a><a class="link" href="#_exemple_de_réponse_http_38">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_39"><a class="anchor" href="#_exemple_de_réponse_http_39"></a><a class="link" href="#_exemple_de_réponse_http_39">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_32"><a class="anchor" href="#_réponse_200_32"></a><a class="link" href="#_réponse_200_32">Réponse 200</a></h6>
+<h6 id="_réponse_200_33"><a class="anchor" href="#_réponse_200_33"></a><a class="link" href="#_réponse_200_33">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -8204,7 +8324,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_45"><a class="anchor" href="#_paramètres_45"></a><a class="link" href="#_paramètres_45">Paramètres</a></h5>
+<h5 id="_paramètres_46"><a class="anchor" href="#_paramètres_46"></a><a class="link" href="#_paramètres_46">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -8253,7 +8373,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_45"><a class="anchor" href="#_réponses_45"></a><a class="link" href="#_réponses_45">Réponses</a></h5>
+<h5 id="_réponses_46"><a class="anchor" href="#_réponses_46"></a><a class="link" href="#_réponses_46">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -8302,9 +8422,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_45"><a class="anchor" href="#_exemple_de_requête_http_45"></a><a class="link" href="#_exemple_de_requête_http_45">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_46"><a class="anchor" href="#_exemple_de_requête_http_46"></a><a class="link" href="#_exemple_de_requête_http_46">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_45"><a class="anchor" href="#_requête_path_45"></a><a class="link" href="#_requête_path_45">Requête path</a></h6>
+<h6 id="_requête_path_46"><a class="anchor" href="#_requête_path_46"></a><a class="link" href="#_requête_path_46">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/{id}</pre>
@@ -8312,7 +8432,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_45"><a class="anchor" href="#_requête_header_45"></a><a class="link" href="#_requête_header_45">Requête header</a></h6>
+<h6 id="_requête_header_46"><a class="anchor" href="#_requête_header_46"></a><a class="link" href="#_requête_header_46">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -8357,9 +8477,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_39"><a class="anchor" href="#_exemple_de_réponse_http_39"></a><a class="link" href="#_exemple_de_réponse_http_39">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_40"><a class="anchor" href="#_exemple_de_réponse_http_40"></a><a class="link" href="#_exemple_de_réponse_http_40">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_33"><a class="anchor" href="#_réponse_200_33"></a><a class="link" href="#_réponse_200_33">Réponse 200</a></h6>
+<h6 id="_réponse_200_34"><a class="anchor" href="#_réponse_200_34"></a><a class="link" href="#_réponse_200_34">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -8404,7 +8524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_46"><a class="anchor" href="#_paramètres_46"></a><a class="link" href="#_paramètres_46">Paramètres</a></h5>
+<h5 id="_paramètres_47"><a class="anchor" href="#_paramètres_47"></a><a class="link" href="#_paramètres_47">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -8460,7 +8580,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_46"><a class="anchor" href="#_réponses_46"></a><a class="link" href="#_réponses_46">Réponses</a></h5>
+<h5 id="_réponses_47"><a class="anchor" href="#_réponses_47"></a><a class="link" href="#_réponses_47">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -8509,9 +8629,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_46"><a class="anchor" href="#_exemple_de_requête_http_46"></a><a class="link" href="#_exemple_de_requête_http_46">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_47"><a class="anchor" href="#_exemple_de_requête_http_47"></a><a class="link" href="#_exemple_de_requête_http_47">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_46"><a class="anchor" href="#_requête_path_46"></a><a class="link" href="#_requête_path_46">Requête path</a></h6>
+<h6 id="_requête_path_47"><a class="anchor" href="#_requête_path_47"></a><a class="link" href="#_requête_path_47">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/string</pre>
@@ -8519,7 +8639,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_46"><a class="anchor" href="#_requête_header_46"></a><a class="link" href="#_requête_header_46">Requête header</a></h6>
+<h6 id="_requête_header_47"><a class="anchor" href="#_requête_header_47"></a><a class="link" href="#_requête_header_47">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -8536,9 +8656,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_40"><a class="anchor" href="#_exemple_de_réponse_http_40"></a><a class="link" href="#_exemple_de_réponse_http_40">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_41"><a class="anchor" href="#_exemple_de_réponse_http_41"></a><a class="link" href="#_exemple_de_réponse_http_41">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_34"><a class="anchor" href="#_réponse_200_34"></a><a class="link" href="#_réponse_200_34">Réponse 200</a></h6>
+<h6 id="_réponse_200_35"><a class="anchor" href="#_réponse_200_35"></a><a class="link" href="#_réponse_200_35">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -8583,7 +8703,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_47"><a class="anchor" href="#_paramètres_47"></a><a class="link" href="#_paramètres_47">Paramètres</a></h5>
+<h5 id="_paramètres_48"><a class="anchor" href="#_paramètres_48"></a><a class="link" href="#_paramètres_48">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -8632,7 +8752,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_réponses_47"><a class="anchor" href="#_réponses_47"></a><a class="link" href="#_réponses_47">Réponses</a></h5>
+<h5 id="_réponses_48"><a class="anchor" href="#_réponses_48"></a><a class="link" href="#_réponses_48">Réponses</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 10%;">
@@ -8671,9 +8791,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_requête_http_47"><a class="anchor" href="#_exemple_de_requête_http_47"></a><a class="link" href="#_exemple_de_requête_http_47">Exemple de requête HTTP</a></h5>
+<h5 id="_exemple_de_requête_http_48"><a class="anchor" href="#_exemple_de_requête_http_48"></a><a class="link" href="#_exemple_de_requête_http_48">Exemple de requête HTTP</a></h5>
 <div class="sect5">
-<h6 id="_requête_path_47"><a class="anchor" href="#_requête_path_47"></a><a class="link" href="#_requête_path_47">Requête path</a></h6>
+<h6 id="_requête_path_48"><a class="anchor" href="#_requête_path_48"></a><a class="link" href="#_requête_path_48">Requête path</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre>/identity-api/users/string/history</pre>
@@ -8681,7 +8801,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header_47"><a class="anchor" href="#_requête_header_47"></a><a class="link" href="#_requête_header_47">Requête header</a></h6>
+<h6 id="_requête_header_48"><a class="anchor" href="#_requête_header_48"></a><a class="link" href="#_requête_header_48">Requête header</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
@@ -8690,9 +8810,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exemple_de_réponse_http_41"><a class="anchor" href="#_exemple_de_réponse_http_41"></a><a class="link" href="#_exemple_de_réponse_http_41">Exemple de réponse HTTP</a></h5>
+<h5 id="_exemple_de_réponse_http_42"><a class="anchor" href="#_exemple_de_réponse_http_42"></a><a class="link" href="#_exemple_de_réponse_http_42">Exemple de réponse HTTP</a></h5>
 <div class="sect5">
-<h6 id="_réponse_200_35"><a class="anchor" href="#_réponse_200_35"></a><a class="link" href="#_réponse_200_35">Réponse 200</a></h6>
+<h6 id="_réponse_200_36"><a class="anchor" href="#_réponse_200_36"></a><a class="link" href="#_réponse_200_36">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -8842,7 +8962,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>gdprAlert</strong><br>
 <em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pour activer ou désactiver la réception des alertes<br>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pour activer ou désactiver la récéeption des alertes<br>
 <strong>Exemple</strong> : <code>true</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
 </tr>
@@ -10379,7 +10499,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-12-17 16:14:05 +0100
+Last updated 2021-01-06 14:28:03 +0100
 </div>
 </div>
 </body>

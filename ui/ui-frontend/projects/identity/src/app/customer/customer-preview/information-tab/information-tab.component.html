@@ -178,20 +178,16 @@
 
 
 
-  <div class="row">
+  <div class="row" >
     <div class="col-12 form-control">
-
-
-    <vitamui-common-slide-toggle formControlName="gdprAlert" i18n="gdprAlert Account@@accountgdprAlertToggleLabel">
+    <vitamui-common-slide-toggle formControlName="gdprAlert" i18n="gdprAlert Account@@accountgdprAlertToggleLabel"  [disabled]="gdprReadOnlyStatus">
       Alerte sur les utilisateurs inactifs</vitamui-common-slide-toggle>
 
     </div>
   </div>
-
-      <div class="row" *ngIf="form?.get('gdprAlert')?.value">
+   <div class="row" *ngIf="form?.get('gdprAlert')?.value" >
         <div class="col-12 form-control">
-    <vitamui-common-editable-input  [disabled]= "!form?.get('gdprAlert')?.value"
-    formControlName="gdprAlertDelay"
+    <vitamui-common-editable-input  [disabled]= "gdprReadOnlyStatus &&  !form?.get('gdprAlert')?.value"  formControlName="gdprAlertDelay"
     
     label="Durée d'alerte sur les utilisateurs inactifs (mois)" i18n-label="gdprAlertDelay@@CustomerDetailLabelgdprAlertDelay"
     [validator]="form?.get('gdprAlertDelay')?.validator"

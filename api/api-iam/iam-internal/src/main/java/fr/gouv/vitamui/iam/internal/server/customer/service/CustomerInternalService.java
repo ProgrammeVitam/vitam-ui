@@ -49,6 +49,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -100,6 +101,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerInternalService extends VitamUICrudService<CustomerDto, Customer> {
+
+    @Value("${gdpr_alert_readonly:true}")
+    private boolean gdprAlertReadonly;
 
     private final CustomerRepository customerRepository;
 
@@ -306,15 +310,33 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
 
-                case "gdprAlertDelay" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(), entry.getValue()));
-                    customer.setGdprAlertDelay(CastUtils.toInt(entry.getValue()));
-                    break;
-
-                case "gdprAlert" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.GDPR_ALERT_KEY, customer.isGdprAlert(), entry.getValue()));
-                    customer.setGdprAlert(CastUtils.toBoolean(entry.getValue()));
-                    break;
+                case "gdprAlertDelay":
+                    if (this.isGdprAlertReadonly()) {
+                        LOGGER.error(
+                            "Cannot update  gdprAlertDelay because the main setting is readOnly, please contact your administrator to update it ");
+                        throw new IllegalArgumentException(
+                            "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
+                                " is not allowed, because the main setting is readOnly, please contact your administrator to update it");
+                    } else {
+                        logbooks.add(
+                            new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(),
+                                entry.getValue()));
+                        customer.setGdprAlertDelay(CastUtils.toInt(entry.getValue()));
+                        break;
+                    }
+                case "gdprAlert":
+                    if (this.isGdprAlertReadonly()) {
+                        LOGGER.error(
+                            "Cannot update  gdprAlert because the main setting is readOnly, please contact your administrator to update it ");
+                        throw new IllegalArgumentException(
+                            "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
+                                " is not allowed, because the main setting is readOnly, please contact your administrator to update it");
+                    } else {
+                        logbooks.add(new EventDiffDto(CustomerConverter.GDPR_ALERT_KEY, customer.isGdprAlert(),
+                            entry.getValue()));
+                        customer.setGdprAlert(CastUtils.toBoolean(entry.getValue()));
+                        break;
+                    }
 
                 case "address" :
                     final Address address = customer.getAddress();
@@ -527,4 +549,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         return null;
     }
 
+    /**
+     * get Gdpr global Setting Status
+     *
+     * @return yes if readonly, false if editable
+     */
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("get Gdpr Setting Status ");
+        return this.gdprAlertReadonly;
+    }
 }
