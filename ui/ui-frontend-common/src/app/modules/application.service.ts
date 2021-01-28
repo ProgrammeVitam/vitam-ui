@@ -169,22 +169,24 @@ export class ApplicationService {
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
     this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
+      console.log('uiUrl was ignored as a quick fix: ', uiUrl);
+      // FIXME: Find a better solution to handle redirections when some domain are prefix of other domain
       // If called app is in the same server...
-      if (app.url.includes(uiUrl)) {
+      /* if (app.url.includes(uiUrl)) {
         // If application requires a tenant identifier, then provide the current active tenant
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
         } else {
           router.navigate([app.url.replace(uiUrl, '')]);
         }
-      } else {
+      } else { */
         // If application on other domain requires a tenant identifier, then provide the current active tenant
-        if (app.hasTenantList) {
-          window.location.href = app.url + '/tenant/' + identifier;
-        } else {
-          window.location.href = app.url;
-        }
+      if (app.hasTenantList) {
+        window.location.href = app.url + '/tenant/' + identifier;
+      } else {
+        window.location.href = app.url;
       }
+      // }
     });
   }
 
