@@ -134,6 +134,9 @@ db.profiles.insert({
             "name": "ROLE_UPDATE_FILE_FORMATS"
         },
         {
+            "name": "ROLE_IMPORT_FILE_FORMATS"
+        },
+        {
             "name": "ROLE_DELETE_FILE_FORMATS"
         }
 	 ]
@@ -334,7 +337,8 @@ db.groups.updateOne( {
                 "system_dsl",
                 "system_probative_value",
                 "system_logbook_operation",
-                "system_holding_filling_scheme_profile"
+                "system_holding_filling_scheme_profile",
+                "system_file_format"
         	]
         }
     }
