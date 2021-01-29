@@ -37,7 +37,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
 import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { MatSidenavModule, MatMenuModule, MatTreeModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTreeModule } from '@angular/material/tree';
+import {  MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ArchiveApiService } from '../../core/api/archive-api.service';
 import { ActivatedRoute } from '@angular/router';

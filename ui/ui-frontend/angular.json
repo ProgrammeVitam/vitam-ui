@@ -291,7 +291,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "13mb"
                 }
               ]
             }
@@ -785,7 +785,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "14mb"
                 }
               ]
             }

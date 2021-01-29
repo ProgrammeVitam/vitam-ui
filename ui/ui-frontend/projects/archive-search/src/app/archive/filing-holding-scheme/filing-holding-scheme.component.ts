@@ -37,7 +37,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';

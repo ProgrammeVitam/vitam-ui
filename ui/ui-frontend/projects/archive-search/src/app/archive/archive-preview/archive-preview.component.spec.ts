@@ -37,7 +37,13 @@
  import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
  
-import { MatIconModule, MatMenuModule, MatProgressSpinnerModule, MatSidenavModule, MatTreeModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
  

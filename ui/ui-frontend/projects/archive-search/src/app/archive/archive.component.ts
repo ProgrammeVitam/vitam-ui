@@ -37,7 +37,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SidenavPage, GlobalEventService } from 'ui-frontend-common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 
 @Component({

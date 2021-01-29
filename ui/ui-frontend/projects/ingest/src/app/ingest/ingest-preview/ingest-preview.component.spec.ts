@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -6,14 +6,19 @@ import { BASE_URL, LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { IngestService } from '../ingest.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+@Pipe({ name: 'truncate' })
+class MockTruncatePipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
 describe('IngestPreviewComponent', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IngestPreviewComponent ],
+      declarations: [IngestPreviewComponent, MockTruncatePipe],
       imports: [
         HttpClientTestingModule,
         MatMenuModule

@@ -38,7 +38,11 @@ import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatMenuModule, MatProgressSpinnerModule, MatSidenavModule, MatTreeModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTreeModule } from '@angular/material/tree';
+
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
