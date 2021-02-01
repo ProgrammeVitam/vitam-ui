@@ -49,7 +49,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @Setter
-public class RuleCSVDto extends IdDto implements Serializable {
+public class RuleCSVDto implements Serializable {
 
     @JsonProperty("RuleId")
     private String ruleId;
