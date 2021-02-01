@@ -38,6 +38,8 @@ package fr.gouv.vitamui.referential.internal.server.ingestcontract;
 
 import fr.gouv.vitam.common.model.administration.IngestContractCheckState;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 
@@ -47,6 +49,8 @@ import java.util.stream.Collectors;
 
 public class IngestContractConverter {
 
+	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
+	
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());
         if (dto.getCheckParentId() != null) {
@@ -64,6 +68,21 @@ public class IngestContractConverter {
         if (ingestContract.getCheckParentLink() != null) {
             dto.setCheckParentLink(ingestContract.getCheckParentLink().name());
         }
+        
+        // copyProperties() doesn't handle Boolean properties
+        if (ingestContract.isMasterMandatory() != null) {
+            dto.setMasterMandatory(ingestContract.isMasterMandatory());
+        }
+        if (ingestContract.isFormatUnidentifiedAuthorized() != null) {
+            dto.setFormatUnidentifiedAuthorized(ingestContract.isFormatUnidentifiedAuthorized());
+        }
+        if (ingestContract.isEveryFormatType() != null) {
+            dto.setEveryFormatType(ingestContract.isEveryFormatType());
+        }
+        if (ingestContract.isEveryDataObjectVersion() != null) {
+            dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
+        }
+
         return dto;
     }
 
