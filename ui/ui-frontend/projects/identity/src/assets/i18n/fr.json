@@ -62,6 +62,15 @@
       "PORTAL_MESSAGE_LENGTH": "/500 caractères max restants",
       "ADD_LANGUAGE": "Ajouter une langue",
       "DELETE_LANGUAGE": "Supprimer la langue"
+    },
+    "OWNER": {
+      "CREATE": {
+        "TITLE": "Création d'un propriétaire pour",
+        "PROOF_ELEMENTS": "Ce propriétaire détiendra les éléments de preuve transverses à l’organisation."
+      },
+      "LIST": {
+        "PROOF_ELEMENTS": "Coffre contenant les éléments de preuve transverses à l’organisation"
+      }
     }
   },
   "EXTERNAL_PARAM_PROFILE": {

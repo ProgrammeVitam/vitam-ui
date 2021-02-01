@@ -62,6 +62,15 @@
       "PORTAL_MESSAGE_LENGTH": "/500 characters max left",
       "ADD_LANGUAGE": "Add a language",
       "DELETE_LANGUAGE": "Delete the language"
+    },
+    "OWNER": {
+      "CREATE": {
+        "TITLE": "Creation of an owner for",
+        "PROOF_ELEMENTS": "This owner will hold the proof elements transverse to the organization."
+      },
+      "LIST": {
+        "PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
+      }
     }
   },
   "EXTERNAL_PARAM_PROFILE": {
