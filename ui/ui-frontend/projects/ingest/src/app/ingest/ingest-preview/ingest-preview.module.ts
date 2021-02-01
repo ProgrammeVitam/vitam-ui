@@ -40,10 +40,15 @@ import { IngestPreviewComponent } from './ingest-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatMenuModule, MatSnackBarModule, MatDialogModule,
-  MatSidenavModule, MatProgressSpinnerModule, MatSelectModule, MatOptionModule, MatTabsModule, MatTooltipModule
-} from '@angular/material';
+import { MatMenuModule} from '@angular/material/menu' ;
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
 import { EventDisplayHelperService } from './event-display-helper.service';
