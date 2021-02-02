@@ -126,6 +126,19 @@ public class CustomerInternalRestClient extends BasePaginatingAndSortingRestClie
         final ResponseEntity<Resource> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, Resource.class);
         checkResponse(response, 200, 204);
         return response;
+
+    }
+
+    public boolean getGdprSettingStatus(final InternalHttpContext context) {
+        LOGGER.debug("get Gdpr Setting Status");
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.GDPR_STATUS);
+
+        final ResponseEntity<Boolean> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Boolean.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
 }

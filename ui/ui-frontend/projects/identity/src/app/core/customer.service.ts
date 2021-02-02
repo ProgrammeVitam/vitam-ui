@@ -153,4 +153,9 @@ export class CustomerService {
     const portalLogo$ = this.getLogoUrl(customerId, AttachmentType.Portal);
     return zip(headerLogo$, footerLogo$, portalLogo$);
   }
+
+  public getGdprReadOnlySettingStatus(): Observable<boolean> {
+    return this.customerApi.getGdprSettingStatus();
+  }
+
 }

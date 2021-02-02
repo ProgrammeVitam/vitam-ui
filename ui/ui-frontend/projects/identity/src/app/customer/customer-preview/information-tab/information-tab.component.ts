@@ -84,6 +84,9 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   get customer(): Customer { return this._customer; }
   // tslint:disable-next-line:variable-name
   private _customer: Customer;
+  private _gdprReadOnlyStatus: boolean;
+  get gdprReadOnlyStatus(): boolean { return this._gdprReadOnlyStatus; }
+
 
   @Input()
   set readOnly(readOnly: boolean) {
@@ -91,9 +94,23 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
       this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
+      if(this._gdprReadOnlyStatus){
+        this.form.get('gdprAlertDelay').disable({ emitEvent: false });
+        this.form.get('gdprAlert').disable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
     }
   }
+
+
+  @Input()
+  set gdprReadOnlyStatus(gdprReadOnlyStatus : boolean){
+    this._gdprReadOnlyStatus = gdprReadOnlyStatus;
+    if(gdprReadOnlyStatus ) {
+      this.form.get('gdprAlertDelay').disable({ emitEvent: false });
+      this.form.get('gdprAlert').disable({ emitEvent: false });
+    }
+  };
 
 
   private sub: Subscription;

@@ -4,7 +4,7 @@
   <div class="vitamui-sidepanel-body">
     <mat-tab-group class="preview-tab-group">
       <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
-        <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly"></app-information-tab>
+        <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"></app-information-tab>
       </mat-tab>
 
       <mat-tab label="SSO" i18n-label="SSO tab@@customerPreviewTabSSO" class="no-padding">

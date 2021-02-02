@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-customer-preview *ngIf="previewType === 'CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem"></app-customer-preview>
+    <app-customer-preview *ngIf="previewType === 'CUSTOMER'" (previewClose)="closePanel()" [customer]="openedItem" [gdprReadOnlyStatus]="gdprReadOnlySettingStatus"></app-customer-preview>
     <app-owner-preview *ngIf="previewType === 'OWNER'" (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
     <app-owner-preview *ngIf="previewType === 'TENANT'" (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
   </mat-sidenav>

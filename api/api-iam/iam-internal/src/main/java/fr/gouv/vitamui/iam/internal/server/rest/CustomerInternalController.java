@@ -230,4 +230,15 @@ public class CustomerInternalController implements CrudController<CustomerDto> {
         return internalCustomerService.getLogo(id, type);
     }
 
+    /**
+     * get GDPR status (readonly/editable)
+     *
+     * @return (readonly / editable)
+     */
+    @GetMapping(path = CommonConstants.GDPR_STATUS)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return internalCustomerService.getGdprSettingStatus();
+    }
+
 }

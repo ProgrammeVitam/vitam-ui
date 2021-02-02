@@ -79,6 +79,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public set customerForm(form: FormGroup) {
     this._customerForm = form;
   }
+  gdprReadOnlyStatus: boolean;
 
   public logos: Logo[];
 
@@ -129,7 +130,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         this.tenantFormValidators.uniqueName(),
       ]
     });
-
+    if(this.data){
+      this.gdprReadOnlyStatus = this.data.gdprReadOnlySettingStatus;
+    }
     this.form.get('gdprAlert').valueChanges.subscribe(() => {
       if (!this.form.get('gdprAlert').value) {
         this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));

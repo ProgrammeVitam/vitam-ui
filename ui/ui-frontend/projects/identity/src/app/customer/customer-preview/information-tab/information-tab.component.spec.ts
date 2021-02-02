@@ -113,13 +113,14 @@ class CustomerColorsInputStubComponent implements ControlValueAccessor {
 }
 
 @Component({
-    template: `<app-information-tab [customer]="customer" [readOnly]="readOnly"></app-information-tab>`
+  template: `<app-information-tab [customer]="customer" [readOnly]="readOnly" [gdprReadOnlyStatus]="gdprReadOnlyStatus">></app-information-tab>`
 })
 class TestHostComponent {
     customer = expectedCustomer;
     readOnly = false;
-
-  @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
+    gdprReadOnlyStatus = false;
+    
+    @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
 }
 
 describe('Customer InformationTabComponent', () => {

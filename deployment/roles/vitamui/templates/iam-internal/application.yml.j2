@@ -31,6 +31,7 @@ server:
       enabled: "{{ vitamui_struct.jvm_log|lower }}"
       directory: "{{ vitamui_folder_log }}"
 
+gdpr_alert_readonly: {{ vitamui_struct.gdpr_alert_readonly | default(true) }}
 
 management:
   server:

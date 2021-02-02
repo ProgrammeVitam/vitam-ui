@@ -23,7 +23,7 @@
               <div (click)="customerClick.emit(customer)" class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.name }}</div>
               <div (click)="customerClick.emit(customer)" class="col-3 d-flex align-items-center align-self-stretch">{{ customer?.companyName }}</div>
               <div (click)="customerClick.emit(customer)" class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
-              
+
               <div class="col-2 actions">
                 <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
                 <div>

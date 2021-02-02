@@ -138,4 +138,9 @@ public class CustomerService extends AbstractPaginateService<CustomerDto> {
     public ResponseEntity<Resource> getLogo(final ExternalHttpContext context, final String id, final AttachmentType type) {
         return getClient().getLogo(context, id, type);
     }
+
+    public boolean getGdprSettingStatus(final ExternalHttpContext context) {
+        return getClient().getGdprSettingStatus(context);
+    }
+
 }

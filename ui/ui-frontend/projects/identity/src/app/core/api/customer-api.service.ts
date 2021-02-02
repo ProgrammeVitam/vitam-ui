@@ -118,4 +118,9 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   public getLogo(id: string, type: AttachmentType): Observable<HttpResponse<Blob>> {
     return super.getHttp().get(super.getApiUrl() + '/' + id + '/logo?type=' + type, { observe: 'response', responseType: 'blob' });
   }
+
+  getGdprSettingStatus(): Observable<boolean> {
+    return this.http.get<boolean>(this.apiUrl + '/gdpr-status');
+  }
+
 }
