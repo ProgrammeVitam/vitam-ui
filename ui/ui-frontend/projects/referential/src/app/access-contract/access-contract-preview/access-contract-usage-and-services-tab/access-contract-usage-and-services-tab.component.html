@@ -17,6 +17,9 @@
                     <div class="select-arrow">
                         <i class="material-icons">keyboard_arrow_down</i>
                     </div>
+                    <mat-error *ngIf="originatingAgencySelect?.errors?.required"
+                        i18n="Application@@agenciesErrorRequiredField">Veuillez sélectionner au moins un service
+                    </mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -38,6 +41,9 @@
                     <div class="select-arrow">
                         <i class="material-icons">keyboard_arrow_down</i>
                     </div>
+                    <mat-error *ngIf="usageSelect?.errors?.required"
+                        i18n="Application@@usagesErrorRequiredField">Veuillez sélectionner au moins un usage
+                    </mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -46,6 +52,6 @@
 
     <div class="form-group bottom">
         <button type="submit" class="btn secondary"
-            [disabled]="unchanged() || submited">Enregistrer</button>
+            [disabled]="unchanged() || isInvalid() || submited">Enregistrer</button>
     </div>
 </form>
