@@ -146,7 +146,8 @@ export class ContextInformationTabComponent {
             formData.activationDate = new Date();
             formData.deactivationDate = '';
           } else {
-            formData.activationDate = 'INACTIVE';
+            formData.status = 'INACTIVE';
+            formData.activationDate = '';
             formData.deactivationDate = new Date();
           }
         }
