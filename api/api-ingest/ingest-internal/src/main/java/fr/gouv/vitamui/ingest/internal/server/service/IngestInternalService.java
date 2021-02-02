@@ -116,10 +116,10 @@ public class IngestInternalService {
     }
 
     public RequestResponseOK upload(MultipartFile path, String contextId, String action)
-            throws IngestExternalException {
+        throws IngestExternalException {
 
         final VitamContext vitamContext =
-                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
 
         RequestResponse<Void> ingestResponse = null;
         try {
@@ -142,11 +142,12 @@ public class IngestInternalService {
     }
 
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-            Optional<String> criteria) {
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
+        Optional<String> criteria) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
+            LOGGER.info(" All ingests EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
@@ -171,6 +172,8 @@ public class IngestInternalService {
 
         final RequestResponse<LogbookOperation> requestResponse;
         try {
+            LOGGER.info("Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
             requestResponse = logbookService.selectOperationbyId(id, vitamContext);
 
             LOGGER.debug("One Ingest Response: {}: ", requestResponse);
@@ -190,12 +193,13 @@ public class IngestInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
+            LOGGER.info("All Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             LOGGER.debug("Response: {}: ", requestResponse);
 
             final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+                .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
             LOGGER.debug("Response DTO: {}: ", logbookOperationsResponseDto);
 
@@ -205,7 +209,7 @@ public class IngestInternalService {
         }
     }
 
-      public String getManifestAsString(VitamContext vitamContext, final String id) {
+    public String getManifestAsString(VitamContext vitamContext, final String id) {
         try {
             String manifest = "";
             Response response = ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.MANIFESTS);
@@ -224,17 +228,17 @@ public class IngestInternalService {
     public String getAtrAsString(VitamContext vitamContext, final String id) {
         try {
             String atr = "";
-        Response response =
-            ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.ARCHIVETRANSFERREPLY);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
-            atr = ingestDocxGenerator.resourceAsString(resource);
-        }
-        LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        return atr;
+            Response response =
+                ingestExternalClient.downloadObjectAsync(vitamContext, id, IngestCollection.ARCHIVETRANSFERREPLY);
+            Object entity = response.getEntity();
+            if (entity instanceof InputStream) {
+                Resource resource = new InputStreamResource((InputStream) entity);
+                atr = ingestDocxGenerator.resourceAsString(resource);
+            }
+            LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            return atr;
 
-    } catch (VitamClientException e) {
+        } catch (VitamClientException e) {
             throw new InternalServerException("Unable to find ATR", e);
         }
     }
@@ -246,45 +250,42 @@ public class IngestInternalService {
         CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
         Resource logo = null;
 
-     try {
-         Document atr = ingestDocxGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
-         Document manifest = ingestDocxGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+        try {
+            Document atr = ingestDocxGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            Document manifest = ingestDocxGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
-         XWPFDocument document = new XWPFDocument();
+            XWPFDocument document = new XWPFDocument();
+            if(myCustomer.isHasCustomGraphicIdentity()) {
+                logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
+            }
+            ingestDocxGenerator.generateDocHeader(document,myCustomer,logo);
 
-         if(myCustomer.isHasCustomGraphicIdentity()) {
-             logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
-         }
+            ingestDocxGenerator.generateFirstTitle(document);
 
+            ingestDocxGenerator.generateTableOne(document,manifest,jsonObject);
 
-         ingestDocxGenerator.generateDocHeader(document,myCustomer,logo);
+            ingestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
 
-         ingestDocxGenerator.generateFirstTitle(document);
+            ingestDocxGenerator.generateTableThree(document,manifest,id);
 
-         ingestDocxGenerator.generateTableOne(document,manifest,jsonObject);
+            ingestDocxGenerator.generateTableFour(document);
 
-         ingestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
+            ingestDocxGenerator.generateSecondtTitle(document);
 
-         ingestDocxGenerator.generateTableThree(document,manifest,id);
+            List<ArchiveUnitDto> list = ingestDocxGenerator.getValuesForDynamicTable(atr,manifest);
 
-         ingestDocxGenerator.generateTableFour(document);
+            ingestDocxGenerator.generateDynamicTable(document,list);
 
-         ingestDocxGenerator.generateSecondtTitle(document);
+            LOGGER.info("Generate Docx Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            document.write(result);
+            return result.toByteArray();
 
-         List<ArchiveUnitDto> list = ingestDocxGenerator.getValuesForDynamicTable(atr,manifest);
+        } catch (IOException | JSONException e) {
+            LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            throw new IOException("Unable to generate the ingest report ", e);
 
-         ingestDocxGenerator.generateDynamicTable(document,list);
-
-         LOGGER.info("Generate Docx Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-         ByteArrayOutputStream result = new ByteArrayOutputStream();
-              document.write(result);
-             return result.toByteArray();
-
-     } catch (IOException | JSONException e) {
-         LOGGER.error("Error with generating Report : {} " , e.getMessage());
-        throw new IOException("Unable to generate the ingest report ", e);
-
-     }
+        }
     }
 
 }

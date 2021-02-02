@@ -1,4 +1,3 @@
-
 ---
 
 - hosts: hosts_vitamui
@@ -46,7 +45,7 @@
 - hosts: hosts_vitamui_mongod
   gather_facts: no
   roles:
-    - {role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true")}
+    - { role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true") }
     # - check_port
   vars:
     service_name: "{{ mongo_express_conf.service_name }}"
@@ -191,6 +190,38 @@
     # - check_port
   vars:
     service_name: "{{ vitamui.ingest.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+###################### ARCHIVE Search #################
+
+- hosts: hosts_vitamui_archive_search_internal
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search_internal.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_vitamui_archive_search_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search_external.service_name }}"
+    verbe: "Starting"
+    etat: "started"
+
+- hosts: hosts_ui_archive_search
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search.service_name }}"
     verbe: "Starting"
     etat: "started"
 

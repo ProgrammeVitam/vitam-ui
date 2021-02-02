@@ -1,0 +1,28 @@
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START 219_security.populate_certificates_archive_ref.js");
+
+{% macro insertCertificate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+{%- endmacro %}
+
+{% macro process(keyPath, contextId, groupName) -%}
+    {% for host in groups[groupName] %}
+        {{ insertCertificate(keyPath | replace('%host%', host), contextId) }}
+    {% endfor %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive-search.pem', 'ui_archive_search_context', 'hosts_ui_archive_search') }}
+
+print("END 219_security.populate_certificates_archive_search_ref.js");

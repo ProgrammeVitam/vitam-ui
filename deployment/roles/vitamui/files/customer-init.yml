@@ -83,7 +83,7 @@ customer-init:
       roles:
        - ROLE_GET_OPERATIONS
        - ROLE_RUN_PROBATIVE_VALUE
-       
+
     - name: Profil pour la lecture des formats de fichiers
       description: Lecture des formats de fichiers dans Vitam
       app-name: FILE_FORMATS_APP
@@ -108,7 +108,7 @@ customer-init:
         - ROLE_GET_ALL_INGEST
 
     - name: Profil Arbres et Plans
-      description: Gestion des application d'import d'arbres de positionnement et plans de classement
+      description: Gestion des applications d'import d'arbres de positionnement et plans de classement
       app-name: HOLDING_FILLING_SCHEME_APP
       level:
       roles:
@@ -125,6 +125,15 @@ customer-init:
         - ROLE_CREATE_RULES
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
+
+    - name: Profil pour l'accès et la recherche d'archives
+      description: Gestion d'accès et de recherche des archives dans Vitam
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
 
   # Other Default profiles for admin group
   admin-profiles:

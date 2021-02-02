@@ -25,18 +25,6 @@
   tags:
     - dlab
 
-- hosts: hosts_ui_archive
-  gather_facts: no
-  roles:
-    - service_state
-    # - check_port
-  vars:
-    service_name: "{{ vitamui.ui_archive.service_name }}"
-    verbe: "Stopping"
-    etat: "stopped"
-  tags:
-    - dlab
-
 - hosts: hosts_flow_external
   gather_facts: no
   roles:
@@ -61,18 +49,6 @@
   tags:
     - dlab
 
-- hosts: hosts_archive_internal
-  gather_facts: no
-  roles:
-    - service_state
-    # - check_port
-  vars:
-    service_name: "{{ vitamui.archive_internal.service_name }}"
-    verbe: "Stopping"
-    etat: "stopped"
-  tags:
-    - dlab
-
 - hosts: hosts_ui_referential
   gather_facts: no
   roles:
@@ -92,6 +68,16 @@
     # - check_port
   vars:
     service_name: "{{ vitamui.ingest.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_ui_archive_search
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search.service_name }}"
     verbe: "Stopping"
     etat: "stopped"
 
@@ -179,6 +165,25 @@
     verbe: "Stopping"
     etat: "stopped"
 
+- hosts: hosts_vitamui_archive_search_external
+  gather_facts: no
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search_external.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
+- hosts: hosts_vitamui_archive_search_internal
+  roles:
+    - service_state
+    # - check_port
+  vars:
+    service_name: "{{ vitamui.archive_search_internal.service_name }}"
+    verbe: "Stopping"
+    etat: "stopped"
+
 - hosts: hosts_vitamui_iam_external
   gather_facts: no
   roles:
@@ -213,7 +218,7 @@
 - hosts: hosts_vitamui_mongod
   gather_facts: no
   roles:
-    - {role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true")}
+    - { role: service_state, when: (mongo_express is defined) and (mongo_express|lower == "true") }
     # - check_port
   vars:
     service_name: "{{ mongo_express_conf.service_name }}"

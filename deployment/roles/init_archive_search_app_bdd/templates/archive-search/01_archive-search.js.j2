@@ -1,0 +1,174 @@
+print("START 01_archive_search.js");
+
+// +++++++++++++++++++++++++++++++++++++++ IAM DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_archive_search.js : START iam database update");
+
+db = db.getSiblingDB('{{ mongodb.iam.db }}')
+
+// ========================================= PROFILES =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.profiles.update(
+    { "_id" : "system_archive_search_profile" },
+    {
+        "$set" : {
+            "identifier" : NumberInt(22),
+              "name": "Archive Search Profile",
+              "description": "Archive Search Profile",
+              "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+              "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
+              "level": "",
+              "enabled": true,
+              "readonly": false,
+              "customerId": "system_customer",
+              "roles": [
+              {"name": "ROLE_CREATE_ARCHIVE_SEARCH"},
+              {"name": "ROLE_GET_ARCHIVE_SEARCH"},
+              {"name": "ROLE_GET_ALL_ARCHIVE_SEARCH"}
+               ]
+        },
+        "$setOnInsert": {
+            "_id" : "system_archive_search_profile"
+        }
+    },
+    { "upsert":true }
+);
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+
+db.groups.updateOne(
+	{
+		"_id": "admin_group",
+		"profileIds": { $nin: ["system_archive_search_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_archive_search_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "super_admin_group",
+		"profileIds": { $nin: ["system_archive_search_profile"] }
+	},
+	{
+		$addToSet: {"profileIds": "system_archive_search_profile" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+// ====================================== APPLICATIONS ======================================
+
+
+db.applications.update(
+    { "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP" },
+    {
+        "$set" : {
+{% if vitamui.archive_search.base_url is defined %}
+        	"url": "{{ vitamui.archive_search.base_url }}/archive-search",
+{% else %}
+            "url" : "{{ url_prefix }}/archive-search/archive-search",
+{% endif %}
+            "icon": "vitamui-icon vitamui-icon-archive-archive",
+             "name": "Recherche et consultation des archives",
+             "category": "ingests",
+             "position": NumberInt(1),
+             "hasCustomerList": false,
+             "hasTenantList": false,
+             "hasHighlight": false,
+             "tooltip": "Recherche et consultation des archives",
+             "target": "_self"
+        },
+        "$setOnInsert": {
+            "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP"
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_archive_search.js : END archive search database update");
+
+// +++++++++++++++++++++++++++++++++++++++ SECURITY DATABASE ++++++++++++++++++++++++++++++++++
+
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("INFO 01_archive_search.js : START security update");
+
+db.contexts.update(
+    { "_id" : "ui_archive_search_context" },
+    {
+        "$set" : {
+            "name": "Contexte UI Archive Search",
+             "fullAccess" : true,
+             "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+             "roleNames" : [
+                 "ROLE_CREATE_ARCHIVE_SEARCH", "ROLE_GET_ARCHIVE_SEARCH", "ROLE_GET_ALL_ARCHIVE_SEARCH"
+                ]
+        },
+        "$setOnInsert": {
+            "_id" : "ui_archive_search_context"
+        }
+    },
+    { "upsert":true }
+);
+
+
+{% macro insertCertififcate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{{ insertCertififcate('{{ inventory_dir }}/certs/server/hosts/{{ groups["hosts_ui_archive_search"]|first }}/ui-archive-search.pem', 'ui_archive_search_context') }}
+
+print("INFO 01_archive_search.js : END security update for Archive search");
+
+// +++++++++++++++++++++++++++++++++++++++ CAS DATABASE +++++++++++++++++++++++++++++++++++++++
+
+print("INFO 01_archive_search.js : START cas database update");
+db = db.getSiblingDB('{{ mongodb.cas.db }}')
+
+
+db.services.update(
+    { "_id" :  NumberInt(4) },
+    {
+        "$set" : {
+            "_class": "org.apereo.cas.services.RegexRegisteredService",
+        	"serviceId": "^{{ vitamui.archive_search.base_url | default(url_prefix) }}/archive-search/.*",
+            "name": "Archive Application",
+            "logoutType" : "FRONT_CHANNEL",
+            "logoutUrl": "{{ vitamui.archive_search.base_url | default(url_prefix) }}/archive-search/logout",
+            "attributeReleasePolicy": {
+                "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+            }
+        },
+        "$setOnInsert": {
+            "_id" :  NumberInt(4)
+        }
+    },
+    { "upsert":true }
+);
+
+print("INFO 01_archive_search.js : END cas database update");
+
+
+print("END 01_archive_search.js");

@@ -346,3 +346,9 @@ i.vitamui-icon {
 .vitamui-icon-archive-room:before {
   content: "\e95d";
 }
+.vitamui-icon-loop2:before {
+  content: "\ea2e";
+}
+.vitamui-icon-target:before {
+  content: "\e9b3";
+}

@@ -52,7 +52,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -63,8 +73,6 @@ import static fr.gouv.vitamui.security.common.rest.RestApi.ADD_TENANT_TO_CONTEXT
 
 /**
  * The controller to check existence, create, read, update and delete the application contexts.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_CONTEXTS_URL)
@@ -101,7 +109,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @PostMapping(value = RestApi.FINDBYCERTIFICATE_PATH)
     public ContextDto findByCertificate(final @Valid @RequestBody String data) {
-
+        LOGGER.info("Request data {} ", data);
         return contextService.findByCertificate(data);
     }
 
@@ -116,13 +124,15 @@ public class ContextController implements CrudController<ContextDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public ContextDto update(final @PathVariable("id") String id, final @Valid @RequestBody ContextDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
-        Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
+        Assert.isTrue(StringUtils.equals(id, dto.getId()),
+            "The DTO identifier must match the path identifier for update.");
         return contextService.update(dto);
     }
 
     @PutMapping(ADD_TENANT_TO_CONTEXT_PATH)
     @ResponseStatus(HttpStatus.CREATED)
-    public ContextDto addTenant(final @PathVariable("id") String id, final @PathVariable("tenantIdentifier") Integer tenantIdentifier) {
+    public ContextDto addTenant(final @PathVariable("id") String id,
+        final @PathVariable("tenantIdentifier") Integer tenantIdentifier) {
         LOGGER.debug("Update {} with {}", id, tenantIdentifier);
         final ContextDto contextDto = contextService.addTenant(id, tenantIdentifier);
 

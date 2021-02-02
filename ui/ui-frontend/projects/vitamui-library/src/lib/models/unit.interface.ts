@@ -6,6 +6,7 @@ export interface Unit {
   '#object'?: string;
 
   Title?: string;
+  Title_?: any;
   Description?: string;
   DescriptionLevel?: string;
   CreatedDate?: Date;
@@ -26,6 +27,7 @@ export interface Unit {
   PhysicalAgency?: string[];
   PhysicalStatus?: string[];
   PhysicalType?: string[];
+
 
   // This does not come from the API. It is built from the unit info
   isDigital?: boolean;

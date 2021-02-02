@@ -1,0 +1,83 @@
+db = db.getSiblingDB('iam')
+
+print("START 216_application_archive_search_ref.js");
+
+
+// ========================================= partie archive search ============================================
+
+db.profiles.insert({
+  "_id": "system_archive_search_profile",
+  "identifier" : NumberInt(23),
+  "name": "Archive Search Profile",
+  "description": "Archive Search Profile",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+  },
+  {
+    "name": "ROLE_GET_ARCHIVE_SEARCH"
+  },
+  {
+    "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+  }
+   ]
+});
+
+//========================================== partie archive search =============================================
+
+
+// -------- VITAM ADMINISTRATION  -----
+
+db.applications.insert({
+    "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP",
+{% if vitamui.archive_search.base_url is defined %}
+    "url": "{{ vitamui.archive_search.base_url }}/archive-search",
+{% else %}
+    "url": "{{ url_prefix }}/archive-search/archive-search",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-search-safe",
+    "name": "Recherche et consultation des archives",
+    "category": "ingest_and_consultation",
+    "position": NumberInt(1),
+    "hasCustomerList": false,
+    "hasTenantList": true,
+    "hasHighlight": false,
+    "tooltip": "Rechercher et consulter les archives",
+    "target": "_self"
+});
+
+
+
+db.groups.updateOne( {
+	"_id": "admin_group"
+}, {
+    $addToSet: {
+        "profileIds":  {
+            $each: [
+                "system_archive_search_profile"
+        	]
+        }
+    }
+});
+
+
+db.groups.updateOne( {
+	"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+}, {
+    $addToSet: {
+        "profileIds":  {
+            $each: [
+                "system_archive_search_profile"
+        	]
+        }
+    }
+});
+
+
+print("END 216_application_archive_search_ref.js");

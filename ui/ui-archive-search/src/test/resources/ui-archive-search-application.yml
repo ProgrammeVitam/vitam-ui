@@ -1,0 +1,88 @@
+
+spring:
+  application:
+    name: ${server-identity.identityRole}
+  api:
+    name: API for Archive UI
+    description: This API is used by the Archive UI to send archives to external Vitam UI layers and than to Vitam. This API should be used by the Archive UI only.
+    version: v1
+  profiles:
+    active: test
+  jmx:
+    default-domain: archive-search
+  cloud:
+    consul:
+      discovery:
+        enabled: false
+        register: false
+
+ui-archive-search:
+  prefix: archive-search-api
+  iam-external-client:
+    server-host: localhost
+    server-port: 8083
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-archive-search.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
+  archive-search-external-client:
+    server-host: localhost
+    server-port: 8089
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-archive-search.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
+
+ui-prefix: archive-search-api
+
+server-identity:
+  identityName: vitamui
+  identityRole: ui-archive-search
+  identityServerId: 1
+
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/css,application/javascript,application/json
+  host: dev.vitamui.com
+  port: 8089
+  scheme: https
+  ssl:
+    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-archive-search.jks
+    key-store-password: changeme
+    key-password: changeme
+
+controller:
+  subrogation:
+    enabled: true
+  user:
+    enabled: true
+
+ui:
+  url: https://localhost:4201
+  redirect-url: ${ui.url}
+
+cas:
+  internal-url: https://dev-cas.vitamui.com:8080
+  external-url: https://dev-cas.vitamui.com:8080
+  callback-url: ${ui.url}/callback
+  ssl:
+    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store-password: changeme
+
+debug: false
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG

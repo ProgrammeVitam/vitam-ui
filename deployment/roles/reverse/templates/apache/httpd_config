@@ -49,7 +49,7 @@
 {% for host in groups['hosts_browse'] %}
     ProxyPass /nodes/{{host}}/browse http://{{ hostvars[host]['ip_admin'] }}/browse  {{reverse_connection_params}}
     ProxyPassReverse  /nodes/{{host}}/browse http://{{ hostvars[host]['ip_admin'] }}/browse
-    
+
     ProxyPass /browse{{loop.index}} http://{{ hostvars[host]['ip_admin'] }}/browse  {{reverse_connection_params}}
     ProxyPassReverse  /browse{{loop.index}} http://{{ hostvars[host]['ip_admin'] }}/browse
 {% endfor %}
@@ -117,6 +117,14 @@
 {% for host in groups['hosts_ui_ingest'] %}
     ProxyPassMatch ^/ingest(/.*)$ {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest$1
     ProxyPassReverse /ingest {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest
+{% endfor %}
+
+
+    # UI ARCHIVE SEARCH
+
+{% for host in groups['hosts_ui_archive_search'] %}
+       ProxyPassMatch ^/archive-search(/.*)$ {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search$1
+       ProxyPassReverse /archive-search {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search
 {% endfor %}
 
     # CAS SERVER

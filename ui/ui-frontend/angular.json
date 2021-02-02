@@ -291,7 +291,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumError": "13mb"
                 }
               ]
             }
@@ -730,6 +730,125 @@
           "configurations": {
             "production": {
               "devServerTarget": "ingest:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "archive-search": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/archive-search",
+      "sourceRoot": "projects/archive-search/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/archive-search",
+            "index": "projects/archive-search/src/index.html",
+            "main": "projects/archive-search/src/main.ts",
+            "polyfills": "projects/archive-search/src/polyfills.ts",
+            "tsConfig": "projects/archive-search/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/assets"
+            ],
+            "styles": [
+              "projects/archive-search/src/sass/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/archive-search/src/environments/environment.ts",
+                  "with": "projects/archive-search/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "14mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "archive-search:build",
+            "host": "dev.vitamui.com",
+            "port": 4209
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "archive-search:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "archive-search:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/archive-search/src/test.ts",
+            "polyfills": "projects/archive-search/src/polyfills.ts",
+            "tsConfig": "projects/archive-search/tsconfig.spec.json",
+            "karmaConfig": "projects/archive-search/karma.conf.ci.js",
+            "assets": [
+              "projects/archive-search/src/favicon.ico",
+              "projects/archive-search/src/assets"
+            ],
+            "styles": [
+              "projects/archive-search/src/sass/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/archive-search/tsconfig.app.json",
+              "projects/archive-search/tsconfig.spec.json",
+              "projects/archive-search/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/archive-search/e2e/protractor.conf.js",
+            "devServerTarget": "archive-search:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "archive-search:serve:production"
             }
           }
         }

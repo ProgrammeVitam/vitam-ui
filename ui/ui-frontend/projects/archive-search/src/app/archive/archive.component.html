@@ -1,0 +1,38 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+        <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()" [archiveUnit]="openedItem" [accessContract]="accessContract"></app-archive-preview>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+
+        <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+            <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+            </mat-sidenav>
+            <mat-sidenav-content>
+                <div class="vitamui-header">
+                    <div class="vitamui-container">
+                        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)"
+                            [hideTenantMenu]="false" [hideCustomerMenu]="true"></vitamui-common-navbar>
+                        <h2><img src="assets/mini-logo-vitam.png">Recherche et Consultation des archives</h2>
+
+                    </div>
+                </div>
+                <div class="marge">
+                    <app-access-contract (selectedAccessContract)="onSelectAccessContract($event)">
+                    </app-access-contract>
+                </div>
+                <div *ngIf="foundAccessContract" class="row">
+                    <div [style.display]="!show ? 'none' : 'block'" class="col-3">
+                        <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
+                    </div>
+                    <div [ngClass]="show ? 'col-9' : 'col-12'">
+                        <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"  [accessContract]="accessContract"></app-archive-search>
+                    </div>
+                </div>
+            </mat-sidenav-content>
+
+        </mat-sidenav-container>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

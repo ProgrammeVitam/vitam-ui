@@ -1,4 +1,3 @@
-
 pki_dir: "{{lookup('env','PWD')}}/../../../dev-deployment/environments/certs"
 
 # Overwrite vitamui defaults in order to perform transparent execution of deployment scripts.
@@ -25,16 +24,16 @@ mongodb:
     db: admin
     user: "mongod_dbuser_admin"
     password: "mongod_dbpwd_admin"
-    roles:  '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
+    roles: '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
   localadmin:
     db: admin
     user: "mongod_dbuser_localadmin"
     password: "mongod_dbpwd_localadmin"
-    roles:  '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
+    roles: '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
   security:
     db: security
     user: "mongod_dbuser_security"
-    password:  "mongod_dbpwd_security"
+    password: "mongod_dbpwd_security"
     roles: '[{ role: "readWrite", db: "security" }]'
   iam:
     db: iam
@@ -91,3 +90,5 @@ vitamui:
     base_url: "https://dev.vitamui.com:4202"
   ingest:
     base_url: "https://dev.vitamui.com:4208"
+  archive_search:
+    base_url: "https://dev.vitamui.com:4209"
