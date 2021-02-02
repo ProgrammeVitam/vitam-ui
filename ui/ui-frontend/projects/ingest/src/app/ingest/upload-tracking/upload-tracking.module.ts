@@ -37,42 +37,38 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxFilesizeModule } from 'ngx-filesize';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { IngestComponent } from './ingest.component';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { IngestListModule } from './ingest-list/ingest-list.module';
-import { IngestRoutingModule } from './ingest-routing.module';
-import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from './upload-tracking/upload-tracking.module';
+import { SharedModule } from '../../shared/shared.module';
+import { UploadTrackingComponent } from './upload-tracking.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUICommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    IngestRoutingModule,
-    UploadModule,
-    UploadTrackingModule,
     SharedModule,
-    IngestListModule,
-    IngestPreviewModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule
+    VitamUICommonModule,
+    MatProgressBarModule,
+    NgxFilesizeModule
   ],
   declarations: [
-    IngestComponent
+    UploadTrackingComponent,
   ],
-  providers: [
+  exports: [
+    UploadTrackingComponent
   ]
 })
-export class IngestModule { }
+export class UploadTrackingModule { }

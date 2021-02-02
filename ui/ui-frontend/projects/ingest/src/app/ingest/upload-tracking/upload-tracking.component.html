@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-11">
+    <h3>Mes téléchargements en cours <span>({{ ingestList.wipNumber }})</span></h3>
+  </div>
+  <div class="col-1">
+    <button class="btn-circle" (click)="toogleTracking()">
+      <i class="material-icons" [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+    </button>
+  </div>
+</div>
+<div *ngIf="displayTracking">
+  <span *ngIf="ingestList.wipNumber === 0">Vous n’avez pas de téléchargement en cours</span>
+
+  <table class="vitamui-table" *ngIf="ingestList.wipNumber > 0">
+    <thead>
+    <tr>
+      <th>Nom du SIP</th>
+      <th style="width: 100px">Poids</th>
+      <th>Avancement</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="vitamui-table-row" *ngFor="let ingestInfo of ingestList.ingests | keyvalue">
+      <td>{{ ingestInfo.value.name }}</td>
+      <td>{{ ingestInfo.value.size | filesize }}</td>
+      <td>
+        <mat-progress-bar mode="determinate" [value]="(ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks" class="stepper-progress-bar"></mat-progress-bar>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
