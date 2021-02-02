@@ -179,9 +179,6 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
                 if(!getAllowedAggregationKeys().contains(field))
                     throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", field));
             }
-            if(Arrays.asList(AggregationRequestOperator.values()).contains(requestParamGroupDto.getOperator())) {
-                throw new ForbiddenException(String.format("Not allowed to get aggregation %s operator", requestParamGroupDto.getOperator()));
-            }
         }
         return addAccessRestriction(QueryDto.fromJson(requestParamDto.getCriteria())).toOptionalJson();
     }

@@ -243,7 +243,12 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
         if(requestParam.getGroups() != null && requestParam.getGroups().isPresent()) {
             RequestParamGroupDto requestParamGroups = requestParam.getGroups().get();
             final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(requestParam.getCriteria());
-            groups = getRepository().aggregation(requestParamGroups.getFields(), criteria, requestParamGroups.getOperator());
+            groups = getRepository()
+                .aggregation(requestParamGroups.getFields(),
+                             criteria,
+                             requestParamGroups.getOperator(),
+                             requestParam.getOrderBy(),
+                             requestParam.getDirection());
         }
         ResultsDto resultsDto = new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
                 entitiesValues.isHasMore(), groups);

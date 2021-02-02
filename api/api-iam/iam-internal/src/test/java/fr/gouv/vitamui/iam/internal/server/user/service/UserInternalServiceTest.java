@@ -256,7 +256,7 @@ public final class UserInternalServiceTest {
                 .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(buildPageable(buildUser("id")));
         when(userRepository
-                .aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
 
         final Customer customer = new Customer();

@@ -470,7 +470,8 @@ public class PersonRepositoryTests {
         List<String> fields = Arrays.asList("firstName");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), AggregationRequestOperator.DISTINCT);
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
+            AggregationRequestOperator.DISTINCT, Optional.of("firstName"), Optional.of(DirectionDto.ASC));
         assertNotNull(result);
         assertEquals(result.size(), 1);
         assertTrue(result.keySet().containsAll(fields));
@@ -487,7 +488,8 @@ public class PersonRepositoryTests {
         List<String> fields = Arrays.asList("firstName", "lastName", "age");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), AggregationRequestOperator.DISTINCT);
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
+            AggregationRequestOperator.DISTINCT, Optional.of("firstName"), Optional.of(DirectionDto.DESC));
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(fields));
@@ -505,7 +507,8 @@ public class PersonRepositoryTests {
         List<String> fields = Arrays.asList("firstName", "lastName", "age");
         final Criterion c = new Criterion("lastName", Arrays.asList("Diagne", "Cornille"), CriterionOperator.IN);
         final CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
-        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria), AggregationRequestOperator.COUNT);
+        final Map<String, Object> result = repository.aggregation( fields, Collections.singletonList(criteria),
+            AggregationRequestOperator.COUNT, Optional.of("firstName"), Optional.of(DirectionDto.ASC));
         assertNotNull(result);
         assertEquals(result.size(), 3);
         assertTrue(result.keySet().containsAll(fields));

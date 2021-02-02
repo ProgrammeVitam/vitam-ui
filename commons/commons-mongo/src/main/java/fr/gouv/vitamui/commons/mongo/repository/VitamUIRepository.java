@@ -151,7 +151,13 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
      * @param fields Array of field names.
      * @param criteria List of criteria.
      * @param operationType type of the aggregation operation to apply.
+     * @param orderBy
+     * @param direction
      * @return Map<String, Object> aggregation results.
      */
-    Map<String, Object> aggregation(Iterable<String> fields, final Iterable<CriteriaDefinition> criteria, AggregationRequestOperator operationType);
+    Map<String, Object> aggregation(Iterable<String> fields,
+                                    final Iterable<CriteriaDefinition> criteria,
+                                    AggregationRequestOperator operationType,
+                                    Optional<String> orderBy,
+                                    Optional<DirectionDto> direction);
 }

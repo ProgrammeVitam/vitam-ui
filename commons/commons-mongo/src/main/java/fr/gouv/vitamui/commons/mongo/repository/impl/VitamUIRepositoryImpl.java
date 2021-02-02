@@ -405,11 +405,15 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * @return Map<String, Object> aggregation results.
      */
     @Override
-    public Map<String, Object> aggregation(final Iterable<String> fields, final Iterable<CriteriaDefinition> criteria, final AggregationRequestOperator operationType) {
+    public Map<String, Object> aggregation(final Iterable<String> fields,
+                                           final Iterable<CriteriaDefinition> criteria,
+                                           final AggregationRequestOperator operationType,
+                                           final Optional<String> orderBy,
+                                           final Optional<DirectionDto> direction) {
         final Map<String, Object> result = new HashMap<>();
         final List<AggregationOperation> matchOperations = new ArrayList<>();
         criteria.forEach(criteriaDefinition -> matchOperations.add(match(criteriaDefinition)));
-        fields.forEach(field -> result.put(field, aggregateByField(field, matchOperations, operationType)));
+        fields.forEach(field -> result.put(field, aggregateByField(field, matchOperations, operationType, orderBy, direction)));
         return result;
     }
 
@@ -422,9 +426,15 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * @throws UnsupportedOperationException if operationType is not supported
      * @return list of values, or a single result, or null depending on the aggregation result.
      */
-    private Object aggregateByField(final String field, final List<AggregationOperation> matchOperations, final AggregationRequestOperator operationType){
+    private Object aggregateByField(final String field,
+                                    final List<AggregationOperation> matchOperations,
+                                    final AggregationRequestOperator operationType,
+                                    final Optional<String> orderBy,
+                                    final Optional<DirectionDto> direction){
         final List<AggregationOperation> aggregationOperations = new ArrayList<>(matchOperations);
         aggregationOperations.add(match(new Criteria(field).ne(null)));
+        // we sort before the aggregation
+        aggregationOperations.add(sort(extractSort(orderBy, direction)));
         switch (operationType) {
             case DISTINCT:
                 aggregationOperations.add(group(field));
