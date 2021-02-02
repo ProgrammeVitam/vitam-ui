@@ -139,7 +139,19 @@ export class ContextInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string, [key: string]: any }) => {
+        // Update the activation and deactivation dates if the context status has changed before sending the data
+        if (formData.status) {
+          if (formData.status === 'ACTIVE') {
+            formData.activationDate = new Date();
+            formData.deactivationDate = '';
+          } else {
+            formData.activationDate = 'INACTIVE';
+            formData.deactivationDate = new Date();
+          }
+        }
+        return this.contextService.patch(formData).pipe(catchError(() => of(null)));
+      }));
   }
 
   onSubmit() {
