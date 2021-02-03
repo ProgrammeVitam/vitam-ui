@@ -211,9 +211,8 @@ public class IngestContractInternalService {
             propertiesToUpdate.put("ManagementContractId", (String) partialDto.get("managementContractId"));
         }
         if (partialDto.get("status") != null) {
-            propertiesToUpdate.put("Status", ((ActivationStatus) partialDto.get("status")).name());
+            propertiesToUpdate.put("Status", (String) partialDto.get("status"));
         }
-
         if (partialDto.get("masterMandatory") != null) {
             propertiesToUpdate.put("MasterMandatory", (boolean) partialDto.get("masterMandatory"));
         }
