@@ -31,5 +31,12 @@
     "ICONS":{
         "Title": "Liste des icônes de Vitam-UI",
         "Colors": "Couleurs disponibles" 
+    },
+    "ELEVATIONS":{
+        "Title": "Ombres & Elevations",
+        "Dark": "Ombres foncées",
+        "Primary" : "Ombres primaires",
+        "Secondary": "Ombres secondaires",
+        "Tertiary": "Ombres tertiaires"
     }
 }

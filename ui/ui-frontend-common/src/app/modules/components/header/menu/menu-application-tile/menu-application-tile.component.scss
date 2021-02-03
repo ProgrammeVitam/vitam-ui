@@ -1,4 +1,6 @@
 @import '../../../../../../sass/variables/colors';
+@import '../../../../../../sass/mixins/elevation';
+
 :host {
     color: #747272!important;
 
@@ -8,7 +10,8 @@
         width: 35px;
         height: 35px;
         padding: 5px;
-        box-shadow: 0px 0px 2px #888;
+        @include elevation-0;
+
     }
 
     .tooltip {

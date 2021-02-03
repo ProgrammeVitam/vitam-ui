@@ -56,6 +56,7 @@ import { ArraysModule } from './components/arrays/arrays.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ButtonsModule } from './components/buttons/buttons.module';
 import { ColorsModule } from './components/colors/colors.module';
+import { ElevationModule } from './components/elevations/elevations.module';
 import { IconsModule } from './components/icons/icons.module';
 import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
@@ -100,6 +101,7 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     MatCardModule,
     MatSidenavModule,
     MatListModule,
+    ElevationModule,
     LoggerModule.forRoot(),
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },

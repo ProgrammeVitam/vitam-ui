@@ -290,7 +290,7 @@ $row-padding: 0.8rem;
 
         &:hover {
             background-color: transparent;
-            box-shadow: 0px 0px 8px rgba(var(--vitamui-grey-600-rgb), 0.24);
+            @include elevation-3-dark;
 
             .actions > div {
                 visibility: visible;

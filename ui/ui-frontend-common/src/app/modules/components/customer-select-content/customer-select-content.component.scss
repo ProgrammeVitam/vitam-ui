@@ -5,8 +5,15 @@
     min-height: 100px;
 }
 
+.mat-drawer,
+.mat-dialog-container {
+    .customer-box {
+      @include dialog-elevation-dark;
+  }
+}
+
 .customer-box {
-    @include elevation-1;
+    @include input-elevation-dark;
     display: flex;
     height: 90px;
     align-items: center;
@@ -22,10 +29,6 @@
     margin-bottom: 24px;
     color: #474747;
     transition: box-shadow 240ms ease-out;
-
-    &:hover {
-        @include elevation-2;
-    }
 
     i {
         color: var(--vitamui-primary);

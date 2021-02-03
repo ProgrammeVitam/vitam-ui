@@ -1,4 +1,12 @@
 @import "../../../../sass/variables/colors";
+@import "../../../../sass/mixins/elevation";
+
+.mat-drawer,
+.mat-dialog-container {
+  .mat-form-field:not(.mat-form-field-disabled) {
+      @include dialog-elevation-dark;
+  }
+}
 
 :host::ng-deep {
   .selected-label,
@@ -63,7 +71,7 @@
 
   .mat-form-field:not(.mat-form-field-disabled) {
 
-    box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
+    @include input-elevation-dark;
 
     .mat-form-field-label {
       color: var(--vitamui-grey-600);
@@ -90,14 +98,6 @@
         color: var(--vitamui-primary);
       }
     }
-  }
-  .mat-form-field-flex {
-    background-color: white;
-    padding: 0 !important;
-  }
-
-  mat-select {
-  
     color: var(--vitamui-grey-900);
     font-size: 16px;
   }
@@ -128,3 +128,5 @@
     margin-top: 0.4rem;
   }
 }
+
+

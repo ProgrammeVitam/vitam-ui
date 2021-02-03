@@ -42,6 +42,7 @@ import { ArraysComponent } from './components/arrays/arrays.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ButtonsComponent } from './components/buttons/buttons.component';
 import { ColorsComponent } from './components/colors/colors.component';
+import { ElevationComponent } from './components/elevations/elevations.component';
 import { IconsComponent } from './components/icons/icons.component';
 import { InputsComponent } from './components/inputs/inputs.component';
 import { MiscellaneousComponent } from './components/miscellaneous/miscellaneous.component';
@@ -64,6 +65,7 @@ const routes: Routes = [
   { path: 'typography', component: TypographyComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'colors', component: ColorsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: 'icons', component: IconsComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
+  { path: 'elevations', component: ElevationComponent, data: { appId: ApplicationId.STARTER_KIT_APP } },
   { path: '**', redirectTo: '' },
 ];
 

@@ -2,7 +2,8 @@
 @import '../../../../sass/mixins/elevation';
 
 .app-box {
-    @include elevation-1;
+    @include btn-elevation-dark;
+
     height: 90px;
     display: flex;
     align-items: center;
@@ -18,10 +19,6 @@
     margin-bottom: 24px;
     color: #474747;
     transition: box-shadow 240ms ease-out;
-
-    &:hover {
-        @include elevation-2;
-    }
 
     i {
         font-size: 42px;

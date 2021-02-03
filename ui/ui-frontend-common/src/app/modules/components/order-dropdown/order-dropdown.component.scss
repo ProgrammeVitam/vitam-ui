@@ -1,4 +1,5 @@
 @import '../../../../sass/variables/colors';
+@import '../../../../sass/mixins/elevation';
 
 .btn-orderby {
     background: transparent;
@@ -33,7 +34,7 @@
 .order-dropdown-container {
     padding: 10px 0;
     background: white;
-    box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3);
+    @include input-elevation-dark;
     border-radius: 5px;
     min-width: 100px;
 }

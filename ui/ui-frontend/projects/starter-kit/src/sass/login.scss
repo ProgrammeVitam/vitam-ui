@@ -1,4 +1,5 @@
 @import '~ui-frontend-common/sass/variables/colors';
+@import '~ui-frontend-common/sass/mixins/elevation';
 
 .login-box {
     position: relative;
@@ -42,14 +43,14 @@
         border: none;
         outline: none;
         border-radius: 25px;
-        box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+        @include dialog-elevation-dark;
         transition: border-color 200ms ease-out;
         height: 50px;
         padding: 0 30px;
         border: 1px solid transparent;
 
         &:focus {
-            border-color: $greyish-two;
+            border-color: var(--vitamui-primary);
         }
 
         &.ng-valid.ng-touched {
@@ -61,6 +62,7 @@
         }
 
         &[disabled] {
+            @include elevation-0;
             opacity: 0.4;
         }
     }
@@ -77,16 +79,14 @@
 
     button.vitamui-primary {
         @include button-primary;
+        @include dialog-elevation-primary;
         border: none;
         height: 50px;
         border-radius: 25px;
         background-color: var(--vitamui-primary);
-        box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
         padding: 0 30px;
         transition: opacity 200ms ease-in-out;
         border: 1px solid var(--vitamui-primary);
-
-
 
         &:focus:not([disabled]),
         &:hover:not([disabled]) {
@@ -96,6 +96,7 @@
         }
 
         &[disabled] {
+            @include elevation-0;
             opacity: 0.4;
         }
     }

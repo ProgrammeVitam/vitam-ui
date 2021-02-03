@@ -2,7 +2,7 @@
 @import '../../../../sass/mixins/elevation';
 
 .table-filter-panel {
-    @include elevation-3;
+    @include elevation-3-dark;
     background: $white;
     border: 1px solid var(--vitamui-grey-400);
     border-radius: 5px;

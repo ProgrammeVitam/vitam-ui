@@ -1,6 +1,6 @@
 .mat-drawer {
     border-left: none!important;
-    box-shadow: 0px 4px 24px rgba(46, 53, 69, 0.1); 
+    @include elevation-5-dark;
 }
 
 .preview-tab-group.mat-tab-group {

@@ -31,5 +31,12 @@
     "ICONS":{
         "Title": "Vitam-UI icons list",
         "Colors": "Available colors" 
+    },
+    "ELEVATIONS":{
+        "Title": "Shadows & Elevations",
+        "Dark": "Black Shadows",
+        "Primary" : "Primary Shadows",
+        "Secondary": "Secondaty Shadows",
+        "Tertiary": "Tertiary Shadows"
     }
 }

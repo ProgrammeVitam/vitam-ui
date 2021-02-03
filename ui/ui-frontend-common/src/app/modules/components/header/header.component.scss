@@ -3,7 +3,7 @@
 $header-height: 72px !default;
 
 mat-toolbar {
-  @include elevation-4;
+  @include elevation-7-dark;
   z-index: 10;
 }
 
@@ -34,6 +34,7 @@ mat-toolbar {
 vitamui-common-item-select {
   height: 100%;
   width: 100%;
+  @include elevation-0;
 }
 
 vitamui-common-select-language, .select-tenant {
