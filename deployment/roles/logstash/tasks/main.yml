@@ -185,7 +185,7 @@
     connect_timeout: 1
     port: "{{ logstash.port }}"
     delay: 5
-    timeout: 120
+    timeout: 240
     host: "{{ ip_admin }}"
   tags:
     - start
