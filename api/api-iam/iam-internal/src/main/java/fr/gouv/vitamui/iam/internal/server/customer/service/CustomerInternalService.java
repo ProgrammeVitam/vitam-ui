@@ -169,6 +169,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         CustomerDto createdCustomerDto = null;
 
         final CustomerDto dto = customerData.getCustomerDto();
+
         LOGGER.debug("Create {} with {}", getObjectName(), dto);
         Assert.isNull(dto.getId(), "The DTO identifier must be null for creation.");
         Assert.isTrue(StringUtils.isNotBlank(customerData.getTenantName()), "Tenant name is mandatory");
@@ -254,6 +255,12 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
      */
     protected void processPatch(final Customer customer, final CustomerPatchFormData customerFormData) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final VitamContext vitamContext =
+            internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        if(vitamContext != null) {
+              LOGGER.info("Patching Customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
             switch (entry.getKey()) {
                 case "id":
@@ -361,6 +368,10 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     private void patchLogos(final Customer customer, final MultipartFile file, final AttachmentType attachmentType) {
         try {
+            final VitamContext vitamContext =
+                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+            LOGGER.info("Graphic identity EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+
             final String base64 = VitamUIUtils.getBase64(file);
             switch (attachmentType) {
                 case HEADER:

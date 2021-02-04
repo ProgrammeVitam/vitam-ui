@@ -187,7 +187,9 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     protected Group beforePatch(final Map<String, Object> partialDto) {
         final String id = CastUtils.toString(partialDto.get("id"));
         final String message = "Unable to update group " + id;
-
+        if(getVitamContext() != null) {
+            LOGGER.info("Patch Group EvIdAppSession : {} " , getVitamContext().getApplicationSessionId());
+        }
         final String customerId = CastUtils.toString(partialDto.get("customerId"));
         final Group group = find(id, customerId, message);
 
@@ -230,6 +232,10 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     @Override
     protected void processPatch(final Group group, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        if(getVitamContext() != null) {
+            LOGGER.info("Patch Group EvIdAppSession : {} " , getVitamContext().getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
@@ -517,6 +523,9 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
             return new ArrayList<>();
         }
         return (List<String>) document.get(CommonConstants.LEVEL_ATTRIBUTE);
+    }
+    private VitamContext getVitamContext() {
+        return internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
     }
 
 }

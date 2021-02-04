@@ -38,6 +38,8 @@ package fr.gouv.vitamui.referential.internal.server.managementcontract;
 import java.util.List;
 
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +59,8 @@ import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
 @Service
 public class ManagementContractInternalService {
 
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractInternalService.class);
+
     private ObjectMapper objectMapper;
 
     private ManagementContractConverter converter;
@@ -73,6 +77,7 @@ public class ManagementContractInternalService {
     public List<ManagementContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<ManagementContractModel> requestResponse;
         try {
+            LOGGER.info("All Management Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = adminExternalClient.findManagementContracts(vitamContext, new Select().getFinalSelect());
             final ManagementContractResponseDto managementContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);

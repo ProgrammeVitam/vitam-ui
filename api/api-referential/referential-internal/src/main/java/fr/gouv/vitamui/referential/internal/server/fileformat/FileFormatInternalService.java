@@ -104,6 +104,7 @@ public class FileFormatInternalService {
 
     public FileFormatDto getOne(VitamContext vitamContext, String identifier) {
         try {
+            LOGGER.info("File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse<FileFormatModel> requestResponse = vitamFileFormatService.findFileFormatById(vitamContext, identifier);
             final FileFormatResponseDto fileFormatResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class);
@@ -121,6 +122,7 @@ public class FileFormatInternalService {
         final RequestResponse<FileFormatModel> requestResponse;
         LOGGER.debug("Get ALL File Formats !");
         try {
+            LOGGER.info("All File Formats EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = vitamFileFormatService
                     .findFileFormats(vitamContext, new Select().getFinalSelect());
             LOGGER.debug("Response: {}", requestResponse);
@@ -135,7 +137,7 @@ public class FileFormatInternalService {
     public PaginatedValuesDto<FileFormatDto> getAllPaginated(final Integer pageNumber, final Integer size,
             final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
             Optional<String> criteria) {
-
+        LOGGER.info("All File Formats EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
@@ -162,6 +164,7 @@ public class FileFormatInternalService {
     private FileFormatResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<FileFormatModel> requestResponse;
         try {
+            LOGGER.info("All File Formats EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = vitamFileFormatService.findFileFormats(vitamContext, query);
 
             final FileFormatResponseDto fileFormatResponseDto = objectMapper
@@ -178,6 +181,7 @@ public class FileFormatInternalService {
     public Boolean check(VitamContext vitamContext, FileFormatDto accessContractDto) {
         List<FileFormatDto> fileFormatDtoList = new ArrayList<>();
         fileFormatDtoList.add(accessContractDto);
+        LOGGER.info("File Format Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             return !vitamFileFormatService.checkAbilityToCreateFileFormatInVitam(converter.convertDtosToVitams(fileFormatDtoList), vitamContext);
         } catch (ConflictException e) {
@@ -190,6 +194,7 @@ public class FileFormatInternalService {
     public FileFormatDto create(VitamContext vitamContext, FileFormatDto fileformatDto) {
         LOGGER.debug("Try to create File Format {} {}", fileformatDto, vitamContext);
         try {
+            LOGGER.info("Create File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             // TODO: Check if this file format is an external PUID
             RequestResponse<?> requestResponse = vitamFileFormatService.create(vitamContext, converter.convertDtoToVitam(fileformatDto));
             final FileFormatModel fileFormatVitamDto = objectMapper
@@ -202,6 +207,7 @@ public class FileFormatInternalService {
 
     public FileFormatDto patch(VitamContext vitamContext,final Map<String, Object> partialDto){
         LOGGER.debug("Try to patch File Format {} {}", partialDto, vitamContext);
+        LOGGER.info("Patch File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         FileFormatDto fileFormat = this.getOne(vitamContext, (String) partialDto.get("puid"));
         partialDto.forEach((key,value) ->
         {
@@ -231,6 +237,7 @@ public class FileFormatInternalService {
 
     public void delete(VitamContext context, String id) {
         LOGGER.debug("Try to delete File Format {} {}", id, context);
+        LOGGER.info("Delete File Format EvIdAppSession : {} " , context.getApplicationSessionId());
 
         if (!id.startsWith("EXTERNAL_")) {
             throw new InternalServerException("Unable to patch fileFormat: Not an external format");
@@ -249,6 +256,7 @@ public class FileFormatInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier) throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
+        LOGGER.info("File Format History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return logbookService.findEventsByIdentifierAndCollectionNames(
                 identifier, AdminCollections.AGENCIES.getName(), vitamContext).toJsonNode();
     }

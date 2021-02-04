@@ -249,6 +249,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
      */
     @Override
     public UserDto create(final UserDto userDto) {
+
         UserDto createdUserDto = null;
 
         // start Transaction if needed
@@ -335,9 +336,12 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
+
             final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
             if(vitamContext != null) {
-                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId()); }
+                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            }
+
             LOGGER.info("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);
@@ -818,6 +822,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public AuthUserDto loadGroupAndProfiles(final UserDto userDto) {
+
         final AuthUserDto authUserDto = new AuthUserDto(userDto);
 
         final String groupId = userDto.getGroupId();
@@ -850,6 +855,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     public void addTenantsByAppInformation(final AuthUserDto authUserDto) {
+
         final Map<String, Set<TenantDto>> tenantsByApp = new HashMap<>();
         if (authUserDto.getProfileGroup().getProfiles() != null) {
             authUserDto.getProfileGroup().getProfiles().stream().filter(profile -> profile.getTenantName() != null).forEach(profile -> {

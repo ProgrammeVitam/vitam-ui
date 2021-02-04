@@ -67,6 +67,7 @@ public class VitamBatchReportService {
 
 	public InputStream downloadBatchReport(final VitamContext vitamContext, final String operationId)
 			throws VitamClientException {
+        LOGGER.info("Batch Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 		LOGGER.debug("findBatchReport: {}", operationId);
 		Response response = adminExternalClient.downloadRulesReport(vitamContext, operationId);
 		VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);

@@ -43,13 +43,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -157,8 +154,8 @@ public class IamLogbookService {
      */
     public void createProfileEvent(final ProfileDto sourceEvent) {
         LOGGER.info("Create Profile {}", sourceEvent.toString());
-        create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
-                converters.getProfileConverter().convertToLogbook(sourceEvent));
+         create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
+            converters.getProfileConverter().convertToLogbook(sourceEvent));
     }
 
     /**
@@ -167,7 +164,7 @@ public class IamLogbookService {
     */
     public void createIdpEvent(final IdentityProviderDto sourceEvent) {
         LOGGER.info("Create Provider {}", sourceEvent.toString());
-        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
+         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
                 EventType.EXT_VITAMUI_CREATE_IDP, converters.getIdpConverter().convertToLogbook(sourceEvent));
     }
 
@@ -244,6 +241,7 @@ public class IamLogbookService {
     */
     public void createTenantEvent(final TenantDto sourceEvent) {
         LOGGER.info("Create Tenant {}", sourceEvent.toString());
+
         create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_CREATE_TENANT, converters.getTenantConverter().convertToLogbook(sourceEvent));
     }
@@ -265,7 +263,7 @@ public class IamLogbookService {
      */
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Profile {}", profile.toString());
-        update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
+         update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
     }
 
     /**
@@ -360,6 +358,7 @@ public class IamLogbookService {
      * @param superUser the super user
      */
     public void revokePasswordEvent(final User user, final String superUser) {
+
         LOGGER.info("revoke password for user: {} / superUser: {}", user, superUser);
         final Map<String, String> logbookData = new HashMap<>();
         if (superUser != null) {
@@ -382,6 +381,7 @@ public class IamLogbookService {
      * @param duration of user's blocked
      */
     public void blockUserEvent(final User user, final UserStatusEnum oldStatus, final Duration duration) {
+
         LOGGER.info("block user: {} / oldStatus: {}", user.toString(), oldStatus);
         final List<EventDiffDto> updates = Arrays.asList(new EventDiffDto("Statut", oldStatus.toString(), user.getStatus().toString()));
         final ObjectNode evDetData = LogbookUtils.getEvData(updates);

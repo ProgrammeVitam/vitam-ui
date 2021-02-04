@@ -310,6 +310,11 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     @Override
     protected void processPatch(final Tenant tenant, final Map<String, Object> partialDto) {
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
+        final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+        if(vitamContext != null) {
+            LOGGER.info("Patch Tenant EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+        }
+
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id" :
@@ -455,6 +460,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
+
         final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         final VitamContext vitamContext = new VitamContext(tenantIdentifier)
                 .setAccessContract(internalSecurityService.getTenant(tenantIdentifier).getAccessContractLogbookIdentifier())
@@ -463,6 +469,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final Optional<Tenant> tenant = getRepository().findById(id);
         tenant.orElseThrow(() -> new NotFoundException(String.format("No tenant found with id : %s", id)));
 
+        LOGGER.info("Tenant History EvIdAppSession : {} " , internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier()).getApplicationSessionId());
         return logbookService.findEventsByIdentifierAndCollectionNames(String.valueOf(tenant.get().getIdentifier()), MongoDbCollections.TENANTS, vitamContext)
                 .toJsonNode();
     }

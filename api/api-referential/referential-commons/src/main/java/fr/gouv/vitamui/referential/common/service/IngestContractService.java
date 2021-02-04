@@ -80,11 +80,13 @@ public class IngestContractService {
 
     public RequestResponse patchIngestContract(VitamContext vitamContext, String id, ObjectNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
+        LOGGER.info("Patch Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.updateIngestContract(vitamContext, id, jsonNode);
     }
 
     public RequestResponse<IngestContractModel> findIngestContractById(final VitamContext vitamContext,
                                                                        final String contractId) throws VitamClientException {
+
         RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContractById(vitamContext,
             contractId);
         VitamRestUtils.checkResponse(jsonResponse);
@@ -93,6 +95,7 @@ public class IngestContractService {
 
     public RequestResponse<IngestContractModel> findIngestContracts(final VitamContext vitamContext,
                                                                     final JsonNode query) throws VitamClientException {
+
         RequestResponse<IngestContractModel> jsonResponse = adminExternalClient.findIngestContracts(vitamContext,
             query);
         VitamRestUtils.checkResponse(jsonResponse);
@@ -134,6 +137,7 @@ public class IngestContractService {
 
     public RequestResponse<?> createIngestContracts(final VitamContext vitamContext, final List<IngestContractModel> ingestContracts) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeIngestContracts(ingestContracts)) {
+            LOGGER.info("Create Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             return adminExternalClient.createIngestContracts(vitamContext, byteArrayInputStream);
         }
     }

@@ -45,6 +45,8 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
@@ -55,6 +57,8 @@ import java.util.List;
 
 @Service
 public class AccessionRegisterInternalService {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterInternalService.class);
 
     final private AccessionRegisterService accessionRegisterService;
 
@@ -70,6 +74,7 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
+            LOGGER.info("List of Access Register EvIdAppSession : {} " , context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSymbolic(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);

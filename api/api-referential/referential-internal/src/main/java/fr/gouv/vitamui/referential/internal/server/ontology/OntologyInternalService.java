@@ -79,7 +79,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OntologyInternalService {
-	
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OntologyInternalService.class);
 
     private OntologyService ontologyService;
@@ -118,8 +118,7 @@ public class OntologyInternalService {
     public List<OntologyDto> getAll(VitamContext vitamContext) {
         final RequestResponse<OntologyModel> requestResponse;
         try {
-            requestResponse = ontologyService
-                .findOntologies(vitamContext, new Select().getFinalSelect());
+            requestResponse = ontologyService.findOntologies(vitamContext, new Select().getFinalSelect());
             final OntologyResponseDto ontologyResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), OntologyResponseDto.class);
 
@@ -135,6 +134,7 @@ public class OntologyInternalService {
 
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
+
         try {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
@@ -231,7 +231,9 @@ public class OntologyInternalService {
 
     private RequestResponse<?> updateOntology(final VitamContext vitamContext, final String id, OntologyDto patchOntology)
             throws InvalidParseOperationException, AccessExternalClientException, IOException {
-
+        if(vitamContext != null) {
+            LOGGER.info("Update Ontology EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        }
         final List<OntologyDto> ontologies = getAll(vitamContext);
 
         ontologies.stream()
@@ -266,7 +268,7 @@ public class OntologyInternalService {
         	throw new InternalServerException("Unable to fetch history", e);
         }
     }
-    
+
     public JsonNode importOntologies(VitamContext context, String fileName, MultipartFile file) {
         try {
             return ontologyService.importOntologies(context, fileName, file).toJsonNode();

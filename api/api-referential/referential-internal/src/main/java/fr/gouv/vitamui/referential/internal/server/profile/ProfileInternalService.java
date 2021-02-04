@@ -38,6 +38,8 @@ package fr.gouv.vitamui.referential.internal.server.profile;
 
 import java.util.List;
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +59,8 @@ import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
 @Service
 public class ProfileInternalService {
 
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalService.class);
+
     private ObjectMapper objectMapper;
 
     private ProfileConverter converter;
@@ -73,6 +77,7 @@ public class ProfileInternalService {
     public List<ProfileDto> getAll(VitamContext vitamContext) {
         final RequestResponse<ProfileModel> requestResponse;
         try {
+            LOGGER.info("All Profiles EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = adminExternalClient.findProfiles(vitamContext, new Select().getFinalSelect());
             final ProfileResponseDto managementContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ProfileResponseDto.class);

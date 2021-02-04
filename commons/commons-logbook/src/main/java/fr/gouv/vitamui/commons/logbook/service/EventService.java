@@ -92,6 +92,7 @@ public class EventService {
     public Event logUpdate(final InternalHttpContext context, final String accessContractLogbookIdentifier,
                            final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
                            final EventLogable evType, final Collection<EventDiffDto> evDetData) {
+        LOGGER.info(" EvIdAppSession : {} " , context.getApplicationId());
         LOGGER.debug("------------- context : {}", context);
         return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
                 tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK,
@@ -115,6 +116,7 @@ public class EventService {
     public Event logCreate(final InternalHttpContext context, final String accessContractLogbookIdentifier,
             final Integer tenantIdentifier, final String objectIdentifier, final String collectionNames,
             final EventLogable evType, final String evDetData) {
+        LOGGER.debug("------------- context : {}", context);
         return create(context.getRequestId(), context.getApplicationId(), accessContractLogbookIdentifier,
                 tenantIdentifier, objectIdentifier, collectionNames, evType, EventTypeProc.EXTERNAL_LOGBOOK, evDetData,
                 StatusCode.OK);

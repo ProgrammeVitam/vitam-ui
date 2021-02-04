@@ -88,13 +88,13 @@ public class VitamSecurityProfileService {
 
     public RequestResponse<?> patchSecurityProfile(final VitamContext vitamSecurityProfile, final String id, JsonNode jsonNode)  throws VitamClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-
+        LOGGER.info("Patch Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         return adminExternalClient.updateSecurityProfile(vitamSecurityProfile, id, jsonNode);
     }
 
     public RequestResponse<?> deleteSecurityProfile(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-
+        LOGGER.info("Delete Security Profile EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<SecurityProfileModel> requestResponse = adminExternalClient.findSecurityProfiles(vitamContext, new Select().getFinalSelect());
         final List<SecurityProfileModel> actualSecurityProfiles = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class).getResults();
@@ -105,12 +105,14 @@ public class VitamSecurityProfileService {
     }
 
     public RequestResponse<SecurityProfileModel> findSecurityProfiles(final VitamContext vitamSecurityProfile, final JsonNode select) throws VitamClientException {
+        LOGGER.info("All Security Profiles EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfiles(vitamSecurityProfile, select);
         VitamRestUtils.checkResponse(response);
         return response;
     }
 
     public RequestResponse<SecurityProfileModel> findSecurityProfileById(final VitamContext vitamSecurityProfile, final String securityProfileId) throws VitamClientException {
+        LOGGER.info("Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         final RequestResponse<SecurityProfileModel> response = adminExternalClient.findSecurityProfileById(vitamSecurityProfile, securityProfileId);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -118,7 +120,7 @@ public class VitamSecurityProfileService {
 
     public RequestResponse<?> createSecurityProfile(final VitamContext vitamSecurityProfile, SecurityProfileModel newSecurityProfile)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-
+        LOGGER.info("Create Security Profile EvIdAppSession : {} " , vitamSecurityProfile.getApplicationSessionId());
         final List<SecurityProfileModel> actualSecurityProfiles = new ArrayList<>();
         newSecurityProfile.setIdentifier(newSecurityProfile.getName());
         actualSecurityProfiles.add(newSecurityProfile);

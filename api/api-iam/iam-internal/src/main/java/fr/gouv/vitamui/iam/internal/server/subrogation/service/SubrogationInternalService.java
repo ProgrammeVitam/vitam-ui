@@ -42,6 +42,10 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.logbook.service.EventService;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +91,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SubrogationInternalService extends VitamUICrudService<SubrogationDto, Subrogation> {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalService.class);
 
     private SubrogationRepository subrogationRepository;
 
@@ -161,7 +167,6 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     @Override
     protected void beforeCreate(final SubrogationDto dto) {
         super.beforeCreate(dto);
-
         Assert.isTrue(dto.getStatus().equals(SubrogationStatusEnum.CREATED), "the subrogation must have the status CREATED at the creation");
         checkUsers(dto);
         // if status is now ACCEPTED, it's a generic user, set genericUsersSubrogationTtl min as lifetime
@@ -196,6 +201,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     }
 
     private void checkUsers(final SubrogationDto dto) {
+
         final String emailSurrogate = dto.getSurrogate();
         final String emailSuperUser = dto.getSuperUser();
         final User surrogate = userRepository.findByEmail(emailSurrogate);
