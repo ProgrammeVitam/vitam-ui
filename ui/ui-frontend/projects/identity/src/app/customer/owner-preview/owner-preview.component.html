@@ -12,7 +12,7 @@
     </mat-tab>
 
     <mat-tab label="Historique" i18n-label="History tab@@ownerPreviewTabHistory">
-      <app-owner-operation-history-tab [id]="owner?.id" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
+      <app-owner-operation-history-tab [id]="owner?.id" [identifier]="owner?.identifier" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
     </mat-tab>
   </mat-tab-group>
 </div>
