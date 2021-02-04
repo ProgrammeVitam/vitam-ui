@@ -34,45 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { IngestComponent } from './ingest.component';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { IngestListModule } from './ingest-list/ingest-list.module';
-import { IngestRoutingModule } from './ingest-routing.module';
-import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from './upload-tracking/upload-tracking.module';
+import { LoggerModule } from 'ui-frontend-common';
+import { UploadTrackingComponent } from './upload-tracking.component';
+import { UploadService } from '../../core/common/upload.service';
+import { IngestList } from '../../core/common/ingest-list';
+import { NgxFilesizeModule } from 'ngx-filesize';
+import { of } from 'rxjs';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    IngestRoutingModule,
-    UploadModule,
-    UploadTrackingModule,
-    SharedModule,
-    IngestListModule,
-    IngestPreviewModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-  ],
-  declarations: [
-    IngestComponent
-  ],
-  providers: [
-  ]
-})
-export class IngestModule { }
+describe('UploadTrackingComponent', () => {
+  let component: UploadTrackingComponent;
+  let fixture: ComponentFixture<UploadTrackingComponent>;
+
+  const UploadServiceSpy = jasmine.createSpyObj('UploadService', { filesStatus: of(new IngestList()) });
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatProgressBarModule,
+        NgxFilesizeModule,
+        NoopAnimationsModule,
+        LoggerModule.forRoot()
+      ],
+      declarations: [ UploadTrackingComponent ],
+      providers: [
+        FormBuilder,
+        { provide: UploadService, useValue: UploadServiceSpy }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UploadTrackingComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

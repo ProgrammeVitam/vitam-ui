@@ -34,45 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { UploadService } from '../../core/common/upload.service';
+import { IngestList } from '../../core/common/ingest-list';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { IngestComponent } from './ingest.component';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
-import { IngestListModule } from './ingest-list/ingest-list.module';
-import { IngestRoutingModule } from './ingest-routing.module';
-import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from './upload-tracking/upload-tracking.module';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatSidenavModule,
-    IngestRoutingModule,
-    UploadModule,
-    UploadTrackingModule,
-    SharedModule,
-    IngestListModule,
-    IngestPreviewModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule
-  ],
-  declarations: [
-    IngestComponent
-  ],
-  providers: [
+@Component({
+  selector: 'app-upload-tracking',
+  templateUrl: './upload-tracking.component.html',
+  styleUrls: ['./upload-tracking.component.scss'],
+  animations: [
+    trigger('rotateAnimation', [
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
+      transition('expand <=> collapse', animate('200ms ease-out')),
+    ])
   ]
 })
-export class IngestModule { }
+export class UploadTrackingComponent implements OnInit {
+
+  ingestList: IngestList;
+  displayTracking = false;
+
+  constructor(private uploadSipService: UploadService) {
+    this.uploadSipService.filesStatus().subscribe( (ingestList) => {
+      this.ingestList = ingestList;
+      if (this.ingestList.wipNumber > 0) {
+        this.displayTracking = true;
+      }
+    });
+  }
+
+  ngOnInit() { }
+
+  toogleTracking() {
+    this.displayTracking = !this.displayTracking;
+  }
+
+}

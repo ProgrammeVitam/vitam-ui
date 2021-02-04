@@ -53,9 +53,11 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
+import { IngestListComponent } from './ingest-list/ingest-list.component';
 
 @Component({ selector: 'app-ingest-list', template: '' })
-class IngestListStubComponent {
+export class IngestListStubComponent {
+      emitOrderChange() {}
 }
 
 describe('IngestComponent', () => {
@@ -96,7 +98,7 @@ describe('IngestComponent', () => {
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) } },
         { provide: environment, useValue: environment }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -104,6 +106,7 @@ describe('IngestComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestComponent);
     component = fixture.componentInstance;
+    component.ingestListComponent = TestBed.createComponent(IngestListStubComponent).componentInstance as IngestListComponent;
     fixture.detectChanges();
   });
 
