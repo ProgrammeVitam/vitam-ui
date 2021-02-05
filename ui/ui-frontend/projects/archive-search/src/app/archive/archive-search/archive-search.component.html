@@ -189,7 +189,7 @@
                   <ng-container *ngFor="let ontology of this.ontologies">
                     <mat-option value="{{ontology.Value}}"
                                 matTooltip="{{ontology?.Value}}" matTooltipClass="vitamui-tooltip"
-                                [matTooltipShowDelay]="300">{{ontology.ShortName}}
+                                [matTooltipShowDelay]="300">{{ontology.Label}}
                     </mat-option>
                   </ng-container>
 
@@ -214,15 +214,15 @@
             </div>
             <div class="col-4 form-control">
               <vitamui-common-editable-input formControlName="otherCriteriaValue"
-                                            *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT') "
+                                            *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT' || otherCriteriaValueType === 'LONG' || otherCriteriaValueType === 'DOUBLE' || otherCriteriaValueType === 'BOOLEAN') "
                                             [validator]="form?.get('otherCriteriaValue')?.validator"
-                                            label="Valeur du critère : {{selectedValueOntolonogy}}">
+                                            label="{{selectedValueOntolonogy}}">
               </vitamui-common-editable-input>
 
               <div class="search-date-filter" (click)="pickerOtherCriteria.open()"
                   *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE' ">
                 <span *ngIf="!form.get('otherCriteriaValue').value; else showOtherCriteria"
-                      (click)="pickerOtherCriteria.open()" class="search-date-label">Valeur du critère : {{selectedValueOntolonogy}}</span>
+                      (click)="pickerOtherCriteria.open()" class="search-date-label">{{selectedValueOntolonogy}}</span>
                 <ng-template #showOtherCriteria><span (click)="pickerOtherCriteria.open()">{{ form.get('otherCriteriaValue').value | date:'dd/MM/yyyy' }}
               </span>
                 </ng-template>
