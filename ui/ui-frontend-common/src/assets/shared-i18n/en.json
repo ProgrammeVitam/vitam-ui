@@ -200,5 +200,8 @@
     },
     "LEVEL-INPUT": {
         "SUBLEVEL": "Sub level"
+    },
+    "PROGRESS_BAR":{
+        "STEP": "Step"
     }
 }

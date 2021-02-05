@@ -216,5 +216,8 @@
     },
     "LEVEL-INPUT": {
         "SUBLEVEL": "Sous niveau"
+    },
+    "PROGRESS_BAR":{
+        "STEP": "Étape"
     }
 }
