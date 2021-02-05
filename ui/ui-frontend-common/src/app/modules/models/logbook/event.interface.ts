@@ -54,7 +54,7 @@ export interface Event extends Id {
   agIdExt: string;
   rightsStatementIdentifier: string;
   obIdReq: string;
-  obId: string;
+  obId?: string;
   userIdentifier?: string;
   subrogatorIdentifier?: string;
   events?: Event[];
