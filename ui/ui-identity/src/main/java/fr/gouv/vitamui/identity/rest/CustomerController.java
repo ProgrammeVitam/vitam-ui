@@ -202,4 +202,15 @@ public class CustomerController extends AbstractUiRestController {
             return RestUtils.buildFileResponse(response, Optional.ofNullable(ContentDispositionType.INLINE), Optional.empty());
         }
     }
+
+    /**
+     * Retrieve settings for GPDR.
+     *
+     * @return
+     */
+    @GetMapping(path = CommonConstants.GDPR_STATUS)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return service.getGdprSettingStatus(buildUiHttpContext());
+    }
 }

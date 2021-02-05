@@ -224,4 +224,16 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
 
+    /**
+     * Retrieve settings for GPDR.
+     *
+     * @return boolean
+     */
+    @ApiOperation(value = "Get Gdpr Setting Status")
+    @GetMapping(CommonConstants.GDPR_STATUS)
+    @ResponseStatus(HttpStatus.OK)
+    public boolean getGdprSettingStatus() {
+        LOGGER.debug("Get Gdpr Setting Status");
+        return customerExternalService.getGdprSettingStatus();
+    }
 }

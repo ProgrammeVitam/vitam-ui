@@ -408,6 +408,57 @@
         }
       }
     },
+    "/identity-api/customers/gdpr-status": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "getGdprSettingStatus",
+        "operationId": "getGdprSettingStatusUsingGET",
+        "parameters": [
+          {
+            "name": "X-Application-Id",
+            "in": "header",
+            "description": "Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "X-User-Token",
+            "in": "header",
+            "description": "Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l'autentification",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "401": {
+            "description": "La requÃªte n'est pas autorisÃ©e. Le X-User-Token n'est pas valide"
+          },
+          "403": {
+            "description": "L'utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration"
+          },
+          "404": {
+            "description": "Non trouvÃ©e"
+          }
+        },
+        "deprecated": false
+      }
+    },
     "/identity-api/customers/me": {
       "get": {
         "tags": [
@@ -3168,16 +3219,16 @@
         "address": {
           "$ref": "#/definitions/AddressDto"
         },
-        "gdprAlertDelay":{
-          "type":"integer",
-          "format":"int32",
+        "gdprAlertDelay": {
+          "type": "integer",
+          "format": "int32",
           "minimum": 72,
-          "example" : "130",
-          "description" : "La durée d'alerte pour les notifications"
+          "example": "130",
+          "description": "La durée d'alerte pour les notifications"
         },
-        "gdprAlert":{
-          "type":"boolean",
-          "description" : "Pour activer ou désactiver la réception des alertes"
+        "gdprAlert": {
+          "type": "boolean",
+          "description": "Pour activer ou désactiver la récéeption des alertes"
         },
         "code": {
           "type": "string",
@@ -3194,7 +3245,6 @@
           "example": "@archiveco.fr",
           "description": "Nom de domaine par défaut"
         },
-
         "emailDomains": {
           "type": "array",
           "items": {
@@ -3218,11 +3268,9 @@
           "description": "Identifiant métier",
           "readOnly": true
         },
-
         "hasCustomGraphicIdentity": {
           "type": "boolean"
         },
-
         "language": {
           "type": "string",
           "enum": [
@@ -3913,13 +3961,13 @@
         "customerId": {
           "type": "string"
         },
-        "desactivationDate":{
-          "type":"string",
-          "format":"date-time"
+        "desactivationDate": {
+          "type": "string",
+          "format": "date-time"
         },
-        "removingDate":{
-          "type":"string",
-          "format":"date-time"
+        "removingDate": {
+          "type": "string",
+          "format": "date-time"
         },
         "email": {
           "type": "string"

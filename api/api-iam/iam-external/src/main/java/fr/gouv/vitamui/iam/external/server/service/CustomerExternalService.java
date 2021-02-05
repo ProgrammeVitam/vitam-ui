@@ -179,4 +179,7 @@ public class CustomerExternalService extends AbstractResourceClientService<Custo
         return getClient().getLogo(getInternalHttpContext(), id, type);
     }
 
+    public boolean getGdprSettingStatus() {
+        return getClient().getGdprSettingStatus(getInternalHttpContext());
+    }
 }
