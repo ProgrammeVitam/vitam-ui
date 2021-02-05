@@ -35,6 +35,7 @@ import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRest
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -49,6 +50,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -125,6 +129,20 @@ public class ArchivesSearchExternalControllerTest extends ApiArchivesSearchExter
             .thenReturn(expectedResponse);
         ArchiveUnitsDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
         Assert.assertEquals(responseDto, expectedResponse);
+    }
+
+    @Test
+    public void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ko() {
+
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setNodes(Arrays.asList("<s>insecure</s>"));
+        ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
+        Mockito
+            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(Mockito.eq(query)))
+            .thenReturn(expectedResponse);
+
+        assertThatCode(() -> archivesSearchExternalController.searchArchiveUnitsByCriteria(query))
+            .isInstanceOf(InvalidSanitizeCriteriaException.class);
     }
 
     @Test

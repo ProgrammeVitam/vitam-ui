@@ -36,14 +36,22 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -65,20 +73,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.FILE_FORMATS_URL)
@@ -112,23 +110,26 @@ public class FileFormatExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public FileFormatDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get file format identifier={}");
+        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
         return fileFormatExternalService.getOne(identifier);
     }
 
     @Secured({ ServicesData.ROLE_GET_FILE_FORMATS })
     @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody FileFormatDto accessContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist accessContract={}", accessContractDto);
-        final boolean exist = fileFormatExternalService.check(accessContractDto);
+    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileFormatDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("check exist accessContract={}", fileFormatDto);
+        ApiUtils.checkValidity(fileFormatDto);
+        final boolean exist = fileFormatExternalService.check(fileFormatDto);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @Secured(ServicesData.ROLE_CREATE_FILE_FORMATS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public FileFormatDto create(final @Valid @RequestBody FileFormatDto accessContractDto) {
-        LOGGER.debug("Create {}", accessContractDto);
-        return fileFormatExternalService.create(accessContractDto);
+    public FileFormatDto create(final @Valid @RequestBody FileFormatDto fileFormatDto) {
+        LOGGER.debug("Create {}", fileFormatDto);
+        ApiUtils.checkValidity(fileFormatDto);
+        return fileFormatExternalService.create(fileFormatDto);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
@@ -143,6 +144,7 @@ public class FileFormatExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return fileFormatExternalService.findHistoryById(id);
     }
 
@@ -150,6 +152,7 @@ public class FileFormatExternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete fileFormat with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         fileFormatExternalService.delete(id);
     }
 
@@ -158,7 +161,7 @@ public class FileFormatExternalController {
     public ResponseEntity<Resource> export() {
         return fileFormatExternalService.export();
     }
-    
+
     /***
      * Import file format from an xml file
      * @param fileName the file name
@@ -169,6 +172,8 @@ public class FileFormatExternalController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("Import file format file {}", fileName);
+        ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         return fileFormatExternalService.importFileFormats(fileName, file);
     }
 }

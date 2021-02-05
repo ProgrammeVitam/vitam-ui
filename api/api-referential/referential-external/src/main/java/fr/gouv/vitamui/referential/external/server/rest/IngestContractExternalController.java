@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -127,6 +128,7 @@ public class IngestContractExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return ingestContractExternalService.findHistoryById(id);
     }
 }

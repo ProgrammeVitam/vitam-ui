@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -109,6 +111,9 @@ public class IngestExternalController {
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
+        ParameterChecker
+            .checkParameter("The Action and contextId are mandatory parameters : ", action, contextId);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         InputStream in = null;
         try {
             in = file.getInputStream();
@@ -126,6 +131,7 @@ public class IngestExternalController {
     @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateDocX(final @PathVariable("id") String id) {
         LOGGER.debug("export docx report for ingest with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
         return ingestExternalService.generateDocX(id);
     }
 }
