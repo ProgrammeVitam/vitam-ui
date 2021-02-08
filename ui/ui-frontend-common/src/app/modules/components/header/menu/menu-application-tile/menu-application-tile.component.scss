@@ -2,7 +2,7 @@
 @import '../../../../../../sass/mixins/elevation';
 
 :host {
-    color: #747272!important;
+    color: var(--vitamui-grey-600)!important;
 
     .app-icon {
         border-radius: 50%;
@@ -24,4 +24,9 @@
     .mandatory {
         max-width: 100%;
     }
+}
+
+a {
+    color: var(--vitamui-grey-600);
+    text-decoration: none;
 }

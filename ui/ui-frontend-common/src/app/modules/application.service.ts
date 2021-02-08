@@ -56,20 +56,14 @@ export class ApplicationService {
   /**
    * Applications list of the authenticated user.
    */
-  set applications(apps: Application[]) {
-    this._applications = apps;
-  }
+  set applications(apps: Application[]) { this._applications = apps; }
 
-  get applications(): Application[] {
-    return this._applications;
-  }
+  get applications(): Application[] { return this._applications; }
 
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
-  get applicationsAnalytics(): ApplicationAnalytics[] {
-    return this._applicationsAnalytics;
-  }
+  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
 
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
@@ -89,15 +83,12 @@ export class ApplicationService {
   /*
    * Categories of the application.
    */
-  set categories(categories: { [categoryId: string]: Category }) {
-    this._categories = categories;
-  }
-  get categories(): { [categoryId: string]: Category } {
-    return this._categories;
-  }
+  set categories(categories: Category[]) { this._categories = categories; }
+
+  get categories(): Category[] { return this._categories; }
 
   // tslint:disable-next-line:variable-name
-  _categories: { [categoryId: string]: Category };
+  _categories: Category[];
 
   private appMap$ = new BehaviorSubject(undefined);
 
@@ -118,7 +109,7 @@ export class ApplicationService {
       catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
-        this._categories = applicationInfo.CATEGORY_CONFIGURATION;
+        this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
         return applicationInfo;
       })
     );
@@ -129,12 +120,13 @@ export class ApplicationService {
    */
   public getAppsMap(): Observable<Map<Category, Application[]>> {
     if (!this.appMap) {
-      const appsByCategorie = this.fillCategoriesWithApps(this.categories, this.applications);
+      const stringMap = this.fillCategoriesWithApps(this.categories, this.applications);
       this.analyticsUpdated$.subscribe(() => {
         const lastUsedApps = this.getLastUsedApps(this.categories, this.applications);
         if (lastUsedApps) {
           this.appMap.set(lastUsedApps.category, lastUsedApps.apps);
-          this.appMap = this.sortMapByCategory(appsByCategorie);
+          const convertedMap = this.convertToCategoryMap(stringMap);
+          this.appMap = this.sortMapByCategory(convertedMap);
         }
         this.appMap$.next(this.appMap);
       });
@@ -176,15 +168,16 @@ export class ApplicationService {
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
       const lastUsedApps = this.getLastUsedApps(this.categories, apps);
       if (lastUsedApps) {
-        resultMap.set(lastUsedApps.category, lastUsedApps.apps);
+          resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
       }
-      return this.sortMapByCategory(resultMap);
+      const convertedMap = this.convertToCategoryMap(resultMap);
+      return this.sortMapByCategory(convertedMap);
     }
   }
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
     this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
-      if (app.serviceId.includes(uiUrl)) {
+      if (router && app.serviceId.includes(uiUrl)) {
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
         } else {
@@ -199,6 +192,18 @@ export class ApplicationService {
         }
       }
     });
+  }
+
+  getApplicationUrl(app: Application, tenantIdentifier?: number): string {
+    if (!tenantIdentifier) {
+      tenantIdentifier = this.tenantService.getSelectedTenant().identifier;
+    }
+
+    if (app.hasTenantList) {
+      return app.url + '/tenant/' + tenantIdentifier;
+    } else {
+      return app.url;
+    }
   }
 
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
@@ -225,28 +230,31 @@ export class ApplicationService {
     });
   }
 
-  private fillCategoriesWithApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[]) {
-    const resultMap = new Map<Category, Application[]>();
-    const categories: Category[] = Object.values(categoriesByIds);
-    categories.sort((a, b) => {
-      return a.order > b.order ? 1 : -1;
+  /**
+   * Convert a map using a string category identifier as key to a map using a Category object instead
+   * @param stringMap - the map to convert as Map<string, Application[]>
+   */
+  private convertToCategoryMap(stringMap: Map<string, Application[]>): Map<Category, Application[]> {
+    const categMap = new Map<Category, Application[]>();
+    stringMap.forEach((val, key) => {
+      const categ = this.categories.find(value => value.identifier === key);
+      categMap.set(categ, val);
     });
+    return categMap;
+  }
 
+  private fillCategoriesWithApps(categories: Category[], applications: Application[]): Map<string, Application[]> {
+    const resultMap = new Map<string, Application[]>();
     categories.forEach((category: Category) => {
       const sortedAppsOfCategory = this.getSortedAppsOfCategory(category, applications);
       if (sortedAppsOfCategory && sortedAppsOfCategory.length > 0) {
-        resultMap.set(category, sortedAppsOfCategory);
+        resultMap.set(category.identifier, sortedAppsOfCategory);
       }
     });
     return resultMap;
   }
 
-  /* tslint:disable:max-line-length */
-  private getLastUsedApps(
-    categoriesByIds: { [categoryId: string]: Category },
-    applications: Application[],
-    max = 8
-  ): { category: Category; apps: Application[] } {
+  private getLastUsedApps(categories: Category[], applications: Application[], max = 8): { category: Category, apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -263,8 +271,9 @@ export class ApplicationService {
 
       if (lastUsedApps.length !== 0) {
         // Check if category already exists
-        if (!categoriesByIds[lastUsedAppsCateg.identifier]) {
-          categoriesByIds[lastUsedAppsCateg.identifier] = lastUsedAppsCateg;
+        const categoryIndex = categories.findIndex((category: Category) => category.identifier === lastUsedAppsCateg.identifier);
+        if (categoryIndex === -1) {
+          this.categories.push(lastUsedAppsCateg);
         }
 
         // Sort last used apps by date
@@ -295,6 +304,13 @@ export class ApplicationService {
     // Sort apps inside categories
     return applications.sort((a: Application, b: Application) => {
       return a.position < b.position ? -1 : 1;
+    });
+  }
+
+  private sortCategories(categories: Category[]): Category[] {
+    // Sort apps inside categories
+    return categories.sort((a, b) => {
+      return a.order > b.order ? 1 : -1;
     });
   }
 

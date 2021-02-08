@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Application, Category } from 'ui-frontend-common';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-application-list',
@@ -46,8 +47,19 @@ export class ApplicationsListComponent {
 
   @Input() appMap: Map<Category, Application[]>;
 
-  @Output() applicationClick = new EventEmitter<Application>();
+  constructor(
+    private router: Router,
+    private startupService: StartupService,
+    private applicationService: ApplicationService
+    ) { }
 
-  constructor() { }
+  openApplication(application: Application): boolean {
+    this.applicationService.openApplication(application, this.router, this.startupService.getConfigStringValue('UI_URL'));
+    return false;
+  }
+
+  getApplicationUrl(application: Application): string {
+    return this.applicationService.getApplicationUrl(application);
+  }
 
 }

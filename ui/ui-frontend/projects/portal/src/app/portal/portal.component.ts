@@ -36,7 +36,6 @@
 */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -75,7 +74,6 @@ export class PortalComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private authService: AuthService,
     private themeService: ThemeService,
-    private router: Router,
     private langagueService: LanguageService,
     private globalEventService: GlobalEventService) { }
 
@@ -113,9 +111,5 @@ export class PortalComponent implements OnInit, OnDestroy {
         this.welcomeMessage = this.startupService.getDefaultPortalMessage();
       }
     }
-  }
-
-  public openApplication(app: Application): void {
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }

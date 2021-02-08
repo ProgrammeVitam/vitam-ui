@@ -164,12 +164,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 300);
   }
 
-  public openApplication(app: Application): void {
-    this.onClose();
-    this.applicationService.
-      openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.value.identifier);
-  }
-
   public updateApps(tenant: MenuOption): void {
     if (tenant) {
       this.selectedTenant = tenant;
