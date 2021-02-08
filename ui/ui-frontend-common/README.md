@@ -46,7 +46,7 @@ Once you've tested your library and everything works fine, you can publish the p
 
 ## Package & Publish a new version
 
-Run `npm version X.X.X` or `npm run version patch`
+Run `npm version X.X.X` or `npm version patch`
 
 Run `npm run check` to check the lint and tests and build the package.
 
