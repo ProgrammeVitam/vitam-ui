@@ -166,6 +166,9 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+        <!--
+        to remove may me
+        -->
         <dependency>
             <groupId>fr.gouv.vitam</groupId>
             <artifactId>common-database-public</artifactId>
