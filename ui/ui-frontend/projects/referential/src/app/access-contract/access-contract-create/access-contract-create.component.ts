@@ -196,6 +196,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       return;
     }
     const accessContract = this.form.value as AccessContract;
+    accessContract.status === 'ACTIVE' ? accessContract.activationDate = new Date().toISOString() : accessContract.deactivationDate = new Date().toISOString();
     this.accessContractService.create(accessContract).subscribe(
       () => {
         this.dialogRef.close(true);

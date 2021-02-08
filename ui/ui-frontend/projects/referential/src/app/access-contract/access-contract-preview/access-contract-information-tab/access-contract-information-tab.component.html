@@ -80,22 +80,30 @@
 
         <div class="col-10 form-control">
             <vitamui-library-input placeholder="Date de derniere modification"
-                i18n-placeholder="lastUpdate@@accessContractPreviewLabelLastUpdate" [value]="accessContract?.lastUpdate | date: 'dd/MM/yyyy'"
-                disabled>
+                i18n-placeholder="lastUpdate@@accessContractPreviewLabelLastUpdate" 
+                [value]="accessContract?.lastUpdate | date: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
         </div>
 
         <div class="col-10 form-control">
-            <vitamui-library-input placeholder="Date d'activation"
+            <vitamui-library-input placeholder="Date d'activation" *ngIf="accessContract?.activationDate"
                 i18n-placeholder="activationDate@@accessContractPreviewLabelActivationDate"
-                [value]="accessContract?.activationDate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract.activationDate | date: 'dd/MM/yyyy'" disabled>
+            </vitamui-library-input>
+            <vitamui-library-input placeholder="Date d'activation" *ngIf="!accessContract?.activationDate"
+                i18n-placeholder="activationDate@@accessContractPreviewLabelActivationDate"
+                [value]="" disabled>
             </vitamui-library-input>
         </div>
 
         <div class="col-10 form-control">
-            <vitamui-library-input placeholder="Date de désactivation"
+            <vitamui-library-input placeholder="Date de désactivation" *ngIf="accessContract?.deactivationDate"
                 i18n-placeholder="deactivationDate@@accessContractPreviewLabelDeactivationDate"
-                [value]="accessContract?.deactivationDate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract.deactivationDate | date: 'dd/MM/yyyy'" disabled>
+            </vitamui-library-input>
+            <vitamui-library-input placeholder="Date de désactivation" *ngIf="!accessContract?.deactivationDate"
+                i18n-placeholder="deactivationDate@@accessContractPreviewLabelDeactivationDate"
+                [value]="" disabled>
             </vitamui-library-input>
         </div>
     </div>

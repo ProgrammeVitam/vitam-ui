@@ -69,6 +69,8 @@ public class AccessContractDto extends IdDto implements Serializable {
     private String lastUpdate;
 
     private String activationDate;
+    
+    private String deactivationDate;
 
     private String accessLog;
 
