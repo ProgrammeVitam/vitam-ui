@@ -164,8 +164,20 @@ export class AccessContractInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap(
-        (formData: { id: string, [key: string]: any }) => this.accessContractService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string, [key: string]: any }) => {
+        // Update the activation and deactivation dates if the contract status has changed before sending the data
+        if (formData.status) {
+          if (formData.status === 'ACTIVE') {
+            formData.activationDate = new Date();
+            formData.deactivationDate = '';
+          } else {
+            formData.status = 'INACTIVE';
+            formData.activationDate = '';
+            formData.deactivationDate = new Date();
+          }
+        }
+        return this.accessContractService.patch(formData).pipe(catchError(() => of(null)))
+    }));
   }
 
   onSubmit() {
@@ -178,6 +190,7 @@ export class AccessContractInformationTabComponent {
         response => {
           this.submited = false;
           this.accessContract = response;
+          this.resetForm(this.accessContract);
         }
       );
     }, () => {

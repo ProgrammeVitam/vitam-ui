@@ -64,6 +64,8 @@ public class AccessContractModelDto {
     private String lastUpdate;
 
     private String activationDate;
+    
+    private String deactivationDate;
 
     private Boolean writingPermission;
 
@@ -134,6 +136,12 @@ public class AccessContractModelDto {
     public void setActivationDate(String activationDate) {
         this.activationDate = activationDate;
     }
+    
+    @JsonProperty("DeactivationDate")
+    public void setDeactivationDate(String deactivationDate) {
+        this.deactivationDate = deactivationDate;
+    }
+
 
     @JsonProperty("WritingPermission")
     public void setWritingPermission(Boolean writingPermission) {
@@ -233,6 +241,11 @@ public class AccessContractModelDto {
     @JsonProperty("activationDate")
     public String getActivationDate() {
         return activationDate;
+    }
+    
+    @JsonProperty("deactivationDate")
+    public String getDeactivationDate() {
+        return deactivationDate;
     }
 
     @JsonProperty("writingPermission")
