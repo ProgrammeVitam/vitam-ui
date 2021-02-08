@@ -160,6 +160,7 @@
 			<optional>true</optional>
 			<scope>test</scope>
 		</dependency>
+        <!-- to remove ? -->
 		<dependency>
 			<groupId>fr.gouv.vitamui.commons</groupId>
 			<artifactId>commons-test</artifactId>
