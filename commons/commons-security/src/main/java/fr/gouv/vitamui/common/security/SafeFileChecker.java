@@ -28,8 +28,8 @@ package fr.gouv.vitamui.common.security;
 
 import com.google.common.base.Joiner;
 import fr.gouv.vitamui.commons.api.exception.InvalidFileSanitizeException;
-import org.owasp.esapi.SafeFile;
-import org.owasp.esapi.errors.ValidationException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +41,9 @@ import java.util.regex.Pattern;
  */
 public class SafeFileChecker {
 
-    private static final Pattern FILENAME_PATTERN = Pattern.compile("^[a-zA-Z0-9\\-_]+(\\.[a-zA-Z0-9]+)*$");
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SafeFileChecker.class);
+
+    private static final String FILENAME_PATTERN = "^[a-zA-Z0-9\\-_]+(\\.[a-zA-Z0-9]+)*$";
     private static final Pattern PATH_COMPONENT_PATTERN = Pattern.compile("^[a-zA-Z0-9\\-_.@]+$");
 
     private SafeFileChecker() {
@@ -55,12 +57,11 @@ public class SafeFileChecker {
      * @throws IOException thrown when any check fails with UnChecked or Runtime exception
      */
     public static void checkSafeFilePath(String path)  {
-        checkNullParameter(path);
+
         try {
-            File sanityCheckedFile = doSanityCheck(path);
-            doCanonicalPathCheck(sanityCheckedFile.getPath());
-            doDirCheck(sanityCheckedFile.getParent());
-            doFilenameCheck(sanityCheckedFile.getName());
+            checkNullParameter(path);
+            doCanonicalPathCheck(path);
+
         } catch (Exception ex) {
             throw new InvalidFileSanitizeException(String
                 .format("Security check error : Invalid name (%s)", path));
@@ -96,28 +97,21 @@ public class SafeFileChecker {
     }
 
     /**
-     * sanity check with ESAPI validation
-     *
-     * @param path
-     */
-    private static File doSanityCheck(String path) throws ValidationException {
-        return new SafeFile(path);
-    }
-
-    /**
      * check recursive/out of submitted root path to avoid Path Traversal attack
      *
      * @param path
      * @throws IOException
      */
     private static void doCanonicalPathCheck(String path) throws IOException {
-        String canonicalPath = new File(path).getCanonicalPath();
+        String canonicalPath = new File(path).getCanonicalFile().getName();
 
         if (!path.equals(canonicalPath)) {
+            LOGGER.error("Invalid path {} did not match canonical : {}", path, canonicalPath);
             throw new IOException(
-                    String.format("Invalid path (%s) did not match canonical : %s", path, canonicalPath));
+                String.format("Invalid path (%s) did not match canonical : %s", path, canonicalPath));
         }
     }
+
 
     /**
      * Check directory path component against a whitelist of characters
@@ -131,6 +125,8 @@ public class SafeFileChecker {
         for (int index = 0; index < dirComponent.length; index++) {
             String component = dirComponent[index];
             if (index != 0 && !PATH_COMPONENT_PATTERN.matcher(component).matches()) {
+                LOGGER.error("Invalid path {} (has unauthorized characters in component[{}] : {}", pathParent, index,
+                    component);
                 throw new InvalidFileSanitizeException(String
                         .format("Invalid path (%s) (has unauthorized characters in component[%d] : %s", pathParent, index,
                                 component));
@@ -146,12 +142,10 @@ public class SafeFileChecker {
      */
     private static void doFilenameCheck(String pathName) {
         if (pathName != null) {
-            String[] nameParts = pathName.split(File.separator);
-            for (String part : nameParts) {
-                if (!FILENAME_PATTERN.matcher(part).matches()) {
-                    throw new InvalidFileSanitizeException(String
-                            .format("Invalid filename (%s) (has unauthorized characters in part %s", pathName, part));
-                }
+            if(!pathName.matches(FILENAME_PATTERN)) {
+                LOGGER.error("Invalid pathName {} ", pathName);
+                throw new InvalidFileSanitizeException(String
+                    .format("Invalid filename (%s) (has unauthorized characters in part %s", pathName));
             }
         }
 
