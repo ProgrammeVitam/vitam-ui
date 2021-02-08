@@ -267,7 +267,7 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "INFO"
   ingest:
-    host: "ingest.service.consul"
+    host: "ingest.service.{{ consul_domain }}"
     vitamui_component: "ui-ingest"
     vitamui_component_type: "ui"
     package_name: "vitamui-ui-ingest"
@@ -286,7 +286,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   ingest_external:
-    host: "ingest-external.service.consul"
+    host: "ingest-external.service.{{ consul_domain }}"
     vitamui_component: "ingest-external"
     vitamui_component_type: "external"
     package_name: "vitamui-ingest-external"
@@ -305,7 +305,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   ingest_internal:
-    host: "ingest-internal.service.consul"
+    host: "ingest-internal.service.{{ consul_domain }}"
     vitamui_component: "ingest-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-ingest-internal"
@@ -325,7 +325,7 @@ vitamui:
 
 
   archive_search:
-    host: "archive-search.service.consul"
+    host: "archive-search.service.{{ consul_domain }}"
     vitamui_component: "ui-archive-search"
     vitamui_component_type: "ui"
     package_name: "vitamui-ui-archive-search"
@@ -344,7 +344,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   archive_search_external:
-    host: "archive-search-external.service.consul"
+    host: "archive-search-external.service.{{ consul_domain }}"
     vitamui_component: "archive-search-external"
     vitamui_component_type: "external"
     package_name: "vitamui-archive-search-external"
@@ -363,7 +363,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   archive_search_internal:
-    host: "archive-search-internal.service.consul"
+    host: "archive-search-internal.service.{{ consul_domain }}"
     vitamui_component: "archive-search-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-archive-search-internal"
