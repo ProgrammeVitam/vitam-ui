@@ -86,7 +86,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     // tslint:disable-next-line: max-line-length
-    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: group.profiles }));
     this.fullGroup = this.data.groups;
     if (!isRootLevel(this.authService.user)) {
       this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
@@ -170,7 +170,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.updateValueAndValidity({ emitEvent: false });
     } else if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup
-        .map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+        .map((group) => {
+          const profilGroup = this.groups.find((g) => g.id === group.id);
+          return Object({ id: group.id,
+            name: group.name,
+            description: group.description,
+            selected: false,
+            profiles: profilGroup?.profiles });
+        });
       this.groups.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     }
 
