@@ -10,22 +10,22 @@
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="filterMap['status']"
             (filterChange)="onFilterChange('status', $event)">
-            <vitamui-common-table-filter-option value="ENABLED" [separator]="true">
+            <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon" i18n="@@userStatusEnabled">
                 <span class="badge-state">Actif</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="BLOCKED" [separator]="true">
+            <vitamui-common-table-filter-option value="BLOCKED">
               <div class="table-filter-icon" i18n="@@userStatusBlocked">
                 <span class="badge-state">Bloqué</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="DISABLED" [separator]="true">
+            <vitamui-common-table-filter-option value="DISABLED">
               <div class="table-filter-icon" i18n="@@userStatusDisabled">
                 <span class="badge-state">Désactivé</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="REMOVED" [separator]="true">
+            <vitamui-common-table-filter-option value="REMOVED">
               <div class="table-filter-icon" i18n="@@userStatusRemoved">
                 <span class="badge-state">Effacé</span>
               </div>
