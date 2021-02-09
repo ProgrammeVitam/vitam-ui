@@ -11,6 +11,6 @@ export class VitamuiMissingTranslationHandler implements MissingTranslationHandl
             return interParams.default;
         }
 
-        return 'No translation available';
+        return params.key;
     }
 }
