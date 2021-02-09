@@ -16,7 +16,7 @@
         *ngIf="hasTenantSelection"
         [label]="'SELECT-TENANT.SELECT' | translate"
         [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
-        [items]="tenants"
+        [items]="appTenants"
         [selectedItem]="selectedTenant"
         (itemSelected)="updateTenant($event)">
       </vitamui-common-item-select>

@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public selectedCustomer: MenuOption;
   public customers: MenuOption[];
   public tenants: MenuOption[];
+  public appTenants: MenuOption[];
   public headerLogoUrl: SafeResourceUrl;
 
   private destroyer$ = new Subject();
@@ -84,7 +85,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this.initTenantSelection();
-    this.initCustomerSelection();
+
+    this.tenantService.currentAppId$.pipe(takeUntil(this.destroyer$)).subscribe((appIdentifier: string) => {
+      this.initCurrentAppTenants(appIdentifier);
+      this.initCustomerSelection(appIdentifier);
+    });
   }
 
   ngOnDestroy() {
@@ -124,7 +129,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.hasTenantSelection = result;
         if (this.hasTenantSelection && !eventsObsRef) {
           eventsObsRef = this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {
-
             if (data instanceof ActivationStart) {
               const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
 
@@ -172,32 +176,40 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  private initCurrentAppTenants(appIdentifier: string): void {
+    if (appIdentifier === ApplicationId.PORTAL_APP) {
+      this.appTenants = this.tenants;
+    } else {
+      this.appTenants = this.applicationService.getApplicationTenants(appIdentifier).map((tenant: Tenant) => {
+        return {value: tenant, label: tenant.name};
+      });
+    }
+  }
+
   /**
    * Init customer selection feature & listeners if the current opened application requires it.
    */
-  private initCustomerSelection(): void {
-    this.tenantService.currentAppId$.pipe(takeUntil(this.destroyer$)).subscribe((appIdentifier: string) => {
-      this.hasCustomerSelection = false;
-      if (appIdentifier) {
-        const currentApp = this.applicationService.applications.find(value => value.identifier === appIdentifier);
-        if (currentApp) {
-          this.hasCustomerSelection = currentApp.hasCustomerList;
+  private initCustomerSelection(appIdentifier: string): void {
+    this.hasCustomerSelection = false;
+    if (appIdentifier) {
+      const currentApp = this.applicationService.applications.find(value => value.identifier === appIdentifier);
+      if (currentApp) {
+        this.hasCustomerSelection = currentApp.hasCustomerList;
+      }
+    }
+
+    if (this.hasCustomerSelection) {
+      this.customerSelectionService.getCustomers$().pipe(takeUntil(this.destroyer$)).subscribe((customers: MenuOption[]) => {
+        this.customers = customers;
+      });
+
+      this.customerSelectionService.getSelectedCustomerId$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: string) => {
+        if (this.customers && (!this.selectedCustomer || this.selectedCustomer.value !== identifier)) {
+          this.selectedCustomer = this.customers.find(value => value.value === identifier);
+          this.globalEventService.customerEvent.next(this.selectedCustomer.value);
         }
-      }
-
-      if (this.hasCustomerSelection) {
-        this.customerSelectionService.getCustomers$().pipe(takeUntil(this.destroyer$)).subscribe((customers: MenuOption[]) => {
-          this.customers = customers;
-        });
-
-        this.customerSelectionService.getSelectedCustomerId$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: string) => {
-          if (this.customers && (!this.selectedCustomer || this.selectedCustomer.value !== identifier)) {
-            this.selectedCustomer = this.customers.find(value => value.value === identifier);
-            this.globalEventService.customerEvent.next(this.selectedCustomer.value);
-          }
-        });
-      }
-    });
+      });
+    }
   }
 
   private changeTenant(tenantIdentifier: number): void {

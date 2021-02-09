@@ -206,6 +206,15 @@ export class ApplicationService {
     }
   }
 
+  getApplicationTenants(appId): Tenant[] {
+    if (this.authService.user) {
+        const appTenantsInfo = this.authService.user.tenantsByApp.find((appTenantInfo) => appTenantInfo.name === appId);
+        const appTenants = appTenantsInfo ? appTenantsInfo.tenants : [];
+        appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
+        return appTenants;
+    }
+  }
+
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
     return new Map([...appMap.entries()].sort((a, b) => (a[0].order < b[0].order ? -1 : 1)));
   }
