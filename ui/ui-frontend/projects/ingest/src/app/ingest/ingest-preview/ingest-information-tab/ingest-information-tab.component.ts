@@ -60,7 +60,7 @@ export class IngestInformationTabComponent implements OnInit, OnChanges {
   }
 
   getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK') {
+    if (ingest.events[ingest.events.length - 1].outcome !== 'OK' && ingest.events[ingest.events.length - 1].outcome !== 'FATAL') {
       this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
         this.ingestDetails = data;
       });
