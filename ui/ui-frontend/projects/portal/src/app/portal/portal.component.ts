@@ -40,8 +40,19 @@ import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ApplicationId, AuthService, BasicCustomer, FullLangString, MinLangString, getFullLangString, GlobalEventService, StartupService, ThemeDataType, ThemeService } from 'ui-frontend-common';
 import { Application, ApplicationService, Category } from 'ui-frontend-common';
+import {
+  ApplicationId,
+  AuthService,
+  BasicCustomer,
+  FullLangString,
+  GlobalEventService,
+  LanguageService,
+  MinLangString,
+  StartupService,
+  ThemeDataType,
+  ThemeService
+} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
@@ -65,6 +76,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private themeService: ThemeService,
     private router: Router,
+    private langagueService: LanguageService,
     private globalEventService: GlobalEventService) { }
 
   ngOnInit() {
@@ -74,8 +86,8 @@ export class PortalComponent implements OnInit, OnDestroy {
     });
 
     this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
-      this.initPortalTitleAndMessage(getFullLangString(event.lang as MinLangString));
-    })
+      this.initPortalTitleAndMessage(this.langagueService.getFullLangString(event.lang as MinLangString));
+    });
 
     this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);

@@ -72,6 +72,7 @@ export * from './startup.service';
 export * from './subrogation/index';
 export * from './tenant-selection.guard';
 export * from './theme.service';
+export * from './language.service';
 export * from './utils/index';
 export * from './externalParameters.enum';
 export * from './externalParameters.service';

@@ -41,4 +41,3 @@ export * from './role.enum';
 export * from './authnRequestBinding.enum';
 export * from './theme-color-type.enum';
 export * from './colors.util';
-export * from './language.util';

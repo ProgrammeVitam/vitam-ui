@@ -203,5 +203,10 @@
     },
     "PROGRESS_BAR":{
         "STEP": "Step"
+    },
+    "LANGUAGE": {
+        "FRENCH" : "French",
+        "ENGLISH" : "English",
+        "GERMAN": "German"
     }
 }
