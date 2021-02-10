@@ -1,6 +1,7 @@
 <div class="row">
 
-  <i class="material-icons caret arrow" (click)="toggleShow()">{{ isShown ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</i>
+  <i class="vitamui-icon caret arrow clickable" (click)="toggleShow()" [ngClass]="{'vitamui-icon-circle-up': isShown, 
+  'vitamui-icon-circle-down':!isShown}"></i>
 
   <div *ngIf="isShown" class="row container-fluid">
     <div *ngFor="let event of events; let i=index">

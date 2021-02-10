@@ -42,6 +42,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { IngestComponent } from './ingest.component';
@@ -67,7 +68,8 @@ import { UploadTrackingModule } from './upload-tracking/upload-tracking.module';
     IngestPreviewModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTooltipModule
   ],
   declarations: [
     IngestComponent

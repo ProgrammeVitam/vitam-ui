@@ -62,7 +62,6 @@ export class EventDisplayComponent implements OnInit {
   }
 
   private setStepColorClass(stepStatus: string) {
-    console.log('stepStatus', stepStatus);
     switch (stepStatus.toUpperCase()) {
       case 'KO':
       case 'FATAL':

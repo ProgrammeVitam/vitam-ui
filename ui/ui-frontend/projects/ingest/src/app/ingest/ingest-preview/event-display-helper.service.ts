@@ -58,7 +58,7 @@ export class EventDisplayHelperService {
           this.eventData = this.getEventData(evt);
           if (!evt.parentId) { // Step event
             rootEvent = new Event(this.eventData, []);
-            if (evt.type.endsWith('.STARTED')) {
+            if (evt.evType.endsWith('.STARTED')) {
               events.push(rootEvent);
               started = true;
             } else {
@@ -92,12 +92,12 @@ export class EventDisplayHelperService {
   private getEventData(event: any) {
     return {
       evId: event.id,
-      evParentId: event.parentId,
-      evType: event.type,
-      evDateTime: event.dateTime,
-      evDetData: event.outDetail,
+      evParentId: event.evParentId,
+      evType: event.evType,
+      evDateTime: event.evDateTime,
+      evDetData: event.evDetData,
       outcome: event.outcome,
-      outMessg: event.outMessage
+      outMessg: event.outMessg
     };
   }
 }
