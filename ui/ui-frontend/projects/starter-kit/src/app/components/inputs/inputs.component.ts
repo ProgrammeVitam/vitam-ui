@@ -28,16 +28,14 @@ export class InputsComponent implements OnInit {
   public duration = new FormControl( {days: 5, hours: 10, minutes: 5});
   public file = new FormControl( new File(['test'], 'test', {type: 'text/plain'}));
 
-  countries: Option[];
+  countries: Option[] = [];
 
   autoCompletSelect = new FormControl();
-
 
   constructor(private countryService: CountryService) { }
 
   onChange = (_: any) => {};
   onTouched = () => {};
-
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -49,9 +47,10 @@ export class InputsComponent implements OnInit {
 
   ngOnInit() {
     this.countryService.getCountries().then(countries => {
-      this.countries = countries;
+      if(countries) {
+        this.countries = countries;
+      }
   });
-    this.autoCompletSelect.disable({ emitEvent: false });
+    this.autoCompletSelect.disable({ emitEvent: false }); 
   }
-
 }

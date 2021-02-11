@@ -74,7 +74,6 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-
   onChange = (_: any) => { };
   onTouched = () => { };
 

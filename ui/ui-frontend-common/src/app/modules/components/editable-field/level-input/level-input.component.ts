@@ -37,7 +37,7 @@
 // tslint:disable:no-use-before-declare
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, forwardRef, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { extractSubLevel } from '../../../utils';
 
@@ -75,38 +75,44 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   // tslint:disable-next-line:variable-name
   private _disabled = false;
 
+  @ViewChild('vitamUILevelInput') private input: ElementRef;
+
   subLevel: string;
 
   @HostBinding('class.vitamui-focused') focused = false;
   @HostBinding('class.vitamui-float') labelFloat = false;
 
-  onChange: (_: any) => void;
-  onTouched: () => void;
+  onChange = (_: any) => { };
+  onTouched = () => { };
 
-  constructor() { }
+  @HostListener('click')
+  onClick() {
+    this.input.nativeElement.focus();
+  }
 
   ngOnInit() {
+    this.labelFloat = !!this.subLevel;
   }
 
   writeValue(level: string): void {
-    this.labelFloat = !!this.subLevel;
     this.subLevel = extractSubLevel(this.prefix, level);
   }
 
-  registerOnChange(fn: (_: any) => void) {
+  registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void) {
+  registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this._disabled = isDisabled;
+    this.disabled = isDisabled;
   }
 
   onFocus() {
     this.focused = true;
+    this.onTouched();
   }
 
   onBlur() {
@@ -116,10 +122,7 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
 
   onValueChange(_: string) {
     this.labelFloat = !!this.subLevel;
-
     const level = this.prefix ? this.prefix + '.' +  this.subLevel :  this.subLevel ;
-
     this.onChange(level.toLocaleUpperCase());
   }
-
 }

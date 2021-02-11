@@ -1,11 +1,8 @@
 @import '../../../../../sass/variables/colors';
 
-$input-height: 60px;
-$input-small-height: 34px;
 $anim-timing: 150ms ease-out;
 
 :host {
-    display: inline-block;
 
     &.ng-valid.ng-touched .vitamui-input {
         border: 1px solid $green;
@@ -16,10 +13,6 @@ $anim-timing: 150ms ease-out;
     }
 }
 
-.vitamui-input {
-    height: $input-height !important;
-}
-
 :host.ng-pending {
     .vitamui-input mat-spinner {
         display: block;
@@ -28,9 +21,5 @@ $anim-timing: 150ms ease-out;
 
 input {
     text-transform: uppercase;
-    background: none;
-    border: none;
     transition: margin $anim-timing;
-    outline: none;
-    width: 100%;
 }
