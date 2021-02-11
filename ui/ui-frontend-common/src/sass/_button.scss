@@ -92,13 +92,16 @@
   outline: none;
   white-space: nowrap;
   font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+
+  &.text-transform-none {
+    text-transform: none;
+    letter-spacing: 0px;
+  }
 
   &:disabled {
     @include disabled();
-  }
-
-  &.uppercase {
-    text-transform: uppercase;
   }
 }
 

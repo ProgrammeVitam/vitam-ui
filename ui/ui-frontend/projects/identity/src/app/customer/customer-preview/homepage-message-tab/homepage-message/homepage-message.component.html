@@ -35,7 +35,7 @@
       <app-homepage-message-translation [form]="item" [index]="index + 1" [languages]="getLanguages(index)" (formChange)="update()" (formRemove)="remove(index)">
       </app-homepage-message-translation>
     </div>
-    <button class="pl-4 btn link uppercase" [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length -1 && isLanguageSet())" (click)="onAdd()">
+    <button class="pl-4 btn link" [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length -1 && isLanguageSet())" (click)="onAdd()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
     </button>
   </div>
