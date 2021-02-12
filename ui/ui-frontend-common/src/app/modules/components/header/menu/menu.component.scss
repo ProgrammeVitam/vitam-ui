@@ -8,19 +8,6 @@
   font-weight: 400;
   font-size: 16px;
 
-
-  .mat-form-field {
-    @include elevation-0;
-}
-
-  vitamui-common-search-bar {
-    .search  {
-      input[type=search], input[type=text] {
-      @include elevation-0;
-      }
-    }
-  }
-
   .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
     background: var(--vitamui-primary);
   }
