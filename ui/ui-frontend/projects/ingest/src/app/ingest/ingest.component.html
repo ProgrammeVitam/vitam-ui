@@ -4,75 +4,64 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{'INGEST_PAGE.TITLE' | translate}}
+      </vitamui-common-title-breadcrumb>
+      <vitamui-common-banner [searchbarPlaceholder]="'Côte, Intitulé, Service producteur...'"
+        i18n-placeholder="@@ingestSearchPlaceholder" (search)="onSearchSubmit($event)">
+        <button class="btn secondary" (click)="refresh()" matTooltip="{{'INGEST_ACTION.ToolTip_Refresh' | translate}}"
+          i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip"
+          [ngStyle]="{'margin-right' : '10px'}">
+          <i class="vitamui-icon vitamui-icon-refresh"></i>
+          <span>{{'INGEST_ACTION.REFRESH' | translate}}</span>
+        </button>
 
-    <div class="vitamui-header">
-      <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideTenantMenu]="false"
-          [hideCustomerMenu]="true"></vitamui-common-navbar>
-        <h2><img src="assets/mini-logo-vitam.png">Dépôt et suivi des versements</h2>
+        <button class="btn primary" (click)="openImportSipDialog('DEFAULT_WORKFLOW')"
+          matTooltip="{{'INGEST_ACTION.ToolTip_New_Ingest' | translate}}"
+          i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
+          <i class="vitamui-icon vitamui-icon-archive-ingest"></i>
+          <span>{{'INGEST_ACTION.NEW_INGEST' | translate}}</span>
+        </button>
+      </vitamui-common-banner>
 
-        <div class="controls">
-          <div class="search-bar-filters">
-            <vitamui-common-search-bar #searchBar name="ingtest-search" (search)="onSearchSubmit($event)"
-                                       placeholder="Côte, Intitulé, Service producteur..." i18n-placeholder="@@ingestSearchPlaceholder">
-            </vitamui-common-search-bar>
-            <div class="reset-filters" (click)="resetFilters()">Effacer les filtres et la recherche</div>
-          </div>
-
-          <div class="actions">
-            <button class="btn secondary" (click)="refresh()" matTooltip="Rafraîchir la liste des versements"
-              i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
-              <i class="vitamui-icon vitamui-icon-refresh"></i> <span>Rafraîchir</span>
-            </button>
-            <button class="btn more-actions" (click)="openImportSipDialog('DEFAULT_WORKFLOW')"
-              matTooltip="Déposer un nouveau versement d'archives (SIP)"
-              i18n-matTooltip="Proof safe info hint@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
-              <i class="vitamui-icon vitamui-icon-archive-ingest"></i> <span>Nouveau versement</span>
-            </button>
-
-          </div>
-
-        </div>
-
-        <div>
-          <form [formGroup]="dateRangeFilterForm" class="filter-controls">
-            <div class="date-filter-container">
-              <div class="date-filter">
-                <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate"
-                  (click)="pickerStart.open()" i18n="@@apiSupervisionStartDate">Date de début</span>
-                <ng-template #showStartDate>
-                  <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value |
-                                        date:'dd/MM/yyyy' }}</span>
-                  <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
-                </ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate"
-                  [max]="dateRangeFilterForm.get('endDate').value">
-                <mat-datepicker #pickerStart></mat-datepicker>
-              </div>
-              <div class="date-filter">
-                <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()"
-                  i18n="@@apiSupervisionEndDate">Date de fin</span>
-                <ng-template #showEndDate><span (click)="pickerEnd.open()">{{
-                                        dateRangeFilterForm.get('endDate').value | date:'dd/MM/yyyy' }}
-                  </span> <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i>
-                </ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate"
-                  [min]="dateRangeFilterForm.get('startDate').value">
-                <mat-datepicker #pickerEnd></mat-datepicker>
-              </div>
+      <div class="actions">
+        <form [formGroup]="dateRangeFilterForm">
+          <div class="date-filter-container">
+            <div class="date-filter">
+              <span *ngIf="!dateRangeFilterForm.get('startDate').value;else showStartDate" (click)="pickerStart.open()"
+                i18n="@@apiSupervisionStartDate">{{'INGEST_ACTION.START_DATE' | translate}}</span>
+              <ng-template #showStartDate>
+                <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value |
+                                            date:'dd/MM/yyyy' }}</span>
+                <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
+              </ng-template>
+              <input class="hidden" size="0" [matDatepicker]="pickerStart" formControlName="startDate"
+                [max]="dateRangeFilterForm.get('endDate').value">
+              <mat-datepicker #pickerStart></mat-datepicker>
             </div>
-          </form>
-        </div>
+            <div class="date-filter">
+              <span *ngIf="!dateRangeFilterForm.get('endDate').value; else showEndDate" (click)="pickerEnd.open()"
+                i18n="@@apiSupervisionEndDate">{{'INGEST_ACTION.END_DATE' | translate}}</span>
+              <ng-template #showEndDate><span (click)="pickerEnd.open()">{{
+                                            dateRangeFilterForm.get('endDate').value | date:'dd/MM/yyyy' }}
+                </span> <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i>
+              </ng-template>
+              <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDate"
+                [min]="dateRangeFilterForm.get('startDate').value">
+              <mat-datepicker #pickerEnd></mat-datepicker>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <div class="vitamui-container">
+    <div class="vitamui-content">
       <app-upload-tracking></app-upload-tracking>
-    </div>
+    </div> <br>
 
-    <div class="vitamui-body vitamui-container">
-      <h3>Suivi des versements</h3>
+    <div class="vitamui-content">
+      <h5 class="mt-0 mb-4">{{'INGEST_LIST.TABLE_NAME' | translate}}</h5>
       <app-ingest-list (ingestClick)="showIngest($event)" [search]="search" [filters]="filters"></app-ingest-list>
     </div>
   </mat-sidenav-content>
-
 </mat-sidenav-container>

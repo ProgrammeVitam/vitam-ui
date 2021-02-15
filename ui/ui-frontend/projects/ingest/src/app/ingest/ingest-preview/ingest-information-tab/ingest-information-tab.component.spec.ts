@@ -40,6 +40,7 @@ import { IngestInformationTabComponent } from './ingest-information-tab.componen
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IngestService } from '../../ingest.service';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
@@ -50,6 +51,9 @@ describe('IngestInformationTabComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IngestInformationTabComponent ],
+      imports: [
+        TranslateModule.forRoot()  
+      ],
       providers: [ {provide: IngestService, useValue: ingestServiceMock}],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

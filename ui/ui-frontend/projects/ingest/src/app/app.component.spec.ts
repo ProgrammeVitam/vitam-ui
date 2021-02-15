@@ -36,7 +36,7 @@
  */
 /* tslint:disable:component-selector max-classes-per-file */
 
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { waitForAsync, TestBed  } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,7 +55,7 @@ class SubrogationBannerStubComponent {}
 describe('AppComponent', () => {
 
   beforeEach(waitForAsync(() => {
-    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
+    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
     TestBed.configureTestingModule({
       imports: [
         MatSidenavModule,
@@ -70,7 +70,8 @@ describe('AppComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
-      ]
+      ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     }).compileComponents();
   }));
 

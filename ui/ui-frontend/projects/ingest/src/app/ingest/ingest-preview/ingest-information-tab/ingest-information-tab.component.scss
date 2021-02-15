@@ -1,12 +1,22 @@
 @import "~ui-frontend-common/sass/variables/colors";
 
 label {
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  color: $light-grey;
-}
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vitamui-primary);
+  font-family: Mulish;
+  box-sizing: inherit;
+  visibility: visible;
+ }
 
 label + div {
-  font-weight: bold;
-  word-break: normal;
+  font-size: 16px;
+  color: var(--vitamui-grey-900);
+  font-weight: 700;
+  display: block;
+  box-sizing: inherit;
+  display: block;
+  font-family: Mulish;
+  visibility: visible;
 }
+

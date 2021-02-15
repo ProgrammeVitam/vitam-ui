@@ -37,12 +37,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { GlobalEventService, SidenavPage, SearchBarComponent } from 'ui-frontend-common';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { GlobalEventService, SidenavPage, SearchBarComponent, AdminUserProfile } from 'ui-frontend-common';
 import { UploadComponent } from '../core/common/upload.component';
+
 
 @Component({
   selector: 'app-ingest',
@@ -53,16 +53,19 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   search: string;
   tenantIdentifier: string;
-
+  connectedUserInfo: AdminUserProfile; 
   dateRangeFilterForm: FormGroup;
-
   filters: any = {};
 
   @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
   @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
 
-  constructor( private router: Router, private route: ActivatedRoute,
-               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder) {
+  constructor(
+    private router: Router, private route: ActivatedRoute, 
+    public globalEventService: GlobalEventService, 
+    public dialog: MatDialog, 
+    private formBuilder: FormBuilder) {
+
     super(route, globalEventService);
 
     route.params.subscribe(params => {

@@ -45,6 +45,7 @@ import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, LoggerModule } from 'ui-frontend-common';
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -60,7 +61,8 @@ describe('UploadComponent', () => {
       imports: [
         MatProgressBarModule,
         MatSnackBarModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot()
       ],
       declarations: [UploadComponent],
       providers: [

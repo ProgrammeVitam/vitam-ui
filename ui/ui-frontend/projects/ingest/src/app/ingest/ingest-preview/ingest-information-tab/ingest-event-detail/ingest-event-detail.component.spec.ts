@@ -43,6 +43,7 @@ import { IngestEventDetailComponent } from './ingest-event-detail.component';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
 import { Event } from '../../event';
 import { of } from 'rxjs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;
@@ -56,7 +57,8 @@ describe('IngestEventDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [IngestEventDetailComponent],
       imports: [
-        MatMenuModule
+        MatMenuModule,
+        BrowserAnimationsModule
       ],
       providers: [{ provide: IngestService, useValue: {} }, { provide: EventDisplayHelperService, useValue: eventDisplayHelperServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA]
