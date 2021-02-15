@@ -39,13 +39,28 @@ import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { HttpClient } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
+import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { QuicklinkModule } from 'ngx-quicklink';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { IngestModule } from './ingest';
+import { environment } from '../environments/environment';
+import { SharedModule } from './shared/shared.module';
 import { HoldingFillingSchemeModule } from './holding-filling-scheme/holding-filling-scheme.module';
+
+
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpClient,  [
+    {prefix: './assets/shared-i18n/', suffix: '.json'},
+    {prefix: './assets/i18n/', suffix: '.json'}
+]);
+}
 
 registerLocaleData(localeFr, 'fr');
 
@@ -59,15 +74,25 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
+    SharedModule,
     IngestModule,
-    HoldingFillingSchemeModule
+    HoldingFillingSchemeModule,
+    QuicklinkModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: WINDOW_LOCATION, useValue: window.location },
-    // { provide: ErrorHandler, useClass: GlobalErrorHandler },
-  ],
+    ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -46,6 +46,7 @@ import { UploadService } from '../../core/common/upload.service';
 import { IngestList } from '../../core/common/ingest-list';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('UploadTrackingComponent', () => {
   let component: UploadTrackingComponent;
@@ -59,7 +60,8 @@ describe('UploadTrackingComponent', () => {
         MatProgressBarModule,
         NgxFilesizeModule,
         NoopAnimationsModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot()
       ],
       declarations: [ UploadTrackingComponent ],
       providers: [

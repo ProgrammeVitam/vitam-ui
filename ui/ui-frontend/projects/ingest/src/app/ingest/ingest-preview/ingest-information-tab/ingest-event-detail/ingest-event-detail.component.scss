@@ -1,3 +1,22 @@
 .arrow {
   margin-inline-start: auto;
 }
+.btn-circle {
+  background-color: var(--vitamui-primary);
+}
+.material-icons {
+  color: white;
+  vertical-align: middle;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}

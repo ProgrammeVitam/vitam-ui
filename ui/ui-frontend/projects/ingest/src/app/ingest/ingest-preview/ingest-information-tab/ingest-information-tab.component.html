@@ -1,53 +1,54 @@
+<br>
 <div class="row">
   <div class="col-6 mb-3">
-    <label>Identifiant du versement</label>
+    <label>{{'INGEST_DETAIL.DEPOSIT_ID' | translate}}</label>
     <div>{{ ingest?.obIdIn }}</div>
   </div>
   <div class="col-6 mb-3">
-    <label>Identification de l’opération</label>
-    <div>{{ ingest?.id }}</div>
+      <label>{{'INGEST_DETAIL.NAME' | translate}}</label>
+      <div>{{ ingest?.evDetData?.EvDetailReq }}</div>   
   </div>
-</div>
+</div> 
 
 <div class="row">
   <div class="col-12 mb-3">
-    <label>Intitulé</label>
-    <div>{{ ingest?.evDetData?.EvDetailReq }}</div>
-  </div>
+      <label>{{'INGEST_DETAIL.OPERATION_ID' | translate}}</label>
+      <div>{{ ingest?.id }}</div>
+  </div> <br>
 
   <div class="col-6 mb-3">
-    <label>Début du versement</label>
+    <label>{{'INGEST_DETAIL.START_DATE' | translate}}</label>
     <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
-  </div>
+  </div> 
   <div class="col-6 mb-3">
-    <label>Fin de versement</label>
+    <label>{{'INGEST_DETAIL.END_DATE' | translate}}</label>
     <div>{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy' }}</div>
-  </div>
+  </div><br>
   <div class="col-6 mb-3">
-    <label>Service Producteur</label>
+    <label>{{'INGEST_DETAIL.PRODUCT_SERVICE' | translate}}</label>
     <div>{{ ingest?.agIdExt?.originatingAgency }}</div>
   </div>
   <div class="col-6 mb-3">
-    <label>Service Versant</label>
+    <label>{{'INGEST_DETAIL.VERSATILE_SERVICE' | translate}}</label>
     <div>{{ ingest?.agIdExt?.submissionAgency }}</div>
-  </div>
+  </div><br>
   <div class="col-6 mb-3">
-    <label>Contrat d'entrée</label>
+    <label>{{'INGEST_DETAIL.ENTRY_CONTRACT' | translate}}</label>
     <div>{{ ingest?.evDetData?.ArchivalAgreement }}</div>
   </div>
   <div class="col-6 mb-3">
-    <label>Profile d'archivage</label>
+    <label>{{'INGEST_DETAIL.ARCHIVING_PROFIL' | translate}}</label>
     <div>{{ ingest?.ArchivalProfile }}</div>
-  </div>
+  </div><br>
   <div class="col-6 mb-3">
-    <label>Statut légal</label>
+    <label>{{'INGEST_DETAIL.STATUS' | translate}}</label>
     <div>{{ ingest?.evDetData?.LegalStatus }}</div>
   </div>
-</div>
+</div> 
 
 <div class="row">
   <div class="col-12 mb-3">
-    <label>Message</label>
+    <label>{{'INGEST_DETAIL.MESSAGE' | translate}}</label>
     <div class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
       <div *ngSwitchCase="'OK'" class="text-green">{{ ingestMessage(ingest) }}</div>
       <div *ngSwitchCase="'WARNING'" class="text-orange">{{ ingestMessage(ingest) }}</div>
@@ -56,10 +57,15 @@
       <div *ngSwitchCase="'En cours'" class="text-grey status">{{ ingestMessage(ingest) }}</div>
     </div>
   </div>
+</div>
+<div class="row">
   <div class="col-12 mb-3">
-    <label>Informations complémentaires sur l’opération</label>
-    <div *ngIf="ingestDetails">
+    <label>{{'INGEST_DETAIL.OPERATION_DETAILS' | translate}}</label>
+   <div *ngIf="ingestDetails">
       <app-ingest-event-detail [ingest]="ingestDetails"></app-ingest-event-detail>
     </div>
   </div>
 </div>
+
+
+
