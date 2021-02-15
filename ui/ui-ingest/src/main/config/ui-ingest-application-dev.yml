@@ -71,22 +71,26 @@ ui-ingest:
     portal: "https://dev.vitamui.com:4200"
 
   portal-categories:
-    ingests:
-      title: "Suivi des Versements"
+    ingest_and_consultation:
+      title: "Versement & consultation"
       displayTitle: true
-      order: 4
-    administrators:
-      title: "Management"
+      order: 1
+    referential:
+      title: "Référentiels"
       displayTitle: true
       order: 2
-    settings:
-      title: "Paramétrage"
+    supervision_and_audits:
+      title: "Supervision & Audits"
       displayTitle: true
       order: 3
-    users:
-      title: ""
-      displayTitle: false
-      order: 1
+    security_and_application_rights:
+      title: "Sécurité & droits applicatifs"
+      displayTitle: true
+      order: 4
+    organization_and_user_rights:
+      title: "Organisation & droits utilisateurs"
+      displayTitle: true
+      order: 5
 
 ui:
   url: "https://dev.vitamui.com:4208"
