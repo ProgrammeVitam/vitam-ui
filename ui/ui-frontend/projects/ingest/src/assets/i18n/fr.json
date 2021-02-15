@@ -56,6 +56,12 @@
         "STATUS" : "Statut légal",
         "MESSAGE" : "Message",
         "OPERATION_DETAILS" : "Informations complémentaires sur l’opération"
+    },
+    "FILLING_HOLDING_SCHEME": {
+        "TITLE": "Importer ou modifier des arbres et plans",
+        "IMPORT_FILLING": "Nouveau plan de classement",
+        "IMPORT_HOLDING": "Nouvel arbre de positionnement",
+        "SEARCH": "Noeud de l'arbre ou plan"
     }
 
 }

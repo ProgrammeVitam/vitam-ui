@@ -1,62 +1,65 @@
 {
-    "COMMON" : {
-        "CANCEL" : "Cancel",
-        "SUBMIT" : "Submit",
-        "UPDATE" : "Update",
-        "APPLY_UPDATE" : "Apply changes"
+    "COMMON": {
+        "CANCEL": "Cancel",
+        "SUBMIT": "Submit",
+        "UPDATE": "Update",
+        "APPLY_UPDATE": "Apply changes"
     },
-    "INGEST_LIST" : {
-        "TABLE_NAME" : "Monitoring of deposits",
-        "ID" : "Deposit identifier",
-        "START_DATE" : "Start of Deposit",
-        "END_DATE" : "End of Deposit",
-        "NAME" : "SIP Name",
-        "STATUS" : "Status and follow-up"
+    "INGEST_LIST": {
+        "TABLE_NAME": "Monitoring of deposits",
+        "ID": "Deposit identifier",
+        "START_DATE": "Start of Deposit",
+        "END_DATE": "End of Deposit",
+        "NAME": "SIP Name",
+        "STATUS": "Status and follow-up"
     },
-    "INGEST_ACTION" : {
-        "REFRESH" : "Refresh",
-        "NEW_INGEST" : "New deposit",
-        "START_DATE" : "Start date",
-        "END_DATE" :"End date",
-        "ToolTip_Refresh" : "Refresh the list of deposits",
-        "ToolTip_New_Ingest" : "Submit a new archive upload (SIP)"
+    "INGEST_ACTION": {
+        "REFRESH": "Refresh",
+        "NEW_INGEST": "New deposit",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "ToolTip_Refresh": "Refresh the list of deposits",
+        "ToolTip_New_Ingest": "Submit a new archive upload (SIP)"
     },
-    "INGEST_PAGE" : {
-        "TITLE" : "File and follow deposits"
+    "INGEST_PAGE": {
+        "TITLE": "File and follow deposits"
     },
-    "INGEST_TRACKING" : {
-        "SIP_NAME" : "SIP Name",
-        "STATUS" : "Progression",
-        "TITLE" : "My current downloads",
-        "WEIGHT" : "WEIGHT",
-        "MESSAGE" : "You have no download in progress"
+    "INGEST_TRACKING": {
+        "SIP_NAME": "SIP Name",
+        "STATUS": "Progression",
+        "TITLE": "My current downloads",
+        "WEIGHT": "WEIGHT",
+        "MESSAGE": "You have no download in progress"
     },
-    "INGEST_UPLOAD" : {
-        "ADD_FILE" : "Drag and drop or",
-        "BROWSE" : "Browse",
-        "CONFIRME" : "Confirme the deposit",
-        "ALERTE_MESSAGE" : "One or more installment (s) are downloading",
-        "SECOND_ALERTE_MESSAGE" : "(Please do not leave this page during the deposit process and open a new tab if necessary)"
-
+    "INGEST_UPLOAD": {
+        "ADD_FILE": "Drag and drop or",
+        "BROWSE": "Browse",
+        "CONFIRME": "Confirme the deposit",
+        "ALERTE_MESSAGE": "One or more installment (s) are downloading",
+        "SECOND_ALERTE_MESSAGE": "(Please do not leave this page during the deposit process and open a new tab if necessary)"
     },
-    "INGEST_DETAIL" : {
-        "DOWNLOAD_ATR" : "Download the ATR",
-        "DOWNLOAD_MANIFEST" : "Download the manifest",
-        "DOWNLOAD_DOCX" : "Download the deposit slip",
-        "DETAILS" : "Informations",
-        "DEPOSIT_ID" : "The deposit identifier",
-        "OPERATION_ID" : "The operation Identifier",
-        "NAME" : "Entitled",
-        "START_DATE" : "Deposit start date",
-        "END_DATE" : "Deposit end date",
-        "PRODUCT_SERVICE" : "Producer service",
-        "VERSATILE_SERVICE" : "Versatile Service",
-        "ENTRY_CONTRACT" : "Entry contract",
-        "ARCHIVING_PROFIL" : "Archiving profil",
-        "STATUS" : "Legal status",
-        "MESSAGE" : "Message",
-        "OPERATION_DETAILS" : "Additional information about the operation"
+    "INGEST_DETAIL": {
+        "DOWNLOAD_ATR": "Download the ATR",
+        "DOWNLOAD_MANIFEST": "Download the manifest",
+        "DOWNLOAD_DOCX": "Download the deposit slip",
+        "DETAILS": "Informations",
+        "DEPOSIT_ID": "The deposit identifier",
+        "OPERATION_ID": "The operation Identifier",
+        "NAME": "Entitled",
+        "START_DATE": "Deposit start date",
+        "END_DATE": "Deposit end date",
+        "PRODUCT_SERVICE": "Producer service",
+        "VERSATILE_SERVICE": "Versatile Service",
+        "ENTRY_CONTRACT": "Entry contract",
+        "ARCHIVING_PROFIL": "Archiving profil",
+        "STATUS": "Legal status",
+        "MESSAGE": "Message",
+        "OPERATION_DETAILS": "Additional information about the operation"
+    },
+    "FILLING_HOLDING_SCHEME": {
+        "TITLE": "Import or modify holding scheme",
+        "IMPORT_FILLING": "New Filling Scheme",
+        "IMPORT_HOLDING": "New Holding Scheme",
+        "SEARCH": "Holding or Filling scheme node"
     }
-
- 
 }
