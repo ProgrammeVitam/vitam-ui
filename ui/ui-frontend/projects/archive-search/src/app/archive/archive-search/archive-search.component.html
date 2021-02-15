@@ -3,81 +3,74 @@
     <div class="row">
       <i (click)="hiddenTreeBlock(show)" class="material-icons">{{ show ? 'clear' : '' }}</i>
       <button *ngIf="!show" type="button" class="btn secondary right-arround left-not-arround"
-              (click)="hiddenTreeBlock(show)"
-              matTooltip="Afficher les arbre et plans" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+        (click)="hiddenTreeBlock(show)" matTooltip="Afficher les arbre et plans" matTooltipClass="vitamui-tooltip"
+        [matTooltipShowDelay]="300">
         <i class="material-icons">chevron_right</i>
       </button>
-      <h2>Recherche: </h2>
+      <h5>{{'ARCHIVE_SEARCH.TITLE_SEARCH' | translate}}  </h5>
     </div>
 
     <div class="row justify-content-around">
-      <div class="col-9 form-control">
+      <div class="col-8 form-control">
         <vitamui-common-editable-input formControlName="archiveCriteria"
-                                      [validator]="form?.get('archiveCriteria')?.validator"
-                                      label="Rechercher une archive">
+          [validator]="form?.get('archiveCriteria')?.validator" label="{{'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate}}">
         </vitamui-common-editable-input>
-
       </div>
-      <div class="col-3 form-control">
-        <button type="button" class="btn secondary launch-search-btn" [disabled]="nbQueryCriteria === 0"
-                (click)="submit()">Lancer une recherche
-        </button>
+      <div class="col-1 form-control">
+      </div>
+      <div class="col-3 form-control text-right">
+        <button type="button" class="btn primary" [disabled]="nbQueryCriteria === 0" (click)="submit()">{{'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate}}</button>
       </div>
     </div>
 
     <div class="row">
-      <div class="btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
+      <div class=" btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
         <ng-container
           *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
-
-          <button type="button"
-                  *ngIf="criteria.value.key === 'NODE'"
-                  matTooltip="{{criteria.value.label + ' : ' + criteriaValue.label}}" matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
-                  [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
-                  class="button-content right-not-arround btn">
+          <button type="button" *ngIf="criteria.value.key === 'NODE'"
+            matTooltip="{{ (criteriaValue.translated ?  ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.'+ criteria.value.label | translate) : criteria.value.label) + ' : ' + criteriaValue.label}}" matTooltipClass="vitamui-tooltip"
+            [matTooltipShowDelay]="300"
+            [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
+            class="button-content right-not-arround">
             <ng-container *ngIf="isFirst">
               <i class="vitamui-icon vitamui-icon-target vitamui-row-icon"></i>
-              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:45}}
+              {{(((criteriaValue.translated ?  ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.'+ criteria.value.label | translate) : criteria.value.label ))+ ' : ' + criteriaValue.label) | truncate:45}}
             </ng-container>
             <ng-container *ngIf="!isFirst">
               {{(criteriaValue.label) | truncate:45}}
             </ng-container>
           </button>
 
-          <button type="button"
-                  *ngIf="criteria.value.key !== 'NODE'"
-                  matTooltip="{{criteria.value.label + ' : ' + criteriaValue.label}}"
-                  matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
-                  [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
-                  class="  button-content right-not-arround btn">
+          <button type="button" *ngIf="criteria.value.key !== 'NODE'"
+            matTooltip="{{((criteriaValue.translated ?  ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.'+ criteria.value.label | translate) : criteria.value.label )) + ' : ' + criteriaValue.label}}" matTooltipClass="vitamui-tooltip"
+            [matTooltipShowDelay]="300"
+            [ngClass]="[isFirst ? 'left-arround':'left-not-arround' , criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
+            class="  button-content right-not-arround ">
             <ng-container *ngIf="isFirst">
-              {{(criteria.value.label + ' : ' + criteriaValue.label) | truncate:45}}
+              {{(((criteriaValue.translated ?  ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.'+ criteria.value.label | translate) : criteria.value.label )) + ' : ' + criteriaValue.label) | truncate:45}}
             </ng-container>
             <ng-container *ngIf="!isFirst">
-              {{(criteriaValue.label) | truncate:45}}
+              {{(criteriaValue.label) | truncate:35}}
             </ng-container>
           </button>
 
 
           <button type="button" *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-                  matTooltip="{{criteria.value.label +  ' : ' + criteriaValue.label}}"
-                  matTooltipClass="vitamui-tooltip"
-                  [matTooltipShowDelay]="300"
-                  [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
-                  class="before-search-launched-button button-remove left-not-arround btn"
-                  (click)="removeCriteria(criteria.key, criteriaValue.value)">
-            <i class="vitamui-icon vitamui-icon-cross1 vitamui-row-icon"></i>
+            matTooltip="{{((criteriaValue.translated ?  ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.'+ criteria.value.label | translate) : criteria.value.label)) +  ' : ' + criteriaValue.label}}" matTooltipClass="vitamui-tooltip"
+            [matTooltipShowDelay]="300"
+            [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
+            class="before-search-launched-button button-remove left-not-arround "
+            (click)="removeCriteria(criteria.key, criteriaValue.value)">
+            <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
           </button>
           <button type="button" *ngIf="criteriaValue.status === 'IN_PROGRESS'"
-                  [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
-                  class="before-search-launched-button button-remove left-not-arround btn">
+            [ngClass]="[isLast ? 'right-arround':'right-not-arround',  criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
+            class="before-search-launched-button button-remove left-not-arround ">
             <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
           </button>
           <button type="button" *ngIf="!isLast"
-                  [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
-                  class="button-or left-not-arround  right-not-arround btn">OU
+            [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button':'before-search-launched-button' ]"
+            class="button-or left-not-arround  right-not-arround ">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate}}
           </button>
         </ng-container>
       </div>
@@ -86,7 +79,7 @@
 
     <div class="row justify-content-around">
       <div class="col-6">
-        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">Afficher les filtres de recherche</a>
+        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">{{'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate}}</a>
       </div>
       <div class="col-6 text-right">
       </div>
@@ -98,25 +91,25 @@
 
           <div class="row justify-content-around">
             <div class="col-11 form-control">
-              <h3>Filtre de recherche</h3>
+              <h5>{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate}}</h5>
             </div>
           </div>
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="title" [validator]="form?.get('title')?.validator"
-                                            label="Titre">
+                label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
-              <div class="search-date-filter" (click)="pickerBegin.open()">
+              <div class=" vitamui-input" (click)="pickerBegin.open()">
                 <span *ngIf="!form.get('beginDt').value; else showBeginDt" (click)="pickerBegin.open()"
-                      class="search-date-label">Date début</span>
+                  class="search-date-label">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE' | translate}}</span>
                 <ng-template #showBeginDt><span
-                  (click)="pickerBegin.open()">{{ form.get('beginDt').value | date:'dd/MM/yyyy' }}
-                </span>
+                    (click)="pickerBegin.open()">{{ form.get('beginDt').value | date:'dd/MM/yyyy' }}
+                  </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt"
-                      [min]="form.get('beginDt').value">
+                  [min]="form.get('beginDt').value">
                 <mat-datepicker #pickerBegin></mat-datepicker>
               </div>
             </div>
@@ -125,18 +118,19 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="description"
-                                            [validator]="form?.get('description')?.validator" label="Description">
+                [validator]="form?.get('description')?.validator" label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
-              <div class="search-date-filter" (click)="pickerEnd.open()">
+              <div class="vitamui-input" (click)="pickerEnd.open()">
                 <span *ngIf="!form.get('endDt').value; else showEndDt" (click)="pickerEnd.open()"
-                      class="search-date-label">Date de fin</span>
-                <ng-template #showEndDt><span (click)="pickerEnd.open()">{{ form.get('endDt').value | date:'dd/MM/yyyy' }}
-              </span>
+                  class="search-date-label">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE' | translate}}</span>
+                <ng-template #showEndDt><span
+                    (click)="pickerEnd.open()">{{ form.get('endDt').value | date:'dd/MM/yyyy' }}
+                  </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt"
-                      [min]="form.get('endDt').value">
+                  [min]="form.get('endDt').value">
                 <mat-datepicker #pickerEnd></mat-datepicker>
               </div>
             </div>
@@ -144,7 +138,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="guid" [validator]="form?.get('guid')?.validator"
-                                            label="GUID du versement">
+                label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -154,7 +148,7 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="uaid" [validator]="form?.get('uaid')?.validator"
-                                            label="GUID d'unité d'archivage">
+                label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
@@ -164,32 +158,29 @@
 
           <div class="row justify-content-around">
             <div class="col-6 form-control">
-              <h3>Service producteur: </h3>
+              <h5>{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate}} </h5>
             </div>
             <div class="col-4 form-control">
-              <h3>Autre critère: </h3>
+              <h5>{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate}} </h5>
             </div>
           </div>
 
           <div class="row justify-content-around">
             <div class="col-3 form-control">
               <vitamui-common-editable-input formControlName="serviceProdCode"
-                                            [validator]="form?.get('serviceProdCode')?.validator"
-                                            label="Code">
+                [validator]="form?.get('serviceProdCode')?.validator" label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-2 form-control"></div>
             <div class="col-4 form-control">
               <mat-form-field class="vitamui-mat-select search-input-criteria">
-                <mat-select
-                  formControlName="otherCriteria"
-                  panelClass="vitamui-mat-select search-select-access-contract"
-                  placeholder="otherCriteria" (valueChange)="onSelectOtherCriteria()">
-                  <mat-option value="">Sélection d'un autre critère</mat-option>
+                <mat-select formControlName="otherCriteria"
+                  panelClass="vitamui-mat-select search-select-access-contract" placeholder="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate}}"
+                  (valueChange)="onSelectOtherCriteria()">
+                  <mat-option value="">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' | translate}}</mat-option>
                   <ng-container *ngFor="let ontology of this.ontologies">
-                    <mat-option value="{{ontology.Value}}"
-                                matTooltip="{{ontology?.Value}}" matTooltipClass="vitamui-tooltip"
-                                [matTooltipShowDelay]="300">{{ontology.Label}}
+                    <mat-option value="{{ontology.Value}}" matTooltip="{{ontology?.Value}}"
+                      matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">{{ontology.Label}}
                     </mat-option>
                   </ng-container>
 
@@ -208,27 +199,25 @@
           <div class="row justify-content-around">
             <div class="col-6 form-control">
               <vitamui-common-editable-input formControlName="serviceProdLabel"
-                                            [validator]="form?.get('serviceProdLabel')?.validator"
-                                            label="Libellé">
+                [validator]="form?.get('serviceProdLabel')?.validator" label="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate}}">
               </vitamui-common-editable-input>
             </div>
             <div class="col-4 form-control">
               <vitamui-common-editable-input formControlName="otherCriteriaValue"
-                                            *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT' || otherCriteriaValueType === 'LONG' || otherCriteriaValueType === 'DOUBLE' || otherCriteriaValueType === 'BOOLEAN') "
-                                            [validator]="form?.get('otherCriteriaValue')?.validator"
-                                            label="{{selectedValueOntolonogy}}">
+                *ngIf="otherCriteriaValueEnabled && (otherCriteriaValueType === 'KEYWORD' || otherCriteriaValueType === 'TEXT' || otherCriteriaValueType === 'LONG' || otherCriteriaValueType === 'DOUBLE' || otherCriteriaValueType === 'BOOLEAN') "
+                [validator]="form?.get('otherCriteriaValue')?.validator" label="{{selectedValueOntolonogy}}">
               </vitamui-common-editable-input>
 
-              <div class="search-date-filter" (click)="pickerOtherCriteria.open()"
-                  *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE' ">
+              <div class="vitamui-input" (click)="pickerOtherCriteria.open()"
+                *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE' ">
                 <span *ngIf="!form.get('otherCriteriaValue').value; else showOtherCriteria"
-                      (click)="pickerOtherCriteria.open()" class="search-date-label">{{selectedValueOntolonogy}}</span>
-                <ng-template #showOtherCriteria><span (click)="pickerOtherCriteria.open()">{{ form.get('otherCriteriaValue').value | date:'dd/MM/yyyy' }}
-              </span>
+                  (click)="pickerOtherCriteria.open()" class="search-date-label">{{selectedValueOntolonogy}}</span>
+                <ng-template #showOtherCriteria><span
+                    (click)="pickerOtherCriteria.open()">{{ form.get('otherCriteriaValue').value | date:'dd/MM/yyyy' }}
+                  </span>
                 </ng-template>
                 <input class="hidden" size="0" [matDatepicker]="pickerOtherCriteria"
-                      formControlName="otherCriteriaValue"
-                      [min]="form.get('otherCriteriaValue').value">
+                  formControlName="otherCriteriaValue" [min]="form.get('otherCriteriaValue').value">
                 <mat-datepicker #pickerOtherCriteria></mat-datepicker>
               </div>
 
@@ -241,149 +230,143 @@
 
             </div>
             <div class="col-4 form-control">
-              <a class="hide-ink" (click)="showHidePanel()">Masquer les filtres de recherche</a>
+              <a class="hide-ink" (click)="showHidePanel()">{{'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate}}</a>
             </div>
           </div>
-
           <div class="row justify-content-center">
-
           </div>
-
         </div>
       </div>
-
-
     </div>
   </form>
 </div>
 
-<div class="archive-search-result" *ngIf="submited">
-  <table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
-    <thead>
-    <tr>
-      <th colspan="4">
-        <p *ngIf="totalResults > 1">{{totalResults}} résultats</p>
-        <p *ngIf="totalResults === 1"> {{totalResults}} résultat</p>
-      </th>
-    </tr>
-    <tr>
-      <th>
-        <div class="vitamui-table-header">
-          <span>Type</span>
-          <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="typeFilterTemplate"
-                  [class.active]="filterMapType['Type'] && filterMapType['Type'].length > 0">
-            <i class="material-icons vitamui-row-icon">filter_list</i>
-          </button>
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-12" *ngIf="totalResults > 1">{{totalResults}} {{'ARCHIVE_SEARCH.RESULTS' | translate}}</div>
+      <div class="col-12" *ngIf="totalResults === 1">{{totalResults}} {{'ARCHIVE_SEARCH.RESULT' | translate}}</div>
+    </div>
 
-          <ng-template #typeFilterTemplate>
-            <vitamui-common-table-filter [(filter)]="filterMapType['Type']"
-                                        (filterChange)="onFilterChange('Type', $event)">
-              <vitamui-common-table-filter-option value="Folder">
-                <div class="table-filter-icon">
-                  <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"></i> Dossier
-                </div>
-              </vitamui-common-table-filter-option>
-              <vitamui-common-table-filter-option value="Document">
-                <div class="table-filter-icon">
-                  <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> Document
-                </div>
-              </vitamui-common-table-filter-option>
-            </vitamui-common-table-filter>
-          </ng-template>
 
-          <vitamui-common-order-by-button orderByKey="DescriptionLevel" [(orderBy)]="orderBy" [(direction)]="direction"
-                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
+    <div class="vitamui-table-head">
+      <div class="col-1 d-flex align-items-center">
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="typeFilterTemplate"
+          [class.active]="filterMapType['Type'] && filterMapType['Type'].length > 0">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
 
-      <th>
-        <div class="vitamui-table-header">
-          <span>Nom <br/>Description</span>
-          <vitamui-common-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction"
-                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
+        <ng-template #typeFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="filterMapType['Type']"
+            (filterChange)="onFilterChange('Type', $event)">
+            <vitamui-common-table-filter-option value="Folder">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"></i> {{'ARCHIVE_SEARCH.FOLDER' | translate}}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Document">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> {{'FOLDER.DOCUMENT' | translate}}
+              </div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
 
-      <th>
-        <div class="vitamui-table-header">
-          <span>Date de début  </span>
-          <vitamui-common-order-by-button orderByKey="StartDate" [(orderBy)]="orderBy" [(direction)]="direction"
-                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span>Date de fin </span>
-          <vitamui-common-order-by-button orderByKey="EndDate" [(orderBy)]="orderBy" [(direction)]="direction"
-                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
-      <th>
-        <div class="vitamui-table-header">
-          <span>Service Producteur</span>
-          <vitamui-common-order-by-button orderByKey="#originating_agencies" [(orderBy)]="orderBy"
-                                          [(direction)]="direction"
-                                          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-        </div>
-      </th>
+        <vitamui-common-order-by-button orderByKey="DescriptionLevel" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
 
-    </tr>
-    </thead>
-    <tbody>
+      </div>
 
-    <ng-container *ngFor="let archiveUnit of archiveUnits; let index = index">
-      <tr class="vitamui-table-row">
-        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-              <span class="vitamui-snack-bar-content" [ngSwitch]="archiveUnit?.DescriptionLevel">
+      <div class="col-5 d-flex align-items-center">
+        <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate}} <br />{{'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate}}</span>
 
-                <ng-container *ngSwitchCase="'RecordGrp'">
-                  <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"></i>
-                </ng-container>
-                <ng-container *ngSwitchCase="'File'">
-                  <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                </ng-container>
-                <ng-container *ngSwitchCase="'Item'">
-                  <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                </ng-container>
+        <vitamui-common-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+
+      </div>
+
+      <div class="col-2 d-flex align-items-center">
+        <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.START_DATE' | translate}} </span>
+        <vitamui-common-order-by-button orderByKey="StartDate" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center">
+        <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.END_DATE' | translate}} </span>
+        <vitamui-common-order-by-button orderByKey="EndDate" [(orderBy)]="orderBy" [(direction)]="direction"
+          (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+      </div>
+
+      <div class="col-2 d-flex align-items-center">
+        <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.SP' | translate}}</span>
+        <vitamui-common-order-by-button orderByKey="#originating_agencies" [(orderBy)]="orderBy"
+          [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
+
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let archiveUnit of archiveUnits; let index = index">
+        <div class="vitamui-row d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
+          <div class="col-1 d-flex align-items-center">
+
+            <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
+
+              <ng-container *ngSwitchCase="'RecordGrp'">
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge"></i>
+              </ng-container>
+              <ng-container *ngSwitchCase="'File'">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+              </ng-container>
+              <ng-container *ngSwitchCase="'Item'">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+              </ng-container>
             </span>
-        </td>
-        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-          <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
-            <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-               <b>
-                {{ archiveUnit?.Title }}</b> <br/> {{archiveUnit?.Description | truncate:100 }}
-              </p>
-          </ng-container>
-          <ng-template #subTitleFr>
-            <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
-              <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-                 <b>{{ archiveUnit.Title_.fr }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
+          </div>
+          <div class="col-5 d-flex align-items-center">
+            <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
+              <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip"
+                [matTooltipShowDelay]="300">
+                <b>
+                  {{ archiveUnit?.Title }}</b> <br /> {{archiveUnit?.Description | truncate:100 }}
               </p>
             </ng-container>
-          </ng-template>
-          <ng-template #subTitleEn>
-            <ng-container *ngIf="archiveUnit.Title_.en">
-              <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-                <b>{{ archiveUnit.Title_.en }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
-              </p>
-            </ng-container>
-          </ng-template>
-        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">{{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)">{{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}</td>
-        <td class="clickable" (click)="archiveUnitClick.emit(archiveUnit)" matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
-          {{ archiveUnit['originating_agencyName']}}
-        </td>
-      </tr>
-    </ng-container>
-    </tbody>
-  </table>
-
-  <div class="vitamui-table-footer">
-    <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-    <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
-      Afficher plus de résultats...
-    </button>
-    <span *ngIf="!pending && !canLoadMore">Fin des résultats</span>
+            <ng-template #subTitleFr>
+              <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
+                <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip"
+                  [matTooltipShowDelay]="300">
+                  <b>{{ archiveUnit.Title_.fr }} </b> <br /> {{archiveUnit?.Description | truncate:100 }}
+                </p>
+              </ng-container>
+            </ng-template>
+            <ng-template #subTitleEn>
+              <ng-container *ngIf="archiveUnit.Title_.en">
+                <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip"
+                  [matTooltipShowDelay]="300">
+                  <b>{{ archiveUnit.Title_.en }} </b> <br /> {{archiveUnit?.Description | truncate:100 }}
+                </p>
+              </ng-container>
+            </ng-template>
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            {{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            {{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            <p matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})"
+              matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              {{ archiveUnit['originating_agencyName']}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vitamui-table-footer">
+      <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
+      <button *ngIf="!pending && canLoadMore" (click)="loadMore()" class="btn">
+        {{'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate}}
+      </button>
+      <span *ngIf="!pending && !canLoadMore">{{'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate}}</span>
+    </div>
   </div>
-
-</div>

@@ -1,4 +1,4 @@
-<div *ngIf="!loadingHolding" >
+<div *ngIf="!loadingHolding" class="justify-content-around">
   <div *ngIf="!loadingHolding" class="tree-filing-scheme">
     <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="filing-holding-scheme-tree">
 
@@ -28,8 +28,8 @@
       </mat-nested-tree-node>
     </mat-tree>
   </div>
-  <div *ngIf="nestedDataSource.data.length <= 0"> Aucun Arbres ou Plans trouvés avec le contrat choisi  </div>
-  <a *ngIf="nestedDataSource.data.length > 0" class="tree-show-link" (click)="showAllTreeNodes()">Afficher l'arborescence au complet</a>
+  <div *ngIf="nestedDataSource.data.length <= 0"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}  </div>
+  <a *ngIf="nestedDataSource.data.length > 0" class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate}}</a>
 </div>
 
 <div class="" *ngIf="loadingHolding">

@@ -137,7 +137,10 @@
 
 
 .button-remove {
+    border-left-width: 0px;
     padding-left: 10px;
     padding-right: 10px;
-    border-left-width: 0px;
+    max-width: 400px;
+    font-weight: bold;
+    height: 60px;
 }
