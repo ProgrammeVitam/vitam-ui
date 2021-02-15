@@ -14,6 +14,7 @@
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Title or Description",
+        "NODE" : "Node",
         "TITLE": "Title",
         "START_DATE": "Start date",
         "END_DATE": "End date",
@@ -63,7 +64,8 @@
     },
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans founds for the selected access contract",
-      "SHOW_ENTIRE_TREE": "Show the entire tree"
+      "SHOW_ENTIRE_TREE": "Show the entire tree",
+      "SHOW_TREE_PARENT" : "Collapse the tree"
     },
     "RESULTS": "Results",
     "RESULT": "Result",

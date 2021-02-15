@@ -38,13 +38,10 @@ import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { GlobalEventService, SidenavPage, SearchBarComponent, Direction } from 'ui-frontend-common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { GlobalEventService, SidenavPage, SearchBarComponent, AdminUserProfile } from 'ui-frontend-common';
+import { GlobalEventService, SidenavPage, SearchBarComponent, AdminUserProfile, Direction } from 'ui-frontend-common';
 import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
 import { IngestList } from '../core/common/ingest-list';

@@ -29,8 +29,8 @@
     </mat-tree>
   </div>
   <div *ngIf="nestedDataSource.data.length <= 0"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}  </div>
-  <a *ngIf="nestedDataSource.data.length > 0 && !linkOneToNotKeep "" class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate}}</a>
-  <a *ngIf="nestedDataSource.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link" (click)="showOnlyParentTreeNodes()">Réduire l'arborescence</a>
+  <a *ngIf="nestedDataSource.data.length > 0 && !linkOneToNotKeep " class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate}}</a>
+  <a *ngIf="nestedDataSource.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link" (click)="showOnlyParentTreeNodes()">{{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' | translate}}</a>
 </div>
 
 <div class="" *ngIf="loadingHolding">

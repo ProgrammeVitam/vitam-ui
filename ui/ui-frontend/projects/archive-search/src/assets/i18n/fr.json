@@ -14,6 +14,7 @@
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Titre ou Description",
+        "NODE" : "Noeud",
         "TITLE": "Titre",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",
@@ -63,7 +64,8 @@
     },
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbres ou Plans trouvés avec le contrat choisi",
-      "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet"
+      "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
+      "SHOW_TREE_PARENT" : "Réduire l'arborescence"
     },
     "RESULTS": "résultats",
     "RESULT": "résultat",

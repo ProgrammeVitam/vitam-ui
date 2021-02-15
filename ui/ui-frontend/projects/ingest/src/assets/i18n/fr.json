@@ -11,7 +11,20 @@
         "START_DATE" : "Début du versement",
         "END_DATE" : "Fin de versement",
         "NAME" : "Nom du SIP",
-        "STATUS" : "Etat et suivi"
+        "STATUS" : "Etat et suivi",
+        "RESULT_STATUS" : {
+            "FINISHED" : "Terminé",
+            "BREAK" : "En pause"
+        },
+        "RESULT" : {
+            "OK" : "Succès",
+            "KO" : "Erreur",
+            "WARNING" : "Avertissement",
+            "STARTED" : "En cours",
+            "FATAL" : "Erreur Technique"
+
+        },
+        "NORESULTS" : "Fin des résultats" 
     },
     "INGEST_ACTION" : {
         "REFRESH" : "Rafraîchir",
@@ -19,7 +32,8 @@
         "START_DATE" : "Date de début",
         "END_DATE" :"Date de fin",
         "ToolTip_Refresh" : "Rafraîchir la liste des versements",
-        "ToolTip_New_Ingest" : "Déposer un nouveau versement d'archives (SIP)"
+        "ToolTip_New_Ingest" : "Déposer un nouveau versement d'archives (SIP)",
+        "SEARCH" : "Côte, Intitulé, Service producteur..." 
     },
     "INGEST_PAGE" : {
         "TITLE" : "Déposer et suivre des versements"
