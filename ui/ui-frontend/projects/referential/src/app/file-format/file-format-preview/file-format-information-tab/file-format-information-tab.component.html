@@ -2,7 +2,7 @@
 
     <div class="form-group">
         <div class="col-10 form-control">
-            <vitamui-common-input formControlName="name" placeholder="Nom" disabled="{{isInternal() ? 'disabled': 'false'}}"
+            <vitamui-common-input formControlName="name" placeholder="Nom" disabled
                 i18n-placeholder="name@@fileFormatPreviewLabelName">
                 <ng-container *ngIf="form.get('name')?.touched">
                     <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
