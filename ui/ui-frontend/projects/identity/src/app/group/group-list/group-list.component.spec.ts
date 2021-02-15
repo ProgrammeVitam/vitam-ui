@@ -170,10 +170,10 @@ describe('GroupListComponent', () => {
   it('should have the right columns', () => {
     expect(page.columns).toBeTruthy();
     expect(page.columns.length).toBe(5);
-    expect(page.columns[1].textContent).toContain('Nom du groupe');
-    expect(page.columns[2].textContent).toContain('Identifiant');
-    expect(page.columns[3].textContent).toContain('Description');
-    expect(page.columns[4].textContent).toContain('Niveau');
+    expect(page.columns[1].textContent).toContain('GROUP.HOME.RESULTS_TABLE.NAME');
+    expect(page.columns[2].textContent).toContain('COMMON.ID');
+    expect(page.columns[3].textContent).toContain('GROUP.HOME.RESULTS_TABLE.DESCRIPTION');
+    expect(page.columns[4].textContent).toContain('GROUP.HOME.RESULTS_TABLE.LEVEL');
   });
 
   it('should have a list of profile groups', () => {

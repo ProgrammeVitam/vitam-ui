@@ -180,11 +180,10 @@ describe('IdentityProviderCreateComponent', () => {
 
       const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();
-      expect(elEnabled.textContent).toContain('IDP Actif');
+      expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
 
       const elName = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=name]');
       expect(elName).toBeTruthy();
-      expect(elName.attributes.placeholder.value).toBe('Nom IDP');
 
       const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=keystorePassword]');
       expect(elKeystorePassword).toBeTruthy();
@@ -198,7 +197,7 @@ describe('IdentityProviderCreateComponent', () => {
     it('should have a submit button', () => {
       const elSubmit = fixture.nativeElement.querySelector('button[type=submit]');
       expect(elSubmit).toBeTruthy();
-      expect(elSubmit.textContent).toContain('Terminer');
+      expect(elSubmit.textContent).toContain('COMMON.SUBMIT');
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -220,7 +219,7 @@ describe('IdentityProviderCreateComponent', () => {
     it('should have a cancel button', () => {
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
-      expect(elCancel.textContent).toContain('Annuler');
+      expect(elCancel.textContent).toContain('COMMON.UNDO');
       spyOn(component, 'onCancel');
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);

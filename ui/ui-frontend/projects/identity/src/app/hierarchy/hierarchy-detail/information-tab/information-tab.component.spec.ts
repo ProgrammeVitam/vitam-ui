@@ -162,7 +162,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
       element = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(element).toBeTruthy('enabled toggle');
-      expect(element.textContent).toContain('Profil actif');
+      expect(element.textContent).toContain('HIERARCHY.INFORMATIONS.ACTIVE_SWITCH');
     });
 
   });

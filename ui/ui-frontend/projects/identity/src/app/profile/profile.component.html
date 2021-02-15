@@ -6,13 +6,13 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        Paramétrer les droits des administrateurs
+        {{'USER_PROFILE.HOME.TITLE' | translate}}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'Nom du profil administrateur, Identifiant'"
+      <vitamui-common-banner [searchbarPlaceholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate"
         (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openProfilAdminCreateDialog()">
-          <span>Créer un Profil Administrateur</span>
+          <span>{{'USER_PROFILE.HOME.ACTION_BUTTON' | translate}}</span>
         </button>
     </vitamui-common-banner>
 </div>

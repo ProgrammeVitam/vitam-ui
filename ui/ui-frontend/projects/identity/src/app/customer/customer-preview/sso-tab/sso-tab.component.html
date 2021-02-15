@@ -1,40 +1,39 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
   <div class="vitamui-panel-content" *ngIf="!selectedIdentityProvider">
     <button *ngIf="!readOnly" class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
-      <div [matTooltipDisabled]="domainsAvailable" matTooltip="Plus de domaines disponibles"
-        i18n-matTooltip="No more available domains@@idpNoMoreAvailableDomains" matTooltipClass="vitamui-tooltip"
-        i18n="Create IDP@@idpCreateButton"> Créer un IDP
+      <div [matTooltipDisabled]="domainsAvailable" [matTooltip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate"
+        matTooltipClass="vitamui-tooltip"> {{'CUSTOMER.SSO.BUTTON' | translate}}
       </div>
     </button>
 
     <div class="provider-list d-flex align-items-center mb-2" *ngFor="let provider of providers">
       <div class="provider-item-content d-flex py-3 px-1" (click)="selectIdentityProvider(provider)">
         <div class="col-3">
-          <label i18n="IDP Name@@idpListLabelName">Nom IDP</label>
+          <label>{{'CUSTOMER.SSO.NAME' | translate}}</label>
           <div>{{provider?.name}}</div>
         </div>
 
         <div class="col-2">
-          <label i18n="Type@@idpListLabelType">Type</label>
-          <div *ngIf="provider?.internal" i18n="Internal@@idpTypeInternal">Interne</div>
-          <div *ngIf="!provider?.internal" i18n="External@@idpTypeExternal">Externe</div>
+          <label>{{'CUSTOMER.SSO.TYPE' | translate}}</label>
+          <div *ngIf="provider?.internal">{{'CUSTOMER.SSO.TYPE_INTERNAL' | translate}}</div>
+          <div *ngIf="!provider?.internal">{{'CUSTOMER.SSO.TYPE_EXTERNAL' | translate}}</div>
         </div>
 
         <div class="col-5">
-          <label i18n="Patterns@@idpListLabelPatterns">Patterns</label>
+          <label>{{'CUSTOMER.SSO.PATTERNS' | translate}}</label>
           <div *ngFor="let pattern of provider?.patterns">{{pattern}}</div>
         </div>
 
         <div class="col-2 d-flex align-items-center">
-          <div *ngIf="provider?.enabled" class="provider-status active" i18n="Active@@idpStatusActive">Actif</div>
-          <div *ngIf="!provider?.enabled" class="provider-status" i18n="Inactive@@idpStatusInactive">Inactif</div>
+          <div *ngIf="provider?.enabled" class="provider-status active">{{'CUSTOMER.SSO.STATUS_ACTIVE' | translate}}</div>
+          <div *ngIf="!provider?.enabled" class="provider-status">{{'CUSTOMER.SSO.STATUS_INACIVE' | translate}}</div>
         </div>
       </div>
 
       <a class="provider-item-link" [href]="!provider?.internal ? provider?.idpMetadataUrl : '#'" target="_blank"
         [class.disabled]="provider?.internal">
         <i class="material-icons">file_download</i>
-        <span i18n="Metadata CAS@@idpListMetadataDownloadLink" class="p-0">Metadata CAS</span>
+        <span class="p-0">{{'CUSTOMER.SSO.METADATA' | translate}}</span>
       </a>
     </div>
   </div>
@@ -45,7 +44,7 @@
     <div>
       <button type="button" class="btn link" (click)="selectedIdentityProvider=null">
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <ng-container i18n="Back button label@@idpBackButton"><span class="underline">Retourner à la liste des IDP</span></ng-container>
+        <ng-container><span class="underline">{{'CUSTOMER.SSO.RETURN' | translate}}</span></ng-container>
       </button>
       <app-identity-provider-details [identityProvider]="selectedIdentityProvider" [domains]="domains"
         [readOnly]="readOnly || selectedIdentityProvider.readonly"></app-identity-provider-details>

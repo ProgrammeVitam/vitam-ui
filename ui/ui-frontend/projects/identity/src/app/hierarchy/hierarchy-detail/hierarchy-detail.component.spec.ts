@@ -42,10 +42,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY, of, Subject } from 'rxjs';
 import { environment } from './../../../environments/environment';
 
 import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
 
@@ -121,7 +123,8 @@ describe('HierarchyDetailComponent', () => {
         MatTabsModule,
         NoopAnimationsModule,
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       declarations: [
         TestHostComponent,
@@ -135,7 +138,8 @@ describe('HierarchyDetailComponent', () => {
         { provide: AuthService, useValue: authServiceMock},
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

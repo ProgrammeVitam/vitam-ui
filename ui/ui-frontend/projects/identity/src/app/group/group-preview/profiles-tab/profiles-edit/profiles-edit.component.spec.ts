@@ -45,6 +45,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../../../group.service';
 import { ProfilesEditComponent } from './profiles-edit.component';
 
@@ -78,6 +79,7 @@ describe('ProfilesEditComponent', () => {
         MatProgressBarModule,
         ReactiveFormsModule,
         NoopAnimationsModule,
+        VitamUICommonTestModule
       ],
       declarations: [ ProfilesEditComponent, ProfilesFormStubComponent ],
       providers: [
@@ -107,7 +109,7 @@ describe('ProfilesEditComponent', () => {
     it('should have a title', () => {
       const elTitle = fixture.nativeElement.querySelector('.text, .large');
       expect(elTitle).toBeTruthy();
-      expect(elTitle.textContent).toContain('Modification des profils de "Test"');
+      expect(elTitle.textContent).toContain('GROUP.PROFILE.MODAL.TITLE "Test"');
     });
 
     it('should have a app-profiles-form', () => {
@@ -122,7 +124,7 @@ describe('ProfilesEditComponent', () => {
       fixture.detectChanges();
       const elSubmit = fixture.nativeElement.querySelector('button[type=submit]');
       expect(elSubmit).toBeTruthy();
-      expect(elSubmit.textContent).toContain('Terminer');
+      expect(elSubmit.textContent).toContain('COMMON.SUBMIT');
       elSubmit.click();
       expect(component.onSubmit).toHaveBeenCalledTimes(1);
     });
@@ -131,7 +133,7 @@ describe('ProfilesEditComponent', () => {
       spyOn(component, 'onCancel');
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
-      expect(elCancel.textContent).toContain('Annuler');
+      expect(elCancel.textContent).toContain('COMMON.UNDO');
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);
     });

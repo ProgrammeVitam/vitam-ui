@@ -2,9 +2,9 @@
     <h4>Simple</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 pl-3 pr-3 mt-4">
-            <vitamui-common-input [formControl]="streetEmpty" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input [formControl]="streetInvalid" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input disabled [formControl]="streetDisable" placeholder="N° et nom de rue"></vitamui-common-input>
+            <vitamui-common-input [formControl]="streetEmpty" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+            <vitamui-common-input [formControl]="streetInvalid" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+            <vitamui-common-input disabled [formControl]="streetDisable" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
         </div>
         <div class="row m-0">
             <div class="col-8">
@@ -111,9 +111,9 @@
     <h4>Auto complete</h4>
 
     <div class="d-flex justify-content-around">
-        <vitamui-common-vitamui-autocomplete [options]="countries" placeholder="Pays">
+        <vitamui-common-vitamui-autocomplete [options]="countries" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate">
         </vitamui-common-vitamui-autocomplete>
-        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" placeholder="Pays" disable="true">
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" disable="true">
         </vitamui-common-vitamui-autocomplete>
     </div>
     <h4>Textarea</h4>

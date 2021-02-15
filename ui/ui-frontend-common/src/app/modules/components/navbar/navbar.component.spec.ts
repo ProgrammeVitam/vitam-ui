@@ -44,6 +44,8 @@ import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+
+import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { environment } from './../../../../environments/environment';
 import { ENVIRONMENT } from './../../injection-tokens';
 
@@ -54,6 +56,7 @@ import { LoggerModule } from '../../logger';
 import { StartupService } from '../../startup.service';
 import { VitamUISnackBar } from '../vitamui-snack-bar/vitamui-snack-bar.service';
 import { NavbarComponent } from './navbar.component';
+
 
 @Directive({ selector: '[vitamuiCommonTriggerFor]' })
 class TriggerForStubDirective {
@@ -116,7 +119,8 @@ describe('NavbarComponent', () => {
         NoopAnimationsModule,
         HttpClientTestingModule,
         MatSnackBarModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       declarations: [
         DropdownStubDirective,

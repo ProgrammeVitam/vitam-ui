@@ -39,10 +39,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT } from './../injection-tokens';
 
-import { NavbarStubComponent } from '../../../../testing/src/public_api';
+import { NavbarStubComponent, VitamUICommonTestModule } from '../../../../testing/src/public_api';
 import { environment } from '../../../environments/environment';
 import { InjectorModule } from '../helper/injector.module';
 import { LoggerModule } from '../logger';
@@ -69,7 +70,8 @@ describe('AccountComponent', () => {
         InjectorModule,
         MatTabsModule,
         NoopAnimationsModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       declarations: [
         AccountComponent,
@@ -77,6 +79,7 @@ describe('AccountComponent', () => {
         NavbarStubComponent
       ],
       providers: [
+        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: AccountService, useValue: accountServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment }

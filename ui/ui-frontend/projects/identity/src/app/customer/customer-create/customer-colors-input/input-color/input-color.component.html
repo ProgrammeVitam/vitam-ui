@@ -5,14 +5,14 @@
     <vitamui-common-input-error class="d-flex align-items-center" *ngIf="colorError!==colorErrorEnum.NONE">
         <i class="vitamui-icon vitamui-icon-anomalie mr-1" [style.fontSize.px]="20"></i>
         <div [ngSwitch]="colorError">
-            <div *ngSwitchCase="colorErrorEnum.COLOR_INVALID">{{'COLOR.INVALID' | translate}}</div>
+            <div *ngSwitchCase="colorErrorEnum.COLOR_INVALID">{{'GRAPHIC_IDENTITY.INVALID' | translate}}</div>
             <ng-container *ngSwitchCase="colorErrorEnum.COLOR_TOO_LIGHT">
-                <div>{{'COLOR.TOO_LIGHT' | translate}}</div>
-                <div>{{'COLOR.INCOMPATIBLE' | translate}}</div>
+                <div>{{'GRAPHIC_IDENTITY.TOO_LIGHT' | translate}}</div>
+                <div>{{'GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
             </ng-container>
             <ng-container *ngSwitchCase="colorErrorEnum.COLOR_TOO_DARK">
-                <div>{{'COLOR.TOO_DARK' | translate}}</div>
-                <div>{{'COLOR.INCOMPATIBLE' | translate}}</div>
+                <div>{{'GRAPHIC_IDENTITY.TOO_DARK' | translate}}</div>
+                <div>{{'GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
             </ng-container>
         </div>
     </vitamui-common-input-error>

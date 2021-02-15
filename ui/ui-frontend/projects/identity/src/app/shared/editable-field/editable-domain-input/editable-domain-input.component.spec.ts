@@ -41,7 +41,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import {
   CustomerCreateValidators
 } from '../../../customer/customer-create/customer-create.validators';
@@ -79,6 +79,7 @@ describe('EditableDomainInputComponent', () => {
         ReactiveFormsModule,
         DomainsInputModule,
         MatProgressSpinnerModule,
+        VitamUICommonTestModule
       ],
       declarations: [
         TesthostComponent,
@@ -151,7 +152,6 @@ describe('EditableDomainInputComponent', () => {
     it('should have a app-domains-input', () => {
       const elDomainInput = fixture.nativeElement.querySelector('.editable-field-control > app-domains-input');
       expect(elDomainInput).toBeTruthy();
-      expect(elDomainInput.attributes.placeholder.textContent).toBe('domaine.xyz');
     });
 
     it('should open then close the action buttons', () => {

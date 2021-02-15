@@ -6,11 +6,11 @@
   <div class="content">
     <div class="text large bold" i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{data?.owner?.name}}"</div>
 
-    <vitamui-common-input formControlName="name" required placeholder="Nom du coffre" i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder"></vitamui-common-input>
+    <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"></vitamui-common-input>
 
     <div class="actions">
-      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
+      <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
     </div>
   </div>
 </form>

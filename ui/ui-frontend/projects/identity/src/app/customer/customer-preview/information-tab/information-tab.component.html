@@ -4,12 +4,11 @@
       <vitamui-common-editable-input
         formControlName="code"
         maxlength="20"
-        label="Code organisation" i18n-label="Customer code@@customerPreviewLabelCode"
+        [label]="'CUSTOMER.INFORMATIONS.CODE' | translate"
         [validator]="form?.get('code')?.validator"
         [asyncValidator]="form?.get('code')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-          requis
+        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
         </vitamui-common-field-error>
         <vitamui-common-field-error errorKey="pattern"
                                     i18n="Wrong format (4 digits minimum) error hint@@formError5DigitsField">Format
@@ -24,7 +23,7 @@
       <vitamui-common-editable-input
         formControlName="identifier"
         maxlength="12"
-        label="Identifiant" i18n-label="Identifier@@CustomerDetailLabelIdentifier"
+        [label]="'COMMON.ID' |translate"
         [validator]="form?.get('identifier')?.validator"
         [asyncValidator]="form?.get('identifier')?.asyncValidator"
       >
@@ -37,12 +36,11 @@
       <vitamui-common-editable-input
         formControlName="name"
         maxlength="100"
-        label="Nom" i18n-label="Customer name@@customerPreviewLabelName"
+        [label]="'CUSTOMER.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-          requis
+        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -50,12 +48,11 @@
       <vitamui-common-editable-input
         formControlName="companyName"
         maxlength="250"
-        label="Raison sociale" i18n-label="Customer company name@@customerPreviewLabelCompanyName"
+        [label]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate"
         [validator]="form?.get('companyName')?.validator"
         [asyncValidator]="form?.get('companyName')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-          requis
+        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -67,12 +64,11 @@
         <vitamui-common-editable-input
           formControlName="street"
           maxlength="250"
-          label="N° et nom de rue" i18n-label="Street number and name Name@@customerPreviewLabelStreetNumberName"
+          [label]="'COMMON.ADRESS.STREET' | translate"
           [validator]="form?.get('address.street')?.validator"
           [asyncValidator]="form?.get('address.street')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-            requis
+          <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -83,12 +79,11 @@
         <vitamui-common-editable-input
           formControlName="zipCode"
           maxlength="10"
-          label="Code postal" i18n-label="Customer Zip Code@@customerPreviewLabelZipCode"
+          [label]="'COMMON.ADRESS.ZIPCODE' | translate"
           [validator]="form?.get('address.zipCode')?.validator"
           [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-            requis
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -96,12 +91,11 @@
         <vitamui-common-editable-input
           formControlName="city"
           maxlength="100"
-          label="Ville" i18n-label="Customer city@@customerPreviewLabelCity"
+          [label]="'COMMON.ADRESS.CITY' | translate"
           [validator]="form?.get('address.city')?.validator"
           [asyncValidator]="form?.get('address.city')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ
-            requis
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -111,7 +105,7 @@
       <div class="col-12 form-control">
         <vitamui-common-editable-select
           formControlName="country"
-          label="Pays" i18n-label="Customer country@@customerPreviewLabelCountry"
+          [label]="'COMMON.ADRESS.COUNTRY' | translate"
           [validator]="form?.get('address.country')?.validator"
           [asyncValidator]="form?.get('address.country')?.asyncValidator"
         >
@@ -131,7 +125,7 @@
       <vitamui-common-editable-input
         formControlName="internalCode"
         maxlength="20"
-        label="Code interne" i18n-label="Internal code@@customerPreviewLabelInternalCode"
+        [label]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate"
       ></vitamui-common-editable-input>
     </div>
   </div>
@@ -140,15 +134,12 @@
     <div class="col-12 form-control">
       <vitamui-common-editable-select
         formControlName="language"
-        label="Langue de l'interface (par défault pour l'utilisateur)"
-        i18n-label="Customer default language@@customerPreviewLabelLanguage"
+        [label]="'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
         [validator]="form?.get('language')?.validator"
         [asyncValidator]="form?.get('language')?.asyncValidator"
       >
-        <vitamui-common-editable-option value="ENGLISH" content="Anglais"
-                                        i18n-content="@@languageEnglish"></vitamui-common-editable-option>
-        <vitamui-common-editable-option value="FRENCH" content="Français"
-                                        i18n-content="@@languageFrench"></vitamui-common-editable-option>
+        <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate"></vitamui-common-editable-option>
+        <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate"></vitamui-common-editable-option>
       </vitamui-common-editable-select>
     </div>
   </div>
@@ -157,8 +148,7 @@
     <div class="col-12 form-control">
       <vitamui-common-editable-select
         formControlName="passwordRevocationDelay"
-        label="Révocation du mot de passe (depuis le dernier changement)"
-        i18n-label="Password revocation delay (from the last modification)@@customerPreviewLabelPasswordRevocation"
+        [label]="'CUSTOMER.INFORMATIONS.PASSWORD_DURATION' | translate"
         [validator]="form?.get('passwordRevocationDelay')?.validator"
         [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
       >
@@ -176,7 +166,7 @@
     <div class="col-12 form-control">
       <vitamui-common-editable-toggle-group
         formControlName="otp"
-        label="Validation en deux étapes" i18n-label="Two steps validation@@customerPreviewLabelTwoStepsValidation"
+        [label]="'CUSTOMER.INFORMATIONS.VALIDATIONS' | translate"
         [validator]="form?.get('otp')?.validator"
         [asyncValidator]="form?.get('otp')?.asyncValidator"
       >
@@ -194,7 +184,7 @@
     <div class="col-12 form-control">
       <app-editable-domain-input
         formControlName="emailDomains"
-        label="Domaines" i18n-label="Customer email domains@@customerPreviewLabelDomains"
+        [label]="'CUSTOMER.INFORMATIONS.DOMAINS' | translate"
         [validator]="form?.get('emailDomains')?.validator"
         [asyncValidator]="form?.get('emailDomains')?.asyncValidator"
         [defaultDomain]="form.get('defaultEmailDomain').value"

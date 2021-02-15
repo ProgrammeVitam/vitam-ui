@@ -40,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { EditableFieldModule } from '../components/editable-field/editable-field.module';
 import { UserPhotoModule } from '../components/header/user-photo/user-photo.module';
@@ -63,7 +64,8 @@ import { AccountComponent } from './account.component';
     MatTabsModule,
     VitamUIFieldErrorModule,
     VitamuiContentBreadcrumbModule,
-    UserPhotoModule
+    UserPhotoModule,
+    TranslateModule
   ],
   declarations: [
     AccountComponent,

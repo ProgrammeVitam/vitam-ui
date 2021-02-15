@@ -14,15 +14,15 @@
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="Informations" i18n-label="Information tab@@customerPreviewTabInformation">
+    <mat-tab [label]="'USER.TAB.INFORMATIONS' | translate">
       <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-info-tab>
     </mat-tab>
 
-    <mat-tab label="Groupe" i18n-label="Groupe tab@@userPreviewTabGroupe" class="no-padding">
+    <mat-tab [label]="'USER.TAB.GROUP' | translate" class="no-padding">
       <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo" [groups]="groups"></app-user-group-tab>
     </mat-tab>
 
-    <mat-tab label="Historique" i18n-label="History tab@@userPreviewTabHistory">
+    <mat-tab [label]="'USER.TAB.HISTORY' | translate">
         <vitamui-common-operation-history-tab [id]="user?.id" [identifier]="user?.identifier" collectionName="users" [filter]="filterAuthenticationEvents"></vitamui-common-operation-history-tab>
     </mat-tab>
   </mat-tab-group>
@@ -35,8 +35,8 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary mr-2" i18n="@@confirmDialogConfirmButton">Confirmer</button>
-    <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
+    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
   </mat-dialog-actions>
 </ng-template>
 
@@ -46,8 +46,8 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary mr-2" i18n="@@confirmDialogConfirmButton">Confirmer</button>
-    <button matDialogClose class="btn link cancel" i18n="@@confirmDialogCancelButton">Retour</button>
+    <button [matDialogClose]="true" class="btn primary mr-2">{{'COMMON.CONFIRM' | translate}}</button>
+    <button matDialogClose class="btn link cancel">{{'COMMON.BACK' | translate}}</button>
   </mat-dialog-actions>
 </ng-template>
 

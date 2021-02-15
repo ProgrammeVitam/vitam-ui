@@ -16,7 +16,7 @@
                                 i18n-placeholder="UnitId@@probativeValueCreateIdentifierPlaceholder">
             <ng-container *ngIf="form.get('unitId')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('unitId')?.errors?.required"
-                                          i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                                          >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
               <ng-container *ngIf="form.get('unitId')?.errors?.minlength" >
                 <ng-template #minlengthErrorTemplate let-minlength="minlength">
                   <vitamui-common-input-error i18n="Minlength field error hint@@formErrorMinlengthField">
@@ -51,14 +51,14 @@
                                 type="number" i18n-placeholder="Version@@probativeValueCreateVersionPlaceholder">
             <ng-container *ngIf="form.get('version')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required"
-                                          i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                                          >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="form.invalid">Terminer</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+          <button type="submit" class="btn primary" [disabled]="form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
 
       </div>

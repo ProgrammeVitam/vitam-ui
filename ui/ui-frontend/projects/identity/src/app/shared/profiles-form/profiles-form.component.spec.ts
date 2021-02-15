@@ -44,6 +44,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { ApplicationApiService, ApplicationService, ProfileService, VitamUIAutocompleteModule } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
 
@@ -167,6 +168,7 @@ describe('ProfilesFormComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         VitamUIAutocompleteModule,
+        VitamUICommonTestModule,
       ],
       declarations: [ ProfilesFormComponent, TesthostComponent, MatTooltipStubDirective ],
       providers: [
@@ -195,15 +197,12 @@ describe('ProfilesFormComponent', () => {
     it('should have 3 select inputs', () => {
       const elInputs = fixture.nativeElement.querySelectorAll('vitamui-common-vitamui-autocomplete');
       expect(elInputs.length).toBe(3);
-      expect(elInputs[0].attributes.placeholder.value).toBe('Application');
-      expect(elInputs[1].attributes.placeholder.value).toBe('Coffre');
-      expect(elInputs[2].attributes.placeholder.value).toBe('Profil');
     });
 
     it('should have an "Add" button', () => {
       const elAddButton = fixture.nativeElement.querySelector('button[type=button]');
       expect(elAddButton).toBeTruthy();
-      expect(elAddButton.textContent).toContain('Ajouter');
+      expect(elAddButton.textContent).toContain('COMMON.ADD');
       spyOn(testhost.component, 'add');
       testhost.component.profileSelect.setValue(expectedProfiles[3].id);
       fixture.detectChanges();

@@ -13,7 +13,7 @@
               [style.width.%]="100"
               [formControl]="control"
               [(selected)]="selected"
-              placeholder="domaine.xyz" i18n-placeholder="Email domain input placeholder@@emailDomainInputPlaceholder"
+              [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
               spinnerDiameter="18"
               (click)="onDomainInputClick()"
             ></app-domains-input>

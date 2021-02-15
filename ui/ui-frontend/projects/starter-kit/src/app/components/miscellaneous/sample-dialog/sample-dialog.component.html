@@ -9,8 +9,8 @@
         <div class="text large bold">{{'SAMPLE-DIALOG.Step-0' | translate}}</div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
-          <button type="button" class="btn cancel link" (click)="cancel()">Annuler</button>
+          <button type="button" class="btn primary" cdkStepperNext>{{'COMMON.NEXT' | translate}}</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
     </cdk-step>
@@ -20,12 +20,12 @@
         <div class="text large bold">{{'SAMPLE-DIALOG.Step-1' | translate}}</div>
 
         <div class="actions">
-          <button type="submit" class="btn primary" (click)="cancel()">Terminer</button>
-          <button type="button" class="btn cancel link" (click)="cancel()">Annuler</button>
+          <button type="submit" class="btn primary" (click)="cancel()">{{'COMMON.SUBMIT' | translate}}</button>
+          <button type="button" class="btn cancel link" (click)="cancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <span class="underline">Retour</span>
+          <span class="underline">{{'COMMON.BACK' | translate}}</span>
         </button>
       </div>
     </cdk-step>

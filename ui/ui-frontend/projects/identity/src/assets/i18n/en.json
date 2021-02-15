@@ -1,5 +1,5 @@
 {
-  "COMMON": {
+	"COMMON": {
     "CANCEL": "Cancel",
     "SUBMIT": "Submit",
     "UPDATE": "Update",
@@ -16,62 +16,290 @@
     "NAME_ALREADY_EXISTS": "Name already exists",
     "ACTIVE": "activated",
     "NO_RESULT": "No Result",
-    "MORE_RESULT": "Show more results..."
-  },
-  "MISC": {
-    "NO_DESC": "No description"
-  },
-  "COLOR": {
-    "INVALID": "Invalid color",
-    "TOO_LIGHT": "The color is too light.",
-    "TOO_DARK": "The color is too dark.",
-    "INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards.",
-    "TERTIARY": "Tertiary color",
-    "HEADER_FOOTER": "Header/footer color",
-    "BACKGROUND": "Background color"
-  },
-  "CUSTOMER": {
-    "TAB": {
-      "INFORMATION": "Informations",
-      "SSO": "SSO",
-      "GRAPHIC_ID": "Graphic ID.",
-      "HOMEPAGE_MESSAGE": "Homepage message",
-      "HISTORY": "History"
+    "MORE_RESULT": "Show more results...",
+    "ID": "Id",
+    "ADRESS": {
+      "STREET": "Number and name of the street",
+      "ZIPCODE": "Zipcode",
+      "CITY": "City",
+      "COUNTRY": "Country"
     },
-    "GRAPHIC_IDENTITY": {
-      "TOGGLE_TITLE": "Personalized graphic identity",
-      "COLOR_TITLE": "Colors settings",
-      "LOGO_TITLE": "Logo management",
-      "LOGO_HEADER_TITLE": "Header logo",
-      "LOGO_FOOTER_TITLE": "Footer logo",
-      "LOGO_PORTAL_TITLE": "Portal logo",
-      "LOGO_DROP": "Drop your logo",
-      "LOGO_ATTACH": "Attach a logo",
-      "TERTIARY_COLOR_SHOW": "Show tertiary color",
-      "TERTIARY_COLOR_HIDE": "Hide tertiary color",
-      "SUBMIT": "Apply graphic idendity chart"
-    },
-    "HOMEPAGE_MESSAGE": {
-      "TITLE": "Homepage message personalization",
-      "PORTAL_TITLE": "Portal title",
-      "DEFAULT_PORTAL_TITLE": "Default title",
-      "LANGUAGE_TITLE": "Title language",
-      "PORTAL_MESSAGE": "Portal homepage message",
-      "DEFAULT_PORTAL_MESSAGE": "Default Portal message",
-      "LANGUAGE_PORTAL_MESSAGE": "Portal message language",
-      "PORTAL_MESSAGE_LENGTH": "/500 characters max left",
-      "ADD_LANGUAGE": "Add a language",
-      "DELETE_LANGUAGE": "Delete the language"
-    },
-    "OWNER": {
-      "CREATE": {
-        "TITLE": "Creation of an owner for",
-        "PROOF_ELEMENTS": "This owner will hold the proof elements transverse to the organization."
-      },
-      "LIST": {
-        "PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
-      }
+    "HISTORY": {
+      "OPERATIONS": "Logbook",
+      "NO_HISTORY": "No history"
     }
+	},
+	"MISC": {
+		"NO_DESC": "No description"
+	},
+	"COLOR": {
+		"INVALID": "Invalid color",
+		"TOO_LIGHT": "The color is too light.",
+		"TOO_DARK": "The color is too dark.",
+		"INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards.",
+		"TERTIARY": "Tertiary color",
+		"HEADER_FOOTER": "Header/footer color",
+		"BACKGROUND": "Background color"
+	},
+	"CUSTOMER": {
+		"HOME": {
+			"TITLE": "Set up organizations",
+			"TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address...",
+			"CREATE_TITLE": "Create an organization",
+			"RESULTS_TABLE": {
+				"CODE": "Organization code",
+				"NAME": "Organization",
+				"SOCIAL_REASON": "Company name",
+				"SSO": "SSO",
+				"VALIDATIONS": "Two-step validation",
+				"OWNER_CODE": "Owner code",
+				"OWNER_NAME": "Owner",
+				"SAFE_CODE": "Safe code",
+				"ADD_OWNER": "Add an owner",
+				"SAFE_TOOLTIP": "Evidence safe"
+			}
+		},
+		"TAB": {
+			"OWNER": "Owner",
+			"INFORMATION": "Informations",
+			"SSO": "SSO",
+			"GRAPHIC_ID": "Graphic ID.",
+			"HOMEPAGE_MESSAGE": "Homepage message",
+			"HISTORY": "History"
+		},
+		"INFORMATIONS": {
+			"CODE": "Organization code",
+			"CODE_CREATION": "Organization code (4 numbers)",
+			"NAME": "Name",
+			"SOCIAL_REASON": "Company name",
+			"INTERNAL_CODE": "Internal code",
+			"DEFAULT_LANGUAGE": "Interface language (default for the user)",
+			"DEFAULT_LANGUAGE_1": "Interface language",
+			"DEFAULT_LANGUAGE_2": "(default for the user)",
+			"PASSWORD_DURATION": "Duration of password revocation (since the last change)",
+			"PASSWORDS_DURATION": "Duration of passwords revocation",
+			"PASSWORD_DURATION_1": "Duration of password revocation",
+			"PASSWORD_DURATION_2": "(since the last change)",
+			"VALIDATIONS": "Two-step validation",
+			"DOMAINS": "Domains",
+			"MODAL": {
+				"DOMAINS_RESTRICTION": "Email domain restriction",
+				"DOMAINS_RESTRICTION_DESC": "(click on the label to define the default domain)",
+				"DOMAINS_PLACEHOLDER": "domain.xyz"
+			}
+		},
+		"SSO": {
+			"UNAVAILABLE_DOMAINS": "No more available domains",
+			"BUTTON": "Create an IDP",
+			"NAME": "IDP name",
+			"TYPE": "Type",
+			"TYPE_INTERNAL": "Internal",
+			"TYPE_EXTERNAL": "External",
+			"STATUS_ACTIVE": "Active",
+			"STATUS_INACTIVE": "Inactive",
+			"PATTERNS": "Patterns",
+			"METADATA": "Metadata CAS",
+			"RETURN": "Return to the IDP list",
+			"ACTIVE_SWITCH": "Active IDP",
+			"KEYSTORE": "Keystore of CAS",
+			"IDP_METADATA": "IDP Metadata",
+			"MAIL_ATTRIBUTE": "Mail attribute"
+		},
+		"GRAPHIC_IDENTITY": {
+			"TOGGLE_TITLE": "Personalized graphic identity",
+			"COLOR_TITLE": "Colors settings",
+			"LOGO_TITLE": "Logo management",
+			"LOGO_HEADER_TITLE": "Header logo",
+			"LOGO_FOOTER_TITLE": "Footer logo",
+			"LOGO_PORTAL_TITLE": "Portal logo",
+			"LOGO_DROP": "Drop your logo",
+			"LOGO_ATTACH": "Attach a logo",
+			"TERTIARY_COLOR_SHOW": "Show tertiary color",
+			"TERTIARY_COLOR_HIDE": "Hide tertiary color",
+			"SUBMIT": "Apply graphic idendity chart",
+			"INVALID": "Incorrect color",
+			"TOO_LIGHT": "The color is too light.",
+			"TOO_DARK": "The color is too dark.",
+			"INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards."
+		},
+		"HOMEPAGE_MESSAGE": {
+			"LANGUAGE_TITLE": "Title",
+			"LANGUAGE_PORTAL_MESSAGE": "Welcome message",
+			"TITLE": "Homepage message personalization",
+			"PORTAL_TITLE": "Portal title",
+			"DEFAULT_PORTAL_TITLE": "Default title",
+			"PORTAL_MESSAGE": "Portal homepage message",
+			"DEFAULT_PORTAL_MESSAGE": "Default Portal message",
+			"PORTAL_MESSAGE_LENGTH": "/500 characters max left",
+			"ADD_LANGUAGE": "Add a language",
+			"DELETE_LANGUAGE": "Delete the language"
+		},
+		"OWNER": {
+			"CODE": "Owner code",
+			"NAME": "Name",
+			"SOCIAL_REASON": "Company name",
+			"INTERNAL_CODE": "Internal code",
+			"SAFE_CODE": "Safe code",
+			"SAFE_NAME": "Safe name",
+			"ACCESS_CONTRACT": "Access contract",
+			"INGEST_CONTRACT": "Ingest contract",
+			"LOGBOOK_ACCESS_CONTRACT": "Logbook access contract",
+			"SLIPS_INGEST_CONTRACT": "Slips ingest contract",
+			"CREATE": {
+				"TITLE": "Creation of an owner for",
+				"PROOF_ELEMENTS": "This owner will hold the proof elements transverse to the organization."
+			},
+			"LIST": {
+				"PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
+			}
+		}
+	},
+	"SUBROGATION": {
+		"HOME": {
+			"TITLE": "Subrogate a user",
+			"TITLE_PLACEHOLDER": "User, Admin",
+			"ACTION_BUTTON": "Subrogate a user",
+			"RESULTS_TABLE": {
+				"NAME": "Lastname / Firstname",
+				"CRITICITY": "Criticity",
+				"GROUP": "Group",
+				"ACTION_BUTTON": "Subrogate",
+				"MODAL": {
+					"TITLE": "User subrogation",
+					"MAIL": "Email",
+					"BUTTON": "Ask for subrogate"
+				}
+			}
+		}
+	},
+	"USER": {
+		"HOME": {
+			"TITLE": "Administer my users",
+			"TITLE_PLACEHOLDER": "Lastname, Firstname, Id, Email",
+			"ACTION_BUTTON": "Create a user",
+			"RESULTS_TABLE": {
+				"NAME": "Lastname / Firstname",
+				"LAST_CONNEXION": "Last connexion",
+				"GROUP_LEVEL": "Group level",
+				"GROUP": "Profile group"
+			}
+		},
+		"TAB": {
+			"INFORMATIONS": "Informations",
+			"GROUP": "Group",
+			"HISTORY": "History"
+		},
+		"INFORMATIONS": {
+			"ACCOUNT": "Active account",
+			"LASTNAME": "Lastname",
+			"FIRSTNAME": "Firstname",
+			"MAIL": "Email",
+			"PHONE": {
+				"MOBILE": "Phone number",
+				"FIX": "Home phone number"
+			},
+			"SITE_CODE": "Site code",
+			"INTERNAL_CODE": "Internal code",
+			"DEFAULT_LANGUAGE": "Interface language",
+			"GROUP_LEVEL": "Group level",
+			"TYPE": "Type",
+			"ALLOW_SUBROGATION": "Subrageable account",
+			"VALIDATIONS": "Two-step validation",
+			"MODAL": {
+				"INFORMATIONS_STEP": {
+					"TITLE": "Informations",
+					"GROUP_TYPE": "Assignable profile groups",
+					"GROUP_TYPE_NOMINATIVE": "Nominative",
+					"GROUP_TYPE_GENERIC": "Generic"
+				}
+			}
+		},
+		"GROUP": {
+			"GROUP": "Group",
+			"DESCRIPTION": "Description",
+			"LEVEL": "Level",
+			"PROFILE": "Group profiles",
+			"MODAL": {
+				"AUTORISATION_STEP": {
+					"TITLE": "Permissions",
+					"INPUT_PLACEHOLDER": "Filter by Name, Id...",
+					"RESULTS_TABLE": {
+						"GROUP_LABEL": "Profile group",
+						"MORE_DETAIL": "Show detail",
+						"LESS_DETAIL": "Hide detail",
+						"PROFILE": "Profiles"
+					}
+				}
+			}
+		}
+	},
+	"USER_PROFILE": {
+		"HOME": {
+			"TITLE": "Set up administrator rights",
+			"TITLE_PLACEHOLDER": "Administrator profile name, Id",
+			"ACTION_BUTTON": "Create an Administrator profile",
+			"RESULTS_TABLE": {
+				"NAME": "Administrator profile name",
+				"DESCRIPTION": "Description",
+				"LEVEL": "Level",
+				"USERS_NUMBER": "number of users"
+			}
+		},
+		"TAB": {
+			"INFORMATIONS": "Informations",
+			"HISTORY": "History"
+		},
+		"INFORMATIONS": {
+			"ACTIVE_SWITCH": "Active profile",
+			"INACTIVE_SWITCH": "Inactive profile",
+			"NAME": "Name",
+			"PROFILE_LEVEL": "Profile level",
+			"PROFILE_SUBLEVEL": "Sub level",
+			"DESCRIPTION": "Description",
+			"STRONG_AUTHENT": "Strong authentication",
+			"USERS_CREATION": "Create users",
+			"MODIF_INFORMATIONS": "Update of standards informations",
+			"ANONYMOUS": "Anonymization",
+			"USERS_MANAGEMENT": "Generic users management",
+			"MODAL": {
+				"DESCRIPTION": "Profile description"
+			}
+		}
+	},
+	"GROUP": {
+		"HOME": {
+			"TITLE": "Set up profile groups",
+			"TITLE_PLACEHOLDER": "Group name, Id",
+			"ACTION_BUTTON": "Create a Group",
+			"RESULTS_TABLE": {
+				"NAME": "Group name",
+				"DESCRIPTION": "Description",
+				"LEVEL": "Level"
+			}
+		},
+		"TAB": {
+			"INFORMATIONS": "Informations",
+			"PROFILE": "Profiles",
+			"HISTORY": "History"
+		},
+		"INFORMATIONS": {
+			"ACTIVE_SWITCH": "Active profile group",
+			"INACTIVE_SWITCH": "Inactive profile group",
+			"NAME": "Name",
+			"DESCRIPTION": "Description",
+			"LEVEL": "Level",
+			"SUBLEVEL": "Sub level",
+			"MODAL": {
+				"TITLE": "Create profile groups"
+			}
+		},
+		"PROFILE": {
+			"MODAL": {
+				"TITLE": "Editing profiles of",
+				"APP": "Application",
+				"SAFE": "Safe",
+				"PROFILE": "Profile"
+			}
   },
   "EXTERNAL_PARAM_PROFILE": {
     "CREATE_EXTERNAL_PARAM_PROFILE": "CREATE AN EXTERNAL PARAMETERS PROFILE",
@@ -90,6 +318,39 @@
     "SELECT_ACCESS_CONTRACT": "Select an access contract",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "External parameters profile {{ name }} has been created",
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External parameters profile {{ name }} has been updated"
-  }
+		}
+	},
+	"HIERARCHY": {
+		"HOME": {
+			"TITLE": "Set up access rights profiles",
+			"TITLE_PLACEHOLDER": "Profile name, Id",
+			"ACTION_BUTTON": "Duplicate a profile",
+			"RESULTS_TABLE": {
+				"NAME": "Profile name",
+				"APP": "Application",
+				"DESCRIPTION": "Description",
+				"LEVEL": "Level",
+				"USERS_NUMBER": "Number of users"
+			}
+		},
+		"TAB": {
+			"INFORMATIONS": "Informations",
+			"HISTORY": "History"
+		},
+		"INFORMATIONS": {
+			"ACTIVE_SWITCH": "Active profile",
+			"INACTIVE_SWITCH": "Inactive profile",
+			"NAME": "Name",
+			"LEVEL": "Profile level",
+			"SUBLEVEL": "Sub level",
+			"DESCRIPTION": "Description",
+			"MODAL": {
+				"TITLE": "Duplicate a profile",
+				"DUPLICATE_PROFILE": "Profile to duplicate",
+				"APP": "Application",
+				"PROFILE": "Profile"
+			}
+		}
+	}
 }
 

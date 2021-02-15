@@ -44,17 +44,16 @@
           (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
 
       </div>
-      <div class="col-2" i18n="User name column header@@userListUserNameHeader"><span>Nom / Prénom&nbsp;</span>
+      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.NAME' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="lastname" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="User id column header@@userListIDHeader"><span>Identifiant&nbsp;</span>
+      <div class="col-2"><span>{{'COMMON.ID' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="User lastConnexion name column header@@userListLastConnexionHeader"><span>Dernière
-          connexion&nbsp;</span>
+      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.LAST_CONNEXION' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="lastConnection" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
@@ -73,7 +72,7 @@
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Strong userGroup column header@@userListStrongAuthenticationHeader">Niveau du goupe&nbsp;</span>
+        <span>{{'USER.HOME.RESULTS_TABLE.GROUP_LEVEL' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
@@ -91,8 +90,7 @@
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Strong userProfileGroup column header@@userListStrongAuthenticationHeader">Groupe de
-          profils&nbsp;</span>
+        <span>{{'USER.HOME.RESULTS_TABLE.GROUP' | translate}}</span>
       </div>
 
 

@@ -166,6 +166,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ResizeSidebarModule,
     AutocompletePositionDirectiveModule,
     LogbookOperationFacetModule,
+    TranslateModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [

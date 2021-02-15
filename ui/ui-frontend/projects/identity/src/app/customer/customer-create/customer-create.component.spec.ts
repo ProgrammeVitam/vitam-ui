@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
+import { ConfirmDialogService, LoggerModule, OtpState } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -166,6 +166,7 @@ describe('CustomerCreateComponent', () => {
         DomainsInputModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        LoggerModule.forRoot()
       ],
       declarations: [
         CustomerCreateComponent,

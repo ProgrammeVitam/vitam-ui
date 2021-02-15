@@ -6,7 +6,7 @@
   <vitamui-common-stepper [selectedIndex]="stepIndex" (selectionChange)="stepIndex=$event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="user create informationTitle@@userCreateTitle">Informations</div>
+        <div class="text large bold">{{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.TITLE' | translate}}</div>
 
         <div class="mt-4">
           <vitamui-common-slide-toggle formControlName="enabled" i18n="user create labelEnabled@@labelEnabled">Compte
@@ -15,28 +15,26 @@
 
         <div class="d-flex mt-2">
           <vitamui-common-input class="col-5 p-0" formControlName="lastname" minlength="2" maxlength="50" required
-            placeholder="Nom" i18n-placeholder="user create lastname@@userCreateLastname">
+            [placeholder]="'USER.INFORMATIONS.LASTNAME' | translate">
             <vitamui-common-input-error
-              *ngIf="form.get('lastname')?.touched && form.get('lastname')?.hasError('required')"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              *ngIf="form.get('lastname')?.touched && form.get('lastname')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
           </vitamui-common-input>
 
           <vitamui-common-input class="col-5 ml-3 p-0" formControlName="firstname" minlength="2" maxlength="50"
-            required placeholder="Prénom" i18n-placeholder="user create firstname@@userCreateFirstname">
+            required [placeholder]="'USER.INFORMATIONS.FIRSTNAME' | translate">
             <vitamui-common-input-error
               *ngIf="form.get('firstname')?.touched && form.get('firstname')?.hasError('required')"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
 
         <form [formGroup]="formEmail">
           <div class="d-flex">
             <vitamui-common-input class="col-6 p-0" formControlName="emailFirstPart" maxlength="50" required
-              placeholder="Adresse e-mail" [class.ng-pending]="form?.get('email')?.pending" [class.ng-invalid]="form?.get('email')?.errors"
-              i18n-placeholder="user create email@@userCreateEmail">
+              [placeholder]="'USER.INFORMATIONS.MAIL' | translate" [class.ng-pending]="form?.get('email')?.pending" [class.ng-invalid]="form?.get('email')?.errors">
               <ng-container *ngIf="formEmail.get('emailFirstPart')?.touched">
                 <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('required')"
-                  i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                  >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
                 <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('pattern')"
                   i18n="Email pattern field error hint@@formErrorPatternEmail">Format e-mail incorrect
                 </vitamui-common-input-error>
@@ -63,31 +61,29 @@
         </form>
 
         <div>
-          <label for="type" i18n="userType label@@userCreateTypeInputLabel">
-            Groupes de profils attribuables
+          <label for="type">
+            {{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE' | translate}}
           </label>
           <div class="mt-2">
             <mat-button-toggle-group formControlName="type" #group="matButtonToggleGroup"
               class="vitamui-button-toggle-group">
-              <mat-button-toggle value="NOMINATIVE" i18n=" userType nominative button@@userCreateTypeNominativeButton">
-                Nominatif</mat-button-toggle>
-              <mat-button-toggle value="GENERIC" i18n="userType generic button@@userCreateTypeGenericButton">Générique
+              <mat-button-toggle value="NOMINATIVE">
+                {{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_NOMINATIVE' | translate}}</mat-button-toggle>
+              <mat-button-toggle value="GENERIC">{{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.GROUP_TYPE_GENERIC' | translate}}
               </mat-button-toggle>
             </mat-button-toggle-group>
           </div>
         </div>
 
         <div class="mt-4">
-          <vitamui-common-slide-toggle formControlName="subrogeable"
-            i18n="user create subrogeable account@@subrogeableAccount">Compte subrogeable par le support
+          <vitamui-common-slide-toggle formControlName="subrogeable">{{'USER.INFORMATIONS.ALLOW_SUBROGATION' | translate}}
           </vitamui-common-slide-toggle>
         </div>
 
         <div class="row actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
-            *ngIf="connectedUserInfo.type !== 'NONE';else noGroup"
-            i18n="user create next step suivant@@userCreateNextStepGroupButton">
-            Suivant
+            *ngIf="connectedUserInfo.type !== 'NONE';else noGroup">
+            {{'COMMON.NEXT' | translate}}
           </button>
           <ng-template #noGroup>
             <button type="button" class="btn primary" [disabled]="firstStepInvalid()" (click)="passGroupStep()"
@@ -95,9 +91,8 @@
               Continuer en gérant l'authentification
             </button>
           </ng-template>
-          <button type="button" class="btn cancel link ml-1" (click)="onCancel()"
-            i18n="user create cancel@@userCreateCancelButton">
-            Annuler
+          <button type="button" class="btn cancel link ml-1" (click)="onCancel()">
+            {{'COMMON.UNDO' | translate}}
           </button>
         </div>
       </div>
@@ -109,16 +104,14 @@
           <app-group-list [groups] = "groups" (selectedGroupEvent)="updateGroup($event)" [searchActiv] = "true"></app-group-list>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!groupName"
-            i18n="user create next step otp@@userCreateNextStepAddressButton">
-           Suivant
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!groupName">
+            {{'COMMON.NEXT' | translate}}
           </button>
-          <button type="button" class="btn cancel link" (click)="onCancel()"
-            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span class="underline">Retour</span></ng-container>
+          <ng-container><span class="underline">{{'COMMON.UNDO' | translate}}</span></ng-container>
         </button>
     </div>
     </cdk-step>
@@ -130,31 +123,30 @@
         <ng-container formGroupName="address">
           <div class="row">
             <vitamui-common-input class="col-12" [required]="!addressEmpty" formControlName="street" maxlength="250"
-              placeholder="N° et nom de rue" i18n-placeholder="@@userCreateStreetInputPlaceholder">
+            [placeholder]="'COMMON.ADRESS.STREET' | translate">
               <vitamui-common-input-error
                 *ngIf="form.get('address.street')?.touched && form.get('address.street')?.hasError('required')"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
             </vitamui-common-input>
           </div>
 
           <div class="row">
             <vitamui-common-input class="col-4" [required]="!addressEmpty" formControlName="zipCode" maxlength="10"
-              placeholder="Code postal" i18n-placeholder="@@userCreateZipCodeInputPlaceholder">
+              [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
               <vitamui-common-input-error
                 *ngIf="form.get('address.zipCode')?.touched && form.get('address.zipCode')?.hasError('required')"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
             </vitamui-common-input>
 
             <vitamui-common-input class="col-4" [required]="!addressEmpty" formControlName="city" maxlength="100"
-              placeholder="Ville" i18n-placeholder="@@userCreateCityInputPlaceholder">
+            [placeholder]="'COMMON.ADRESS.CITY' | translate">
               <vitamui-common-input-error
                 *ngIf="form.get('address.city')?.touched && form.get('address.city')?.hasError('required')"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+                >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
             </vitamui-common-input>
 
             <mat-form-field class="col-4 vitamui-mat-select">
-              <mat-select formControlName="country" placeholder="Pays"
-                i18n-placeholder="@@userCreateCountrySelectPlaceholder" panelClass="vitamui-mat-select">
+              <mat-select formControlName="country" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" panelClass="vitamui-mat-select">
                 <!-- TODO Fetch those values from a referential -->
                 <mat-option value="FR">France</mat-option>
                 <mat-option value="GB">Royaume Uni</mat-option>
@@ -172,27 +164,23 @@
         </ng-container>
 
         <div class="row">
-          <vitamui-common-input class="col-4" formControlName="siteCode" placeholder="Code du site"
-            i18n-placeholder="user create siteCode@@userCreateSiteCode">
+          <vitamui-common-input class="col-4" formControlName="siteCode" [placeholder]="'USER.INFORMATIONS.SITE_CODE' | translate">
           </vitamui-common-input>
 
-          <vitamui-common-input class="col-8" formControlName="internalCode" maxlength="20" placeholder="Code interne"
-            i18n-placeholder="@@userCreateInternalCodeInputPlaceholder">
+          <vitamui-common-input class="col-8" formControlName="internalCode" maxlength="20" [placeholder]="'USER.INFORMATIONS.INTERNAL_CODE' | translate">
           </vitamui-common-input>
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()"
-            i18n="user create next step otp@@userCreateNextStepOtpButton">
-            Suivant
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">
+            {{'COMMON.NEXT' | translate}}
           </button>
-          <button type="button" class="btn cancel link" (click)="onCancel()"
-            i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
 
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span class="underline">Retour</span></ng-container>
+          <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
         </button>
       </div>
     </cdk-step>
@@ -201,36 +189,31 @@
       <div class="content">
         <div class="text large bold" i18n="user create autorisationsTitle@@userCreateTitle">Sécurité</div>
 
-        <vitamui-common-slide-toggle formControlName="otp" i18n="user create otp@@userCreateOtp">Validation en deux
-          étapes</vitamui-common-slide-toggle>
+        <vitamui-common-slide-toggle formControlName="otp">{{'USER.INFORMATIONS.VALIDATIONS' | translate}}</vitamui-common-slide-toggle>
 
         <div class="d-flex mt-3">
-          <vitamui-common-input class="col-5 p-0 mr-4" formControlName="mobile" placeholder="Numéro de mobile"
-            i18n-placeholder="user create mobile@@userCreateMobile"
+          <vitamui-common-input class="col-5 p-0 mr-4" formControlName="mobile" [placeholder]="'USER.INFORMATIONS.PHONE.MOBILE' | translate"
             [class.ng-invalid]="form?.hasError('missingPhoneNumber')">
             <vitamui-common-input-error *ngIf="form?.get('mobile')?.hasError('pattern')"
               i18n="Mobile field format error hint@@formErrorMobileFieldFormat">
               Format international (+336XXXXXXXX) obligatoire
             </vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="form?.get('mobile')?.touched && form?.hasError('missingPhoneNumber')"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+              >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
           </vitamui-common-input>
-          <vitamui-common-input class="col-5 p-0" formControlName="phone" placeholder="Numéro de fixe"
-            i18n-placeholder="user create phone@@userCreatePhone">
+          <vitamui-common-input class="col-5 p-0" formControlName="phone" [placeholder]="'USER.INFORMATIONS.PHONE.FIX' | translate">
             <vitamui-common-input-error *ngIf="form?.get('phone')?.hasError('pattern')"
               i18n="Phone field format error hint@@formErrorPhoneFieldFormat">Format international (+331XXXXXXXX)
               obligatoire</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
         <div class="actions">
-        <button type="submit" class="btn primary" [disabled]="formInvalid() || creating"
-          i18n="user create validation@@userCreateValidationButton">Terminer</button>
-        <button type="button" class="btn cancel link" (click)="onCancel()"
-          i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+        <button type="submit" class="btn primary" [disabled]="formInvalid() || creating">{{'COMMON.SUBMIT' | translate}}</button>
+        <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
           </div>
         <button type="button" class="btn link" cdkStepperPrevious>
           <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-          <ng-container i18n="Previous step button label@@customerCreateBackButton"><span class="underline">Retour</span></ng-container>
+          <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
         </button>
       </div>
     </cdk-step>

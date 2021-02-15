@@ -1,5 +1,5 @@
 <button *ngIf="!readOnly" class="btn primary mb-3" (click)="openEditProfilesDialog()" i18n="Edit profiles@@profileGroupPreviewEditButton">
-  Modifier
+  {{'COMMON.UPDATE' | translate}}
 </button>
 
 <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list" *ngFor="let profile of profilesDisplay">

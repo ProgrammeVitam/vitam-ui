@@ -2,10 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService, ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
 import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
 import {FileFormatService} from '../../file-format/file-format.service';
@@ -45,6 +47,9 @@ describe('IngestContractCreateComponent', () => {
     };
 
     TestBed.configureTestingModule({
+      imports: [
+        VitamUICommonTestModule
+      ],
       declarations: [IngestContractCreateComponent],
       imports: [
         MatSnackBarModule

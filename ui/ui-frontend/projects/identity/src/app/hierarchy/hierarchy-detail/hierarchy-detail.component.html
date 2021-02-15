@@ -8,10 +8,10 @@
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="Informations" i18n-label="Information tab@@hierarchyDetailTabInformation">
+    <mat-tab [label]="'HIERARCHY.TAB.INFORMATIONS' | translate">
       <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()"></app-information-tab>
     </mat-tab>
-    <mat-tab label="Historique" i18n-label="History tab@@hierarchyDetailTabHistory">
+    <mat-tab [label]="'HIERARCHY.TAB.HISTORY' | translate">
       <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier"
         collectionName="profiles" [filter]="filterEvents"></vitamui-common-operation-history-tab>
     </mat-tab>

@@ -41,6 +41,8 @@ import { BASE_URL, IdentityProvider, LoggerModule, Operators, SearchQuery, WINDO
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../../../shared/vitamui-snack-bar';
 import { IdentityProviderService } from './identity-provider.service';
 
@@ -76,7 +78,8 @@ describe('IdentityProviderService', () => {
         { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } }
       ]
     });
 
