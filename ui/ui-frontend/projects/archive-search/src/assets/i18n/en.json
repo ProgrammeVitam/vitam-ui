@@ -1,0 +1,76 @@
+{
+  "ARCHIVE_SEARCH": {
+    "TITLE_SEARCH": "Search : ",
+    "TITLE_SEARCH_AREA": "Searching an archive",
+    "LAUNCH_SEARCH_ACTION": "Launch the search",
+    "SEARCH_CRITERIA_OR": "OR",
+    "SHOW_SEARCH_CRITERIA": "Show the search filters",
+    "HIDE_SEARCH_CRITERIA": "hide the search filters",
+    "SHOW_MORE_RESULTS": "Show more results...",
+    "NO_MORE_RESULTS": "No more results",
+    "SEARCH_CRITERIA_FILTER": {
+      "TITLE": "Search filters",
+      "OTHER_FILED_SELECTION": "Select another criteria",
+      "FIELDS": {
+        "ID": "ID",
+        "TITLE_OR_DESCRIPTION": "Title or Description",
+        "TITLE": "Title",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "DESCRIPTION": "Description",
+        "GUID": "Ingest GUID",
+        "UAID": "Archive unit GUID",
+        "SP": "Originating agency",
+        "SP_CODE": "Originating agency code",
+        "SP_LABEL": "Originating agency name",
+        "OTHER_FIELD": "Another criteria",
+        "SELECT_OTHER_FIELD": "Select another criteria"
+      }
+    },
+    "ARCHIVE_UNIT": {
+      "FIELDS": {
+        "TITLE": "Title",
+        "NAME": "Name",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "DESCRIPTION": "Description",
+        "GUID": "Ingest GUID",
+        "UAID": "Archive unit GUID",
+        "SP": "Originating agency",
+        "SP_CODE": "Originating agency code",
+        "SP_LABEL": "Originating agency name",
+        "OTHER_FIELD": "Another criteria",
+        "SELECT_OTHER_FIELD": "Select another criteria",
+        "SP_COMM": "Originating agency Comm",
+        "SP_COMM_DT": "Originating agency Comm DT"
+      }
+    },
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "NAME",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "DESCRIPTION": "Description",
+        "GUID": "Ingest Technical ID",
+        "UAID": "Archive Technical ID",
+        "SP": "Originating agency",
+        "PATH": "Path",
+        "DOWNLOAD_DOC": "Download the document"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations"
+      }
+    },
+    "FILING_SHCEMA": {
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans founds for the selected access contract",
+      "SHOW_ENTIRE_TREE": "Show the entire tree"
+    },
+    "RESULTS": "Results",
+    "RESULT": "Result",
+    "FOLDER": "Folder",
+    "DOCUMENT": "Document",
+    "ARCHIVE_PREVIEW": {
+      "INFORMATION": "Informations"
+    }
+  }
+}

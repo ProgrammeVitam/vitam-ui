@@ -572,7 +572,7 @@
           "options": {
             "browserTarget": "starter-kit:build",
             "host": "dev.vitamui.com",
-            "port": 4201
+            "port": 4203
           },
           "configurations": {
             "production": {
@@ -736,42 +736,43 @@
       }
     },
     "archive-search": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/archive-search",
+      "root": "projects/archive-search/",
       "sourceRoot": "projects/archive-search/src",
-      "prefix": "app",
+      "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./extra-webpack.config.js"
+            },
             "outputPath": "dist/archive-search",
             "index": "projects/archive-search/src/index.html",
             "main": "projects/archive-search/src/main.ts",
-            "polyfills": "projects/archive-search/src/polyfills.ts",
             "tsConfig": "projects/archive-search/tsconfig.app.json",
-            "aot": false,
+            "polyfills": "projects/archive-search/src/polyfills.ts",
+            "rebaseRootRelativeCssUrls": true,
             "assets": [
+              "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
-              "projects/archive-search/src/assets"
+              {
+                "glob": "**/*",
+                "input": "node_modules/ui-frontend-common/assets",
+                "output": "/assets"
+              }
             ],
             "styles": [
               "projects/archive-search/src/sass/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/archive-search/src/environments/environment.ts",
-                  "with": "projects/archive-search/src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -781,18 +782,26 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
+              "fileReplacements": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "14mb"
+                  "replace": "projects/archive-search/src/environments/environment.ts",
+                  "with": "projects/archive-search/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/archive-search/ngsw-config.json"
+            },
+            "en": {
+              "aot": true,
+              "i18nFile": "projects/archive-search/src/locale/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "i18nMissingTranslation": "warning"
             }
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "archive-search:build",
             "host": "dev.vitamui.com",
@@ -801,6 +810,9 @@
           "configurations": {
             "production": {
               "browserTarget": "archive-search:build:production"
+            },
+            "en": {
+              "browserTarget": "archive-search:build:en"
             }
           }
         },
@@ -814,17 +826,22 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "projects/archive-search/src/test.ts",
+            "karmaConfig": "projects/archive-search/karma.conf.ci.js",
             "polyfills": "projects/archive-search/src/polyfills.ts",
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
-            "karmaConfig": "projects/archive-search/karma.conf.ci.js",
-            "assets": [
-              "projects/archive-search/src/favicon.ico",
-              "projects/archive-search/src/assets"
-            ],
+            "scripts": [],
             "styles": [
               "projects/archive-search/src/sass/styles.scss"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
+            "assets": [
+              "projects/archive-search/src/assets",
+              "projects/archive-search/src/favicon.ico"
+            ]
           }
         },
         "lint": {
@@ -832,24 +849,11 @@
           "options": {
             "tsConfig": [
               "projects/archive-search/tsconfig.app.json",
-              "projects/archive-search/tsconfig.spec.json",
-              "projects/archive-search/e2e/tsconfig.json"
+              "projects/archive-search/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/archive-search/e2e/protractor.conf.js",
-            "devServerTarget": "archive-search:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "archive-search:serve:production"
-            }
           }
         }
       }

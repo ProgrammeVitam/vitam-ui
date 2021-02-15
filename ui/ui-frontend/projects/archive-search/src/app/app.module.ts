@@ -43,11 +43,24 @@ import { VitamUICommonModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+//import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { QuicklinkModule } from 'ngx-quicklink';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
 
 
 registerLocaleData(localeFr, 'fr');
 
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/shared-i18n/', suffix: '.json' },
+    { prefix: './assets/i18n/', suffix: '.json' }
+  ]);
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +71,18 @@ registerLocaleData(localeFr, 'fr');
     BrowserModule,
     VitamUICommonModule,
     AppRoutingModule,
-    VitamUILibraryModule
+   // VitamUILibraryModule,
+    QuicklinkModule,
+    TranslateModule.forRoot({
+      defaultLanguage: 'fr',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+
   ],
   providers: [
     Title,

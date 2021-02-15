@@ -1,0 +1,27 @@
+{
+  "xliffmergeOptions": {
+    "srcDir": "projects/archive-search/src/locale",
+    "genDir": "projects/archive-search/src/locale",
+    "i18nFile": "messages.xlf",
+    "i18nBaseFile": "messages",
+    "i18nFormat": "xlf",
+    "encoding": "UTF-8",
+    "defaultLanguage": "fr",
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "removeUnusedIds": true,
+    "supportNgxTranslate": false,
+    "ngxTranslateExtractionPattern": "@@|ngx-translate",
+    "useSourceAsTarget": false,
+    "targetPraefix": "",
+    "targetSuffix": "",
+    "allowIdChange": false,
+    "autotranslate": false,
+    "apikey": "",
+    "apikeyfile": "",
+    "verbose": true,
+    "quiet": false
+  }
+}

@@ -46,6 +46,7 @@ import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
@@ -127,7 +128,8 @@ emptyForm = {
   showUnitPreviewBlock = false;
 
   constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
-              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe) {
+              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe,
+    private translate: TranslateService) {
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe(node => {
       if(node.checked){
         this.addCriteria("NODE", "Noeud", node.id, node.title);
@@ -195,45 +197,45 @@ emptyForm = {
    isEmpty(formData: any): boolean{
      if(formData){
        if(formData.archiveCriteria){
-         this.addCriteria("titleAndDescription", "Titre ou Description", formData.archiveCriteria.trim(), formData.archiveCriteria.trim());
+         this.addCriteria("titleAndDescription", "TITLE_OR_DESCRIPTION", formData.archiveCriteria.trim(), formData.archiveCriteria.trim(), true);
        return true;
      }else
       if(formData.title){
-        this.addCriteria("Title", "Titre", formData.title.trim(), formData.title.trim());
+        this.addCriteria("Title", "TITLE", formData.title.trim(), formData.title.trim(), true);
        return true;
      }else  if(formData.description){
-        this.addCriteria("Description", "Description", formData.description.trim(), formData.description.trim());
+        this.addCriteria("Description", "DESCRIPTION", formData.description.trim(), formData.description.trim(), true);
        return true;
      } else if(formData.beginDt) {
-        this.addCriteria("StartDate", "Date début", this.form.value.beginDt, this.datePipe.transform(this.form.value.beginDt, 'dd/MM/yyyy'));
+        this.addCriteria("StartDate", "START_DATE", this.form.value.beginDt, this.datePipe.transform(this.form.value.beginDt, 'dd/MM/yyyy'), true);
        return true;
      }else if(formData.endDt){
-        this.addCriteria("EndDate", "Date de fin", this.form.value.endDt, this.datePipe.transform(this.form.value.endDt, 'dd/MM/yyyy'));
+        this.addCriteria("EndDate", "END_DATE", this.form.value.endDt, this.datePipe.transform(this.form.value.endDt, 'dd/MM/yyyy'), true);
        return true;
       }   else if(formData.serviceProdCode){
-        this.addCriteria("#originating_agency", "Code Service Prod ", formData.serviceProdCode.trim(), formData.serviceProdCode.trim());
+        this.addCriteria("#originating_agency", "SP_CODE", formData.serviceProdCode.trim(), formData.serviceProdCode.trim(), true);
        return true;
       }else if(formData.serviceProdLabel){
-        this.addCriteria("originating_agency_label", "Nom Service Prod ", formData.serviceProdLabel.trim(), formData.serviceProdLabel.trim());
+        this.addCriteria("originating_agency_label", "SP_LABEL", formData.serviceProdLabel.trim(), formData.serviceProdLabel.trim(), true);
        return true;
      }else if(formData.uaid){
-        this.addCriteria("#id", "ID", formData.uaid, formData.uaid);
+        this.addCriteria("#id", "ID", formData.uaid, formData.uaid, true);
        return true;
       } else if(formData.guid) {
-        this.addCriteria("#opi", "GUID", formData.guid, formData.guid);
+        this.addCriteria("#opi", "GUID", formData.guid, formData.guid, true);
         return true;
       }else if(formData.serviceProdCommunicability){
-        this.addCriteria("serviceProdCommunicability", "Service Prod Comm", formData.serviceProdCommunicability, formData.serviceProdCommunicability);
+        this.addCriteria("serviceProdCommunicability", "SP_COMM", formData.serviceProdCommunicability, formData.serviceProdCommunicability, true);
        return true;
      }else if(formData.serviceProdCommunicabilityDt){
-        this.addCriteria("serviceProdCommunicabilityDt", "Service Prod Comm DT", formData.serviceProdCommunicabilityDt, formData.serviceProdCommunicabilityDt);
+        this.addCriteria("serviceProdCommunicabilityDt", "SP_COMM_DT", formData.serviceProdCommunicabilityDt, formData.serviceProdCommunicabilityDt, true);
        return true;
      }else if(formData.otherCriteriaValue){
         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
         if(this.otherCriteriaValueType === 'DATE'){
-          this.addCriteria(ontologyElt.Value, ontologyElt.Label, this.form.value.otherCriteriaValue, this.datePipe.transform(this.form.value.otherCriteriaValue, 'dd/MM/yyyy') );
+          this.addCriteria(ontologyElt.Value, ontologyElt.Label, this.form.value.otherCriteriaValue, this.datePipe.transform(this.form.value.otherCriteriaValue, 'dd/MM/yyyy'), false );
         }else {
-          this.addCriteria(ontologyElt.Value, ontologyElt.Label, formData.otherCriteriaValue.trim(), formData.otherCriteriaValue.trim());
+          this.addCriteria(ontologyElt.Value, ontologyElt.Label, formData.otherCriteriaValue.trim(), formData.otherCriteriaValue.trim(), false);
         }
        return true;
      }else{
@@ -337,7 +339,7 @@ emptyForm = {
     });
 }
 
-  addCriteria(keyElt: string, keyLabel: string, valueElt: string, labelElt: string){
+  addCriteria(keyElt: string, keyLabel: string, valueElt: string, labelElt: string, translated: boolean){
     if(keyElt && valueElt){
      if(this.searchCriterias){
       this.nbQueryCriteria++;
@@ -348,12 +350,12 @@ emptyForm = {
         if(!values || values.length === 0){
           values = [];
         }
-        values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED} );
+        values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED, translated: translated} );
         criteria.values = values;
         this.searchCriterias.set(keyElt, criteria);
       }else {
         let values = [];
-        values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED} );
+        values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED, translated: translated} );
         let criteria = {key: keyElt, label: keyLabel, values : values };
         this.searchCriterias.set(keyElt, criteria);
       }
