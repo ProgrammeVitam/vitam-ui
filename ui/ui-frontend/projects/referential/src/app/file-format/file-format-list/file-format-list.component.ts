@@ -46,7 +46,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
+import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
 import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
@@ -166,6 +166,10 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  isInternal(fileFormat: FileFormat): boolean {
+    return !fileFormat.puid.startsWith(FILE_FORMAT_EXTERNAL_PREFIX);
   }
 
   deleteFileFormatDialog(fileFormat: FileFormat) {
