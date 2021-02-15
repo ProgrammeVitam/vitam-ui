@@ -66,19 +66,19 @@
           <div class="col-2">
             <ng-container [ngSwitch]="ingestStatus(ingest)">
               <div *ngSwitchCase="'OK'">
-                <span class="text-green">Succès</span>
+                <span class="text-green">{{'INGEST_LIST.RESULT.OK' | translate}}</span>
               </div>
               <div *ngSwitchCase="'STARTED'">
-                <span class="text-grey">En cours</span>
+                <span class="text-grey">{{'INGEST_LIST.RESULT.STARTED' | translate}}</span>
               </div>
               <div *ngSwitchCase="'WARNING'">
-                <span class="text-orange">Avertissement</span>
+                <span class="text-orange">{{'INGEST_LIST.RESULT.WARNING' | translate}}</span>
               </div>
               <div *ngSwitchCase="'FATAL'">
-                <span class="text-red">Erreur Technique</span>
+                <span class="text-red">{{'INGEST_LIST.RESULT.FATAL' | translate}}</span>
               </div>
               <div *ngSwitchCase="'KO'">
-                <span class="text-red">Erreur</span>
+                <span class="text-red">{{'INGEST_LIST.RESULT.KO' | translate}}</span>
               </div>
             </ng-container>
           </div>
@@ -86,10 +86,13 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+  <div *ngIf="!pending && !ingestService.canLoadMore then resultfound else loadingSpinner"></div>
 </div>
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
+</ng-template>
+<ng-template #resultfound>
+  <div class="text-center">{{'INGEST_LIST.NORESULTS' | translate}}</div>
 </ng-template>

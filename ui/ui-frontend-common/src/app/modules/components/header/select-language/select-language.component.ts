@@ -81,6 +81,29 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
       switch (appId) {
         case ApplicationId.PORTAL_APP:
         case ApplicationId.STARTER_KIT_APP:
+        case ApplicationId.CUSTOMERS_APP :
+        case ApplicationId.USERS_APP :
+        case ApplicationId.GROUPS_APP :
+        case ApplicationId.PROFILES_APP :
+        case ApplicationId.SUBROGATIONS_APP :
+        case ApplicationId.ACCOUNTS_APP :
+        case ApplicationId.HIERARCHY_PROFILE_APP :
+        case ApplicationId.INGEST_APP :
+        case ApplicationId.ARCHIVE_SEARCH_APP :
+        case ApplicationId.RULES_APP :
+        case ApplicationId.HOLDING_FILLING_SCHEME_APP :
+        case ApplicationId.LOGBOOK_OPERATION_APP :
+        case ApplicationId.PROBATIVE_VALUE_APP :
+        case ApplicationId.DSL_APP :
+        case ApplicationId.SECURE_APP :
+        case ApplicationId.AUDIT_APP :
+        case ApplicationId.ONTOLOGY_APP :
+        case ApplicationId.SECURITY_PROFILES_APP :
+        case ApplicationId.CONTEXTS_APP :
+        case ApplicationId.FILE_FORMATS_APP :
+        case ApplicationId.AGENCIES_APP :
+        case ApplicationId.ACCESS_APP :
+        case ApplicationId.INGEST_APP_REF :
           return true;
         default:
           return false;

@@ -14,6 +14,7 @@
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Titre ou Description",
+        "NODE" : "Noeud",
         "TITLE": "Titre",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",

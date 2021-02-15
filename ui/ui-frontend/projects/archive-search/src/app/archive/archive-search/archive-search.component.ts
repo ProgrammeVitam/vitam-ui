@@ -46,7 +46,7 @@ import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
-import { TranslateService } from '@ngx-translate/core';
+
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
@@ -128,11 +128,11 @@ emptyForm = {
   showUnitPreviewBlock = false;
 
   constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
-              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe,
-    private translate: TranslateService) {
+              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe
+    ) {
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe(node => {
       if(node.checked){
-        this.addCriteria("NODE", "Noeud", node.id, node.title);
+        this.addCriteria("NODE", "NODE", node.id, node.title, true);
       }else {
         node.count = null;
         this.removeCriteria("NODE", node.id);
