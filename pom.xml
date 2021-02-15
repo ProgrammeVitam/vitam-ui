@@ -70,7 +70,7 @@
         <apache.commons.codec.version>1.14</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.16</apache.pdfbox.version>
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
-        <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
+        <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
         <bouncycastle.version>1.65</bouncycastle.version>
         <cas.version>6.1.6</cas.version>
