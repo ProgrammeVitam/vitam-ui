@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import fr.gouv.vitam.common.dsl.schema.Dsl;
-import fr.gouv.vitam.common.dsl.schema.DslSchema;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +73,7 @@ public class UnitExternalController {
     }
 
     @PostMapping(RestApi.DSL_PATH)
-    public JsonNode searchByDsl(final @RequestBody @Dsl(value = DslSchema.SELECT_MULTIPLE) JsonNode dsl) {
+    public JsonNode searchByDsl(final @RequestBody JsonNode dsl) {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
         SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitExternalService.findUnitByDsl(dsl);
