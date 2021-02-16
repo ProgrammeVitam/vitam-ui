@@ -63,6 +63,10 @@ export class UploadService {
     return this.uploadStatus;
   }
 
+  setUploadStatus(uploadStaus: BehaviorSubject<IngestList>) {
+    this.uploadStatus = uploadStaus;
+  }
+
   addNewUploadFile(requestId: string, ingest: IngestInfo): void {
     const map: IngestList = this.uploadStatus.getValue();
     map.add(requestId, ingest);

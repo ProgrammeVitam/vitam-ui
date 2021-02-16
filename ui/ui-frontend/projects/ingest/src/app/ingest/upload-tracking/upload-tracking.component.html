@@ -24,7 +24,9 @@
       <td>{{ ingestInfo.value.name }}</td>
       <td>{{ ingestInfo.value.size | filesize }}</td>
       <td>
-        <mat-progress-bar mode="determinate" [value]="(ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks" class="stepper-progress-bar"></mat-progress-bar>
+        <span class="purcent">{{ (ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks | number:'1.0-0' }} %</span>
+        <mat-progress-bar mode="determinate" [value]="(ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks" class="stepper-progress-bar">
+        </mat-progress-bar>
       </td>
     </tr>
     </tbody>

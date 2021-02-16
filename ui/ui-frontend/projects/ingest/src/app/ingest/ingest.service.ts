@@ -36,9 +36,9 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IngestApiService } from '../core/api/ingest-api.service';
-import { SearchService } from 'ui-frontend-common';
 import { Observable } from 'rxjs';
+import { SearchService } from 'ui-frontend-common';
+import { IngestApiService } from '../core/api/ingest-api.service';
 
 
 @Injectable({
@@ -52,15 +52,17 @@ export class IngestService extends SearchService<any> {
     super(http, ingestApiService, 'ALL');
   }
 
-  headers = new HttpHeaders();
-
   getBaseUrl() {
     return this.ingestApiService.getBaseUrl();
   }
 
+  get(id: string, tenantIdentifier?: string): Observable<any> {
+    const headers = new HttpHeaders();
+    if (tenantIdentifier) {
+      headers.set('X-Tenant-Id', tenantIdentifier);
+    }
 
-  get(id: string): Observable<any> {
-    return this.ingestApiService.getOne(id);
+    return this.ingestApiService.getOne(id, headers);
   }
 
   getIngestOperation(id: string): Observable<any> {

@@ -54,6 +54,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { UploadService } from '../core/common/upload.service';
 
 @Component({ selector: 'app-ingest-list', template: '' })
 export class IngestListStubComponent {
@@ -68,6 +69,7 @@ describe('IngestComponent', () => {
     ingest: () => of('test ingest'),
     search: () => of([])
   };
+  const uploadServiceSpy = jasmine.createSpyObj('UploadService', { uploadFile: of({}), filesStatus: of([]) });
 
   beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
@@ -95,6 +97,7 @@ describe('IngestComponent', () => {
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
+        { provide: UploadService, useValue: uploadServiceSpy },
         { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) } },
         { provide: environment, useValue: environment }
       ],

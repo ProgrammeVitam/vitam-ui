@@ -133,7 +133,9 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
         criteria.evDateTime_Start = this._filters.startDate;
       }
       if (this._filters.endDate) {
-        criteria.evDateTime_End = this._filters.endDate;
+        const date = new Date(this._filters.endDate);
+        date.setDate(date.getDate() + 1);
+        criteria.evDateTime_End = date;
       }
     }
 
@@ -153,8 +155,24 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this.orderChange.next();
   }
 
+  getOperationStatus(ingest: any): string {
+    const eventsLength = ingest.events.length;
+    if (eventsLength > 0) {
+      if (ingest.evType === ingest.events[eventsLength - 1].evType) {
+        return ingest.events[eventsLength - 1].outcome;
+      } else {
+        return 'En cours';
+      }
+    }
+  }
+
   ingestStatus(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+    if (this.getOperationStatus(ingest) === 'En cours') {
+      return 'En cours';
+    } else {
+      return (ingest.events !== undefined && ingest.events.length !== 0) ?
+        ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+    }
   }
 
   ingestEndDate(ingest: any): string {
