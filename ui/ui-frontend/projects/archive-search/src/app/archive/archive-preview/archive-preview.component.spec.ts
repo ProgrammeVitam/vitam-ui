@@ -56,6 +56,7 @@ import { BASE_URL, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { Unit } from '../models/unit.interface';
  
 import { ArchivePreviewComponent } from './archive-preview.component';
+import { TranslateModule } from '@ngx-translate/core';
  
 
  
@@ -77,7 +78,8 @@ describe('ArchivePreviewComponent', () => {
         RouterTestingModule,
         VitamUILibraryModule,
         MatIconModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        TranslateModule.forRoot()
       ],
       declarations: [
         ArchivePreviewComponent
