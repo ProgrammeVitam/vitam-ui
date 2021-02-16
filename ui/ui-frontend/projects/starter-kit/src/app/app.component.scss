@@ -17,10 +17,10 @@
     }
     
     ::ng-deep {
-        .mat-sidenav-content {
-            overflow: hidden;
+        .mat-drawer-container {
+            height: 100%;
         }
-         
+        
         .mat-list-item-content {
             justify-content: center;
         }
