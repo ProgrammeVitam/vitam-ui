@@ -106,6 +106,7 @@ customer-init:
         - ROLE_GET_INGEST
         - ROLE_CREATE_INGEST
         - ROLE_GET_ALL_INGEST
+        - ROLE_LOGBOOKS
 
     - name: Profil Arbres et Plans
       description: Gestion des applications d'import d'arbres de positionnement et plans de classement

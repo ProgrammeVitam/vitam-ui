@@ -26,7 +26,8 @@ db.profiles.update(
               "roles": [
               {"name": "ROLE_CREATE_INGEST"},
               {"name": "ROLE_GET_INGEST"},
-              {"name": "ROLE_GET_ALL_INGEST"}
+              {"name": "ROLE_GET_ALL_INGEST"},
+              {"name": "ROLE_LOGBOOKS"}
                ]
         },
         "$setOnInsert": {
@@ -111,7 +112,7 @@ db.contexts.update(
              "fullAccess" : true,
              "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
              "roleNames" : [
-                 "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST"
+                 "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST", "ROLE_LOGBOOKS"
                 ]
         },
         "$setOnInsert": {
@@ -162,7 +163,7 @@ db.services.update(
             }
         },
         "$setOnInsert": {
-            "_id" :  NumberInt(4) 
+            "_id" :  NumberInt(4)
         }
     },
     { "upsert":true }
