@@ -69,6 +69,7 @@ ui-archive-search:
   base-url:
     portal: "https://dev.vitamui.com:4200"
 
+
   portal-categories:
     ingests:
       title: "Recherches et consultation"
