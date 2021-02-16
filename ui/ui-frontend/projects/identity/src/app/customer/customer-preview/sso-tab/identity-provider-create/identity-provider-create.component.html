@@ -64,27 +64,31 @@
       </vitamui-common-input>
     </div>
 
-    <div class="form-group">
-      <label for="authnRequestBinding" i18n="Authentication Request Binding label@@idpCreateAuthnRequestBindingInputLabel">
-        Authentication Request Binding <span class="required-marker">*</span>
-      </label>
-      <mat-button-toggle-group formControlName="authnRequestBinding" #group="matButtonToggleGroup"
-        class="vitamui-button-toggle-group">
-        <mat-button-toggle value="GET" i18n="Authentication Request Binding GET button@@idpCreateAuthnRequestBindingGetButton">GET
-        </mat-button-toggle>
-        <mat-button-toggle value="POST" i18n="Authentication Request Binding POST button@@idpCreateAuthnRequestBindingPostButton">POST
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-
     <div class="mt-2">
-      <div class="text medium bold mb-3" for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</div>
-      <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>
-    </div>
+      <div class="form-group">
+        <label class="text medium bold mb-3" for="authnRequestBinding" i18n="Authentication Request Binding label@@idpCreateAuthnRequestBindingInputLabel">
+          Authentication Request Binding <span class="text danger">*</span>
+        </label>
+        <div class="my-2">
+          <mat-button-toggle-group formControlName="authnRequestBinding" #group="matButtonToggleGroup"
+            class="vitamui-button-toggle-group">
+            <mat-button-toggle value="GET" i18n="Authentication Request Binding GET button@@idpCreateAuthnRequestBindingGetButton">GET
+            </mat-button-toggle>
+            <mat-button-toggle value="POST" i18n="Authentication Request Binding POST button@@idpCreateAuthnRequestBindingPostButton">POST
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
 
-    <div class="actions mt-4">
-      <button type="submit" class="btn primary" [disabled]="!isFormValid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
-      <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
+      <div class="form-group">
+        <label class="text medium bold mb-3" for="patterns" i18n="Patterns label@@idpCreatePatternsLabel">Patterns</label>
+        <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>
+      </div>
+
+      <div class="actions mt-4">
+        <button type="submit" class="btn primary" [disabled]="!isFormValid" i18n="Finish tenant creation button@@tenantCreateFinishButton">Terminer</button>
+        <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel tenant creation@@tenantCreateCancelButton">Annuler</button>
+      </div>
     </div>
   </div>
 </form>
