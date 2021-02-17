@@ -1,12 +1,5 @@
 @import 'indigo-pink.css';
 @import 'material-icons.css';
-<<<<<<< HEAD
-
-@import 'theme';
-
-@import url('https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900');
-=======
->>>>>>> 7f97a853a... import Mulish googleApi fonts
 
 @import 'theme';
 @import 'font-styles';
@@ -18,13 +11,6 @@
 @import 'mfa-sms';
 @import 'typography';
 
-@font-face {
-    font-family: 'Mulish', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    src: local('Mulish', sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format('woff2');
-    font-display: optional;
-  }
 
 body {
     margin: 0;
