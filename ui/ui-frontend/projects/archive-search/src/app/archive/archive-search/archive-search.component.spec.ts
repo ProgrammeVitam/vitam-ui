@@ -124,7 +124,8 @@ describe('ArchiveSearchComponent', () => {
             'value': 'Titre 1',
             'label': 'Titre 1',
             'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-            'valueShown': true
+            'valueShown': true,
+            'translated' : true
           }
         ]
     };
@@ -134,13 +135,15 @@ describe('ArchiveSearchComponent', () => {
         'value': 'Titre 1',
         'label': 'Titre 1',
         'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-        'valueShown': true
+        'valueShown': true,
+        'translated' : true
       },
       {
         'value': 'Titre2',
         'label': 'Titre 2',
         'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-        'valueShown': true
+        'valueShown': true,
+        'translated' : true
       }
     ];
 
@@ -162,7 +165,8 @@ describe('ArchiveSearchComponent', () => {
             {'value':'Titre2',
             'label':'Titre 2',
             'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-            'valueShown': true
+            'valueShown': true,
+            'translated' : true
           }
           ]
       });
@@ -173,7 +177,7 @@ describe('ArchiveSearchComponent', () => {
     describe('addCriteria', () => {
       it('should add the new criteria to the criteria list having same key', () => {
         // When: add a new criteria value
-        component.addCriteria(searchCriteria.key, searchCriteria.label, searchCriteria.values[0].value, searchCriteria.values[0].label);
+        component.addCriteria(searchCriteria.key, searchCriteria.label, searchCriteria.values[0].value, searchCriteria.values[0].label, true);
 
         // Then: the new criteria should be added to the criteria list
         expect(component.searchCriterias.size).toEqual(1);

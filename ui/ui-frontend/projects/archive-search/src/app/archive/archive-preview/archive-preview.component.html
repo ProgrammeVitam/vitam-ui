@@ -1,134 +1,116 @@
-<div class="vitamui-sidepanel">
-    <div class="vitamui-sidepanel-header">
-                  <ng-container *ngIf="!isPopup">
-                        <button class="btn-popup" role="button" (click)="openPopup()"><i
-                            class="vitamui-icon vitamui-icon-pin"></i></button>
-                      </ng-container>
+<vitamui-common-sidenav-header 
+    [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en "      
+    [icon]="archiveUnit?.DescriptionLevel === 'RecordGrp' ?  'vitamui-icon-box' : 'vitamui-icon-folder'"  
+    (onclose)="emitClose()">
+</vitamui-common-sidenav-header>
 
-                  <button class="btn-close" role="button" (click)="emitClose()"><i
-                    class="material-icons">close</i></button>
-                <div class="title">
-                    <h2>
-                        <mat-icon>info</mat-icon>
-                        <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
-                            {{ archiveUnit?.Title }}
-                        </ng-container>
-                        <ng-template #subTitleFr>
-                            <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
-                                {{ archiveUnit.Title_.fr }}
+<div class="vitamui-sidepanel-body">
+    <mat-tab-group class="preview-tab-group">
+        <mat-tab label="{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate}}" >
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate}}:</label>
+                        <div>
+                            <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
+                                {{ archiveUnit?.Title }}
                             </ng-container>
-                        </ng-template>
-                        <ng-template #subTitleEn>
-                            <ng-container *ngIf="archiveUnit.Title_.en">
-                                {{ archiveUnit.Title_.en }}
-                            </ng-container>
-                        </ng-template>
-                    </h2>
-            </div>
-    </div>
-    <div class="vitamui-sidepanel-body">
-        <mat-tab-group class="preview-tab-group">
-            <mat-tab label="Informations">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Nom:</label>
-                            <div>
-                                <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
-                                    {{ archiveUnit?.Title }}
+                            <ng-template #subTitleFr>
+                                <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
+                                    {{ archiveUnit.Title_.fr }}
                                 </ng-container>
-                                <ng-template #subTitleFr>
-                                    <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
-                                        {{ archiveUnit.Title_.fr }}
-                                    </ng-container>
-                                </ng-template>
-                                <ng-template #subTitleEn>
-                                    <ng-container *ngIf="archiveUnit.Title_.en">
-                                        {{ archiveUnit.Title_.en }}
-                                    </ng-container>
-                                </ng-template>
-                            </div>
+                            </ng-template>
+                            <ng-template #subTitleEn>
+                                <ng-container *ngIf="archiveUnit.Title_.en">
+                                    {{ archiveUnit.Title_.en }}
+                                </ng-container>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Identifiant technique du versement:</label>
-                            <div>
-                                {{archiveUnit['#opi']}}
-                            </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate}}:</label>
+                        <div>
+                            {{archiveUnit['#opi']}}
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Identifiant technique de l'unité archivistique:</label>
-                            <div>
-                                {{archiveUnit['#id']}}
-                            </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate}}:</label>
+                        <div>
+                            {{archiveUnit['#id']}}
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Description:</label>
-                            <div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field text-justify">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate}}:</label>
+                        <div>
+                            <p class="text-justify">
                                 {{archiveUnit.Description}}
-                            </div>
+                            </p>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate}}:</label>
+                        <div matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})"
+                            matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                            {{ archiveUnit['originating_agencyName']}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate}}:</label>
+                        <div>
+                            {{archiveUnit.DescriptionLevel}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-6">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate}}:</label>
+                        <div>
+                            {{archiveUnit?.StartDate | date: 'dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="read-only-field">
+                        <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate}}:</label>
+                        <div>
+                            {{archiveUnit?.EndDate | date: 'dd/MM/yyyy'}}
+                        </div>
+                    </div>
+                </div>
+            
                 <div class="row">
                     <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Service Producteur:</label>
-                            <div matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300" >
-                                {{ archiveUnit['originating_agencyName']}}
-                            </div>
-                        </div>
+                        <button class="btn secondary download-btn" [disabled]="archiveUnit['#object'] == null"
+                            (click)="onDownloadObjectFromUnit(archiveUnit)">
+                            <i class="vitamui-icon vitamui-icon-download"></i> <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate}}</span>
+                        </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="read-only-field">
-                            <label>Chemin:</label>
-                            <div>
-                                {{archiveUnit.DescriptionLevel}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <div class="read-only-field">
-                            <label>Date de début:</label>
-                            <div>
-                                {{archiveUnit?.StartDate | date: 'dd/MM/yyyy'}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="read-only-field">
-                            <label>Date de fin:</label>
-                            <div>
-                                {{archiveUnit?.EndDate | date: 'dd/MM/yyyy'}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <button class="btn secondary download-btn" [disabled] = "archiveUnit['#object'] == null" (click)="onDownloadObjectFromUnit(archiveUnit)">
-                                <i class="vitamui-icon vitamui-icon-download"></i> <span>Télécharger le document</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </div>
+  

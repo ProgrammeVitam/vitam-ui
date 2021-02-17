@@ -37,12 +37,14 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { BytesPipe, Logger } from 'ui-frontend-common';
 import { UploadService } from './upload.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 
+const LAST_STEP_INDEX = 2;
 const action = 'RESUME';
 
 @Component({
@@ -50,6 +52,7 @@ const action = 'RESUME';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
+
 export class UploadComponent implements OnInit {
 
   sipForm: FormGroup;
@@ -68,6 +71,9 @@ export class UploadComponent implements OnInit {
   tenantIdentifier: string;
   uploadComplete = false;
   isDisabled = true;
+  public stepIndex = 0;
+  public stepCount = 2;
+  
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -143,6 +149,7 @@ export class UploadComponent implements OnInit {
       this.hasError = true;
       return;
     }
+    this.stepIndex = LAST_STEP_INDEX;
   }
 
   addSip() {

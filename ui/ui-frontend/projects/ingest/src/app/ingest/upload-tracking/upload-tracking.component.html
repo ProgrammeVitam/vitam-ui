@@ -1,22 +1,22 @@
 <div class="row">
   <div class="col-11">
-    <h3>Mes téléchargements en cours <span>({{ ingestList.wipNumber }})</span></h3>
+    <h5 class="mt-0 mb-4">{{'INGEST_TRACKING.TITLE' | translate}} <span>({{ ingestList.wipNumber }})</span></h5>
   </div>
   <div class="col-1">
     <button class="btn-circle" (click)="toogleTracking()">
-      <i class="material-icons" [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+      <i class="material-icons"  [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
     </button>
   </div>
 </div>
 <div *ngIf="displayTracking">
-  <span *ngIf="ingestList.wipNumber === 0">Vous n’avez pas de téléchargement en cours</span>
+  <span *ngIf="ingestList.wipNumber === 0">{{'INGEST_TRACKING.MESSAGE' | translate}}</span>
 
   <table class="vitamui-table" *ngIf="ingestList.wipNumber > 0">
     <thead>
     <tr>
-      <th>Nom du SIP</th>
-      <th style="width: 100px">Poids</th>
-      <th>Avancement</th>
+      <th>{{'INGEST_TRACKING.SIP_NAME' | translate}}</th>
+      <th style="width: 100px">{{'INGEST_TRACKING.WEIGHT' | translate}}</th>
+      <th>{{'INGEST_TRACKING.STATUS' | translate}}</th>
     </tr>
     </thead>
     <tbody>

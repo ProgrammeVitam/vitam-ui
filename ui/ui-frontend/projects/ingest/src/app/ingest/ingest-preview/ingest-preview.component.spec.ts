@@ -6,6 +6,7 @@ import { BASE_URL, LogbookService } from 'ui-frontend-common';
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { IngestService } from '../ingest.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
@@ -21,7 +22,8 @@ describe('IngestPreviewComponent', () => {
       declarations: [IngestPreviewComponent, MockTruncatePipe],
       imports: [
         HttpClientTestingModule,
-        MatMenuModule
+        MatMenuModule,
+        TranslateModule.forRoot()
       ],
       providers: [ { provide: LogbookService, useValue: {} },
          { provide: IngestService, useIngestServiceValue: {} },

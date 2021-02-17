@@ -28,12 +28,18 @@ management:
       enabled: false
 
 ui-archive-search:
-  #theme-logo: /path/to/logo.png
   platform-name: VITAM-UI
+  portal-logo: logo_PORTAL.png
+  header-logo: logo_HEADER.png
+  footer-logo: logo_FOOTER.png
+  portal-title: "Portail des applications de l'archivage"
   theme-colors:
-    vitamui-primary: "#ff4a54"
-    vitamui-secondary: "#241f63"
-  assets: src/main/config
+    vitamui-primary: "#702382"
+    vitamui-secondary: "#2563A9"
+    vitamui-tertiary: "#C22A40"
+    vitamui-header-footer: "#ffffff"
+    vitamui-background: "#F5F7FC"
+  assets: src/main/resources/assets
   iam-external-client:
     server-host: localhost
     server-port: 8083
@@ -62,6 +68,7 @@ ui-archive-search:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
+
 
   portal-categories:
     ingests:

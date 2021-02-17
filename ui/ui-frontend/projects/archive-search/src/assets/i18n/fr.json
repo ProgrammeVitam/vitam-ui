@@ -1,0 +1,78 @@
+{
+  "ARCHIVE_SEARCH": {
+    "TITLE_SEARCH": "Recherche : ",
+    "TITLE_SEARCH_AREA": "Rechercher une archive",
+    "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
+    "SEARCH_CRITERIA_OR": "OU",
+    "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
+    "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
+    "NO_MORE_RESULTS": "Fin des résultats",
+    "SEARCH_CRITERIA_FILTER": {
+      "TITLE": "Filtre de recherche",
+      "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
+      "FIELDS": {
+        "ID": "ID",
+        "TITLE_OR_DESCRIPTION": "Titre ou Description",
+        "NODE" : "Noeud",
+        "TITLE": "Titre",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "GUID du versement",
+        "UAID": "GUID d'unité d'archivage",
+        "SP": "Service producteur",
+        "SP_CODE": "Code service producteur",
+        "SP_LABEL": "Nom service producteur",
+        "OTHER_FIELD": "Autre critère",
+        "SELECT_OTHER_FIELD": "Sélection d'un autre critère"
+      }
+    },
+    "ARCHIVE_UNIT": {
+      "FIELDS": {
+        "TITLE": "Titre",
+        "NAME": "Nom",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "GUID du versement",
+        "UAID": "GUID d'unité d'archivage",
+        "SP": "Service producteur",
+        "SP_CODE": "Code service producteur",
+        "SP_LABEL": "Nom service producteur",
+        "OTHER_FIELD": "Autre critère",
+        "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
+        "SP_COMM": "Service Prod Comm",
+        "SP_COMM_DT": "Service Prod Comm DT"
+      }
+    },
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Nom",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "Identifiant technique du versement",
+        "UAID": "Identifiant technique de l'unité archivistique",
+        "SP": "Service producteur",
+        "PATH": "Chemin",
+        "DOWNLOAD_DOC": "Télécharger le document"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations"
+      }
+    },
+    "FILING_SHCEMA": {
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbres ou Plans trouvés avec le contrat choisi",
+      "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
+      "SHOW_TREE_PARENT" : "Réduire l'arborescence"
+    },
+    "RESULTS": "résultats",
+    "RESULT": "résultat",
+    "FOLDER": "Dossier",
+    "DOCUMENT": "Document",
+    "ARCHIVE_PREVIEW": {
+      "INFORMATION": "Informations"
+    }
+  }
+}

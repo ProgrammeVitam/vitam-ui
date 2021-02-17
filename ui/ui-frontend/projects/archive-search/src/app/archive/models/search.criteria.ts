@@ -45,6 +45,7 @@ export interface SearchCriteriaValue {
     label?: string;
     valueShown?: boolean;
     status: SearchCriteriaStatusEnum;
+    translated: boolean;
 };
 
 export interface SearchCriteria {

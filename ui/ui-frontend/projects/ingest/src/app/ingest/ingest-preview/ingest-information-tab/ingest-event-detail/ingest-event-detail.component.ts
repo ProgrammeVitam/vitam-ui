@@ -37,11 +37,19 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
 import { Event } from '../../event';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-ingest-event-detail',
   templateUrl: './ingest-event-detail.component.html',
-  styleUrls: ['./ingest-event-detail.component.scss']
+  styleUrls: ['./ingest-event-detail.component.scss'],
+  animations: [
+    trigger('rotateAnimation', [
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
+      transition('expand <=> collapse', animate('200ms ease-out')),
+    ])
+  ]
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
 

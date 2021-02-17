@@ -54,7 +54,7 @@ The consul interface for service discovery is accessible at [http://localhost:80
 
 ### 1b - Get SSL certificate from the store
 to make HTTPS request to VITAM Endpoints, you should get the `.crt` and `.key` certificates.
-To do so, download the keystore from this link [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/](this)
+To do so, download the keystore from this link [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/](http://localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/)
 
 or execute the command below: 
 >`bash$ wget localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/keystore_ihm-demo.p12` 
@@ -70,7 +70,7 @@ To do so execute the two commands:
 >`bash$ openssl pkcs12 -in keystore_ihm-demo.p12 -out crt.pem -clcerts -nokeys`
 
 ### 1b - Try to access the Vitam from local
-get your IP adress with `ipconfig` command.
+get your IP adress with `ifconfig` command or with the command `hostname -i`.
 
 - sending HTTPS curl request:
 
@@ -92,9 +92,9 @@ In this step we are going to send a real SIP to VITAM, see the screen example
 
 use this request to reproduce it in your local: 
 
->`bash$ curl -XPOST -v  -k --key ./key.pem --cert ./crt.pem https://@yourIP:8443/ingest-external/v1/ingests  -H 'X-Tenant-Id: 0' -H 'X-Action: RESUME' -H 'Accept: application/json' -H 'X-Chunk-Offset:0' -H 'X-Context-Id: DEFAULT_WORKFLOW' -H 'Content-Type: application/octet-stream' -H 'X-Size-Total: 2510 (verify size of sip.zip)' --data-binary @path/to/some/valid/sip.zip`
+>`bash$ curl -XPOST -v  -k --key ./key.pem --cert ./crt.pem https://@yourIP:8443/ingest-external/v1/ingests  -H 'X-Tenant-Id: 0' -H 'X-Action: RESUME' -H 'Accept: application/json' -H 'X-Chunk-Offset:0' -H 'X-Context-Id: DEFAULT_WORKFLOW' -H 'Content-Type: application/octet-stream' -H 'X-Size-Total: Size-2510 (verify size of sip.zip)' --data-binary @path/to/some/valid/sip.zip`
 
-> :warning: change `@yourIP`, `X-Size-Total` and the `path/to/some/valid/sip.zip` before launching the command
+> :warning: change `@yourIP`, `Size-2510` and the `path/to/some/valid/sip.zip` before launching the command
 
 ### 1c - Configure VITAMUI to access Vitam APIs
 The final Step is to configure VITAMUI modules that interacts with VITAM.

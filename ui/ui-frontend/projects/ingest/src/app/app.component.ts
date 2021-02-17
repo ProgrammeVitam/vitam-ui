@@ -35,6 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { StartupService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-root',
@@ -46,7 +48,9 @@ export class AppComponent implements OnInit {
   title = 'Ingest App';
   subrogating = false;
 
-  constructor() {}
+  constructor(titleService: Title, startupService: StartupService) {
+    titleService.setTitle(startupService.getPlatformName());
+  }
 
   ngOnInit() {
   }

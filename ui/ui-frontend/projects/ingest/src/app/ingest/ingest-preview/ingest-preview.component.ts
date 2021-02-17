@@ -46,7 +46,7 @@ import { IngestService } from '../ingest.service';
 export class IngestPreviewComponent implements OnInit {
 
   @Input() ingest: any; // Make a type ?
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  @Output() previewClose = new EventEmitter();
  
 
   constructor(private logbookService: LogbookService, private ingestService : IngestService) { }
