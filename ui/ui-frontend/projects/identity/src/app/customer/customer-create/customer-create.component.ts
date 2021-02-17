@@ -98,7 +98,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.form = this.formBuilder.group({
       gdprAlert: true,
-      gdprAlertDelay: [72, Validators.min(72)],
+      gdprAlertDelay: [72, Validators.min(1)],
       enabled: [true, Validators.required],
       code: [
         null,
