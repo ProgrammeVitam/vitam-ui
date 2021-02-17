@@ -1,6 +1,6 @@
 ## Anonymisation des données personnelles des utilisateurs ##
 
-Dans le cadre des obligations du Règlement Européen sur la Gestion des données personnelles "RGPD", les données personnelles des personnes inactives depuis 72 mois (6 ans) doivent être supprimées de la base de données d'un système. Il s'agit ici du droit à l'oubli. <br/>
+Dans le cadre des obligations du Règlement Européen sur la Gestion des données personnelles "RGPD", les données personnelles des personnes inactives depuis une période dépassant la durée d'alerte, doivent être supprimées de la base de données d'un système. Il s'agit ici du droit à l'oubli. <br/>
 La Partie **RGPD** consiste sur la gestion des utilisateurs VITAMUI, c'est à dire une gestion global (création, modification et suppression des données personnelles).
 pour la partie suppression des données personnelles des utilisateurs, on a modifier la partie Modèle des clients et aussi la partie modèle des utilisateur au niveau des projets iam (internal, external) ansi que le projet identity coté Front.
 

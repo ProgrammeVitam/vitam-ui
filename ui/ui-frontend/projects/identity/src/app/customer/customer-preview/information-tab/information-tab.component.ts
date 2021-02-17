@@ -145,7 +145,7 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       gdprAlert: false,
       gdprAlertDelay: [
         72,
-        [Validators.required, Validators.min(72), Validators.pattern(/^[0-9]{1,20}$/)]]
+        [Validators.required, Validators.min(1), Validators.pattern(/^[0-9]{1,20}$/)]]
     });
   }
 

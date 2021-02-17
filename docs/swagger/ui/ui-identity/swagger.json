@@ -3222,7 +3222,7 @@
         "gdprAlertDelay": {
           "type": "integer",
           "format": "int32",
-          "minimum": 72,
+          "minimum": 1,
           "example": "130",
           "description": "La durée d'alerte pour les notifications"
         },

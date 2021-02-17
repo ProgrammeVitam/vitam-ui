@@ -36,31 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.converter.Converter;
@@ -94,6 +70,28 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the customers.
@@ -126,10 +124,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     private LogbookService logbookService;
 
     @Autowired
-    public CustomerInternalService(final CustomSequenceRepository sequenceRepository, final CustomerRepository customerRepository,
-                                   final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
-                                   final InternalSecurityService internalSecurityService, final AddressService addressService, final InitCustomerService initCustomerService,
-                                   final IamLogbookService iamLogbookService, final CustomerConverter customerConverter, final LogbookService logbookService) {
+    public CustomerInternalService(final CustomSequenceRepository sequenceRepository,
+        final CustomerRepository customerRepository,
+        final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
+        final InternalSecurityService internalSecurityService, final AddressService addressService,
+        final InitCustomerService initCustomerService,
+        final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
+        final LogbookService logbookService) {
         super(sequenceRepository);
         this.customerRepository = customerRepository;
         this.internalOwnerService = internalOwnerService;
@@ -235,7 +236,9 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Customer customer = find(id, "Unable to patch customer");
         final String message = "Unable to patch customer " + id;
 
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")), message);
+        Assert
+            .isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")),
+                message);
         final String code = CastUtils.toString(partialDto.get("code"));
         if (code != null) {
             checkCode(Optional.of(customer.getId()), code);
@@ -261,8 +264,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Collection<EventDiffDto> logbooks = new ArrayList<>();
         final VitamContext vitamContext =
             internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-        if(vitamContext != null) {
-              LOGGER.info("Patching Customer EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        if (vitamContext != null) {
+            LOGGER.info("Patching Customer EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
         for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
@@ -280,19 +283,23 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setName(CastUtils.toString(entry.getValue()));
                     break;
                 case "companyName":
-                    logbooks.add(new EventDiffDto(CustomerConverter.COMPANY_NAME_KEY, customer.getCompanyName(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(CustomerConverter.COMPANY_NAME_KEY, customer.getCompanyName(),
+                        entry.getValue()));
                     customer.setCompanyName(CastUtils.toString(entry.getValue()));
                     break;
                 case "enabled":
-                    logbooks.add(new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
+                    logbooks
+                        .add(new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
                     customer.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "language":
-                    logbooks.add(new EventDiffDto(CustomerConverter.LANGUAGE_KEY, customer.getLanguage(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(CustomerConverter.LANGUAGE_KEY, customer.getLanguage(), entry.getValue()));
                     customer.setLanguage(CastUtils.toString(entry.getValue()));
                     break;
                 case "passwordRevocationDelay":
-                    logbooks.add(new EventDiffDto(CustomerConverter.PASSWORD_RECOVATION_KEY, customer.getPasswordRevocationDelay(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(CustomerConverter.PASSWORD_RECOVATION_KEY,
+                        customer.getPasswordRevocationDelay(), entry.getValue()));
                     customer.setPasswordRevocationDelay(CastUtils.toInteger(entry.getValue()));
                     break;
                 case "otp":
@@ -304,12 +311,15 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     break;
                 case "emailDomains":
                     final List<String> emailDomains = CastUtils.toList(entry.getValue());
-                    logbooks.add(new EventDiffDto(CustomerConverter.EMAIL_DOMAINS_KEY, customer.getEmailDomains(), emailDomains));
+                    logbooks.add(new EventDiffDto(CustomerConverter.EMAIL_DOMAINS_KEY, customer.getEmailDomains(),
+                        emailDomains));
                     customer.setEmailDomains(emailDomains);
                     break;
                 case "defaultEmailDomain":
                     final String defaultEmailDomain = CastUtils.toString(entry.getValue());
-                    logbooks.add(new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(),
+                            entry.getValue()));
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
                 case "gdprAlertDelay":
@@ -320,11 +330,18 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                             "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
                                 " is not allowed, because the main setting is readOnly, please contact your administrator to update it");
                     } else {
-                        logbooks.add(
-                            new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(),
-                                entry.getValue()));
-                        customer.setGdprAlertDelay(CastUtils.toInt(entry.getValue()));
-                        break;
+                        if (customer.getGdprAlertDelay() > 0) {
+                            logbooks.add(
+                                new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(),
+                                    entry.getValue()));
+                            customer.setGdprAlertDelay(CastUtils.toInt(entry.getValue()));
+                            break;
+                        } else {
+                            LOGGER.error(
+                                "Wrong value , gdprAlertDelay because the value should be greater than 0 ");
+                            throw new IllegalArgumentException(
+                                "Wrong value , gdprAlertDelay because the value should be greater than 0");
+                        }
                     }
                 case "gdprAlert":
                     if (this.isGdprAlertReadonly()) {
@@ -344,20 +361,24 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     if (address == null) {
                         customer.setAddress(new Address());
                     }
-                    addressService.processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, false);
+                    addressService
+                        .processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, false);
                     break;
-                case "internalCode" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.INTERNAL_CODE_KEY, customer.getInternalCode(), entry.getValue()));
+                case "internalCode":
+                    logbooks.add(new EventDiffDto(CustomerConverter.INTERNAL_CODE_KEY, customer.getInternalCode(),
+                        entry.getValue()));
                     customer.setInternalCode(CastUtils.toString(entry.getValue()));
                     break;
-                case "subrogeable" :
-                    logbooks.add(new EventDiffDto(CustomerConverter.SUBROGEABLE_KEY, customer.isSubrogeable(), entry.getValue()));
+                case "subrogeable":
+                    logbooks.add(new EventDiffDto(CustomerConverter.SUBROGEABLE_KEY, customer.isSubrogeable(),
+                        entry.getValue()));
                     customer.setSubrogeable(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "hasCustomGraphicIdentity":
                     LOGGER.debug("Update GraphicalIdentity");
                     final boolean newCustomGraphicIdentityValue = CastUtils.toBoolean(entry.getValue());
-                    logbooks.add(new EventDiffDto(CustomerConverter.CUSTOM_GRAPHIC_IDENTITY_KEY, customer.getGraphicIdentity().isHasCustomGraphicIdentity(),
+                    logbooks.add(new EventDiffDto(CustomerConverter.CUSTOM_GRAPHIC_IDENTITY_KEY,
+                        customer.getGraphicIdentity().isHasCustomGraphicIdentity(),
                         newCustomGraphicIdentityValue));
                     processGraphicIdentity(newCustomGraphicIdentityValue, customer, customerFormData);
                     break;
@@ -371,19 +392,25 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                         customer.getGraphicIdentity().setThemeColors(themeColors);
                     } else {
                         LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>.");
-                        throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() + " is not allowed");
+                        throw new IllegalArgumentException(
+                            "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
+                                " is not allowed");
                     }
                     break;
                 case "portalTitle":
-                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_TITLE, customer.getGraphicIdentity().getPortalTitle(), entry.getValue()));
+                    logbooks.add(
+                        new EventDiffDto(CustomerConverter.PORTAL_TITLE, customer.getGraphicIdentity().getPortalTitle(),
+                            entry.getValue()));
                     customer.getGraphicIdentity().setPortalTitle(CastUtils.toString(entry.getValue()));
                     break;
                 case "portalMessage":
-                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_MESSAGE, customer.getGraphicIdentity().getPortalMessage(), entry.getValue()));
+                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_MESSAGE,
+                        customer.getGraphicIdentity().getPortalMessage(), entry.getValue()));
                     customer.getGraphicIdentity().setPortalMessage(CastUtils.toString(entry.getValue()));
                     break;
                 default:
-                    throw new IllegalArgumentException("Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
+                    throw new IllegalArgumentException(
+                        "Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateCustomerEvent(customer, logbooks);
@@ -393,7 +420,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         try {
             final VitamContext vitamContext =
                 internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-            LOGGER.info("Graphic identity EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Graphic identity EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
             final String base64 = VitamUIUtils.getBase64(file);
             switch (attachmentType) {
@@ -415,13 +442,15 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         }
     }
 
-    private void processGraphicIdentity(final boolean newCustomGraphicIdentityValue, final Customer customer, final CustomerPatchFormData customerFormData) {
+    private void processGraphicIdentity(final boolean newCustomGraphicIdentityValue, final Customer customer,
+        final CustomerPatchFormData customerFormData) {
 
         final Optional<MultipartFile> header = customerFormData.getHeader();
         final Optional<MultipartFile> footer = customerFormData.getFooter();
         final Optional<MultipartFile> portal = customerFormData.getPortal();
 
-        if ((header != null && header.isPresent()) || (footer != null && footer.isPresent()) || (portal != null && portal.isPresent())) {
+        if ((header != null && header.isPresent()) || (footer != null && footer.isPresent()) ||
+            (portal != null && portal.isPresent())) {
             if (header != null && header.isPresent()) {
                 patchLogos(customer, header.get(), AttachmentType.HEADER);
             }
@@ -445,7 +474,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         LOGGER.debug("Patch customer {}", customerData);
         final Customer customer = beforePatch(customerData.getPartialCustomerDto());
         processPatch(customer, customerData);
-        Assert.isTrue(getRepository().existsById(customer.getId()), "Unable to patch customer : no entity found with id: " + customer.getId());
+        Assert.isTrue(getRepository().existsById(customer.getId()),
+            "Unable to patch customer : no entity found with id: " + customer.getId());
         final Customer savedCustomer = getRepository().save(customer);
         return convertFromEntityToDto(savedCustomer);
     }
@@ -456,31 +486,38 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     private Customer find(final String id, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-        return getRepository().findById(id).orElseThrow(() -> new IllegalArgumentException(message + ": no customer found for id " + id));
+        return getRepository().findById(id)
+            .orElseThrow(() -> new IllegalArgumentException(message + ": no customer found for id " + id));
     }
 
     /**
      * Method allowing to check if a code can be used.
+     *
      * @param customerId Id of an existing customer wanting code's update.
      * @param customerCode Code to check.
      */
     protected void checkCode(final Optional<String> customerId, final String customerCode) {
         final Optional<Customer> optCustomer = customerRepository.findByCode(customerCode);
-        if (optCustomer.isPresent() && (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))) {
+        if (optCustomer.isPresent() &&
+            (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))) {
             throw new IllegalArgumentException(String.format(
-                "Integrity constraint error on the customer %s : the new code is already used by another customer.", customerId.orElse("[Undefined]")));
+                "Integrity constraint error on the customer %s : the new code is already used by another customer.",
+                customerId.orElse("[Undefined]")));
         }
     }
 
-    private void checkDefaultEmailDomains(final String emailDomain, final List<String> emailDomains, final String message) {
-        Assert.isTrue(StringUtils.isNotEmpty(emailDomain), message + ": a customer must have at least one default email domains.");
+    private void checkDefaultEmailDomains(final String emailDomain, final List<String> emailDomains,
+        final String message) {
+        Assert.isTrue(StringUtils.isNotEmpty(emailDomain),
+            message + ": a customer must have at least one default email domains.");
 
         final boolean found = emailDomains.stream().anyMatch(i -> StringUtils.equals(i, emailDomain));
         Assert.isTrue(found, message + ": the default email domain is not in the email Domain list");
     }
 
     private void checkEmailDomains(final List<String> emailDomains, final String message) {
-        Assert.isTrue(emailDomains != null && emailDomains.size() > 0, message + ": a customer must have emails domains.");
+        Assert.isTrue(emailDomains != null && emailDomains.size() > 0,
+            message + ": a customer must have emails domains.");
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
@@ -490,13 +527,15 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     }
 
     private void checkEmailDomains(final List<String> emailDomains, final String customerId, final String message) {
-        Assert.isTrue(emailDomains != null && emailDomains.size() > 0, message + ": a customer must have emails domains.");
+        Assert.isTrue(emailDomains != null && emailDomains.size() > 0,
+            message + ": a customer must have emails domains.");
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
             final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
             if (optCustomer.isPresent()) {
-                Assert.isTrue(StringUtils.equals(optCustomer.get().getId(), customerId), message + ": a customer has already the email domain " + domain);
+                Assert.isTrue(StringUtils.equals(optCustomer.get().getId(), customerId),
+                    message + ": a customer has already the email domain " + domain);
             }
         }
     }
@@ -508,12 +547,15 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
         final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-            .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier()).getAccessContractLogbookIdentifier())
+            .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
+                .getAccessContractLogbookIdentifier())
             .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);
         customer.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
-        return logbookService.findEventsByIdentifierAndCollectionNames(customer.get().getIdentifier(), MongoDbCollections.CUSTOMERS, vitamContext).toJsonNode();
+        return logbookService
+            .findEventsByIdentifierAndCollectionNames(customer.get().getIdentifier(), MongoDbCollections.CUSTOMERS,
+                vitamContext).toJsonNode();
     }
 
     /**
@@ -574,10 +616,18 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         if (customer.isPresent()) {
             final String logo;
             switch (type) {
-                case HEADER: logo = customer.get().getGraphicIdentity().getLogoHeaderBase64(); break;
-                case FOOTER: logo = customer.get().getGraphicIdentity().getLogoFooterBase64(); break;
-                case PORTAL: logo = customer.get().getGraphicIdentity().getLogoPortalBase64(); break;
-                default: logo = null; break;
+                case HEADER:
+                    logo = customer.get().getGraphicIdentity().getLogoHeaderBase64();
+                    break;
+                case FOOTER:
+                    logo = customer.get().getGraphicIdentity().getLogoFooterBase64();
+                    break;
+                case PORTAL:
+                    logo = customer.get().getGraphicIdentity().getLogoPortalBase64();
+                    break;
+                default:
+                    logo = null;
+                    break;
             }
             LOGGER.debug("get customer logo => " + logo);
             final byte[] decodedLogo;

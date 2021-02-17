@@ -411,7 +411,7 @@
         <note priority="1" from="description">at least one email</note>
       </trans-unit>
    <trans-unit id="formErrorRequiredFieldAndMinValue" datatype="html">
-        <source>Champ obligatoire et il faut au moins 72 mois (6 ans)</source>
+        <source>Champ obligatoire et il faut une valeur supérieure à 0 </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context>
           <context context-type="linenumber">192</context>
@@ -427,7 +427,7 @@
         <note priority="1" from="description">Wrong format error hint</note>
       </trans-unit>
       <trans-unit id="formErrorRequiredMinValue" datatype="html">
-        <source>Il faut au moins 72 mois (6 ans)</source>
+        <source>Il faut une valeur supérieure à 0 </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/customer/customer-preview/information-tab/information-tab.component.html</context>
           <context context-type="linenumber">194</context>
