@@ -5,46 +5,50 @@
     <div>{{ ingest?.obIdIn }}</div>
   </div>
   <div class="col-6 mb-3">
-      <label>{{'INGEST_DETAIL.NAME' | translate}}</label>
-      <div>{{ ingest?.evDetData?.EvDetailReq }}</div>   
+    <label>{{'INGEST_DETAIL.NAME' | translate}}</label>
+    <div>{{ getEvDetData(ingest).EvDetailReq }}</div>
   </div>
-</div> 
+</div>
 
 <div class="row">
   <div class="col-12 mb-3">
-      <label>{{'INGEST_DETAIL.OPERATION_ID' | translate}}</label>
-      <div>{{ ingest?.id }}</div>
-  </div> <br>
+    <label>{{'INGEST_DETAIL.OPERATION_ID' | translate}}</label>
+    <div>{{ ingest?.id }}</div>
+  </div>
+  <br>
 
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.START_DATE' | translate}}</label>
     <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
-  </div> 
+  </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.END_DATE' | translate}}</label>
     <div>{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy' }}</div>
-  </div><br>
+  </div>
+  <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.PRODUCT_SERVICE' | translate}}</label>
-    <div>{{ ingest?.agIdExt?.originatingAgency }}</div>
+    <div>{{ getAgIdExt(ingest)?.originatingAgency }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.VERSATILE_SERVICE' | translate}}</label>
-    <div>{{ ingest?.agIdExt?.submissionAgency }}</div>
-  </div><br>
+    <div>{{ getAgIdExt(ingest)?.submissionAgency }}</div>
+  </div>
+  <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.ENTRY_CONTRACT' | translate}}</label>
-    <div>{{ ingest?.evDetData?.ArchivalAgreement }}</div>
+    <div>{{ getEvDetData(ingest)?.ArchivalAgreement }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.ARCHIVING_PROFIL' | translate}}</label>
     <div>{{ ingest?.ArchivalProfile }}</div>
-  </div><br>
+  </div>
+  <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.STATUS' | translate}}</label>
-    <div>{{ ingest?.evDetData?.LegalStatus }}</div>
+    <div>{{ getEvDetData(ingest)?.LegalStatus }}</div>
   </div>
-</div> 
+</div>
 
 <div class="row">
   <div class="col-12 mb-3">
@@ -61,7 +65,7 @@
 <div class="row">
   <div class="col-12 mb-3">
     <label>{{'INGEST_DETAIL.OPERATION_DETAILS' | translate}}</label>
-   <div *ngIf="ingestDetails">
+    <div *ngIf="ingestDetails">
       <app-ingest-event-detail [ingest]="ingestDetails"></app-ingest-event-detail>
     </div>
   </div>
