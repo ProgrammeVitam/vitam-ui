@@ -43,6 +43,7 @@ import static org.easymock.EasyMock.mock;
 
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
@@ -66,6 +67,7 @@ public class UnitInternalServiceTest {
 
     @Before
     public void setUp() {
+        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         unitService = mock(UnitService.class);
         unitInternalService = new UnitInternalService(unitService);
     }
@@ -195,7 +197,7 @@ public class UnitInternalServiceTest {
             unitInternalService.findUnitById(unitId, vitamContext);
         }).isInstanceOf(VitamClientException.class);
     }
-    
+
     @Test
     public void findObjectMetadataById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
@@ -239,6 +241,6 @@ public class UnitInternalServiceTest {
         assertThatCode(() -> {
             unitInternalService.findObjectMetadataById(unitId, dslQuery, vitamContext);
         }).isInstanceOf(VitamClientException.class);
-    } 
+    }
 }
 
