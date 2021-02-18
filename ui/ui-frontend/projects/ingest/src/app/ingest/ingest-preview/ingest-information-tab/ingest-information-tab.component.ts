@@ -106,10 +106,10 @@ export class IngestInformationTabComponent implements OnInit, OnChanges {
         return element;
       }
 
-      if (element.data && typeof element.data === 'string' && element.data.length >= 2) {
-        element.data = JSON.parse(element.data);
+      if (element.evDetData && typeof element.evDetData === 'string' && element.evDetData.length >= 2) {
+        element.evDetData = JSON.parse(element.evDetData);
       }
-      return element.data;
+      return element.evDetData;
     }
 
     getAgIdExt(element: any) {
