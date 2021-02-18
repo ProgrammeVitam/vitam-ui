@@ -83,6 +83,12 @@ public class OperationService {
         LOGGER.debug(r.toString());
     }
 
+    public void launchRectificationAudit(final VitamContext context, final String evidenceAuditIdentifier) throws VitamClientException {
+        LOGGER.debug("Run rectificationAudit {}", evidenceAuditIdentifier);
+        final RequestResponse r = this.adminExternalClient.rectificationAudit(context, evidenceAuditIdentifier);
+        LOGGER.debug(r.toString());
+    }
+
     public void runProbativeValue(VitamContext context, ProbativeValueRequest request) throws VitamClientException {
         LOGGER.info("run Probative Value EvIdAppSession : {} " , context.getApplicationSessionId());
         this.adminExternalClient.exportProbativeValue(context, request);

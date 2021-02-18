@@ -56,7 +56,8 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
 
   auditTypes: Option[] = [
     {key: 'PROCESS_AUDIT', label: 'Integrité et Existence'},
-    {key: 'EVIDENCE_AUDIT', label: 'Cohérence'}
+    {key: 'EVIDENCE_AUDIT', label: 'Cohérence'},
+    {key: 'RECTIFICATION_AUDIT', label: 'Correctif'}
   ];
 
   dateRangeFilterForm: FormGroup;
@@ -145,6 +146,6 @@ export class AuditComponent extends SidenavPage<Event> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 }

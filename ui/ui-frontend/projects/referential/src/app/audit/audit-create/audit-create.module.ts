@@ -11,6 +11,7 @@ import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
 import {VitamUICommonModule} from 'ui-frontend-common';
 
 import {SharedModule} from '../../shared/shared.module';
+import {AuditCreateValidators} from './audit-create-validator';
 import {AuditCreateComponent} from './audit-create.component';
 
 @NgModule({
@@ -28,7 +29,9 @@ import {AuditCreateComponent} from './audit-create.component';
     VitamUICommonModule,
     VitamUILibraryModule
   ],
-  entryComponents: [AuditCreateComponent]
+  entryComponents: [AuditCreateComponent],
+  providers: [AuditCreateValidators]
+
 })
 export class AuditCreateModule {
 }
