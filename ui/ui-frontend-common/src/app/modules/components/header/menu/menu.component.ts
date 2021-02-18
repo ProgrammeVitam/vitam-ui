@@ -1,7 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatSelectionList } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -13,7 +12,6 @@ import { TenantSelectionService } from '../../../tenant-selection.service';
 import { MenuOption } from '../../navbar';
 import { SearchBarComponent } from '../../search-bar';
 import { Tenant } from './../../../models/customer/tenant.interface';
-import { StartupService } from './../../../startup.service';
 import { MenuOverlayRef } from './menu-overlay-ref';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
@@ -72,9 +70,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private dialogRef: MenuOverlayRef,
     private applicationService: ApplicationService,
     private cdrRef: ChangeDetectorRef,
-    private router: Router,
     private tenantService: TenantSelectionService,
-    private startupService: StartupService,
     private translateService: TranslateService
   ) { }
 
@@ -86,14 +82,18 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
-    this.selectedTenant = {value: this.tenantService.getSelectedTenant(), label: this.tenantService.getSelectedTenant().name};
-    if (this.selectedTenant) {
-      this.updateApps(this.selectedTenant);
-    } else {
-      this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
-        this.updateApps(this.tenants.find(option => option.value.identifier === identifier));
-      });
-    }
+    this.tenantService.getSelectedTenant$().pipe(take(1)).subscribe((tenant: Tenant) => {
+      debugger;
+      if (tenant) {
+        this.selectedTenant = { value: tenant, label: tenant.name };
+        this.updateApps(this.selectedTenant);
+      } else {
+        this.tenantService.getLastTenantIdentifier$().pipe(takeUntil(this.destroyer$)).subscribe((identifier: number) => {
+          this.updateApps(this.tenants.find(option => option.value.identifier === identifier));
+        });
+      }
+
+    });
 
     // Get the list of translated apps from en / fr json files for research
     this.translateService.get(APPLICATION_TRANSLATE_PATH).pipe(take(1)).subscribe((translatedApps: any) => {
