@@ -100,4 +100,27 @@ export class IngestInformationTabComponent implements OnInit, OnChanges {
         ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
     }
   }
+
+  getEvDetData(element: any) {
+      if (!element) {
+        return element;
+      }
+
+      if (element.data && typeof element.data === 'string' && element.data.length >= 2) {
+        element.data = JSON.parse(element.data);
+      }
+      return element.data;
+    }
+
+    getAgIdExt(element: any) {
+      if (!element) {
+        return element;
+      }
+
+      if (element.agIdExt && typeof element.agIdExt === 'string' && element.agIdExt.length >= 2) {
+        element.agIdExt = JSON.parse(element.agIdExt);
+      }
+      return element.agIdExt;
+    }
+
 }
