@@ -16,8 +16,9 @@
     display: none!important;
   }
 
-  .mat-list-item-content {
-    padding: 24px!important;
+  .mat-list-text {
+    height: 100%;
+    padding: 0!important;
   }
 
   mat-pseudo-checkbox.mat-pseudo-checkbox {
@@ -25,7 +26,7 @@
   }
 
   mat-list-option:focus, mat-list-option:hover {
-    background-color: #E8E8E8;
+    background-color: var(--vitamui-grey-300);
   }
 
   .mat-tab-body-content  {
@@ -42,6 +43,10 @@
     font-weight: bold;
   }
 
+  vitamui-common-menu-application-tile {
+    height: 100%;
+  }
+
   mat-list-option vitamui-common-menu-application-tile * {
     .hover-focus {
       visibility: hidden;
@@ -56,6 +61,10 @@
     max-height: 80vh;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+
+  mat-list-option .mat-list-item-content {
+    padding: 0!important;
   }
 
   mat-list-option:focus{

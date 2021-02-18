@@ -83,7 +83,6 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     // Display application list depending on the current active tenant.
     // If no active tenant is set, then use the last tenant identifier.
     this.tenantService.getSelectedTenant$().pipe(take(1)).subscribe((tenant: Tenant) => {
-      debugger;
       if (tenant) {
         this.selectedTenant = { value: tenant, label: tenant.name };
         this.updateApps(this.selectedTenant);

@@ -43,9 +43,7 @@
         <ng-template #displayMats>
                 <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
                     <mat-tab *ngFor="let element of appMap | keyvalue" [label]="'MENU.' + element.key.identifier | translate:{default:element.key.title}">
-                        <mat-selection-list
-                            (selectionChange)="onClose()"
-                            class="py-3">
+                        <mat-selection-list (selectionChange)="onClose()" class="py-3">
                             <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
                                 <vitamui-common-menu-application-tile [application]="app" [menuSelectedTenant]="selectedTenant?.value?.identifier"></vitamui-common-menu-application-tile>
                             </mat-list-option>
