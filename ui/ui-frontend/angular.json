@@ -618,12 +618,7 @@
     },
     "ingest": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/ingest",
+      "root": "projects/ingest/",
       "sourceRoot": "projects/ingest/src",
       "prefix": "app",
       "architect": {
@@ -635,10 +630,9 @@
             },
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
-            "main": "projects/ingest/src/main.ts",
-            "polyfills": "projects/ingest/src/polyfills.ts",
+            "main": "projects/ingest/src/main.ts",            
             "tsConfig": "projects/ingest/tsconfig.app.json",
-            "aot": false,
+            "polyfills": "projects/ingest/src/polyfills.ts",
             "assets": [
               "projects/ingest/src/favicon.ico",
               "projects/ingest/src/assets",
@@ -651,18 +645,15 @@
             "styles": [
               "projects/ingest/src/sass/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/ingest/src/environments/environment.ts",
-                  "with": "projects/ingest/src/environments/environment.prod.ts"
-                }
-              ],
-              "serviceWorker": true,
-              "ngswConfigPath": "projects/ingest/ngsw-config.json",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -672,13 +663,22 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
+              "fileReplacements": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "14mb"
+                  "replace": "projects/ingest/src/environments/environment.ts",
+                  "with": "projects/ingest/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/ingest/ngsw-config.json"
+            },
+            "en": {
+              "aot": true,
+              "i18nFile": "projects/ingest/src/locale/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "i18nMissingTranslation": "warning"
+
             }
           }
         },
@@ -692,6 +692,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ingest:build:production"
+            },
+            "en": {
+              "browserTarget": "ingest:build:en"
             }
           }
         },
@@ -715,6 +718,11 @@
             "styles": [
               "projects/ingest/src/sass/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/commons/src/sass"
+              ]
+            },
             "scripts": []
           }
         },
@@ -723,24 +731,11 @@
           "options": {
             "tsConfig": [
               "projects/ingest/tsconfig.app.json",
-              "projects/ingest/tsconfig.spec.json",
-              "projects/ingest/e2e/tsconfig.json"
+              "projects/ingest/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/ingest/e2e/protractor.conf.js",
-            "devServerTarget": "ingest:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "ingest:serve:production"
-            }
           }
         }
       }

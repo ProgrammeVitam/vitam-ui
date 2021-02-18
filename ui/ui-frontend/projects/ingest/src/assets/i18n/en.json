@@ -37,7 +37,7 @@
     "SEARCH" : "Rating, Title, Producer service ..."
   },
   "INGEST_PAGE" : {
-    "TITLE" : "File and follow deposits"
+    "TITLE" : "Track and follow deposits"
   },
   "INGEST_TRACKING" : {
     "SIP_NAME" : "SIP Name",

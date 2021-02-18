@@ -1,5 +1,6 @@
 {
   "ARCHIVE_SEARCH": {
+    "ACCESS_CONTRACT_SELECT" : "Sélectionnez un contrat d'accès",
     "TITLE_SEARCH": "Recherche : ",
     "TITLE_SEARCH_AREA": "Rechercher une archive",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
