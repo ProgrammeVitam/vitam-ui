@@ -79,6 +79,12 @@ export class LanguageService {
     ).fullLangString;
   }
 
+  public getShortLangString(fullLang: FullLangString): MinLangString {
+    return this.availableLanguages.find(
+      (value: VitamUILangague) => value.fullLangString === fullLang
+    ).minLangString;
+  }
+
   public getAvailableLanguagesOptions(): Observable<Option[]> {
     return new Observable((observer) => {
       this.translateService

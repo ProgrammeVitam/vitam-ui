@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, ActivationStart, Router } from '@angular/router';
@@ -25,6 +25,7 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenan
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Input() hasLangSelection = false;
 
   /** TODO : rooting /account in portal module => move to header module */
   public hasAccountProfile = false;
