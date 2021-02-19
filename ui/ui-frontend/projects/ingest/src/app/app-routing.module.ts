@@ -37,7 +37,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard,
+  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard, AnalyticsResolver,
 } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
@@ -48,12 +48,14 @@ const routes: Routes = [
     path: '',
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'PORTAL_APP' }
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ACCOUNTS_APP' }
   },
   // =====================================================
@@ -63,6 +65,7 @@ const routes: Routes = [
     path: 'ingest',
     loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'INGEST_MANAGEMENT_APP' }
   },
 
@@ -73,6 +76,7 @@ const routes: Routes = [
     path: 'holding-filling-scheme',
     loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
     canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
   },
   // =====================================================
