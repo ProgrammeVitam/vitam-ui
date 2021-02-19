@@ -21,7 +21,6 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
    */
   @Input() displayMode: 'select' | 'button' = 'button';
   @Input() hasLangSelection;
-  @Input() disabled = false;
 
   public currentLang = '';
   public minLangString = MinLangString;

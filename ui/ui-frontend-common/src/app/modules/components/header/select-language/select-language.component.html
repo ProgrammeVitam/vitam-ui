@@ -1,10 +1,10 @@
 <div *ngIf="displayMode === 'select' then select else button"></div>
 
 <ng-template #button>
-  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" [disabled]="disabled">
+  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu">
     <img [src]="'../../../assets/country/' + currentLang + '.svg'">
   </button>
-  
+
   <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before" >
     <span mat-menu-item (click)="use(minLangString.FR)">
       FR<img src="../../../assets/country/fr.svg">
@@ -16,9 +16,8 @@
 </ng-template>
 
 <ng-template #select>
-  <div class="hasLangSelection">
+  <div class="select-language">
     <vitamui-common-item-select
-      [disabled]="disabled"
       [label]="'SELECT-LANGUAGE.LANGUAGE' | translate"
       [selectedLabel]="'SELECT-LANGUAGE.LANGUAGE' | translate"
       [items]="[{label: 'SELECT-LANGUAGE.FRENCH' | translate, value:'fr'}, {label: 'SELECT-LANGUAGE.ENGLISH' | translate, value:'en'}]"

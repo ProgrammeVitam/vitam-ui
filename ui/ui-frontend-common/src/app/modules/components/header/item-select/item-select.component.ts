@@ -9,8 +9,6 @@ import { MenuOption } from '../../navbar/customer-menu/menu-option.interface';
 export class ItemSelectComponent {
 
   @Input() label: string;
-  
-  @Input() disabled = false;
 
   @Input() selectedLabel: string;
 
