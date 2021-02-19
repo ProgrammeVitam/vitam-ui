@@ -56,6 +56,7 @@ public class ReferentialDtoBuilder {
         contextDto.setStatus(ContextStatus.ACTIVE.toString());
         contextDto.setEnableControl(true);
         contextDto.setSecurityProfile("securityProfile");
+    
         return contextDto;
     }
 
@@ -78,14 +79,17 @@ public class ReferentialDtoBuilder {
     private static Set<PermissionDto> buildPermissions() {
         Set<String> contracts = new HashSet<String>();
         contracts.add("contract");
+        
         PermissionDto permission1 = new PermissionDto();
         permission1.setTenant("tenant_1");
         permission1.setAccessContracts(contracts);
         permission1.setIngestContracts(contracts);
+        
         PermissionDto permission2 = new PermissionDto();
         permission2.setTenant("tenant_2");
         permission2.setAccessContracts(contracts);
         permission2.setIngestContracts(contracts);
+        
         Set<PermissionDto> permissions = new HashSet<PermissionDto>();
         permissions.add(permission1);
         permissions.add(permission2);

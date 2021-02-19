@@ -37,16 +37,22 @@
 package fr.gouv.vitamui.referential.rest;
 
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.service.UnitService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -67,7 +73,7 @@ public class UnitController extends AbstractUiRestController {
     public UnitController(final UnitService searchService) {
         this.searchService = searchService;
     }
-
+    
     @ApiOperation(value = "search unit by id")
     @GetMapping(RestApi.UNITS_PATH + "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -77,12 +83,22 @@ public class UnitController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "find units by custom dsl")
-    @PostMapping(RestApi.UNITS_PATH + RestApi.DSL_PATH)
+    @PostMapping({RestApi.UNITS_PATH + RestApi.DSL_PATH, RestApi.UNITS_PATH + RestApi.DSL_PATH + CommonConstants.PATH_ID})
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public JsonNode findByDsl(@RequestBody final JsonNode dsl) {
+    public JsonNode findByDsl(final @PathVariable Optional<String> id, @RequestBody final JsonNode dsl) {
         LOG.debug("searchUnits by dsl = {}", dsl);
-        return searchService.findByDsl(dsl, buildUiHttpContext());
+        LOG.debug("id = {}", id);
+        return searchService.findByDsl(id, dsl, buildUiHttpContext());
+    }
+    
+    @ApiOperation(value = "find unit objects by custom dsl")
+    @PostMapping(RestApi.UNITS_PATH + CommonConstants.PATH_ID + RestApi.OBJECTS_PATH)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public JsonNode findObjectMetadataById(final @PathVariable String id, @RequestBody final JsonNode dsl) {
+        LOG.debug("searchUnitObjects by id {} and dsl = {}", id, dsl);
+        return searchService.findObjectMetadataById(id, dsl, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get filing plan")

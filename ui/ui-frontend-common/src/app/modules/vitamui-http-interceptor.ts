@@ -110,6 +110,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
 
     const reqWithCredentials = request.clone({
       withCredentials: true,
+      headers: request.headers.delete('X-By-Passed-Error'),
       setHeaders: {
         'X-Request-Id': requestId,
         'X-Request-Timestamp': moment().unix().toString(),
@@ -118,6 +119,11 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
         'X-Application-Id': applicationId,
       }
     });
+
+    let errorToByPass: number = null;
+    if (request.headers.has('X-By-Passed-Error')) {
+      errorToByPass = +request.headers.get('X-By-Passed-Error');
+    }
 
     return next.handle(reqWithCredentials)
       .pipe(
@@ -128,7 +134,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
           }
         }),
         catchError((response) => {
-          if (response instanceof HttpErrorResponse) {
+          if (response instanceof HttpErrorResponse && response.status !== errorToByPass) {
             this.logger.log(this, 'Processing http error', response);
             if (response.status === HTTP_STATUS_CODE_UNAUTHORIZED) {
               // const loginRedirectUrl = response.headers.get('x-login-redirect');

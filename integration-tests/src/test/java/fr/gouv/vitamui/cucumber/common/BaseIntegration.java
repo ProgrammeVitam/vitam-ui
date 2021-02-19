@@ -19,7 +19,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -61,15 +60,14 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.utils.TestConstants;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -91,6 +89,8 @@ public abstract class BaseIntegration {
 
     public static final String ACCESS_CONTRACT = "AC-000001";
 
+    public static final String UNIT_CONTRACT = "ContratTNR";
+
     public static final String ADMIN_USER = "admin_user";
 
     public static final String ADMIN_USER_GROUP = "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363";
@@ -98,7 +98,7 @@ public abstract class BaseIntegration {
     private IamExternalRestClientFactory restClientFactory;
 
     private IamExternalWebClientFactory iamExternalWebClientFactory;
-    
+
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
     
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
@@ -130,10 +130,12 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
-
+    
     private ContextExternalRestClient contextRestClient;
 
     private RuleExternalRestClient ruleRestClient;
+
+    private UnitExternalRestClient unitRestClient;
 
     private static MongoClient mongoClientIam;
 
@@ -194,8 +196,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword;
-
+    protected String iamTruststorePassword; 
+    
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -271,6 +273,11 @@ public abstract class BaseIntegration {
     protected ExternalHttpContext getArchiveTenantUserAdminContext(final Integer tenantIdentifier) {
         buildSystemTenantUserAdminContext();
         return new ExternalHttpContext(tenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", ACCESS_CONTRACT);
+    }
+
+    protected ExternalHttpContext getUnitAdminContext() {
+        buildSystemTenantUserAdminContext();
+        return new ExternalHttpContext(proofTenantIdentifier, TestConstants.TOKEN_USER_ADMIN, TESTS_CONTEXT_ID, "admincaller", "requestId", UNIT_CONTRACT);
     }
 
     protected ExternalHttpContext getContext(final int tenant, final String user) {
@@ -648,6 +655,13 @@ public abstract class BaseIntegration {
             ruleRestClient = getReferentialRestClientFactory().getRuleExternalRestClient();
         }
         return ruleRestClient;
+    }
+
+    protected UnitExternalRestClient getUnitRestClient() {
+        if (unitRestClient == null) {
+            unitRestClient = getReferentialRestClientFactory().getUnitExternalRestClient();
+        }
+        return unitRestClient;
     }
 
     protected MongoCollection<Document> getProfilesCollection() {

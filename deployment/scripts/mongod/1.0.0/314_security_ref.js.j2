@@ -1,0 +1,18 @@
+db = db.getSiblingDB('security')
+
+print("START 314_security_ref.js");
+
+// ========================================= CONTEXTS =========================================
+db.contexts.updateOne( {
+	"_id": "ui_referential_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+				"ROLE_GET_UNITS"
+        	]
+        }
+    }
+});
+
+print("END 314_security_ref.js.j2");

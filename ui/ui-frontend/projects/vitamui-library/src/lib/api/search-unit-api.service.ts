@@ -16,12 +16,20 @@ export class SearchUnitApiService {
     this.apiUrl = this.baseUrl + '/search';
   }
 
-  /*  get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-      return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
-    } */
+  check(unitId: string, headers?: HttpHeaders): Observable<boolean> {
+    return this.http.get<any>(this.apiUrl + '/units/check/' + unitId, {headers});
+  }
 
-  getByDsl(dsl: any, headers?: HttpHeaders): Observable<any> {
-    return this.http.post<any>(this.apiUrl + '/units/dsl', dsl, {headers});
+  getById(unitId: string, headers?: HttpHeaders) {
+    return this.http.get<any>(this.apiUrl + '/units/' + unitId, {headers});
+  }
+
+  getByDsl(unitId: string, dsl: any, headers?: HttpHeaders): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/units/dsl' + (unitId ? '/' + unitId : ''), dsl, {headers});
+  }
+
+  getUnitObjectsByDsl(unitId: string, dsl: any, headers?: HttpHeaders): Observable<any> {
+    return this.http.post<any>(this.apiUrl + '/units/' + unitId + '/objects', dsl, {headers});
   }
 
   getFilingPlan(headers?: HttpHeaders): Observable<SearchResponse> {

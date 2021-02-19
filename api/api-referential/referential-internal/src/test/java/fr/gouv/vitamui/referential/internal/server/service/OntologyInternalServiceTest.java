@@ -73,7 +73,6 @@ import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.referential.common.dto.OntologyDto;
 import fr.gouv.vitamui.referential.common.service.OntologyService;
-import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
 
@@ -539,26 +538,4 @@ public class OntologyInternalServiceTest {
             ontologyInternalService.findHistoryByIdentifier(vitamContext, identifier);
         }).isInstanceOf(VitamClientException.class);
     }
-
-    @Test
-    public void import_should_return_ok() throws
-    InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
-    	VitamContext vitamContext = new VitamContext(1);
-	    File file = new File("src/test/resources/data/import_ontologies_valid.json");
-	    FileInputStream input = new FileInputStream(file);
-	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
-
-	    String stringReponse = "{\"httpCode\":\"201\"}";
-	    ObjectMapper mapper = new ObjectMapper();
-	    JsonNode jsonResponse = mapper.readTree(stringReponse);
-
-        expect(ontologyService.importOntologies(isA(VitamContext.class), isA(String.class), isA(MultipartFile.class)))
-    	    .andReturn((RequestResponse) new RequestResponseOK<JsonNode>(jsonResponse));
-        EasyMock.replay(ontologyService);
-
-        assertThatCode(() -> {
-        	ontologyInternalService.importOntologies(vitamContext, file.getName(), multipartFile);
-        }).doesNotThrowAnyException();
-    }
-
 }

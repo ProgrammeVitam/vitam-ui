@@ -40,6 +40,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -59,6 +61,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -89,23 +92,34 @@ public class UnitInternalController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @PostMapping(CommonConstants.PATH_ID)
+    @GetMapping(CommonConstants.PATH_ID)
     public JsonNode findUnitById(
             @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-            @PathVariable final String idu) throws VitamClientException {
+            @PathVariable final String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return unitInternalService.findUnitById(idu, vitamContext);
+        return unitInternalService.findUnitById(id, vitamContext);
     }
-
+ 
     // TODO : Secure it !
-    @PostMapping(RestApi.DSL_PATH)
+    @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
     public JsonNode findByDsl(
             @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+            @PathVariable final Optional<String> id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return unitInternalService.searchUnitsWithErrors(dsl, vitamContext);
+        return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
+    }
+    
+    @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
+    public JsonNode findObjectMetadataById(            
+    		@RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+            @PathVariable final String id,
+            @RequestBody final JsonNode dsl) throws VitamClientException {
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        return unitInternalService.findObjectMetadataById(id, dsl, vitamContext);
     }
 
     // TODO: Secure it ! Multiple (OR) CREATE_APPNAME_ROLE ? Unique FILLING_PLAN_ACCESS ?
@@ -131,7 +145,6 @@ public class UnitInternalController {
         catch (InvalidCreateOperationException | InvalidParseOperationException e) {
             throw new UnexpectedDataException("Unexpected error occured while building holding dsl query : " + e.getMessage());
         }
-
     }
 
 }

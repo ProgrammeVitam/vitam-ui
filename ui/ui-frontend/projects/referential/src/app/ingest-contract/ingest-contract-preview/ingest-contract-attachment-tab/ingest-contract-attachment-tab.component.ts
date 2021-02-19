@@ -60,7 +60,7 @@ export class IngestContractAttachmentTabComponent implements OnInit {
     this.accessContractId = event.value;
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', event.value);
-    this.unitService.getByDsl(this.getDslForRootNodes(), headers).subscribe(
+    this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe(
       response => {
         if (response.httpCode === 200) {
           this.titles = {};

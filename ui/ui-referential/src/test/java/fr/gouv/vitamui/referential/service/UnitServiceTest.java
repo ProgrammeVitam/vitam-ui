@@ -36,44 +36,78 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+
 import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-@Service
-public class UnitService {
+import java.util.Optional;
 
-    private final UnitExternalRestClient unitRestClient;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.when;
 
-    @Autowired
-    public UnitService(final UnitExternalRestClient unitRestClient) {
-        this.unitRestClient = unitRestClient;
-    }
+@RunWith(MockitoJUnitRunner.class)
+public class UnitServiceTest {
+    @Mock
+    private UnitExternalRestClient client;
+    private UnitService service;
 
-    public UnitExternalRestClient getClient() {
-        return unitRestClient;
+    @Before
+    public void setUp() {
+        service = new UnitService(client);
+    }    
+
+    @Test
+    public void testSearchById() {
+        String unitId = "id";
+
+        when(client.findUnitById(isNull(), any(String.class)))
+        	.thenReturn(new VitamUISearchResponseDto());
+        
+        final VitamUISearchResponseDto response = service.searchById(unitId, null);
+        Assert.assertNotNull(response);
+    }  
+
+    @Test
+    public void testFindByDsl() {
+        JsonNode json = JsonHandler.createObjectNode();
+
+        when(client.findUnitByDsl(isNull(), any(Optional.class), any(JsonNode.class)))
+        	.thenReturn(json);
+        
+        final JsonNode response = service.findByDsl(Optional.empty(), json, null);
+        Assert.assertNotNull(response);
     }
     
-    public VitamUISearchResponseDto searchById(final String id, final ExternalHttpContext context) {
-        return getClient().findUnitById(context, id);
-    }
+    @Test
+    public void testFindObjectMetadataById() {
+        String unitId = "id";
+        JsonNode json = JsonHandler.createObjectNode();
 
-    public JsonNode findByDsl(final Optional<String> id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findUnitByDsl(context, id, dsl);
+        when(client.findObjectMetadataById(isNull(), any(String.class), any(JsonNode.class)))
+        	.thenReturn(json);
+        
+        final JsonNode response = service.findObjectMetadataById(unitId, json, null);
+        Assert.assertNotNull(response);
     }
     
-    public JsonNode  findObjectMetadataById(final String id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findObjectMetadataById(context, id, dsl);
-    }
-
-    public VitamUISearchResponseDto findFilingPlan(ExternalHttpContext context) {
-        return getClient().getFilingPlan(context);
+    @Test
+    public void testFindFilingPlan() {
+        when(client.getFilingPlan(isNull()))
+    		.thenReturn(new VitamUISearchResponseDto());
+        
+        final VitamUISearchResponseDto response = service.findFilingPlan(null);
+        Assert.assertNotNull(response);
     }
 }

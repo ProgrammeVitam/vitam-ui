@@ -135,6 +135,12 @@ customer-init:
         - ROLE_CREATE_ARCHIVE_SEARCH
         - ROLE_GET_ARCHIVE_SEARCH
         - ROLE_GET_ALL_ARCHIVE_SEARCH
+    - name: Lancement de recherches par DSL
+      description: Lancement de recherches par DSL dans Vitam
+      app-name: DSL_APP
+      level:
+      roles:
+        - ROLE_GET_UNITS
 
   # Other Default profiles for admin group
   admin-profiles:

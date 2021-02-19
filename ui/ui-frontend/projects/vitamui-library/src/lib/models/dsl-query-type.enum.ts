@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,46 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.service;
-
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
-
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
-@Service
-public class UnitService {
-
-    private final UnitExternalRestClient unitRestClient;
-
-    @Autowired
-    public UnitService(final UnitExternalRestClient unitRestClient) {
-        this.unitRestClient = unitRestClient;
-    }
-
-    public UnitExternalRestClient getClient() {
-        return unitRestClient;
-    }
-    
-    public VitamUISearchResponseDto searchById(final String id, final ExternalHttpContext context) {
-        return getClient().findUnitById(context, id);
-    }
-
-    public JsonNode findByDsl(final Optional<String> id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findUnitByDsl(context, id, dsl);
-    }
-    
-    public JsonNode  findObjectMetadataById(final String id, final JsonNode dsl, final ExternalHttpContext context) {
-    	return getClient().findObjectMetadataById(context, id, dsl);
-    }
-
-    public VitamUISearchResponseDto findFilingPlan(ExternalHttpContext context) {
-        return getClient().getFilingPlan(context);
-    }
+export enum DslQueryType {
+    ARCHIVE_UNIT = 'ARCHIVE_UNIT',
+    TECHNICAL_OBJECT_GROUP = 'TECHNICAL_OBJECT_GROUP'
 }
