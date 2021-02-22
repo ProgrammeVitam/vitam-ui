@@ -166,14 +166,9 @@ export class LogbookDownloadService extends SearchService<Event> {
 
   downloadReport(event: Event, tenantIdentifier: number) {
     if (this.isOperationInProgress(event)) {
-      console.log('Nothing to download');
       return;
     }
-
-    console.log('Trying to download...');
-    console.log(event);
-    console.log(tenantIdentifier);
-
+    
     const id = event.id;
 
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
@@ -188,20 +183,11 @@ export class LogbookDownloadService extends SearchService<Event> {
     var eventType = event.type.toUpperCase();
     var downloadType = this.getDownloadType(eventTypeProc, eventType);
 
-    console.log('Download type');
-    console.log(downloadType);
-
     if(downloadType) {
       const headers = new HttpHeaders({
           'X-Tenant-Id': tenantIdentifier.toString(),
           'X-Access-Contract-Id': contractId
       });
-
-      console.log('headers');
-      console.log(headers);
-
-      console.log('id ' + id);
-      console.log('downloadType ' + downloadType);
 
       this.logbookApiService.downloadReport(id, downloadType, headers).subscribe((response) => {
         const element = document.createElement('a');

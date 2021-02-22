@@ -40,10 +40,11 @@ import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule } from 'u
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
@@ -53,6 +54,8 @@ describe('LogbookOperationComponent', () => {
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
   beforeEach(waitForAsync(() => {
+    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
     TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
@@ -62,6 +65,7 @@ describe('LogbookOperationComponent', () => {
       ],
       declarations: [LogbookOperationComponent],
       providers: [
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => { } } },

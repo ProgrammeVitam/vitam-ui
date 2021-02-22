@@ -93,14 +93,11 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
 
 
   downloadReports() {
-    console.log('download report');
     this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier);
   }
 
   updateCanDownload(event: Event) {
     const canDownloadReports = this.logbookDownloadService.canDownloadReports(event);
-    console.log("BONJOUR");
-    console.log(canDownloadReports);
     this.hideDownload = canDownloadReports.length < 1;
     if (!this.hideDownload) {
       this.canDownload = canDownloadReports.includes('download');
