@@ -91,7 +91,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     private final BuildProperties buildProperties;
 
     @Autowired
-    AutoConfigurationVitam autoConfigurationVitam;
+    private AutoConfigurationVitam autoConfigurationVitam;
 
     @Value("${cas.external-url}")
     @NotNull
