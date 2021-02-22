@@ -111,8 +111,6 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private Map<String, List<String>> listEnableExternalIdentifiers;
 
-    private static String PLATFORM_NAME = "PLATFORM_NAME";
-
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
     final BuildProperties buildProperties) {
         this.properties = properties;
