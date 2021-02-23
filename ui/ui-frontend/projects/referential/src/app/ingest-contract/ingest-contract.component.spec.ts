@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 import {of} from 'rxjs';
-import {BASE_URL, GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {ApplicationService, BASE_URL, GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
@@ -21,6 +21,12 @@ describe('IngestContractComponent', () => {
       data: of({appId: 'INGEST_CONTRACT_APP'})
     };
 
+    const applicationServiceMock = {
+      applications: new Array<any>(),
+      isApplicationExternalIdentifierEnabled: () => of(true)
+    };
+      
+
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -32,6 +38,7 @@ describe('IngestContractComponent', () => {
       declarations: [IngestContractComponent],
       providers: [
         GlobalEventService,
+        {provide: ApplicationService, useValue: applicationServiceMock },
         {provide: ActivatedRoute, useValue: activatedRouteMock},
         {provide: Router, useValue: {}},
         {provide: MatDialog, useValue: {}},
