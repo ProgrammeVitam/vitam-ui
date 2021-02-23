@@ -1,12 +1,12 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatDialog} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 
 import {IngestContractAttachmentTabComponent} from './ingest-contract-attachment-tab.component';
 import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
-import {MatSnackBarModule} from '@angular/material';
 
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;

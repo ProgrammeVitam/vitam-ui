@@ -37,13 +37,13 @@
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option, ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
 
 import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { AgencyService } from '../../agency/agency.service';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { MatSnackBar } from '@angular/material';
 import '@angular/localize/init';
 import { AccessContractService } from '../access-contract.service';
 

@@ -38,6 +38,7 @@ import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {FileFormat, FilingPlanMode, IngestContract} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
 import {ConfirmDialogService, Option, ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
@@ -47,7 +48,6 @@ import {ManagementContractApiService} from '../../core/api/management-contract-a
 import {FileFormatService} from '../../file-format/file-format.service';
 import {IngestContractService} from '../ingest-contract.service';
 import {IngestContractCreateValidators} from './ingest-contract-create.validators';
-import { MatSnackBar } from '@angular/material';
 import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;

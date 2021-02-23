@@ -44,6 +44,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
@@ -53,7 +54,6 @@ import {AgencyService} from '../../agency/agency.service';
 import {AccessContractService} from '../access-contract.service';
 import {AccessContractCreateComponent} from './access-contract-create.component';
 import {AccessContractCreateValidators} from './access-contract-create.validators';
-import {MatSnackBarModule} from '@angular/material';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',

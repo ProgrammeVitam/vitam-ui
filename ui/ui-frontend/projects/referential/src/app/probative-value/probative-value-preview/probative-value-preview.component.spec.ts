@@ -1,5 +1,6 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 
@@ -7,7 +8,6 @@ import {AccessContractService} from '../../access-contract/access-contract.servi
 import {ProbativeValueService} from '../probative-value.service';
 import {ProbativeValuePreviewComponent} from './probative-value-preview.component';
 import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
-import {MatSnackBarModule} from '@angular/material';
 
 describe('ProbativeValuePreviewComponent', () => {
   let component: ProbativeValuePreviewComponent;

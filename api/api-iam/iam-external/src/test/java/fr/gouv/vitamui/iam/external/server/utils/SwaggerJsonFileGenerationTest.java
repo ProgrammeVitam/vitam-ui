@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.external.server.utils;
 
+import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -70,5 +71,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ApplicationExternalService applicationExternalService;
+
+    @MockBean
+    private ExternalParametersExternalService externalParametersExternalService;
 
 }

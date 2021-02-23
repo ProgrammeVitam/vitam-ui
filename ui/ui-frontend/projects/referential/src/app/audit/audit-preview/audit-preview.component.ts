@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Event } from 'projects/vitamui-library/src/public-api';
 import { AuditService } from '../audit.service';
 import { ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
-import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-audit-preview',
