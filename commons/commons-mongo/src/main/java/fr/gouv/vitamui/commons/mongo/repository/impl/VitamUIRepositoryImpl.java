@@ -461,8 +461,7 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     private Object formatAggregationResult(final AggregationResults<AggregationResultValue> aggregationResults){
         if (aggregationResults.getMappedResults().size() > 1) {
             return aggregationResults.getMappedResults().stream().map(AggregationResultValue::getValue).collect(Collectors.toList());
-        } else {
-            return aggregationResults.getUniqueMappedResult() != null ? aggregationResults.getUniqueMappedResult().getValue() : null;
         }
+        return aggregationResults.getUniqueMappedResult() != null ? aggregationResults.getUniqueMappedResult().getValue() : null;
     }
 }

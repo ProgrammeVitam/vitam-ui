@@ -277,11 +277,10 @@ public final class UserInternalServiceTest {
         final RequestParamDto requestParamDto =
                 new RequestParamDto(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty(), Optional.of(groups));
         final ResultsDto<UserDto> subrogateUsers = internalUserService.getAllRequest(requestParamDto);
-        assertThat(subrogateUsers.getValues()).isNotEmpty();
-        assertThat(subrogateUsers.getValues().size()).isEqualTo(1);
-        assertThat(subrogateUsers.getGroups()).isNotEmpty();
-        assertThat(subrogateUsers.getGroups().size()).isEqualTo(1);
+        assertThat(subrogateUsers.getValues()).hasSize(1);
+        assertThat(subrogateUsers.getGroups()).hasSize(1);
         assertThat(subrogateUsers.getGroups().containsKey("type")).isEqualTo(true);
+        assertThat(((List)subrogateUsers.getGroups().get("type")).get(0)).isEqualTo("DISTINCT");
     }
 
     @Test

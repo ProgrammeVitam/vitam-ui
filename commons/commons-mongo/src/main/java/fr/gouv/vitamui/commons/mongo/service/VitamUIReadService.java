@@ -240,7 +240,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
                 .collect(Collectors.toList());
         // get aggregation results if request param group was given.
         Map<String, Object> groups = null;
-        if(requestParam.getGroups() != null && requestParam.getGroups().isPresent()) {
+        if(requestParam.getGroups().isPresent()) {
             RequestParamGroupDto requestParamGroups = requestParam.getGroups().get();
             final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(requestParam.getCriteria());
             groups = getRepository()
@@ -250,9 +250,8 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
                              requestParam.getOrderBy(),
                              requestParam.getDirection());
         }
-        ResultsDto resultsDto = new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
+        return new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
                 entitiesValues.isHasMore(), groups);
-        return resultsDto;
     }
 
     /**
