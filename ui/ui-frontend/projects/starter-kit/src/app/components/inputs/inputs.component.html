@@ -228,6 +228,12 @@
       <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4" disabled>
+        <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis" disabled>
+        <mat-datepicker-toggle [for]="pickerStart" matSuffix disabled></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart disabled></mat-datepicker>
+      </mat-form-field>
   </div>
 
     <h4>Duration</h4>

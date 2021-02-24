@@ -32,7 +32,7 @@ $anim-timing: 150ms ease-out;
     position: absolute;
     font-size: 14px;
     font-weight: 700;
-    color: var(--vitamui-primary);
+    color: var(--vitamui-primary) !important;
     letter-spacing: 0.1px;
     line-height: 10px;
     white-space: nowrap;
@@ -70,6 +70,28 @@ $anim-timing: 150ms ease-out;
       .mat-icon {
         font-size: 25px !important;
       }
+    }
+
+    .mat-form-field-label span {
+
+      line-height: 15px;
+
+    }
+
+    .mat-form-field-flex {
+      background-color: unset;
+    }
+
+    &.mat-form-field-disabled
+    {
+        background-color: var(--vitamui-grey-300);
+        border: none !important;
+        @include elevation-0;
+    }
+
+    .mat-input-element
+    {
+      color: unset;
     }
   }
 
