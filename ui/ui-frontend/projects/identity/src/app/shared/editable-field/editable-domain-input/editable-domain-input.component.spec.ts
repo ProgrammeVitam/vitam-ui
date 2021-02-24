@@ -37,17 +37,36 @@
 import { of } from 'rxjs';
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import {
   CustomerCreateValidators
 } from '../../../customer/customer-create/customer-create.validators';
-import { DomainsInputModule } from '../../domains-input';
 import { EditableDomainInputComponent } from './editable-domain-input.component';
 
+@Component({
+  selector: 'app-domains-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => DomainInputStubComponent),
+    multi: true
+  }]
+})
+class DomainInputStubComponent implements ControlValueAccessor {
+  @Input() placeholder: string;
+  @Input() selected: string;
+  @Input() spinnerDiameter = 25;
+
+  @Output() selectedChange = new EventEmitter<string>();
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
 @Component({
   template: `
     <app-editable-domain-input [(ngModel)]="value" [label]="label" [(defaultDomain)]="defaultValue"></app-editable-domain-input>
@@ -77,17 +96,18 @@ describe('EditableDomainInputComponent', () => {
         OverlayModule,
         FormsModule,
         ReactiveFormsModule,
-        DomainsInputModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule
       ],
       declarations: [
         TesthostComponent,
         EditableDomainInputComponent,
+        DomainInputStubComponent
       ],
       providers: [
-        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-      ]
+        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
 

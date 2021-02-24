@@ -11,7 +11,7 @@
 
         <vitamui-common-input class="col-6 pl-0" formControlName="code" maxlength="20" required
                               [placeholder]="'CUSTOMER.INFORMATIONS.CODE_CREATION' | translate"
-                              i18n-placeholder="Customer code@@customerCreateCustomerCodeInputPlaceholder">
+                              >
 
           <ng-container *ngIf="form.get('code')?.touched">
             <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
@@ -46,8 +46,7 @@
 
         <ng-container formGroupName="address">
           <vitamui-common-input class="col-12 pl-0" formControlName="street" maxlength="250" required
-          [placeholder]="'COMMON.ADRESS.STREET' | translate"
-                                i18n-placeholder="Customer street input placeholder@@customerCreateStreetInputPlaceholder">
+          [placeholder]="'COMMON.ADRESS.STREET' | translate">
             <vitamui-common-input-error
               *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
             </vitamui-common-input-error>
