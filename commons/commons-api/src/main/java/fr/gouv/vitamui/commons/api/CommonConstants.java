@@ -287,6 +287,8 @@ public class CommonConstants {
 
     public static final String LOGBOOK_DOWNLOAD_MANIFEST_PATH = LOGBOOK_DOWNLOAD_PATH + "/manifest";
 
+    public static final String LOGBOOK_DOWNLOAD_REPORT_PATH = LOGBOOK_DOWNLOAD_PATH + "/{downloadType}";
+
     public static final String STATUS_API_DOCUMENTATION_TAGS = "status";
 
     public static final String STATUS_API_DOCUMENTATION_VALUE = "Status";

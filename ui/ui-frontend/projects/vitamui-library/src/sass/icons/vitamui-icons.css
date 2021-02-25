@@ -21,6 +21,9 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-logbook-operations:before {
+  content: "\e966";
+}
 .vitamui-icon-rules:before {
   content: "\e965";
 }

@@ -154,4 +154,25 @@ public class LogbookInternalController {
         VitamRestUtils.writeFileResponse(vitamResponse, response);
     }
 
+    @ApiOperation(value = "Download the report file for a given operation")
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public void downloadReport(
+            @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+            @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+            @PathVariable final String id,
+            @PathVariable final String downloadType,
+            final HttpServletResponse response) throws VitamClientException, IOException {
+        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        final VitamContext vitamContext;
+        if(accessContractId != null) {
+            vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        } else {
+            vitamContext = securityService.buildVitamContext(tenantId);
+        }
+        final Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext);
+        VitamRestUtils.writeFileResponse(vitamResponse, response);
+    }
+
 }

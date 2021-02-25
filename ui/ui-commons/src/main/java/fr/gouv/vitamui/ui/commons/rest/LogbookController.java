@@ -36,8 +36,18 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Optional;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.ui.commons.service.LogbookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -52,19 +62,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.enums.ContentDispositionType;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.ui.commons.service.LogbookService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
 
 /**
  * UI logbook controller.
@@ -79,38 +77,38 @@ public class LogbookController extends AbstractUiRestController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookController.class);
 
-    protected final LogbookService loogbookService;
+    protected final LogbookService logbookService;
 
     @Autowired
-    public LogbookController(final LogbookService loogbookService) {
-        this.loogbookService = loogbookService;
+    public LogbookController(final LogbookService logbookService) {
+        this.logbookService = logbookService;
     }
 
     @ApiOperation(value = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
-        return loogbookService.findOperationById(buildUiHttpContext(), id);
+        return logbookService.findOperationById(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook unit lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
-        return loogbookService.findUnitLifeCyclesByUnitId(buildUiHttpContext(), id);
+        return logbookService.findUnitLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook object lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
-        return loogbookService.findObjectLifeCyclesByUnitId(buildUiHttpContext(), id);
+        return logbookService.findObjectLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook operations by json select")
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) {
-        return loogbookService.findOperations(buildUiHttpContext(), select);
+        return logbookService.findOperations(buildUiHttpContext(), select);
     }
 
     @ApiOperation(value = "Download the manifest for a given operation")
@@ -118,7 +116,7 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id, @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
-        final ResponseEntity<Resource> response = loogbookService.downloadManifest(buildUiHttpContext(), id);
+        final ResponseEntity<Resource> response = logbookService.downloadManifest(buildUiHttpContext(), id);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }
 
@@ -127,7 +125,18 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadAtr(@PathVariable final String id, @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadAtr: id={}, disposition={}", id, disposition);
-        final ResponseEntity<Resource> response = loogbookService.downloadAtr(buildUiHttpContext(), id);
+        final ResponseEntity<Resource> response = logbookService.downloadAtr(buildUiHttpContext(), id);
+        return RestUtils.buildFileResponse(response, disposition, Optional.empty());
+    }
+
+    @ApiOperation(value = "Download the report file for a given operation")
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> downloadReport(@PathVariable final String id,
+                                                   @PathVariable final String downloadType,
+                                                   @RequestParam final Optional<ContentDispositionType> disposition) {
+        LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
+        final ResponseEntity<Resource> response = logbookService.downloadReport(buildUiHttpContext(), id, downloadType);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }
 

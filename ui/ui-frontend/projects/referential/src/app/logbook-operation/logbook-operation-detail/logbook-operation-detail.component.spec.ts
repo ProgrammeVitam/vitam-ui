@@ -43,6 +43,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EventTypeBadgeClassPipe } from '../logbook-operation-list/event-type-badge-class.pipe';
 import { LastEventPipe } from '../logbook-operation-list/last-event.pipe';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
+import {LogbookDownloadService} from '../logbook-download.service';
 
 describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
@@ -53,6 +54,7 @@ describe('LogbookOperationDetailComponent', () => {
       declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe ],
       providers: [
         { provide: LogbookService, useValue: {} },
+        { provide: LogbookDownloadService, useValue: {} },
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
       ],

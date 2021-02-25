@@ -41,6 +41,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -137,6 +138,16 @@ public class LogbookExternalController {
         LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadAtr(id);
+        return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
+    }
+
+    @ApiOperation(value = "Download the report file for a given operation")
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType) {
+        LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        final ResponseEntity<Resource> response = logbookExternalService.downloadReport(id, downloadType);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
 

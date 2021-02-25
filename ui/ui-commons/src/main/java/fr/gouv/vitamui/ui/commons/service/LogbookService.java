@@ -145,4 +145,15 @@ public class LogbookService {
         return getLogbookRestClient().downloadAtr(context, id);
     }
 
+    /**
+     * Download an operation report
+     *
+     * @param context
+     * @param id
+     * @return
+     */
+    public ResponseEntity<Resource> downloadReport(final ExternalHttpContext context, final String id, final String downloadType) {
+        return getLogbookRestClient().downloadReport(context, id, downloadType);
+    }
+
 }

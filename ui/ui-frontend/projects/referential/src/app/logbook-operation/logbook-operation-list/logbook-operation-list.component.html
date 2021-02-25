@@ -2,12 +2,34 @@
   <thead>
     <tr>
       <th class="no-first-cell-padding width60">
-        <i class="vitamui-icon vitamui-icon-api-supervision vitamui-row-icon"></i>
+        <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon"></i>
       </th>
 
       <th>
         <div class="vitamui-table-header">
           <span i18n="@@logbookOperationListIdentifiantHeader">Identifiant</span>
+        </div>
+      </th>
+
+      <th>
+        <div class="vitamui-table-header">
+
+          <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="operationCategoriesFilterTemplate"
+          [class.active]="filterMap['operationCategories'] && filterMap['operationCategories'].length > 0">
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+          </button>
+
+          <ng-template #operationCategoriesFilterTemplate>
+            <vitamui-common-table-filter-search
+              [(filter)]="filterMap['operationCategories']"
+              [options]="operationCategoriesFilterOptions"
+              (filterChange)="onFilterChange('operationCategories', $event)"
+              (filterClose)="operationCategoriesFilterTrigger?.close()"
+              i18n-emptyValueOption="@@userListLevelFilterEmpty"
+            ></vitamui-common-table-filter-search>
+          </ng-template>
+
+          <span i18n="@@logbookOperationListOperationHeader">Catégorie d'opération</span>
         </div>
       </th>
 
@@ -19,13 +41,13 @@
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@logbookOperationListStartDateHeader">Date de création</span>
+          <span i18n="@@logbookOperationListStartDateHeader">Date de début</span>
         </div>
       </th>
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@logbookOperationListEndDateHeader">Fin d'exécution</span>
+          <span i18n="@@logbookOperationListEndDateHeader">Date de fin</span>
         </div>
       </th>
 
@@ -37,7 +59,7 @@
 
       <th>
         <div class="vitamui-table-header">
-          <span i18n="@@logbookOperationListStepHeader">Etape</span>
+          <span i18n="@@logbookOperationListStepHeader">Étape</span>
         </div>
       </th>
 
@@ -48,11 +70,12 @@
       <td class="no-first-cell-padding width60">
         <div class="vitamui-cell-icon aligned">
           <div class="status-badge" [ngClass]="event | eventTypeBadgeClass">
-            <i class="vitamui-icon vitamui-icon-api-supervision vitamui-row-icon status-badge"></i>
+            <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon status-badge"></i>
           </div>
         </div>
       </td>
       <td><div class="vitamui-cell-content break-content" [title]="event.id">{{ event.id }}</div></td>
+      <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass"><vitamui-common-event-type-label [key]="event.typeProc"></vitamui-common-event-type-label></div></td>
       <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass"><vitamui-common-event-type-label [key]="event.type"></vitamui-common-event-type-label></div></td>
       <td>
         <div class="vitamui-cell-content">{{ event.dateTime | date:'dd/MM/yyyy' }}</div>

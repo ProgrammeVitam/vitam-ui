@@ -42,8 +42,6 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { EventFilter } from './event-filter.interface';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -53,7 +51,7 @@ export class LogbookSearchService extends SearchService<Event> {
     super(http, logbookApi);
   }
 
-  static buildVitamQuery(pageRequest: PageRequest, filters: EventFilter): VitamSelectQuery {
+  static buildVitamQuery(pageRequest: PageRequest, criteria: any): VitamSelectQuery {
     const baseParameters: Partial<VitamSelectQuery> = {
       $projection: {},
       $filter: {
@@ -63,14 +61,14 @@ export class LogbookSearchService extends SearchService<Event> {
       }
     };
 
-    if (!filters) {
+    if (!criteria) {
       return {
         $query: {} as VitamSelectOperator,
         ...baseParameters
       };
     }
 
-    const queryOperators = this.buildQueryOperators(filters);
+    const queryOperators = this.buildQueryOperators(criteria);
 
     if (queryOperators.length === 0) {
       return {
@@ -82,30 +80,34 @@ export class LogbookSearchService extends SearchService<Event> {
     return {
       $query: {
         $and: [
-          ...this.buildQueryOperators(filters),
+          ...this.buildQueryOperators(criteria),
         ]
       },
       ...baseParameters
     };
   }
 
-  private static buildQueryOperators(filters: EventFilter): VitamSelectOperator[] {
+  private static buildQueryOperators(criteria: any): VitamSelectOperator[] {
     const operators: VitamSelectOperator[] = [];
 
-    if (filters.type) {
-      operators.push({ $eq: { evTypeProc: filters.type } });
+    if (criteria.types && criteria.types.length > 0) {
+      operators.push({ $in: { evTypeProc: criteria.types } });
     }
 
-    if (filters.status === 'ERROR') {
+    if (criteria.status === 'ERROR') {
       operators.push({ $in: { 'events.outcome': ['KO', 'FATAL'] } });
     }
 
-    if (filters.dateRange && filters.dateRange.startDate) {
-      operators.push({ $gte: { evDateTime: filters.dateRange.startDate } });
+    if (criteria.evDateTime_Start) {
+      operators.push({ $gte: { evDateTime: criteria.evDateTime_Start } });
     }
 
-    if (filters.dateRange && filters.dateRange.endDate) {
-      operators.push({ $lte: { evDateTime: moment(filters.dateRange.endDate).endOf('day') } });
+    if (criteria.evDateTime_End) {
+      operators.push({ $lte: { evDateTime: moment(criteria.evDateTime_End).endOf('day') } });
+    }
+
+    if (criteria.evId) {
+      operators.push({ $eq: { evId: criteria.evId } });
     }
 
     return operators;

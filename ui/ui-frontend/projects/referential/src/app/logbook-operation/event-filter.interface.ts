@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export interface EventFilter {
-  type?: 'INGEST' | 'ELIMINATION' | 'MASTERDATA';
+  type?: Array<string>;
   status?: 'RUNNING' | 'ERROR' | 'DONE';
   dateRange?: { startDate: Date, endDate: Date };
 }

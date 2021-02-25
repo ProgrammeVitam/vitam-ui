@@ -8,10 +8,13 @@
     <div class="header-container">
       <div class="title">
         <div class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
-          <i class="vitamui-icon vitamui-icon-api-supervision vitamui-row-icon status-badge"></i>
+          <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon status-badge"></i>
         </div>
         <h2>{{ event?.id }}</h2>
       </div>
+      <ng-container *ngIf="!hideDownload || canDownload">
+        <button mat-button class="btn btn-primary button-maring" (click)="downloadReports()" [disabled]="couldDownload && !canDownload">Télécharger le rapport</button>
+      </ng-container>
     </div>
   </div>
   <div class="vitamui-sidepanel-body">
@@ -36,7 +39,7 @@
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label i18n="Application Identifier@@logbookOperationApplicationId">Identification de l'application</label>
+            <label i18n="Application Identifier@@logbookOperationApplicationId">Identifiant de l'application</label>
             <div class="word-break">{{ event?.agIdApp }}</div>
           </div>
           <div class="read-only-field">
@@ -58,7 +61,7 @@
 
         <div class="read-only-field">
           <label i18n="Report@@logbookOperationReport">Rapport</label>
-          <div>-</div>
+          <div>{{ reportFileName }}</div>
         </div>
 
         <div class="read-only-field">
