@@ -40,7 +40,6 @@ import {Subject} from 'rxjs';
 import {Event, LogbookApiService, SearchService, VitamUISnackBar} from 'ui-frontend-common';
 import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
 
-const CONTRACT_COOKIE = 'accessContract';
 
 const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
 const DOWNLOAD_TYPE_DIP = 'dip';
@@ -151,20 +150,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  getAccessContractId(event: Event): string {
-    const rightsStatementIdentifier = event.rightsStatementIdentifier;
-    if (rightsStatementIdentifier) {
-      const parsedValue = JSON.parse(rightsStatementIdentifier);
-      if (parsedValue && parsedValue.AccessContract) {
-        return parsedValue.AccessContract;
-      } else {
-        // Default contract Id
-        return localStorage.getItem(CONTRACT_COOKIE);
-      }
-    }
-  }
-
-  downloadReport(event: Event, tenantIdentifier: number) {
+  downloadReport(event: Event, tenantIdentifier: number, accessContractId: string) {
     if (this.isOperationInProgress(event)) {
       return;
     }
@@ -177,8 +163,6 @@ export class LogbookDownloadService extends SearchService<Event> {
       data: {type: 'eventExportAll'}
     });
 
-    var contractId = this.getAccessContractId(event);
-
     var eventTypeProc = event.typeProc.toUpperCase();
     var eventType = event.type.toUpperCase();
     var downloadType = this.getDownloadType(eventTypeProc, eventType);
@@ -186,7 +170,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     if(downloadType) {
       const headers = new HttpHeaders({
           'X-Tenant-Id': tenantIdentifier.toString(),
-          'X-Access-Contract-Id': contractId
+          'X-Access-Contract-Id': accessContractId
       });
 
       this.logbookApiService.downloadReport(id, downloadType, headers).subscribe((response) => {
@@ -195,6 +179,12 @@ export class LogbookDownloadService extends SearchService<Event> {
         const url = window.URL.createObjectURL(blob);
         element.href = url;
         element.download = id + '.json';
+        if (DOWNLOAD_TYPE_OBJECT == downloadType) {
+          element.download = id + '.xml';
+        }
+        if (DOWNLOAD_TYPE_BATCH_REPORT == downloadType) {
+          element.download = id + '.jsonl';
+        }
         element.click();
         window.URL.revokeObjectURL(url);
       }, (error) => {

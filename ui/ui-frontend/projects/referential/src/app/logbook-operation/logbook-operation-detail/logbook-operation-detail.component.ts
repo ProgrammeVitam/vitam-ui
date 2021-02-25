@@ -93,7 +93,17 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
 
 
   downloadReports() {
-    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier);
+    if (!this.tenantIdentifier || !this.eventId) {
+      return;
+    }
+
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
+
+    if (!tenant) {
+      return;
+    }
+    const accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
+    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier, accessContractLogbookIdentifier);
   }
 
   updateCanDownload(event: Event) {
