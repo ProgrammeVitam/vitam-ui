@@ -143,137 +143,156 @@
 }
 
 @mixin input-elevation-dark {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-2-dark;
 
         &:hover {
             @include elevation-3-dark;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin btn-elevation-dark {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-3-dark;
 
         &:hover {
             @include elevation-4-dark;
         }
 
-        &:focus, .active {
+        &:focus,
+        .active {
             @include elevation-2-dark;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin btn-elevation-primary {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-3-primary;
 
         &:hover {
             @include elevation-4-primary;
         }
 
-        &:focus, .active {
+        &:focus,
+        .active {
             @include elevation-2-primary;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin btn-elevation-secondary {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-3-secondary;
 
         &:hover {
             @include elevation-4-secondary;
         }
 
-        &:focus, .active {
+        &:focus,
+        .active {
             @include elevation-2-secondary;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin dialog-elevation-dark {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-1-dark;
 
         &:hover {
             @include elevation-2-dark;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin dialog-elevation-primary {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-1-primary;
 
         &:hover {
             @include elevation-2-primary;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
 @mixin dialog-elevation-secondary {
-    &:not(.disabled) {
+    &:not(.disabled),
+    &:not(:disabled) {
         @include elevation-1-secondary;
 
         &:hover {
             @include elevation-2-secondary;
         }
     }
-    &.disabled {
+    &.disabled,
+    &:disabled {
         @include elevation-0;
     }
 }
 
-
 @mixin btn-dialog-elevation-dark {
-
     @include dialog-elevation-dark;
 
-    &:not(.disabled) {
-        &:focus, .active {
+    &:not(.disabled),
+    &:not(:disabled) {
+        &:focus,
+        .active {
             @include elevation-0;
         }
     }
 }
 
 @mixin btn-dialog-elevation-primary {
-
     @include dialog-elevation-primary;
 
-    &:not(.disabled) {
-        &:focus, .active {
+    &:not(.disabled),
+    &:not(:disabled) {
+        &:focus,
+        .active {
             @include elevation-0;
         }
     }
 }
 
 @mixin btn-dialog-elevation-secondary {
-
     @include dialog-elevation-secondary;
 
-    &:not(.disabled) {
-        &:focus, .active {
+    &:not(.disabled),
+    &:not(:disabled) {
+        &:focus,
+        .active {
             @include elevation-0;
         }
     }
