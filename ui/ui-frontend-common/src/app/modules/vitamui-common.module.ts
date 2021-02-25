@@ -48,7 +48,6 @@ import { CollapseModule } from './components/collapse/collapse.module';
 import { CommonProgressBarModule } from './components/common-progress-bar/common-progress-bar.module';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
-import { CountryModule } from './components/country/country.module';
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
@@ -150,7 +149,6 @@ export function startupServiceFactory(startupService: StartupService) {
     StepperModule,
     SubrogationModule,
     TooltipModule,
-    CountryModule,
     CommonProgressBarModule,
     VitamuiCommonSelectModule,
     VitamuiDragDropFileModule,
@@ -204,7 +202,6 @@ export function startupServiceFactory(startupService: StartupService) {
     StepperModule,
     SubrogationModule,
     TooltipModule,
-    CountryModule,
     VitamuiCommonSelectModule,
     VitamuiDragDropFileModule,
     VitamUIAutocompleteModule,

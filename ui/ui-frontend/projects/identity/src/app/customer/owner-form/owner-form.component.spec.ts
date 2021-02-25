@@ -1,3 +1,4 @@
+
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -41,9 +42,9 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of ,  timer } from 'rxjs';
+import { EMPTY, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { CountryService } from 'ui-frontend-common';
 import { Owner } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OwnerService } from '../owner.service';
@@ -79,6 +80,9 @@ describe('OwnerFormComponent', () => {
       providers: [
         { provide: OwnerService, useValue: ownerServiceSpy },
         { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+
+
       ]
     })
     .compileComponents();

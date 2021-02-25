@@ -147,14 +147,10 @@
 
             <mat-form-field class="col-4 vitamui-mat-select">
               <mat-select formControlName="country" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" panelClass="vitamui-mat-select">
-                <!-- TODO Fetch those values from a referential -->
-                <mat-option value="FR">France</mat-option>
-                <mat-option value="GB">Royaume Uni</mat-option>
-                <mat-option value="DE">Allemagne</mat-option>
-                <mat-option value="DK">Danemark</mat-option>
-                <mat-option value="ES">Espagne</mat-option>
-                <mat-option value="IT">Italie</mat-option>
-              </mat-select>
+                <mat-option *ngFor="let country of countries" [value]="country.code">
+                  {{country.name}}
+                </mat-option>
+                 </mat-select>
               <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_up</i>
                 <i class="material-icons">keyboard_arrow_down</i>

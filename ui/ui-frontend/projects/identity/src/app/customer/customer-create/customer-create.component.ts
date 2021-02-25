@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { merge, Observable, Subject } from 'rxjs';
-import {ConfirmDialogService, Customer, Logo, OtpState } from 'ui-frontend-common';
+import {ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -97,6 +97,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   public logos: Logo[];
 
+  public countries: CountryOption[];
+
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -106,6 +108,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
+    private countryService: CountryService,
   ) {
   }
 
@@ -160,6 +163,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef)
     .pipe(takeUntil(this.destroy))
     .subscribe(() => this.onCancel());
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
+    });
   }
 
   ngOnDestroy() {

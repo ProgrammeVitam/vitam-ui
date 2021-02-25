@@ -97,12 +97,8 @@
       <div class="col-12 form-control">
         <vitamui-common-editable-select formControlName="country" [label]="'COMMON.ADRESS.COUNTRY' | translate" [validator]="form?.get('address.country')?.validator"
           [asyncValidator]="form?.get('address.country')?.asyncValidator">
-          <vitamui-common-editable-option value="FR" content="France"></vitamui-common-editable-option>
-          <vitamui-common-editable-option value="GB" content="Royaume Uni"></vitamui-common-editable-option>
-          <vitamui-common-editable-option value="DE" content="Allemagne"></vitamui-common-editable-option>
-          <vitamui-common-editable-option value="DK" content="Danemark"></vitamui-common-editable-option>
-          <vitamui-common-editable-option value="ES" content="Espagne"></vitamui-common-editable-option>
-          <vitamui-common-editable-option value="IT" content="Italie"></vitamui-common-editable-option>
+          <vitamui-common-editable-option *ngFor="let country of countries" [value]="country.code" [content]="country.name">
+          </vitamui-common-editable-option>
         </vitamui-common-editable-select>
       </div>
     </div>

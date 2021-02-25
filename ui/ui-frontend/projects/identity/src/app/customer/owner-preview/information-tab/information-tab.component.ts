@@ -38,7 +38,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Owner, Tenant } from 'ui-frontend-common';
+import { CountryOption,  CountryService, diff, Owner, Tenant } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
@@ -90,12 +90,15 @@ export class InformationTabComponent implements OnChanges, OnInit {
     accessContractLogbookIdentifier: string,
   };
 
+  public countries: CountryOption[];
+
   constructor(
     private formBuilder: FormBuilder,
     private ownerFormValidators: OwnerFormValidators,
     private ownerService: OwnerService,
     private tenantService: TenantService,
-    private tenantFormValidators: TenantFormValidators
+    private tenantFormValidators: TenantFormValidators,
+    private countryService: CountryService,
   ) {
     this.ownerForm = this.formBuilder.group({
       id: [null, Validators.required],
@@ -158,6 +161,9 @@ export class InformationTabComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
+    });
   }
 
   ngOnChanges() {

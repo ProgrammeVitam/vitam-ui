@@ -1,3 +1,4 @@
+
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -41,6 +42,7 @@ import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsM
 import { of, Subject } from 'rxjs';
 
 import { AuthService, Profile } from 'ui-frontend-common';
+import { CountryService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
@@ -132,6 +134,7 @@ describe('Hierarchy InformationTabComponent', () => {
         { provide: HierarchyService, useValue: hierarchyServiceMock },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock },
+        { provide: CountryService, useValue: {} },
       ]
     })
     .compileComponents();

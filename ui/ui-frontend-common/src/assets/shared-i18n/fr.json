@@ -276,5 +276,15 @@
     "FRENCH": "Français",
     "ENGLISH": "Anglais",
     "GERMAN": "Allemand"
+  }	,
+  "COUNTRY": {
+      "FRANCE" : "France",
+      "GERMANY": "Allemagne",
+      "ITALY": "Italie",
+      "UNITED-KINGDOM": "Royaume-Uni",
+      "DENMARK": "Danemark",
+      "SPAIN": "Espagne",
+      "BELGIUM": "Belgique",
+      "PORTUGAL": "Portugal"
   }
 }

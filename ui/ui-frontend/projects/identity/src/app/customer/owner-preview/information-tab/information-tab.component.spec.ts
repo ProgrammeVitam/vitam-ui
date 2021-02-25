@@ -39,8 +39,8 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Subject } from 'rxjs';
-
+import { EMPTY, of, Subject } from 'rxjs';
+import { CountryService } from 'ui-frontend-common';
 import { Owner, Tenant } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { VitamUISnackBar } from '../../../shared/vitamui-snack-bar';
@@ -149,6 +149,8 @@ describe('Owner InformationTabComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: TenantService, useValue: { patch: () => of(expectedTenant) } },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+
       ]
     })
     .compileComponents();

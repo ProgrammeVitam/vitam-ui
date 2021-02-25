@@ -40,7 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState
+  AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState
 } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
 
@@ -72,6 +72,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public creating = false;
   public stepCount = 4;
   private keyPressSubscription: Subscription;
+  public countries: CountryOption[];
+
 
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
@@ -80,7 +82,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private authService: AuthService,
     private userCreateValidators: UserCreateValidators,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
+    private countryService: CountryService,
   ) { }
 
   ngOnInit() {
@@ -155,6 +158,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         this.form.get('address.city').setValidators(Validators.required);
       }
       this.form.get('address').updateValueAndValidity({ emitEvent: false });
+    });
+
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
     });
   }
 

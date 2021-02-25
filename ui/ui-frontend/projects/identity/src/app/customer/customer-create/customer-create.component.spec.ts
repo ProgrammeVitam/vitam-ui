@@ -49,7 +49,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { CountryService } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -204,7 +204,8 @@ describe('CustomerCreateComponent', () => {
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
-        {provide : MatDialog , useValue : {}}
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        { provide : MatDialog , useValue : {} }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

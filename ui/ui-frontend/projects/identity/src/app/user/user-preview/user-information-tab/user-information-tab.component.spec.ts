@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
@@ -44,7 +44,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { CountryService } from 'ui-frontend-common';
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserService } from '../../user.service';
 import { UserInfoTabComponent } from './user-information-tab.component';
@@ -266,6 +266,7 @@ describe('UserInfoTabComponent', () => {
         { provide: UserService, useValue: userServiceSpy },
         { provide: UserCreateValidators, useValue: userCreateValidatorsSpy },
         { provide: AuthService, useValue: { user: {} } },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ]
     })
     .compileComponents();
