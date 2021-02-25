@@ -53,7 +53,6 @@ public class UserRepositoryTest {
 
     @Test
     public void testFindByEmail() {
-        // Populate database
         final List<String> emailsMoctar = new ArrayList<>();
         final String emailVitamUIMoctar = "moctar.diagne@vitamui.com";
         final String emailOuidouMoctar = "moctar.diagne@ouidou.fr";
@@ -65,7 +64,6 @@ public class UserRepositoryTest {
         repository.save(userVitamUI);
         repository.save(userOuidou);
 
-        // Find user by email
         final User user = repository.findByEmail(emailVitamUIMoctar);
 
         assertNotNull(user);
@@ -74,7 +72,6 @@ public class UserRepositoryTest {
 
     @Test
     public void testCountByProfileGroupId() {
-        // Populate database
         final List<String> emailsMoctar = new ArrayList<>();
         final String emailVitamUIMoctar = "moctar.diagne@vitamui.com";
         final String emailOuidouMoctar = "moctar.diagne@ouidou.fr";

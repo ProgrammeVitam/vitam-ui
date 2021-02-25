@@ -155,16 +155,13 @@ public class InitCustomerService {
         final List<OwnerDto> ownerDtos = owners;
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
-        // create identity provider
         createIdentityProvider(customerDto.getId(), customerDto.getDefaultEmailDomain());
 
-        // create proof tenant, profiles, group and user
         final Tenant proofTenantDto = createProofTenant(tenantName, createdOwnerDtos.get(0).getId(), customerDto.getId());
         final List<Profile> createdAdminProfiles = createAdminProfiles(customerDto, proofTenantDto);
         final Group createdAdminGroup = createAdminGroup(customerDto, createdAdminProfiles);
         createAdminUser(customerDto, createdAdminGroup);
 
-        // create custom profiles, groups and user
         List<Profile> customProfiles = createCustomProfiles(customerDto, proofTenantDto);
         List<Group> customGroups = createCustomGroups(customerDto, proofTenantDto, customProfiles);
         createCustomUsers(customerDto, customGroups);
@@ -304,8 +301,6 @@ public class InitCustomerService {
     private List<Profile> createAdminProfiles(final CustomerDto customerDto, final Tenant proofTenant) {
         final List<Profile> profiles = new ArrayList<>();
 
-        //@formatter:off
-        // Manage User Application
         final Profile userProfile = EntityFactory.buildProfile(ServicesData.SERVICE_USERS + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
             ApiIamInternalConstants.USERS_PROFILE_DESCRIPTION,
@@ -317,7 +312,6 @@ public class InitCustomerService {
             customerDto.getId());
         profiles.add(saveProfile(userProfile));
 
-        // Manage Group Application
         final Profile groupProfile = EntityFactory.buildProfile(ServicesData.SERVICE_GROUPS + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
             ApiIamInternalConstants.GROUPS_PROFILE_DESCRIPTION,
@@ -329,7 +323,6 @@ public class InitCustomerService {
             customerDto.getId());
         profiles.add(saveProfile(groupProfile));
 
-        // Manage User Profile Application
         final Profile profileUserProfileDto = EntityFactory.buildProfile(ServicesData.SERVICE_PROFILES + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
             ApiIamInternalConstants.PROFILE_DESCRIPTION,
@@ -341,7 +334,6 @@ public class InitCustomerService {
             customerDto.getId());
         profiles.add(saveProfile(profileUserProfileDto));
 
-        // Manage My Account Application
         final Profile accountProfile = EntityFactory.buildProfile(ServicesData.SERVICE_ACCOUNTS + " " + proofTenant.getIdentifier(),
             generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
             ApiIamInternalConstants.ACCOUNT_PROFILE_DESCRIPTION,
@@ -353,7 +345,6 @@ public class InitCustomerService {
             customerDto.getId());
         profiles.add(saveProfile(accountProfile));
 
-        // Custom admin profiles
         if(customerInitConfig.getAdminProfiles() != null) {
             customerInitConfig.getAdminProfiles().forEach(p -> {
                 Profile profile = EntityFactory.buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
@@ -369,9 +360,7 @@ public class InitCustomerService {
             });
         }
 
-        //@formatter:on
 
-        // create all default profiles for this tenant
         final List<Profile> tenantProfiles = internalTenantService.getDefaultProfiles(proofTenant.getCustomerId(), proofTenant.getIdentifier());
 
         for (final Profile p : tenantProfiles) {
@@ -382,7 +371,6 @@ public class InitCustomerService {
     }
 
     private Group createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
-        //@formatter:off
         final Group group = EntityFactory.buildGroup(getAdminClientRootName(customerDto),
             generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
             ApiIamInternalConstants.ADMIN_CLIENT_ROOT,
@@ -390,7 +378,6 @@ public class InitCustomerService {
             ApiIamInternalConstants.ADMIN_LEVEL,
             profiles,
             customerDto.getId());
-        //@formatter:on
         return saveGroup(group);
     }
 

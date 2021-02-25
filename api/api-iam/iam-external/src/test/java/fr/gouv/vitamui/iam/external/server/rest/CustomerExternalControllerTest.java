@@ -32,7 +32,6 @@ public class CustomerExternalControllerTest extends ApiIamControllerTest<Custome
 
     @Test
     public void testCreateCustomer() {
-        // TODO correct multipart problem (empty customerDto)
         final CustomerCreationFormData creationFormData = new CustomerCreationFormData();
         creationFormData.setCustomerDto(buildDto());
         creationFormData.setHeader(Optional.empty());

@@ -119,7 +119,6 @@ public class TenantInternalServiceTest {
         final UserDto userProfile = new UserDto();
         userProfile.setId("userId");
 
-        // when(internalCustomerService.getMany(tenantDto.getCustomerId())).thenReturn(Arrays.asList(new BasicCustomerDto()));
         when(customerRepository.findById(tenantDto.getCustomerId())).thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
 
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
@@ -163,7 +162,6 @@ public class TenantInternalServiceTest {
 
         internalTenantService.processPatch(entity, partialDto);
 
-        // Fill fields ignored by patch process
         entity.setId(other.getId());
         entity.setCustomerId(other.getCustomerId());
         entity.setReadonly(other.isReadonly());

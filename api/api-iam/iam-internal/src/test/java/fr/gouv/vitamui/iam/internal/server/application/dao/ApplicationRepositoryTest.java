@@ -36,7 +36,6 @@ public class ApplicationRepositoryTest {
 
     @Test
     public void testSaveApplication() {
-        // Populate database
         final Application app = repository.save(IamServerUtilsTest.buildApplication("identifier", "url"));
         assertThat(app.getIdentifier()).isEqualTo("identifier");
     }

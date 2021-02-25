@@ -193,7 +193,6 @@ public class InitCustomerServiceIntegrationTest {
         customSequence7.setName(SequencesConstants.TENANT_IDENTIFIER);
         sequenceRepository.save(customSequence7);
 
-        // retrieve sequences
         customerInternalService.getNextSequenceId(SequencesConstants.CUSTOMER_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
         customerInternalService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
@@ -243,7 +242,6 @@ public class InitCustomerServiceIntegrationTest {
         final Optional<Customer> customer = customerRepository.findByCode(CUSTOMER_CODE);
         assertThat(customer).isPresent();
 
-        // custom profiles groups and users initialization
         final Profile profile1 = profileRepository.findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_1 + " " + TENANT_IDENTIFIER, LEVEL_1, TENANT_IDENTIFIER);
         assertThat(profile1).isNotNull();
         assertThat(profile1.getDescription()).isEqualTo(DESCRIPTION_1);

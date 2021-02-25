@@ -168,7 +168,6 @@ public class TenantInternalController implements CrudController<TenantDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for tenant with id :{}", id);
-        // the id param checker is checked earlier .. no idea how code audit will interpret this?
         return internalTenantService.findHistoryById(id);
     }
 }

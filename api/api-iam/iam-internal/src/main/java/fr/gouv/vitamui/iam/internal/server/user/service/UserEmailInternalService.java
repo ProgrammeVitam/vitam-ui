@@ -96,7 +96,6 @@ public class UserEmailInternalService {
                 }
             }
             catch (final Exception e) {
-                // user creation email is not mandatory. This shouldn't block the process
                 LOGGER.error("User creation: failed to send mail after creation. \n{}", e);
             }
 

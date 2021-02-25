@@ -66,7 +66,6 @@ public class IdentityProviderDto extends CustomerIdDto {
      */
     private static final long serialVersionUID = 2372968720503585884L;
 
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
     private String identifier;
 
     @NotNull
@@ -85,14 +84,12 @@ public class IdentityProviderDto extends CustomerIdDto {
     @Size(min = 1)
     private List<String> patterns;
 
-    // Embedded keystore
     private String keystoreBase64;
 
     private String keystorePassword;
 
     private String privateKeyPassword;
 
-    // Embedded idpmetadata
     private String idpMetadata;
 
     private String spMetadata;

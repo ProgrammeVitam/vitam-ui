@@ -101,7 +101,6 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         customSequence.setName(SequencesConstants.IDP_IDENTIFIER);
         sequenceRepository.save(customSequence);
 
-        // retrieve sequences
         service.getNextSequenceId(SequencesConstants.IDP_IDENTIFIER);
     }
 

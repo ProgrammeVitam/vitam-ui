@@ -180,7 +180,6 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         customSequence3.setSequence(1);
         sequenceRepository.save(customSequence3);
 
-        // retrieve sequences
         internalGroupService.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
         service.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER);
 

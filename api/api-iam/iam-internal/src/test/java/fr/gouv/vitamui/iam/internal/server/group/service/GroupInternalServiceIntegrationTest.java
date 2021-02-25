@@ -110,7 +110,6 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
         customSequence.setName(SequencesConstants.GROUP_IDENTIFIER);
         sequenceRepository.save(customSequence);
 
-        // retrieve sequences
         service.getNextSequenceId(SequencesConstants.GROUP_IDENTIFIER);
     }
 

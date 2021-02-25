@@ -104,7 +104,6 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
     @Override
     @Deprecated
-    // use {@link CustomerExternalWebClient} for customer creation which supports multipart for the graphical identity.
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto dto) {
         return super.create(context, dto);
     }

@@ -82,9 +82,6 @@ public class OwnerExternalService extends AbstractResourceClientService<OwnerDto
         final boolean hasRoleGetOwner = externalSecurityService.hasRole(ServicesData.ROLE_GET_OWNERS);
         if (!hasRoleGetOwner) {
             // TODO
-/*            if (!StringUtils.equals(externalSecurityService.getUser().get, id)) {
-                throw new ForbiddenException(String.format("Unable to access owner with id: %s", id));
-            }*/
         }
         final OwnerDto ownerDto = super.getOne(id);
         if (ownerDto == null) {

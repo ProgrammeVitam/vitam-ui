@@ -319,7 +319,6 @@ public class CasInternalService {
         tokenRepository.save(token);
         user.setLastConnection(OffsetDateTime.now());
         user.setAuthToken(token.getId());
-        // update user last connection info. This is used for example for users with external provider.
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(LAST_CONNECTION, user.getLastConnection());
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);

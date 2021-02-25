@@ -109,14 +109,11 @@ public class CustomerDto extends IdDto {
 
     private boolean readonly = false;
 
-    // Owners embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<OwnerDto> owners = null;
 
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
     private String identifier;
 
-    //**** THEME, don't use GraphicIdentityDto to not send logos..
     private boolean hasCustomGraphicIdentity = false;
 
     private Map<String, String> themeColors = new HashMap<>();

@@ -188,7 +188,6 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     @Override
     protected Collection<String> getRestrictedKeys() {
         final Collection<String> restrictedKeys = new ArrayList<>(Arrays.asList(CUSTOMER_ID_KEY, TYPE_KEY, LEVEL_KEY));
-        // If user have ROLE_GENERIC_USERS then he can Get,Update,Create Generic USER
         if (externalSecurityService.hasRole(ServicesData.ROLE_GENERIC_USERS)) {
             restrictedKeys.remove(TYPE_KEY);
         }

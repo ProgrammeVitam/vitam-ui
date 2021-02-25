@@ -92,7 +92,7 @@ public class CustomerInternalRestClient extends BasePaginatingAndSortingRestClie
     }
 
     @Override
-    @Deprecated // use {@link CustomerInternalWebClient} for customer creation which supports multipart for the graphical identity.
+    @Deprecated
     public CustomerDto create(final InternalHttpContext context, final CustomerDto dto) {
         return super.create(context, dto);
     }
