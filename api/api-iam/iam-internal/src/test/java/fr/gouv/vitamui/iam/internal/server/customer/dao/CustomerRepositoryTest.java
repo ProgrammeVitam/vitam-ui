@@ -45,7 +45,6 @@ public class CustomerRepositoryTest {
 
     @Test
     public void testSaveProfile() {
-        // Populate database
         final Customer c = repository.save(IamServerUtilsTest.buildCustomer("id", "name", "0123456", Arrays.asList("julien@vitamui.com")));
         assertThat(c.getId()).isEqualTo("id");
     }

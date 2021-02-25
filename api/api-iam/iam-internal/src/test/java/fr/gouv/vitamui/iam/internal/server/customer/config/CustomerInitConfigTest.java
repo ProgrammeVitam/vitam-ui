@@ -49,7 +49,6 @@ public class CustomerInitConfigTest {
         customerInitConfig.afterPropertiesSet();
     }
 
-    // Test profile config
 
     @Test
     public void testAfterPropertiesWithEmptyProfileNameForProfile(){
@@ -94,7 +93,6 @@ public class CustomerInitConfigTest {
     }
 
 
-    // Test Tenant profile config
 
     @Test
     public void testAfterPropertiesWithEmptyProfileNameForTenantProfile(){
@@ -136,7 +134,6 @@ public class CustomerInitConfigTest {
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("profiles list contains duplicate name for profile config");
     }
-    // Test profiles group config
 
     @Test
     public void testAfterPropertiesWithEmptyProfileNameForGroup(){
@@ -189,7 +186,6 @@ public class CustomerInitConfigTest {
         customerInitConfig.setTenantProfiles(Arrays.asList(new CustomerInitConfig.ProfileInitConfig(PROFILE_NAME_2,DESCRIPTION_1,LEVEL_1,APP_NAME_1,Arrays.asList(ROLE_1))));
     }
 
-    // Test users
 
     @Test
     public void testAfterPropertiesWithEmptyLastNameForUser(){

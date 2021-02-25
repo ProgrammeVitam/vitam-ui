@@ -59,7 +59,6 @@ public class ProfileExternalControllerTest extends ApiIamControllerTest<ProfileD
         LOGGER.debug("testGetLevels");
         ResultActions result = super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(),
                 status().isOk());
-        // Check the controller method used to process the request. Parameters are not verified.
         result.andExpect(MockMvcResultMatchers.handler()
                 .methodCall(mockedController.getLevels(Optional.empty())));
         Mockito.verify(profileExternalService, Mockito.times(1)).getLevels(Optional.empty());

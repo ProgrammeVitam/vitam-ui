@@ -91,7 +91,6 @@ public class SubrogationExternalService extends AbstractResourceClientService<Su
 
     @Override
     public SubrogationDto create(final SubrogationDto dto) {
-        // TODO EDV can anybody do that ?
         return super.create(dto);
     }
 

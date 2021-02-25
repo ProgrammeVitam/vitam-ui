@@ -116,7 +116,6 @@ public abstract class AbstractCustomerCrudControllerTest<D extends CustomerIdDto
         userDto.setId("CURRENT_USER_ID");
         userDto.setLevel("DSI");
 
-        //        when(internalSecurityService.isLevelAllowed(ArgumentMatchers.anyString())).thenCallRealMethod() ;
         when(internalSecurityService.getUser()).thenReturn(userDto);
         when(internalSecurityService.getLevel()).thenReturn(userDto.getLevel());
 

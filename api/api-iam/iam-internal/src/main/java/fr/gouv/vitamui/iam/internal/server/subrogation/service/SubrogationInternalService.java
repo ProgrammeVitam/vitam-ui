@@ -169,8 +169,7 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         super.beforeCreate(dto);
         Assert.isTrue(dto.getStatus().equals(SubrogationStatusEnum.CREATED), "the subrogation must have the status CREATED at the creation");
         checkUsers(dto);
-        // if status is now ACCEPTED, it's a generic user, set genericUsersSubrogationTtl min as lifetime
-        // otherwise, subrogationTtl minutes to accept or decline it
+
         final int ttlInMinutes;
         if (dto.getStatus().equals(SubrogationStatusEnum.ACCEPTED)) {
             ttlInMinutes = genericUsersSubrogationTtl;
@@ -253,7 +252,6 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         Assert.isTrue(subro.getSurrogate().equals(emailCurrentUser), "Users " + emailCurrentUser + " can't accept subrogation of " + subro.getSurrogate());
         subro.setStatus(SubrogationStatusEnum.ACCEPTED);
 
-        // if it is a GENERIC user, the subrogation has already been accepted at the creation
         final Date nowPlusXMinutes = DateUtils.addMinutes(new Date(), subrogationTtl);
         subro.setDate(nowPlusXMinutes);
 
@@ -270,7 +268,6 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
         if (subro.getStatus().equals(SubrogationStatusEnum.ACCEPTED)) {
             iamLogbookService.subrogation(subro, EventType.EXT_VITAMUI_STOP_SURROGATE);
         }
-        // Subrogation is REFUSED
         else {
             iamLogbookService.subrogation(subro, EventType.EXT_VITAMUI_DECLINE_SURROGATE);
         }

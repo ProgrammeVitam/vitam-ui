@@ -295,7 +295,6 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         authUserProfile.setEnabled(true);
         authUserProfile.setRoles(roles);
         group.setProfiles(Arrays.asList(authUserProfile));
-        // authUser.setG
 
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
@@ -308,17 +307,6 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         return profile;
     }
 
-    //    case "enabled" :
-    //        logbooks.add(new LogbookDataUpdateDto(LogbookHelper.PROFILES_ENABLED_KEY, profile.getDescription(),
-    //                entry.getValue()));
-    //        profile.setEnabled(CastUtils.toBoolean(entry.getValue()));
-    //        break;
-    //    case "level" :
-    //        logbooks.add(new LogbookDataUpdateDto(LogbookHelper.PROFILES_LEVEL_KEY, profile.getDescription(),
-    //                entry.getValue()));
-    //        profile.setLevel(CastUtils.toString(entry.getValue()));
-    //        break;
-    //    case "roles" :
     @Test
     public void testPatch() {
         final ProfileDto profile = createProfile(Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS), new Role(ServicesData.ROLE_GET_USERS)));
@@ -374,7 +362,6 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
                     "SUPPORT"));
         }
         catch (final DuplicateKeyException e) {
-            // DuplicateKeyException was thrown as expected
             assertThat(e.getMessage()).contains(identifier);
             return;
         }

@@ -184,7 +184,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         customSequence.setName(SequencesConstants.USER_IDENTIFIER);
         sequenceRepository.save(customSequence);
 
-        // retrieve sequences
         internalUserService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
     }
 
@@ -330,7 +329,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
-        //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo("{"
                 + "\"Nom\":\"-\","
                 + "\"Prénom\":\"-\","
@@ -351,7 +349,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Ville\":\"-\","
                 + "\"Pays\":\"-\""
                 + "}");
-        //@formatter:on
        }
 
     @Test
@@ -589,7 +586,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
-        //@formatter:off
         assertThat(event.getEvDetData()).isEqualTo(
             "{\"diff\":{"
                 + "\"-Code postal\":\"-\",\"+Code postal\":\"-\","
@@ -597,7 +593,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"-Ville\":\"-\",\"+Ville\":\"-\","
                 + "\"-Nom de la rue\":\"-\",\"+Nom de la rue\":\"-\""
                 + "}}");
-        //@formatter:on
     }
 
     @Test

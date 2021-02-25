@@ -170,10 +170,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     public List<Profile> getDefaultProfiles(final String customerId, final Integer tenantIdentifier) {
         final List<Profile> profiles = new ArrayList<>();
 
-        //@formatter:off
 
-
-        // Manage Hierarchy Profile Application
         profiles.add(EntityFactory.buildProfile(ApiIamInternalConstants.HIERARCHY_PROFILE_NAME + " " + tenantIdentifier,
                 getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
                 ApiIamInternalConstants.HIERARCHY_PROFILE_DESCRIPTION,
@@ -184,7 +181,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
                 ApiIamInternalConstants.getHierarchyRoles(),
                 customerId));
 
-        // custom default tenant profiles
         if(customerInitConfig.getTenantProfiles() != null) {
             customerInitConfig.getTenantProfiles().forEach(p -> profiles.add(EntityFactory.buildProfile(p.getName() + " " + tenantIdentifier,
                 getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER),
@@ -213,11 +209,8 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             checkSetReadonly(tenantDto.isReadonly(), message);
         }
         tenantDto.setIdentifier(generateTenantIdentifier());
-        // Initialize tenant in VITAM
-        // If the operation failed tenant creation can't be processed
         initVitamTenantService.init(tenantDto);
 
-        // name should be unique
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
         final List<Tenant> tenants = tenantRepository.findByNameIgnoreCaseAndCustomerId(name, tenantDto.getCustomerId());
         Assert.isTrue(tenants == null || tenants.isEmpty(), message + ": a tenant with the name: " + name + " already exists.");
@@ -231,7 +224,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
 
         iamLogbookService.createTenantEvent(createdTenantDto);
 
-        // create all default profiles for this tenant
         final List<Profile> profiles = getDefaultProfiles(createdTenantDto.getCustomerId(), createdTenantDto.getIdentifier());
         profiles.forEach(profile -> saveProfile(profile));
 
@@ -250,7 +242,6 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         checkOwner(tenant, tenantDto.getOwnerId(), message);
         checkSetReadonly(tenantDto.isReadonly(), message);
 
-        // name should be unique
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
         final List<Tenant> tenants = tenantRepository.findByNameIgnoreCaseAndCustomerId(name, tenant.getCustomerId());
         if (tenants != null && !tenants.isEmpty()) {

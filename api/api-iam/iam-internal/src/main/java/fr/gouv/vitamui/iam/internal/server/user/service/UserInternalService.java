@@ -252,7 +252,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         UserDto createdUserDto = null;
 
-        // start Transaction if needed
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
             final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -294,7 +293,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         checkLevel(user.getLevel(), message);
 
         checkSetReadonly(dto.isReadonly(), message);
-        // check email only if the email has changed
         if (!StringUtils.equalsIgnoreCase(user.getEmail(), dto.getEmail())) {
             checkEmail(dto.getEmail(), user.getCustomerId(), message);
         }
@@ -328,7 +326,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         boolean sendMail = false;
         UserDto updatedUser = null;
 
-        // start Transaction if needed
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
             final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -350,7 +347,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             Assert.isTrue(optExistingUser.isPresent(), "Unable to update " + getObjectName() + ": no entity found with id: " + entityId);
 
             final User existingUser = optExistingUser.get();
-            // copy the existing password in the updated entity
             entity.setPassword(existingUser.getPassword());
             entity.setOldPasswords(existingUser.getOldPasswords());
 
@@ -413,11 +409,9 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
      */
     @Override
     public UserDto patch(final Map<String, Object> partialDto) {
-        // send an email only if the user was disabled and enabled
         boolean sendMail = false;
         UserDto dto = null;
 
-        // start Transaction if needed
         TransactionStatus status = null;
         if (mongoTransactionManager != null) {
             final TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -427,7 +421,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         try {
             LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
 
-            // replacing the email with the lowercase version during update
             String email = CastUtils.toString(partialDto.get("email"));
             if (email != null) {
                 partialDto.put("email", email.toLowerCase());
@@ -642,7 +635,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private User find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
-        // We enforce session customerId (no cross customer allowed for user
         Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
 
         return getRepository().findByIdAndCustomerId(id, customerId)
@@ -658,7 +650,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
         Assert.isTrue(StringUtils.equals(groupDto.getCustomerId(), customerId), message + ": group and user customerId must be equals");
 
-        // To maintain database consistency, it's mandatory to only add enabled entity
         Assert.isTrue(groupDto.isEnabled(), message + ": group must be enabled");
     }
 
@@ -671,7 +662,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         Assert.isTrue(Pattern.matches(ApiIamInternalConstants.EMAIL_VALID_REGEXP, email), "email : " + email + " format is not allowed");
         Assert.isNull(getRepository().findByEmail(email), message + ": mail already exists");
         if (email.matches(ADMIN_EMAIL_PATTERN + ".*")) {
-            // only one user with an email like 'admin@' is allowed
             final Query query = new Query();
             query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));
             query.addCriteria(Criteria.where("customerId").is(customerId));
@@ -695,19 +685,15 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     }
 
     private void checkCustomer(final String customerId, final String message) {
-        // We don't enforce session customerId here. User creation with another customerId is allowed
-        // customerId check must be done in the controller layer
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), message + ": customer does not exist");
 
-        // To maintain database consistency, it's mandatory to only add enabled entity
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 
     private void checkOtp(final UserDto userDto) {
         if (UserTypeEnum.GENERIC == userDto.getType() && !userDto.isOtp()) {
-            // do not check OTP informations for generic admin or support accounts when otp is disabled
             return;
         }
         checkOtp(userDto.isOtp(), userDto.getEmail(), userDto.getMobile(), userDto.getCustomerId());
@@ -832,7 +818,6 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         final List<String> profileIds = groupDto.getProfileIds();
         final List<ProfileDto> profiles = profileInternalService.getMany(profileIds.toArray(new String[0]));
         if (profiles.size() != profileIds.size()) {
-            // retrieve ids of profiles not found
             final List<String> profilesNotFound = profileIds.stream()
                     .filter((profileId) -> profiles.stream().filter((profile) -> profile.getId().equals(profileId)).count() == 0).collect(Collectors.toList());
             LOGGER.error("Unable to embed group {} for user {}, profiles {} don't exist.", groupId, userDto.getId(), profilesNotFound);

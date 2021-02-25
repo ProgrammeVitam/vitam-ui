@@ -130,7 +130,6 @@ public class GroupInternalServiceTest {
 
         internalGroupService.processPatch(entity, partialDto);
 
-        // Fill fields ignored by patch process
         entity.setId(other.getId());
         entity.setCustomerId(other.getCustomerId());
 

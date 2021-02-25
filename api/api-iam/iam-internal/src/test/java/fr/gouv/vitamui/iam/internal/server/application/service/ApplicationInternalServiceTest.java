@@ -122,7 +122,6 @@ public class ApplicationInternalServiceTest {
             applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
             fail("Should Throw Exception");
         } catch (UnAuthorizedException e) {
-            // Should throw exception
         }
     }
 

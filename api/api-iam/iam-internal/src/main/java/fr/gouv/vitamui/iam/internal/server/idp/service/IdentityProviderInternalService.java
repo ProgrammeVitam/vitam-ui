@@ -340,7 +340,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         final String idpMetadata = dto.getIdpMetadata();
         dto.setIdpMetadata(null);
         if (embeddedList.isPresent()) {
-            // Check enum is valid
+
             EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embeddedList);
             final String[] arrayEmbedded = embeddedList.get().split(",");
             for (final String embedded : arrayEmbedded) {

@@ -109,7 +109,6 @@ public class ExternalAuthentificationService {
             throw new NotFoundException("User not found for token: " + userToken);
         }
 
-        // TODO we should check that the customer's tenants contains the requested tenant
 
         final Integer tenantIdentifier = httpContext.getTenantIdentifier();
         final List<Integer> userTenants = userDto.getProfileGroup().getProfiles().stream().filter(ProfileDto::isEnabled).map(ProfileDto::getTenantIdentifier)
@@ -147,7 +146,6 @@ public class ExternalAuthentificationService {
             final List<Integer> contextTenants = context.getTenants();
             final Integer tenantIdentifier = httpContext.getTenantIdentifier();
 
-            // the application context has not a full access and the requested tenant is not in the tenants of the application context
             if (!context.isFullAccess() && tenantIdentifier != null && !contextTenants.contains(tenantIdentifier)) {
                 LOGGER.warn("[InvalidAuthenticationException] This tenant: {} is not allowed for the application context: {}. credential={}", tenantIdentifier,
                         httpContext.getIdentity(), certificate);
@@ -170,7 +168,6 @@ public class ExternalAuthentificationService {
      */
     public List<String> getRoles(final ContextDto context, final AuthUserDto userProfile, final int tenantIdentifier) {
 
-        // security context roles
         final List<String> contextRoles = context.extractRoleNames();
         LOGGER.debug("context roles: {}", contextRoles);
 

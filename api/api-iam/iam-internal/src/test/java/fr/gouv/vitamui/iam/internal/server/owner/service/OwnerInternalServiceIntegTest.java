@@ -127,7 +127,6 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         customSequence.setName(SequencesConstants.OWNER_IDENTIFIER);
         sequenceRepository.save(customSequence);
 
-        // retrieve sequences
         ownerService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
     }
 
