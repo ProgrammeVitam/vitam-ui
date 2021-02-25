@@ -330,7 +330,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                             "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
                                 " is not allowed, because the main setting is readOnly, please contact your administrator to update it");
                     } else {
-                        if (customer.getGdprAlertDelay() > 0) {
+                        if(CastUtils.toInt(entry.getValue()) > 0) {
                             logbooks.add(
                                 new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(),
                                     entry.getValue()));
@@ -338,9 +338,9 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                             break;
                         } else {
                             LOGGER.error(
-                                "Wrong value , gdprAlertDelay because the value should be greater than 0 ");
+                                "Wrong value , gdprAlertDelay should be greater than 0 ");
                             throw new IllegalArgumentException(
-                                "Wrong value , gdprAlertDelay because the value should be greater than 0");
+                                "Wrong value , gdprAlertDelay should be greater than 0");
                         }
                     }
                 case "gdprAlert":
