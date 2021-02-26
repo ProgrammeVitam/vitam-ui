@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
+import { ConfirmDialogService, LoggerModule, OtpState } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 /* tslint:disable: max-classes-per-file directive-selector */
@@ -185,7 +185,8 @@ describe('CustomerCreateComponent', () => {
         MatProgressBarModule,
         NoopAnimationsModule,
         MatProgressSpinnerModule,
-        VitamUICommonTestModule
+        VitamUICommonTestModule,
+        LoggerModule.forRoot()
       ],
       declarations: [
         CustomerCreateComponent,
