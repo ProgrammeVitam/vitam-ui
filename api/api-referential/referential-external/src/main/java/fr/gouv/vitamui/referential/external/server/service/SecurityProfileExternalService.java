@@ -64,11 +64,12 @@ import lombok.Setter;
 @Service
 public class SecurityProfileExternalService extends AbstractResourceClientService<SecurityProfileDto, SecurityProfileDto> {
 
-    @Autowired
     private SecurityProfileInternalRestClient securityProfileInternalRestClient;
 
-    public SecurityProfileExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public SecurityProfileExternalService(ExternalSecurityService externalSecurityService, SecurityProfileInternalRestClient securityProfileInternalRestClient) {
         super(externalSecurityService);
+        this.securityProfileInternalRestClient = securityProfileInternalRestClient;
     }
 
     public List<SecurityProfileDto> getAll(final Optional<String> criteria) {

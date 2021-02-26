@@ -39,7 +39,6 @@ package fr.gouv.vitamui.referential.external.server.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +63,12 @@ import lombok.Setter;
 @Service
 public class ContextExternalService extends AbstractResourceClientService<ContextDto, ContextDto> {
 
-    @Autowired
     private ContextInternalRestClient contextInternalRestClient;
 
-    public ContextExternalService(@Autowired  ExternalSecurityService externalSecurityService) {
+    @Autowired
+    public ContextExternalService(ExternalSecurityService externalSecurityService, ContextInternalRestClient contextInternalRestClient) {
         super(externalSecurityService);
+        this.contextInternalRestClient = contextInternalRestClient;
     }
 
     public List<ContextDto> getAll(final Optional<String> criteria) {

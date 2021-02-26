@@ -55,6 +55,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   @Input() tenantIdentifier: number;
+  @Input() isSlaveMode: boolean;
 
   form: FormGroup;
   stepIndex = 0;
@@ -114,7 +115,6 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    console.log('tenantIdentifier', this.tenantIdentifier);
 
     this.agencyService.getAll().subscribe(agencies =>
       this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
@@ -125,7 +125,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
+      identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
       status: ['INACTIVE'],
       name: [null, [Validators.required], this.accessContractCreateValidators.uniqueName()],
       description: [null],
@@ -158,7 +158,9 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
-      this.form.controls.identifier.setValue(value);
+      if (!this.isSlaveMode) {
+        this.form.controls.identifier.setValue(value);
+      }
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());

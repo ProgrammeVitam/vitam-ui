@@ -36,12 +36,10 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.Criterion;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -49,9 +47,11 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.config.AutoConfigurationVitam;
 import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -63,11 +63,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,6 +90,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private final BuildProperties buildProperties;
 
+    @Autowired
+    private AutoConfigurationVitam autoConfigurationVitam;
+
     @Value("${cas.external-url}")
     @NotNull
     private String casExternalUrl;
@@ -110,8 +109,10 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     @NotNull
     private String uiRedirectUrl;
 
+    private Map<String, List<String>> listEnableExternalIdentifiers;
+
     public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
-            final BuildProperties buildProperties) {
+    final BuildProperties buildProperties) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         this.buildProperties = buildProperties;
@@ -136,6 +137,30 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, categories);
 
         return portalConfig;
+    }
+
+    private Map<String, List<String>> getListEnableExternalIdentifiers() {
+        if(listEnableExternalIdentifiers == null) {
+            listEnableExternalIdentifiers = autoConfigurationVitam.getTenants();
+        }
+        return listEnableExternalIdentifiers;
+    }
+
+    public Boolean isApplicationExternalIdentifierEnabled(final ExternalHttpContext context, final String identifier) {
+        final String tenantId = context.getTenantIdentifier().toString();
+        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+
+        final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
+        LOGGER.info("Reading list of external identifiers {}", externalIdentifiers == null ? "null" : externalIdentifiers.toString());
+
+        if(externalIdentifiers != null) {
+            if(listEnableExternalIdentifiers.containsKey(tenantId)) {
+                final List<String> enabledApplications = listEnableExternalIdentifiers.get(tenantId);
+                return(enabledApplications.contains(identifier));
+            }
+        }
+
+        return false;
     }
 
     public String getBaseUrlPortal() {

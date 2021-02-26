@@ -147,11 +147,15 @@ public class AccessContractService {
             if (tenantIdentifier != null) {
                 final boolean sameTenant = accessContracts.stream().allMatch(ac -> tenantIdentifier.equals(ac.getTenant()));
                 if (!sameTenant) {
-                    throw new BadRequestException("All the access contracts must have the same tenant identifier");
+                    final String msg = "All the access contracts must have the same tenant identifier";
+                    LOGGER.error(msg);
+                    throw new BadRequestException(msg);
                 }
             }
             else {
-                throw new BadRequestException("The tenant identifier must be present in the request body");
+                final String msg = "The tenant identifier must be present in the request body";
+                LOGGER.error(msg);
+                throw new BadRequestException(msg);
             }
 
             try {
@@ -160,20 +164,28 @@ public class AccessContractService {
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<AccessContractModel> response = findAccessContracts(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create access contracts for the tenant : " + tenantIdentifier + " not found in Vitam");
+                    final String msg = "Can't create access contracts for the tenant : " + tenantIdentifier + " not found in Vitam";
+                    LOGGER.error(msg);
+                    throw new PreconditionFailedException(msg);
                 }
                 else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create access contracts for this tenant, Vitam response code : " + response.getStatus());
+                    final String msg = "Can't create access contracts for this tenant, Vitam response code : " + response.getStatus();
+                    LOGGER.error(msg);
+                    throw new UnavailableServiceException(msg);
                 }
 
                 verifyAccessContractExistence(accessContracts, response);
             }
             catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
+                final String msg = "Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage();
+                LOGGER.error(msg);
+                throw new UnavailableServiceException(msg);
             }
             return tenantIdentifier;
         }
-        throw new BadRequestException("The body is not found");
+        final String msg = "The body is not found";
+        LOGGER.error(msg);
+        throw new BadRequestException(msg);
 
     }
 
@@ -188,13 +200,25 @@ public class AccessContractService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(response.toJsonNode(), AccessContractResponseDto.class);
             final List<String> accessContractsNames = accessContracts.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            final boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
+            boolean alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsNames.contains(ac.getName()));
             if (alreadyCreated) {
-                throw new ConflictException("Can't create access contract, a contract with the same name already exist in Vitam");
+                final String msg = "Can't create access contract, a contract with the same name already exist in Vitam";
+                LOGGER.error(msg);
+                throw new ConflictException(msg);
+            }
+
+            final List<String> accessContractsIdentifiers = accessContracts.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
+            alreadyCreated = accessContractResponseDto.getResults().stream().anyMatch(ac -> accessContractsIdentifiers.contains(ac.getIdentifier()));
+            if (alreadyCreated) {
+                final String msg = "Can't create access contract, a contract with the same identifier already exist in Vitam";
+                LOGGER.error(msg);
+                throw new ConflictException(msg);
             }
         }
         catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
+            final String msg = "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage();
+            LOGGER.error(msg);
+            throw new UnexpectedDataException(msg);
         }
     }
 }

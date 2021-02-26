@@ -65,6 +65,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   message: string;
 
   @Input() tenantIdentifier: number;
+  @Input() isSlaveMode: boolean;
   FILLING_PLAN_MODE = FilingPlanMode;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
@@ -110,7 +111,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      identifier: [null, Validators.required],
+      identifier: [null, Validators.required, this.ingestContractCreateValidators.uniqueIdentifier()],
       status: ['INACTIVE'],
       name: [null, [Validators.required], this.ingestContractCreateValidators.uniqueName()],
       description: [null, Validators.required],
@@ -161,7 +162,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
-      this.form.controls.identifier.setValue(value);
+      if (!this.isSlaveMode) {
+        this.form.controls.identifier.setValue(value);
+      }
     });
 
     this.linkParentIdControl.valueChanges.subscribe((value: { included: string[], excluded: string[] }) => {

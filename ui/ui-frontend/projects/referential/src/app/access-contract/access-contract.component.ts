@@ -38,7 +38,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AccessContract} from 'projects/vitamui-library/src/public-api';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
 
 import {AccessContractCreateComponent} from './access-contract-create/access-contract-create.component';
 import {AccessContractListComponent} from './access-contract-list/access-contract-list.component';
@@ -53,6 +53,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   search = '';
   tenantId: number;
+  isSlaveMode: boolean;
 
   @ViewChild(AccessContractListComponent, {static: true}) accessContractListComponent: AccessContractListComponent;
 
@@ -60,11 +61,13 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
-    globalEventService: GlobalEventService) {
+    globalEventService: GlobalEventService,
+    private applicationService: ApplicationService) {
 
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
+      this.updateSlaveMode();
     });
 
     this.route.params.subscribe(params => {
@@ -80,6 +83,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       disableClose: true
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
+    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         this.refreshList();
@@ -99,11 +103,18 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
+  updateSlaveMode() {
+    this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').subscribe((value) => {
+      this.isSlaveMode = value;
+    });
+  }
+
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
 
   ngOnInit() {
+    this.updateSlaveMode();
   }
 
   showAccessContract(item: AccessContract) {

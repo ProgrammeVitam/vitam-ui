@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 
 import {SecurityProfile} from 'projects/vitamui-library/src/lib/models/security-profile';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {SecurityProfileCreateComponent} from './security-profile-create/security-profile-create.component';
 import {SecurityProfileListComponent} from './security-profile-list/security-profile-list.component';
 
@@ -15,10 +15,12 @@ import {SecurityProfileListComponent} from './security-profile-list/security-pro
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> implements OnInit {
 
   search = '';
+  isSlaveMode: boolean;
 
   @ViewChild(SecurityProfileListComponent, {static: true}) contextListComponent: SecurityProfileListComponent;
 
-  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, route: ActivatedRoute, globalEventService: GlobalEventService,
+              private applicationService: ApplicationService) {
     super(route, globalEventService);
   }
 
@@ -27,6 +29,7 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> imple
       panelClass: 'vitamui-modal',
       disableClose: true
     });
+    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.refreshList();
@@ -48,7 +51,14 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> imple
     this.search = search || '';
   }
 
+  updateSlaveMode() {
+    this.applicationService.isApplicationExternalIdentifierEnabled('SECURITY_PROFILE').subscribe((value) => {
+      this.isSlaveMode = value;
+    });
+  }
+
   ngOnInit() {
+    this.updateSlaveMode();
   }
 
   showSecurityProfile(item: SecurityProfile) {

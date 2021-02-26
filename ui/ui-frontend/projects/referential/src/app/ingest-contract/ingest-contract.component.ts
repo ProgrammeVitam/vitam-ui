@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IngestContract} from 'projects/vitamui-library/src/lib/models/ingest-contract';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
 
 import {IngestContractCreateComponent} from './ingest-contract-create/ingest-contract-create.component';
 import {IngestContractListComponent} from './ingest-contract-list/ingest-contract-list.component';
@@ -19,11 +19,14 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   search = '';
   tenantId: number;
+  isSlaveMode: boolean;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService) {
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private router: Router, globalEventService: GlobalEventService,
+              private applicationService: ApplicationService) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
+      this.updateSlaveMode();
     });
 
     this.route.params.subscribe(params => {
@@ -40,6 +43,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       disableClose: true
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
+    dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         this.refreshList();
@@ -62,7 +66,14 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
+  updateSlaveMode() {
+    this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').subscribe((value) => {
+      this.isSlaveMode = value;
+    });
+  }
+
   ngOnInit() {
+    this.updateSlaveMode();
   }
 
   showIngestContract(item: IngestContract) {

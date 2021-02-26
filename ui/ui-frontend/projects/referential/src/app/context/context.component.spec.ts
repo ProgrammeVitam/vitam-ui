@@ -4,11 +4,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterTestingModule} from '@angular/router/testing';
-import {GlobalEventService, InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {GlobalEventService, ApplicationService, InjectorModule, LoggerModule} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of, EMPTY} from 'rxjs';
 import {ContextComponent} from './context.component';
 
 @Component({selector: 'app-agency-preview', template: ''})
@@ -27,6 +28,11 @@ describe('ContextComponent', () => {
   let component: ContextComponent;
   let fixture: ComponentFixture<ContextComponent>;
 
+  const applicationServiceMock = {
+    applications: new Array<any>(),
+    isApplicationExternalIdentifierEnabled: () => of(true)
+  };
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -35,10 +41,12 @@ describe('ContextComponent', () => {
         ContextPreviewStub
       ],
       providers: [
+        { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } }
       ],
       imports: [
+        HttpClientTestingModule,
         VitamUICommonTestModule,
         RouterTestingModule,
         InjectorModule,

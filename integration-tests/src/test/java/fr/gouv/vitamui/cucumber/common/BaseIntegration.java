@@ -1,24 +1,24 @@
 package fr.gouv.vitamui.cucumber.common;
 
-import static com.mongodb.client.model.Filters.eq;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import fr.gouv.vitamui.RegisterRestQueryInterceptor;
+import fr.gouv.vitamui.TestContextConfiguration;
+import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.*;
+import fr.gouv.vitamui.referential.external.client.*;
+import fr.gouv.vitamui.utils.TestConstants;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -31,44 +31,19 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
-import fr.gouv.vitamui.RegisterRestQueryInterceptor;
-import fr.gouv.vitamui.TestContextConfiguration;
-import fr.gouv.vitamui.commons.api.domain.LanguageDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
-import fr.gouv.vitamui.iam.external.client.GroupExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
-import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
-import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
-import fr.gouv.vitamui.utils.TestConstants;
+import static com.mongodb.client.model.Filters.eq;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 public abstract class BaseIntegration {
@@ -100,17 +75,17 @@ public abstract class BaseIntegration {
     private IamExternalWebClientFactory iamExternalWebClientFactory;
 
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
-    
+
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
 
     private CustomerExternalWebClient customerWebClient;
-    
+
     private AgencyExternalWebClient agencyWebClient;
-    
+
     private OntologyExternalWebClient ontologyWebClient;
-    
+
     private FileFormatExternalWebClient fileFormatWebClient;
 
     private IdentityProviderExternalRestClient identityProviderRestClient;
@@ -130,12 +105,18 @@ public abstract class BaseIntegration {
     private SubrogationExternalRestClient subrogationRestClient;
 
     private OwnerExternalRestClient ownerRestClient;
-    
+
     private ContextExternalRestClient contextRestClient;
 
     private RuleExternalRestClient ruleRestClient;
 
     private UnitExternalRestClient unitRestClient;
+
+    private AccessContractExternalRestClient accessContractRestClient;
+
+    private IngestContractExternalRestClient ingestContractRestClient;
+
+    private SecurityProfileExternalRestClient securityProfileRestClient;
 
     private static MongoClient mongoClientIam;
 
@@ -196,8 +177,8 @@ public abstract class BaseIntegration {
     protected String iamKeystorePassword;
 
     @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword; 
-    
+    protected String iamTruststorePassword;
+
     @Value("${referential-client.host}")
     protected String referentialServerHost;
 
@@ -364,7 +345,7 @@ public abstract class BaseIntegration {
         }
         return restReferentialClientFactory;
     }
-    
+
     private ReferentialExternalWebClientFactory getReferentialWebClientFactory() {
         if (webReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential web client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
@@ -390,28 +371,28 @@ public abstract class BaseIntegration {
         }
         return customerWebClient;
     }
-    
+
     protected AgencyExternalWebClient getAgencyWebClient() {
         if (agencyWebClient == null) {
             agencyWebClient = getReferentialWebClientFactory().getAgencyExternalWebClient();
         }
         return agencyWebClient;
     }
-    
+
     protected OntologyExternalWebClient getOntologyWebClient() {
         if (ontologyWebClient == null) {
             ontologyWebClient = getReferentialWebClientFactory().getOntologyExternalWebClient();
         }
         return ontologyWebClient;
     }
-    
+
     protected FileFormatExternalWebClient getFileFormatWebClient() {
         if (fileFormatWebClient == null) {
-            fileFormatWebClient = getReferentialWebClientFactory().getFileFormatExternalWebClient();	
+            fileFormatWebClient = getReferentialWebClientFactory().getFileFormatExternalWebClient();
         }
         return fileFormatWebClient;
     }
-    
+
     protected IamExternalWebClientFactory getIamWebClientFactory(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
         prepareGenericContext(fullAccess, tenants, roles);
         final IamExternalWebClientFactory restClientFactory = new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
@@ -642,7 +623,7 @@ public abstract class BaseIntegration {
         prepareGenericContext(fullAccess, tenants, roles);
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getLogbookExternalRestClient();
     }
-    
+
     protected ContextExternalRestClient getContextRestClient() {
         if (contextRestClient == null) {
             contextRestClient = getReferentialRestClientFactory().getContextExternalRestClient();
@@ -655,6 +636,27 @@ public abstract class BaseIntegration {
             ruleRestClient = getReferentialRestClientFactory().getRuleExternalRestClient();
         }
         return ruleRestClient;
+    }
+
+    protected AccessContractExternalRestClient getAccessContractRestClient() {
+        if (accessContractRestClient == null) {
+            accessContractRestClient = getReferentialRestClientFactory().getAccessContractExternalRestClient();
+        }
+        return accessContractRestClient;
+    }
+
+    protected IngestContractExternalRestClient getIngestContractRestClient() {
+        if (ingestContractRestClient == null) {
+            ingestContractRestClient = getReferentialRestClientFactory().getIngestContractExternalRestClient();
+        }
+        return ingestContractRestClient;
+    }
+
+    protected SecurityProfileExternalRestClient getSecurityProfileRestClient() {
+        if (securityProfileRestClient == null) {
+            securityProfileRestClient = getReferentialRestClientFactory().getSecurityProfileExternalRestClient();
+        }
+        return securityProfileRestClient;
     }
 
     protected UnitExternalRestClient getUnitRestClient() {

@@ -96,12 +96,31 @@ public class TestConstants {
     public static final String EVENT_DATE_TIME_KEY = "Date d'opération";
 
     public static final String PIERRE_USER_PREFIX_EMAIL = "pierre";
-    
+
     public static final String CONTEXT_ID = "CONTEXT_ID";
-    
+
     public static final String CONTEXT_IDENTIFIER = "CT-000001";
-    
+
     public static final String CONTEXT_NAME = "admin-context";
+
+    public static final String ACCESS_CONTRACT_ID = "ACCESS_CONTRACT_ID";
+
+    public static final String ACCESS_CONTRACT_IDENTIFIER = "IC-000001";
+
+    public static final String ACCESS_CONTRACT_NAME = "IC-000001";
+
+    public static final String INGEST_CONTRACT_ID = "INGEST_CONTRACT_ID";
+
+    public static final String INGEST_CONTRACT_IDENTIFIER = "ArchivalAgreement0";
+
+    public static final String INGEST_CONTRACT_NAME = "ArchivalAgreement0";
+
+    public static final String SECURITY_PROFILE_ID = "SECURITY_PROFILE_ID";
+
+    public static final String SECURITY_PROFILE_IDENTIFIER = "admin-security-profile";
+
+    public static final String SECURITY_PROFILE_NAME = "admin-security-profile";
+
 
     private TestConstants() {
         // do nothing
