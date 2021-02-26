@@ -70,7 +70,7 @@ public class ExternalParametersService {
 	}
 	
 	/**
-	 * Get the external paremeters for the authenticated user
+	 * Get the external parameters for the authenticated user
 	 * @return
 	 */
     public Map<String, String> getMyExternalParameters(ExternalHttpContext context) {

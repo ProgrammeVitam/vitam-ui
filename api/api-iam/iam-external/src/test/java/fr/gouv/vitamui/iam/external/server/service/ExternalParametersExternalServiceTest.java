@@ -37,16 +37,26 @@
 package fr.gouv.vitamui.iam.external.server.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -62,23 +72,45 @@ public class ExternalParametersExternalServiceTest {
     private final ExternalParametersInternalRestClient externalParametersInternalRestClient= Mockito.mock(ExternalParametersInternalRestClient.class);
 
     private final ExternalSecurityService externalSecurityService = Mockito.mock(ExternalSecurityService.class);
+    
+    private static final String TEST_IDENTIFIER = "identifier";
+    private static final String TEST_NAME = "name";
+    private static final String TEST_KEY = "key";
+    private static final String TEST_VALUE = "value";
 
     @Before
     public void before() {
+        final ExternalParametersDto dto = new ExternalParametersDto();
+        dto.setIdentifier(TEST_IDENTIFIER);
+        dto.setName(TEST_NAME);
+        
+        ParameterDto parameter = new ParameterDto();
+        parameter.setKey(TEST_KEY);
+		parameter.setValue(TEST_VALUE);
+		List<ParameterDto> parameters = new ArrayList<ParameterDto>();
+		parameters.add(parameter);
+        dto.setParameters(parameters);
+       
     	externalParametersExternalService = new ExternalParametersExternalService(externalParametersInternalRestClient, externalSecurityService);
         Mockito.reset(externalParametersInternalRestClient, externalSecurityService);
         
     	Mockito.when(externalSecurityService.getHttpContext()).thenReturn(new ExternalHttpContext(null, null, null, null));
     	Mockito.when(externalSecurityService.getUser()).thenReturn(new AuthUserDto());
+        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(Mockito.any())).thenReturn(dto);
     }
 
     @Test
     public void testOne() {
-        Mockito.when(externalParametersInternalRestClient.getMyExternalParameters(ArgumentMatchers.any(InternalHttpContext.class)))
-        	.thenReturn(new ExternalParametersDto());
-  
         ExternalParametersDto dto = externalParametersExternalService.getMyExternalParameters();
-        assertThat(dto).isNotNull();
+
+        assertNotNull(dto);
+        assertEquals(dto.getIdentifier(), TEST_IDENTIFIER);
+        assertEquals(dto.getName(), TEST_NAME);
+        
+        assertNotNull(dto.getParameters());
+        assertEquals(dto.getParameters().size(), 1);
+        assertEquals(dto.getParameters().get(0).getKey(), TEST_KEY);
+        assertEquals(dto.getParameters().get(0).getValue(), TEST_VALUE);
     }
 }
 

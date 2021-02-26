@@ -152,12 +152,16 @@ export class ApplicationService {
       tenantsByApp.forEach((element: { name: string, tenants: Tenant[] }) => {
         const index = element.tenants.findIndex(value => value.identifier === tenant.identifier);
         const items = this.applications.find(value => value.identifier === element.name);
-        if (index !== -1) {
-          apps.push(items);
-        } else if (!items.hasTenantList) {
-          apps.push(items);
+
+        if (items) {
+          if (index !== -1) {
+            apps.push(items);
+          } else if (!items.hasTenantList) {
+            apps.push(items);
+          }
         }
       });
+
       const resultMap = this.fillCategoriesWithApps(this.categories, apps);
       const lastUsedApps = this.getLastUsedApps(this.categories, apps);
       if (lastUsedApps) {

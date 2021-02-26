@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +59,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
-import fr.gouv.vitamui.iam.common.enums.ApplicationEnum;
+import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
@@ -105,7 +107,7 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
     @Test
     public void testGetMyExternalParameters() {
     	ProfileDto profile = new ProfileDto();
-    	profile.setApplicationName(ApplicationEnum.EXTERNAL_PARAMS.toString());
+    	profile.setApplicationName(Application.EXTERNAL_PARAMS.toString());
     	profile.setExternalParamId(PARAMETER_ID);
     	List<ProfileDto> profiles = new ArrayList<ProfileDto>();
     	profiles.add(profile);
@@ -124,7 +126,7 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
     	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(result));
         ExternalParametersDto dto = controller.getMyExternalParameters();
         
-        assertTrue(dto != null);
-        assertTrue(dto.getId().equals(PARAMETER_ID));
+        assertNotNull(dto);
+        assertEquals(dto.getId(), PARAMETER_ID);
     }
 }

@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.iam.external.client;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,13 +72,20 @@ public class ExternalParametersExternalRestClientTest extends AbstractServerIden
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
         String url = "http://localhost:8083/iam/v1/externalparameters/me";
         
+        final ExternalParametersDto mock = new ExternalParametersDto();
+        mock.setIdentifier("identifier");
+        mock.setName("name");
+        
         Mockito.when(restTemplate.exchange(
         	Mockito.eq(url),
         	Mockito.eq(HttpMethod.GET), 
         	Mockito.any(), 
         	Mockito.eq(ExternalParametersDto.class)))
-        .thenReturn(new ResponseEntity<ExternalParametersDto>(new ExternalParametersDto(), HttpStatus.OK));
+        .thenReturn(new ResponseEntity<ExternalParametersDto>(mock, HttpStatus.OK));
         
-        externalParametersExternalRestClient.getMyExternalParameters(context);
+        ExternalParametersDto test = externalParametersExternalRestClient.getMyExternalParameters(context);
+        assertNotNull(test); 
+        assertEquals(test.getIdentifier(), mock.getIdentifier());
+        assertEquals(test.getName(), mock.getName());
     }
 }

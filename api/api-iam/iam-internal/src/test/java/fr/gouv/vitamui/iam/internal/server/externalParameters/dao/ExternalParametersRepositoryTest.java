@@ -70,7 +70,7 @@ public class ExternalParametersRepositoryTest {
     @Autowired
     private ExternalParametersRepository repository;
 
-    private static final String EXTERNAL_PARAMETERS_ID = "test_external_param_01";
+    private static final String EXTERNAL_PARAMETERS_ID = "external_param_default";
 
     @AfterAll
     public void cleanUp() {

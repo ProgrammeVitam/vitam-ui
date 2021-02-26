@@ -48,7 +48,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.common.enums.ApplicationEnum;
+import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
@@ -91,7 +91,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     	if (authUserDto != null && authUserDto.getProfileGroup() != null && authUserDto.getProfileGroup().getProfiles() != null) {
     		
     		Optional<ProfileDto> externalParametersProfile = authUserDto.getProfileGroup().getProfiles().stream()    
-    				.filter(p -> ApplicationEnum.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName())).findFirst();
+    				.filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName())).findFirst();
     		if (!externalParametersProfile.isEmpty() && externalParametersProfile.isPresent()) {
     			return this.getOne(externalParametersProfile.get().getExternalParamId());
     		}
@@ -134,7 +134,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
 	
     @Override
     protected String getObjectName() {
-        return "external_parameters";
+        return "externalParameters";
     }
 	
 
