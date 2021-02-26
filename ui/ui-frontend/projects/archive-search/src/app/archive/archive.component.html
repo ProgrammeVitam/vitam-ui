@@ -1,32 +1,38 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-    <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-        <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()" [archiveUnit]="openedItem"
-            [accessContract]="accessContract"></app-archive-preview>
-    </mat-sidenav>
+  
+  <mat-sidenav mode="side" [fixedInViewport]="true" opened="{{show}}" *ngIf="foundAccessContract" >
+    <app-filing-holding-scheme (fillingSchemaClose)="closePanel()"  [accessContract]="accessContract"></app-filing-holding-scheme>
+  </mat-sidenav>
+
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-archive-preview *ngIf="openedItem" (previewClose)="closePanel()" [archiveUnit]="openedItem"
+                         [accessContract]="accessContract"></app-archive-preview>
+  </mat-sidenav>
 
 
-
-    <mat-sidenav-content>
-        <div class="vitamui-heading">
-            <vitamui-common-title-breadcrumb>
-               {{'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate}}
-            </vitamui-common-title-breadcrumb>
-            <div class="marge">
-                <app-access-contract (selectedAccessContract)="onSelectAccessContract($event)">
-                </app-access-contract>
-            </div>
-        </div>
-        <div class="vitamui-content">
-            <div *ngIf="foundAccessContract" class="row">
-                <div [style.display]="!show ? 'none' : 'block'" class="col-3">
-                    <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
-                </div>
-                <div [ngClass]="show ? 'col-9' : 'col-12'">
-                    <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"
-                        [accessContract]="accessContract">
-                    </app-archive-search>
-                </div>
-            </div>
-        </div>
-    </mat-sidenav-content>
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb>
+        {{'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate}}
+      </vitamui-common-title-breadcrumb>
+      <div class="marge">
+        <app-access-contract (selectedAccessContract)="onSelectAccessContract($event)">
+        </app-access-contract>
+      </div>
+    </div>
+    <div class="vitamui-content" *ngIf="foundAccessContract">
+          <div class="row">
+            
+            <button *ngIf="!show" type="button" class="btn secondary right-arround left-not-arround"
+              (click)="hiddenTreeBlock(show)" matTooltip="{{'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate}}"
+              matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <i class="material-icons">chevron_right</i>
+            </button>
+          </div>
+          <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"
+                              [accessContract]="accessContract">
+          </app-archive-search>
+         
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,6 +1,7 @@
 {
   "ARCHIVE_SEARCH": {
-    "ACCESS_CONTRACT_SELECT" : "Select an access contract",
+    "ACCESS_CONTRACT_SELECT": "Select an access contract",
+    "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
@@ -15,7 +16,7 @@
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Title or Description",
-        "NODE" : "Node",
+        "NODE": "Node",
         "TITLE": "Title",
         "START_DATE": "Start date",
         "END_DATE": "End date",
@@ -66,7 +67,7 @@
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans founds for the selected access contract",
       "SHOW_ENTIRE_TREE": "Show the entire tree",
-      "SHOW_TREE_PARENT" : "Collapse the tree"
+      "SHOW_TREE_PARENT": "Collapse the tree"
     },
     "RESULTS": "Results",
     "RESULT": "Result",

@@ -2,13 +2,12 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="row col-1"><i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon"></i></div>
-      <div class="col-3" i18n="ingest identifier column header@@ingestListIdentifierHeader">
+      <div class="col-5" i18n="ingest identifier column header@@ingestListIdentifierHeader">
         <span>{{'INGEST_LIST.ID' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="Ingest name@@IngestSIPName">{{'INGEST_LIST.NAME' | translate}}</div>
       <div class="col-2" i18n="ingest createdDate column header@@ingestListCreatedDateHeader">
         <span>{{'INGEST_LIST.START_DATE' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
@@ -51,8 +50,7 @@
               </div>
             </ng-container>
           </div>
-          <div class="col-3">{{ ingest?.obIdIn }}</div>
-          <div class="col-2">{{ ingest?.evDetData?.EvDetailReq }}</div>
+          <div class="col-5">{{ ingest?.obIdIn }}</div>
           <div class="col-2">
             <div> {{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }} </div> <span class="date">
               {{ ingest?.evDateTime | date: 'hh:mm:ss' }}

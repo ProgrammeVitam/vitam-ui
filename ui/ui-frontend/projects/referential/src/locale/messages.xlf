@@ -1566,7 +1566,7 @@
         <note priority="1" from="description">Search an access contract, owner or tenant</note>
       </trans-unit>
       <trans-unit id="accessContractSearchPlaceholder" datatype="html">
-        <source>Nom, ID, ...</source>
+        <source>Nom, Identifiant, ...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/access-contract/access-contract.component.html</context>
           <context context-type="linenumber">21</context>
@@ -2040,7 +2040,7 @@
         <note priority="1" from="description">Search an ingest contract, owner or tenant</note>
       </trans-unit>
       <trans-unit id="IngestContractSearchPlaceholder" datatype="html">
-        <source>Nom, ID, ...</source>
+        <source>Nom, Identifiant, ...</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ingest-contract/ingest-contract.component.html</context>
           <context context-type="linenumber">21</context>
@@ -2190,7 +2190,7 @@
         <note priority="1" from="description">Search a agency, owner or tenant</note>
       </trans-unit>
       <trans-unit id="agencySearchPlaceholder" datatype="html">
-        <source>Nom, ID</source>
+        <source>Nom, Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/agency/agency.component.html</context>
           <context context-type="linenumber">22</context>
@@ -2536,7 +2536,7 @@
         <note priority="1" from="description">Search context</note>
       </trans-unit>
       <trans-unit id="contextSearchPlaceholder" datatype="html">
-        <source>Nom, ID</source>
+        <source>Nom, Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/context/context.component.html</context>
           <context context-type="linenumber">23</context>
@@ -2798,14 +2798,14 @@
         <note priority="1" from="description">Ontology creation date column header</note>
       </trans-unit>
       <trans-unit id="ontologySearchPlaceholder" datatype="html">
-        <source>Nom, ID</source>
+        <source>Nom, Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ontology/ontology.component.html</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ontologyListCreateButton" datatype="html">
-        <source>Créer une ontologie</source>
+        <source>Créer un vocabulaire</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ontology/ontology.component.html</context>
           <context context-type="linenumber">27</context>
@@ -2841,7 +2841,7 @@
         <note priority="1" from="description">audit createdDate column header</note>
       </trans-unit>
       <trans-unit id="auditSearchPlaceholder" datatype="html">
-        <source>Nom, ID</source>
+        <source>Nom, Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/audit/audit.component.html</context>
           <context context-type="linenumber">19</context>
@@ -2914,7 +2914,7 @@
         <note priority="1" from="description">traceability date column header</note>
       </trans-unit>
       <trans-unit id="securisationSearchPlaceholder" datatype="html">
-        <source>Nom, ID</source>
+        <source>Nom, Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/securisation/securisation.component.html</context>
           <context context-type="linenumber">21</context>

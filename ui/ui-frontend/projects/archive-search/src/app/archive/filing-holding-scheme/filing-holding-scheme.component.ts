@@ -184,4 +184,10 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       this.recursiveShowById(node.children, checked, nodeId);
     }
   }
+
+  
+
+  emitClose() {
+    this.archiveSharedDataServiceService.emitToggle(false);
+  }
 }

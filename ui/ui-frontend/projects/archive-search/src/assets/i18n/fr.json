@@ -1,8 +1,9 @@
 {
   "ARCHIVE_SEARCH": {
-    "ACCESS_CONTRACT_SELECT" : "Sélectionnez un contrat d'accès",
+    "ACCESS_CONTRACT_SELECT": "Filtre sur les positions d'arborescences",
+    "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
-    "TITLE_SEARCH_AREA": "Rechercher une archive",
+    "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s)",
     "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
     "SEARCH_CRITERIA_OR": "OU",
     "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
@@ -15,32 +16,32 @@
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Titre ou Description",
-        "NODE" : "Noeud",
-        "TITLE": "Titre",
+        "NODE": "Position",
+        "TITLE": "Intitulé",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",
         "DESCRIPTION": "Description",
         "GUID": "GUID du versement",
-        "UAID": "GUID d'unité d'archivage",
-        "SP": "Service producteur",
-        "SP_CODE": "Code service producteur",
-        "SP_LABEL": "Nom service producteur",
+        "UAID": "Guid d'unité archivistique",
+        "SP": "Service producteur ou service versant",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère"
       }
     },
     "ARCHIVE_UNIT": {
       "FIELDS": {
-        "TITLE": "Titre",
+        "TITLE": "Intitulé",
         "NAME": "Nom",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",
         "DESCRIPTION": "Description",
         "GUID": "GUID du versement",
         "UAID": "GUID d'unité d'archivage",
-        "SP": "Service producteur",
-        "SP_CODE": "Code service producteur",
-        "SP_LABEL": "Nom service producteur",
+        "SP": "Service producteur ou service versant",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP_COMM": "Service Prod Comm",
@@ -66,7 +67,7 @@
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbres ou Plans trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
-      "SHOW_TREE_PARENT" : "Réduire l'arborescence"
+      "SHOW_TREE_PARENT": "Réduire l'arborescence"
     },
     "RESULTS": "résultats",
     "RESULT": "résultat",

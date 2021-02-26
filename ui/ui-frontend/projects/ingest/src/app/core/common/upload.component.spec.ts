@@ -92,29 +92,6 @@ describe('UploadComponent', () => {
     beforeEach(() => {
       spyOn(console, 'error');
     });
-
-    it('should adapt the message with Holding scheme', () => {
-      component.initContextIdentifier('HOLDING_SCHEME');
-      expect(component.messageImportType).toEqual('Importer un arbre de positionnement');
-      expect(component.messageLabelImportType).toEqual('Nouvel arbre de positionnement');
-    });
-
-    it('should adapt the message with Filling scheme', () => {
-      component.initContextIdentifier('FILING_SCHEME');
-      expect(component.messageImportType).toEqual('Importer un plan de classement');
-      expect(component.messageLabelImportType).toEqual('Nouveau plan de classement');
-    });
-
-    it('should adapt the message with default ingest', () => {
-      component.initContextIdentifier('DEFAULT_WORKFLOW');
-      expect(component.messageImportType).toEqual('Verser un SIP');
-      expect(component.messageLabelImportType).toEqual('Nouveau versement');
-    });
-
-    it('should log error for unknown context', () => {
-      component.initContextIdentifier('XYZ');
-      expect(console.error).toHaveBeenCalled();
-    });
   });
 
   describe('checkFileExtension', () => {

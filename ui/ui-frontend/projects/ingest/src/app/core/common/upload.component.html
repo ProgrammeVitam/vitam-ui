@@ -2,10 +2,22 @@
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 <form [formGroup]="sipForm">
-  <div class="content">
-    <h4>{{ messageLabelImportType }}</h4>
-    <h2>{{ messageImportType }}</h2>
-
+  <div class="content">    
+  <ng-container [ngSwitch]="contextId">    
+        <ng-container *ngSwitchCase="'HOLDING_SCHEME'">
+        <h4> {{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.HOLDING_SCHEME' | translate}}</h4>
+        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.HOLDING_SCHEME' | translate}}</h2>
+        </ng-container>
+        <ng-container *ngSwitchCase="'FILING_SCHEME'">
+        <h4>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.FILING_SCHEME' | translate}}</h4>
+        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.FILING_SCHEME' | translate}}</h2>
+      </ng-container>
+        <ng-container *ngSwitchCase="'DEFAULT_WORKFLOW'">
+        <h4>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate}}</h4>
+        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate}}</h2>
+      </ng-container>¯
+      
+</ng-container>
     <div class="d-flex">
       <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
         (fileToUploadEmitter)="onDropped($event)" (fileDragOverEmitter)="onDragOver($event)" (fileDragLeaveEmitter)="onDragLeave($event)">
@@ -27,8 +39,10 @@
           </div>
           <div *ngIf="!fileSize || !hasSip">
             <div class="sip-drop">
-              <div class="upload"><span class="underline" (click)="addSip()">{{'INGEST_UPLOAD.BROWSE' | translate}}</span>
+              <div class="upload"><span class="url-select" (click)="addSip()">{{'INGEST_UPLOAD.BROWSE' | translate}}</span>
               </div>
+              <span class="sip-drop-small">{{'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate}}</span><br/>
+              <span class="sip-drop-small">{{'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate}}</span>
             </div>
           </div>
         </div>

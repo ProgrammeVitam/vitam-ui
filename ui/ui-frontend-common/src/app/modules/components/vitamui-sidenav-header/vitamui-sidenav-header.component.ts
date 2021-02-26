@@ -20,6 +20,13 @@ export class VitamuiSidenavHeaderComponent {
 
   @Output() onclose = new EventEmitter<undefined>();
 
+  @Input() hasToolTipOnTitle: boolean;
+
+  @Input() toolTipTitleText: string;
+
+  @Input() toolTipTitleDuration: number;
+
+
   constructor() { }
 
 }
