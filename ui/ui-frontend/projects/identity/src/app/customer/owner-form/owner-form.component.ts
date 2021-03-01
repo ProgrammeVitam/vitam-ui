@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
+
 import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
@@ -71,7 +71,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   get customerId() { return this._customerId; }
 
-  // tslint:disable-next-line:variable-name
   private _customerId: string;
 
   @Input()
@@ -88,7 +87,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   get customerInfo() { return this._customerInfo; }
 
-  // tslint:disable-next-line:variable-name
   private _customerInfo: any;
 
   constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators) {}
@@ -127,10 +125,8 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   }
 
   writeValue(owner: Owner) {
-    // Temporarely unsubscribing to valueChanges before setting the form value to avoid emitting a valueChange
     this.sub.unsubscribe();
 
-    // Making sure we don't call reset with a null value
     this.form.reset(owner || {
       customerId: this.customerId,
       code: null,
@@ -158,8 +154,6 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   }
 
   subscribeToValueChanges() {
-    // TODO Send only the properties which actually changed.
-    // See profile/profile-details/information-tab/information-tab.component.ts
     this.sub = merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
         map(() => this.form.pending || this.form.invalid ? null : this.form.value),

@@ -59,13 +59,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
   @Input() emailDomains: string[];
 
-  // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-  // tslint:disable-next-line:variable-name
+
   private _searchText: string;
 
   private groups: Array<{id: string, group: any}> = [];
@@ -101,13 +100,10 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     this.refreshDataList();
     this.activatedRoute.params.subscribe(() => this.refreshDataList());
 
-    // when the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
 
-      // get the groupId of every user
       const groupIds = new Set (this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
 
-      // look for groups that we don't already have on our list (groups not previously fetched)
       const observables = new Array<Observable<Group>>();
       groupIds.forEach((groupId) => {
         const existingGroup = this.groups.find((group) => group.id === groupId);
@@ -117,14 +113,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
       });
 
       if (observables && observables.length > 0) {
-        // fetch remaining groups
         forkJoin([forkJoin(observables), this.subrogationService.getAllByCustomerId(this._getCustomerId())]).subscribe((results) => {
           results[0].forEach((group) => {
             this.groups.push({ id: group.id, group });
           });
 
           const subrogations = results[1];
-          // update users critically information if needed
           this.dataSource.filter((subrogationUser: SubrogationUser) => !subrogationUser.criticality)
           .forEach(((subrogationUser: SubrogationUser) => {
             const subrogateUserGroup = this.getGroup(subrogationUser);
@@ -137,15 +131,11 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
             }
           }));
 
-          // we load everything before displaying data
           this.loaded = true;
-          // we change the pending after groups load
           this.pending = false;
         });
       } else {
-        // we load everything before displaying data
         this.loaded = true;
-        // we change the pending after groups load
         this.pending = false;
       }
     });

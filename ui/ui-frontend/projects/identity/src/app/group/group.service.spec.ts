@@ -36,7 +36,6 @@
  */
 import { BASE_URL, Direction, Group, Operators, PageRequest, SearchQuery } from 'ui-frontend-common';
 
-/* tslint:disable:no-magic-numbers */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 

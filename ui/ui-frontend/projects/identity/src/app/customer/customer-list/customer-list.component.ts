@@ -86,16 +86,14 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
   }
 
 
-  ngOnInit() {      
+  ngOnInit() {
      this.searchCustomersOrderedByCode();
      this.customerDataService.tenantsUpdated$.subscribe((tenants) => {
       this.tenants = tenants;
     });
 
-    // When the list is reloaded, we retrieve the tenants .
     this.updatedData.subscribe(() => {
-      // get the id of every customer
-      // look for customer tenants that we don't already have on our list (tenants not previously fetched)
+
       const customerIds = this.dataSource.filter((customer: Customer) => {
         const existingTenant = this.tenants.find((tenant) => tenant.customerId === customer.id);
         if (!existingTenant) {
@@ -107,18 +105,13 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
       .map((customer: Customer) => customer.id);
 
       if (customerIds && customerIds.length > 0) {
-        // fetch remaining tenants
         this.tenantService.getTenantsByCustomerIds(customerIds).subscribe((results) => {
           this.customerDataService.addTenants(results);
-          // we load everything before displaying data
           this.loaded = true;
-          // we change the pending after tenants load
           this.pending = false;
         });
       } else {
-        // we load everything before displaying data
         this.loaded = true;
-        // we change the pending after tenants load
         this.pending = false;
       }
     });

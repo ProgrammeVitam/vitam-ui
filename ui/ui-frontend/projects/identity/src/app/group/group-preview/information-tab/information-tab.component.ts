@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-unused-variable */
+
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';

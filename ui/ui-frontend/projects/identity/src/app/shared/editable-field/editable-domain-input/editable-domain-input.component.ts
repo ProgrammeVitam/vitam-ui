@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
+
 import { Component, ElementRef, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -59,7 +59,6 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
     this.selected = defaultDomain;
   }
   get defaultDomain(): string { return this._defaultDomain; }
-  // tslint:disable-next-line:variable-name
   private _defaultDomain: string;
 
   @Output() defaultDomainChange = new EventEmitter<string>();

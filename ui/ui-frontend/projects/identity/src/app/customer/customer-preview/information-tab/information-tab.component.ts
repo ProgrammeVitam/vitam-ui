@@ -82,7 +82,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
   }
 
   get customer(): Customer { return this._customer; }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
   private _gdprReadOnlyStatus: boolean;
   get gdprReadOnlyStatus(): boolean { return this._gdprReadOnlyStatus; }
@@ -171,7 +170,6 @@ export class InformationTabComponent implements OnInit, OnDestroy {
 
   private resetForm(customer: Customer) {
     if (customer) {
-      // Passing the customer code to the validator so it doesn't check if his own code exists
       this.form.get('code').setAsyncValidators(this.customerCreateValidators.uniqueCode(customer.code));
     }
     this.form.reset(customer, { emitEvent: false });

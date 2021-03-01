@@ -38,7 +38,6 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Criterion, Operators, Owner, SearchQuery } from 'ui-frontend-common';
 
-/* tslint:disable:no-magic-numbers */
 import { Injectable } from '@angular/core';
 
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';

@@ -44,8 +44,6 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
-    // we use PORTAL_APP as our appId so that the AppGuard won't find a profile with this appId
-    // and we'll be redirected to the Portal Application
     path: '',
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],

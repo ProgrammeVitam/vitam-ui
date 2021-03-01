@@ -34,8 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// TODO Make our own snackbar service instead of ripping the code
-// from the angular material sources
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -55,14 +53,12 @@ import {
 import { MAT_SNACK_BAR_DATA, MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { take, takeUntil } from 'rxjs/operators';
 
-/** Injection token that can be used to specify default snack bar. */
 export const MAT_SNACK_BAR_DEFAULT_OPTIONS =
   new InjectionToken<MatSnackBarConfig>('mat-snack-bar-default-options', {
     providedIn: 'root',
     factory: MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY,
   });
 
-/** @docs-private */
 export function MAT_SNACK_BAR_DEFAULT_OPTIONS_FACTORY(): MatSnackBarConfig {
   return new MatSnackBarConfig();
 }
@@ -77,10 +73,9 @@ export class VitamUISnackBar {
    * If there is a parent snack-bar service, all operations should delegate to that parent
    * via `_openedSnackBarRef`.
    */
-  // tslint:disable-next-line:variable-name
+
   private _snackBarRefAtThisLevel: MatSnackBarRef<any> | null = null;
 
-  /** Reference to the currently opened snackbar at *any* level. */
   get _openedSnackBarRef(): MatSnackBarRef<any> | null {
     const parent = this._parentSnackBar;
 
@@ -96,17 +91,11 @@ export class VitamUISnackBar {
   }
 
   constructor(
-    // tslint:disable-next-line:variable-name
     private _overlay: Overlay,
-    // tslint:disable-next-line:variable-name
     private _live: LiveAnnouncer,
-    // tslint:disable-next-line:variable-name
     private _injector: Injector,
-    // tslint:disable-next-line:variable-name
     private _breakpointObserver: BreakpointObserver,
-    // tslint:disable-next-line:variable-name
     @Optional() @SkipSelf() private _parentSnackBar: VitamUISnackBar,
-    // tslint:disable-next-line:variable-name
     @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private _defaultConfig: MatSnackBarConfig) { }
 
   /**
@@ -143,8 +132,6 @@ export class VitamUISnackBar {
     MatSnackBarRef<SimpleSnackBar> {
     const mergedConfig = { ...this._defaultConfig, ...config };
 
-    // Since the user doesn't have access to the component, we can
-    // override the data to pass in our own message and action.
     mergedConfig.data = { message, action };
     mergedConfig.announcementMessage = message;
 
@@ -203,13 +190,9 @@ export class VitamUISnackBar {
       const portal = new ComponentPortal(content, undefined, injector);
       const contentRef = container.attachComponentPortal<T>(portal);
 
-      // We can't pass this via the injector, because the injector is created earlier.
       snackBarRef.instance = contentRef.instance;
     }
 
-    // Subscribe to the breakpoint observer and attach the mat-snack-bar-handset class as
-    // appropriate. This class is applied to the overlay element because the overlay must expand to
-    // fill the width of the screen for full width snackbars.
     this._breakpointObserver.observe(Breakpoints.Handset).pipe(
       takeUntil(overlayRef.detachments().pipe(take(1)))
     ).subscribe((state) => {
@@ -226,29 +209,22 @@ export class VitamUISnackBar {
     return this._openedSnackBarRef;
   }
 
-  /** Animates the old snack bar out and the new one in. */
   private _animateSnackBar(snackBarRef: MatSnackBarRef<any>, config: MatSnackBarConfig) {
-    // When the snackbar is dismissed, clear the reference to it.
     snackBarRef.afterDismissed().subscribe(() => {
-      // Clear the snackbar ref if it hasn't already been replaced by a newer snackbar.
       if (this._openedSnackBarRef === snackBarRef) {
         this._openedSnackBarRef = null;
       }
     });
 
     if (this._openedSnackBarRef) {
-      // If a snack bar is already in view, dismiss it and enter the
-      // new snack bar after exit animation is complete.
       this._openedSnackBarRef.afterDismissed().subscribe(() => {
         snackBarRef.containerInstance.enter();
       });
       this._openedSnackBarRef.dismiss();
     } else {
-      // If no snack bar is in view, enter the new snack bar.
       snackBarRef.containerInstance.enter();
     }
 
-    // If a dismiss timeout is provided, set up dismiss based on after the snackbar is opened.
     if (config.duration && config.duration > 0) {
       snackBarRef.afterOpened().subscribe(() => snackBarRef._dismissAfter(config.duration));
     }
@@ -267,7 +243,6 @@ export class VitamUISnackBar {
     overlayConfig.direction = config.direction;
 
     const positionStrategy = this._overlay.position().global();
-    // Set horizontal position.
     const isRtl = config.direction === 'rtl';
     const isLeft = (
       config.horizontalPosition === 'left' ||
@@ -281,17 +256,12 @@ export class VitamUISnackBar {
     } else {
       positionStrategy.centerHorizontally();
     }
-    // Set horizontal position.
     if (config.verticalPosition === 'top') {
       positionStrategy.top('0');
     } else {
       positionStrategy.bottom('0');
     }
 
-    // TODO Find another way to make the snackbar stretch accross the screen
-    // The whole file has been ripped from the angular material sources
-    // (https://github.com/angular/material2/blob/master/src/lib/snack-bar/snack-bar.ts)
-    // just to add the line below
     overlayConfig.width = '100%';
 
     overlayConfig.positionStrategy = positionStrategy;

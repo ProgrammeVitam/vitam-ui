@@ -53,7 +53,6 @@ export class OwnerPopupComponent implements OnInit {
     if (this.route.snapshot.data.tenant) {
       this.tenant = this.route.snapshot.data.tenant;
       this.owner = this.route.snapshot.data.owner;
-      // retrieve the owner when it wasn't given
       if (!this.owner) {
         this.ownerService.get(this.tenant.ownerId).subscribe((owner) => this.owner = owner);
       }

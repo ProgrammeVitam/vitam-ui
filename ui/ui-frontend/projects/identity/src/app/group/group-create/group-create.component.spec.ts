@@ -39,7 +39,6 @@ import { EMPTY, of } from 'rxjs';
 import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-/* tslint:disable:max-classes-per-file */
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';

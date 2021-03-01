@@ -107,7 +107,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
       portalUrl: '',
     });
 
-    // should have a customer template for update AND creation
     this.customerTheme = {
       colors: this.customer && this.customer.themeColors
         ? this.themeService.getThemeColors(this.customer.themeColors)
@@ -144,7 +143,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     }
 
     this.displayCustomGraphicIdentity.valueChanges.subscribe((hasGraphicIdentity: boolean) => {
-      if (!hasGraphicIdentity) { // should only patch hasCustomGraphicIdentity
+      if (!hasGraphicIdentity) {
         this.formToSend.emit({
           form: this.formBuilder.group({
               id: this.graphicIdentityForm.get('id').value,
@@ -160,7 +159,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
 
   }
 
-  // always customer form
   public sendForm(data: {form: FormGroup, logos: Logo[]}): void {
     this.customerForm = data.form;
     this.formToSend.emit(data);
@@ -192,7 +190,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     this.graphicIdentityForm.get('portalTitle').setValue(theme.portalTitle);
     this.graphicIdentityForm.get('portalMessage').setValue(theme.portalMessage);
 
-    // do not use this.graphicIdentityForm.controls (and new FormGroup)
     const newForm = this.formBuilder.group(this.graphicIdentityForm.value);
     newForm.controls.themeColors = newTheme;
     newForm.get('portalTitle').validator = this.graphicIdentityForm.get('portalTitle').validator;

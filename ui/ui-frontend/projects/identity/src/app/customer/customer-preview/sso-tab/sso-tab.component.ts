@@ -96,7 +96,6 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     this.refreshAvailableDomains();
   }
   get customer(): Customer { return this._customer; }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
 
   @Input() readOnly: boolean;

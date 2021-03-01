@@ -94,7 +94,6 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
 
     const idp = this.form.value;
 
-    // TODO Remove this when idp type can be changed
     idp.internal = false;
 
     idp.keystore = this.keystore;
@@ -103,7 +102,6 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
     this.identityProviderService.create(idp).subscribe(
       (newIdp: IdentityProvider) => this.dialogRef.close(newIdp),
       (response) => {
-        // TODO Clean up this ugly piece of code
         if (response && response.error && response.error.error && response.error.error === 'INVALID_KEYSTORE_PASSWORD') {
           this.form.get('keystorePassword').setErrors({ badPassword: true });
         }

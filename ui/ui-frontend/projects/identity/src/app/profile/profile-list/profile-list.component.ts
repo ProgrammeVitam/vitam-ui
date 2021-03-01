@@ -60,13 +60,11 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
 
-  // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   orderBy = 'name';

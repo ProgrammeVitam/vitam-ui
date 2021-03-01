@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-use-before-declare */
 
 import { Component, ElementRef, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -79,7 +78,6 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
   get level(): string {
     return this._level;
   }
-  // tslint:disable-next-line:variable-name
   private _level: string;
 
   appSelect = new FormControl();
@@ -107,7 +105,6 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
           this.tenantSelect.setValue(this.filteredTenants[0].key);
         } else {
           this.tenantSelect.setValue(null);
-          // Trick to call open() "asynchronously"
           if (!this.tenantIdentifier) {
             setTimeout(() => this.tenantInput.focus(), 0);
           }
@@ -122,7 +119,6 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit {
         this.profileSelect.setValue(null);
       }
       this.toggleSelects();
-      // Trick to call open() "asynchronously"
       if (this.filteredProfiles.length === 1) {
         setTimeout(() => this.addButton.nativeElement.focus(), 0);
       } else {

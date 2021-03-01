@@ -58,7 +58,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     this._customer = customer;
   }
   get customer(): Customer { return this._customer; }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer = null;
 
   @Output() ownerClick = new EventEmitter<Owner>();
@@ -78,17 +77,12 @@ export class OwnerListComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit() {
-    // initialize tenants list
-    // we display owners with tenants and then owners without tenants
     this.filteredData(this.customerDataService.tenants);
 
-    // subscription in order to get every tenant update
     this.customerDataService.tenantsUpdated$.subscribe((tenants) =>  {
-      // update data
       this.filteredData(tenants);
     });
 
-    // subscription in order to get every owner update
     this.updatedOwnerSub = this.ownerService.updated.subscribe((updatedOwner: Owner) => {
       const ownerIndex = (this.customer.owners || []).findIndex((owner: Owner) => updatedOwner.id === owner.id);
       if (ownerIndex > -1) {
@@ -97,7 +91,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
       this.filteredData(this.myTenants);
     });
 
-    // subscription in order to launch a tenant update when an API call is made
     this.updatedTenantSub = this.tenantService.updated.subscribe((updatedTenant: Tenant) => {
       this.customerDataService.updateTenant(updatedTenant);
     });

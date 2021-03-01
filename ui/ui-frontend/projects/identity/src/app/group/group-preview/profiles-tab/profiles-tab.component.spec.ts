@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -47,7 +46,6 @@ import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab.component';
 
-// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -61,7 +59,6 @@ class MatTooltipStubDirective {
   `
 })
 class TesthostComponent {
-  // group: any;
   readOnly = false;
 
   group: Group = {

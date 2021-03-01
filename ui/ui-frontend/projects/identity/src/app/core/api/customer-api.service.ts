@@ -82,8 +82,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
 
   patchCustomer(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
-    formData.append('partialCustomerDto', JSON.stringify({ // to not send header/footer/portal -url
-      
+    formData.append('partialCustomerDto', JSON.stringify({
       id: partialCustomer.id,
       hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
       themeColors: partialCustomer.themeColors,

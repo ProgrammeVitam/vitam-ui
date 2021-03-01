@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:max-classes-per-file no-magic-numbers */
+
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -51,7 +51,6 @@ class IdentityProviderDetailsStubComponent {
     @Input() readOnly: boolean;
 }
 
-// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
