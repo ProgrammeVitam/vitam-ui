@@ -22,7 +22,7 @@
     "Secondary_contrast": "Contraste Secondaire par défaut",
     "Secondary_contrast_outline": "Contour contrasté secondaire  par défaut",
     "Tertiary": "Tertiaire par défaut",
-    "Disabled_label": "désactivé",
+    "Disabled_label": "Désactivé",
     "Disabled_outline": "Contour désactivé",
     "Disabled_contrast": "Contraste désactivé",
     "Disabled_contrast_outline": "Contour contrasté désactivé",
@@ -51,5 +51,33 @@
     "Primary": "Ombres primaires",
     "Secondary": "Ombres secondaires",
     "Tertiary": "Ombres tertiaires"
+  },
+  "TRANSLATION": {
+    "TITLE": "Traduction",
+    "CONVENTION": "Convention",
+    "USAGE": "Utilisation",
+    "WITH_PIPE": "Le pipe translate : usage à privilégier",
+    "DO_NOT_SPLIT_WORDS": "Ne pas diviser les phrases en plusieurs mots chacun traduit unitairement",
+    "TRANSLATE_SERVICE": "Les méthodes du TranslateService",
+    "TRANSLATE_PIPE": "Texte traduit avec le pipe translate. Il est bien traduit dynamiquement au changement de langue.",
+    "TRANSLATE_INSTANT": "Texte traduit avec la méthode translateService.instant(). Il n'est pas traduit dynamiquement au changement de langue.",
+    "TRANSLATE_GET": {
+      "TRANSLATE_GET_1": "Premier texte traduit avec la méthode translateService.get().",
+      "TRANSLATE_GET_2": "Second texte traduit avec la méthode translateService.get()."
+    },
+    "TRANSLATE_PARAMETERS": "Texte traduit avec plusieurs paramètres : {{ param1 }} et {{ param2 }}.",
+    "TRANSLATE_NUMBER": {
+      "ZERO": "Texte traduit au singulier et pluriel: Je n'ai aucune pomme.",
+      "SINGULAR": "Texte traduit au singulier et pluriel: J'ai une pomme.",
+      "PLURAL": "Texte traduit au singulier et pluriel: J'ai {{ number }} pommes."
+    },
+    "TRANSLATE_HTML": "Texte traduit contenant du <strong>code html</strong>.",
+    "NUMBER_OF_APPLE": "Nombre de pommes",
+    "TRANSLATE_FRENCH_ONLY": "Texte uniquement traduit en français.",
+    "ALWAYS_TRANSLATE": "Toujours traduire les nouveaux libellés : ne laisser aucun texte en dur.",
+    "KEY_NAMING": "Pour le nommage des clés, utiliser des majuscules et underscores. Toujours commencer par le nom de l'app, et au minimum inclure le composant où il se situe. Ex: CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
+    "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex: COMMON.BACK",
+    "FIRST_INPUT": "Premier paramètre",
+    "SECOND_INPUT": "Deuxième paramètre"
   }
 }
