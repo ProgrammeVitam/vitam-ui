@@ -25,7 +25,6 @@ export class VitamuiMenuButtonComponent {
 
   @Input()
   public disabled = false;
-  
-  constructor() { }
 
+  constructor() { }
 }
