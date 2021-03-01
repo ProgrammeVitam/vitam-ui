@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-/* tslint:disable:no-magic-numbers no-use-before-declare max-classes-per-file */
 import {Component, Input} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -66,7 +65,6 @@ let page: Page;
 @Component({ selector: 'app-group-list', template: '' })
 class GroupListStubComponent {
 
-  // tslint:disable-next-line:no-input-rename
   @Input('search') searchText: string;
 
   search() { }

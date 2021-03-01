@@ -99,7 +99,6 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
   }
 
   buildMetadataUrl(identityProviderId: string, tenantIdentifier: string): string {
-    // the link is opened in a new window, the tenantIdentifier must be provided for security checks.
     return this.apiUrl + `/${identityProviderId}/idpMetadata?tenantId=${tenantIdentifier}`;
   }
 

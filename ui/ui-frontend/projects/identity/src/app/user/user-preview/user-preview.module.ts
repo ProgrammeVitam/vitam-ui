@@ -45,7 +45,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
-// TODO This is not good, we shouldn't import components from other projects other than commons
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionComponent } from '../group-attribution/group-attribution.component';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';

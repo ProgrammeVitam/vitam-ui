@@ -53,7 +53,6 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
     this._group = group;
   }
   get group(): Group { return this._group; }
-  // tslint:disable-next-line:variable-name
   private _group: Group;
 
   @Input() readOnly: boolean;

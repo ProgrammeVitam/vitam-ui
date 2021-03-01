@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-magic-numbers */
+
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
@@ -48,7 +48,7 @@ import { input, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { EditableKeystoreComponent } from './editable-keystore.component';
 
-// tslint:disable-next-line:max-classes-per-file
+
 @Component({
   template: `
     <app-editable-keystore [identityProvider]="identityProvider" [disabled]="disabled"></app-editable-keystore>

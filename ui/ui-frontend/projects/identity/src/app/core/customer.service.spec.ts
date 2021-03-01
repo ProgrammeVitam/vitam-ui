@@ -38,7 +38,6 @@ import { ENVIRONMENT, LoggerModule } from 'ui-frontend-common';
 import { BASE_URL, Customer, Operators, OtpState, SearchQuery } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
 
-/* tslint:disable:no-magic-numbers no-use-before-declare max-file-line-count */
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 

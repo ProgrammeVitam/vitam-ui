@@ -70,13 +70,11 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
 
 
-  // tslint:disable-next-line:no-input-rename
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
-  // tslint:disable-next-line:variable-name
   private _searchText: string;
 
   @Output() userClick = new EventEmitter<User>();
@@ -119,7 +117,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   set connectedUserInfo(userInfo: AdminUserProfile) {
     this._connectedUserInfo = userInfo;
   }
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
@@ -151,12 +148,9 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       }
     });
 
-    // When the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
-      // get the groupId of every user
       const groupIds = new Set(this.dataSource.map((user: User) => user.groupId));
 
-      // look for groups that we don't already have on our list (groups not previously fetched)
       const idsToFetch = new Array<string>();
       groupIds.forEach((groupId) => {
         const existingGroup = this.groups.find((group) => group.id === groupId);
@@ -166,7 +160,6 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       });
 
       if (idsToFetch && idsToFetch.length > 0) {
-        // fetch remaining groups
         const criterionArray: Criterion[] = [];
         criterionArray.push({ key: 'id', value: idsToFetch, operator: Operators.in });
 
@@ -176,18 +169,14 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
           results.forEach((group) => {
             this.groups.push({ id: group.id, group });
           });
-          // we load everything before displaying data
           this.loaded = true;
-          // we change the pending after groups load
           this.pending = false;
         });
 
         this.checkInactifUsers();
 
       } else {
-        // we load everything before displaying data
         this.loaded = true;
-        // we change the pending after groups load
         this.pending = false;
       }
     });

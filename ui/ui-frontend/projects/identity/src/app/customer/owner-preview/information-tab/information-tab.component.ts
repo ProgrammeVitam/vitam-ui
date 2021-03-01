@@ -183,7 +183,6 @@ export class InformationTabComponent implements OnChanges, OnInit {
   }
 
   private resetOwnerForm(owner: Owner) {
-    // Passing the owner code to the validator so it doesn't check if his own code exists
     this.ownerForm.reset(owner, { emitEvent: false });
     this.ownerForm.get('code').setAsyncValidators(this.ownerFormValidators.uniqueCode(owner.code));
     this.ownerForm.get('identifier').disable({ emitEvent: false });

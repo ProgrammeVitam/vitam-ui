@@ -174,7 +174,6 @@ export class UserInfoTabComponent implements OnChanges {
   }
 
   private initFormValidators(form: FormGroup, user: User) {
-    // Passing the user email to the validator so it doesn't check if his own code exists
     form.get('email').setAsyncValidators(this.userCreateValidators.uniqueEmail(user.email));
     this.initMobileValidators(form);
   }
@@ -188,7 +187,6 @@ export class UserInfoTabComponent implements OnChanges {
   }
 
   private initFormActivationState(form: FormGroup, customer: Customer, userInfo: AdminUserProfile, readOnly: boolean) {
-    // get customer email domains
     this.customerEmailDomains = [];
     customer.emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
     if (readOnly || !userInfo.standardAttrsAllowed) {

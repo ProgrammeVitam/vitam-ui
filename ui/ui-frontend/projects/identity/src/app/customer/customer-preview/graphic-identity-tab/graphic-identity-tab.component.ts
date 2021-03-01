@@ -57,7 +57,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     this.resetTab(this.customer);
   }
   get customer(): Customer { return this._customer; }
-  // tslint:disable-next-line:variable-name
   private _customer: Customer;
 
   @Input()
@@ -66,7 +65,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   }
   get readonly(): boolean { return this._readonly; }
 
-  // tslint:disable-next-line:variable-name
   private _readonly: boolean;
   private destroy = new Subject();
   public isLoading = false;
@@ -113,7 +111,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     if (customer.hasCustomGraphicIdentity) {
       this.isLoading = true;
     }
-    // customer logos mandatory for graphic-identity
     this.customerService.getLogos(customer.id)
     .pipe(takeUntil(this.destroy))
     .subscribe((logos: LogosSafeResourceUrl[]) => {

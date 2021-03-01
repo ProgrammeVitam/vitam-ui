@@ -127,8 +127,6 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   completeRoles(profile: Profile) {
-    // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
-    // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
     const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
     const hasRole = profile.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
     if (hasRole) {
