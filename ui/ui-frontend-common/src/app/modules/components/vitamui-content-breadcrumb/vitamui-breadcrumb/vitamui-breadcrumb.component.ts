@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 
@@ -55,7 +55,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
   @Output()
   public selected = new EventEmitter<string>();
 
-  constructor(private translateService: TranslateService, private route: ActivatedRoute, private applicationService: ApplicationService) { }
+  constructor(private route: ActivatedRoute, private applicationService: ApplicationService) { }
 
   ngOnInit() {
     if (!this.data) {
@@ -63,7 +63,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
       if (appId) {
         this.data = [
           {
-            label: this.translateService.instant('PORTAL.TITLE')
+            identifier: ApplicationId.PORTAL_APP
           },
           {
             label: this.applicationService.getAppById(appId).name,

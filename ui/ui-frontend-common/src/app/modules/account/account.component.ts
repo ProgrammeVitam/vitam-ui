@@ -39,6 +39,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppRootComponent } from '../app-root-component.class';
+import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
@@ -67,8 +68,8 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
       this.account = account;
     });
     this.dataBreadcrumb = [
-      { label: this.translateService.instant('PORTAL.TITLE') },
-      { label: this.translateService.instant('ACCOUNT.TITLE') }
+      { identifier: ApplicationId.PORTAL_APP},
+      { identifier: ApplicationId.ACCOUNTS_APP}
     ];
   }
 

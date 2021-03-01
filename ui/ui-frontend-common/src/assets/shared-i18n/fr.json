@@ -44,10 +44,10 @@
 		"LEVEL": "Niveau",
 		"GROUP": "Mon groupe de profils"
   },
-  "PORTAL": {
-    "TITLE": "Portail"
-  },
   "APPLICATION": {
+    "PORTAL_APP": {
+      "NAME" : "Portal"
+     },
     "CUSTOMERS_APP": {
       "NAME": "Organisations",
       "TOOLTIP": "Paramétrer les organisations (clients, ...) et les coffres des organisations"
