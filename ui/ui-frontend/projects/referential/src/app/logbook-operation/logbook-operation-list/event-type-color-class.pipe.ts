@@ -51,7 +51,6 @@ export class EventTypeColorClassPipe implements PipeTransform {
 
   transform(event: Event): string {
     if (!event.events || event.events.length <= 0) {
-      console.error('EventTypeColorClassPipe Error: event has no child event');
       return '';
     }
 

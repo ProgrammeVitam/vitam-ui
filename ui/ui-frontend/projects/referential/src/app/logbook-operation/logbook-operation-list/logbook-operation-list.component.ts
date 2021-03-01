@@ -113,6 +113,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   }
 
   ngOnInit() {
+
     this.pending = true;
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -123,6 +124,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
 
     this.refreshOperationCategoriesOptions();
     this.refreshList();
+
   }
 
   buildCriteriaFromSearch() {
@@ -144,9 +146,6 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
       criteria.types = this.filterMap.operationCategories;
     }
 
-    console.log('criteria.types');
-    console.log(criteria.types);
-
     return criteria;
   }
 
@@ -167,6 +166,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     const query = JSON.stringify(LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch()));
 
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, query));
+
   }
 
   onFilterChange(key: string, values: any[]) {
