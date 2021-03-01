@@ -23,6 +23,9 @@ export class VitamuiMenuButtonComponent {
    */
   @Input() label: string;
 
+  @Input()
+  public disabled = false;
+  
   constructor() { }
 
 }
