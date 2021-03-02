@@ -83,6 +83,7 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
   patchCustomer(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[], headers?: HttpHeaders): Observable<Customer> {
     const formData: FormData = new FormData();
     formData.append('partialCustomerDto', JSON.stringify({ // to not send header/footer/portal -url
+      
       id: partialCustomer.id,
       hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
       themeColors: partialCustomer.themeColors,
@@ -99,6 +100,9 @@ export class CustomerApiService extends BaseHttpClient<Customer> {
       language: partialCustomer.language,
       emailDomains: partialCustomer.emailDomains,
       defaultEmailDomain: partialCustomer.defaultEmailDomain,
+      gdprAlert: partialCustomer.gdprAlert,
+      gdprAlertDelay: partialCustomer.gdprAlertDelay,
+
     }));
 
     if (logos) {
