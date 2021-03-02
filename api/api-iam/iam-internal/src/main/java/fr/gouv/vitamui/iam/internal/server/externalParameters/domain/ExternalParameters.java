@@ -36,20 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.externalParameters.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import fr.gouv.vitamui.commons.api.domain.BaseIdentifierDocument;
-import fr.gouv.vitamui.commons.api.domain.Role;
-import fr.gouv.vitamui.commons.mongo.IdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.CustomerIdDocument;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Parameter;
@@ -57,6 +43,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An external param set.
@@ -73,11 +67,11 @@ public class ExternalParameters extends CustomerIdDocument {
     @NotNull
     @Length(min = 1, max = 12)
     private String identifier;
-    
+
     @NotNull
     @Length(min = 2, max = 100)
     private String name;
-	
+
     @NotNull
     @Size(min = 0)
     private List<Parameter> parameters = new ArrayList<>();

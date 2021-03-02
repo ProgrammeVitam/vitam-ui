@@ -36,21 +36,16 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the external parameters.
@@ -61,11 +56,11 @@ import lombok.Setter;
 @Setter
 @Service
 public class ExternalParametersExternalService extends AbstractResourceClientService<ExternalParametersDto, ExternalParametersDto> {
-	
+
 	private final ExternalParametersInternalRestClient externalParametersInternalRestClient;
-	
+
     @Autowired
-    public ExternalParametersExternalService(final ExternalParametersInternalRestClient externalParametersInternalRestClient, 
+    public ExternalParametersExternalService(final ExternalParametersInternalRestClient externalParametersInternalRestClient,
     		final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.externalParametersInternalRestClient = externalParametersInternalRestClient;
@@ -83,7 +78,7 @@ public class ExternalParametersExternalService extends AbstractResourceClientSer
     public ExternalParametersDto getOne(final String id, final Optional<String> embedded) {
         return super.getOne(id, embedded);
     }
-    
+
     @Override
     protected ExternalParametersInternalRestClient getClient() {
         return externalParametersInternalRestClient;

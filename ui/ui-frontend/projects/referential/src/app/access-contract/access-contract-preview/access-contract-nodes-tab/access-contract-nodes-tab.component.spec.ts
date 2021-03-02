@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {AccessContractNodesTabComponent} from './access-contract-nodes-tab.component';

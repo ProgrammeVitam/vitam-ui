@@ -61,14 +61,13 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalParametersDto extends IdDto {
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
+
     private String identifier;
 
     @NotNull
     @Length(min = 2, max = 100)
     private String name;
-    
-    // Embedded
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<ParameterDto> parameters = null;
 }

@@ -1,45 +1,38 @@
 package fr.gouv.vitamui.iam.internal.server.externalParameters.service;
 
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
+import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
-import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
-import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-//@Import({ TestMongoConfig.class })
 @EnableMongoRepositories(
 	basePackageClasses =  {ExternalParametersRepository.class, CustomSequenceRepository.class, GroupRepository.class,
         OwnerRepository.class, ProfileRepository.class, UserRepository.class, TenantRepository.class },

@@ -36,16 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -53,6 +45,10 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalPa
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The controller to check existence, create, read, update and delete the external parameters.
@@ -65,7 +61,7 @@ import lombok.Setter;
 @Setter
 @Api(tags = "externalParameters", value = "External Parameters Management")
 public class ExternalParametersInternalController {
-	
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersInternalController.class);
 
     private ExternalParametersInternalService externalParametersInternalService;
@@ -74,7 +70,7 @@ public class ExternalParametersInternalController {
     public ExternalParametersInternalController(final ExternalParametersInternalService externalParametersInternalService) {
         this.externalParametersInternalService = externalParametersInternalService;
     }
-	
+
     /**
      * Retrieve the external parameters associated to the authenticated user.
      * @return

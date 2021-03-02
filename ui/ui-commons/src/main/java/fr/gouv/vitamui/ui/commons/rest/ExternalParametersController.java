@@ -36,13 +36,12 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
-import java.util.Map;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,19 +50,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.ws.rs.Produces;
+import java.util.Map;
 
 @Api(tags = "externalparameters")
 @RequestMapping("${ui-prefix}/externalparameters")
 @RestController
 @ResponseBody
 public class ExternalParametersController extends AbstractUiRestController {
-	
+
     protected final ExternalParametersService service;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersController.class);
@@ -72,7 +67,7 @@ public class ExternalParametersController extends AbstractUiRestController {
     public ExternalParametersController(final ExternalParametersService service) {
         this.service = service;
     }
-    
+
 	/**
 	 * Get the external paremters for the authenticated user
 	 * @return
@@ -83,10 +78,10 @@ public class ExternalParametersController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> getMyExternalParameters() {
         LOGGER.debug("Get external parameters for the authenticated user");
-        
+
         Map<String, String> parameters = service.getMyExternalParameters(buildUiHttpContext());
         LOGGER.debug("External parameters : {}", parameters);
-        
+
         return parameters;
     }
 
