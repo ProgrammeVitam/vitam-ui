@@ -66,7 +66,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let event of dataSource; let index = index" (click)="selectEvent(event)" class="vitamui-table-row">
+    <tr *ngFor="let event of dataSource; let index = index" (click)="selectEvent(event)" class="vitamui-table-row" [ngStyle] = "{'cursor':'pointer'}"> 
       <td class="no-first-cell-padding width60">
         <div class="vitamui-cell-icon aligned">
           <div class="status-badge" [ngClass]="event | eventTypeBadgeClass">
@@ -74,23 +74,23 @@
           </div>
         </div>
       </td>
-      <td><div class="vitamui-cell-content break-content" [title]="event.id">{{ event.id }}</div></td>
+      <td><div class="vitamui-cell-content break-content" [title]="event.id">{{ event?.id }}</div></td>
       <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass"><vitamui-common-event-type-label [key]="event.typeProc"></vitamui-common-event-type-label></div></td>
       <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass"><vitamui-common-event-type-label [key]="event.type"></vitamui-common-event-type-label></div></td>
       <td>
-        <div class="vitamui-cell-content">{{ event.dateTime | date:'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-content">{{ event?.dateTime | date:'dd/MM/yyyy' }}</div>
         <div class="vitamui-cell-sub-content cell-content-bold">
-          <span>{{ event.dateTime | date:'hh:mm:ss' }}</span>
+          <span>{{ event?.dateTime | date:'hh:mm:ss' }}</span>
         </div>
       </td>
       <td>
-        <div class="vitamui-cell-content">{{ (event | lastEvent).dateTime | date:'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-content">{{ (event | lastEvent)?.dateTime | date:'dd/MM/yyyy' }}</div>
         <div class="vitamui-cell-sub-content cell-content-bold">
-          <span>{{ (event | lastEvent).dateTime | date:'hh:mm:ss' }}</span>
+          <span>{{ (event | lastEvent)?.dateTime | date:'hh:mm:ss' }}</span>
         </div>
       </td>
-      <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent).outcome }}</div></td>
-      <td><div class="vitamui-cell-content cell-content-bold break-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent).type }}</div></td>
+      <td><div class="vitamui-cell-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent)?.outcome }}</div></td>
+      <td><div class="vitamui-cell-content cell-content-bold break-content" [ngClass]="event | eventTypeColorClass">{{ (event | lastEvent)?.type }}</div></td>
     </tr>
   </tbody>
 </table>
