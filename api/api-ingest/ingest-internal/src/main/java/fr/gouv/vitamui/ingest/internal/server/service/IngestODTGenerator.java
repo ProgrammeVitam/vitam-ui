@@ -71,9 +71,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class IngestDocxGenerator {
+public class IngestODTGenerator {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestDocxGenerator.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestODTGenerator.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
 
@@ -117,7 +117,9 @@ public class IngestDocxGenerator {
             XWPFRun runTwo = tableOneRowTwo.getCell(0).addParagraph().createRun();
             runTwo.setText("Service versant :");
             runTwo.setBold(true);
+            tableOneRowTwo.getCell(0).setWidth("3000");
             tableOneRowTwo.getCell(1).setText(getServiceVersant(jsonObject));
+            tableOneRowTwo.getCell(1).setWidth("7000");
 
             XWPFParagraph paragraph = document.createParagraph();
             XWPFRun run = paragraph.createRun();
@@ -156,26 +158,32 @@ public class IngestDocxGenerator {
         XWPFRun runContent = tableTwoRowTwo.getCell(0).addParagraph().createRun();
         runContent.setText("Présentation du contenu :");
         runContent.setBold(true);
+        tableTwoRowTwo.getCell(0).setWidth("3000");
         tableTwoRowTwo.getCell(1).setText(getComment(manifest));
+        tableTwoRowTwo.getCell(1).setWidth("7000");
 
         XWPFTableRow tableTwoRowThree = tableTwo.createRow();
         tableTwoRowThree.getCell(0).removeParagraph(0);
         XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
         runDate.setText("Dates extrêmes :");
         runDate.setBold(true);
+        tableTwoRowThree.getCell(0).setWidth("3000");
         tableTwoRowThree.getCell(1).removeParagraph(0);
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
             "date de début : " + selectedIngest.getEvDateTime().split("T")[0].replace('-', '/'));
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
             selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getEvDateTime().split("T")[0]
                 .replace('-', '/'));
+        tableTwoRowThree.getCell(1).setWidth("7000");
 
         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
         tableTwoRowFour.getCell(0).removeParagraph(0);
         XWPFRun runHistory = tableTwoRowFour.getCell(0).addParagraph().createRun();
         runHistory.setText("Historique des conservations :");
         runHistory.setBold(true);
+        tableTwoRowFour.getCell(0).setWidth("3000");
         tableTwoRowFour.getCell(1).setText(getCustodialHistory(manifest));
+        tableTwoRowFour.getCell(1).setWidth("7000");
 
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
@@ -208,7 +216,9 @@ public class IngestDocxGenerator {
         XWPFRun runTwo = tableThreeRowFour.getCell(0).addParagraph().createRun();
         runTwo.setText("Identifiant de l’opération d’entrée :");
         runTwo.setBold(true);
+        tableThreeRowFour.getCell(0).setWidth("3000");
         tableThreeRowFour.getCell(1).setText(id);
+        tableThreeRowFour.getCell(1).setWidth("7000");
 
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
@@ -226,15 +236,15 @@ public class IngestDocxGenerator {
         XWPFTable table = document.createTable();
 
         XWPFTableRow tableRowOne = table.getRow(0);
-        tableRowOne.getCell(0).setText("Date de signature :");
+        tableRowOne.getCell(0).setText("Date de signature ");
         tableRowOne.getCell(0).setWidth("5000");
-        tableRowOne.addNewTableCell().setText("Date de signature :");
+        tableRowOne.addNewTableCell().setText("Date de signature ");
         tableRowOne.getCell(1).setWidth("5000");
         tableRowOne.setHeight(750);
 
         XWPFTableRow tableRowTwo = table.createRow();
-        tableRowTwo.getCell(0).setText("Le responsable du versement : ");
-        tableRowTwo.getCell(1).setText("Le responsable du service d'archives : ");
+        tableRowTwo.getCell(0).setText("Le responsable du versement ");
+        tableRowTwo.getCell(1).setText("Le responsable du service d'archives");
         tableRowTwo.setHeight(750);
 
         table.getCTTbl().getTblPr().getTblBorders().getRight().setVal(STBorder.NONE);
@@ -298,21 +308,25 @@ public class IngestDocxGenerator {
             XWPFRun runSystem = dynamicTableRow.getCell(0).addParagraph().createRun();
             runSystem.setText(x.getSystemId());
             runSystem.setFontSize(8);
+            dynamicTableRow.getCell(0).setWidth("2000");
 
             dynamicTableRow.getCell(1).removeParagraph(0);
             XWPFRun runTitle = dynamicTableRow.getCell(1).addParagraph().createRun();
             runTitle.setText(x.getTitle());
-            runTitle.setFontSize(8);
+            runTitle.setFontSize(7);
+            dynamicTableRow.getCell(1).setWidth("5000");
 
             dynamicTableRow.getCell(2).removeParagraph(0);
             XWPFRun runDateD = dynamicTableRow.getCell(2).addParagraph().createRun();
             runDateD.setText(x.getStartDate().split("T")[0].replace('-', '/'));
-            runDateD.setFontSize(10);
+            runDateD.setFontSize(9);
+            dynamicTableRow.getCell(2).setWidth("1500");
 
             dynamicTableRow.getCell(3).removeParagraph(0);
             XWPFRun runDateF = dynamicTableRow.getCell(3).addParagraph().createRun();
             runDateF.setText(x.getEndDate().split("T")[0].replace('-', '/'));
-            runDateF.setFontSize(10);
+            runDateF.setFontSize(9);
+            dynamicTableRow.getCell(3).setWidth("1500");
 
         });
     }
@@ -325,6 +339,8 @@ public class IngestDocxGenerator {
         paragraphRun.setBold(true);
         paragraphRun.setFontSize(22);
         paragraph.setAlignment(ParagraphAlignment.CENTER);
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
 
     }
 
@@ -335,6 +351,8 @@ public class IngestDocxGenerator {
         paragraphRun.setBold(true);
         paragraphRun.setText(SECOND_TITLE);
         paragraphRun.setFontSize(12);
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
 
     }
 
@@ -421,6 +439,7 @@ public class IngestDocxGenerator {
                         throw new IllegalStateException("Unexpected value: " + base64Image.charAt(0));
                 }
                 tableRow.getCell(1).removeParagraph(0);
+                tableRow.getCell(1).setWidth("3000");
                 FileUtils.forceDelete(new File(imgFile));
             }
 
@@ -433,33 +452,33 @@ public class IngestDocxGenerator {
         }
     }
 
-    public String getServiceProducteur(Document document) {
+    private String getServiceProducteur(Document document) {
         document.getDocumentElement().normalize();
         return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
     }
 
-    public String getNumVersement(Document document) {
+    private String getNumVersement(Document document) {
         return document.getElementsByTagName("MessageIdentifier").item(0).getTextContent();
     }
 
-    public String getComment(Document document) {
+    private String getComment(Document document) {
         return document.getElementsByTagName("Comment").item(0).getTextContent();
     }
 
-    public String getCustodialHistory(Document document) {
+    private String getCustodialHistory(Document document) {
         return document.getElementsByTagName("CustodialHistory").getLength() == 0 ?
             "historique indisponible" :
             document.getElementsByTagName("CustodialHistory").item(0).getTextContent();
     }
 
-    public String getServiceVersant(JSONObject jsonObject) throws JSONException {
+    private String getServiceVersant(JSONObject jsonObject) throws JSONException {
         if (jsonObject.toString().contains("submissionAgency")) {
             return jsonObject.get("submissionAgency").toString();
         }
         return jsonObject.get("originatingAgency").toString();
     }
 
-    public int getBinaryFileNumber(Document document) {
+    private int getBinaryFileNumber(Document document) {
         return document.getElementsByTagName("BinaryDataObject").getLength();
     }
 

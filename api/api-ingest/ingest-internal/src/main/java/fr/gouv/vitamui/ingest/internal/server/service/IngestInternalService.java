@@ -95,7 +95,7 @@ public class IngestInternalService {
 
     private final CustomerInternalRestClient customerInternalRestClient;
 
-    private final IngestDocxGenerator ingestDocxGenerator;
+    private final IngestODTGenerator ingestODTGenerator;
 
 
     @Autowired
@@ -103,7 +103,7 @@ public class IngestInternalService {
         final LogbookService logbookService, final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestDocxGenerator ingestDocxGenerator)
+        final IngestODTGenerator ingestODTGenerator)
     {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
@@ -111,7 +111,7 @@ public class IngestInternalService {
         this.objectMapper = objectMapper;
         this.ingestService = ingestService;
         this.customerInternalRestClient = customerInternalRestClient;
-        this.ingestDocxGenerator = ingestDocxGenerator;
+        this.ingestODTGenerator = ingestODTGenerator;
 
     }
 
@@ -217,7 +217,7 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestDocxGenerator.resourceAsString(resource);
+                manifest = ingestODTGenerator.resourceAsString(resource);
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
@@ -234,7 +234,7 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                atr = ingestDocxGenerator.resourceAsString(resource);
+                atr = ingestODTGenerator.resourceAsString(resource);
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return atr;
@@ -244,7 +244,7 @@ public class IngestInternalService {
         }
     }
 
-    public byte[] generateDocX(VitamContext vitamContext, final String id) throws JSONException, IOException {
+    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws JSONException, IOException {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -252,32 +252,32 @@ public class IngestInternalService {
         Resource logo = null;
 
         try {
-            Document atr = ingestDocxGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
-            Document manifest = ingestDocxGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+            Document atr = ingestODTGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            Document manifest = ingestODTGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
             XWPFDocument document = new XWPFDocument();
             if(myCustomer.isHasCustomGraphicIdentity()) {
                 logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
-            ingestDocxGenerator.generateDocHeader(document,myCustomer,logo);
+            ingestODTGenerator.generateDocHeader(document,myCustomer,logo);
 
-            ingestDocxGenerator.generateFirstTitle(document);
+            ingestODTGenerator.generateFirstTitle(document);
 
-            ingestDocxGenerator.generateTableOne(document,manifest,jsonObject);
+            ingestODTGenerator.generateTableOne(document,manifest,jsonObject);
 
-            ingestDocxGenerator.generateTableTwo(document,manifest,selectedIngest);
+            ingestODTGenerator.generateTableTwo(document,manifest,selectedIngest);
 
-            ingestDocxGenerator.generateTableThree(document,manifest,id);
+            ingestODTGenerator.generateTableThree(document,manifest,id);
 
-            ingestDocxGenerator.generateTableFour(document);
+            ingestODTGenerator.generateTableFour(document);
 
-            ingestDocxGenerator.generateSecondtTitle(document);
+            ingestODTGenerator.generateSecondtTitle(document);
 
-            List<ArchiveUnitDto> list = ingestDocxGenerator.getValuesForDynamicTable(atr,manifest);
+            List<ArchiveUnitDto> list = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
 
-            ingestDocxGenerator.generateDynamicTable(document,list);
+            ingestODTGenerator.generateDynamicTable(document,list);
 
-            LOGGER.info("Generate Docx Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
             document.write(result);
             return result.toByteArray();

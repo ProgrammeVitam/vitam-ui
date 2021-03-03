@@ -94,7 +94,7 @@ export class IngestPreviewComponent implements OnInit {
     this.logbookService.downloadATR(this.ingest.id);
   }
 
-  generateDocX() {
-    this.ingestService.downloadDocxReport(this.ingest.id);
+  generateODTreport() {
+    this.ingestService.downloadODTReport(this.ingest.id);
   }
 }

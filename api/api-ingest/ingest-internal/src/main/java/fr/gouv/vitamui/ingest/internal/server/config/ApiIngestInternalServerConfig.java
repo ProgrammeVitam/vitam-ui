@@ -54,8 +54,8 @@ import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.ingest.internal.server.service.IngestDocxGenerator;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
+import fr.gouv.vitamui.ingest.internal.server.service.IngestODTGenerator;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -107,8 +107,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     }
 
     @Bean
-    public IngestDocxGenerator ingestDocxGenerator() {
-        return new IngestDocxGenerator();
+    public IngestODTGenerator ingestODTGenerator() {
+        return new IngestODTGenerator();
     }
 
     @Bean
@@ -119,8 +119,8 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
             final IngestExternalClient ingestExternalClient,
             final IngestService ingestService,
             final CustomerInternalRestClient customerInternalRestClient,
-            final IngestDocxGenerator ingestDocxGenerator) {
+            final IngestODTGenerator ingestODTGenerator) {
         return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService,
-            customerInternalRestClient, ingestDocxGenerator);
+            customerInternalRestClient, ingestODTGenerator);
     }
 }

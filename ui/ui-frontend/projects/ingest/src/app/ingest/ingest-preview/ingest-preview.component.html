@@ -11,7 +11,7 @@
     <button mat-menu-item i18n="@@ingestPreviewDownloadATR"
             (click)="downloadATR()">{{'INGEST_DETAIL.DOWNLOAD_ATR' | translate}}
     </button>
-    <button mat-menu-item i18n="@@ingestPreviewGenerateDocX" (click)="generateDocX()"
+    <button mat-menu-item i18n="@@ingestPreviewGenerateDocX" (click)="generateODTreport()"
             matTooltip="{{'INGEST_DETAIL.DOWNLOAD_DOCX' | translate}}" matTooltipClass="vitamui-tooltip"
             [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'FATAL'">
       {{'INGEST_DETAIL.DOWNLOAD_DOCX' | translate}}

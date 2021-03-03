@@ -69,12 +69,12 @@ export class IngestService extends SearchService<any> {
     return this.ingestApiService.getOne(id);
   }
 
-  downloadDocxReport(id : string)  {
-    return this.ingestApiService.downloadDocxReport(id).subscribe(file => {
+  downloadODTReport(id : string)  {
+    return this.ingestApiService.downloadODTReport(id).subscribe(file => {
 
       const element = document.createElement('a');
       element.href = window.URL.createObjectURL(file);
-      element.download ='Bordereau-' + id + '.docx';
+      element.download ='Bordereau-' + id + '.odt';
       element.style.visibility = 'hidden';
       document.body.appendChild(element);
       element.click();
