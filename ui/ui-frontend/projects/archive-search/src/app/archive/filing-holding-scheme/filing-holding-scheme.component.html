@@ -1,4 +1,12 @@
-<div *ngIf="!loadingHolding" class="justify-content-around">
+<div class="tree-filing-scheme-side-panel">
+  <div class="vitamui-sidepanel-header">
+    <div class="d-flex justify-content-end">
+      <button class="btn link cancel" >
+        <i class="vitamui-icon vitamui-icon-close" (click)="emitClose()"></i>
+      </button>
+    </div>
+
+<div class="justify-content-around">
   <div *ngIf="!loadingHolding" class="tree-filing-scheme">
     <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="filing-holding-scheme-tree">
 
@@ -28,11 +36,13 @@
       </mat-nested-tree-node>
     </mat-tree>
   </div>
-  <div *ngIf="nestedDataSource.data.length <= 0"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}  </div>
-  <a *ngIf="nestedDataSource.data.length > 0 && !linkOneToNotKeep " class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate}}</a>
-  <a *ngIf="nestedDataSource.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link" (click)="showOnlyParentTreeNodes()">{{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' | translate}}</a>
+  <div *ngIf="!loadingHolding && nestedDataSource.data.length <= 0"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate}}  </div>
+  <a *ngIf="!loadingHolding && nestedDataSource.data.length > 0 && !linkOneToNotKeep " class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' | translate}}</a>
+  <a *ngIf="!loadingHolding && nestedDataSource.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link" (click)="showOnlyParentTreeNodes()">{{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' | translate}}</a>
 </div>
 
 <div class="" *ngIf="loadingHolding">
   <mat-spinner diameter="50" color="accent"></mat-spinner>
+</div>
+</div>
 </div>

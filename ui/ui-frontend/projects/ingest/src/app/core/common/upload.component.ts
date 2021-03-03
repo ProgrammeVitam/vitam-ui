@@ -94,30 +94,12 @@ export class UploadComponent implements OnInit {
 
   ngOnInit() {
     this.contextId = this.data.givenContextId;
-    this.initContextIdentifier(this.data.givenContextId);
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
     this.hasSip = this.sipForm.get('hasSip').value;
 
   }
-  initContextIdentifier(contextInput: string) {
-    switch (contextInput) {
-      case 'HOLDING_SCHEME':
-        this.messageImportType = 'Importer un arbre de positionnement';
-        this.messageLabelImportType = 'Nouvel arbre de positionnement';
-        break;
-      case 'FILING_SCHEME':
-        this.messageImportType = 'Importer un plan de classement';
-        this.messageLabelImportType = 'Nouveau plan de classement';
-        break;
-      case 'DEFAULT_WORKFLOW':
-        this.messageImportType = 'Verser un SIP';
-        this.messageLabelImportType = 'Nouveau versement';
-        break;
-      default:
-      console.error('unknown context identifier');
-    }
-  }
+ 
 
   onDragOver(inDropZone: boolean) {
     this.hasDropZoneOver = inDropZone;

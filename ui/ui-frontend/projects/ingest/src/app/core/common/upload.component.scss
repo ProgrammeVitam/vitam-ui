@@ -36,9 +36,15 @@ i.icon-error {
     padding-bottom: 30px;
 }
 
-.underline {
-    text-decoration: underline;
+.url-select {
     cursor: pointer;
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--vitamui-primary);
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+    transform-origin: left;
+    transition: transform 150ms ease-out;
 }
 
 .input-file {
@@ -121,24 +127,31 @@ button > small {
 
 }
 
-.sip-drop {
-    font-size: 14px;
-    line-height: 20px;
-    color: $charcoal-grey;
-    text-align: center;
-    margin-top: 40px;
+.sip-drop { 
+     text-align: center;
+    margin-top: 20px;
     margin-bottom: 10px;
-    color: #5cbaa9;
+    color: var(--vitamui-primary);
     font-family: Roboto;
     font-style: normal;
     font-weight: bold;
     font-size: 25px;
-
     small {
-        color: #a5a5a5;
+        color: var(--vitamui-primary);
     }
 }
+.sip-drop-small { 
+     text-align: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: var(--vitamui-primary);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+     line-height: 10px;
 
+}
 .error-message {
     color: $red;
     font-size: 16px;
