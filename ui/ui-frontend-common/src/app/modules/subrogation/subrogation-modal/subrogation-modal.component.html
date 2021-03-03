@@ -42,14 +42,14 @@
 
   <cdk-step>
     <div class="content">
-      <div class="text large bold mb-1" i18n="subrogation wait@@SubrogationWaitAcceptation" >Attente de l'acceptation de l'utilisateur</div>
+      <div class="text large bold mb-1">{{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.WAITING_ACCEPTATION' | translate}}</div>
 
-      <div class="text normal" *ngIf="user?.firstname && user?.lastname" i18n="subrogate user fullName@@subrogateTitleUserFullName">
-        Vous avez demandé à subroger l'utilisateur {{ user?.firstname }} {{ user?.lastname }}
+      <div class="text normal" *ngIf="user?.firstname && user?.lastname">
+        {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate}} {{ user?.firstname }} {{ user?.lastname }}
       </div>
 
-      <div class="text normal" *ngIf="!user?.firstname || !user?.lastname" i18n="subrogate user email@@subrogateTitleUserEmail">
-        Vous avez demandé à subroger l'utilisateur {{ user?.email }}
+      <div class="text normal" *ngIf="!user?.firstname || !user?.lastname">
+        {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ASK_SUBROGATION' | translate}} {{ user?.email }}
       </div>
 
       <div class="d-flex justify-content-center align-items-center my-5">

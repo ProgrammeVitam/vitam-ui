@@ -95,7 +95,13 @@
 			"ACTIVE_SWITCH": "IDP Actif",
 			"KEYSTORE": "Keystore de CAS",
 			"IDP_METADATA": "Metadata de l'IDP",
-			"MAIL_ATTRIBUTE": "Attribut mail"
+			"MAIL_ATTRIBUTE": "Attribut mail",
+			"MODAL": {
+				"TITLE": "Création d'un IDP pour",
+				"KEYSTORE_PWD": "Mot de passe du keystore",
+				"UPLOAD_KEYSTORE": "Uploader le fichier keystore de CAS",
+				"UPLOAD_METADATA": "Uploader le fichier metadata de l'IDP"
+			}			
 		},
 		"GRAPHIC_IDENTITY": {
 			"TOGGLE_TITLE": "Identité graphique personnalisée",
@@ -143,6 +149,10 @@
 			},
 			"LIST": {
 				"PROOF_ELEMENTS": "Coffre contenant les éléments de preuve transverses à l’organisation"
+			},
+			"MODAL": {
+				"SAFE_TITLE": "Création du coffre pour",
+				"ACTION_BUTTON": "Créer un coffre"
 			}
 		}
 	},
@@ -173,7 +183,14 @@
 				"NAME": "Nom / Prénom",
 				"LAST_CONNEXION": "Dernières connexion",
 				"GROUP_LEVEL": "Niveau du groupe",
-				"GROUP": "Groupe de profils"
+				"GROUP": "Groupe de profils",
+				"STATUS_FILTER": {
+					"ACTIVE": "Actif",
+					"BLOCKED": "Bloqué",
+					"INACTIVE": "Désactivé",
+					"DELETED": "Effacé",
+					"GENERIC": "Générique"
+				}
 			}
 		},
 		"TAB": {
@@ -182,7 +199,8 @@
 			"HISTORY": "Historique"
 		},
 		"INFORMATIONS": {
-			"ACCOUNT": "Compte actif",
+			"ACTIVE_SWITCH": "Compte actif",
+			"INACTIVE_SWITCH": "Compte inactif",
 			"LASTNAME": "Nom",
 			"FIRSTNAME": "Prénom",
 			"MAIL": "Adresse E-mail",
@@ -207,12 +225,13 @@
 			}
 		},
 		"GROUP": {
-			"GROUP": "Groupe",
+			"GROUP": "Groupe attribué",
 			"DESCRIPTION": "Description",
 			"LEVEL": "Niveau",
 			"PROFILE": "Profils de groupe",
 			"MODAL": {
 				"AUTORISATION_STEP": {
+					"ATTRIBUATE_GROUP": "Groupe attribué",
 					"TITLE": "Autorisations",
 					"INPUT_PLACEHOLDER": "Filtrer par Nom, Id...",
 					"RESULTS_TABLE": {
@@ -244,9 +263,11 @@
 		"INFORMATIONS": {
 			"ACTIVE_SWITCH": "Profil actif",
 			"INACTIVE_SWITCH": "Profil inactif",
+			"ACTIVE_SWITCH_TOOLTIP": "Profil encore attribué à un groupe",
 			"NAME": "Nom",
-			"PROFILE_LEVEL": "Niveau du profil",
-			"PROFILE_SUBLEBEL": "Sous niveau",
+			"LEVEL": "Niveau du profil",
+			"SUBLEVEL": "Sous niveau",
+			"SUBLEVEL_TOOLTIP": "Ce profil est affecté à un groupe",	
 			"DESCRIPTION": "Description",
 			"STRONG_AUTHENT": "Authentification forte",
 			"USERS_CREATION": "Création d'utilisateurs",
@@ -254,6 +275,7 @@
 			"ANONYMOUS": "Anonymisation",
 			"USERS_MANAGEMENT": "Gestion des utilisateurs génériques",
 			"MODAL": {
+				"TITLE": "Création d'un profil Administrateur",
 				"DESCRIPTION": "Description du Profil"
 			}
 		}
@@ -266,7 +288,11 @@
 			"RESULTS_TABLE": {
 				"NAME": "Nom du groupe",
 				"DESCRIPTION": "Description",
-				"LEVEL": "Niveau"
+				"LEVEL": "Niveau",
+				"STATUS_FILTER": {
+					"ACTIVE": "Actif",
+					"INACTIVE": "Désactivé"
+				}
 			}
 		},
 		"TAB": {
@@ -277,10 +303,12 @@
 		"INFORMATIONS": {
 			"ACTIVE_SWITCH": "Groupe de profils actif",
 			"INACTIVE_SWITCH": "Groupe de profils inactif",
+			"ACTIVE_SWITCH_TOOLTIP": "Un utilisateur est affecté à ce groupe",
 			"NAME": "Nom",
 			"DESCRIPTION": "Description",
 			"LEVEL": "Niveau",
 			"SUBLEVEL": "Sous niveau",
+			"SUBLEVEL_TOOLTIP": "Ce groupe possède des profils",
 			"MODAL": {
 				"TITLE": "Création d'un groupe de profils"
 			}
@@ -332,9 +360,11 @@
 		"INFORMATIONS": {
 			"ACTIVE_SWITCH": "Profil actif",
 			"INACTIVE_SWITCH": "Profil inactif",
+			"ACTIVE_SWITCH_TOOLTIP": "Profil encore attribué à un groupe",
 			"NAME": "Nom",
 			"LEVEL": "Niveau du profil",
 			"SUBLEVEL": "Sous niveau",
+			"SUBLEVEL_TOOLTIP": "Ce profil est affecté à un groupe",
 			"DESCRIPTION": "Description",
 			"MODAL": {
 				"TITLE": "Duplication de profil",

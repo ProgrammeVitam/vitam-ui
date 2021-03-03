@@ -74,14 +74,14 @@
     <ng-container *ngSwitchCase="'subrogationAccept'" i18n="@@notificationSubrogationAccept">
       <i class="vitamui-icon vitamui-icon-link"></i> Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationCancel'" i18n="@@notificationSubrogationCancel">
-      <i class="vitamui-icon vitamui-icon-link"></i> Votre demande de subrogation a bien été annulée
+    <ng-container *ngSwitchCase="'subrogationCancel'">
+      <i class="vitamui-icon vitamui-icon-link"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.CANCEL_SUBROGATION' | translate}}
     </ng-container>
     <ng-container *ngSwitchCase="'subrogationDenied'" i18n="@@notificationSubrogationDenied">
       <i class="vitamui-icon vitamui-icon-link"></i> Votre demande de subrogation a été refusée
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationUnavailable'" i18n="@@notificationSubrogationUnavailable">
-      <i class="vitamui-icon vitamui-icon-link"></i> La subrogation pour cet utilisateur est momentanément impossible
+    <ng-container *ngSwitchCase="'subrogationUnavailable'">
+      <i class="vitamui-icon vitamui-icon-link"></i> {{'SUBROGATION.HOME.RESULTS_TABLE.MODAL.IMPOSSIBLE_SUBROGATION' | translate}}
     </ng-container>
 
     <ng-container *ngSwitchCase="'accountUpdate'" i18n="@@notificationAccountUpdate">

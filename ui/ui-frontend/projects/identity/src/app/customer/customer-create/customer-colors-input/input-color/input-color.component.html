@@ -7,12 +7,12 @@
         <div [ngSwitch]="colorError">
             <div *ngSwitchCase="colorErrorEnum.COLOR_INVALID">{{'GRAPHIC_IDENTITY.INVALID' | translate}}</div>
             <ng-container *ngSwitchCase="colorErrorEnum.COLOR_TOO_LIGHT">
-                <div>{{'GRAPHIC_IDENTITY.TOO_LIGHT' | translate}}</div>
-                <div>{{'GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
+                <div>{{'CUSTOMER.GRAPHIC_IDENTITY.TOO_LIGHT' | translate}}</div>
+                <div>{{'CUSTOMER.GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
             </ng-container>
             <ng-container *ngSwitchCase="colorErrorEnum.COLOR_TOO_DARK">
-                <div>{{'GRAPHIC_IDENTITY.TOO_DARK' | translate}}</div>
-                <div>{{'GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
+                <div>{{'CUSTOMER.GRAPHIC_IDENTITY.TOO_DARK' | translate}}</div>
+                <div>{{'CUSTOMER.GRAPHIC_IDENTITY.INCOMPATIBLE' | translate}}</div>
             </ng-container>
         </div>
     </vitamui-common-input-error>

@@ -4,7 +4,7 @@
 [placeholder]="'USER.GROUP.MODAL.AUTORISATION_STEP.INPUT_PLACEHOLDER' | translate" (search)="onSearch($event)" [disabled]= "searchActiv"></vitamui-common-search-bar>
 
 <div class="d-flex mt-4 mb-3" *ngIf="groupName">
-  <div class="text medium bold">Groupe attribué : </div>&nbsp;<span class="text medium">{{ groupName }}</span>
+  <div class="text medium bold">{{'USER.GROUP.MODAL.AUTORISATION_STEP.ATTRIBUATE_GROUP' | translate}} : </div>&nbsp;<span class="text medium">{{ groupName }}</span>
 </div>
 
 <div class="vitamui-table">

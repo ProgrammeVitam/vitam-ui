@@ -11,7 +11,7 @@
         <app-owner-form formControlName="owner" [customerId]="data?.customer?.id"></app-owner-form>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="ownerForm.pending || ownerForm.invalid" i18n="Create a tenant@@ownerCreateTenantButton">Créer un coffre</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="ownerForm.pending || ownerForm.invalid">{{'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate}}</button>
           <button type="submit" class="btn primary" [disabled]="ownerForm.pending || ownerForm.invalid">{{'COMMON.SUBMIT' | translate}}</button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
@@ -22,7 +22,7 @@
   <cdk-step>
     <form [formGroup]="tenantForm" (ngSubmit)="onTenantSubmit()">
       <div class="content">
-        <div class="text large bold" i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{ownerForm?.value?.owner?.name}}"</div>
+        <div class="text large bold">{{'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate}} "{{ownerForm?.value?.owner?.name}}"</div>
 
         <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
           <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>

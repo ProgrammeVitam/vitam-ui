@@ -173,7 +173,7 @@ describe('IdentityProviderCreateComponent', () => {
 
     it('should have a title', () => {
       const elTitle = fixture.nativeElement.querySelector('.large');
-      expect(elTitle.textContent).toContain('Création d\'un IDP pour "OwnerName"');
+      expect(elTitle.textContent).toContain('CUSTOMER.SSO.MODAL.TITLE "OwnerName"');
     });
 
     it('should have all the inputs', () => {
@@ -187,7 +187,6 @@ describe('IdentityProviderCreateComponent', () => {
 
       const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=keystorePassword]');
       expect(elKeystorePassword).toBeTruthy();
-      expect(elKeystorePassword.attributes.placeholder.value).toBe('Mot de passe du keystore');
 
       const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
       expect(elPatterns).toBeTruthy();

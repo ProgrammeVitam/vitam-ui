@@ -1,12 +1,11 @@
 <form [formGroup]="form">
   <div clas="row">
     <vitamui-common-slide-toggle formControlName="enabled"
-    matTooltip="Un utilisateur est affecté à ce groupe" i18n-matTooltip="@@CantModifyGroupEnabled" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form.get('enabled').enabled || readOnly">
+    [matTooltip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form.get('enabled').enabled || readOnly">
       <span *ngIf="!form?.get('enabled').value">{{'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
       <span *ngIf="form?.get('enabled').value">{{'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
     </vitamui-common-slide-toggle>
   </div>
-
   <div class="row">
       <div class="col-8 form-control">
         <vitamui-common-editable-input formControlName="identifier" [label]="'COMMON.ID' |translate"
@@ -41,7 +40,7 @@
           <div>{{authService.user.level}}</div>
       </div>
     </div>
-    <div class="col-7" matTooltip="Ce groupe possède des profiles" i18n-matTooltip="@@CantModifyGroupLevel" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form?.get('level').enabled || readOnly">
+    <div class="col-7" [matTooltip]="'GROUP.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form?.get('level').enabled || readOnly">
       <vitamui-common-editable-level-input
         formControlName="level"
         maxlength="250"

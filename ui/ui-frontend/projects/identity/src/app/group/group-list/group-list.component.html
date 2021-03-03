@@ -9,13 +9,13 @@
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusEnabled">
-                <span class="badge-state">Actif</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusDisabled">
-                <span class="badge-state">Désactivé</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.NAME' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>

@@ -38,7 +38,6 @@
 		"TOO_DARK": "The color is too dark.",
 		"INCOMPATIBLE": "This color will not be compatible with RGAA accessibility standards.",
 		"TERTIARY": "Tertiary color",
-		"HEADER_FOOTER": "Header/footer color",
 		"BACKGROUND": "Background color"
 	},
 	"CUSTOMER": {
@@ -103,7 +102,13 @@
 			"ACTIVE_SWITCH": "Active IDP",
 			"KEYSTORE": "Keystore of CAS",
 			"IDP_METADATA": "IDP Metadata",
-			"MAIL_ATTRIBUTE": "Mail attribute"
+			"MAIL_ATTRIBUTE": "Mail attribute",
+			"MODAL": {
+				"TITLE": "IDP Creation for",
+				"KEYSTORE_PWD": "Keystore password",
+				"UPLOAD_KEYSTORE": "Upload the CAS keystore file",
+				"UPLOAD_METADATA": "Upload the IDP metadata file"
+			}	
 		},
 		"GRAPHIC_IDENTITY": {
 			"TOGGLE_TITLE": "Personalized graphic identity",
@@ -151,6 +156,12 @@
 			},
 			"LIST": {
 				"PROOF_ELEMENTS": "Tenant containing the proof elements transverse to the organization"
+			},
+			"OWNER": {
+				"MODAL": {
+					"SAFE_TITLE": "Safe creation for",
+					"ACTION_BUTTON": "Create a safe"
+				}
 			}
 		}
 	},
@@ -181,7 +192,14 @@
 				"NAME": "Lastname / Firstname",
 				"LAST_CONNEXION": "Last connexion",
 				"GROUP_LEVEL": "Group level",
-				"GROUP": "Profile group"
+				"GROUP": "Profile group",
+				"STATUS_FILTER": {
+					"ACTIVE": "Activated",
+					"BLOCKED": "Blocked",
+					"INACTIVE": "Desactivated",
+					"DELETED": "Deleted",
+					"GENERIC": "Generic"
+				}
 			}
 		},
 		"TAB": {
@@ -190,7 +208,8 @@
 			"HISTORY": "History"
 		},
 		"INFORMATIONS": {
-			"ACCOUNT": "Active account",
+			"ACTIVE_SWITCH": "Active account",
+			"INACTIVE_SWITCH": "Inactive account",
 			"LASTNAME": "Lastname",
 			"FIRSTNAME": "Firstname",
 			"MAIL": "Email",
@@ -215,12 +234,13 @@
 			}
 		},
 		"GROUP": {
-			"GROUP": "Group",
+			"GROUP": "Assigned group",
 			"DESCRIPTION": "Description",
 			"LEVEL": "Level",
 			"PROFILE": "Group profiles",
 			"MODAL": {
 				"AUTORISATION_STEP": {
+					"ATTRIBUATE_GROUP": "Assigned group",
 					"TITLE": "Permissions",
 					"INPUT_PLACEHOLDER": "Filter by Name, Id...",
 					"RESULTS_TABLE": {
@@ -253,8 +273,9 @@
 			"ACTIVE_SWITCH": "Active profile",
 			"INACTIVE_SWITCH": "Inactive profile",
 			"NAME": "Name",
-			"PROFILE_LEVEL": "Profile level",
-			"PROFILE_SUBLEVEL": "Sub level",
+			"LEVEL": "Profile level",
+			"SUBLEVEL": "Sub level",
+			"SUBLEVEL_TOOLTIP": "This profile is assigned to a group",			
 			"DESCRIPTION": "Description",
 			"STRONG_AUTHENT": "Strong authentication",
 			"USERS_CREATION": "Create users",
@@ -262,6 +283,7 @@
 			"ANONYMOUS": "Anonymization",
 			"USERS_MANAGEMENT": "Generic users management",
 			"MODAL": {
+				"TITLE": "Creating an Administrator profile",
 				"DESCRIPTION": "Profile description"
 			}
 		}
@@ -274,7 +296,11 @@
 			"RESULTS_TABLE": {
 				"NAME": "Group name",
 				"DESCRIPTION": "Description",
-				"LEVEL": "Level"
+				"LEVEL": "Level",
+				"STATUS_FILTER": {
+					"ACTIVE": "Activated",
+					"INACTIVE": "Desactivated"
+				}
 			}
 		},
 		"TAB": {
@@ -285,10 +311,13 @@
 		"INFORMATIONS": {
 			"ACTIVE_SWITCH": "Active profile group",
 			"INACTIVE_SWITCH": "Inactive profile group",
+			"ACTIVE_SWITCH_TOOLTIP": "A user is assigned to this group",
+			
 			"NAME": "Name",
 			"DESCRIPTION": "Description",
 			"LEVEL": "Level",
 			"SUBLEVEL": "Sub level",
+			"SUBLEVEL_TOOLTIP": "This group has profiles",
 			"MODAL": {
 				"TITLE": "Create profile groups"
 			}
@@ -340,6 +369,7 @@
 		"INFORMATIONS": {
 			"ACTIVE_SWITCH": "Active profile",
 			"INACTIVE_SWITCH": "Inactive profile",
+			"ACTIVE_SWITCH_TOOLTIP": "Profile still assigned to a group",
 			"NAME": "Name",
 			"LEVEL": "Profile level",
 			"SUBLEVEL": "Sub level",

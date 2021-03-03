@@ -251,9 +251,8 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
-                  cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">Créer
-            un coffre
+          <button type="button" class="btn primary"
+                  cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">{{'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -263,7 +262,7 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{
+        <div class="text large bold">{{'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate}} "{{
           getOwnerName() }}"
         </div>
         <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">

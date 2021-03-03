@@ -1,7 +1,7 @@
 <form [formGroup]="form">
 
-  <vitamui-common-slide-toggle formControlName="enabled" i18n="Enabled@@profileFormLabelEnabled"
-  matTooltip="Profil encore attribué à un groupe" [matTooltipDisabled]="profile?.groupsCount == 0" matTooltipClass="vitamui-tooltip"> 
+  <vitamui-common-slide-toggle formControlName="enabled"
+  [matTooltip]="'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate" [matTooltipDisabled]="profile?.groupsCount == 0" matTooltipClass="vitamui-tooltip"> 
   <span *ngIf="!form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
   <span *ngIf="form?.get('enabled').value">{{'HIERARCHY.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
   </vitamui-common-slide-toggle>
@@ -41,7 +41,7 @@
           <div>{{userLevel}}</div>
       </div>
     </div>
-    <div class="col-5" matTooltip="Ce profil est affecté à un groupe" i18n-matTooltip="@@CantModifyLevel" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
+    <div class="col-5" [matTooltip]="'HIERARCHY.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="profile?.groupsCount == 0">
       <vitamui-common-editable-level-input
         formControlName="level"
         maxlength="250"

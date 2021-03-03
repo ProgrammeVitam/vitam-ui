@@ -4,7 +4,7 @@
 
 <form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
     <div class="content vitamui-form">
-        <div class="text large bold" i18n="Admin profile create@@createAdminProfileTitle">Création d'un Profil Administrateur</div>
+        <div class="text large bold">{{'USER_PROFILE.INFORMATIONS.MODAL.TITLE' | translate}}</div>
 
         <div class="mb-2">
             <vitamui-common-slide-toggle formControlName="enabled">
@@ -24,7 +24,7 @@
 
         <div class="d-flex">
             <div class="mr-4 p-2">
-                <div class="text normal light">{{'USER_PROFILE.INFORMATIONS.PROFILE_LEVEL' | translate}}</div>
+                <div class="text normal light">{{'USER_PROFILE.INFORMATIONS.LEVEL' | translate}}</div>
                 <div class="text medium bold">{{authService.user.level}}RH</div>
             </div>
             <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">

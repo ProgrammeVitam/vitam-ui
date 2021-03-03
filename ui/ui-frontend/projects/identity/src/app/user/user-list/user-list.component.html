@@ -11,29 +11,29 @@
           <vitamui-common-table-filter [(filter)]="filterMap['status']"
             (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
-              <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                <span class="badge-state">Actif</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="BLOCKED">
-              <div class="table-filter-icon" i18n="@@userStatusBlocked">
-                <span class="badge-state">Bloqué</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.BLOCKED' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
-              <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                <span class="badge-state">Désactivé</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="REMOVED">
-              <div class="table-filter-icon" i18n="@@userStatusRemoved">
-                <span class="badge-state">Effacé</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.DELETED' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC"
               [separator]="true">
-              <div class="table-filter-icon" i18n="@@userTypeGeneric">
-                <span class="badge-state">Générique</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.GENERIC' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>

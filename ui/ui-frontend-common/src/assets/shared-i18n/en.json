@@ -16,6 +16,10 @@
 			"ENGLISH": "English",
 			"FRENCH": "French",
 			"GERMAN": "German"
+    },
+    "UNDO_MODAL": {
+			"TITLE": "Close the window",
+			"UNDO_MESSAGE": "Modified data won't be saved. Are you sure you want to close the window ?"
 		}
   },
   "COLOR": {
@@ -43,6 +47,22 @@
 		"DELIVERY_ADRESS": "Delivery address",
 		"LEVEL": "Level",
 		"GROUP": "My profile group"
+  },
+  "SUBROGATION": {
+		"PREHOME": {
+			"ORGANIZATIONS": "My Organizations"
+		},
+		"HOME": {
+			"RESULTS_TABLE": {
+				"MODAL": {
+					"IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
+					"CANCEL_SUBROGATION": "Your subragation request has been canceled",
+					"ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user",
+					"WAITING_ACCEPTATION": "Waiting for user approval",
+					"ASK_SUBROGATION": "You ask a user to subrogate"
+				}
+			}
+    }
   },
   "APPLICATION":
    {

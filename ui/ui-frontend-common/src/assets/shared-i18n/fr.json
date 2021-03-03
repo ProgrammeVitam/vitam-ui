@@ -16,6 +16,10 @@
 			"ENGLISH": "Anglais",
 			"FRENCH": "Français",
 			"GERMAN": "Allemand"
+    },
+    "UNDO_MODAL": {
+			"TITLE": "Fermer la fenêtre",
+			"UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
 		}
   },
   "COLOR": {
@@ -44,9 +48,25 @@
 		"LEVEL": "Niveau",
 		"GROUP": "Mon groupe de profils"
   },
+  "SUBROGATION": {
+		"PREHOME": {
+			"ORGANIZATIONS": "Mes Organisations"
+		},
+		"HOME": {
+			"RESULTS_TABLE": {
+				"MODAL": {
+					"IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
+					"CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
+					"ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
+					"WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
+					"ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
+				}
+			}
+		}
+	},
   "APPLICATION": {
     "PORTAL_APP": {
-      "NAME" : "Portal"
+      "NAME" : "Portail"
      },
     "CUSTOMERS_APP": {
       "NAME": "Organisations",

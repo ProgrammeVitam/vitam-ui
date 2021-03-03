@@ -10,9 +10,8 @@
   <div class="content">
     <div
       class="text large bold"
-      i18n="Create an IDP for the customer@@idpCreateTitle"
     >
-      Création d'un IDP pour "{{ data?.customer?.name }}"
+    {{'CUSTOMER.SSO.MODAL.TITLE' | translate}} "{{ data?.customer?.name }}"
     </div>
 
     <div>
@@ -34,7 +33,7 @@
         <ng-container *ngIf="form.get('name')?.touched">
           <vitamui-common-input-error
             *ngIf="!!form?.get('name')?.errors?.required"
-            >{{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error
+            >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
           >
         </ng-container>
       </vitamui-common-input>
@@ -47,14 +46,12 @@
         type="password"
         required
         maxlength="50"
-        placeholder="Mot de passe du keystore"
-        i18n-placeholder="
-          IDP keystore password@@idpCreateKeystorePasswordPlaceholder"
+        [placeholder]="'CUSTOMER.SSO.MODAL.KEYSTORE_PWD' | translate"
       >
         <ng-container *ngIf="form.get('keystorePassword')?.touched">
           <vitamui-common-input-error
             *ngIf="!!form?.get('keystorePassword')?.errors?.required"
-            >{{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error
+            >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
           >
           <vitamui-common-input-error
             *ngIf="!!form?.get('keystorePassword')?.errors?.badPassword"
@@ -69,8 +66,7 @@
       <label for="keystore">
         <span
           class="text link bold primary"
-          i18n="Upload the CAS keystore file@@idpCreateKeystoreUploadLabel"
-          >Uploader le fichier keystore de CAS</span
+          >{{'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate}}</span
         >
         <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
       </label>
@@ -86,8 +82,7 @@
       <label for="idpMetadata">
         <span
           class="text link bold primary"
-          i18n="Upload the IDP's metadata file@@idpCreateMetadataUploadLabel"
-          >Uploader le fichier metadata de l'IDP</span
+          >{{'CUSTOMER.SSO.MODAL.UPLOAD_METADATA' | translate}}</span
         >
         <div class="vitamui-input-file-filename">{{ idpMetadata?.name }}</div>
       </label>
@@ -127,16 +122,10 @@
           >
             <mat-button-toggle
               value="GET"
-              i18n="
-                Authentication Request Binding GET
-                button@@idpCreateAuthnRequestBindingGetButton"
               >GET
             </mat-button-toggle>
             <mat-button-toggle
               value="POST"
-              i18n="
-                Authentication Request Binding POST
-                button@@idpCreateAuthnRequestBindingPostButton"
               >POST
             </mat-button-toggle>
           </mat-button-toggle-group>
