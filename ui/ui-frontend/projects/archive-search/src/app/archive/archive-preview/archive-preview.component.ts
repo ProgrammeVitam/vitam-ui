@@ -30,7 +30,6 @@ export class ArchivePreviewComponent  implements OnInit {
 
   }
 
-
   ngOnInit() {
 
     }
@@ -40,7 +39,7 @@ export class ArchivePreviewComponent  implements OnInit {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', this.accessContract);
 
-   return  this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], headers);
+   return  this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], archiveUnit.Title, headers);
   }
 
   emitClose() {
