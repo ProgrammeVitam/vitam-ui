@@ -61,16 +61,27 @@
           </div>
         </div>
       </div>
+
       <div class="row">
-        <div class="col-12">
+        <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate}} :</label>
-            <div matTooltip="{{ archiveUnit['originating_agencyName']}}   ({{archiveUnit['#originating_agencies']}})"
-                 matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate}} :</label><br/>
+            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate}} :</label>
+            <div>
+              {{ archiveUnit['#originating_agencies']}}
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="read-only-field">
+            <label></label><br/>
+            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate}} :</label>
+            <div>
               {{ archiveUnit['originating_agencyName']}}
             </div>
           </div>
         </div>
+
       </div>
       <div class="row">
         <div class="col-12">

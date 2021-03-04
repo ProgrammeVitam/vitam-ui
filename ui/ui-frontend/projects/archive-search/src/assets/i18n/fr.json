@@ -1,6 +1,6 @@
 {
   "ARCHIVE_SEARCH": {
-    "ACCESS_CONTRACT_SELECT": "Filtre sur les positions d'arborescences",
+    "ACCESS_CONTRACT_SELECT": "Sélectionner un contrat d'accès",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
     "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s)",
@@ -15,7 +15,7 @@
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "FIELDS": {
         "ID": "ID",
-        "TITLE_OR_DESCRIPTION": "Titre ou Description",
+        "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
         "NODE": "Position",
         "TITLE": "Intitulé",
         "START_DATE": "Date de début",
@@ -33,7 +33,7 @@
     "ARCHIVE_UNIT": {
       "FIELDS": {
         "TITLE": "Intitulé",
-        "NAME": "Nom",
+        "NAME": "Intitulé",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",
         "DESCRIPTION": "Description",
@@ -50,13 +50,15 @@
     },
     "ARCHIVE_UNIT_PREVIEW": {
       "FIELDS": {
-        "NAME": "Nom",
+        "NAME": "Intitulé",
         "START_DATE": "Date de début",
         "END_DATE": "Date de fin",
         "DESCRIPTION": "Description",
         "GUID": "Identifiant technique du versement",
         "UAID": "Identifiant technique de l'unité archivistique",
-        "SP": "Service producteur",
+        "SP": "Service producteur ou service versant",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
         "PATH": "Chemin",
         "DOWNLOAD_DOC": "Télécharger le document"
       },
@@ -65,7 +67,7 @@
       }
     },
     "FILING_SHCEMA": {
-      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbres ou Plans trouvés avec le contrat choisi",
+      "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
       "SHOW_TREE_PARENT": "Réduire l'arborescence"
     },

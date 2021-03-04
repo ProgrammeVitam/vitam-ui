@@ -10,15 +10,15 @@
 
 <div class="row c-padding-top">
   <div class="col-10">
-    <span>Noeuds de consultation</span> :
+    <span>Positions de consultation</span> :
     <ul>
-      <li *ngFor="let rootUnit of accessContract.rootUnits"> {{getTitle(rootUnit)}} </li>
+      <li *ngFor="let rootUnit of accessContract.rootUnits"> {{getTitle(rootUnit)}}</li>
     </ul>
   </div>
   <div class="col-10">
-    <span>Noeuds exclus</span> :
+    <span>Positions exclues</span> :
     <ul>
-      <li *ngFor="let excludeRootUnit of accessContract.excludedRootUnits"> {{getTitle(excludeRootUnit)}} </li>
+      <li *ngFor="let excludeRootUnit of accessContract.excludedRootUnits"> {{getTitle(excludeRootUnit)}}</li>
     </ul>
   </div>
 </div>

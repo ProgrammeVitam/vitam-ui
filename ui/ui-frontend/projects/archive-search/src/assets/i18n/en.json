@@ -50,13 +50,15 @@
     },
     "ARCHIVE_UNIT_PREVIEW": {
       "FIELDS": {
-        "NAME": "NAME",
+        "NAME": "Title",
         "START_DATE": "Start date",
         "END_DATE": "End date",
         "DESCRIPTION": "Description",
         "GUID": "Ingest Technical ID",
         "UAID": "Archive Technical ID",
         "SP": "Originating agency",
+        "SP_CODE": "ID",
+        "SP_LABEL": "Name",
         "PATH": "Path",
         "DOWNLOAD_DOC": "Download the document"
       },
