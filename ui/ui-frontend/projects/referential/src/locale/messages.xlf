@@ -1242,7 +1242,7 @@
         <note priority="1" from="description">Write Access tab</note>
       </trans-unit>
       <trans-unit id="accessContractPreviewTabNode" datatype="html">
-        <source>Noeuds</source>
+        <source>Positions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-preview.component.html</context>
           <context context-type="linenumber">36</context>
@@ -1358,7 +1358,7 @@
         <note priority="1" from="description">Create accessContract title</note>
       </trans-unit>
       <trans-unit id="accessContractCreateTitle5" datatype="html">
-        <source>Noeuds de consultation</source>
+        <source>Positions de consultation</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context>
           <context context-type="linenumber">170</context>
@@ -2074,7 +2074,7 @@
         <note priority="1" from="description">ingestContract name column header</note>
       </trans-unit>
       <trans-unit id="ingestContractListIdHeader" datatype="html">
-        <source>ID</source>
+        <source>Identifiant</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ingest-contract/ingest-contract-list/ingest-contract-list.component.html</context>
           <context context-type="linenumber">48</context>
@@ -2883,7 +2883,7 @@
         <note priority="1" from="description">History tab</note>
       </trans-unit>
       <trans-unit id="ontologyCreateTitle1" datatype="html">
-        <source>Création d&apos;une ontologie</source>
+        <source>Création d&apos;un vocabulaire</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context>
           <context context-type="linenumber">10</context>

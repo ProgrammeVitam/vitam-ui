@@ -10,8 +10,10 @@
 
 <div class="row c-padding-top">
   <div class="col-10">
-    <span>Noeud de rattachement SIP</span> :
-    <ul *ngIf="getTitle(ingestContract.linkParentId)"><li>{{ getTitle(ingestContract.linkParentId) }}</li></ul>
+    <span>Positions de rattachement SIP</span> :
+    <ul *ngIf="getTitle(ingestContract.linkParentId)">
+      <li>{{ getTitle(ingestContract.linkParentId) }}</li>
+    </ul>
   </div>
 
   <div class="col-10">
@@ -22,9 +24,9 @@
   </div>
 
   <div class="col-10">
-    <span>Noeuds de rattachement UA</span> :
+    <span>Positions de rattachement UA</span> :
     <ul>
-      <li *ngFor="let unitId of ingestContract.checkParentId"> {{getTitle(unitId)}} </li>
+      <li *ngFor="let unitId of ingestContract.checkParentId"> {{getTitle(unitId)}}</li>
     </ul>
   </div>
 </div>
