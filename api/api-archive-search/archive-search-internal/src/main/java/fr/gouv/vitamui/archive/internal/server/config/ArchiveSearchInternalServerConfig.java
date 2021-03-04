@@ -49,7 +49,7 @@ import org.springframework.context.annotation.Import;
 @Import({RestExceptionHandler.class, SwaggerConfiguration.class,
     fr.gouv.vitamui.archive.internal.server.security.WebSecurityConfig.class,
     VitamAccessConfig.class, VitamAdministrationConfig.class, ConverterConfig.class})
-public class ArchiveInternalServerConfig extends AbstractContextConfiguration {
+public class ArchiveSearchInternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "clients.iam-internal")

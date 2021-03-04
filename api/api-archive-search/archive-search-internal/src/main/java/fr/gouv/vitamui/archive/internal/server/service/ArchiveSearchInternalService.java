@@ -72,9 +72,9 @@ import java.util.stream.Collectors;
  * Archive-Search Internal service communication with VITAM.
  */
 @Service
-public class ArchiveInternalService {
+public class ArchiveSearchInternalService {
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveInternalService.class);
+        VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     public static final String INGEST_ARCHIVE_TYPE = "INGEST";
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "originating_agency_label";
     public static final String ORIGINATING_AGENCY_ID_FIELD = "#originating_agency";
@@ -90,7 +90,7 @@ public class ArchiveInternalService {
     final private AgencyService agencyService;
 
     @Autowired
-    public ArchiveInternalService(final ObjectMapper objectMapper, final UnitService unitService,
+    public ArchiveSearchInternalService(final ObjectMapper objectMapper, final UnitService unitService,
         final AgencyService agencyService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;

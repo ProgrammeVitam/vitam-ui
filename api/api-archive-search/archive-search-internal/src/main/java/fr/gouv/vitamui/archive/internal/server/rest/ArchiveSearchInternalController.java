@@ -34,7 +34,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -74,15 +74,15 @@ import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unit
 @Getter
 @Setter
 @Api(tags = "archives search", value = "Archives units search")
-public class ArchiveInternalController {
+public class ArchiveSearchInternalController {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveInternalController.class);
+        VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
 
     private static final String[] FILING_PLAN_PROJECTION =
         new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
 
-    private ArchiveInternalService archiveInternalService;
+    private ArchiveSearchInternalService archiveInternalService;
 
     private InternalSecurityService securityService;
 
@@ -90,7 +90,7 @@ public class ArchiveInternalController {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public ArchiveInternalController(final ArchiveInternalService archiveInternalService,
+    public ArchiveSearchInternalController(final ArchiveSearchInternalService archiveInternalService,
         final InternalSecurityService securityService) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;

@@ -24,28 +24,31 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archive.internal.server.config;
+package fr.gouv.vitamui.archive.internal.server.rest;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
-import org.junit.Assert;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
+@WebMvcTest(controllers = {ArchiveSearchInternalControllerTest.class})
 @ActiveProfiles("test")
-public class ApiArchiveInternalServerConfigTest {
+public class ArchiveSearchInternalControllerTest {
+
 
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -56,11 +59,25 @@ public class ApiArchiveInternalServerConfigTest {
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
 
-    @Autowired
-    private ArchiveInternalService archiveInternalService;
+    @MockBean
+    private InternalApiAuthenticationProvider internalApiAuthenticationProvider;
+
+    @Mock
+    private InternalSecurityService internalSecurityService;
+
+    @MockBean
+    private RestExceptionHandler restExceptionHandler;
+
+    @InjectMocks
+    private ArchiveSearchInternalService archiveSearchInternalService;
+
+    @BeforeClass
+    public static void setup() {
+        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+    }
 
     @Test
-    public void testArchiveInternalConf() {
-        Assert.assertNotNull(archiveInternalService);
+    public void testBasicArchive() {
     }
+
 }

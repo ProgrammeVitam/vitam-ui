@@ -64,10 +64,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-public class ArchiveInternalServiceTest {
+public class ArchiveSearchInternalServiceTest {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveInternalServiceTest.class);
+        VitamUILoggerFactory.getInstance(ArchiveSearchInternalServiceTest.class);
 
     @MockBean(name = "objectMapper")
     private ObjectMapper objectMapper;
@@ -79,14 +79,14 @@ public class ArchiveInternalServiceTest {
     private AgencyService agencyService;
 
     @InjectMocks
-    private ArchiveInternalService archiveInternalService;
+    private ArchiveSearchInternalService archiveSearchInternalService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
 
     @Before
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveInternalService = new ArchiveInternalService(objectMapper, unitService, agencyService);
+        archiveSearchInternalService = new ArchiveSearchInternalService(objectMapper, unitService, agencyService);
     }
 
     @Test(expected = InvalidParseOperationException.class)
@@ -105,7 +105,7 @@ public class ArchiveInternalServiceTest {
         when(unitService.searchUnits(any(), any()))
             .thenReturn(buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS));
         // When
-        JsonNode jsonNode = archiveInternalService.searchUnits(any(), any());
+        JsonNode jsonNode = archiveSearchInternalService.searchUnits(any(), any());
 
         // Configure the mapper
         ObjectMapper objectMapper = new ObjectMapper();
@@ -123,7 +123,7 @@ public class ArchiveInternalServiceTest {
         throws IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        InputStream inputStream = ArchiveInternalServiceTest.class.getClassLoader()
+        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));

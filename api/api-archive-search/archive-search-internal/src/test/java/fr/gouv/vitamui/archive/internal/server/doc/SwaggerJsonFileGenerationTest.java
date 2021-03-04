@@ -30,7 +30,7 @@ package fr.gouv.vitamui.archive.internal.server.doc;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.archive.internal.server.service.AccessContractTempInternalService;
-import fr.gouv.vitamui.archive.internal.server.service.ArchiveInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -72,7 +72,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private AuthenticationProvider authenticationProvider;
 
     @MockBean
-    private ArchiveInternalService archiveInternalService;
+    private ArchiveSearchInternalService archiveSearchInternalService;
 
     @MockBean
     private AccessContractTempInternalService accessContractTempInternalService;
