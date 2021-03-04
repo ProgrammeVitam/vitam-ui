@@ -8,17 +8,7 @@
   </div>
 </div>
 
-<div class="row">
-
-  <p>Veuillez sélectionner un contrat d'accès pour afficher le nom des noeuds ou les modifier:</p>
-  <mat-form-field class="vitamui-mat-select">
-    <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="initTitles($event)">
-      <mat-option *ngFor='let accessContract of accessContracts'
-                  [value]="accessContract.identifier">{{accessContract.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
+<div class="row c-padding-top">
   <div class="col-10">
     <span>Noeuds de consultation</span> :
     <ul>

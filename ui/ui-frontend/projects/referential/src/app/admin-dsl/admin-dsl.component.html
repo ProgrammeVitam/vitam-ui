@@ -5,12 +5,14 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true"></vitamui-common-navbar>
+        <vitamui-common-navbar [appId]="appId" (tenantSelect)="changeTenant($event)" [hideCustomerMenu]="true">
+        </vitamui-common-navbar>
         <h2>
           <img src="assets/mini-logo-vitam.png"> Recherche par <strong>Requêtes DSL</strong>
         </h2>
       </div>
     </div>
+
 
     <form [formGroup]="form" (ngSubmit)="search()" (keydown.enter)="$event.preventDefault()">
       <div class="row">
@@ -57,9 +59,9 @@
           </vitamui-common-input>
         </div>
         <mat-form-field class="vitamui-mat-select form_padding">
-          <mat-select formControlName="accessContract" placeholder="Sélectionnez un contrat d'accès"
-            required="required" i18n-placeholder="Application@@accessContractFormApplicationPlaceholder"
-            panelclass="vitamui-mat-select" class="full_size">
+          <mat-select formControlName="accessContract" placeholder="Sélectionnez un contrat d'accès" required="required"
+            i18n-placeholder="Application@@accessContractFormApplicationPlaceholder" panelclass="vitamui-mat-select"
+            class="full_size">
             <mat-option *ngFor='let accessContract of accessContracts' [value]="accessContract.key">
               {{accessContract.label}}</mat-option>
           </mat-select>
@@ -74,15 +76,12 @@
           <label for="dsl">Requête DSL (Format JSON)</label>
           <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
           <div class="actions">
-            <div>
-              <button type="submit" [disabled]="form.pending || form.invalid" class="btn secondary"
-                [disabled]="form.pending || form.invalid"
-                i18n="Launch adminDsl button@@AdminDslLaunchButton">Recherche</button>
-            </div>
-            <div class="form_padding">
-              <button type="button" class="btn" (click)="checkDsl()"
-                i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
-            </div>
+            <button type="submit" [disabled]="form.pending || form.invalid" class="btn secondary"
+              [disabled]="form.pending || form.invalid"
+              i18n="Launch adminDsl button@@AdminDslLaunchButton">Recherche</button>
+
+            <button type="button" class="btn" (click)="checkDsl()"
+              i18n="Check adminDsl button@@AdminDslCheckButton">Valider JSON</button>
           </div>
         </div>
         <div class="form_textarea">
@@ -90,14 +89,11 @@
           <textarea class="textarea textarea__resultat" readonly="readonly" id="response" #responseText
             formControlName="response"></textarea>
           <div class="actions right">
-            <div>
-              <button type="button" class="btn" (click)="copyToClipbord(responseText)"
-                i18n="Copy adminDsl button@@AdminDslCopyButton">Copier</button>
-            </div>
-            <div class="form_padding">
-              <button type="button" class="btn" (click)="clear()"
-                i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">Effacer</button>
-            </div>
+            <button type="button" class="btn" (click)="copyToClipbord(responseText)"
+              i18n="Copy adminDsl button@@AdminDslCopyButton">Copier</button>
+
+            <button type="button" class="btn" (click)="clear()"
+              i18n="Clear Response adminDsl button@@AdminDslClearResponseButton">Effacer</button>
           </div>
         </div>
       </div>

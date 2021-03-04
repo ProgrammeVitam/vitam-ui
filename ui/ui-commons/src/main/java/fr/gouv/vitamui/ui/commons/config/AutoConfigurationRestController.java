@@ -44,12 +44,14 @@ import org.springframework.context.annotation.DependsOn;
 
 import fr.gouv.vitamui.ui.commons.rest.AccountController;
 import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
+import fr.gouv.vitamui.ui.commons.rest.ExternalParametersController;
 import fr.gouv.vitamui.ui.commons.rest.LogbookController;
 import fr.gouv.vitamui.ui.commons.rest.SecurityController;
 import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
 import fr.gouv.vitamui.ui.commons.rest.UserController;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
@@ -89,6 +91,12 @@ public class AutoConfigurationRestController {
     @DependsOn("logbookService")
     public LogbookController logbookController(final LogbookService logbookService) {
         return new LogbookController(logbookService);
+    }
+    
+    @Bean("externalParametersController")
+    @DependsOn("externalParametersService")
+    public ExternalParametersController externalParametersController(final ExternalParametersService externalParametersService) {
+        return new ExternalParametersController(externalParametersService);
     }
 
     @Bean("commonUserController")

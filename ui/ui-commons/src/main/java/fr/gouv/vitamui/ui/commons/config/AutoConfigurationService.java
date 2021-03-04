@@ -48,6 +48,7 @@ import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
@@ -74,6 +75,13 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public LogbookService logbookService(final IamExternalRestClientFactory factory) {
         return new LogbookService(factory.getLogbookExternalRestClient());
+    }
+    
+    @Bean
+    @DependsOn("iamRestClientFactory")
+    @ConditionalOnMissingBean
+    public ExternalParametersService externalParametersService(final IamExternalRestClientFactory factory) {
+        return new ExternalParametersService(factory.getExternalParametersExternalRestClient());
     }
 
     @Bean

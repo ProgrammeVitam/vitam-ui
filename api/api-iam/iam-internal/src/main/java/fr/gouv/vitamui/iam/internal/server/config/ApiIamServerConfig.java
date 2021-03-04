@@ -61,6 +61,9 @@ import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.service.InitCustomerService;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
@@ -304,5 +307,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     public AddressService addressService() {
         return new AddressService();
+    }
+    
+    @Bean
+    public ExternalParametersInternalService externalParametersInternalService(final CustomSequenceRepository sequenceRepository, 
+    		final ExternalParametersRepository externalParametersRepository,
+    		final ExternalParametersConverter externalParametersConverter,
+    		final InternalSecurityService internalSecurityService) {
+        return new ExternalParametersInternalService(sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService);
     }
 }

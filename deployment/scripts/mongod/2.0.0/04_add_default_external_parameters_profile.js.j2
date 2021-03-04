@@ -1,0 +1,78 @@
+db = db.getSiblingDB('iam')
+
+print("START 312_iam_ref.js");
+
+db.externalParameters.remove({});
+db.createCollection('externalParameters', {autoIndexId: true});
+
+// ========================================= EXTERNAL PARAMS =========================================
+db.externalParameters.insert({
+	"_id" : "external_param_default",
+	"identifier" : "external_param_default",
+	"name" : "External params default Profile",
+	"parameters" : [
+        {
+            "key": "PARAM_ACCESS_CONTRACT",
+			"value": "AC-000001"
+        }
+	]
+});
+
+// ========================================= PROFILES =========================================
+var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
+
+db.profiles.insert({
+	"_id" : "external_params_profile",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "External params 01 Profile",
+	"description" : "External params default Profile",
+	"applicationName" : "EXTERNAL_PARAMS",
+	"tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"externalParamId": "external_param_default",
+	"roles" : [
+        {
+            "name": "ROLE_GET_EXTERNAL_PARAMS"
+        }
+	]
+});
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
+});
+
+// ========================================= GROUPS =========================================
+db.groups.updateOne({
+	"name": "Groupe acces complet"
+}, {
+	$addToSet: {
+		"profileIds": {
+			$each: [
+				"external_params_profile"
+			]
+		}
+	}
+});
+
+
+
+db.groups.updateOne({
+	"_id": "admin_group"
+}, {
+	$addToSet: {
+		"profileIds": {
+			$each: [
+				"external_params_profile"
+			]
+		}
+	}
+});
+
+print("END 312_iam_ref.js");

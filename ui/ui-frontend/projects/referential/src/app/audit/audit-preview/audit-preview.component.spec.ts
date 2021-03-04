@@ -1,30 +1,31 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {of} from 'rxjs';
-import {AccessContractService} from '../../access-contract/access-contract.service';
 import {AuditService} from '../audit.service';
 import {AuditPreviewComponent} from './audit-preview.component';
+import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 
 describe('AuditPreviewComponent', () => {
   let component: AuditPreviewComponent;
   let fixture: ComponentFixture<AuditPreviewComponent>;
 
   beforeEach(waitForAsync(() => {
-    const accessContractServiceMock = {
-      getAllForTenant: () => of([])
-    };
-    const activatedRouteMock = {
-      params: of({tenantIdentifier: 1})
+    const parameters: Map<string, string> = new Map<string, string>();
+    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters)
     };
 
     TestBed.configureTestingModule({
       declarations: [AuditPreviewComponent],
       providers: [
         {provide: AuditService, useValue: {}},
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: ActivatedRoute, useValue: activatedRouteMock}
+        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+      ],
+      imports: [
+        MatSnackBarModule
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

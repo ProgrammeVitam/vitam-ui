@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
-import {AccessContractService} from '../../access-contract.service';
 import {AccessContractNodesTabComponent} from './access-contract-nodes-tab.component';
+import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -38,16 +39,25 @@ describe('AccessContractNodesTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
 
-    const accessContractServiceMock = {
-      getAll: () => of([])
+    const parameters: Map<string, string> = new Map<string, string>();
+    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
+    const externalParametersServiceMock = {
+      getUserExternalParameters: () => of(parameters)
+    };
+
+    const unitValueMock = {
+      getByDsl: () => of({})
     };
 
     TestBed.configureTestingModule({
       declarations: [AccessContractNodesTabComponent],
+      imports: [
+        MatSnackBarModule
+      ],
       providers: [
-        {provide: MatDialog, useValue: {}},
-        {provide: AccessContractService, useValue: accessContractServiceMock},
-        {provide: SearchUnitApiService, useValue: {}}
+        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
+        {provide: SearchUnitApiService, useValue: unitValueMock},
+        {provide: MatDialog, useValue: {}}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
