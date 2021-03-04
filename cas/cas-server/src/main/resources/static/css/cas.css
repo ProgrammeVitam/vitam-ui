@@ -644,6 +644,36 @@ h5 {
   .text.light {
     color: #757575; }
 
+.loader {
+  border-radius: 50%;
+  border-top: 5px solid transparent;
+  border-right: 5px dashed var(--vitamui-primary);
+  border-bottom: 5px solid var(--vitamui-primary);
+  border-left: 5px solid var(--vitamui-primary);
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 1000ms linear infinite;
+  animation: spin 1000ms linear infinite; }
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+@font-face {
+  font-family: 'Mulish', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  src: local("Mulish", sans-serif), url(https://fonts.googleapis.com/css?family=Mulish:200,300,400,500,600,700,800,900&display=swap) format("woff2");
+  font-display: optional; }
+
 body {
   margin: 0;
   font-family: 'Mulish', sans-serif;
