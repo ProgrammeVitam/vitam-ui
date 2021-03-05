@@ -19,6 +19,7 @@
       "resources": {
         "files": [
           "/assets/**",
+          "!/assets/**/*.json",
           "/*.(eot|otf|svg|jpg|ttf|woff|woff2|ani)",
           "/*-bg.png"
         ]
