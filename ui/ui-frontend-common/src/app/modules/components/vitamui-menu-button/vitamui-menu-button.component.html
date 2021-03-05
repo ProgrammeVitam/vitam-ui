@@ -4,7 +4,7 @@
     {{label}}
 </button>
 
-<mat-menu #moreMenu="matMenu" xPosition="before" [overlapTrigger]="true" class="more-action-menu {{overlayPos}}">
+<mat-menu #moreMenu="matMenu" xPosition="{{overlayPos === 'start' ? 'after' : 'before'}}" [overlapTrigger]="true" class="more-action-menu {{overlayPos}}">
   <button mat-menu-item disableRipple class="menu-cancel-button">
     <i class="vitamui-icon vitamui-icon-close"></i>
   </button>
