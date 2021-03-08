@@ -143,7 +143,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     if (!ownerId) {
       return null;
     }
-
     return this.customer.owners.filter((owner) => owner.id === ownerId)[0];
   }
 

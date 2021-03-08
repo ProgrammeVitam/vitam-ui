@@ -15,7 +15,7 @@
           </div>
           <div class="col-2">{{ getOwner(tenant?.ownerId)?.code }}</div>
           <div class="col-3">{{ getOwner(tenant?.ownerId)?.name }}</div>
-          <div class="col-2">{{ getOwner(tenant?.ownerId)?.identifier }}</div>
+          <div class="col-2">{{ tenant?.identifier }}</div>
         </div>
       </div>
 
@@ -27,7 +27,7 @@
           <div class="col-2" (click)="ownerClick.emit(owner)">{{ owner?.name }}</div>
           <div class="col-3" (click)="ownerClick.emit(owner)">{{ owner?.name }}</div>
           <div class="col-3 sub-actions">
-            <div>   
+            <div>
               <button class="btn btn-circle primary" (click)="openCreateTenantDialog(owner)">
                 <i class="vitamui-icon vitamui-icon-home-add" [style.fontSize.px]="25"></i>
               </button>
