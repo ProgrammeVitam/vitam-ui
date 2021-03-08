@@ -6,14 +6,16 @@
   (onclose)="emitClose()">
   <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
     <button mat-menu-item i18n="@@ingestPreviewDownloadManifest" (click)="downloadManifest()"
-            [disabled]="ingestStatus(ingest) === 'KO'">{{'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate}}
+            [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'En cours'">{{'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate}}
     </button>
     <button mat-menu-item i18n="@@ingestPreviewDownloadATR"
-            (click)="downloadATR()">{{'INGEST_DETAIL.DOWNLOAD_ATR' | translate}}
+            (click)="downloadATR()"
+            [disabled]="ingestStatus(ingest) === 'En cours'"
+            >{{'INGEST_DETAIL.DOWNLOAD_ATR' | translate}}           
     </button>
     <button mat-menu-item i18n="@@ingestPreviewGenerateDocX" (click)="generateODTreport()"
             matTooltip="{{'INGEST_DETAIL.DOWNLOAD_DOCX' | translate}}" matTooltipClass="vitamui-tooltip"
-            [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'FATAL'">
+            [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'FATAL' || ingestStatus(ingest) === 'En cours'">
       {{'INGEST_DETAIL.DOWNLOAD_DOCX' | translate}}
     </button>
   </vitamui-common-menu-button>
