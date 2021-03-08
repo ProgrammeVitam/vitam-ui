@@ -68,7 +68,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 1;
+  private stepCount = 2;
   private keyPressSubscription: Subscription;
 
   @ViewChild('fileSearch', {static: false}) fileSearch: any;
@@ -104,10 +104,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
     this.statusControl.valueChanges.subscribe((value) => {
       this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    this.form.controls.enableControl.valueChanges.subscribe((value: boolean) => {
-      this.stepCount = (value) ? 2 : 1;
     });
 
     this.securityProfileService.getAll().subscribe(
