@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: max-file-line-count max-classes-per-file */
 
 import { of } from 'rxjs';
 import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
@@ -137,7 +136,6 @@ let expectedUserInfo: AdminUserProfile = {
   }]
 };
 
-// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;

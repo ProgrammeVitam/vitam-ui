@@ -288,7 +288,6 @@ public final class UserControllerTest implements InternalCrudControllerTest {
         prepareServices();
         when(internalCustomerService.getOne(userDto.getCustomerId(), Optional.empty())).thenReturn(null);
 
-        // Test
         try {
             userController.update(userDto.getId(), userDto);
             fail("should fail");

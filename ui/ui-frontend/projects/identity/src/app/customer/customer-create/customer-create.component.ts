@@ -73,7 +73,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   };
   public stepIndex = 0;
   public stepCount = 5;
-  // tslint:disable-next-line: variable-name
   private _customerForm: FormGroup;
   public get customerForm(): FormGroup { return this._customerForm; }
   public set customerForm(form: FormGroup) {
@@ -157,7 +156,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       this.form.get('companyName').valueChanges,
     )
     .subscribe(() => {
-      // reset object to trigger customerInfo input update in child component
       this.customerInfo = {
         code: this.form.get('code').value,
         name: this.form.get('name').value,

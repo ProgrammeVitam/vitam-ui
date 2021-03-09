@@ -37,7 +37,6 @@ public class GroupRepositoryTest {
 
     @Test
     public void testFindByProfileIds() {
-        // Populate database
         final Group groupAdmin = new Group();
         final String profileToFind = "adminFirstProfile";
         final String expectedId = "adminFirstProfile";

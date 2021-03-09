@@ -31,7 +31,6 @@ export class CustomerColorsInputComponent implements OnInit {
 
     this.baseColors = this.themeService.getBaseColors();
 
-    // Build dynamic formgroup and variations names array
     this.colors = this.themeService.getThemeColors();
 
     this.backgroundColors = this.themeService.backgroundChoice

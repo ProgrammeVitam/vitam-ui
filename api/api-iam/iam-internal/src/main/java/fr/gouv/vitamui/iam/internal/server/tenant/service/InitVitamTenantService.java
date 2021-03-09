@@ -187,7 +187,6 @@ public class InitVitamTenantService {
             Optional<IngestContractDto> optIngestContract = retrieveIngestContractByName(vitamContext,
                     ingestContractName);
 
-            // If no ingestContract already exist so we create an ingest contract
             if (!optIngestContract.isPresent() || !StringUtils.equals(optIngestContract.get().getStatus(), STATUS)) {
                 final RequestResponse<?> responseIngestContract = ingestContractService
                         .createIngestContracts(vitamContext, contractResources.get(ingestContractName).getInputStream());

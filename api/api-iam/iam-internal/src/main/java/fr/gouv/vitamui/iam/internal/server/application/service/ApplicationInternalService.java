@@ -97,7 +97,6 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
         Boolean filterApp = true;
 
         if (criteria.isPresent()) {
-            // Get FilterApp from criteria
             final QueryDto queryDto = QueryDto.fromJson(criteria);
             List<Criterion> criterions = queryDto.getCriterionList();
             Optional<Criterion> findFilterApp = criterions.stream()
@@ -108,7 +107,6 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
                 Criterion filterAppCriterion = findFilterApp.get();
                 filterApp = (Boolean) filterAppCriterion.getValue();
 
-                // Remove filterApp from criteria
                 criterions.remove(filterAppCriterion);
                 criteria = Optional.of(CriteriaUtils.toJson(queryDto));
             }

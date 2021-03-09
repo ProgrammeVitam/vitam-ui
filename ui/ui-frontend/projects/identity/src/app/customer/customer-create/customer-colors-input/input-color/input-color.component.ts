@@ -73,7 +73,6 @@ export class InputColorComponent implements OnInit {
   }
 
   public handlePicker(pickerValue: string): void {
-    // Avoid 3 chars hex to become 6 chars (ex. #123 becoming instantly #112233...)
     let inputValue: string = this.colorInput.value.toUpperCase();
     pickerValue = pickerValue.toUpperCase();
 

@@ -82,11 +82,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        /*http.
-            anonymous()
-            .and()
-        .csrf().disable();*/
-        // @formatter:off
         http
             .authorizeRequests()
             .antMatchers(getAuthList()).permitAll()
@@ -101,7 +96,7 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             .addFilterAt(getRequestHeadersAuthenticationFilter(), BasicAuthenticationFilter.class)
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        // @formatter:on
+
     }
 
     @Override
@@ -110,7 +105,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
     }
 
     protected String[] getAuthList() {
-        // @formatter:off
         return new String[] {
             "/error**",
             "/favicon.ico",
@@ -118,7 +112,6 @@ public abstract class AbstractApiWebSecurityConfig extends WebSecurityConfigurer
             "*/users/me",
             "/swagger-resources/**", "/swagger.json", "/**/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
         };
-        // @formatter:on
     }
 
     @Bean

@@ -56,7 +56,6 @@ export class GroupPreviewComponent implements OnInit, OnDestroy {
     this.groupService.get(group.id).subscribe((groupRetrieved) => this.groupService.updated.next(groupRetrieved));
   }
   get group(): Group { return this._group; }
-  // tslint:disable-next-line:variable-name
   private _group: Group;
 
   @Output() previewClose = new EventEmitter();

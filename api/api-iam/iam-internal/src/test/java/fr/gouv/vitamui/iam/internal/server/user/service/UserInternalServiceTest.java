@@ -520,7 +520,6 @@ public final class UserInternalServiceTest {
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         when(internalSecurityService.getCustomerId()).thenReturn(customerDto.getId());
 
-        // when email starts with "-"
         userToUpdate.setEmail("-test@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -529,7 +528,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email ends with "-"
         userToUpdate.setEmail("test-@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -538,7 +536,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email contains successive "-"
         userToUpdate.setEmail("test--toto@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -547,7 +544,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email starts with "."
         userToUpdate.setEmail(".test@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -556,7 +552,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email ends with "."
         userToUpdate.setEmail("test.@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -565,7 +560,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email ends with one character
         userToUpdate.setEmail("test@t");
         try {
             internalUserService.update(userToUpdate);
@@ -574,7 +568,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email ends with one character
         userToUpdate.setEmail("test@vitamui.f");
         try {
             internalUserService.update(userToUpdate);
@@ -583,7 +576,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email ends with vitamui
         userToUpdate.setEmail("test@vitamui");
         try {
             internalUserService.update(userToUpdate);
@@ -592,7 +584,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email contains successive "."
         userToUpdate.setEmail("test..toto@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
@@ -601,7 +592,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // when email is null
         userToUpdate.setEmail(null);
         try {
             internalUserService.update(userToUpdate);
@@ -644,7 +634,6 @@ public final class UserInternalServiceTest {
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         when(internalSecurityService.getCustomerId()).thenReturn(customerDto.getId());
 
-        // this test email covers the majority of authorized situations
         userToUpdate.setEmail("_test-test.test.test-test_@vitamui.com");
         User updatedUser = new User();
         VitamUIUtils.copyProperties(user, updatedUser);
@@ -697,7 +686,6 @@ public final class UserInternalServiceTest {
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         when(internalSecurityService.getCustomerId()).thenReturn(customerDto.getId());
 
-        // phone number not in international format
         userToUpdate.setPhone("0171270691");
         try {
             internalUserService.update(userToUpdate);
@@ -706,7 +694,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // mobile number not in international format
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setMobile("0671270691");
         try {
@@ -716,7 +703,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // phone number in international format with more than 12 digits
         userToUpdate.setPhone("+331712706999999999999");
         try {
             internalUserService.update(userToUpdate);
@@ -725,7 +711,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // mobile number in international format with more than 12 digits
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setMobile("+336712706999999999999");
         try {
@@ -735,7 +720,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // phone number in international format with less than 11 digits
         userToUpdate.setPhone("+33171");
         try {
             internalUserService.update(userToUpdate);
@@ -744,7 +728,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // mobile number in international format with less than 11 digits
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setMobile("+33671");
         try {
@@ -754,7 +737,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // phone number in international format with unauthorized chars
         userToUpdate.setPhone("+33171$_éù%999999+");
         try {
             internalUserService.update(userToUpdate);
@@ -763,7 +745,6 @@ public final class UserInternalServiceTest {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
-        // mobile number in international format with unauthorized chars
         userToUpdate.setPhone(user.getPhone());
         userToUpdate.setMobile("+33671$_éù%999999+");
         try {
@@ -807,7 +788,6 @@ public final class UserInternalServiceTest {
         when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         when(internalSecurityService.getCustomerId()).thenReturn(customerDto.getId());
 
-        // phone number in international format with 11 digits
         userToUpdate.setPhone("+33171270699");
         final User updatedUser = new User();
         VitamUIUtils.copyProperties(user, updatedUser);
@@ -817,7 +797,6 @@ public final class UserInternalServiceTest {
         assertNotNull("User shouldn't be null", userUpdated);
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
-        // phone number in international format with 12 digits
         userToUpdate.setPhone("+333171270699");
         VitamUIUtils.copyProperties(user, updatedUser);
         updatedUser.setPhone(userToUpdate.getPhone());
@@ -826,7 +805,6 @@ public final class UserInternalServiceTest {
         assertNotNull("User shouldn't be null", userUpdated);
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
-        // mobile number in international format with 11 digits
         userToUpdate.setMobile("+33671270699");
         VitamUIUtils.copyProperties(user, updatedUser);
         updatedUser.setPhone(userToUpdate.getPhone());
@@ -836,7 +814,6 @@ public final class UserInternalServiceTest {
         assertNotNull("User shouldn't be null", userUpdated);
         assertThat(userToUpdate).isEqualToComparingFieldByFieldRecursively(userUpdated);
 
-        // mobile number in international format with 12 digits
         userToUpdate.setMobile("+333671270699");
         VitamUIUtils.copyProperties(user, updatedUser);
         updatedUser.setPhone(userToUpdate.getPhone());

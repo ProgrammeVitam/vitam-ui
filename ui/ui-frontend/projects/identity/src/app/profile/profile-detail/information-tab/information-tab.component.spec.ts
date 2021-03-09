@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-magic-numbers max-classes-per-file */
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -47,7 +46,6 @@ import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
 
-// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -130,59 +128,13 @@ describe('Profile InformationTabComponent', () => {
   });
 
 
-  // it('should create', () => {
-  //   expect(testhost).toBeTruthy();
-  // });
+   describe('DOM', () => {
+   // TO DO
 
-  // describe('DOM', () => {
-
-  //   it('should have all the fields', () => {
-  //     let element = fixture.nativeElement.querySelector('vitamui-editable-input[formControlName=name]');
-  //     expect(element).toBeTruthy('name input');
-  //     expect(element.textContent).toContain('ProfileName');
-  //     expect(element.attributes.maxlength.value).toBe('100');
-
-  //     element = fixture.nativeElement.querySelector('vitamui-editable-textarea[formControlName=description]');
-  //     expect(element).toBeTruthy('description textarea');
-  //     expect(element.textContent).toContain('Profile description...');
-  //     expect(element.attributes.maxlength.value).toBe('250');
-
-  //     element = fixture.nativeElement.querySelector('vitamui-slide-toggle[formControlName=enabled]');
-  //     expect(element).toBeTruthy('enabled toggle');
-  //     expect(element.textContent).toContain('Profil actif');
-  //   });
-
-  // });
+   });
 
   describe('Component', () => {
-
-    // it('should toggle the form', () => {
-    //   expect(testhost.component.form.disabled).toBeFalsy();
-    //   testhost.readOnly = true;
-    //   fixture.detectChanges();
-    //   expect(testhost.component.form.disabled).toBeTruthy();
-    //   testhost.readOnly = false;
-    //   fixture.detectChanges();
-    //   expect(testhost.component.form.disabled).toBeFalsy();
-    // });
-
-    // it('should update the name', fakeAsync(() => {
-    //   const service = TestBed.inject(ProfileService);
-    //   spyOn(service, 'patch').and.returnValue(of(testhost.profile));
-    //   testhost.component.form.get('name').setValue('New name');
-    //   tick(400);
-    //   expect(service.patch).toHaveBeenCalledWith({ id: '1', customerId: 'customerId', tenantIdentifier: 420, name: 'New name' });
-    // }));
-
-    // it('should not call update if nothing changes', fakeAsync(() => {
-    //   const service = TestBed.inject(ProfileService);
-    //   spyOn(service, 'patch').and.returnValue(of(testhost.profile));
-    //   testhost.component.form.get('name').setValue('ProfileName');
-    //   tick(400);
-    //   testhost.component.form.get('name').setValue('ProfileName');
-    //   tick(400);
-    //   expect(service.patch).toHaveBeenCalledTimes(0);
-    // }));
+  // TO DO
 
   });
 

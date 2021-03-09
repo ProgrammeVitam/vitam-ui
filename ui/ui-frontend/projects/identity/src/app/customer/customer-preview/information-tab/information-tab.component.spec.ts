@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// tslint:disable:max-classes-per-file
+
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
@@ -119,7 +119,7 @@ class TestHostComponent {
     customer = expectedCustomer;
     readOnly = false;
     gdprReadOnlyStatus = false;
-    
+
     @ViewChild(InformationTabComponent, { static: false }) component: InformationTabComponent;
 }
 

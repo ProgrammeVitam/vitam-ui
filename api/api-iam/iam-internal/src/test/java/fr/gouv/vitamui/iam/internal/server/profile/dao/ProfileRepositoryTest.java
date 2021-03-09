@@ -42,7 +42,6 @@ public class ProfileRepositoryTest {
 
     @Test
     public void testSaveProfile() {
-        // Populate database
         final Profile p = repository.save(IamServerUtilsTest.buildProfile("id", "identifier", "name", "customerId", 10,
                 CommonConstants.USERS_APPLICATIONS_NAME));
         assertThat(p.getId()).isEqualTo("id");

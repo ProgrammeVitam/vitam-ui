@@ -106,13 +106,12 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         convertPatterns(dto, provider);
         provider.setKeystoreBase64(dto.getKeystoreBase64());
         provider.setKeystorePassword(dto.getKeystorePassword());
-        // PrivateKeyPassword and KeystorePassword are equal
         provider.setPrivateKeyPassword(dto.getKeystorePassword());
         dto.setPrivateKeyPassword(dto.getKeystorePassword());
         provider.setIdpMetadata(dto.getIdpMetadata());
         provider.setMailAttribute(dto.getMailAttribute());
 
-        // generates and saves the metadata
+
         final String spMetadata = spMetadataGenerator.generate(dto);
         provider.setSpMetadata(spMetadata);
         provider.setCustomerId(dto.getCustomerId());

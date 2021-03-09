@@ -23,7 +23,6 @@ public class ApiIamApplicationTest {
 
     @BeforeClass
     public static void init() {
-        // Set the location of the vitam config folder. Mandatory for the application to start
         System.setProperty("vitam.config.folder", "src/main/config");
     }
 

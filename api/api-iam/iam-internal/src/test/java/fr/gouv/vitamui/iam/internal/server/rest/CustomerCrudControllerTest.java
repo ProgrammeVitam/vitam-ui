@@ -181,10 +181,8 @@ public final class CustomerCrudControllerTest {
         when(internalUserService.create(any())).thenReturn(buildUserDto());
 
         when(groupRepository.save(any())).thenReturn(buildGroup());
-        //        when(profileRepository.save(any())).thenReturn(buildProfile());
 
         when(profileRepository.save(any()))
-                //        Mockito.when(client.get(Mockito.any(Request.class)))
                 .thenAnswer(invocation -> {
                     final Object[] args = invocation.getArguments();
                     return args[0];
@@ -365,7 +363,6 @@ public final class CustomerCrudControllerTest {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
-        //        when(internalUserService.internalConvertFromEntityToDto(any())).thenThrow(new InternalServerException("User Creation error"));
         when(internalUserService.create(any())).thenThrow(new InternalServerException("User Creation error"));
 
         controller.create(buildCustomerData(customerDto));
@@ -472,13 +469,9 @@ public final class CustomerCrudControllerTest {
         final OwnerDto ownerDto = buildOwnerDto();
         ownerDto.setId(null);
 
-        //        final TenantDto tenantDto = buildTenantDto();
-        //        tenantDto.setId(null);
-
         final CustomerDto customerDto = buildCustomerDto();
         customerDto.setId(null);
         customerDto.setOwners(Arrays.asList(ownerDto));
-        //        customerDto.setTenants(Arrays.asList(tenantDto));
         return customerDto;
     }
 

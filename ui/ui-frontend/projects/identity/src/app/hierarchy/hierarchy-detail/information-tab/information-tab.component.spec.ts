@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable: no-magic-numbers max-classes-per-file */
+
 import { Component, Directive, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
@@ -46,7 +46,6 @@ import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
 import { InformationTabComponent } from './information-tab.component';
 
-// tslint:disable-next-line:directive-selector
 @Directive({ selector: '[matTooltip]' })
 class MatTooltipStubDirective {
   @Input() matTooltip: any;
@@ -170,24 +169,7 @@ describe('Hierarchy InformationTabComponent', () => {
 
   describe('Component', () => {
 
-    // it('should toggle the form', () => {
-    //   expect(testhost.component.form.disabled).toBeFalsy();
-    //   testhost.readOnly = true;
-    //   fixture.detectChanges();
-    //   expect(testhost.component.form.disabled).toBeTruthy();
-    //   testhost.readOnly = false;
-    //   fixture.detectChanges();
-    //   expect(testhost.component.form.disabled).toBeFalsy();
-    // });
-
-    // TODO FIXME
-    // it('should update the name', fakeAsync(() => {
-    //   const service = TestBed.inject(HierarchyService);
-    //   spyOn(service, 'update').and.returnValue(of(testhost.profile));
-    //   testhost.component.form.get('name').setValue('New name');
-    //   tick(400);
-    //   expect(service.update).toHaveBeenCalledWith({ id: '1', name: 'New name' });
-    // }));
+    // TODO
   });
 
 });

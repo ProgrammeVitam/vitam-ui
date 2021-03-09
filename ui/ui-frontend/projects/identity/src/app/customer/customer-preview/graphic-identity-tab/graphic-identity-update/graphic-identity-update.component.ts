@@ -51,7 +51,6 @@ import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
 
   private destroy = new Subject();
-  // tslint:disable-next-line: variable-name
   private _customForm: FormGroup;
   public get customForm(): FormGroup { return this._customForm; }
   public set customForm(form: FormGroup) {

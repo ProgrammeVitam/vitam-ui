@@ -121,13 +121,11 @@ public class CasInternalController {
         final OffsetDateTime now = OffsetDateTime.now();
         final OffsetDateTime nowLess20Minutes = now.plusMinutes(-casService.getTimeIntervalForLoginAttempts());
 
-        // the last connection is more than 20 minutes ago, we reset the number of failed attempts
         if (lastConnection != null && lastConnection.isBefore(nowLess20Minutes)) {
             LOGGER.debug("reset nbFailedAttemps");
             nbFailedAttemps = 0;
         }
 
-        // we check the password
         final boolean passwordMatch = passwordEncoder.matches(dto.getPassword(), password);
         if (!passwordMatch) {
             nbFailedAttemps++;
@@ -138,8 +136,6 @@ public class CasInternalController {
         user.setNbFailedAttempts(nbFailedAttemps);
         user.setLastConnection(now);
 
-        // update user status to BLOCKED when the user reached a max login attempts
-        // update user status to ENABLED when the user was previously blocked due to max login attemps
         if (nbFailedAttemps >= maximumFailuresForLoginAttempts) {
             user.setStatus(UserStatusEnum.BLOCKED);
         }
@@ -225,7 +221,6 @@ public class CasInternalController {
     @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
     @ResponseStatus(HttpStatus.OK)
     public void logout(@RequestParam final String authToken, @RequestParam final String superUser) {
-        // FIXME 6880: Make another API point for superuser logout and keep an api point with "normal user" (authTokenOnly) logout
         LOGGER.debug("logout: authToken={}, superUser={}", authToken, superUser);
         ParameterChecker.checkParameter("The arguments authToken is mandatory : ", authToken);
         final String principal = casService.removeTokenAndGetUsername(authToken);

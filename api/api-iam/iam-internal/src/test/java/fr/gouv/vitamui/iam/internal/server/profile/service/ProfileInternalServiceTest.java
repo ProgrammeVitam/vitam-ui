@@ -117,7 +117,6 @@ public class ProfileInternalServiceTest {
 
         final ProfileDto profileCreated = service.create(profileDto);
 
-        // Fill fields ignored by create process
         final ProfileDto profile = new ProfileDto();
         profile.setId(profileCreated.getId());
         profile.setEnabled(true);
@@ -142,7 +141,6 @@ public class ProfileInternalServiceTest {
         partialDto.put("roles", other.getRoles().stream().map(role -> TestUtils.getMapFromObject(role)).collect(Collectors.toList()));
         service.processPatch(entity, partialDto);
 
-        // Fill fields ignored by patch process
         entity.setId(other.getId());
         entity.setIdentifier(other.getIdentifier());
         entity.setCustomerId(other.getCustomerId());

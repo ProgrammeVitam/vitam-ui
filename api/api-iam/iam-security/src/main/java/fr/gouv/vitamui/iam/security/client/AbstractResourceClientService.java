@@ -179,7 +179,6 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * @return
      */
     protected QueryDto addAccessRestrictionV2(final QueryDto query) {
-        // Check contains allowed keys
         checkContainsAuthorizedKeys(query);
         final QueryDto securedQuery = QueryDto.andQuery();
         query.keyFilter(getAllowedKeys());
@@ -204,7 +203,6 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
     }
 
     protected QueryDto addAccessRestrictionV1(final QueryDto criteria) {
-        // Check contains allowed keys
         criteria.keyFilter(getAllowedKeys());
         getRestrictedKeys().forEach(key -> addAccessRestrictionByKey(key, criteria));
         if (!(criteria.getQueryOperator() == null || QueryOperator.AND.equals(criteria.getQueryOperator()))) {
@@ -356,13 +354,11 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
 
     @SuppressWarnings("unchecked")
     protected E converterToExternalDto(final I internalDto) {
-        // Default case: external DTO and Internal DTO are equals ...
         return (E) internalDto;
     }
 
     @SuppressWarnings("unchecked")
     protected I converterToInternalDto(final E externalDto) {
-        // Default case: external DTO and Internal DTO are equals ...
         return (I) externalDto;
     }
 }

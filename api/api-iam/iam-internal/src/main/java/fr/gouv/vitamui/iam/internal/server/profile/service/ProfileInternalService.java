@@ -357,7 +357,6 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
         Assert.isTrue(StringUtils.isNotEmpty(customerId), message + ": no customerId");
         Assert.isTrue(tenantIdentifier != null, message + ": no tenant Identifier");
-        // We enforce session customerId (no cross customer allowed for profile)
         Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
 
         return getRepository().findByIdAndCustomerIdAndTenantIdentifier(id, customerId, tenantIdentifier).orElseThrow(() -> new IllegalArgumentException(
@@ -392,13 +391,11 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     }
 
     private void checkCustomer(final String customerId, final String message) {
-        // We enforce session customerId (no cross customer allowed for profile)
         Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), message + ": customer does not exist");
 
-        // To (try to) maintain database consistency, it's mandatory to only add enabled entity
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 

@@ -285,7 +285,6 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
     private Group find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
-        // We enforce session customerId (no cross customer allowed for group)
         Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
         return getRepository().findByIdAndCustomerId(id, customerId)
                 .orElseThrow(() -> new IllegalArgumentException(message + ": no group found for id " + id + " - customerId " + customerId));
@@ -328,7 +327,6 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
 
         Assert.isTrue(profiles.size() == dtoProfiles.size(), message + ": one of the profiles does not exist");
 
-        // To (try to) maintain database consistency, it's mandatory to only add enabled entity
         profiles.stream().forEach(p -> Assert.isTrue(p.isEnabled(), message + ": one of the profile is disabled"));
 
         profiles.stream().forEach(p -> {
@@ -348,7 +346,6 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
             Assert.isTrue(StringUtils.equals(tenant.getCustomerId(), customerId), message + ": tenant and group customerId must be equals");
         });
 
-        // Check if 2 profiles with the same applicationName and tenant exist in the collection
         for (int i = 0; i < profiles.size() - 1; i++) {
             for (int j = i + 1; j < profiles.size(); j++) {
                 final ProfileDto p1 = profiles.get(i);
@@ -370,13 +367,11 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     }
 
     private void checkCustomer(final String customerId, final String message) {
-        // We enforce session customerId (no cross customer allowed for group)
         Assert.isTrue(StringUtils.equals(customerId, getInternalSecurityService().getCustomerId()), message + ": customerId " + customerId + " is not allowed");
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
         Assert.isTrue(customer.isPresent(), message + ": customer " + customerId + " does not exist");
 
-        // To (try to) maintain database consistency, it's mandatory to only add enabled entity
         Assert.isTrue(customer.get().isEnabled(), message + ": customer must be enabled");
     }
 
@@ -401,7 +396,6 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                         .thenComparing(ProfileDto::getName));
                 dto.setProfiles(profiles);
 
-                // Give the number of users in a group
                 dto.setUsersCount(userRepository.countByGroupId(dto.getId()));
             }
         }

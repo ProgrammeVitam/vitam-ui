@@ -83,7 +83,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
       enabled: null
     });
 
-    // TODO FIXME GET CUSTOMERID FROM PROFILE
     this.updateSub = merge(this.form.valueChanges, this.form.statusChanges)
     .pipe(
       debounceTime(DEBOUNCE_TIME),
@@ -124,7 +123,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private initFormValidators(form: FormGroup, profile: Profile) {
-    // tslint:disable-next-line:max-line-length
     form.get('name').setAsyncValidators(this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
   }
 

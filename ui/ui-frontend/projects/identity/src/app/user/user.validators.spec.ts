@@ -50,14 +50,6 @@ describe('UserValidators', () => {
             }))).toBe(null, 'testing with "' + value + '"');
         }
 
-        // function testInvalid(value: FormGroup) {
-        //     expect(UserValidators.missingPhoneNumber(new FormGroup({
-        //         phone: new FormControl(null),
-        //         mobile: new FormControl(null),
-        //         otp: new FormControl(null)
-        //     }))).toEqual({ missingPhoneNumber: true }, 'testing with "' + value + '"');
-        // }
-
         it('should return null', () => {
             testValid(new FormGroup({
                 phone: new FormControl(''),

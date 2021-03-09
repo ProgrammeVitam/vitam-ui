@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// tslint:disable:max-classes-per-file
+
 import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
@@ -221,18 +221,8 @@ describe('IdentityProviderDetailsComponent', () => {
       });
       expect(testhost.component.form.valid).toBeTruthy();
 
-      // TODO Find a way to test observable with a debounce time
-      // expect(providerService.update).toHaveBeenCalledWith('42'', {
-      //   id: '42',
-      //   name: 'Test IDP',
-      //   internal: true,
-      //   patterns: ['test1.com', 'test3.com'],
-      //   enabled: false
-      // });
-
     }));
 
-    // TODO Find a way to test an observable with a debounce time
     it('should call updateMetadataFile');
 
     it('should disable then enable the form', () => {

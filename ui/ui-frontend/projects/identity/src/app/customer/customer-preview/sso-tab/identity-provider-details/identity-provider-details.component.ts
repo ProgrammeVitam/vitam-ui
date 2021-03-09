@@ -64,13 +64,11 @@ export class IdentityProviderDetailsComponent implements OnInit {
     this.previousValue = this.form.value;
   }
   get identityProvider(): IdentityProvider { return this._identityProvider; }
-  // tslint:disable-next-line:variable-name
   private _identityProvider: IdentityProvider;
 
   @Input()
   set domains(domains: Array<{ value: string, disabled: boolean }>) {
     this._domains = domains.map((domain: { value: string, disabled: boolean }) => {
-      // We enable the domains that are used by this provider
       if (this.identityProvider.patterns.includes(domain.value)) {
         return { value: domain.value, disabled: false };
       }
@@ -79,7 +77,6 @@ export class IdentityProviderDetailsComponent implements OnInit {
     });
   }
   get domains(): Array<{ value: string, disabled: boolean }> { return this._domains; }
-  // tslint:disable-next-line:variable-name
   private _domains: Array<{ value: string, disabled: boolean }> = [];
 
   private previousValue: {
@@ -111,7 +108,6 @@ export class IdentityProviderDetailsComponent implements OnInit {
     }
   }
   get readOnly(): boolean { return this._readOnly; }
-  // tslint:disable-next-line:variable-name
   private _readOnly: boolean;
 
   form: FormGroup;

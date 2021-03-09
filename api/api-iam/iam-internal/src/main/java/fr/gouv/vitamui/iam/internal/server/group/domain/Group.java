@@ -81,7 +81,6 @@ public class Group extends CustomerIdDocument implements BaseIdentifierDocument 
     @Length(min = 4, max = 250)
     private String description;
 
-    // Profile is enabled by default
     private boolean enabled = true;
 
     @NotNull

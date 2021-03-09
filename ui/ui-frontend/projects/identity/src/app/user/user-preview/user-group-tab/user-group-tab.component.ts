@@ -56,7 +56,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
       this._user = user;
   }
   get user(): User { return this._user; }
-  // tslint:disable-next-line:variable-name
   private _user: User;
 
   @Input()
@@ -68,7 +67,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
     }
   }
   get readOnly(): boolean { return this._readOnly; }
-  // tslint:disable-next-line:variable-name
   private _readOnly: boolean;
 
   @Input()
@@ -76,7 +74,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
     this._userInfo = userInfo;
   }
   get userInfo() { return this._userInfo; }
-  // tslint:disable-next-line:variable-name
   private _userInfo: AdminUserProfile;
 
   form: FormGroup;
@@ -109,7 +106,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
       this.activeGroups = this.activeGroups.filter((g) => g.id !== this.authService.user.groupId);
       }
       if (this.user.groupId) {
-        // retrieve whole group to display all associated profiles
         this.userGroup = data.find((group) => group.id === this.user.groupId);
       }
     });
@@ -119,7 +115,6 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
     if (this.userInfo.type === 'LIST') {
       this.activeGroups = [];
       this.userInfo.profilGroup.forEach((displayGroup) => {
-        // const simplifiedProfileGroup = JSON.parse(JSON.stringify(displayProfileGroup));
         const simplifiedGroup = Object({ id: displayGroup.id, name: displayGroup.name,
                                          description: displayGroup.description, selected: false });
         this.activeGroups.push(simplifiedGroup);

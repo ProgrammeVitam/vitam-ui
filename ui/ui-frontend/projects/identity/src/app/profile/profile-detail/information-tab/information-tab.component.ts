@@ -78,7 +78,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     private profileValidators: ProfileValidators,
     private authService: AuthService,
   ) {
-    // Form linked to the profile
     this.form = this.formBuilder.group({
       name: [null, Validators.required],
       identifier: [{value: null, disabled : true}, Validators.required],
@@ -88,7 +87,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
       roles : []
     });
 
-    // TODO FIXME GET CUSTOMERID FROM PROFILE
     this.updateFormSub = this.form.valueChanges
       .pipe(
         map(() => diff(this.form.value, this.previousValue)),
@@ -107,8 +105,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   completeRoles(data: { [key: string]: any }) {
-    // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
-    // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
     if (data.roles) {
       const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
       const hasRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
@@ -144,7 +140,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private initFormValidators(form: FormGroup, profile: Profile) {
-    // tslint:disable-next-line:max-line-length
     form.get('name').setAsyncValidators(this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
   }
 

@@ -152,7 +152,6 @@ describe('TenantService', () => {
 
   it('should call /fake-api/tenants with criteria', () => {
     tenantService.getTenantsByCustomerIds(['42']).subscribe((response) => expect(response).toEqual(expectedTenants), fail);
-    // tslint:disable-next-line:max-line-length
 
     const criterionArray: any[] = [{ key: 'customerId', value: ['42'], operator: Operators.in }];
     const query: SearchQuery = { criteria: criterionArray };

@@ -117,7 +117,6 @@ import org.springframework.web.multipart.support.MultipartFilter;
 @EnableConfigurationProperties
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
-    // needed to allow a proper init of InitVitamTenantService => @PostConstruct
     @SuppressWarnings("unused")
     @Autowired
     private ServerIdentityConfiguration serverIdentityConfiguration;

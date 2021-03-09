@@ -58,6 +58,5 @@ public class GraphicIdentity {
     @Length(max = 500)
     private String portalMessage;
 
-    // Theme based Graphical identity
     Map<String, String> themeColors;
 }

@@ -78,7 +78,7 @@ public class Profile extends CustomerIdDocument {
     @Indexed(name = "idx_profile_name", background = true)
     private String name;
 
-    // Profile is enabled by default
+
     private boolean enabled = true;
 
     @NotNull
