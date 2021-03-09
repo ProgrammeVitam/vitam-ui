@@ -99,8 +99,8 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         ingestThread.start();
     }
 
-     public ResponseEntity<byte[]> generateDocX(ExternalHttpContext context, String id) {
-        return ingestExternalRestClient.generateDocX(context, id);
+     public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
+        return ingestExternalRestClient.generateODTReport(context, id);
     }
 
     public IngestExternalRestClient getClient() {

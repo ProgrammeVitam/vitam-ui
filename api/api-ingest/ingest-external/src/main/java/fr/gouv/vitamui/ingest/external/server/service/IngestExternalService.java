@@ -101,8 +101,8 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
 
     }
 
-     public ResponseEntity<byte[]> generateDocX(String id) {
-        return ingestInternalRestClient.generateDocX(getInternalHttpContext(), id);
+     public ResponseEntity<byte[]> generateODTReport(String id) {
+        return ingestInternalRestClient.generateODTReport(getInternalHttpContext(), id);
     }
 
     @Override

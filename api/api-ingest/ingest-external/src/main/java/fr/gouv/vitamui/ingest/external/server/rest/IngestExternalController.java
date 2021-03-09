@@ -128,10 +128,10 @@ public class IngestExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_INGEST)
-    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> generateDocX(final @PathVariable("id") String id) {
-        LOGGER.debug("export docx report for ingest with id :{}", id);
+    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
+        LOGGER.debug("export ODT report for ingest with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
-        return ingestExternalService.generateDocX(id);
+        return ingestExternalService.generateODTReport(id);
     }
 }
