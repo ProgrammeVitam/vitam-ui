@@ -13,7 +13,8 @@
         </button>
 
         <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+          <vitamui-common-table-filter [(filter)]="filterMap['status']"
+                                       (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ACTIVE">
               <div class="table-filter-icon" i18n="@@userStatusEnabled">
                 <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
@@ -45,7 +46,7 @@
 
     <th>
       <div class="vitamui-table-header">
-        <span i18n="ingestContract id column header@@ingestContractListIdHeader">ID</span>
+        <span i18n="ingestContract id column header@@ingestContractListIdHeader">Identifiant</span>
         <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
                                         (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
@@ -53,7 +54,8 @@
 
     <th>
       <div class="vitamui-table-header">
-        <span i18n="ingestContract creation date column header@@ingestContractListCreationDateHeader">Date de création</span>
+        <span
+          i18n="ingestContract creation date column header@@ingestContractListCreationDateHeader">Date de création</span>
         <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction"
                                         (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
@@ -61,7 +63,8 @@
 
     <th>
       <div class="vitamui-table-header">
-        <span i18n="ingestContract column header@@ingestContractListArchiveProfileHeader">Nombre de profils d'archivage</span>
+        <span
+          i18n="ingestContract column header@@ingestContractListArchiveProfileHeader">Nombre de profils d'archivage</span>
       </div>
     </th>
     <th></th>
@@ -78,12 +81,15 @@
       <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">{{ ingestContract?.name }}
       </td>
       <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
-        {{ ingestContract?.identifier }}</td>
+        {{ ingestContract?.identifier }}
+      </td>
       <!-- TODO: Add date pipe -->
       <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
-        {{ ingestContract?.creationdate | date: 'dd/MM/yyyy'}}</td>
+        {{ ingestContract?.creationdate | date: 'dd/MM/yyyy'}}
+      </td>
       <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
-        {{ ingestContract?.archiveProfiles?.length }}</td>
+        {{ ingestContract?.archiveProfiles?.length }}
+      </td>
     </tr>
 
   </ng-container>

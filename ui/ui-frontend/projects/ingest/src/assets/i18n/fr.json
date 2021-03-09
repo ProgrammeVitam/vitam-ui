@@ -7,7 +7,7 @@
   },
   "INGEST_LIST": {
     "TABLE_NAME": "Suivi des versements",
-    "ID": "Identifiant du versement",
+    "ID": "Identifiant du message",
     "START_DATE": "Début de versement",
     "END_DATE": "Fin de versement",
     "NAME": "Nom du SIP",
@@ -28,8 +28,8 @@
   "INGEST_ACTION": {
     "REFRESH": "Rafraîchir",
     "NEW_INGEST": "Dépôt d'un versement",
-    "START_DATE": "Date de début",
-    "END_DATE": "Date de fin",
+    "START_DATE": "Début de versement",
+    "END_DATE": "Fin de versement",
     "ToolTip_Refresh": "Rafraîchir la liste des versements",
     "ToolTip_New_Ingest": "Déposer un nouveau versement d'archives (SIP)",
     "SEARCH": "Identifiant du versement, Intitulé, Service producteur...",
@@ -78,7 +78,7 @@
     "PRODUCT_SERVICE": "Service Producteur",
     "VERSATILE_SERVICE": "Service versant",
     "ENTRY_CONTRACT": "Contrat d'entrée",
-    "ARCHIVING_PROFIL": "Profile d'archivage",
+    "ARCHIVING_PROFIL": "Profil d'archivage",
     "STATUS": "Statut légal",
     "MESSAGE": "Message",
     "OPERATION_DETAILS": "Informations complémentaires sur l’opération"
@@ -87,6 +87,6 @@
     "TITLE": "Importer ou modifier des arbres et plans",
     "IMPORT_FILLING": "Nouveau plan de classement",
     "IMPORT_HOLDING": "Nouvel arbre de positionnement",
-    "SEARCH": "Noeud de l'arbre ou plan"
+    "SEARCH": "Position de l'arbre ou plan"
   }
 }

@@ -12,7 +12,8 @@
         </button>
 
         <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="filterMap['status']" (filterChange)="onFilterChange('status', $event)">
+          <vitamui-common-table-filter [(filter)]="filterMap['status']"
+                                       (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ACTIVE">
               <div class="table-filter-icon" i18n="@@userStatusEnabled">
                 <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green close"></i> Actif
@@ -40,14 +41,15 @@
     </th>
     <th>
       <div class="vitamui-table-header">
-        <span i18n="accessContract id column header@@accessContractListIdHeader">ID</span>
+        <span i18n="accessContract id column header@@accessContractListIdHeader">Identifiant</span>
         <vitamui-common-order-by-button orderByKey="Identifier" [(orderBy)]="orderBy" [(direction)]="direction"
                                         (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
     </th>
     <th>
       <div class="vitamui-table-header">
-        <span i18n="accessContract creation date column header@@accessContractListCreationDateHeader">Date de création</span>
+        <span
+          i18n="accessContract creation date column header@@accessContractListCreationDateHeader">Date de création</span>
         <vitamui-common-order-by-button orderByKey="CreationDate" [(orderBy)]="orderBy" [(direction)]="direction"
                                         (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
@@ -75,7 +77,8 @@
       <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.name }}</td>
       <td class="clickable" (click)="accessContractClick.emit(accessContract)">{{ accessContract?.identifier }}</td>
       <td class="clickable" (click)="accessContractClick.emit(accessContract)">
-        {{ accessContract?.creationDate | date: 'dd/MM/yyyy'}}</td>
+        {{ accessContract?.creationDate | date: 'dd/MM/yyyy'}}
+      </td>
     </tr>
 
   </ng-container>

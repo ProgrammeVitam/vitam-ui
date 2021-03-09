@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-10 form-control">
             <mat-form-field class="vitamui-mat-select">
-                <mat-select formControlName="archiveProfiles" placeholder="Profile d'archivage"
+                <mat-select formControlName="archiveProfiles" placeholder="Profil d'archivage"
                     i18n-placeholder="Application@@profilesFormApplicationPlaceholder" panelclass="vitamui-mat-select"
                     multiple>
                   <mat-option *ngFor='let profiles of archiveProfiles' [value]="profiles.identifier">{{profiles.name}}</mat-option>
