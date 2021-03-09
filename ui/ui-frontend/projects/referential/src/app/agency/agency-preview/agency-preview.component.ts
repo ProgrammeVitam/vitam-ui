@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {Agency, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
@@ -47,7 +47,7 @@ import {AgencyInformationTabComponent} from './agency-information-tab/agency-inf
   templateUrl: './agency-preview.component.html',
   styleUrls: ['./agency-preview.component.scss']
 })
-export class AgencyPreviewComponent implements OnInit {
+export class AgencyPreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() agency: Agency;
@@ -72,10 +72,7 @@ export class AgencyPreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private agencyService: AgencyService) {
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
