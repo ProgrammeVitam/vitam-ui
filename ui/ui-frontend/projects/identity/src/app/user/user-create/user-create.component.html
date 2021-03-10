@@ -9,7 +9,7 @@
         <div class="text large bold">{{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.TITLE' | translate}}</div>
 
         <div class="mt-4">
-          <vitamui-common-slide-toggle formControlName="enabled" i18n="user create labelEnabled@@labelEnabled">
+          <vitamui-common-slide-toggle formControlName="enabled">
             <span *ngIf="!form?.get('enabled').value">{{'USER.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
             <span *ngIf="form?.get('enabled').value">{{'USER.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
           </vitamui-common-slide-toggle>

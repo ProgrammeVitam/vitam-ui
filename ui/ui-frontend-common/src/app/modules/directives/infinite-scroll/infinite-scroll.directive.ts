@@ -52,7 +52,7 @@ export class InfiniteScrollDirective implements OnInit {
 
   ngOnInit() {
     const sideNavElement = document.getElementsByClassName('mat-sidenav-content');
-    const windowElement = document.getElementsByTagName('html');
+    const windowElement = document.getElementsByTagName('div');
     const scrollElement = sideNavElement?.length > 0 ? sideNavElement[0] : windowElement[0];
 
     scrollElement.addEventListener('scroll', () => {
