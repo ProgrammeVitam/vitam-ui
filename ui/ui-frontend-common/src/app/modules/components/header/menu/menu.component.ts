@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { MatSelectionList } from '@angular/material/list';
+import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -8,6 +9,7 @@ import { opacityAnimation , slideAnimation} from '../../../animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models';
 import { Application } from '../../../models/application/application.interface';
+import { StartupService } from '../../../startup.service';
 import { TenantSelectionService } from '../../../tenant-selection.service';
 import { MenuOption } from '../../navbar';
 import { SearchBarComponent } from '../../search-bar';
@@ -71,7 +73,9 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     private applicationService: ApplicationService,
     private cdrRef: ChangeDetectorRef,
     private tenantService: TenantSelectionService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: Router,
+    private startupService: StartupService
   ) { }
 
   ngOnInit() {
@@ -145,7 +149,11 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchBar.onFocus();
   }
 
-  public onClose(): void {
+  public onClose(event?: MatSelectionListChange): void {
+    if (event) {
+      this.openApplication(event.options[0].value);
+    }
+
     this.state = 'close';
     setTimeout(() => this.dialogRef.close(), 500);
   }
@@ -169,4 +177,16 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.appMap = this.applicationService.getTenantAppMap(tenant.value);
     }
   }
+
+  public getApplicationUrl(application: Application): string {
+    return this.applicationService.getApplicationUrl(application, this.selectedTenant.value.identifier);
+  }
+
+  public openApplication(application: Application): void {
+    this.applicationService.openApplication(
+      application, this.router, this.startupService.getConfigStringValue('UI_URL'), this.selectedTenant.value.identifier);
+
+    this.onClose();
+  }
+
 }

@@ -1,4 +1,4 @@
-<a class="d-flex align-items-center" href="{{ getApplicationUrl(application) }}" (click)="openApplication(application)">
+<a class="d-flex align-items-center" href="{{ applicationUrl }}" (click)="openApplication.emit(application)">
     <div class="d-flex align-items-center mandatory">
         <i [ngClass]="application.icon" class="app-icon d-flex justify-content-center align-items-center"></i>
         <span class="pl-2 appName" [innerHTML]="'APPLICATION.' + application.identifier + '.NAME' | translate:{default: application.name}  | highlight: hlCriteria"></span>
