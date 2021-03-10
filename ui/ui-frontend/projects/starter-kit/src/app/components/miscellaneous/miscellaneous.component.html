@@ -73,3 +73,12 @@
   <h4>{{'SAMPLE-DIALOG.Open' | translate}}</h4>
   <button class="btn primary" (click)="openDialog()">Open sample dialog</button>
 </div>
+
+<div>
+  <h4>{{'MISCELLANEOUS.INFINITE_SCROLL' | translate}}</h4>
+  <div vitamuiCommonInfiniteScroll vitamuiCommonInfiniteScrollThreshold="0.5" [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+    (vitamuiScroll)="onScroll()">
+    <div *ngFor="let value of infiniteValues">value {{value}}</div>
+    <mat-spinner *ngIf="infiniteScrollDisabled" class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</div>

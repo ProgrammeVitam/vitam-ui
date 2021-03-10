@@ -79,5 +79,8 @@
     "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex: COMMON.BACK",
     "FIRST_INPUT": "Premier paramètre",
     "SECOND_INPUT": "Deuxième paramètre"
+  },
+  "MISCELLANEOUS": {
+    "INFINITE_SCROLL": "Scroll infini"
   }
 }

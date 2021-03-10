@@ -78,5 +78,8 @@
     "KEY_NAMING_COMMON": "For reccuring texts, put them in the COMMON category. Ex: COMMON.BACK",
     "FIRST_INPUT": "First parameter",
     "SECOND_INPUT": "Second parameter"
+  },
+  "MISCELLANEOUS": {
+    "INFINITE_SCROLL": "Infinite scroll"
   }
 }
