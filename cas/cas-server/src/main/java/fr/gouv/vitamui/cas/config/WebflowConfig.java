@@ -62,14 +62,12 @@ import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
 import org.apereo.cas.web.support.ArgumentExtractor;
-import org.apereo.cas.web.view.CasProtocolView;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationContext;
@@ -78,7 +76,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.webflow.config.FlowDefinitionRegistryBuilder;
@@ -93,7 +90,6 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.webflow.actions.CheckMfaTokenAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomDelegatedClientAuthenticationAction;
-import fr.gouv.vitamui.cas.webflow.actions.CustomInitialFlowSetupAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.webflow.actions.CustomVerifyPasswordResetRequestAction;
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
@@ -108,8 +104,6 @@ import lombok.val;
 
 /**
  * Web(flow) customizations.
- *
- *
  */
 @Configuration
 public class WebflowConfig {
@@ -242,16 +236,8 @@ public class WebflowConfig {
 
     @Bean
     public DispatcherAction dispatcherAction() {
-        return new DispatcherAction(providersService, identityProviderHelper, casRestClient,
-            surrogationSeparator, utils, delegatedClientDistributedSessionStore.getObject());
-    }
-
-    @RefreshScope
-    @Bean
-    public Action initialFlowSetupAction() {
-        return new CustomInitialFlowSetupAction(CollectionUtils.wrap(argumentExtractor.getObject()), servicesManager.getObject(),
-                authenticationRequestServiceSelectionStrategies.getObject(), ticketGrantingTicketCookieGenerator.getObject(), warnCookieGenerator.getObject(),
-                casProperties, AuthenticationEventExecutionStrategies.getObject(), webflowSingleSignOnParticipationStrategy.getObject(), ticketRegistrySupport);
+        return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils,
+                delegatedClientDistributedSessionStore.getObject());
     }
 
     @Bean
@@ -265,8 +251,8 @@ public class WebflowConfig {
         val pmTicketFactory = new DefaultTicketFactory();
         pmTicketFactory.addTicketFactory(TransientSessionTicket.class, pmTicketFactory());
 
-        return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager, passwordManagementService,
-            ticketRegistry, pmTicketFactory, messageSource, providersService, identityProviderHelper, utils);
+        return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager, passwordManagementService, ticketRegistry, pmTicketFactory,
+                messageSource, providersService, identityProviderHelper, utils);
     }
 
     @Bean
@@ -371,4 +357,5 @@ public class WebflowConfig {
     public Action verifyPasswordResetRequestAction() {
         return new CustomVerifyPasswordResetRequestAction(casProperties, passwordManagementService, centralAuthenticationService.getObject());
     }
+
 }
