@@ -102,10 +102,10 @@ button > small {
 }
 
 .drag-container {
-    position: absolute;
-    width: 450px;
+    width: 100%;
     height: 160px;
     vertical-align: middle;
+    text-align: center;
 }
 
 .drop-area {
@@ -158,14 +158,14 @@ button > small {
     padding: 34px 0px 34px 34px;
 }
 .success-icon {
-    color:#74c41c;
-    font-size: 40px;
+    color:#27740A;
+    font-size: 50px;
 }
 
 
 .error-icon {
     color: $dark-red;
-    font-size: 40px;
+    font-size: 50px;
 }
 
     .file-info-container {

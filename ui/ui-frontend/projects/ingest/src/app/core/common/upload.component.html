@@ -26,7 +26,8 @@
             <span class="text-grey" [ngStyle]="{'font-size':'13px'}"> | {{ fileSizeString }} </span>
             <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
             <div>
-              <span class="text-red">{{ message }} </span> <i class="material-icons error-icon" *ngIf="hasError">error</i>
+              <span class="text-red">{{ message }} </span>
+              <i class="material-icons error-icon" *ngIf="hasError">cancel</i>
             </div>
           </div>
         </div>
