@@ -11,6 +11,7 @@
     customers
     events
     groups
+    externalParameters
     owners
     profiles
     providers
@@ -39,6 +40,9 @@
 | subrogeable    |  boolean   |  default=false |   |
 | readonly    |  boolean   | default=false  |   |
 | graphicIdentity    |  GraphicIdentity   |  |   |
+|gdprAlert| true,
+| gdprAlert    |  boolean   | default=false  |   |
+| gdprAlertDelay    |  int   | minimum=1  |   |
 
    * GraphicIdentity (Embarqué)
 
@@ -46,8 +50,21 @@
 | -------- | -------- | ------ | ------  |
 | hasCustomGraphicIdentity | boolean     |   |   |
 | logoDataBase64 | String    |   |   |
+| logoHeaderBase64 | String    |   | Base64 encoded logo  |
+| portalTitle | String    |   |   |
+| portalMessage | String    |  maximum length = 500 chars) |   |
 | themeColors    |   Map<String, String>   |   |  |
+       
+   * themeColors
 
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| vitamui-primary | String     |  hexadeciaml color like |   |
+| vitamui-secondary | String     |  hexadeciaml color like |   |
+| vitamui-tertiary | String     |  hexadeciaml color like |   |
+| vitamui-header-footer | String     | hexadeciaml color like  |   |
+| vitamui-background | String     | hexadeciaml color like  |   |
+        
    * _Collection Tenants_
 
 Le tenant correspond à un container (ie. espace de travail) logique.
@@ -99,7 +116,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 
  * _Collection Identity Provider_
 
- L’identity provider L’IDP est soit externe (Total, Teamdlab, etc.) soit interne.
+ L’identity provider L’IDP est soit externe (Clients/Organisations externes) soit interne.
  L’IDP interne est CAS lui même et les utilisateurs sont alors gérés uniquement dans l’annuaire CAS de VITAMUI.
 
 
@@ -149,6 +166,42 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | level    |   String  | Not null |   |
 | passwordExpirationDate    |   OffsetDateTime  |  |   |
 | address    |   Address  |  |   |
+| analytics    |   AnalyticsDto  |  |   |
+
+
+   * AnalyticsDto (Embarqué)
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| applications | ApplicationAnalyticsDto     |  |   |
+| lastTenantIdentifier | Integer    |  |   |
+
+   * ApplicationAnalyticsDto (Embarqué)
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| applicationId | String     |  |   |
+| accessCounter | int    |  |   |
+| lastAccess | OffsetDateTime    |  |  ex: YYYY-MM-ddTHH:mm:ss.ssssssZ |
+
+
+* _Collection externalParameters
+
+La collection qui définit un contrat d'accès par défaut
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| _id | String     | Clé Primaire  |   |
+| identifier    |   String  |  minimum = 1, maximum = 12  |  |
+| name    |   String  | minimum = 2, maximum = 100|   |
+| parameters    |   ParameterDto  |  Not Null |   |
+
+   * ParameterDto (Embarqué)
+
+| Nom    | Type | Contrainte(s) | Remarque(s) |
+| -------- | -------- | ------ | ------  |
+| key | String     |  |  exemple: PARAM_ACCESS_CONTRACT |
+| value | String    |  | exemple: AC-000001  |
 
 * _Collection Groups_
 
@@ -232,6 +285,7 @@ Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seul
 | vitamResponse    |  String   | |   |
 | synchronizedVitamDate    |   OffsetDateTime  | |   |
 
+Pour aller plus loin, le modèle de données Vitam concernant les journaux d'archives est accessible par [ici](http://www.programmevitam.fr/ressources/DocCourante/autres/fonctionnel/VITAM_Modele_de_donnees.pdf#%5B%7B%22num%22%3A45%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C56.7%2C748.3%2C0%5D)
 ## Base security
 
 * _Collection Context_
@@ -270,6 +324,16 @@ La collection sequence permet de stocker les différentes séquences utilisés.
   | name | String    |  Not Null | Nom de la séquence   |
   | sequence    |  int   |  | Valeur courante |
 
+La liste des noms de séquences :
+
+- tenant_identifier
+- user_identifier
+- profile_identifier
+- group_identifier	
+- provider_identifier
+- customer_identifier
+- owner_identifier
+	
 ## Base Cas
 
 Cette base est initialisée à la création de l'environnement. Elle est uniquement utilisée par CAS en lecture seule.

@@ -10,8 +10,6 @@ La solution est développée principalement avec les briques technologies suivan
 * Java 1.8+ (Java 11) 
 * Angular 8 : framework front 
 * Spring Boot 2 : framework applicatif
-* Camel : framework d'intégration
-* Active MQ : gestionnaire message 
 * MongoDB : base de données NoSQL
 * Swagger : documentation API
 
@@ -22,7 +20,6 @@ Les composants suivant sont utilisés dans la solution :
 * CAS : gestionnaire d'authentification centralisé (IAM) 
 * VITAM : socle d'archivage développé par le programme VITAM
 * MongoDB : base de données orientée documents
-* Active MQ : message broker JMS
 * Curator : maintenance des index d’elasticsearch
 * ELK : agrégation et traitement des logs et dashboards et recherche des logs techniques
 * Consul : annuaire de services

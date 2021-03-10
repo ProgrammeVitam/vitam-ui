@@ -17,7 +17,7 @@ La cinématique est la suivante :
 2. Vérification du certificat client transmis par l'application  
 3. Vérification du contexte de sécurité associé au certificat   
 4. Récupération des profils (rôles & tenants) de l'utilisateur   
-5. Intersection des rôles et tenants entre la conexte de sécurité et les profils  
+5. Intersection des rôles et tenants entre le conexte de sécurité et les profils  
 6. L'utilisateur peut accéder aux ressources autorisées
 
 Il est ainsi possible de limiter les risques d'élévations de privilèges en dissociant les contextes applicatifs de 2 instances d'une même application.
@@ -26,7 +26,7 @@ Par exemple, dans une première instance de l'application exposée sur un résea
 
 ### Service d'authentification centralisé CAS 
 
-Dans VITAMUI, l'authentification des utilisateurs est réalisée au moyen du service CAS. CAS est un service d'authentification centralisé (SSO et fédération d’identité), développé depuis 2004 par une communauté open source, et destiné aux applications Web . Cette solution est déployée dans le monde entier aussi bien dans des organismes publics (universités, administrations, etc), que dans de entreprises privées. 
+Dans VITAMUI, l'authentification des utilisateurs est réalisée au moyen du service CAS. CAS est un service d'authentification centralisé (SSO et fédération d’identité), développé depuis 2004 par une communauté open source, et destiné aux applications Web . 
 
 CAS propose les fonctionnalités suivantes :
 
@@ -40,7 +40,7 @@ CAS propose les fonctionnalités suivantes :
 
 Dans la solution VITAMUI, CAS porte uniquement le processus d'authentification (délégué ou non) avec les informations (tickets, cookies, etc.) nécessaires au bon fonctionnement de l'authentification. En revanche, toutes les données des utilisateurs (compte, profils, rôles, etc.) sont stockés dans une base MongoDB gérée par les services VITAMUI. Lors du processus d'authentification, CAS récupère les données des utilisateurs via des services REST dédiés et sécurisés dans VITAMUI. Il est important de noter que les crédentials d'accès à la solution, les données des utilisateurs ou des applications ne sont donc jamais stockés dans CAS.
 
-Ce choix simplifie l'exploitation de la solution car il n'est pas nécessaire de migrer les données lors d'mise à jour de CAS.  
+Ce choix simplifie l'exploitation de la solution car il n'est pas nécessaire de migrer les données lors de la mise à jour de CAS.  
 
 ![Protocole CAS](../images/dat_cas_1.png)
 
@@ -58,7 +58,7 @@ Les principes généraux de l'implémentation de CAS dans VITAMUI sont les suiva
 
 * la délégation d’authentification du serveur CAS aux IDP des clients se fait en SAML 2.0
 
-* les IDP SAML utilisés sont déclarés dans VITAMUI et sont stockés dans MongoDB 
+* les IDP SAML utilisés sont déclarés dans VITAMUI et sont stockés dans MongoDB
 
 * la fonction de révocation périodique de mot de passe est assurée par CAS
 

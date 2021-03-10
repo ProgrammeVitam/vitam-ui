@@ -16,14 +16,32 @@ Les services disposent d'API REST pour suivre leur état et leur activité. Ces 
 
 Les services génèrent les logs techniques dans la solution de log centralisée basée sur ELK. 
 
-### Service identity-external
+### Service iam-external
 
 * Description : service externe pour la gestion des organisations, utilisateurs, profils, etc.
 * Contraintes
 * API swagger
 
-### Service cas-external
+### Service cas-server
 
 * Description : service d’authentification nécessaire et accessible uniquement par l'IAM CAS
+* Contraintes
+* API swagger
+
+### Service referential-external
+
+* Description : service externe pour la gestion des référentiels de la solution logicielle VITAM.
+* Contraintes
+* API swagger
+
+### Service ingest-external
+
+* Description : service externe pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
+* Contraintes
+* API swagger
+
+### Service archive-search-external
+
+* Description : service externe pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
 * Contraintes
 * API swagger

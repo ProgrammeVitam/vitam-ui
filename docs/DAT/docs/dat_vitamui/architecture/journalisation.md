@@ -14,19 +14,19 @@ Utilisation des journaux vitam NF Z42-013
 
 ## Événement
 ### Vitam
-* Un événement = Un master (maître) et ensemble de sous-événements (esclaves)
-    * Master : événement initial
+* Un événement = Un événement Primaire (Primary) et ensemble de sous-événements secondaires (Secondary)
+    * Primary : événement initial
         * les champs sont contrôlés par VITAM
         * Marque le début de la transaction au sens VITAM 
         * L’heure de l’événement et mise par VITAM (cohérence des journeaux) 
-    * slave : note un sous événement réalisé suite à l’action principale
+    * Secondary : note un sous événement réalisé suite à l’action principale
         * possède les mêmes champs que l’événement Master mais VITAM ne procède à aucun contrôle
         * l’heure de l’êvénement est à l’appréciation du client
     * Fin de la transaction : le dernier sous événement doit posséder le même champs “eventType” que l’événement Master pour finir la transaction.
 
 ### VITAMUI
-* Maître et esclave => Un event VITAMUI cf : fr.gouv.vitamui.commons.logbook.domain.event
-* Un appel REST => Une ou plusieurs opération métier => ensemble d’events => le premier sera le maître et les suivants esclaves
+* Primaire et Secondaire => Un event VITAMUI cf : fr.gouv.vitamui.commons.logbook.domain.event
+* Un appel REST => Une ou plusieurs opération métier => ensemble d’events => le premier sera l'evénement primaire (Primary) et les suivants secondaires (Secondary)
 * Stocker dans le tenant des éléments de preuves du client
 
 ![Journalisation](../images/journalisation_transaction.png)
@@ -53,8 +53,8 @@ Utilisation des journaux vitam NF Z42-013
 ## Sauvegarde 
 * Réalisation par les tâches asynchrones (Cf : SendEventToVitamTasks.java et DeleteSynchronizedEventsTasks.java)
 * Les événements sont regroupés par rapport à leur X-Request-Id et triés par ordre chronologique croissant.
-* Le premier événements du groupe devient le Master et les autres des sous-events.
-* Le premier est recopier a la fin des sous-events afin de fermer la “transaction au sens VITAM)
+* Le premier événements du groupe devient le Primary et les autres des sous-events.
+* Le premier est recopier a la fin des sous-events afin de fermer la “transaction au sens VITAM”
 * Envoit vers vitam (La reponse vitam et la date d'envoi sont toujours stocké) :
     * Succès -> Les events sont conservés X jours et sont marqué au status “SUCCESS”
     * Erreur -> Les events sont marqués au statut “ERROR” et un retry sera effectué dans X heure.

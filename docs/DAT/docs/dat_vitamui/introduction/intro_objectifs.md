@@ -31,6 +31,10 @@ La solution VITAMUI a pour objectif de répondre aux principaux enjeux métiers 
 
 La solution VITAMUI est construite sur une contribution initiale de la société [XELIANS Archivage](https://www.xelians.fr/).  
 
-La solution VITAMUI s'inscrit aujourd'hui dans le cadre du [Programme VITAM](https://www.programmevitam.fr/) porté par l'Etat Français pour développer une solution complète d'archivage numérique. La solution est soumise à la licence Ceccil C v2.1. 
+Plusieurs partenaires et contributeurs participent à l'enrichissement de la solution VITAMUI, notamment le Projet interministériel [VAS](http://www.programmevitam.fr/pages/VaS/), le [CEA](https://www.cea.fr/), le [CINES](https://www.cines.fr/).
+
+La solution VITAMUI s'inscrit aujourd'hui dans le cadre du [Programme VITAM](https://www.programmevitam.fr/) porté par l'Etat Français pour développer une solution complète d'archivage numérique. La solution est soumise à la [licence Ceccil C v2.1](https://cecill.info/licences/Licence_CeCILL_V2.1-fr.html). 
+
+Les différentes couches et services internes de la solution VITAMUI communiquent avec les clients externes java de la solution VITAM, ces derniers sont publiés sous la licence [CeCILL-C](https://cecill.info/licences/Licence_CeCILL-C_V1-fr.html).
 
 Si vous souhaitez contribuer au développement officiel de la solution, merci de [contacter le Programmme VITAM](contact@programmevitam.fr).

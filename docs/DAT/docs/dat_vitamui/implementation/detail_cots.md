@@ -20,16 +20,6 @@ La résilience est assurée par l’annuaire de service Consul. Il est partagé 
 
 La solution de DNS applicatif intégrée à VITAMUI et VITAM est présentée plus en détails dans la section dédiée à Consul dans la documentation VITAM. 
 
-### Broker de message ACTIVEMQ
-
-* Description  
-* Contraintes  
-
-### Base NOSQL MongoDB
-
-* Description  
-* Contraintes  
-
 ### Base NOSQL MongoDB
 
 * Description  
