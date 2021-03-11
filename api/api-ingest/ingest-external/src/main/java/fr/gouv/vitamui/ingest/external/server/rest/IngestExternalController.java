@@ -127,7 +127,7 @@ public class IngestExternalController {
         return ingestExternalService.upload(in, action, contextId);
     }
 
-    @Secured(ServicesData.ROLE_GET_INGEST)
+    @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
         LOGGER.debug("export ODT report for ingest with id :{}", id);
