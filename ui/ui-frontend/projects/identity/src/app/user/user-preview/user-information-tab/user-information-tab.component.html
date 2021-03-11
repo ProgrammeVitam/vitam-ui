@@ -1,8 +1,8 @@
 <form [formGroup]="form" *ngIf="user?.status !== 'REMOVED'">
   <div class="row">
     <div class="col-10 form-control">
-      <p *ngIf="user?.status === 'ENABLED'">{{'USER.INFORMATIONS.ACCOUNT' | translate}}</p>
-      <p *ngIf="user?.status === 'DISABLED'" i18n="user info tab disabled@@userInfoTabDisabled">Compte désactivé
+      <p *ngIf="user?.status === 'ENABLED'">{{'USER.INFORMATIONS.ACTIVE_SWITCH' | translate}}</p>
+      <p *ngIf="user?.status === 'DISABLED'">{{'USER.INFORMATIONS.INACTIVE_SWITCH' | translate}}
       </p>
       <p class="status-warning" *ngIf="user?.status === 'BLOCKED'" i18n="user info tab blocked@@userInfoTabBlocked">
         Compte bloqué <ng-container *ngIf="user?.lastConnection">(depuis le {{ user?.lastConnection | date: 'medium' }})
