@@ -31,6 +31,10 @@ $animation-time: 150ms;
       outline: none;
       border: solid 1px var(--vitamui-primary);
     }
+
+    &.ng-invalid {
+      border: 1px solid $red;
+    }
   }
 
   &.disabled {
@@ -55,7 +59,6 @@ $animation-time: 150ms;
   }
 
   .input-label {
-
     font-size: 14px;
     font-weight: 700;
     align-items: center;
@@ -68,6 +71,10 @@ $animation-time: 150ms;
     transform-origin: left;
     color: var(--vitamui-primary);
     transition: transform $animation-time ease-out, top $animation-time ease-out;
+
+    > .required-marker {
+      color: $red;
+    }
   }
 
   &.label-up {

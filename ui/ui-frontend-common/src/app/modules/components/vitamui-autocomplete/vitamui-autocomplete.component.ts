@@ -74,6 +74,7 @@ export class VitamUIAutocompleteComponent implements ControlValueAccessor, OnIni
   private _options: Option[] = [];
 
   @Input() placeholder: string;
+  @Input() required: boolean;
 
   @ViewChild('input', { read: ElementRef, static: true }) inputElement: ElementRef;
 
