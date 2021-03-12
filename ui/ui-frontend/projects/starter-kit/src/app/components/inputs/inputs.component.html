@@ -68,8 +68,8 @@
             <div class="col-8">
                 <mat-form-field class="mr-3 field-domain vitamui-mat-select">
                     <mat-select [formControl]="country" panelClass="vitamui-mat-select">
-                      <mat-option *ngFor="let country of countries" [value]="country.code">
-                        {{country.name}}
+                      <mat-option *ngFor="let country of countries" [value]="country.key">
+                        {{country.label}}
                       </mat-option>
                     </mat-select>
                     <div class="select-arrow">
@@ -80,8 +80,8 @@
             </div>
             <mat-form-field class="mr-3 field-domain vitamui-mat-select">
                 <mat-select [formControl]="country" panelClass="vitamui-mat-select" disabled>
-                  <mat-option *ngFor="let country of countries" [value]="country.code">
-                    {{country.name}}
+                  <mat-option *ngFor="let country of countries" [value]="country.key">
+                    {{country.label}}
                   </mat-option>
                 </mat-select>
                 <div class="select-arrow">
