@@ -30,7 +30,6 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import org.apache.commons.io.FileUtils;
@@ -64,16 +63,19 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
-public class IngestDocxGenerator {
+public class IngestODTGenerator {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestDocxGenerator.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestODTGenerator.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
 
@@ -117,7 +119,9 @@ public class IngestDocxGenerator {
             XWPFRun runTwo = tableOneRowTwo.getCell(0).addParagraph().createRun();
             runTwo.setText("Service versant :");
             runTwo.setBold(true);
+            tableOneRowTwo.getCell(0).setWidth("3000");
             tableOneRowTwo.getCell(1).setText(getServiceVersant(jsonObject));
+            tableOneRowTwo.getCell(1).setWidth("7000");
 
             XWPFParagraph paragraph = document.createParagraph();
             XWPFRun run = paragraph.createRun();
@@ -126,7 +130,6 @@ public class IngestDocxGenerator {
         } catch (JSONException e) {
             LOGGER.error("Unable to get the data from the JsonObject : {}", e.getMessage());
             throw new JSONException("Unable to get the data from the JsonObject " + e);
-
 
         }
     }
@@ -137,7 +140,7 @@ public class IngestDocxGenerator {
      * Numéro du versement, Présentation du contenu, Dates extrêmes et l'historique de conservation
      *
      * */
-    public void generateTableTwo(XWPFDocument document, Document manifest, LogbookOperationDto selectedIngest) {
+    public void generateTableTwo(XWPFDocument document, Document manifest, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         XWPFTable tableTwo = document.createTable();
 
@@ -156,26 +159,31 @@ public class IngestDocxGenerator {
         XWPFRun runContent = tableTwoRowTwo.getCell(0).addParagraph().createRun();
         runContent.setText("Présentation du contenu :");
         runContent.setBold(true);
+        tableTwoRowTwo.getCell(0).setWidth("3000");
         tableTwoRowTwo.getCell(1).setText(getComment(manifest));
+        tableTwoRowTwo.getCell(1).setWidth("7000");
 
         XWPFTableRow tableTwoRowThree = tableTwo.createRow();
         tableTwoRowThree.getCell(0).removeParagraph(0);
         XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
         runDate.setText("Dates extrêmes :");
         runDate.setBold(true);
+        tableTwoRowThree.getCell(0).setWidth("3000");
         tableTwoRowThree.getCell(1).removeParagraph(0);
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
-            "date de début : " + selectedIngest.getEvDateTime().split("T")[0].replace('-', '/'));
+            "date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
         tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
-            selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getEvDateTime().split("T")[0]
-                .replace('-', '/'));
+            transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
+        tableTwoRowThree.getCell(1).setWidth("7000");
 
         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
         tableTwoRowFour.getCell(0).removeParagraph(0);
         XWPFRun runHistory = tableTwoRowFour.getCell(0).addParagraph().createRun();
         runHistory.setText("Historique des conservations :");
         runHistory.setBold(true);
+        tableTwoRowFour.getCell(0).setWidth("3000");
         tableTwoRowFour.getCell(1).setText(getCustodialHistory(manifest));
+        tableTwoRowFour.getCell(1).setWidth("7000");
 
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
@@ -208,7 +216,9 @@ public class IngestDocxGenerator {
         XWPFRun runTwo = tableThreeRowFour.getCell(0).addParagraph().createRun();
         runTwo.setText("Identifiant de l’opération d’entrée :");
         runTwo.setBold(true);
+        tableThreeRowFour.getCell(0).setWidth("3000");
         tableThreeRowFour.getCell(1).setText(id);
+        tableThreeRowFour.getCell(1).setWidth("7000");
 
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
@@ -226,15 +236,15 @@ public class IngestDocxGenerator {
         XWPFTable table = document.createTable();
 
         XWPFTableRow tableRowOne = table.getRow(0);
-        tableRowOne.getCell(0).setText("Date de signature :");
+        tableRowOne.getCell(0).setText("Date de signature ");
         tableRowOne.getCell(0).setWidth("5000");
-        tableRowOne.addNewTableCell().setText("Date de signature :");
+        tableRowOne.addNewTableCell().setText("Date de signature ");
         tableRowOne.getCell(1).setWidth("5000");
         tableRowOne.setHeight(750);
 
         XWPFTableRow tableRowTwo = table.createRow();
-        tableRowTwo.getCell(0).setText("Le responsable du versement : ");
-        tableRowTwo.getCell(1).setText("Le responsable du service d'archives : ");
+        tableRowTwo.getCell(0).setText("Le responsable du versement ");
+        tableRowTwo.getCell(1).setText("Le responsable du service d'archives");
         tableRowTwo.setHeight(750);
 
         table.getCTTbl().getTblPr().getTblBorders().getRight().setVal(STBorder.NONE);
@@ -255,7 +265,7 @@ public class IngestDocxGenerator {
      * Identifiant SAE VAS, Titre, date de début et date de fin
      *
      * */
-    public void generateDynamicTable(XWPFDocument document, List<ArchiveUnitDto> list) {
+    public void generateDynamicTable(XWPFDocument document, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         XWPFTable dynamicTable = document.createTable();
 
@@ -291,28 +301,32 @@ public class IngestDocxGenerator {
         dynamicTableFirstRow.getCell(3).setWidth("1500");
         dynamicTableFirstRow.getCell(3).setColor("909399");
 
-        list.stream().forEach(x -> {
+        archiveUnitDtoList.stream().forEach(x -> {
             XWPFTableRow dynamicTableRow = dynamicTable.createRow();
 
             dynamicTableRow.getCell(0).removeParagraph(0);
             XWPFRun runSystem = dynamicTableRow.getCell(0).addParagraph().createRun();
             runSystem.setText(x.getSystemId());
             runSystem.setFontSize(8);
+            dynamicTableRow.getCell(0).setWidth("2000");
 
             dynamicTableRow.getCell(1).removeParagraph(0);
             XWPFRun runTitle = dynamicTableRow.getCell(1).addParagraph().createRun();
             runTitle.setText(x.getTitle());
-            runTitle.setFontSize(8);
+            runTitle.setFontSize(7);
+            dynamicTableRow.getCell(1).setWidth("5000");
 
             dynamicTableRow.getCell(2).removeParagraph(0);
             XWPFRun runDateD = dynamicTableRow.getCell(2).addParagraph().createRun();
-            runDateD.setText(x.getStartDate().split("T")[0].replace('-', '/'));
-            runDateD.setFontSize(10);
+            runDateD.setText(transformDate(x.getStartDate().split("T")[0]));
+            runDateD.setFontSize(9);
+            dynamicTableRow.getCell(2).setWidth("1500");
 
             dynamicTableRow.getCell(3).removeParagraph(0);
             XWPFRun runDateF = dynamicTableRow.getCell(3).addParagraph().createRun();
-            runDateF.setText(x.getEndDate().split("T")[0].replace('-', '/'));
-            runDateF.setFontSize(10);
+            runDateF.setText(transformDate(x.getEndDate().split("T")[0]));
+            runDateF.setFontSize(9);
+            dynamicTableRow.getCell(3).setWidth("1500");
 
         });
     }
@@ -325,6 +339,8 @@ public class IngestDocxGenerator {
         paragraphRun.setBold(true);
         paragraphRun.setFontSize(22);
         paragraph.setAlignment(ParagraphAlignment.CENTER);
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
 
     }
 
@@ -335,6 +351,8 @@ public class IngestDocxGenerator {
         paragraphRun.setBold(true);
         paragraphRun.setText(SECOND_TITLE);
         paragraphRun.setFontSize(12);
+        XWPFRun run = paragraph.createRun();
+        run.addBreak();
 
     }
 
@@ -421,6 +439,7 @@ public class IngestDocxGenerator {
                         throw new IllegalStateException("Unexpected value: " + base64Image.charAt(0));
                 }
                 tableRow.getCell(1).removeParagraph(0);
+                tableRow.getCell(1).setWidth("3000");
                 FileUtils.forceDelete(new File(imgFile));
             }
 
@@ -431,36 +450,6 @@ public class IngestDocxGenerator {
         } catch (IOException | InvalidFormatException exception) {
             throw new IOException("Unable to generate the document header ", exception);
         }
-    }
-
-    public String getServiceProducteur(Document document) {
-        document.getDocumentElement().normalize();
-        return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
-    }
-
-    public String getNumVersement(Document document) {
-        return document.getElementsByTagName("MessageIdentifier").item(0).getTextContent();
-    }
-
-    public String getComment(Document document) {
-        return document.getElementsByTagName("Comment").item(0).getTextContent();
-    }
-
-    public String getCustodialHistory(Document document) {
-        return document.getElementsByTagName("CustodialHistory").getLength() == 0 ?
-            "historique indisponible" :
-            document.getElementsByTagName("CustodialHistory").item(0).getTextContent();
-    }
-
-    public String getServiceVersant(JSONObject jsonObject) throws JSONException {
-        if (jsonObject.toString().contains("submissionAgency")) {
-            return jsonObject.get("submissionAgency").toString();
-        }
-        return jsonObject.get("originatingAgency").toString();
-    }
-
-    public int getBinaryFileNumber(Document document) {
-        return document.getElementsByTagName("BinaryDataObject").getLength();
     }
 
     public String resourceAsString(Resource resource) {
@@ -491,7 +480,7 @@ public class IngestDocxGenerator {
 
     public List<ArchiveUnitDto> getValuesForDynamicTable(Document atr, Document manifest) {
 
-        List<ArchiveUnitDto> list = new ArrayList<>();
+        List<ArchiveUnitDto> archiveUnitDtoList = new ArrayList<>();
         Map<String, String> map = getSystemIdValues(atr);
         manifest.getDocumentElement().normalize();
         NodeList nList = manifest.getElementsByTagName("ArchiveUnit");
@@ -499,28 +488,80 @@ public class IngestDocxGenerator {
         for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                ArchiveUnitDto sea = new ArchiveUnitDto();
+                ArchiveUnitDto archiveUnitDto = new ArchiveUnitDto();
                 Element eElement = (Element) nNode;
 
                 if (map.get(eElement.getAttribute("id")) != null) {
 
-                    sea.setId(eElement.getAttribute("id"));
-                    sea.setTitle(eElement.getElementsByTagName("Title").getLength() == 0 ?
+                    archiveUnitDto.setId(eElement.getAttribute("id"));
+                    archiveUnitDto.setTitle(eElement.getElementsByTagName("Title").getLength() == 0 ?
                         "_ _ _ _" :
                         eElement.getElementsByTagName("Title").item(0).getTextContent());
-                    sea.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
+                    archiveUnitDto.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
                         "_ _ _ _" :
                         eElement.getElementsByTagName("EndDate").item(0).getTextContent());
-                    sea.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
+                    archiveUnitDto.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
                         "_ _ _ _" :
                         eElement.getElementsByTagName("StartDate").item(0).getTextContent());
-                    sea.setSystemId(map.get(eElement.getAttribute("id")));
+                    archiveUnitDto.setSystemId(map.get(eElement.getAttribute("id")));
 
-                    list.add(sea);
+                    archiveUnitDtoList.add(archiveUnitDto);
                 }
             }
         }
-        return list;
+        return archiveUnitDtoList;
+    }
+
+    private String getServiceProducteur(Document document) {
+        document.getDocumentElement().normalize();
+        return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
+    }
+
+    private String getNumVersement(Document document) {
+        return document.getElementsByTagName("MessageIdentifier").item(0).getTextContent();
+    }
+
+    private String getComment(Document document) {
+        return document.getElementsByTagName("Comment").item(0).getTextContent();
+    }
+
+    private String getCustodialHistory(Document document) {
+        return document.getElementsByTagName("CustodialHistory").getLength() == 0 ?
+            "historique indisponible" :
+            document.getElementsByTagName("CustodialHistory").item(0).getTextContent();
+    }
+
+    private String getServiceVersant(JSONObject jsonObject) throws JSONException {
+        if (jsonObject.toString().contains("submissionAgency")) {
+            return jsonObject.get("submissionAgency").toString();
+        }
+        return jsonObject.get("originatingAgency").toString();
+    }
+
+    private int getBinaryFileNumber(Document document) {
+        return document.getElementsByTagName("BinaryDataObject").getLength();
+    }
+
+    private List<String> getArchiveUnitStartDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getStartDate ).filter(startDate->
+            startDate != "_ _ _ _"
+        ).collect(Collectors.toList());
+    }
+
+    private List<String> getArchiveUnitEndDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getEndDate ).filter(endDate->
+            endDate != "_ _ _ _"
+        ).collect(Collectors.toList());
+    }
+
+    private String transformDate(String date) {
+        if(date != "_ _ _ _") {
+            LocalDate finalDate = LocalDate.parse(date);
+            return finalDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        }
+        else {
+            return date;
+        }
     }
 
 }
