@@ -36,41 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.EMAIL_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.FIRSTNAME_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GROUP_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LANGUAGE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LASTNAME_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LAST_CONNECTION_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.LEVEL_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.MOBILE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.NB_FAILED_ATTEMPTS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.OTP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PASSWORD_EXPIRATION_DATE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PHONE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PROFILE_GROUP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.PROOF_TENANT_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.READONLY_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ROLES_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.STATUS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
-import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SITE_CODE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
-
 import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
@@ -104,6 +69,8 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 
 import lombok.val;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * Resolver to retrieve the user.
@@ -224,6 +191,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(GROUP_ID_ATTRIBUTE, Collections.singletonList(user.getGroupId()));
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
         attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
+        attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
             final UserDto superUser = casExternalRestClient.getUserByEmail(utils.buildContext(superUsername), superUsername, Optional.empty());
