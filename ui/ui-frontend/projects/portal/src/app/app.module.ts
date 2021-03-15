@@ -44,6 +44,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { BASE_URL, ENVIRONMENT,
@@ -89,7 +90,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
         deps: [HttpClient]
       }
     }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    AngularSvgIconModule.forRoot()
   ],
   providers: [
     Title,
