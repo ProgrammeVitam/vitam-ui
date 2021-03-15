@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, AfterViewInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ConfirmActionComponent, SecurityProfile} from 'projects/vitamui-library/src/public-api';
