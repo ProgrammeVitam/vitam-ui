@@ -26,7 +26,7 @@
           <vitamui-common-input class="col-5 ml-3 p-0" formControlName="firstname" minlength="2" maxlength="50" required
             [placeholder]="'USER.INFORMATIONS.FIRSTNAME' | translate">
             <vitamui-common-input-error
-              *ngIf="form.get('firstname')?.touched && form.get('firstname')?.hasError('required')">{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+              *ngIf="form.get('firstname')?.touched && form.get('firstname')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
 
@@ -36,13 +36,10 @@
               [placeholder]="'USER.INFORMATIONS.MAIL' | translate" [class.ng-pending]="form?.get('email')?.pending" [class.ng-invalid]="form?.get('email')?.errors">
               <ng-container *ngIf="formEmail.get('emailFirstPart')?.touched">
                 <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('required')"
-                  >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('pattern')"
-                  i18n="Email pattern field error hint@@formErrorPatternEmail">Format e-mail incorrect
+                  >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('pattern')">{{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.WRONG_FORMAT' | translate}}
                 </vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('uniqueEmail')"
-                  i18n="Existing email error hint@@formErrorExistingEmail">E-mail déjà existant
-                </vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="form?.get('email')?.hasError('uniqueEmail')">{{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.MAIL_ALREADY_EXIST' | translate}}</vitamui-common-input-error>
               </ng-container>
             </vitamui-common-input>
 
@@ -87,9 +84,8 @@
     {{'COMMON.NEXT' | translate}}
   </button>
   <ng-template #noGroup>
-    <button type="button" class="btn primary" [disabled]="firstStepInvalid()" (click)="passGroupStep()"
-      i18n="user create next step otp@@userCreateNextStepOtpButton">
-      Continuer en gérant l'authentification
+    <button type="button" class="btn primary" [disabled]="firstStepInvalid()" (click)="passGroupStep()">
+      {{'USER.INFORMATIONS.MODAL.INFORMATIONS_STEP.CONTINUE_AUTH' | translate}}
     </button>
   </ng-template>
   <button type="button" class="btn cancel link ml-1" (click)="onCancel()">
@@ -113,21 +109,21 @@
     </div>
     <button type="button" class="btn link" cdkStepperPrevious>
       <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-      <ng-container><span class="underline">{{'COMMON.UNDO' | translate}}</span></ng-container>
+      <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
     </button>
   </div>
 </cdk-step>
 
 <cdk-step>
   <div class="content">
-    <div class="text large bold" i18n="user create autorisationsTitle@@userCreateTitle">Coordonnées</div>
+    <div class="text large bold">{{'USER.INFORMATIONS.MODAL.CONTACT_STEP.TITLE' | translate}}</div>
 
     <ng-container formGroupName="address">
       <div class="row">
         <vitamui-common-input class="col-12" [required]="!addressEmpty" formControlName="street" maxlength="250"
           [placeholder]="'COMMON.ADRESS.STREET' | translate">
           <vitamui-common-input-error
-            *ngIf="form.get('address.street')?.touched && form.get('address.street')?.hasError('required')">{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+            *ngIf="form.get('address.street')?.touched && form.get('address.street')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
             </vitamui-common-input>
           </div>
 
@@ -136,14 +132,14 @@
               [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
               <vitamui-common-input-error
                 *ngIf="form.get('address.zipCode')?.touched && form.get('address.zipCode')?.hasError('required')"
-                >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+                >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
             </vitamui-common-input>
 
             <vitamui-common-input class="col-4" [required]="!addressEmpty" formControlName="city" maxlength="100"
             [placeholder]="'COMMON.ADRESS.CITY' | translate">
               <vitamui-common-input-error
                 *ngIf="form.get('address.city')?.touched && form.get('address.city')?.hasError('required')"
-                >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+                >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
             </vitamui-common-input>
 
             <mat-form-field class="col-4 vitamui-mat-select">
@@ -186,7 +182,7 @@
 
 <cdk-step>
   <div class="content">
-    <div class="text large bold" i18n="user create autorisationsTitle@@userCreateTitle">Sécurité</div>
+    <div class="text large bold">{{'USER.INFORMATIONS.MODAL.SECURITY_STEP.TITLE' | translate}}</div>
 
     <vitamui-common-slide-toggle formControlName="otp">{{'USER.INFORMATIONS.VALIDATIONS' | translate}}
     </vitamui-common-slide-toggle>
@@ -195,17 +191,14 @@
       <vitamui-common-input class="col-5 p-0 mr-4" formControlName="mobile"
         [placeholder]="'USER.INFORMATIONS.PHONE.MOBILE' | translate"
         [class.ng-invalid]="form?.hasError('missingPhoneNumber')">
-        <vitamui-common-input-error *ngIf="form?.get('mobile')?.hasError('pattern')"
-          i18n="Mobile field format error hint@@formErrorMobileFieldFormat">
-          Format international (+336XXXXXXXX) obligatoire
+        <vitamui-common-input-error *ngIf="form?.get('mobile')?.hasError('pattern')">
+          {{'USER.INFORMATIONS.MODAL.SECURITY_STEP.PHONE_FIELD_FORMAT' | translate}}
         </vitamui-common-input-error>
         <vitamui-common-input-error *ngIf="form?.get('mobile')?.touched && form?.hasError('missingPhoneNumber')">
-          {{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+          {{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
           </vitamui-common-input>
           <vitamui-common-input class="col-5 p-0" formControlName="phone" [placeholder]="'USER.INFORMATIONS.PHONE.FIX' | translate">
-            <vitamui-common-input-error *ngIf="form?.get('phone')?.hasError('pattern')"
-              i18n="Phone field format error hint@@formErrorPhoneFieldFormat">Format international (+331XXXXXXXX)
-              obligatoire</vitamui-common-input-error>
+            <vitamui-common-input-error *ngIf="form?.get('phone')?.hasError('pattern')">{{'USER.INFORMATIONS.MODAL.SECURITY_STEP.PHONE_FIELD_FORMAT' | translate}}</vitamui-common-input-error>
           </vitamui-common-input>
         </div>
         <div class="actions">

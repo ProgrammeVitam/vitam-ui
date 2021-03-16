@@ -18,7 +18,7 @@
       <vitamui-common-editable-input formControlName="name" minlength="2" maxlength="100" [label]="'GROUP.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator" [asyncValidator]="form?.get('name')?.asyncValidator">
         <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -48,7 +48,7 @@
         [label]="'GROUP.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator">
           <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques séparés par le caractères .)</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
   </div>

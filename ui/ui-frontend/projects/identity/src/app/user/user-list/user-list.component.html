@@ -68,7 +68,7 @@
         <ng-template #levelFilterTemplate>
           <vitamui-common-table-filter-search [(filter)]="filterMap['level']" [options]="levelFilterOptions"
             (filterChange)="onFilterChange('level', $event)" (filterClose)="levelFilterTrigger?.close()"
-            emptyValueOption="-Niveau vide-" i18n-emptyValueOption="@@userListLevelFilterEmpty">
+            [emptyValueOption]="'USER.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
           </vitamui-common-table-filter-search>
         </ng-template>
 

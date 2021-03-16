@@ -38,6 +38,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { PatternComponent } from './pattern.component';
 
@@ -46,6 +47,7 @@ import { PatternComponent } from './pattern.component';
     CommonModule,
     ReactiveFormsModule,
     MatSelectModule,
+    TranslateModule
   ],
   declarations: [PatternComponent],
   exports: [PatternComponent]

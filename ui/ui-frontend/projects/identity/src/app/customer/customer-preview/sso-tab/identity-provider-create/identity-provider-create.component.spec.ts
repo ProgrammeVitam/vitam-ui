@@ -41,16 +41,36 @@ import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-front
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { PatternModule } from '../../../../shared/pattern';
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
+@Component({
+  selector: 'app-pattern',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PatternStubComponent),
+    multi: true
+  }]
+})
+class PatternStubComponent implements ControlValueAccessor {
+  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() vitamuiMiniMode = false;
+
+  @ViewChild('select', { static: true }) select: MatSelect;
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
+
 
 describe('IdentityProviderCreateComponent', () => {
   let component: IdentityProviderCreateComponent;
@@ -71,10 +91,9 @@ describe('IdentityProviderCreateComponent', () => {
         MatButtonToggleModule,
         MatSelectModule,
         NoopAnimationsModule,
-        PatternModule,
         VitamUICommonTestModule,
       ],
-      declarations: [ IdentityProviderCreateComponent ],
+      declarations: [ IdentityProviderCreateComponent, PatternStubComponent ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

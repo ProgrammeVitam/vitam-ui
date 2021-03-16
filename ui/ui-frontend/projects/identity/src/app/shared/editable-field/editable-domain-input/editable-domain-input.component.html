@@ -5,7 +5,7 @@
           <label>{{label}}</label>
           <span class="editable-field-text-content">
             <div *ngFor="let domain of control.value">
-              {{domain}} <ng-container *ngIf="domain===defaultDomain" i18n="By default@@emailDomainInputByDefault">(par défaut)</ng-container>
+              {{domain}} <ng-container *ngIf="domain===defaultDomain">{{'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate}}</ng-container>
             </div>
           </span>
           <div class="editable-field-control" [ngStyle]="{'margin-top': (label) ? '15px' : '0'}">
@@ -44,6 +44,6 @@
 <div *ngIf="disabled" class="read-only-field disabled-input">
   <label>{{label}}</label>
   <div *ngFor="let domain of control?.value">
-    {{domain}} <ng-container *ngIf="domain===defaultDomain" i18n="By default@@emailDomainInputByDefault">(par défaut)</ng-container>
+    {{domain}} <ng-container *ngIf="domain===defaultDomain">{{'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate}}</ng-container>
   </div>
 </div>

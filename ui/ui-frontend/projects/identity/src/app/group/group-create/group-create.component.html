@@ -17,7 +17,7 @@
               required [placeholder]="'GROUP.INFORMATIONS.NAME' | translate">
               <ng-container *ngIf="form.get('name')?.touched">
                 <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
-                <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-input-error>
+                <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">{{'GROUP.INFORMATIONS.MODAL.EXISTING_NAME' | translate}}</vitamui-common-input-error>
               </ng-container>
             </vitamui-common-input>
           </div>
@@ -39,8 +39,7 @@
               <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
                 <ng-container *ngIf="form.get('level')?.touched">
                   <vitamui-common-input-error *ngIf="form?.get('level')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
-                  <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">Format
-                    incorrect (caractères alphanumériques séparés par le caractères .)
+                  <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">{{'GROUP.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
                   </vitamui-common-input-error>
                 </ng-container>
               </vitamui-common-level-input>
@@ -56,7 +55,7 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" [ngClass]="{'mb-0': form.get('level').value}" i18n="Group Provisioning@@profileGroupCreateTitle2">Provisionnement du groupe “{{ form.get('name').value }}”</div>
+        <div class="text large bold" [ngClass]="{'mb-0': form.get('level').value}">{{'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate}} “{{ form.get('name').value }}”</div>
         <div class="text medium bold mb-4" *ngIf="form.get('level').value">{{'GROUP.INFORMATIONS.LEVEL' | translate}} : {{ form.get('level').value }}</div>
         
         <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>

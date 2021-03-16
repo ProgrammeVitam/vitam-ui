@@ -24,8 +24,8 @@
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')">
             {{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>
-          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')" i18n="Pattern field error hint@@formErrorPatternField">
-            Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)
+          <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('pattern')">
+            {{'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
           </vitamui-common-input-error>
         </vitamui-common-level-input>
       </div>

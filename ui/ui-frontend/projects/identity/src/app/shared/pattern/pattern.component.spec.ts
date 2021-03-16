@@ -41,6 +41,7 @@ import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/t
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { PatternComponent } from './pattern.component';
 
@@ -70,6 +71,7 @@ describe('PatternComponent', () => {
         ReactiveFormsModule,
         MatSelectModule,
         NoopAnimationsModule,
+        VitamUICommonTestModule
       ],
       declarations: [ PatternComponent, TestHostComponent ]
     })
@@ -222,7 +224,7 @@ describe('PatternComponent', () => {
       expect(elOptions[1].textContent).toContain('option2.com');
       expect(elOptions[2].textContent).toContain('option3.com');
       expect(elOptions[3].textContent).toContain('option4.com');
-      expect(elOptions[3].textContent).toContain('(déjà utilisé)');
+      expect(elOptions[3].textContent).toContain('SHARED.PATTERN_ALREADY_USED');
       expect(elOptions[3].className).toContain('mat-option-disabled');
     });
 

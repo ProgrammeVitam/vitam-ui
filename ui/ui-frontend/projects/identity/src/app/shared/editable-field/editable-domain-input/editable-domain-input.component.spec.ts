@@ -155,7 +155,7 @@ describe('EditableDomainInputComponent', () => {
       });
     }));
 
-    it('should display "(par défaut)" next to the selected domain', waitForAsync(() => {
+    it('should display "SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN" next to the selected domain', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com', 'test4.com'];
       testhost.defaultValue = testhost.value[1];
       fixture.detectChanges();
@@ -165,7 +165,7 @@ describe('EditableDomainInputComponent', () => {
           '.editable-field .editable-field-content .editable-field-text-content > div'
         );
         expect(elDomains.length).toBe(4);
-        expect(elDomains[1].textContent).toContain('(par défaut)');
+        expect(elDomains[1].textContent).toContain('SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN');
       });
     }));
 

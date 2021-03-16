@@ -16,7 +16,7 @@
                                   required placeholder="Identifiant" i18n-placeholder="Identifier@@ontologyCreateIdentifierPlaceholder">
               <ng-container *ngIf="form.get('identifier')?.touched">
                 <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required"
-                                            >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+                                            >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
                 <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.idExists"
                                             i18n="Identfier exists error hint@@formErrorIdentifierExists">Identifiant déjà utilisé
                 </vitamui-common-input-error>
@@ -34,7 +34,7 @@
                                   placeholder="Nom" i18n-placeholder="Name@@ontologyCreateNamePlaceholder">
               <ng-container *ngIf="form.get('shortName')?.touched">
                 <vitamui-common-input-error *ngIf="!!form.get('shortName')?.errors?.required"
-                                            >{{'COMMON.REQUIRED' | translate}</vitamui-common-input-error>
+                                            >{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
                 <!-- FIXME: Must we validate existance ? -->
                 <vitamui-common-input-error *ngIf="!!form?.get('shortName')?.errors?.nameExists"
                                             i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-input-error>

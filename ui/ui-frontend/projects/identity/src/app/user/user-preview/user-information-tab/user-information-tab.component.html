@@ -4,12 +4,12 @@
       <p *ngIf="user?.status === 'ENABLED'">{{'USER.INFORMATIONS.ACTIVE_SWITCH' | translate}}</p>
       <p *ngIf="user?.status === 'DISABLED'">{{'USER.INFORMATIONS.INACTIVE_SWITCH' | translate}}
       </p>
-      <p class="status-warning" *ngIf="user?.status === 'BLOCKED'" i18n="user info tab blocked@@userInfoTabBlocked">
-        Compte bloqué <ng-container *ngIf="user?.lastConnection">(depuis le {{ user?.lastConnection | date: 'medium' }})
+      <p class="status-warning" *ngIf="user?.status === 'BLOCKED'">
+        {{'USER.INFORMATIONS.BLOCKED_ACCOUNT' | translate}} <ng-container *ngIf="user?.lastConnection">({{'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate}} {{ user?.lastConnection | date: 'medium' }})
         </ng-container>
       </p>
-      <p class="status-warning" *ngIf="user?.status === 'ANONYM'" i18n="user info tab anonym@@userInfoTabAnonym">
-        Compte effacé</p>
+      <p class="status-warning" *ngIf="user?.status === 'ANONYM'">
+        {{'USER.INFORMATIONS.ERASED_ACCOUNT' | translate}}</p>
     </div>
   </div>
 
@@ -41,9 +41,8 @@
         [asyncValidator]="form?.get('email')?.asyncValidator" [domains]="customerEmailDomains" [label]="'USER.INFORMATIONS.MAIL' | translate">
         <vitamui-common-field-error errorKey="email">{{'COMMON.REQUIRED' | translate}}
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueEmail" i18n="Existing email error hint@@formErrorExistingEmail">
-          E-mail
-          déjà existant</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueEmail">
+          {{'USER.INFORMATIONS.MAIL_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-email-input>
     </div>
   </div>
@@ -53,15 +52,13 @@
       <vitamui-common-editable-input formControlName="mobile" [validator]="form?.get('mobile')?.validator"
         [label]="'USER.INFORMATIONS.PHONE.MOBILE' | translate">
         <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern" i18n="Mobile format error hint@@mobileFormatError">Format
-          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern">{{'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6 form-control">
       <vitamui-common-editable-input formControlName="phone" [validator]="form?.get('phone')?.validator"
         [label]="'USER.INFORMATIONS.PHONE.FIX' | translate">
-        <vitamui-common-field-error errorKey="pattern" i18n="Phone format error hint@@phoneFormatError">Format
-          international (+336XXXXXXXX) obligatoire</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="pattern">{{'USER.INFORMATIONS.PHONE_FIELD_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -118,8 +115,7 @@
 
   <div class="row">
     <div class="col-6 form-control">
-      <vitamui-common-editable-select formControlName="language" [label]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate"
-        i18n-label="user info tab language@@UserInfoTabLanguage">
+      <vitamui-common-editable-select formControlName="language" [label]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate">
         <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
         </vitamui-common-editable-option>
         <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
@@ -152,7 +148,7 @@
   <div class="row">
     <div class="col-6 form-control">
       <vitamui-common-slide-toggle formControlName="otp" [matTooltipDisabled]="!showTooltip"
-        matTooltip="Afin de pouvoir activer la validation en deux étapes vous devez au préalable renseigner le numéro de mobile"
+        [matTooltip]="'USER.INFORMATIONS.VALIDATIONS_TOOLTIP' | translate"
         i18n-matTooltip="Activate otp info hint@@fillMobileForOtpActivation" matTooltipClass="vitamui-tooltip">{{'USER.INFORMATIONS.VALIDATIONS' | translate}}
       </vitamui-common-slide-toggle>
     </div>

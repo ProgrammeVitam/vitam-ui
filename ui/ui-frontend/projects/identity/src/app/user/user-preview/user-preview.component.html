@@ -5,8 +5,8 @@
   [icon]="'vitamui-icon-user'"
   (onclose)="emitClose()">
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-      <button mat-menu-item i18n="@@userPreviewEnabled" (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED'">Activer </button>
-      <button mat-menu-item i18n="@@userPreviewDisabled" (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED' || user?.status === 'REMOVED'">Désactiver</button>
+      <button mat-menu-item (click)="updateStatus('ENABLED')"  [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED'">{{'USER.OTHER_ACTION.ACTIVATE' | translate}} </button>
+      <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED' || user?.status === 'REMOVED'">{{'USER.OTHER_ACTION.DESACTIVATE' | translate}}</button>
       <button mat-menu-item i18n="@@userPreviewDeleted" (click)="deleteUser(user,'REMOVED')"
               [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'">Supprimer les données personnelles</button>
     </vitamui-common-menu-button>
@@ -30,8 +30,7 @@
 
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
-    <p i18n="@@disabledUserConfirm">Êtes-vous sûr de vouloir désactiver l'utilisateur {{user?.firstname}}
-      {{user?.lastname}} - {{user?.email}} ?</p>
+    <p>{{'USER.OTHER_ACTION.DESACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
   </mat-dialog-content>
 
   <mat-dialog-actions>
@@ -42,7 +41,7 @@
 
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
-    <p i18n="@@EnabledUserConfirm">Êtes-vous sûr de vouloir réactiver l'utilisateur {{user?.firstname}} {{user?.lastname}} - {{user?.email}} ?</p>
+    <p>{{'USER.OTHER_ACTION.RESACTIVATE_MESSAGE' | translate : { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}</p>
   </mat-dialog-content>
 
   <mat-dialog-actions>

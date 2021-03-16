@@ -11,11 +11,9 @@
         <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}
         </vitamui-common-field-error>
         <vitamui-common-field-error errorKey="pattern"
-                                    i18n="Wrong format (4 digits minimum) error hint@@formError5DigitsField">Format
-          incorrect (4 chiffres minimum)
+                                    >{{'CUSTOMER.INFORMATIONS.WRONG_FORMAT' | translate}}
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà
-          existant
+        <vitamui-common-field-error errorKey="uniqueCode" >{{'CUSTOMER.INFORMATIONS.CODE_ALREADY_EXIST' | translate}}
         </vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
@@ -147,12 +145,9 @@
         [validator]="form?.get('passwordRevocationDelay')?.validator"
         [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
       >
-        <vitamui-common-editable-option [value]="6" content="6 mois"
-                                        i18n-content="6 months@@customerPreviewPasswordRevocationDelayOption6Months"></vitamui-common-editable-option>
-        <vitamui-common-editable-option [value]="9" content="9 mois"
-                                        i18n-content="9 months@@customerPreviewPasswordRevocationDelayOption9Months"></vitamui-common-editable-option>
-        <vitamui-common-editable-option [value]="12" content="12 mois"
-                                        i18n-content="12 months@@customerPreviewPasswordRevocationDelayOption12Months"></vitamui-common-editable-option>
+        <vitamui-common-editable-option [value]="6" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate"></vitamui-common-editable-option>
+        <vitamui-common-editable-option [value]="9" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate"></vitamui-common-editable-option>
+        <vitamui-common-editable-option [value]="12" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate"></vitamui-common-editable-option>
       </vitamui-common-editable-select>
     </div>
   </div>
@@ -165,12 +160,9 @@
         [validator]="form?.get('otp')?.validator"
         [asyncValidator]="form?.get('otp')?.asyncValidator"
       >
-        <vitamui-common-editable-button-toggle value="DISABLED" content="Non"
-                                               i18n-content="OTP deactivate button@@customerPreviewOTPDeactivatedButton"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="OPTIONAL" content="Optionnelle"
-                                               i18n-content="OTP activate button@@customerPreviewOTPOptionalButton"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle value="MANDATORY" content="Obligatoire"
-                                               i18n-content="OTP mandatory button@@customerPreviewOTPMandatoryButton"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="DISABLED" [content]="'CUSTOMER.INFORMATIONS.OTP_DESACTIVATE' | translate"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="OPTIONAL" [content]="'CUSTOMER.INFORMATIONS.OTP_OPTIONNAL' | translate"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="MANDATORY" [content]="'CUSTOMER.INFORMATIONS.OTP_MANDATORY' | translate"></vitamui-common-editable-button-toggle>
       </vitamui-common-editable-toggle-group>
     </div>
   </div>

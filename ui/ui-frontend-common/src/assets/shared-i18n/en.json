@@ -6,21 +6,21 @@
     "SUBMIT": "Submit",
     "UPDATE": "Update",
     "NEXT": "Next",
-    "CONFIRM" : "Confirm",
-    "CLOSE" : "Close",
+    "CONFIRM": "Confirm",
+    "CLOSE": "Close",
     "REQUIRED": "Required param",
-    "NO_RESULT" :"No result",
-    "SHOW_MORE_RESULTS" : "Show more results",
-		"LANGUAGE": {
-			"TITLE": "Language",
-			"ENGLISH": "English",
-			"FRENCH": "French",
-			"GERMAN": "German"
+    "NO_RESULT": "No result",
+    "SHOW_MORE_RESULTS": "Show more results",
+    "LANGUAGE": {
+      "TITLE": "Language",
+      "ENGLISH": "English",
+      "FRENCH": "French",
+      "GERMAN": "German"
     },
     "UNDO_MODAL": {
-			"TITLE": "Close the window",
-			"UNDO_MESSAGE": "Modified data won't be saved. Are you sure you want to close the window ?"
-		}
+      "TITLE": "Close the window",
+      "UNDO_MESSAGE": "Modified data won't be saved. Are you sure you want to close the window ?"
+    }
   },
   "COLOR": {
     "PRIMARY": "Primary color",
@@ -29,46 +29,47 @@
     "HEADER_FOOTER": "Header color",
     "BACKGROUND": "Background color"
   },
-	"ACCOUNT": {
-		"TITLE": "My account",
-		"REFRESH_PASSWORD": "Change password",
-		"TAB": {
-			"INFORMATIONS": "Informations"
-		},
-		"LASTNAME": "Lastname",
-		"FIRSTNAME": "Firstname",
-		"MAIL": "Email",
-		"DEFAULT_LANGUAGE": "Interface language",
-		"OTP_AUTH": "OTP authentication",
-		"PHONE": {
-			"MOBILE": "Phone number",
-			"FIX": "Home phone number"
-		},
-		"DELIVERY_ADRESS": "Delivery address",
-		"LEVEL": "Level",
-		"GROUP": "My profile group"
+  "ACCOUNT": {
+    "TITLE": "My account",
+    "REFRESH_PASSWORD": "Change password",
+    "TAB": {
+      "INFORMATIONS": "Informations"
+    },
+    "LASTNAME": "Lastname",
+    "FIRSTNAME": "Firstname",
+    "MAIL": "Email",
+    "DEFAULT_LANGUAGE": "Interface language",
+    "OTP_AUTH": "OTP authentication",
+    "PHONE": {
+      "MOBILE": "Phone number",
+      "FIX": "Home phone number"
+    },
+    "DELIVERY_ADRESS": "Delivery address",
+    "LEVEL": "Level",
+    "GROUP": "My profile group"
   },
   "SUBROGATION": {
-		"PREHOME": {
-			"ORGANIZATIONS": "My Organizations"
-		},
-		"HOME": {
-			"RESULTS_TABLE": {
-				"MODAL": {
-					"IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
-					"CANCEL_SUBROGATION": "Your subragation request has been canceled",
-					"ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user",
-					"WAITING_ACCEPTATION": "Waiting for user approval",
-					"ASK_SUBROGATION": "You ask a user to subrogate"
-				}
-			}
+    "PREHOME": {
+      "ORGANIZATIONS": "My Organizations"
+    },
+    "HOME": {
+      "RESULTS_TABLE": {
+        "MODAL": {
+          "IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
+          "DENIED_SUBROGATION": "Your subrogation request has been refused",
+          "CANCEL_SUBROGATION": "Your subragation request has been canceled",
+          "ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user",
+          "WAITING_ACCEPTATION": "Waiting for user approval",
+          "ACCEPT_SUBROGATION": "In order to help you the support has for the next 30 minutes the same rights as you",
+          "ASK_SUBROGATION": "You ask a user to subrogate"
+        }
+      }
     }
   },
-  "APPLICATION":
-   {
-     "PORTAL_APP": {
-      "NAME" : "Portal"
-     },
+  "APPLICATION": {
+    "PORTAL_APP": {
+      "NAME": "Portal"
+    },
     "CUSTOMERS_APP": {
       "NAME": "Clients organizations settings",
       "TOOLTIP": "Set up a client organization, assign safes and configure user authentication security"
@@ -278,15 +279,14 @@
     "ENGLISH": "English",
     "GERMAN": "German"
   },
-
   "COUNTRY": {
-      "FRANCE" : "France",
-      "GERMANY": "Germany",
-      "ITALY": "Italy",
-      "UNITED-KINGDOM": "United Kingdom",
-      "DENMARK": "Denmark",
-      "SPAIN": "Spain",
-      "BELGIUM": "Belgium",
-      "PORTUGAL": "Portugal"
+    "FRANCE": "France",
+    "GERMANY": "Germany",
+    "ITALY": "Italy",
+    "UNITED-KINGDOM": "United Kingdom",
+    "DENMARK": "Denmark",
+    "SPAIN": "Spain",
+    "BELGIUM": "Belgium",
+    "PORTUGAL": "Portugal"
   }
 }

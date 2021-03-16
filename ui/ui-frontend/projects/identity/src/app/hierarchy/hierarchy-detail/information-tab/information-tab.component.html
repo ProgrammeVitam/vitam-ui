@@ -29,7 +29,7 @@
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
         <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
@@ -49,8 +49,8 @@
         [label]="'HIERARCHY.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{'HIERARCHY.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
   </div>

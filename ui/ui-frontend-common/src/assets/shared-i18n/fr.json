@@ -6,21 +6,21 @@
     "SUBMIT": "Terminer",
     "UPDATE": "Modifier",
     "NEXT": "Suivant",
-    "CONFIRM" : "Confirmer",
-    "CLOSE" : "Fermer",
+    "CONFIRM": "Confirmer",
+    "CLOSE": "Fermer",
     "REQUIRED": "Champ requis",
-    "NO_RESULT" :"Aucun résultat",
-    "SHOW_MORE_RESULTS" : "Afficher plus de résultats...",
-		"LANGUAGE": {
-			"TITLE": "Langue",
-			"ENGLISH": "Anglais",
-			"FRENCH": "Français",
-			"GERMAN": "Allemand"
+    "NO_RESULT": "Aucun résultat",
+    "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
+    "LANGUAGE": {
+      "TITLE": "Langue",
+      "ENGLISH": "Anglais",
+      "FRENCH": "Français",
+      "GERMAN": "Allemand"
     },
     "UNDO_MODAL": {
-			"TITLE": "Fermer la fenêtre",
-			"UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
-		}
+      "TITLE": "Fermer la fenêtre",
+      "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
+    }
   },
   "COLOR": {
     "PRIMARY": "Couleur primaire",
@@ -29,45 +29,47 @@
     "HEADER_FOOTER": "Couleur d'entête",
     "BACKGROUND": "Couleur de fond de page"
   },
-	"ACCOUNT": {
-		"TITLE": "Mon compte",
-		"REFRESH_PASSWORD": "Changer de mot de passe",
-		"TAB": {
-			"INFORMATIONS": "Informations"
-		},
-		"LASTNAME": "Nom",
-		"FIRSTNAME": "Prénom",
-		"MAIL": "Adresse e-mail",
-		"DEFAULT_LANGUAGE": "Langue de l'interface",
-		"OTP_AUTH": "Authentification OTP",
-		"PHONE": {
-			"MOBILE": "Numéro de mobile",
-			"FIX": "Numéro de fix"
-		},
-		"DELIVERY_ADRESS": "Adresse de livraison",
-		"LEVEL": "Niveau",
-		"GROUP": "Mon groupe de profils"
+  "ACCOUNT": {
+    "TITLE": "Mon compte",
+    "REFRESH_PASSWORD": "Changer de mot de passe",
+    "TAB": {
+      "INFORMATIONS": "Informations"
+    },
+    "LASTNAME": "Nom",
+    "FIRSTNAME": "Prénom",
+    "MAIL": "Adresse e-mail",
+    "DEFAULT_LANGUAGE": "Langue de l'interface",
+    "OTP_AUTH": "Authentification OTP",
+    "PHONE": {
+      "MOBILE": "Numéro de mobile",
+      "FIX": "Numéro de fix"
+    },
+    "DELIVERY_ADRESS": "Adresse de livraison",
+    "LEVEL": "Niveau",
+    "GROUP": "Mon groupe de profils"
   },
   "SUBROGATION": {
-		"PREHOME": {
-			"ORGANIZATIONS": "Mes Organisations"
-		},
-		"HOME": {
-			"RESULTS_TABLE": {
-				"MODAL": {
-					"IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
-					"CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
-					"ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
-					"WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
-					"ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
-				}
-			}
-		}
-	},
+    "PREHOME": {
+      "ORGANIZATIONS": "Mes Organisations"
+    },
+    "HOME": {
+      "RESULTS_TABLE": {
+        "MODAL": {
+          "IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
+          "DENIED_SUBROGATION": "Votre demande de subrogation a été refusée",
+          "CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
+          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
+          "WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
+          "ACCEPT_SUBROGATION": "Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous",
+          "ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
+        }
+      }
+    }
+  },
   "APPLICATION": {
     "PORTAL_APP": {
-      "NAME" : "Portail"
-     },
+      "NAME": "Portail"
+    },
     "CUSTOMERS_APP": {
       "NAME": "Organisations",
       "TOOLTIP": "Paramétrer les organisations (clients, ...) et les coffres des organisations"
@@ -296,15 +298,15 @@
     "FRENCH": "Français",
     "ENGLISH": "Anglais",
     "GERMAN": "Allemand"
-  }	,
+  },
   "COUNTRY": {
-      "FRANCE" : "France",
-      "GERMANY": "Allemagne",
-      "ITALY": "Italie",
-      "UNITED-KINGDOM": "Royaume-Uni",
-      "DENMARK": "Danemark",
-      "SPAIN": "Espagne",
-      "BELGIUM": "Belgique",
-      "PORTUGAL": "Portugal"
+    "FRANCE": "France",
+    "GERMANY": "Allemagne",
+    "ITALY": "Italie",
+    "UNITED-KINGDOM": "Royaume-Uni",
+    "DENMARK": "Danemark",
+    "SPAIN": "Espagne",
+    "BELGIUM": "Belgique",
+    "PORTUGAL": "Portugal"
   }
 }

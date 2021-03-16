@@ -5,11 +5,9 @@
       [validator]="ownerForm?.get('code')?.validator"
         [asyncValidator]="ownerForm?.get('code')?.asyncValidator">
         <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="pattern"
-          i18n="Wrong format (6 digits minimum) error hint@@formError6DigitsField">Format incorrect (6 chiffres minimum)
+        <vitamui-common-field-error errorKey="pattern">{{'CUSTOMER.OWNER.MODAL.WRONG_FORMAT' | translate}}
         </vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode" i18n="Code exists error hint@@formErrorCodeExists">Code déjà
-          existant</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueCode">{{'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
@@ -88,8 +86,8 @@
       <vitamui-common-editable-input formControlName="name" maxlength="100" [label]="'CUSTOMER.OWNER.SAFE_NAME' | translate" [validator]="tenantForm?.get('name')?.validator"
         [asyncValidator]="tenantForm?.get('name')?.asyncValidator">
         <vitamui-common-field-error errorKey="required">{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueName" i18n="Existing name field error hint@@formErrorExistingName">
-          Nom déjà existant</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniqueName">
+          {{'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>

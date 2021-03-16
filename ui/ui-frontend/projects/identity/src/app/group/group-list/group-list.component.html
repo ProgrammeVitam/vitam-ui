@@ -15,7 +15,7 @@
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
               <div class="table-filter-icon">
-                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.NAME' | translate}}</span>
+                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -51,8 +51,7 @@
             [options]="levelFilterOptions"
             (filterChange)="onFilterChange('level', $event)"
             (filterClose)="levelFilterTrigger?.close()"
-            emptyValueOption="-Niveau vide-"
-            i18n-emptyValueOption="@@groupsListLevelFilterEmpty">
+            [emptyValueOption]="'GROUP.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
           </vitamui-common-table-filter-search>
         </ng-template>
 
