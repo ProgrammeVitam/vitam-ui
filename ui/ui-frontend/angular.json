@@ -630,7 +630,7 @@
             },
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
-            "main": "projects/ingest/src/main.ts",            
+            "main": "projects/ingest/src/main.ts",
             "tsConfig": "projects/ingest/tsconfig.app.json",
             "polyfills": "projects/ingest/src/polyfills.ts",
             "assets": [
