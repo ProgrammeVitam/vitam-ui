@@ -241,6 +241,10 @@
     "LOGBOOK_OPERATION_APP": {
       "NAME": "Operations Log",
       "TOOLTIP": "Consulting the logs of entry, base and elimination operations"
+    },
+    "ITEM_SUPERVISION_PROFILE_APP": {
+      "NAME": "Rights in the “Organizations item supervision”",
+      "TOOLTIP": "Set up supervision profiles for the “Organizations item supervision” APP"
     }
   },
   "FOOTER": {

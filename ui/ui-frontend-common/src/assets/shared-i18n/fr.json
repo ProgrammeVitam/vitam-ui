@@ -234,6 +234,10 @@
       "NAME": "Rapports",
       "TOOLTIP": "Consulter les rapports et les statistiques"
     },
+    "ITEM_SUPERVISION_PROFILE_APP": {
+      "NAME": "Profil APP de supervision",
+      "TOOLTIP": "Paramétrer des profils de supervision pour l’APP de supervision des bordereaux"
+    },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
       "NAME": "Recherche et consultation des archives",
       "TOOLTIP": "Rechercher et consulter les archives"
