@@ -215,6 +215,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   onSubmit() {
     /*if (this.form.invalid) { return; }*/
     const ingestContract = this.form.value as IngestContract;
+    ingestContract.status === 'ACTIVE' ? ingestContract.activationDate = new Date().toISOString() : ingestContract.deactivationDate = new Date().toISOString();
     this.ingestContractService.create(ingestContract).subscribe(
       () => {
         this.dialogRef.close(true);

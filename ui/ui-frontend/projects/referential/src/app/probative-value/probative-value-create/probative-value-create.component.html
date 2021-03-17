@@ -34,23 +34,6 @@
         <div class="form-group">
           <div class="col-8 form-control">
             <mat-form-field class="vitamui-mat-select">
-              <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
-                          panelclass="vitamui-mat-select" required>
-                <mat-option *ngFor='let accessContract of accessContracts'
-                            [value]="accessContract.key">{{accessContract.label}}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-8 form-control">
-            <mat-form-field class="vitamui-mat-select">
               <mat-select formControlName="usage" placeholder="Selectionner un usage"
                           panelclass="vitamui-mat-select" required>
                 <mat-option *ngFor='let usage of usages' [value]="usage.key">{{usage.label}}</mat-option>

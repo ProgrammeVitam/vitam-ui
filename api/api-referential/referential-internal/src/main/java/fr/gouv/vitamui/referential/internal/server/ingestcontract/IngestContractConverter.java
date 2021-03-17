@@ -60,6 +60,11 @@ public class IngestContractConverter {
             ingestContract.setCheckParentLink(IngestContractCheckState.valueOf(dto.getCheckParentLink()));
         }
 
+        ingestContract.setCreationdate(dto.getCreationDate());
+        ingestContract.setLastupdate(dto.getLastUpdate());
+        ingestContract.setActivationdate(dto.getActivationDate());
+        ingestContract.setDeactivationdate(dto.getDeactivationDate());
+        
         return ingestContract;
     }
 
@@ -82,7 +87,12 @@ public class IngestContractConverter {
         if (ingestContract.isEveryDataObjectVersion() != null) {
             dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
         }
-
+        
+        dto.setCreationDate(ingestContract.getCreationdate());
+        dto.setLastUpdate(ingestContract.getLastupdate());
+        dto.setActivationDate(ingestContract.getActivationdate());
+        dto.setDeactivationDate(ingestContract.getDeactivationdate());
+        
         return dto;
     }
 
