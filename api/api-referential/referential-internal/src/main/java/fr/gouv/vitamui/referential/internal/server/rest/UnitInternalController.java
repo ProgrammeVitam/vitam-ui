@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 import java.io.IOException;
@@ -130,14 +130,17 @@ public class UnitInternalController {
             throws VitamClientException, IOException {
         LOGGER.debug("Get filing plan");
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        final JsonNode holdingQuery = createQueryForHoldingUnit();
-        return objectMapper.treeToValue(unitInternalService.searchUnits(holdingQuery, vitamContext), VitamUISearchResponseDto.class);
+        
+        // TULEAP-20359 : The filling plan must retrieve the units with the FILING or HOLDING type
+        final JsonNode fillingOrHoldingQuery = createQueryForFillingOrHoldingUnit();
+        
+        return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext), VitamUISearchResponseDto.class);
     }
 
-    private JsonNode createQueryForHoldingUnit() {
+    private JsonNode createQueryForFillingOrHoldingUnit() {
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query = eq(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue());
+            final Query query = in(unitType(), UnitTypeEnum.FILING_UNIT.getValue(), UnitTypeEnum.HOLDING_UNIT.getValue());
             select.addQueries(query);
             select.addUsedProjection(FILING_PLAN_PROJECTION);
             return select.getFinalSelect();

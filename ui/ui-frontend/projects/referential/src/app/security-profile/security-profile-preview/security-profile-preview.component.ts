@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ConfirmActionComponent, SecurityProfile} from 'projects/vitamui-library/src/public-api';
@@ -13,7 +13,7 @@ import {SecurityProfilePermissionsTabComponent} from './security-profile-permiss
   templateUrl: './security-profile-preview.component.html',
   styleUrls: ['./security-profile-preview.component.scss']
 })
-export class SecurityProfilePreviewComponent implements OnInit {
+export class SecurityProfilePreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() securityProfile: SecurityProfile;
@@ -37,11 +37,7 @@ export class SecurityProfilePreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private securityProfileService: SecurityProfileService) {
   }
 
-  ngOnInit() {
-  }
-
-
-  ngAfterViewInit = (): void => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.permsTab;

@@ -223,6 +223,9 @@ public class AccessContractInternalService {
         if (partialDto.get("activationDate") != null) {
             propertiesToUpdate.put("ActivationDate", (String) partialDto.get("activationDate"));
         }
+        if (partialDto.get("deactivationDate") != null) {
+            propertiesToUpdate.put("DeactivationDate", (String) partialDto.get("deactivationDate"));
+        }
         if (partialDto.get("lastUpdate") != null) {
             propertiesToUpdate.put("LastUpdate", (String) partialDto.get("lastUpdate"));
         }

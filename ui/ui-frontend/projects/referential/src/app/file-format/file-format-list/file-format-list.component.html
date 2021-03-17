@@ -39,7 +39,7 @@
       <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.puid }}</td>
       <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.createdDate | date:'dd/MM/yyyy' }}</td>
       <td>
-        <div class="actions">
+        <div class="actions" *ngIf="!isInternal(format)">
           <button class="btn-circle primary" (click)="deleteFileFormatDialog(format)">
             <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
           </button>

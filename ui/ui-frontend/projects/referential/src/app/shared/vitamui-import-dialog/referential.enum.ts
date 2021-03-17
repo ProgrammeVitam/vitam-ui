@@ -37,5 +37,6 @@
 export enum Referential {
     AGENCY = 'agency',
     FILE_FORMAT = 'fileformat',
-    ONTOLOGY = 'ontology'
+    ONTOLOGY = 'ontology',
+    RULE = 'rule',
 }

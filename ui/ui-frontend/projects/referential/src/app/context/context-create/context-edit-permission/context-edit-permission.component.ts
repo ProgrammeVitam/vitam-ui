@@ -157,6 +157,9 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
 
   onAdd() {
     this.permissions.push({ tenant: '', accessContracts: [], ingestContracts: [] });
+    if(!this.selectedOrganisations) {
+      this.selectedOrganisations = new Array<string>();
+    }
     this.selectedOrganisations.push(null);
     this.changeOrganisations.emit(this.selectedOrganisations);
     if (this.onChange) {

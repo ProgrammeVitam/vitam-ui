@@ -107,13 +107,19 @@ public class IngestContractService {
         final List<IngestContractModel> listOfAC = new ArrayList<>();
         for (final IngestContractModel acModel : ingestContractModels) {
             final IngestContractModel ac = new IngestContractModel();
-            // we don't want to inculde the tenant field in the json sent to vitam
+            // we don't want to include the tenant field in the json sent to vitam
             acModel.setTenant(null);
 
             LOGGER.debug("inputIC: {}", acModel);
             LOGGER.debug("input checkParentID: {}", acModel.getCheckParentId());
 
             VitamUIUtils.copyProperties(acModel, ac);
+
+            // copyProperties() doesn't handle Boolean properties
+            ac.setMasterMandatory(acModel.isMasterMandatory());
+            ac.setFormatUnidentifiedAuthorized(acModel.isFormatUnidentifiedAuthorized());
+            ac.setEveryFormatType(acModel.isEveryFormatType());
+            ac.setEveryDataObjectVersion(acModel.isEveryDataObjectVersion());
 
             LOGGER.debug("outputIC: {}", ac);
             LOGGER.debug("output checkParentID: {}", ac.getCheckParentId());
@@ -127,6 +133,7 @@ public class IngestContractService {
         final List<IngestContractModel> listOfAC = convertIngestContractsToModelOfCreation(ingestContractModels);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfAC, JsonNode.class);
+ 
         LOGGER.debug("The json for creation ingest contract, sent to Vitam {}", node);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {

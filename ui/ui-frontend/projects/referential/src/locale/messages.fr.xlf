@@ -287,7 +287,7 @@
 
 
         <note priority="1" from="description">Required field error hint</note>
-      <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-modal/subrogation-modal.component.d.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-preview/agency-information-tab/agency-information-tab.component.html</context><context context-type="linenumber">16</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">30</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">56</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">64</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">84</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">86</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-preview/ontology-information-tab/ontology-information-tab.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-create/audit-create.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context><context context-type="linenumber">71</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/admin-dsl/admin-dsl.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-preview/rule-information-tab/rule-information-tab.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">56</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">71</context></context-group></trans-unit><trans-unit id="languageEnglish" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-modal/subrogation-modal.component.d.ts</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-create/ingest-contract-create.component.html</context><context context-type="linenumber">39</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-preview/agency-information-tab/agency-information-tab.component.html</context><context context-type="linenumber">16</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">30</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-preview/file-format-information-tab/file-format-information-tab.component.html</context><context context-type="linenumber">56</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">64</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">24</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">93</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">95</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">29</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-preview/ontology-information-tab/ontology-information-tab.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-create/audit-create.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-create/probative-value-create.component.html</context><context context-type="linenumber">71</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/admin-dsl/admin-dsl.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-preview/rule-information-tab/rule-information-tab.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">56</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-create/rule-create.component.html</context><context context-type="linenumber">71</context></context-group></trans-unit><trans-unit id="languageEnglish" datatype="html">
         <source>Anglais</source><target state="final">Anglais</target>
 
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/account/account-information-tab/account-information-tab.component.d.ts</context><context context-type="linenumber">24</context></context-group></trans-unit><trans-unit id="languageFrench" datatype="html">
@@ -815,7 +815,7 @@
 
 
         <note priority="1" from="description">Create accessContract title</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">139</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">169</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">83</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">148</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">178</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle2" datatype="html">
         <source>Informations</source><target state="final">Informations</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context>
@@ -833,7 +833,7 @@
 
 
         <note priority="1" from="description">Name exists error hint</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">42</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">28</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="profileGroupCreateNamePlaceholder" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">24</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-create/agency-create.component.html</context><context context-type="linenumber">42</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-create/file-format-create.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-create/ontology-create.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="profileGroupCreateNamePlaceholder" datatype="html">
         <source>Nom</source><target state="final">Nom</target>
 
 
@@ -844,7 +844,7 @@
 
 
         <note priority="1" from="description">Name</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-preview/agency-information-tab/agency-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-preview/context-information-tab/context-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-preview/security-profile-information-tab/security-profile-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">16</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-preview/ontology-information-tab/ontology-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/admin-dsl/admin-dsl.component.html</context><context context-type="linenumber">41</context></context-group></trans-unit><trans-unit id="profilesFormApplicationPlaceholder" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-preview/agency-information-tab/agency-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-preview/context-information-tab/context-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-preview/security-profile-information-tab/security-profile-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-preview/ontology-information-tab/ontology-information-tab.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/admin-dsl/admin-dsl.component.html</context><context context-type="linenumber">41</context></context-group></trans-unit><trans-unit id="profilesFormApplicationPlaceholder" datatype="html">
         <source>Sélectionnez les règles</source><target state="final">Sélectionnez les règles</target>
 
 
@@ -856,14 +856,14 @@
 
 
         <note priority="1" from="description">Application</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">58</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">87</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">110</context></context-group><context-group purpose="location"><context context-type="sourcefile">../identity/src/app/shared/profiles-form/profiles-form.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="accessContractCreateNextButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-information-tab/access-contract-information-tab.component.html</context><context context-type="linenumber">58</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">60</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">119</context></context-group><context-group purpose="location"><context context-type="sourcefile">../identity/src/app/shared/profiles-form/profiles-form.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="accessContractCreateNextButton" datatype="html">
         <source>Suivant</source><target state="final">Suivant</target>
 
 
 
 
         <note priority="1" from="description">Next step button label</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">65</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">126</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">156</context></context-group></trans-unit><trans-unit id="accessContractCreateCancelButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">135</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">165</context></context-group></trans-unit><trans-unit id="accessContractCreateCancelButton" datatype="html">
         <source>Annuler</source><target state="final">Annuler</target>
 
 
@@ -871,18 +871,18 @@
 
 
         <note priority="1" from="description">Cancel accessContract creation</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">67</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">128</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">158</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">188</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle3" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">137</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">167</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">197</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle3" datatype="html">
         <source>Services producteurs et usages</source><target state="final">Services producteurs et usages</target>
 
         <note priority="1" from="description">Create accessContract title</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">75</context></context-group></trans-unit><trans-unit id="accessContractCreateBackButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">84</context></context-group></trans-unit><trans-unit id="accessContractCreateBackButton" datatype="html">
         <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Retour<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></source><target state="final"><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span>"/>Retour<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/></target>
 
 
 
 
         <note priority="1" from="description">Previous step button label</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">132</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">162</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">191</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle4" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">141</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">171</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">200</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">65</context></context-group></trans-unit><trans-unit id="accessContractCreateTitle4" datatype="html">
         <source>Droits d'écritures</source><target state="final">Droits d'écritures</target>
 
         <note priority="1" from="description">Create accessContract title</note>
@@ -890,11 +890,11 @@
         <source>Positions de consultation</source><target state="final">Positions de consultation</target>
 
         <note priority="1" from="description">Create accessContract title</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">170</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component.html</context><context context-type="linenumber">3</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component.html</context><context context-type="linenumber">23</context></context-group></trans-unit><trans-unit id="accessContractCreateFinishButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">179</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-preview/access-contract-nodes-tab/access-contract-nodes-update/access-contract-node-update.component.html</context><context context-type="linenumber">3</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component.html</context><context context-type="linenumber">5</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-attachment-tab/ingest-contract-nodes-update/ingest-contract-node-update.component.html</context><context context-type="linenumber">23</context></context-group></trans-unit><trans-unit id="accessContractCreateFinishButton" datatype="html">
         <source>Terminer</source><target state="final">Terminer</target>
 
         <note priority="1" from="description">Finish accessContract creation button</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">186</context></context-group></trans-unit><trans-unit id="userStatusEnabled" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-create/access-contract-create.component.html</context><context context-type="linenumber">195</context></context-group></trans-unit><trans-unit id="userStatusEnabled" datatype="html">
         <source>
                 <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Actif
               </source><target state="final">
@@ -956,7 +956,7 @@
 
 
         <note priority="1" from="description">Show more results</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-list/access-contract-list.component.html</context><context context-type="linenumber">88</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-list/ingest-contract-list.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-list/agency-list.component.html</context><context context-type="linenumber">54</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-list/file-format-list.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-list/context-list.component.html</context><context context-type="linenumber">82</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-list/security-profile-list.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-list/ontology-list.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-list/audit-list.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/securisation/securisation-list/securisation-list.component.html</context><context context-type="linenumber">53</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-list/probative-value-list.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">78</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-list/rule-list.component.html</context><context context-type="linenumber">72</context></context-group></trans-unit><trans-unit id="accessContractSearchHeader" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/access-contract/access-contract-list/access-contract-list.component.html</context><context context-type="linenumber">88</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-list/ingest-contract-list.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/agency/agency-list/agency-list.component.html</context><context context-type="linenumber">54</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/file-format/file-format-list/file-format-list.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-list/context-list.component.html</context><context context-type="linenumber">82</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-list/security-profile-list.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/ontology/ontology-list/ontology-list.component.html</context><context context-type="linenumber">57</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-list/audit-list.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/securisation/securisation-list/securisation-list.component.html</context><context context-type="linenumber">53</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/probative-value/probative-value-list/probative-value-list.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">101</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/rule/rule-list/rule-list.component.html</context><context context-type="linenumber">72</context></context-group></trans-unit><trans-unit id="accessContractSearchHeader" datatype="html">
         <source>
           <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/> Paramétrer mes <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>Contrats d'accès<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
         </source><target state="final">
@@ -1716,23 +1716,25 @@
         <note priority="1" from="description">Create context title</note>
       </trans-unit><trans-unit id="contextCreateNamePlaceholder" datatype="html">
         <source>Nom</source><target state="final">Nom</target>
+        
+        <note priority="1" from="description">Name</note>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="contextCreateIdentifierPlaceholder" datatype="html">
+        <source>Identifiant</source><target state="final">Identifiant</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">32</context>
         </context-group>
-        <note priority="1" from="description">Name</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Identifier</note>
       </trans-unit><trans-unit id="securityProfileFormApplicationPlaceholder" datatype="html">
         <source>Profil de sécurité</source><target state="final">Profil de sécurité</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">36</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-preview/context-information-tab/context-information-tab.component.html</context>
-          <context context-type="linenumber">18</context>
-        </context-group>
+        
+        
         <note priority="1" from="description">Application</note>
-      </trans-unit><trans-unit id="contextEditTitle1" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-preview/context-information-tab/context-information-tab.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">45</context></context-group></trans-unit><trans-unit id="contextEditTitle1" datatype="html">
         <source>Modification d'un contexte applicatif</source><target state="final">Modification d'un contexte applicatif</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context>
@@ -1748,16 +1750,10 @@
         <note priority="1" from="description">Edit context title</note>
       </trans-unit><trans-unit id="formWarningMultipleOrganisations" datatype="html">
         <source>Attention vous avez renseigné deux organisations différentes</source><target state="final">Attention vous avez renseigné deux organisations différentes</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">80</context>
-        </context-group>
+        
+        
         <note priority="1" from="description">Multiple organisation warning hint</note>
-      </trans-unit><trans-unit id="contextEditFinishButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">89</context></context-group></trans-unit><trans-unit id="contextEditFinishButton" datatype="html">
         <source>Terminer</source><target state="final">Terminer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context>
@@ -1787,39 +1783,30 @@
         <note priority="1" from="description">Update context save permission button label</note>
       </trans-unit><trans-unit id="contextCreateNextButton" datatype="html">
         <source>Suivant</source><target state="final">Suivant</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">64</context>
-        </context-group>
+        
         <note priority="1" from="description">Next step button label</note>
-      </trans-unit><trans-unit id="contextCreateCancelButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">73</context></context-group></trans-unit><trans-unit id="contextCreateCancelButton" datatype="html">
         <source>Annuler</source><target state="final">Annuler</target>
 
 
         <note priority="1" from="description">Cancel context creation</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">66</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">94</context></context-group></trans-unit><trans-unit id="contextCreateTitle1" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">75</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">103</context></context-group></trans-unit><trans-unit id="contextCreateTitle1" datatype="html">
         <source>Création d'un contexte applicatif</source><target state="final">Création d'un contexte applicatif</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">72</context>
-        </context-group>
+        
         <note priority="1" from="description">Create context title</note>
-      </trans-unit><trans-unit id="contextCreateTitle2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">81</context></context-group></trans-unit><trans-unit id="contextCreateTitle2" datatype="html">
         <source>Permissions</source><target state="final">Permissions</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context>
-          <context context-type="linenumber">73</context>
-        </context-group>
+        
         <note priority="1" from="description">Create context title</note>
-      </trans-unit><trans-unit id="contextCreateFinishButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">82</context></context-group></trans-unit><trans-unit id="contextCreateFinishButton" datatype="html">
         <source>Terminer</source><target state="final">Terminer</target>
 
         <note priority="1" from="description">Finish context creation button</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">92</context></context-group></trans-unit><trans-unit id="contextCreateBackButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">101</context></context-group></trans-unit><trans-unit id="contextCreateBackButton" datatype="html">
         <source>Retour</source><target state="final">Retour</target>
 
         <note priority="1" from="description">Previous step button label</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">97</context></context-group></trans-unit><trans-unit id="contextListContextNameHeader" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">106</context></context-group></trans-unit><trans-unit id="contextListContextNameHeader" datatype="html">
         <source>Nom</source><target state="final">Nom</target>
 
         <note priority="1" from="description">Context name column header</note>
@@ -1840,18 +1827,12 @@
         </target>
 
         <note priority="1" from="description">Search context</note>
-      </trans-unit><trans-unit id="contextSearchPlaceholder" datatype="html">
-        <source>Nom, Identifiant</source><target state="final">Nom, Identifiant</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/context/context.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/security-profile/security-profile.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit><trans-unit id="contextListCreateButton" datatype="html">
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="contextSearchPlaceholder" datatype="html">
+        <source>Nom, Identifiant</source><target state="final">Nom, Identifiant</target>
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="contextListCreateButton" datatype="html">
+      <source>Créer un contexte</source><target state="final">Créer un contexte</target><context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile.component.html</context><context context-type="linenumber">26</context></context-group><note from="description" priority="1">Create context button label</note></trans-unit><trans-unit id="contextSearchPlaceholder" datatype="html">
         <source>Nom, ID</source><target state="final">Nom, ID</target>
 
 
@@ -1908,7 +1889,7 @@
 
 
         <note priority="1" from="description">Create securityProfile title</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">45</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit><trans-unit id="securityProfileCreateTitle2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">54</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="securityProfileCreateTitle2" datatype="html">
         <source>Informations</source><target state="final">Informations</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context>
@@ -1917,22 +1898,19 @@
         <note priority="1" from="description">Create securityProfile title</note>
       </trans-unit><trans-unit id="securityProfileCreateNextButton" datatype="html">
         <source>Suivant</source><target state="final">Suivant</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
+        
         <note priority="1" from="description">Next step button label</note>
-      </trans-unit><trans-unit id="securityProfileCreateFinishButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">44</context></context-group></trans-unit><trans-unit id="securityProfileCreateFinishButton" datatype="html">
         <source>Terminer</source><target state="final">Terminer</target>
 
 
         <note priority="1" from="description">Finish securityProfile creation button</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">51</context></context-group></trans-unit><trans-unit id="securityProfileCreateCancelButton" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">46</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">60</context></context-group></trans-unit><trans-unit id="securityProfileCreateCancelButton" datatype="html">
         <source>Annuler</source><target state="final">Annuler</target>
 
 
         <note priority="1" from="description">Cancel securityProfile creation</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">38</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">52</context></context-group></trans-unit><trans-unit id="contextListSecurityProfileNameHeader" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">47</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">61</context></context-group></trans-unit><trans-unit id="contextListSecurityProfileNameHeader" datatype="html">
         <source>Nom</source><target state="final">Nom</target>
 
         <note priority="1" from="description">SecurityProfile name column header</note>
@@ -2032,9 +2010,9 @@
         </context-group>
         <note priority="1" from="description">Import ontology button label</note>
       </trans-unit><trans-unit id="userPreviewTabHistory" datatype="html">
-        <source>Historique</source><target state="final">Historique</target>
-
-
+        <source>Détails</source><target state="final">Détails</target>
+        
+        
         <note priority="1" from="description">History tab</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-preview/audit-preview.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/securisation/securisation-preview/securisation-preview.component.html</context><context context-type="linenumber">34</context></context-group></trans-unit><trans-unit id="auditListIdentifierHeader" datatype="html">
         <source>Identifiant</source><target state="final">Identifiant</target>
@@ -2138,50 +2116,35 @@
           <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit><trans-unit id="logbookOperationListOperationHeader" datatype="html">
-        <source>Opération</source><target state="final">Opération</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-      </trans-unit><trans-unit id="logbookOperationListStartDateHeader" datatype="html">
-        <source>Date de création</source><target state="final">Date de création</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit><trans-unit id="logbookOperationListEndDateHeader" datatype="html">
-        <source>Fin d'exécution</source><target state="final">Fin d'exécution</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
-      </trans-unit><trans-unit id="logbookOperationListStatusHeader" datatype="html">
+        <source>Catégorie d'opération</source><target state="final">Catégorie d'opération</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit><trans-unit id="logbookOperationListStartDateHeader" datatype="html">
+        <source>Date de début</source><target state="final">Date de début</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">44</context></context-group></trans-unit><trans-unit id="logbookOperationListEndDateHeader" datatype="html">
+        <source>Date de fin</source><target state="final">Date de fin</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">50</context></context-group></trans-unit><trans-unit id="logbookOperationListStatusHeader" datatype="html">
         <source>Statut</source><target state="final">Statut</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
-          <context context-type="linenumber">34</context>
-        </context-group>
-      </trans-unit><trans-unit id="logbookOperationListStepHeader" datatype="html">
-        <source>Etape</source><target state="final">Etape</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context>
-          <context context-type="linenumber">40</context>
-        </context-group>
-      </trans-unit><trans-unit id="apiSupervisionPageTitle" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit><trans-unit id="logbookOperationListStepHeader" datatype="html">
+        <source>Étape</source><target state="final">Étape</target>
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">62</context></context-group></trans-unit><trans-unit id="apiSupervisionPageTitle" datatype="html">
         <source>
-            <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/> Journal des Opérations
-          </source><target state="final">
-            <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/> Journal des Opérations
-          </target>
+          <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>Journal des Opérations<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+        </source><target state="final">
+          <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>Journal des Opérations<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+        </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
-      </trans-unit><trans-unit id="apiSupervisionMoreActionsButton" datatype="html">
-        <source>Autres actions</source><target state="final">Autres actions</target>
+      </trans-unit><trans-unit id="logbookOperationSearchPlaceholder" datatype="html">
+        <source>Nom, ID</source><target state="final">Nom, ID</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit><trans-unit id="apiSupervisionComingSoon" datatype="html">
         <source>
@@ -2189,91 +2152,59 @@
               </source><target state="final">
                 Bientôt
               </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context>
-          <context context-type="linenumber">29</context>
-        </context-group>
-      </trans-unit><trans-unit id="logbookOperationCategory" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="logbookOperationCategory" datatype="html">
         <source>Catégorie d'opération</source><target state="final">Catégorie d'opération</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
+        
         <note priority="1" from="description">Operation category</note>
-      </trans-unit><trans-unit id="logbookOperationAgIdExt" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">25</context></context-group></trans-unit><trans-unit id="logbookOperationAgIdExt" datatype="html">
         <source>Identifiants des agents externes</source><target state="final">Identifiants des agents externes</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">28</context>
-        </context-group>
+        
         <note priority="1" from="description">External Agencies Identifiers</note>
-      </trans-unit><trans-unit id="logbookOperationContract" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit><trans-unit id="logbookOperationContract" datatype="html">
         <source>Contrat associé</source><target state="final">Contrat associé</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">32</context>
-        </context-group>
+        
         <note priority="1" from="description">Associated Contract</note>
-      </trans-unit><trans-unit id="logbookOperationApplicationId" datatype="html">
-        <source>Identification de l'application</source><target state="final">Identification de l'application</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">39</context>
-        </context-group>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit><trans-unit id="logbookOperationApplicationId" datatype="html">
+        <source>Identifiant de l'application</source><target state="final">Identifiant de l'application</target>
+        
         <note priority="1" from="description">Application Identifier</note>
-      </trans-unit><trans-unit id="logbookOperationTransactionNumber" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">42</context></context-group></trans-unit><trans-unit id="logbookOperationTransactionNumber" datatype="html">
         <source>Numéro de transaction</source><target state="final">Numéro de transaction</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">43</context>
-        </context-group>
+        
         <note priority="1" from="description">Transaction number</note>
-      </trans-unit><trans-unit id="logbookOperationOPI" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit><trans-unit id="logbookOperationOPI" datatype="html">
         <source>Identification de l'opération</source><target state="final">Identification de l'opération</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">50</context>
-        </context-group>
+        
         <note priority="1" from="description">Operation Identifier</note>
-      </trans-unit><trans-unit id="logbookOperationAgId" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit><trans-unit id="logbookOperationAgId" datatype="html">
         <source>Acteur(s) interne(s)</source><target state="final">Acteur(s) interne(s)</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">54</context>
-        </context-group>
+        
         <note priority="1" from="description">Agency identifier</note>
-      </trans-unit><trans-unit id="logbookOperationReport" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">57</context></context-group></trans-unit><trans-unit id="logbookOperationReport" datatype="html">
         <source>Rapport</source><target state="final">Rapport</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">60</context>
-        </context-group>
+        
         <note priority="1" from="description">Report</note>
-      </trans-unit><trans-unit id="logbookOperationAddInfos" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit><trans-unit id="logbookOperationAddInfos" datatype="html">
         <source>Informations complémentaires sur l'opération</source><target state="final">Informations complémentaires sur l'opération</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">65</context>
-        </context-group>
+        
         <note priority="1" from="description">Additionnal Infos</note>
-      </trans-unit><trans-unit id="logbookOperationMessage" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit><trans-unit id="logbookOperationMessage" datatype="html">
         <source>Message</source><target state="final">Message</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">70</context>
-        </context-group>
+        
         <note priority="1" from="description">Message</note>
-      </trans-unit><trans-unit id="eventDetailTabInformation" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">73</context></context-group></trans-unit><trans-unit id="eventDetailTabInformation" datatype="html">
         <source>Informations</source><target state="final">Informations</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
-          <context context-type="linenumber">75</context>
-        </context-group>
+        
+        
         <note priority="1" from="description">Information tab</note>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="eventDetailTabDetails" datatype="html">
+        <source>Détails</source><target state="final">Détails</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <note priority="1" from="description">Details tab</note>
       </trans-unit><trans-unit id="archiveUnitDslQueryCategoryLabel" datatype="html">
         <source>
                 Unité d'archive
@@ -2605,10 +2536,6 @@
         <source>Annuler</source><target state="final">Annuler</target>
 
         <note priority="1" from="description">Cancel import button</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit><trans-unit id="accessContratNotSetErrorMessage">
-        <source>Aucun contrat d'accès n'est associé à l'utiisateur</source>
-        <target>Aucun contrat d'accès n'est associé à l'utiisateur</target>
-        <description>access contrat not set message</description>
-      </trans-unit></body>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/shared/vitamui-import-dialog/vitamui-import-dialog.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit></body>
   </file>
 </xliff>

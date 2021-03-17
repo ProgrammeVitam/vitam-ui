@@ -79,7 +79,7 @@ export class AuditPreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.auditService.download(this.audit.id, this.accessContractId);
+    this.auditService.download(this.audit.id, this.audit.type, this.accessContractId);
   }
 
   filterEvents(event: any): boolean {

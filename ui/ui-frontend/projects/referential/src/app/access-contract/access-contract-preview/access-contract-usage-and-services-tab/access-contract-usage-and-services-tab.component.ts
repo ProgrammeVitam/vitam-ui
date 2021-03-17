@@ -103,6 +103,36 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
       }
     );
 
+    this.form.controls.everyOriginatingAgency.valueChanges.subscribe(
+      allAgencies => {
+        if (allAgencies) {
+          // remove required validator on originatingAgencySelect
+          this.originatingAgencySelect.setValidators([]);
+          this.originatingAgencySelect.updateValueAndValidity();
+        } else {
+          // add required validator on originatingAgencySelect
+          this.originatingAgencySelect.setValidators(Validators.required);
+          this.originatingAgencySelect.markAllAsTouched();
+          this.originatingAgencySelect.updateValueAndValidity();
+        }
+      }
+    );
+    
+    this.form.controls.everyDataObjectVersion.valueChanges.subscribe(
+      allUsage => {
+        if (allUsage) {
+          // remove required validator on usageSelect
+          this.usageSelect.setValidators([]);
+          this.usageSelect.updateValueAndValidity();
+        } else {
+          // add required validator on usageSelect
+          this.usageSelect.setValidators(Validators.required);
+          this.usageSelect.markAllAsTouched();
+          this.usageSelect.updateValueAndValidity();
+        }
+      }
+    );
+
     this.usageSelect.valueChanges.subscribe(
       x => {
         this.form.controls.dataObjectVersion.setValue(x);
@@ -172,6 +202,27 @@ export class AccessContractUsageAndServicesTabComponent implements OnInit {
   }
 
   resetForm(accessContract: AccessContract) {
+    if (accessContract.everyOriginatingAgency) {
+      // remove required validator on originatingAgencySelect
+      this.originatingAgencySelect.setValidators([]);
+    } else {
+      // add required validator on originatingAgencySelect
+      this.originatingAgencySelect.setValidators(Validators.required);
+    }
+
+    if (accessContract.everyDataObjectVersion) {
+      // remove required validator on usageSelect
+      this.usageSelect.setValidators([]);
+    } else {
+      // add required validator on usageSelect
+      this.usageSelect.setValidators(Validators.required);
+    }
+
     this.form.reset(accessContract, {emitEvent: false});
   }
+
+  isInvalid(): boolean {
+    return this.form.invalid || this.usageSelect.invalid || this.originatingAgencySelect.invalid;
+  }
+
 }

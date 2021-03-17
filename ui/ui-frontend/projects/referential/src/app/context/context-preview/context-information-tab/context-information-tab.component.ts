@@ -135,11 +135,33 @@ export class ContextInformationTabComponent {
     return false;
   }
 
+  getEnableControl(): boolean {
+    return this.form.getRawValue().enableControl;
+  }
+
   prepareSubmit(): Observable<Context> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    let diffValue = diff(this.form.getRawValue(), this.previousValue());
+    if (!diffValue.enableControl) {
+      diffValue.permissions = [];
+    }
+
+    return of(diffValue).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.contextService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string, [key: string]: any }) => {
+        // Update the activation and deactivation dates if the context status has changed before sending the data
+        if (formData.status) {
+          if (formData.status === 'ACTIVE') {
+            formData.activationDate = new Date();
+            formData.deactivationDate = '';
+          } else {
+            formData.status = 'INACTIVE';
+            formData.activationDate = '';
+            formData.deactivationDate = new Date();
+          }
+        }
+        return this.contextService.patch(formData).pipe(catchError(() => of(null)));
+      }));
   }
 
   onSubmit() {

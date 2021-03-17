@@ -59,6 +59,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
+  isCreationPending = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -112,6 +113,8 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
     format.extensions = [this.form.value.extensions];
 
+    // Disable the submit button to prevent double submit
+    this.isCreationPending = true;
     this.agencyService.create(format).subscribe(
       () => {
         this.dialogRef.close({success: true});
