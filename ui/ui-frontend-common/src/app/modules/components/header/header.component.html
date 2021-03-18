@@ -14,8 +14,8 @@
       <!-- tenant selection -->
       <vitamui-common-item-select
         *ngIf="hasTenantSelection"
-        [label]="'SELECT-TENANT.SELECT' | translate"
-        [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
+        [label]="'SELECT_TENANT.SELECT' | translate"
+        [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
         [items]="appTenants"
         [selectedItem]="selectedTenant"
         (itemSelected)="updateTenant($event)">
@@ -24,8 +24,8 @@
       <!-- customer selection -->
       <vitamui-common-item-select
         *ngIf="hasCustomerSelection"
-        [label]="'SELECT-CUSTOMER.SELECT' | translate"
-        [selectedLabel]="'SELECT-CUSTOMER.SELECTED' | translate"
+        [label]="'SELECT_CUSTOMER.SELECT' | translate"
+        [selectedLabel]="'SELECT_CUSTOMER.SELECTED' | translate"
         [items]="customers"
         [selectedItem]="selectedCustomer"
         (itemSelected)="updateCustomer($event)">

@@ -263,10 +263,10 @@
     "security_and_application_rights": "Sécurité & droits applicatifs",
     "organization_and_user_rights": "Organisation & droits utilisateurs"
   },
-  "MENU-APPLICATION-TILE": {
+  "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Entrée pour lancer l'application"
   },
-  "SELECT-TENANT": {
+  "SELECT_TENANT": {
     "SELECTED": "Coffre sélectionné",
     "SELECT": "Sélectionner un coffre",
     "DIALOG_TITLE": "Bienvenue sur ",
@@ -275,20 +275,20 @@
     "DIALOG_MESSAGE": "Votre coffre par défaut pourra être modifié depuis votre compte",
     "DIALOG_BUTTON_LABEL": "Accéder à "
   },
-  "SELECT-CUSTOMER": {
+  "SELECT_CUSTOMER": {
     "SELECTED": "Organisation sélectionnée",
     "SELECT": "Sélectionner une organisation"
   },
-  "SELECT-LANGUAGE": {
+  "SELECT_LANGUAGE": {
     "LANGUAGE": "Langue",
     "ENGLISH": "Anglais",
     "FRENCH": "Français"
   },
-  "SLIDE-TOGGLE": {
+  "SLIDE_TOGGLE": {
     "YES": "OUI",
     "NO": "NON"
   },
-  "LEVEL-INPUT": {
+  "LEVEL_INPUT": {
     "SUBLEVEL": "Sous niveau"
   },
   "PROGRESS_BAR": {
@@ -303,7 +303,7 @@
     "FRANCE": "France",
     "GERMANY": "Allemagne",
     "ITALY": "Italie",
-    "UNITED-KINGDOM": "Royaume-Uni",
+    "UNITED_KINGDOM": "Royaume-Uni",
     "DENMARK": "Danemark",
     "SPAIN": "Espagne",
     "BELGIUM": "Belgique",

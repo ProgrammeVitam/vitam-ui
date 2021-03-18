@@ -49,7 +49,7 @@ export interface CountryOption {
 export enum CountryName {
   // can be completed at need
   FRANCE = 'FRANCE',
-  UNITED_KINGDOM = 'UNITED-KINGDOM',
+  UNITED_KINGDOM = 'UNITED_KINGDOM',
   GERMANY = 'GERMANY',
   SPAIN = 'SPAIN',
   ITALY = 'ITALY',

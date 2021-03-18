@@ -13,44 +13,44 @@
     }
   },
   "BUTTON": {
-    "Primary": "Primaire par défaut",
-    "Primary_outline": "Contour Primaire par défaut",
-    "Primary_contrast": "Contraste Primaire par défaut",
-    "Primary_contrast_outline": "Contour contrasté Primaire par défaut",
-    "Secondary": "Secondaire par défaut",
-    "Secondary_outline": "Contour Secondaire par défaut",
-    "Secondary_contrast": "Contraste Secondaire par défaut",
-    "Secondary_contrast_outline": "Contour contrasté secondaire  par défaut",
-    "Tertiary": "Tertiaire par défaut",
-    "Disabled_label": "Désactivé",
-    "Disabled_outline": "Contour désactivé",
-    "Disabled_contrast": "Contraste désactivé",
-    "Disabled_contrast_outline": "Contour contrasté désactivé",
+    "PRIMARY": "Primaire par défaut",
+    "PRIMARY_OUTLINE": "Contour Primaire par défaut",
+    "PRIMARY_CONTRAST": "Contraste Primaire par défaut",
+    "PRIMARY_CONTRAST_OUTLINE": "Contour contrasté Primaire par défaut",
+    "SECONDARY": "Secondaire par défaut",
+    "SECONDARY_OUTLINE": "Contour Secondaire par défaut",
+    "SECONDARY_CONTRAST": "Contraste Secondaire par défaut",
+    "SECONDARY_CONTRAST_OUTLINE": "Contour contrasté secondaire  par défaut",
+    "TERTIARY": "Tertiaire par défaut",
+    "DISABLED_LABEL": "Désactivé",
+    "DISABLED_OUTLINE": "Contour désactivé",
+    "DISABLED_CONTRAST": "Contraste désactivé",
+    "DISABLED_CONTRAST_OUTLINE": "Contour contrasté désactivé",
     "CANCEL": "Annuler"
   },
-  "SAMPLE-DIALOG": {
-    "Open": "Ouvrir la popup d'exemple",
-    "Step-0": "Première étape",
-    "Step-1": "Deuxième étape"
+  "SAMPLE_DIALOG": {
+    "OPEN": "Ouvrir la popup d'exemple",
+    "STEP_0": "Première étape",
+    "STEP_1": "Deuxième étape"
   },
   "COLORS": {
-    "Primary": "Couleur primaire",
-    "Secondary": "Couleur secondaire",
-    "Grey": "Couleur grise",
-    "Red": "Couleur rouge",
-    "Orange": "Couleur orange",
-    "Green": "Couleur verte"
+    "PRIMARY": "Couleur primaire",
+    "SECONDARY": "Couleur secondaire",
+    "GREY": "Couleur grise",
+    "RED": "Couleur rouge",
+    "ORANGE": "Couleur orange",
+    "GREEN": "Couleur verte"
   },
   "ICONS": {
-    "Title": "Liste des icônes de Vitam-UI",
+    "TITLE": "Liste des icônes de Vitam-UI",
     "Colors": "Couleurs disponibles"
   },
   "ELEVATIONS": {
-    "Title": "Ombres & Elevations",
-    "Dark": "Ombres foncées",
-    "Primary": "Ombres primaires",
-    "Secondary": "Ombres secondaires",
-    "Tertiary": "Ombres tertiaires"
+    "TITLE": "Ombres & Elevations",
+    "DARK": "Ombres foncées",
+    "PRIMARY": "Ombres primaires",
+    "SECONDARY": "Ombres secondaires",
+    "TERTIARY": "Ombres tertiaires"
   },
   "TRANSLATION": {
     "TITLE": "Traduction",

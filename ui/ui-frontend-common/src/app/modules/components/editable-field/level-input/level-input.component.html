@@ -1,6 +1,6 @@
 <div *ngIf="!isEditableComponent" class="vitamui-input" [class.disabled]="disabled">
     <label>
-        {{'LEVEL-INPUT.SUBLEVEL' | translate }}
+        {{'LEVEL_INPUT.SUBLEVEL' | translate }}
         <span *ngIf="required" class="required-marker">*</span>
       </label>
     <input #vitamUILevelInput type="text" [disabled]="disabled" [required]="required" [(ngModel)]="subLevel" (ngModelChange)="onValueChange($event)"

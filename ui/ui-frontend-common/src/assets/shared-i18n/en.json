@@ -243,10 +243,10 @@
     "security_and_application_rights": "Security & application rights",
     "organization_and_user_rights": "Organization & user rights"
   },
-  "MENU-APPLICATION-TILE": {
+  "MENU_APPLICATION_TILE": {
     "ENTER_APPLICATION": "Enter to launch the application"
   },
-  "SELECT-TENANT": {
+  "SELECT_TENANT": {
     "SELECTED": "Selected tenant",
     "SELECT": "Select a tenant",
     "DIALOG_TITLE": "Welcome to ",
@@ -255,20 +255,20 @@
     "DIALOG_MESSAGE": "Your default safe can be modified from your account",
     "DIALOG_BUTTON_LABEL": "Access to "
   },
-  "SELECT-CUSTOMER": {
+  "SELECT_CUSTOMER": {
     "SELECTED": "Selected customer",
     "SELECT": "Select a customer"
   },
-  "SELECT-LANGUAGE": {
+  "SELECT_LANGUAGE": {
     "LANGUAGE": "Language",
     "ENGLISH": "English",
     "FRENCH": "French"
   },
-  "SLIDE-TOGGLE": {
+  "SLIDE_TOGGLE": {
     "YES": "YES",
     "NO": "NO"
   },
-  "LEVEL-INPUT": {
+  "LEVEL_INPUT": {
     "SUBLEVEL": "Sub level"
   },
   "PROGRESS_BAR": {
@@ -283,7 +283,7 @@
     "FRANCE": "France",
     "GERMANY": "Germany",
     "ITALY": "Italy",
-    "UNITED-KINGDOM": "United Kingdom",
+    "UNITED_KINGDOM": "United Kingdom",
     "DENMARK": "Denmark",
     "SPAIN": "Spain",
     "BELGIUM": "Belgium",

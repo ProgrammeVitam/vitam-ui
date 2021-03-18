@@ -18,10 +18,10 @@
 <ng-template #select>
   <div class="select-language">
     <vitamui-common-item-select
-      [label]="'SELECT-LANGUAGE.LANGUAGE' | translate"
-      [selectedLabel]="'SELECT-LANGUAGE.LANGUAGE' | translate"
-      [items]="[{label: 'SELECT-LANGUAGE.FRENCH' | translate, value:'fr'}, {label: 'SELECT-LANGUAGE.ENGLISH' | translate, value:'en'}]"
-      [selectedItem]="currentLang === 'fr' ? {label: 'SELECT-LANGUAGE.FRENCH' | translate, value:'fr'} : {label: 'SELECT-LANGUAGE.ENGLISH' | translate, value:'en'}"
+      [label]="'SELECT_LANGUAGE.LANGUAGE' | translate"
+      [selectedLabel]="'SELECT_LANGUAGE.LANGUAGE' | translate"
+      [items]="[{label: 'SELECT_LANGUAGE.FRENCH' | translate, value:'fr'}, {label: 'SELECT_LANGUAGE.ENGLISH' | translate, value:'en'}]"
+      [selectedItem]="currentLang === 'fr' ? {label: 'SELECT_LANGUAGE.FRENCH' | translate, value:'fr'} : {label: 'SELECT_LANGUAGE.ENGLISH' | translate, value:'en'}"
       (itemSelected)="use($event.value)">
     </vitamui-common-item-select>
   </div>
