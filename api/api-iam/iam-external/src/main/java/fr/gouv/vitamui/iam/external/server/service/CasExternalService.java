@@ -85,6 +85,10 @@ public class CasExternalService extends AbstractInternalClientService {
         return getClient().getUserByEmail(getInternalHttpContext(), email, embedded);
     }
 
+    public UserDto getUser(final String email, final String idp, final Optional<String> userIdentifier, final Optional<String> embedded) {
+        return getClient().getUser(getInternalHttpContext(), email, idp, userIdentifier, embedded);
+    }
+
     public UserDto getUserById(final String id) {
         return getClient().getUserById(getInternalHttpContext(), id);
     }

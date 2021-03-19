@@ -34,60 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.rest;
+package fr.gouv.vitamui.iam.internal.server.provisioning.service;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import fr.gouv.vitamui.commons.api.domain.ProvidedUserDto;
 
 /**
- * The URLs of the REST API.
+ * Customer provisioning service.
  *
  *
  */
-public abstract class RestApi {
+@Service
+public class ProvisioningInternalService {
 
-    public static final String STATUS_URL = "/status";
-
-    public static final String AUTOTEST_URL = "/autotest";
-
-    public static final String V1_CUSTOMERS_URL = "/iam/v1/customers";
-
-    public static final String V1_TENANTS_URL = "/iam/v1/tenants";
-
-    public static final String V1_OWNERS_URL = "/iam/v1/owners";
-
-    public static final String V1_PROVIDERS_URL = "/iam/v1/providers";
-
-    public static final String V1_USERS_URL = "/iam/v1/users";
-
-    public static final String V1_ACCOUNTS_URL = "/iam/v1/accounts";
-
-    public static final String V1_GROUPS_URL = "/iam/v1/groups";
-
-    public static final String V1_PROFILES_URL = "/iam/v1/profiles";
-
-    public static final String V1_SUBROGATIONS_URL = "/iam/v1/subrogations";
-
-    public static final String V1_APPLICATIONS_URL = "/iam/v1/applications";
-
-    public static final String V1_CAS_URL = "/iam/v1/cas";
-
-    public static final String CAS_LOGIN_PATH = "/login";
-
-    public static final String CAS_LOGOUT_PATH = "/logout";
-
-    public static final String CAS_CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String CAS_USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING = "/provisioning";
-
-    public static final String CAS_SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String V1_IAM_URL = "/iam/v1";
-
-    public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
-
-    public static final String V1_EXTERNAL_PARAM_PROFILE_URL = "/iam/v1/externalparamprofile";
-
-    private RestApi() {
-        // do nothing
+    public ProvidedUserDto getUserInformation(final String email, final String idp, final Optional<String> userIdentifier) {
+        // TODO : get user info from effective customer proxy
+        return new ProvidedUserDto();
     }
 }

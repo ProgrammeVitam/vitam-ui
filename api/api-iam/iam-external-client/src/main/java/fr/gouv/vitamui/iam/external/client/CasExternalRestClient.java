@@ -116,6 +116,31 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         }
     }
 
+    public UserDto getUser(final ExternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
+            final Optional<String> embedded) {
+        LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
+        uriBuilder.queryParam("email", email);
+        uriBuilder.queryParam("idp", idp);
+        if (userIdentifier.isPresent()) {
+            uriBuilder.queryParam("userIdentifier", userIdentifier);
+        }
+        if (embedded.isPresent()) {
+            uriBuilder.queryParam("embedded", embedded.get());
+        }
+
+        final HttpEntity request = new HttpEntity(buildHeaders(context));
+        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, AuthUserDto.class);
+        checkResponse(response);
+        final AuthUserDto authUserDto = response.getBody();
+        if (authUserDto.getProfileGroup() != null) {
+            return authUserDto;
+        }
+        else {
+            return authUserDto.newBasicUserDto();
+        }
+    }
+
     public UserDto getUserById(final ExternalHttpContext context, final String id) {
         LOGGER.debug("getUserById: {}", id);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
