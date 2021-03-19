@@ -81,10 +81,12 @@ public class IdentityProviderBuilder {
 
     private final AuthnRequestBindingEnum authnRequestBinding;
 
+    private final boolean autoProvisioningEnabled;
+
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
             final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
             final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-            final boolean readonly, final String mailAttribute, final AuthnRequestBindingEnum authnRequestBinding) {
+            final boolean readonly, final String mailAttribute, final AuthnRequestBindingEnum authnRequestBinding, final boolean autoProvisioningEnabled) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -98,6 +100,7 @@ public class IdentityProviderBuilder {
         this.readonly = readonly;
         this.mailAttribute = mailAttribute;
         this.authnRequestBinding =  authnRequestBinding;
+        this.autoProvisioningEnabled = autoProvisioningEnabled;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -123,6 +126,8 @@ public class IdentityProviderBuilder {
         extractIdpMetadata(idp, idpMetadata);
 
         idp.setCustomerId(customerId);
+
+        idp.setAutoProvisioningEnabled(autoProvisioningEnabled);
 
         return idp;
     }

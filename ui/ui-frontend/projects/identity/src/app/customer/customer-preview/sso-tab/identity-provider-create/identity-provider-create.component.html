@@ -140,6 +140,14 @@
         ></app-pattern>
       </div>
 
+      <div>
+        <vitamui-common-slide-toggle
+          class="p-0"
+          formControlName="autoProvisioningEnabled"
+          >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
+        >
+      </div>
+
       <div class="actions mt-4">
         <button type="submit" class="btn primary" [disabled]="!isFormValid">
           {{ "COMMON.SUBMIT" | translate }}

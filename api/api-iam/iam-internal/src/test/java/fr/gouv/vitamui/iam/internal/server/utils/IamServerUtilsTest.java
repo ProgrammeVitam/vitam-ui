@@ -385,7 +385,7 @@ public final class IamServerUtilsTest {
      * IdentityProviderDto
      */
     public static IdentityProviderDto buildIdentityProviderDto() {
-        return IamDtoBuilder.buildIdentityProviderDto(IDP_ID, IDP_NAME, CUSTOMER_ID, EMAIL_DOMAINS, true);
+        return IamDtoBuilder.buildIdentityProviderDto(IDP_ID, IDP_NAME, CUSTOMER_ID, EMAIL_DOMAINS, false, true);
     }
 
     public static IdentityProvider buildIdentityProvider() {
@@ -396,6 +396,7 @@ public final class IamServerUtilsTest {
         idp.setEnabled(true);
         idp.setInternal(true);
         idp.setIdentifier(String.valueOf(IDP_IDENTIFIER));
+        idp.setAutoProvisioningEnabled(true);
         return idp;
     }
 

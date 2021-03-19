@@ -171,7 +171,7 @@ public class IamDtoBuilder {
     }
 
     public static IdentityProviderDto buildIdentityProviderDto(final String idpId, final String idpName, final String customerId, final List<String> patterns,
-            final boolean internal) {
+            final boolean internal, final boolean autoProvisioningEnabled) {
         final IdentityProviderDto idpDto = new IdentityProviderDto();
         idpDto.setId(idpId);
         idpDto.setName(idpName);
@@ -179,6 +179,7 @@ public class IamDtoBuilder {
         idpDto.setEnabled(true);
         idpDto.setInternal(internal);
         idpDto.setPatterns(patterns);
+        idpDto.setAutoProvisioningEnabled(autoProvisioningEnabled);
         return idpDto;
     }
 

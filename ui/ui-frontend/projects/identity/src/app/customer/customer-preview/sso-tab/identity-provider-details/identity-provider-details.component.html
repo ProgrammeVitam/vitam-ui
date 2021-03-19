@@ -17,7 +17,7 @@
   </div>
 
   <div class="row">
-    <div class="col-5 form-control">
+    <div class="col-5">
       <vitamui-common-editable-input
         formControlName="name"
         maxlength="100"
@@ -29,7 +29,7 @@
       </vitamui-common-editable-input>
     </div>
 
-    <div class="col-7 form-control">
+    <div class="col-7">
       <vitamui-common-editable-toggle-group
         formControlName="internal"
         [label]="'CUSTOMER.SSO.TYPE' | translate"
@@ -83,7 +83,7 @@
   </div>
 
   <div class="row">
-    <div class="col-6 form-control">
+    <div class="col-6">
       <vitamui-common-editable-input
         formControlName="mailAttribute"
         maxlength="100"
@@ -94,7 +94,7 @@
   </div>
 
   <div class="row">
-    <div class="col-6 form-control">
+    <div class="col-6">
       <vitamui-common-editable-toggle-group
       formControlName="authnRequestBinding"
       label="Authentication Request Binding"
@@ -107,6 +107,14 @@
       <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
     </vitamui-common-editable-toggle-group>
     </div>
+  </div>
+
+  <div class="row mt-2" *ngIf="!identityProvider.internal">
+    <vitamui-common-slide-toggle
+      class="col-4"
+      formControlName="autoProvisioningEnabled"
+      >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
+    >
   </div>
 
 </form>

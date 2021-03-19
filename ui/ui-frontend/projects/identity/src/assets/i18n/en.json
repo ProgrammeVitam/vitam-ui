@@ -158,7 +158,8 @@
         "WRONG_PASSWORD": "Wrong password",
         "UPLOAD_KEYSTORE": "Upload the CAS keystore file",
         "UPLOAD_METADATA": "Upload the IDP metadata file"
-      }
+      },
+      "AUTO_PROVISIONING": "Automatic user update"
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Personalized graphic identity",

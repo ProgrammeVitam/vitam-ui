@@ -103,5 +103,5 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
-    private boolean autoProvisioning;
+    private boolean autoProvisioningEnabled;
 }

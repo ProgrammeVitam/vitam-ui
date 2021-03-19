@@ -52,6 +52,7 @@ export interface IdentityProvider extends Id {
   readonly: boolean;
   mailAttribute?: string;
   authnRequestBinding: AuthnRequestBindingEnum;
+  autoProvisioningEnabled: boolean;
 }
 
 /**
