@@ -108,6 +108,26 @@ public class CasInternalRestClient extends BaseRestClient<InternalHttpContext> {
         return response.getBody();
     }
 
+    public UserDto getUser(final InternalHttpContext context, final String email, final String idp, final Optional<String> userIdentifier,
+            final Optional<String> embedded) {
+        LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING);
+        uriBuilder.queryParam("email", email);
+        uriBuilder.queryParam("idp", idp);
+        if (userIdentifier.isPresent()) {
+            uriBuilder.queryParam("userIdentifier", userIdentifier);
+        }
+        if (embedded.isPresent()) {
+            uriBuilder.queryParam("embedded", embedded.get());
+        }
+
+        final HttpEntity request = new HttpEntity(buildHeaders(context));
+        final ResponseEntity<AuthUserDto> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET,
+                request, AuthUserDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
     public UserDto getUserById(final InternalHttpContext context, final String id) {
         LOGGER.debug("getUserById {}", id);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CAS_USERS_PATH);
