@@ -1,6 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { collapseAnimation, Direction, Group, rotateAnimation } from 'ui-frontend-common';
+import { SampleDialogComponent } from '../miscellaneous/sample-dialog/sample-dialog.component';
 
 @Component({
   selector: 'app-arrays',
@@ -27,7 +29,7 @@ export class ArraysComponent implements OnInit {
     {name: 'Sample name', identifier: '0006', description: 'Sample description', level: 'Hero'},
   ] as Group[];
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() { }
 
@@ -37,6 +39,13 @@ export class ArraysComponent implements OnInit {
 
   public handleClick(event: any): void {
     console.log('[onClick] : ' + event);
+  }
+
+  openDialog(event: any) {
+    console.log('[Dialog] : ' + event);
+    this.dialog.open(SampleDialogComponent, { panelClass: 'vitamui-modal', disableClose: true }).afterClosed().subscribe(() => {
+      console.log('Dialog closed !');
+    });
   }
 
 }

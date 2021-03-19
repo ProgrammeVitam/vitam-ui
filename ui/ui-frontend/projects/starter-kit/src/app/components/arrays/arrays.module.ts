@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { SampleDialogModule } from '../miscellaneous/sample-dialog/sample-dialog.module';
 import { ArraysComponent } from './arrays.component';
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ArraysComponent } from './arrays.component';
     ReactiveFormsModule,
     VitamUICommonModule,
     MatButtonToggleModule,
+    SampleDialogModule,
     SharedModule
   ],
   exports: [

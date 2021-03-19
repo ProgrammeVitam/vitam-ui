@@ -12,6 +12,13 @@
       "TITLE_PLACEHOLDER": "Nom, Raison sociale, Code organisation, Adresse..."
     }
   },
+  "ARRAY":{
+    "BASIC_TITLE" : "Tableau simple",
+    "FILTER_TITLE": "Tableau avec filtres",
+    "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
+    "MULTI_ACTIONS_TITLE" : "Tableau avec sous tableau et actions différentes sur les colonnes",
+    "DIALOG_TITLE" :"Tableau avec détail"
+  },
   "BUTTON": {
     "PRIMARY": "Primaire par défaut",
     "PRIMARY_OUTLINE": "Contour Primaire par défaut",
