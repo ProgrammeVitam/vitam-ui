@@ -615,6 +615,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.CENTER_CODE, user.getCenterCode(), entry.getValue()));
                     user.setCenterCode(CastUtils.toString(entry.getValue()));
                     break;
+                case "autoProvisioningEnabled" :
+                    logbooks.add(new EventDiffDto(UserConverter.AUTO_PROVISIONING_ENABLED_KEY, user.isAutoProvisioningEnabled(), entry.getValue()));
+                    user.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch group " + user.getId() + ": key " + entry.getKey() + " is not allowed");
             }

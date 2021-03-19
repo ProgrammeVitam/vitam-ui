@@ -342,6 +342,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Statut\":\"ENABLED\","
                 + "\"Subrogeable\":\"false\","
                 + "\"Code interne\":\"\","
+                + "\"Mise à jour automatique\":\"false\","
                 + "\"OTP\":\"true\","
                 + "\"Date de désactivation\":\"\","
                 + "\"Date de suppression\":\"\","
@@ -415,6 +416,10 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         partialDto.put("centerCode", "002");
         internalUserService.patch(partialDto);
         partialDto.remove("centerCode");
+
+        partialDto.put("autoProvisioningEnabled", true);
+        internalUserService.patch(partialDto);
+        partialDto.remove("autoProvisioningEnabled");
 
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));

@@ -129,6 +129,7 @@ public final class IamServerUtilsTest {
         user.setPhone("+33134237766");
         user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
         user.setAddress(buildAddress());
+        user.setAutoProvisioningEnabled(false);
         return user;
     }
 

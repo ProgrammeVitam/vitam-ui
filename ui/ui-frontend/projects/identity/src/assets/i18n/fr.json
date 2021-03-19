@@ -305,7 +305,8 @@
           "TITLE": "Sécurité",
           "PHONE_FIELD_FORMAT": "Format international (+336XXXXXXXX) obligatoire"
         }
-      }
+      },
+      "ACTIVATE_AUTO_PROVISIONING": "Activer la mise à jour automatique"
     },
     "GROUP": {
       "GROUP": "Groupe attribué",

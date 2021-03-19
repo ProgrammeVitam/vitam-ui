@@ -90,6 +90,7 @@ export class UserInfoTabComponent implements OnChanges {
     siteCode: string,
     centerCode: string,
     internalCode: string
+    autoProvisioningEnabled: boolean
   };
 
   public countries: CountryOption[];
@@ -126,6 +127,7 @@ export class UserInfoTabComponent implements OnChanges {
       siteCode: [null],
       centerCode: [null],
       internalCode: [null],
+      autoProvisioningEnabled: null
     });
 
     this.form.get('mobile').valueChanges.subscribe(() => {
