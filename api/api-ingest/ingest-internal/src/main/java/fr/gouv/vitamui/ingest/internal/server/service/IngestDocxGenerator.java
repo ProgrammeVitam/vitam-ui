@@ -163,18 +163,21 @@ public class IngestODTGenerator {
         tableTwoRowTwo.getCell(1).setText(getComment(manifest));
         tableTwoRowTwo.getCell(1).setWidth("7000");
 
-        XWPFTableRow tableTwoRowThree = tableTwo.createRow();
-        tableTwoRowThree.getCell(0).removeParagraph(0);
-        XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
-        runDate.setText("Dates extrêmes :");
-        runDate.setBold(true);
-        tableTwoRowThree.getCell(0).setWidth("3000");
-        tableTwoRowThree.getCell(1).removeParagraph(0);
-        tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
-            "date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
-        tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
-            transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
-        tableTwoRowThree.getCell(1).setWidth("7000");
+        if(!archiveUnitDtoList.isEmpty() && archiveUnitDtoList != null) {
+
+            XWPFTableRow tableTwoRowThree = tableTwo.createRow();
+            tableTwoRowThree.getCell(0).removeParagraph(0);
+            XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
+            runDate.setText("Dates extrêmes :");
+            runDate.setBold(true);
+            tableTwoRowThree.getCell(0).setWidth("3000");
+            tableTwoRowThree.getCell(1).removeParagraph(0);
+            tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
+                "date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
+            tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
+                transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
+            tableTwoRowThree.getCell(1).setWidth("7000");
+        }
 
         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
         tableTwoRowFour.getCell(0).removeParagraph(0);
