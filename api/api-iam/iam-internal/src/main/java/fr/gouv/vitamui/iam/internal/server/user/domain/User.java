@@ -141,4 +141,6 @@ public class User extends CustomerIdDocument implements BaseIdentifierDocument {
     private String centerCode;
 
     private Analytics analytics = new Analytics();
+
+    private boolean autoProvisioningEnabled;
 }

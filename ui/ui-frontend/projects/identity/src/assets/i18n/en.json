@@ -305,7 +305,8 @@
           "TITLE": "Security",
           "PHONE_FIELD_FORMAT": "International format required"
         }
-      }
+      },
+      "ACTIVATE_AUTO_PROVISIONING": "Activate auto update"
     },
     "GROUP": {
       "GROUP": "Assigned group",
