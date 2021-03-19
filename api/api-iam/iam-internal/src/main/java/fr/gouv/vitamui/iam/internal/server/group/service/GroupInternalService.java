@@ -265,6 +265,12 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                             groupConverter.convertProfileIdsToLogbook(profileIds)));
                     group.setProfileIds(profileIds);
                     break;
+                case "units" :
+                    final List<String> units = CastUtils.toList(entry.getValue());
+                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertProfileIdsToLogbook(group.getUnits()),
+                            groupConverter.convertUnitsToLogbook(units)));
+                    group.setUnits(units);
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch group " + group.getId() + ": key " + entry.getKey() + " is not allowed");
             }

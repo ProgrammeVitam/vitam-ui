@@ -91,4 +91,6 @@ public class Group extends CustomerIdDocument implements BaseIdentifierDocument 
 
     @Length(max = 250)
     private String level;
+
+    private List<String> units;
 }

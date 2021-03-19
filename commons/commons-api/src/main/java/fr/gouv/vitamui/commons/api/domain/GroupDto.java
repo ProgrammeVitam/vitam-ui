@@ -91,4 +91,7 @@ public class GroupDto extends CustomerIdDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long usersCount;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> units;
 }
