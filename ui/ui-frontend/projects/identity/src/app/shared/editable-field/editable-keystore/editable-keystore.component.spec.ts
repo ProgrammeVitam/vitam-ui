@@ -67,7 +67,8 @@ class TesthostComponent {
     patterns: ['test1.com', 'test2.com'],
     enabled: true,
     readonly : false,
-    authnRequestBinding: AuthnRequestBindingEnum.POST
+    authnRequestBinding: AuthnRequestBindingEnum.POST,
+    autoProvisioningEnabled: false
   };
   disabled: boolean;
   @ViewChild(EditableKeystoreComponent, { static: false }) component: EditableKeystoreComponent;

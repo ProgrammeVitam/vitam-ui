@@ -125,4 +125,6 @@ public class UserDto extends CustomerIdDto {
     private OffsetDateTime removingDate;
 
     private String centerCode;
+
+    private boolean autoProvisioningEnabled;
 }

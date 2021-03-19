@@ -85,7 +85,8 @@ export class IdentityProviderDetailsComponent implements OnInit {
     enabled: boolean,
     name: string,
     internal: boolean;
-    patterns: string[]
+    patterns: string[];
+    autoProvisioningEnabled: boolean;
   };
 
   @Input()
@@ -122,7 +123,8 @@ export class IdentityProviderDetailsComponent implements OnInit {
       internal: [{ value: false, disabled: true }, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],
-      authnRequestBinding: [null, Validators.required]
+      authnRequestBinding: [null, Validators.required],
+      autoProvisioningEnabled: [null, Validators.required],
     });
     this.idpMetadata = new FormControl({value: newFile([''], 'metadata.xml'), disabled: true});
 

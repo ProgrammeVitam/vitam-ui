@@ -104,4 +104,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private String mailAttribute;
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
+
+    private boolean autoProvisioningEnabled;
 }
