@@ -54,8 +54,6 @@ import java.util.List;
 
 /**
  * An external param set.
- *
- *
  */
 @Document(collection = MongoDbCollections.EXTERNAL_PARAMETERS)
 @TypeAlias(MongoDbCollections.EXTERNAL_PARAMETERS)
@@ -65,7 +63,7 @@ import java.util.List;
 @ToString
 public class ExternalParameters extends CustomerIdDocument {
     @NotNull
-    @Length(min = 1, max = 12)
+    @Length(min = 1, max = 30)
     private String identifier;
 
     @NotNull

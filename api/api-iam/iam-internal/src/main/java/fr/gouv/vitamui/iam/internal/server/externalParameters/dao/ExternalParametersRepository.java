@@ -39,11 +39,13 @@ package fr.gouv.vitamui.iam.internal.server.externalParameters.dao;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 
+import java.util.Optional;
+
 /**
  * MongoDB repository for the groups.
- *
- *
  */
 public interface ExternalParametersRepository extends VitamUIRepository<ExternalParameters, String> {
+    Optional<ExternalParameters> findByIdentifier(String identifier);
+
 
 }

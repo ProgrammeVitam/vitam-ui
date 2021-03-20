@@ -36,12 +36,12 @@
  */
 package fr.gouv.vitamui.iam.internal.server.common.utils;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class EntityFactory {
 
@@ -49,8 +49,8 @@ public final class EntityFactory {
     }
 
     public static Profile buildProfile(final String name, final String identifier, final String description,
-            final boolean isReadonly, final String level, final Integer tenant, final String service,
-            final List<String> roleNames, final String customerId) {
+        final boolean isReadonly, final String level, final Integer tenant, final String service,
+        final List<String> roleNames, final String customerId) {
 
         final Profile profile = new Profile();
         profile.setIdentifier(identifier);
@@ -66,8 +66,18 @@ public final class EntityFactory {
         return profile;
     }
 
+    public static Profile buildProfile(final String name, final String identifier, final String description,
+        final boolean isReadonly, final String level, final Integer tenant, final String service,
+        final List<String> roleNames, final String customerId, final String externalParameterId) {
+
+        final Profile profile =
+            buildProfile(name, identifier, description, isReadonly, level, tenant, service, roleNames, customerId);
+        profile.setExternalParamId(externalParameterId);
+        return profile;
+    }
+
     public static Group buildGroup(final String name, final String identifier, final String description,
-            final boolean isReadonly, final String level, final List<Profile> profiles, final String customerId) {
+        final boolean isReadonly, final String level, final List<Profile> profiles, final String customerId) {
 
         final Group group = new Group();
         group.setIdentifier(identifier);

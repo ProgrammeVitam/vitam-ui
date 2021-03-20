@@ -1,25 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.tenant.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -31,8 +11,12 @@ import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
@@ -46,6 +30,24 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 public class TenantInternalServiceTest {
 
@@ -100,12 +102,20 @@ public class TenantInternalServiceTest {
     @Mock
     private CustomerInitConfig customerInitConfig;
 
+    @Mock
+    private ExternalParametersRepository externalParametersRepository;
+
+    @Mock
+    private ExternalParametersInternalService externalParametersInternalService;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         Mockito.when(tenantConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(tenantConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+        when(externalParametersRepository.findByIdentifier(Mockito.any(String.class)))
+            .thenReturn(Optional.of(buildExternalParameter()));
     }
 
     protected void prepareServices() {
@@ -119,15 +129,18 @@ public class TenantInternalServiceTest {
         final UserDto userProfile = new UserDto();
         userProfile.setId("userId");
 
-        when(customerRepository.findById(tenantDto.getCustomerId())).thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(tenantDto.getCustomerId()))
+            .thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
 
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
 
         when(tenantRepository.findByIdentifier(tenantDto.getIdentifier())).thenReturn(null);
-        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId())).thenReturn(Optional.of(proofTenant));
+        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId()))
+            .thenReturn(Optional.of(proofTenant));
         when(tenantRepository.generateSuperId()).thenReturn(tenantDto.getId());
         when(tenantRepository.save(any())).thenReturn(buildTenant());
-        when(customSequenceRepository.incrementSequence(anyString(), anyInt())).thenReturn(Optional.of(new CustomSequence()));
+        when(customSequenceRepository.incrementSequence(anyString(), anyInt()))
+            .thenReturn(Optional.of(new CustomSequence()));
 
         when(internalProfileService.create(any())).thenReturn(profileDto);
         when(internalProfileService.internalConvertFromEntityToDto(any())).thenReturn(profileDto);
@@ -136,8 +149,11 @@ public class TenantInternalServiceTest {
 
         when(internalUserService.getDefaultAdminUser(proofTenant.getCustomerId())).thenReturn(buildUserDto());
 
-        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(buildGroupDto());
+        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty()))
+            .thenReturn(buildGroupDto());
         when(internalUserService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildUserDto()));
+
+
     }
 
     @Test
@@ -197,4 +213,12 @@ public class TenantInternalServiceTest {
     private Owner buildOwner() {
         return IamServerUtilsTest.buildOwner();
     }
+
+    public ExternalParameters buildExternalParameter() {
+        ExternalParameters externalParameters = new ExternalParameters();
+        externalParameters.setIdentifier("identifierdefault_ac_customerId");
+        externalParameters.setName("identifierdefault_ac_customerId");
+        return externalParameters;
+    }
+
 }

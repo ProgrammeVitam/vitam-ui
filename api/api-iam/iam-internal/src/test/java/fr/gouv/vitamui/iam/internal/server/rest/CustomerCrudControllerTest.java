@@ -1,23 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
-import java.util.*;
-
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.*;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -33,11 +17,13 @@ import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.service.InitCustomerService;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
@@ -61,11 +47,33 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CustomerInternalController}.
- *
- *
  */
 
 public final class CustomerCrudControllerTest {
@@ -140,9 +148,16 @@ public final class CustomerCrudControllerTest {
     @Mock
     private CustomerInitConfig customerInitConfig;
 
+
+
+    @Mock
+    private ExternalParametersInternalService externalParametersInternalService;
+
+
     private final AddressConverter addressConverter = new AddressConverter();
 
-    private final IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(new SpMetadataGenerator());
+    private final IdentityProviderConverter identityProviderConverter =
+        new IdentityProviderConverter(new SpMetadataGenerator());
 
     private final OwnerConverter ownerConverter = new OwnerConverter(addressConverter);
 
@@ -152,15 +167,23 @@ public final class CustomerCrudControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
-        internalCustomerService = new CustomerInternalService(customSequenceRepository, customerRepository, internalOwnerService, userInternalService,
-                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
-        controller = new CustomerInternalController(internalCustomerService);
         initCustomerService.setOwnerConverter(ownerConverter);
         initCustomerService.setIdpConverter(identityProviderConverter);
+        initCustomerService.setExternalParametersInternalService(externalParametersInternalService);
+        internalCustomerService =
+            new CustomerInternalService(customSequenceRepository, customerRepository, internalOwnerService,
+                userInternalService,
+                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter,
+                logbookService);
+        controller = new CustomerInternalController(internalCustomerService);
         Mockito.when(ownerRepository.generateSuperId()).thenReturn(UUID.randomUUID().toString());
-        Mockito.when(ownerRepository.save(ArgumentMatchers.any(Owner.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
-        Mockito.when(initVitamTenantService.init(ArgumentMatchers.any(Tenant.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(ownerRepository.save(ArgumentMatchers.any(Owner.class)))
+            .thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(initVitamTenantService.init(ArgumentMatchers.any(Tenant.class), ArgumentMatchers.any(
+            ExternalParametersDto.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
+
     }
 
     protected void prepareServices() {
@@ -183,10 +206,10 @@ public final class CustomerCrudControllerTest {
         when(groupRepository.save(any())).thenReturn(buildGroup());
 
         when(profileRepository.save(any()))
-                .thenAnswer(invocation -> {
-                    final Object[] args = invocation.getArguments();
-                    return args[0];
-                });
+            .thenAnswer(invocation -> {
+                final Object[] args = invocation.getArguments();
+                return args[0];
+            });
         when(identityProviderRepository.save(any())).thenReturn(buildIdp());
         when(internalProfileService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildProfileDto()));
         when(internalTenantService.getDefaultProfiles(any(), any())).thenReturn(new ArrayList<>());
@@ -231,9 +254,9 @@ public final class CustomerCrudControllerTest {
         try {
             controller.create(buildCustomerData(customerDto));
             fail("should fail");
-        }
-        catch (final IllegalArgumentException ex) {
-            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.", ex.getMessage());
+        } catch (final IllegalArgumentException ex) {
+            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.",
+                ex.getMessage());
         }
     }
 
@@ -246,9 +269,9 @@ public final class CustomerCrudControllerTest {
         try {
             controller.create(buildCustomerData(customerDto));
             fail("should fail");
-        }
-        catch (final IllegalArgumentException ex) {
-            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.", ex.getMessage());
+        } catch (final IllegalArgumentException ex) {
+            assertEquals("Unable to create customer " + customerDto.getName() + ": a customer must have owners.",
+                ex.getMessage());
         }
     }
 
@@ -260,8 +283,7 @@ public final class CustomerCrudControllerTest {
         try {
             controller.create(buildCustomerData(customerDto));
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -277,9 +299,10 @@ public final class CustomerCrudControllerTest {
         try {
             controller.create(buildCustomerData(customerDto));
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Integrity constraint error on the customer [Undefined] : the new code is already used by another customer.", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Integrity constraint error on the customer [Undefined] : the new code is already used by another customer.",
+                e.getMessage());
         }
     }
 
@@ -289,16 +312,17 @@ public final class CustomerCrudControllerTest {
         customerDto.setId(null);
 
         prepareServices();
-        when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString())).thenReturn(Optional.of(buildCustomer()));
+        when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString()))
+            .thenReturn(Optional.of(buildCustomer()));
 
         try {
             controller.create(buildCustomerData(customerDto));
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals(
-                    "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " + customerDto.getDefaultEmailDomain(),
-                    e.getMessage());
+                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
+                    customerDto.getDefaultEmailDomain(),
+                e.getMessage());
         }
     }
 
@@ -392,8 +416,7 @@ public final class CustomerCrudControllerTest {
 
             controller.update(customerDto.getId() + "_BAD", customerDto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }
     }
@@ -414,9 +437,10 @@ public final class CustomerCrudControllerTest {
 
             controller.update(customerDto.getId(), customerDto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Integrity constraint error on the customer customerId : the new code is already used by another customer.", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Integrity constraint error on the customer customerId : the new code is already used by another customer.",
+                e.getMessage());
         }
     }
 
@@ -460,7 +484,8 @@ public final class CustomerCrudControllerTest {
         final PaginatedValuesDto<Customer> data = new PaginatedValuesDto<>(Arrays.asList(customerCreated), 0, 5, false);
         when(customerRepository.getPaginatedValues(any(), any(), any(), any(), any())).thenReturn(data);
 
-        final PaginatedValuesDto<CustomerDto> result = controller.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(), Optional.empty(),
+        final PaginatedValuesDto<CustomerDto> result =
+            controller.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(), Optional.empty(),
                 Optional.of(DirectionDto.ASC));
         Assert.assertNotNull("Customer should be created.", result);
     }
