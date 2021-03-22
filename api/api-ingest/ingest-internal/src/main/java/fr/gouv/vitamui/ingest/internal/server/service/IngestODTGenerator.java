@@ -30,7 +30,6 @@ package fr.gouv.vitamui.ingest.internal.server.service;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import org.apache.commons.io.FileUtils;
@@ -64,11 +63,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class IngestODTGenerator {
@@ -129,7 +131,6 @@ public class IngestODTGenerator {
             LOGGER.error("Unable to get the data from the JsonObject : {}", e.getMessage());
             throw new JSONException("Unable to get the data from the JsonObject " + e);
 
-
         }
     }
 
@@ -139,7 +140,7 @@ public class IngestODTGenerator {
      * Numéro du versement, Présentation du contenu, Dates extrêmes et l'historique de conservation
      *
      * */
-    public void generateTableTwo(XWPFDocument document, Document manifest, LogbookOperationDto selectedIngest) {
+    public void generateTableTwo(XWPFDocument document, Document manifest, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         XWPFTable tableTwo = document.createTable();
 
@@ -162,19 +163,21 @@ public class IngestODTGenerator {
         tableTwoRowTwo.getCell(1).setText(getComment(manifest));
         tableTwoRowTwo.getCell(1).setWidth("7000");
 
-        XWPFTableRow tableTwoRowThree = tableTwo.createRow();
-        tableTwoRowThree.getCell(0).removeParagraph(0);
-        XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
-        runDate.setText("Dates extrêmes :");
-        runDate.setBold(true);
-        tableTwoRowThree.getCell(0).setWidth("3000");
-        tableTwoRowThree.getCell(1).removeParagraph(0);
-        tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
-            "date de début : " + selectedIngest.getEvDateTime().split("T")[0].replace('-', '/'));
-        tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
-            selectedIngest.getEvents().get(selectedIngest.getEvents().size() - 1).getEvDateTime().split("T")[0]
-                .replace('-', '/'));
-        tableTwoRowThree.getCell(1).setWidth("7000");
+        if(!archiveUnitDtoList.isEmpty() && archiveUnitDtoList != null) {
+
+            XWPFTableRow tableTwoRowThree = tableTwo.createRow();
+            tableTwoRowThree.getCell(0).removeParagraph(0);
+            XWPFRun runDate = tableTwoRowThree.getCell(0).addParagraph().createRun();
+            runDate.setText("Dates extrêmes :");
+            runDate.setBold(true);
+            tableTwoRowThree.getCell(0).setWidth("3000");
+            tableTwoRowThree.getCell(1).removeParagraph(0);
+            tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
+                "date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
+            tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
+                transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
+            tableTwoRowThree.getCell(1).setWidth("7000");
+        }
 
         XWPFTableRow tableTwoRowFour = tableTwo.createRow();
         tableTwoRowFour.getCell(0).removeParagraph(0);
@@ -265,7 +268,7 @@ public class IngestODTGenerator {
      * Identifiant SAE VAS, Titre, date de début et date de fin
      *
      * */
-    public void generateDynamicTable(XWPFDocument document, List<ArchiveUnitDto> list) {
+    public void generateDynamicTable(XWPFDocument document, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         XWPFTable dynamicTable = document.createTable();
 
@@ -301,7 +304,7 @@ public class IngestODTGenerator {
         dynamicTableFirstRow.getCell(3).setWidth("1500");
         dynamicTableFirstRow.getCell(3).setColor("909399");
 
-        list.stream().forEach(x -> {
+        archiveUnitDtoList.stream().forEach(x -> {
             XWPFTableRow dynamicTableRow = dynamicTable.createRow();
 
             dynamicTableRow.getCell(0).removeParagraph(0);
@@ -318,13 +321,13 @@ public class IngestODTGenerator {
 
             dynamicTableRow.getCell(2).removeParagraph(0);
             XWPFRun runDateD = dynamicTableRow.getCell(2).addParagraph().createRun();
-            runDateD.setText(x.getStartDate().split("T")[0].replace('-', '/'));
+            runDateD.setText(transformDate(x.getStartDate().split("T")[0]));
             runDateD.setFontSize(9);
             dynamicTableRow.getCell(2).setWidth("1500");
 
             dynamicTableRow.getCell(3).removeParagraph(0);
             XWPFRun runDateF = dynamicTableRow.getCell(3).addParagraph().createRun();
-            runDateF.setText(x.getEndDate().split("T")[0].replace('-', '/'));
+            runDateF.setText(transformDate(x.getEndDate().split("T")[0]));
             runDateF.setFontSize(9);
             dynamicTableRow.getCell(3).setWidth("1500");
 
@@ -452,6 +455,66 @@ public class IngestODTGenerator {
         }
     }
 
+    public String resourceAsString(Resource resource) {
+        try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
+            return FileCopyUtils.copyToString(reader);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    public Map<String, String> getSystemIdValues(Document document) {
+
+        Map<String, String> map = new HashMap<>();
+        document.getDocumentElement().normalize();
+        NodeList nList = document.getElementsByTagName("ArchiveUnit");
+
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                Element eElement = (Element) nNode;
+                map.put(eElement.getAttribute("id"),
+                    eElement.getElementsByTagName("SystemId").item(0).getTextContent());
+            }
+        }
+        return map;
+    }
+
+    public List<ArchiveUnitDto> getValuesForDynamicTable(Document atr, Document manifest) {
+
+        List<ArchiveUnitDto> archiveUnitDtoList = new ArrayList<>();
+        Map<String, String> map = getSystemIdValues(atr);
+        manifest.getDocumentElement().normalize();
+        NodeList nList = manifest.getElementsByTagName("ArchiveUnit");
+
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                ArchiveUnitDto archiveUnitDto = new ArchiveUnitDto();
+                Element eElement = (Element) nNode;
+
+                if (map.get(eElement.getAttribute("id")) != null) {
+
+                    archiveUnitDto.setId(eElement.getAttribute("id"));
+                    archiveUnitDto.setTitle(eElement.getElementsByTagName("Title").getLength() == 0 ?
+                        "_ _ _ _" :
+                        eElement.getElementsByTagName("Title").item(0).getTextContent());
+                    archiveUnitDto.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
+                        "_ _ _ _" :
+                        eElement.getElementsByTagName("EndDate").item(0).getTextContent());
+                    archiveUnitDto.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
+                        "_ _ _ _" :
+                        eElement.getElementsByTagName("StartDate").item(0).getTextContent());
+                    archiveUnitDto.setSystemId(map.get(eElement.getAttribute("id")));
+
+                    archiveUnitDtoList.add(archiveUnitDto);
+                }
+            }
+        }
+        return archiveUnitDtoList;
+    }
+
     private String getServiceProducteur(Document document) {
         document.getDocumentElement().normalize();
         return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
@@ -482,64 +545,26 @@ public class IngestODTGenerator {
         return document.getElementsByTagName("BinaryDataObject").getLength();
     }
 
-    public String resourceAsString(Resource resource) {
-        try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
-            return FileCopyUtils.copyToString(reader);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    private List<String> getArchiveUnitStartDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getStartDate ).filter(startDate->
+            startDate != "_ _ _ _"
+        ).collect(Collectors.toList());
     }
 
-    public Map<String, String> getSystemIdValues(Document document) {
-
-        Map<String, String> map = new HashMap<>();
-        document.getDocumentElement().normalize();
-        NodeList nList = document.getElementsByTagName("ArchiveUnit");
-
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                Element eElement = (Element) nNode;
-                map.put(eElement.getAttribute("id"),
-                    eElement.getElementsByTagName("SystemId").item(0).getTextContent());
-            }
-        }
-        return map;
+    private List<String> getArchiveUnitEndDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
+        return archiveUnitDtoList.stream().map(ArchiveUnitDto::getEndDate ).filter(endDate->
+            endDate != "_ _ _ _"
+        ).collect(Collectors.toList());
     }
 
-    public List<ArchiveUnitDto> getValuesForDynamicTable(Document atr, Document manifest) {
-
-        List<ArchiveUnitDto> list = new ArrayList<>();
-        Map<String, String> map = getSystemIdValues(atr);
-        manifest.getDocumentElement().normalize();
-        NodeList nList = manifest.getElementsByTagName("ArchiveUnit");
-
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                ArchiveUnitDto sea = new ArchiveUnitDto();
-                Element eElement = (Element) nNode;
-
-                if (map.get(eElement.getAttribute("id")) != null) {
-
-                    sea.setId(eElement.getAttribute("id"));
-                    sea.setTitle(eElement.getElementsByTagName("Title").getLength() == 0 ?
-                        "_ _ _ _" :
-                        eElement.getElementsByTagName("Title").item(0).getTextContent());
-                    sea.setEndDate(eElement.getElementsByTagName("EndDate").getLength() == 0 ?
-                        "_ _ _ _" :
-                        eElement.getElementsByTagName("EndDate").item(0).getTextContent());
-                    sea.setStartDate(eElement.getElementsByTagName("StartDate").getLength() == 0 ?
-                        "_ _ _ _" :
-                        eElement.getElementsByTagName("StartDate").item(0).getTextContent());
-                    sea.setSystemId(map.get(eElement.getAttribute("id")));
-
-                    list.add(sea);
-                }
-            }
+    private String transformDate(String date) {
+        if(date != "_ _ _ _") {
+            LocalDate finalDate = LocalDate.parse(date);
+            return finalDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
-        return list;
+        else {
+            return date;
+        }
     }
 
 }

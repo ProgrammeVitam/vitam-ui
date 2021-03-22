@@ -249,7 +249,7 @@ public class IngestInternalService {
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
         CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
-        Resource logo = null;
+        Resource customerLogo = null;
 
         try {
             Document atr = ingestODTGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
@@ -257,15 +257,17 @@ public class IngestInternalService {
 
             XWPFDocument document = new XWPFDocument();
             if(myCustomer.isHasCustomGraphicIdentity()) {
-                logo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
+                customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
-            ingestODTGenerator.generateDocHeader(document,myCustomer,logo);
+            List<ArchiveUnitDto> archiveUnitDtoList = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
+
+            ingestODTGenerator.generateDocHeader(document,myCustomer,customerLogo);
 
             ingestODTGenerator.generateFirstTitle(document);
 
             ingestODTGenerator.generateTableOne(document,manifest,jsonObject);
 
-            ingestODTGenerator.generateTableTwo(document,manifest,selectedIngest);
+            ingestODTGenerator.generateTableTwo(document,manifest,archiveUnitDtoList);
 
             ingestODTGenerator.generateTableThree(document,manifest,id);
 
@@ -273,9 +275,7 @@ public class IngestInternalService {
 
             ingestODTGenerator.generateSecondtTitle(document);
 
-            List<ArchiveUnitDto> list = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
-
-            ingestODTGenerator.generateDynamicTable(document,list);
+            ingestODTGenerator.generateDynamicTable(document,archiveUnitDtoList);
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
