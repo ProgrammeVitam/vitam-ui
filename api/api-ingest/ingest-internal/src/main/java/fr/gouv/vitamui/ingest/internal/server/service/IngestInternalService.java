@@ -56,16 +56,19 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.ByteArrayOutputStream;
 
+import org.odftoolkit.simple.TextDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
 import org.w3c.dom.Document;
+
+
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -95,7 +98,7 @@ public class IngestInternalService {
 
     private final CustomerInternalRestClient customerInternalRestClient;
 
-    private final IngestODTGenerator ingestODTGenerator;
+    private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
 
     @Autowired
@@ -103,7 +106,7 @@ public class IngestInternalService {
         final LogbookService logbookService, final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestODTGenerator ingestODTGenerator)
+        final IngestGeneratorODTFile ingestGeneratorODTFile)
     {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
@@ -111,7 +114,7 @@ public class IngestInternalService {
         this.objectMapper = objectMapper;
         this.ingestService = ingestService;
         this.customerInternalRestClient = customerInternalRestClient;
-        this.ingestODTGenerator = ingestODTGenerator;
+        this.ingestGeneratorODTFile = ingestGeneratorODTFile;
 
     }
 
@@ -217,7 +220,7 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestODTGenerator.resourceAsString(resource);
+                manifest = ingestGeneratorODTFile.resourceAsString(resource);
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
@@ -234,7 +237,7 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                atr = ingestODTGenerator.resourceAsString(resource);
+                atr = ingestGeneratorODTFile.resourceAsString(resource);
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return atr;
@@ -244,7 +247,7 @@ public class IngestInternalService {
         }
     }
 
-    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws JSONException, IOException {
+    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws Exception {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -252,34 +255,37 @@ public class IngestInternalService {
         Resource customerLogo = null;
 
         try {
-            Document atr = ingestODTGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
-            Document manifest = ingestODTGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
-            XWPFDocument document = new XWPFDocument();
+            Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+
+            TextDocument document = TextDocument.newTextDocument();
             if(myCustomer.isHasCustomGraphicIdentity()) {
                 customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
-            List<ArchiveUnitDto> archiveUnitDtoList = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
+            List<ArchiveUnitDto> archiveUnitDtoList = ingestGeneratorODTFile.getValuesForDynamicTable(atr,manifest);
 
-            ingestODTGenerator.generateDocHeader(document,myCustomer,customerLogo);
+            ingestGeneratorODTFile.generateDocumentHeader(document,myCustomer,customerLogo);
 
-            ingestODTGenerator.generateFirstTitle(document);
+            ingestGeneratorODTFile.generateFirstTitle(document);
 
-            ingestODTGenerator.generateTableOne(document,manifest,jsonObject);
+            ingestGeneratorODTFile.generateTableOne(document,manifest,jsonObject);
 
-            ingestODTGenerator.generateTableTwo(document,manifest,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateTableTwo(document,manifest,archiveUnitDtoList);
 
-            ingestODTGenerator.generateTableThree(document,manifest,id);
+            ingestGeneratorODTFile.generateTableThree(document,manifest,id);
 
-            ingestODTGenerator.generateTableFour(document);
+            ingestGeneratorODTFile.generateTableFour(document);
 
-            ingestODTGenerator.generateSecondtTitle(document);
+            document.addPageBreak();
 
-            ingestODTGenerator.generateDynamicTable(document,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateSecondtTitle(document);
+
+            ingestGeneratorODTFile.generateDynamicTable(document,archiveUnitDtoList);
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
-            document.write(result);
+            document.save(result);
             return result.toByteArray();
 
         } catch (IOException | JSONException e) {

@@ -106,14 +106,14 @@ public class IngestInternalController {
         return ingestInternalService.upload(path, contextId, action);
     }
 
-    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> generateDocx(final @PathVariable("id") String id)
-        throws IOException {
+    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
+        throws Exception {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
       try {
-          LOGGER.debug("export docx report for operation with id :{}", id);
+          LOGGER.debug("export ODT report for operation with id :{}", id);
           ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-       byte[] response =  this.ingestInternalService.generateDocX(vitamContext, id);
+       byte[] response =  this.ingestInternalService.generateODTReport(vitamContext, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
        catch(IOException | JSONException e) {
