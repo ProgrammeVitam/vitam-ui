@@ -170,6 +170,10 @@ export class LogbookApiService implements PaginatedApi<Event> {
   }
 
   getAllPaginated(pageRequest: PageRequest, _?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Event>> {
+    const criteria = JSON.parse(pageRequest.criteria);
+    criteria.$filter.$offset = pageRequest.page * pageRequest.size;
+    pageRequest.criteria = JSON.stringify(criteria);
+
     // The pagination and order are defined in the Vitam DSL query stored in the `criteria` property
     // We don't actually need to use the other properties of the page request
     return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers }).pipe(
