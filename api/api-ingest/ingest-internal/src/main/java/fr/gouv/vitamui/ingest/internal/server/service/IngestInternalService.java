@@ -68,12 +68,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.w3c.dom.Document;
 
-
-
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,13 +124,14 @@ public class IngestInternalService {
 
         RequestResponse<Void> ingestResponse = null;
         try {
-            LOGGER.info("Upload EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.info("Upload EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
             LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
 
-            if (ingestResponse.isOk()) {
+            if(ingestResponse.isOk()) {
                 LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
-            } else {
+            }
+            else {
                 LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
             }
         } catch (IOException | IngestExternalException e) {
@@ -149,7 +149,7 @@ public class IngestInternalService {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
-            LOGGER.info(" All ingests EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.info(" All ingests EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
@@ -174,14 +174,13 @@ public class IngestInternalService {
 
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            LOGGER.info("Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.info("Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 
             requestResponse = logbookService.selectOperationbyId(id, vitamContext);
 
             LOGGER.debug("One Ingest Response: {}: ", requestResponse);
 
-            final LogbookOperationsResponseDto logbookOperationDtos =
-                objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationDtos = objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
             List<LogbookOperationDto> singleLogbookOperationDto =
                 IngestConverter.convertVitamsToDtos(logbookOperationDtos.getResults());
@@ -196,7 +195,7 @@ public class IngestInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            LOGGER.info("All Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.info("All Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             LOGGER.debug("Response: {}: ", requestResponse);
@@ -223,8 +222,10 @@ public class IngestInternalService {
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
+
         } catch (VitamClientException e) {
-            throw new InternalServerException("Unable to find ATR", e);
+            LOGGER.error("Unable to find the Manifest {}", e.getMessage());
+            throw new InternalServerException("Unable to find the Manifest", e);
         }
     }
 
@@ -242,11 +243,13 @@ public class IngestInternalService {
             return atr;
 
         } catch (VitamClientException e) {
+            LOGGER.error("Unable to find ATR {}", e.getMessage());
             throw new InternalServerException("Unable to find ATR", e);
         }
     }
 
-    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws Exception {
+    public byte[] generateODTReport(VitamContext vitamContext, final String id)
+        throws IOException, JSONException, URISyntaxException, IngestFileGenerationException {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id);
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -257,8 +260,14 @@ public class IngestInternalService {
 
             Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+            TextDocument document;
+            try {
+                document = TextDocument.newTextDocument();
+            } catch (Exception e) {
+                LOGGER.error("Error to initialize the document : {} " , e.getMessage());
+                throw new IngestFileGenerationException("Error to initialize the document : {} " , e);
+            }
 
-            TextDocument document = TextDocument.newTextDocument();
             if(myCustomer.isHasCustomGraphicIdentity()) {
                 customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
@@ -284,14 +293,20 @@ public class IngestInternalService {
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
-            document.save(result);
+            try {
+                document.save(result);
+            } catch (Exception e) {
+                LOGGER.error("Error to save the document : {} " , e.getMessage());
+                throw new IngestFileGenerationException("Error to save the document : {} " , e);
+            }
+
             return result.toByteArray();
 
-        } catch (IOException | JSONException e) {
-            LOGGER.error("Error with generating Report : {} ", e.getMessage());
-            throw new IOException("Unable to generate the ingest report ", e);
-
+        } catch (IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
+            LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            throw new IngestFileGenerationException("Unable to generate the ingest report ", e) ;
         }
+
     }
 
     public void streamingUpload(InputStream inputStream, String contextId, String action)

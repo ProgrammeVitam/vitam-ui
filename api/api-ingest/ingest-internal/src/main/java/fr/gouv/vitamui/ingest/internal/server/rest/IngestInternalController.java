@@ -33,6 +33,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
@@ -58,6 +59,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
@@ -104,17 +107,18 @@ public class IngestInternalController {
 
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
-        throws Exception {
+        throws IngestFileGenerationException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        try {
-            LOGGER.debug("export ODT report for operation with id :{}", id);
-            ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-            byte[] response = this.ingestInternalService.generateODTReport(vitamContext, id);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (IOException | JSONException e) {
-            LOGGER.error("Error with generating Report : {} ", e.getMessage());
-            throw new IOException("Unable to generate the ingest report " + e.getMessage());
-        }
+      try {
+          LOGGER.debug("export ODT report for operation with id :{}", id);
+          ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+       byte[] response =  this.ingestInternalService.generateODTReport(vitamContext, id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+      }
+       catch(IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
+            LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
+      }
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
