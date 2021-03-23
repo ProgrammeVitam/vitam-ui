@@ -16,7 +16,6 @@
     "BASIC_TITLE" : "Tableau simple",
     "FILTER_TITLE": "Tableau avec filtres",
     "SUBTABLE_TITLE": "Tableau avec des sous tableaux",
-    "MULTI_ACTIONS_TITLE" : "Tableau avec sous tableau et actions différentes sur les colonnes",
     "DIALOG_TITLE" :"Tableau avec détail"
   },
   "BUTTON": {
@@ -86,6 +85,10 @@
     "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex: COMMON.BACK",
     "FIRST_INPUT": "Premier paramètre",
     "SECOND_INPUT": "Deuxième paramètre"
+  },
+  "TYPOGRAPHY": {
+    "TEXT_ELLIPSIS_TITLE": "Text Ellipsis",
+    "TEXT_ELLIPSIS_CONTENT": "Texte long qui permet l'affichage de seulement une partie. Utile lors d'un resizing pour éviter que cela empiète sur la colonne à côté."
   },
   "MISCELLANEOUS": {
     "INFINITE_SCROLL": "Scroll infini"

@@ -12,22 +12,22 @@
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
         <ng-container *ngFor="let customer of dataSource">
-          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'">
+          <div class="vitamui-row" [vitamuiCommonCollapse] #row="vitamuiCommonCollapse" [class.no-hover]="row.state === 'expanded'" (click)="customerClick.emit(customer)">
             <div class="d-flex align-items-center clickable">
-              <div class="col-1 d-flex" (click)="row.toggle()">
+              <div class="col-1 d-flex" (click)="$event.stopPropagation(); row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
                 <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
               </div>
 
-              <div (click)="customerClick.emit(customer)" class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.code }}</div>
-              <div (click)="customerClick.emit(customer)" class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.name }}</div>
-              <div (click)="customerClick.emit(customer)" class="col-3 d-flex align-items-center align-self-stretch">{{ customer?.companyName }}</div>
-              <div (click)="customerClick.emit(customer)" class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.idp ? 'Oui' : 'Non'}}</div>
+              <div class="col-2" vitamuiCommonEllipsis>{{ customer?.code }}</div>
+              <div class="col-2" vitamuiCommonEllipsis>{{ customer?.name }}</div>
+              <div class="col-3" vitamuiCommonEllipsis>{{ customer?.companyName }}</div>
+              <div class="col-2" vitamuiCommonEllipsis>{{ customer?.idp ? 'Oui' : 'Non'}}</div>
 
               <div class="col-2 actions">
-                <span (click)="customerClick.emit(customer)">{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
+                <span vitamuiCommonEllipsis>{ customer?.otp, select, DISABLED {Non} OPTIONAL {Optionnelle} MANDATORY {Obligatoire} }</span>
                 <div>
-                  <button class="btn btn-circle primary" (click)="openCreateOwnerDialog(customer, tenants)">
+                  <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateOwnerDialog(customer, tenants)">
                     <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
                   </button>
                 </div>

@@ -30,10 +30,10 @@
               "
             ></i>
           </div>
-          <div class="col-3">{{ profile.name }}</div>
-          <div class="col-2">{{ profile.identifier }}</div>
-          <div class="col-3">{{ profile.description | truncate: 50 }}</div>
-          <div class="col-2">{{ profile.level }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.description }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
         </div>
       </div>
     </div>
@@ -159,10 +159,10 @@
             >
             </i>
           </div>
-          <div class="col-3">{{ group.name }}</div>
-          <div class="col-2">{{ group.identifier }}</div>
-          <div class="col-3">{{ group.description | truncate: 50 }}</div>
-          <div class="col-2">{{ group.level }}</div>
+          <div class="col-3 text ellipsis">{{ group.name }}</div>
+          <div class="col-2 text ellipsis">{{ group.identifier }}</div>
+          <div class="col-3 text ellipsis">{{ group.description }}</div>
+          <div class="col-2 text ellipsis">{{ group.level }}</div>
         </div>
       </div>
     </div>
@@ -208,72 +208,12 @@
                 >
               </div>
               <div [style.display]="'contents'">
-                <div class="col-3">{{ customer?.name }}</div>
-                <div class="col-2">{{ customer?.identifier }}</div>
-                <div class="col-3">{{ customer?.description }}</div>
+                <div class="col-3" vitamuiCommonEllipsis>{{ customer?.name }}</div>
+                <div class="col-2" vitamuiCommonEllipsis>{{ customer?.identifier }}</div>
+                <div class="col-3" vitamuiCommonEllipsis>{{ customer?.description }}</div>
               </div>
               <div class="col-2 actions">
-                <span>{{ customer?.level }}</span>
-                <div>
-                  <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openDialog('button')">
-                    <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="row.state === 'expanded'; then subArray"></div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div>
-  <h4>{{'ARRAY.MULTI_ACTIONS_TITLE' | translate}}</h4>
-  <div class="vitamui-table">
-    <div class="vitamui-table-head">
-      <div class="col-2"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">
-        Nom du profil administrateur
-      </div>
-      <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">
-        Description
-      </div>
-      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
-    </div>
-
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows">
-        <ng-container *ngFor="let customer of dataSource">
-          <div
-            class="vitamui-row"
-            [vitamuiCommonCollapse]
-            #row="vitamuiCommonCollapse"
-            [class.no-hover]="row.state === 'expanded'"
-            (click)="handleClick(customer)"
-          >
-            <div class="d-flex align-items-center clickable">
-              <div
-                class="col-2 d-flex"
-                (click)="$event.stopPropagation(); row.toggle()"
-              >
-                <i class="vitamui-icon vitamui-icon-bank"></i>
-                <i
-                  class="material-icons caret ml-1"
-                  [style.fontSize.px]="20"
-                  [@rotateAnimation]="row.state"
-                  >keyboard_arrow_up</i
-                >
-              </div>
-
-                <div (click)="$event.stopPropagation(); openDialog(customer?.name)" class="col-3 d-flex align-items-center align-self-stretch">{{ customer?.name }}</div>
-                <div (click)="$event.stopPropagation(); openDialog(customer?.identifier)"class="col-2 d-flex align-items-center align-self-stretch">{{ customer?.identifier }}</div>
-                <div class="col-3 d-flex align-items-center align-self-stretch">{{ customer?.description }}</div>
-           
-              <div class="col-2 actions">
-                <span>{{ customer?.level }}</span>
+                <span vitamuiCommonEllipsis>{{ customer?.level }}</span>
                 <div>
                   <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openDialog('button')">
                     <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
@@ -306,15 +246,12 @@
             #row="vitamuiCommonCollapse"
           >
             <div
-              class="d-flex justify-content-between align-items-center clickable"
+              class="d-flex justify-content-between align-items-center clickable" (click)="handleClick(group)"
             >
-              <div
-                class="row-label d-flex align-items-center"
-                (click)="handleClick(group)"
-              >
+              <div class="row-label align-items-center" vitamuiCommonEllipsis>
                 {{ group?.name }}
               </div>
-              <button class="btn link underline" (click)="row.toggle()">
+              <button class="btn link underline" (click)="$event.stopPropagation(); row.toggle()">
                 {{
                   row.state === "collapsed" ? "Voir detail" : "Masquer detail"
                 }}
@@ -348,9 +285,9 @@
             <div
               class="col-3 d-flex justify-content-center align-items-end"
             ></div>
-            <div class="col-2">{{ tenant.identifier }}</div>
-            <div class="col-3">{{ tenant.name }}</div>
-            <div class="col-2">{{ tenant.description }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ tenant.identifier }}</div>
+            <div class="col-3" vitamuiCommonEllipsis>{{ tenant.name }}</div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ tenant.description }}</div>
           </div>
         </ng-container>
       </div>
@@ -375,9 +312,9 @@
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
         <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-4">Value 1</div>
-          <div class="col-4">Value 2</div>
-          <div class="col-4">Value 3</div>
+          <div class="col-4" vitamuiCommonEllipsis>Value 1</div>
+          <div class="col-4" vitamuiCommonEllipsis>Value 2</div>
+          <div class="col-4" vitamuiCommonEllipsis>Value 3</div>
         </div>
       </div>
     </div>

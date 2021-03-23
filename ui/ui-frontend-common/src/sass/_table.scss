@@ -287,15 +287,7 @@ $row-padding: 0.8rem;
         padding: $row-padding;
         margin-bottom: 0.3rem;
         background-color: white;
-        div, span  {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            &:hover {
-                text-overflow: clip;
-                white-space: normal;
-                word-break: break-all;
-            }
-        }
+
         &:hover {
             background-color: transparent;
             @include elevation-3-dark;
@@ -322,6 +314,10 @@ $row-padding: 0.8rem;
     .actions {
         display: flex;
         align-items: center;
+    }
+
+    .actions > span {
+        width: 100%;
     }
 
     .actions > div {

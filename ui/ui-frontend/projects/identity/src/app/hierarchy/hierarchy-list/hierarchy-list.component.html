@@ -19,12 +19,12 @@
               [style.fontSize.px]="30"
             ></i>
           </div>
-          <div class="col-3">{{ profile.name }}</div>
-          <div class="col-2">{{ getApplicationName(profile.applicationName) }}</div>
-          <div class="col-3">{{ profile.description | truncate:50 }}</div>
-          <div class="col-1">{{ profile.level }}</div>
-          <div class="col-1">{{ profile.identifier }}</div>
-          <div class="col-1">{{ profile.usersCount }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ getApplicationName(profile.applicationName) }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.description | truncate:50 }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ profile.level }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ profile.usersCount }}</div>
         </div>
       </div>
     </div>

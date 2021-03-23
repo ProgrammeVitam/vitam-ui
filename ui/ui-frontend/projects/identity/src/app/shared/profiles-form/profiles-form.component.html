@@ -36,9 +36,9 @@
   <div *ngIf="!loading" class="vitamui-table-body">
     <div class="vitamui-table-rows" *ngFor="let id of profileIds; let index=index">
       <div class="vitamui-row d-flex align-items-center">
-        <div class="col-3">{{ getApplicationFromId(id)?.name }}</div>
-        <div *ngIf="!tenantIdentifier" class="col-3">{{ getProfileFromId(id)?.tenantName }}</div>
-        <div class="col-5">{{ getProfileFromId(id)?.name }}</div>
+        <div class="col-3" vitamuiCommonEllipsis>{{ getApplicationFromId(id)?.name }}</div>
+        <div *ngIf="!tenantIdentifier" class="col-3" vitamuiCommonEllipsis>{{ getProfileFromId(id)?.tenantName }}</div>
+        <div class="col-5" vitamuiCommonEllipsis>{{ getProfileFromId(id)?.name }}</div>
         <div class="d-flex justify-content-end" [ngClass]="{'col-1': !tenantIdentifier, 'col-4': tenantIdentifier}">
           <button class="btn link" (click)="remove(index)">
             <i class="material-icons">clear</i>
