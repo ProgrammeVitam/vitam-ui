@@ -310,6 +310,8 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final GroupDto group = new GroupDto();
         group.setEnabled(true);
         group.setCustomerId(customerId);
+        user.setSiteCode("001");
+        user.setCenterCode("002");
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupInternalService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
@@ -329,7 +331,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
-        assertThat(event.getEvDetData()).isEqualTo("{"
+         assertThat(event.getEvDetData()).isEqualTo("{"
                 + "\"Nom\":\"-\","
                 + "\"Prénom\":\"-\","
                 + "\"Email\":\"-\","
@@ -344,6 +346,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Date de désactivation\":\"\","
                 + "\"Date de suppression\":\"\","
                 + "\"Code du site\":\"\","
+                + "\"Code du centre\":\"002\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
                 + "\"Ville\":\"-\","
@@ -409,9 +412,13 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         internalUserService.patch(partialDto);
         partialDto.remove("siteCode");
 
+        partialDto.put("centerCode", "002");
+        internalUserService.patch(partialDto);
+        partialDto.remove("centerCode");
+
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
-        assertThat(events).hasSize(12);
+        assertThat(events).hasSize(13);
 
     }
 

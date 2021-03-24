@@ -123,4 +123,6 @@ public class UserDto extends CustomerIdDto {
     private OffsetDateTime disablingDate;
 
     private OffsetDateTime removingDate;
+
+    private String centerCode;
 }
