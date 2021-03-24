@@ -119,8 +119,8 @@
       "TOOLTIP": "Manage slips of the organizations assigned to the operator of the instance"
     },
     "ITEM_CUSTOMER_SUPERVISION_APP": {
-      "NAME": "Organisations item supervision",
-      "TOOLTIP": "Supervise organisations items"
+      "NAME": "Item supervision",
+      "TOOLTIP": "Supervise items"
     },
     "INGEST_SUPERVISION_APP": {
       "NAME": "Ingest validation",
@@ -243,8 +243,8 @@
       "TOOLTIP": "Consulting the logs of entry, base and elimination operations"
     },
     "ITEM_SUPERVISION_PROFILE_APP": {
-      "NAME": "Rights in the “Organizations item supervision”",
-      "TOOLTIP": "Set up supervision profiles for the “Organizations item supervision” APP"
+      "NAME": "Rights in the \"Item supervision\" APP",
+      "TOOLTIP": "Set up supervision profiles for the \"Item supervision\" APP"
     }
   },
   "FOOTER": {
