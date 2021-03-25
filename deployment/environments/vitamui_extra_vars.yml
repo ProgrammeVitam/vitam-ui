@@ -23,7 +23,7 @@ smtp:
   tls_enable: true
   cas:
     sender: no-reply@changeme
-    expiration: 10 # in minutes
+    expiration: 1440 # 1 Day : 24 * 60 Minutes to reset password
 
 sms:
   enabled: true

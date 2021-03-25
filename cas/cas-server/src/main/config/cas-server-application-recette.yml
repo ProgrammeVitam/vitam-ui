@@ -74,7 +74,8 @@ cas.authn.pm.policyPattern: '^(?=.*[$@!%*#?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
-cas.authn.pm.reset.expirationMinutes: 10
+# 1 Day : 24 * 60 Minutes to reset password
+cas.authn.pm.reset.expirationMinutes: 1440
 cas.authn.pm.reset.mail.attributeName: email
 cas.authn.pm.reset.securityQuestionsEnabled: false
 cas.authn.pm.reset.includeServerIpAddress: false

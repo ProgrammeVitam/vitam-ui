@@ -119,7 +119,7 @@ public class ResetPasswordController {
 
         final int expMinutes;
         if (PmMessageToSend.ONE_DAY.equals(ttl)) {
-            expMinutes = 24 * 60;
+            expMinutes = 86400;
         } else {
             expMinutes = (int) casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
         }
