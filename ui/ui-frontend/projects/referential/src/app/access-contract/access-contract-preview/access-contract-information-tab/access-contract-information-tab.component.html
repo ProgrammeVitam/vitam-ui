@@ -86,11 +86,13 @@
         </div>
 
         <div class="col-10 form-control">
-            <vitamui-library-input placeholder="Date d'activation" *ngIf="accessContract?.activationDate"
+            <vitamui-library-input placeholder="Date d'activation" 
+                *ngIf="accessContract?.status === 'ACTIVE' && accessContract?.activationDate"
                 i18n-placeholder="activationDate@@accessContractPreviewLabelActivationDate"
                 [value]="accessContract.activationDate | date: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
-            <vitamui-library-input placeholder="Date d'activation" *ngIf="!accessContract?.activationDate"
+            <vitamui-library-input placeholder="Date d'activation" 
+                *ngIf="accessContract?.status !== 'ACTIVE' || !accessContract?.activationDate"
                 i18n-placeholder="activationDate@@accessContractPreviewLabelActivationDate"
                 [value]="" disabled>
             </vitamui-library-input>

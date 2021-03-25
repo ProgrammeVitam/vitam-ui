@@ -65,6 +65,8 @@ public class AccessContractDto implements Serializable {
     private String lastUpdate;
 
     private String activationDate;
+    
+    private String deactivationDate;
 
     private Boolean writingPermission;
 
@@ -125,6 +127,11 @@ public class AccessContractDto implements Serializable {
     @JsonProperty("activationDate")
     public void setActivationDate(String activationDate) {
         this.activationDate = activationDate;
+    }
+    
+    @JsonProperty("deactivationDate")
+    public void setDeactivationDate(String deactivationDate) {
+        this.deactivationDate = deactivationDate;
     }
 
     @JsonProperty("writingPermission")
@@ -210,6 +217,11 @@ public class AccessContractDto implements Serializable {
     @JsonProperty("ActivationDate")
     public String getActivationDate() {
         return activationDate;
+    }
+    
+    @JsonProperty("DeactivationDate")
+    public String getDeactivationDate() {
+        return deactivationDate;
     }
 
     @JsonProperty("WritingPermission")

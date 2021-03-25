@@ -2,13 +2,15 @@ import {HttpHeaders} from '@angular/common/http';
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AccessContract, AccessionRegister, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
+import {AccessionRegister, FilingPlanMode} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, StartupService} from 'ui-frontend-common';
+import {ConfirmDialogService, StartupService, ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
 
 import {AccessContractService} from '../../access-contract/access-contract.service';
 import {AuditService} from '../audit.service';
 import {AuditCreateValidators} from './audit-create-validator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -29,10 +31,9 @@ export class AuditCreateComponent implements OnInit {
   allServices = new FormControl(true);
   allNodes = new FormControl(true);
   selectedNodes = new FormControl();
-  accessContractSelect = new FormControl(null, Validators.required);
 
+  accessContractId: string = null;
   accessionRegisters: AccessionRegister[];
-  accessContracts: AccessContract[];
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -49,13 +50,29 @@ export class AuditCreateComponent implements OnInit {
     private auditService: AuditService,
     private startupService: StartupService,
     protected accessContractService: AccessContractService,
-    private auditCreateValidator: AuditCreateValidators
+    private auditCreateValidator: AuditCreateValidators,
+    private externalParameterService: ExternalParametersService,
+    private snackBar: MatSnackBar
   ) {
   }
 
   ngOnInit() {
-    this.accessContractService.getAllForTenant('' + this.tenantIdentifier).subscribe((value) => {
-      this.accessContracts = value;
+    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+      const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessConctractId && accessConctractId.length > 0) {
+        this.accessContractId = accessConctractId;
+
+        this.auditService.getAllAccessionRegister(this.accessContractId).subscribe(accessionRegisters => {
+          this.accessionRegisters = accessionRegisters;
+        });
+      } else {
+        this.snackBar.open(
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
+          null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+        });
+      }
     });
 
     this.form = this.formBuilder.group({
@@ -75,18 +92,6 @@ export class AuditCreateComponent implements OnInit {
         this.form.get('evidenceAudit').clearValidators();
       }
       this.form.updateValueAndValidity();
-    });
-
-    this.accessContractSelect.valueChanges.subscribe(accessContractId => {
-      if (this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' ||
-        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY' ||
-        this.form.controls.auditActions.value === 'AUDIT_FILE_RECTIFICATION') {
-        this.auditService.getAllAccessionRegister(accessContractId).subscribe(accessionRegisters => {
-          this.accessionRegisters = accessionRegisters;
-        });
-      } else {
-        this.accessionRegisters = null;
-      }
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -123,14 +128,14 @@ export class AuditCreateComponent implements OnInit {
 
   isStepValid(): boolean {
     const isEvidenceAuditValid = this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' &&
-      !this.accessContractSelect.invalid && !this.accessContractSelect.pending;
+      this.accessContractId != null;
     const isRectificationAuditValid = this.form.value.auditActions === 'AUDIT_FILE_RECTIFICATION' &&
-      !this.accessContractSelect.invalid && !this.accessContractSelect.pending &&
+      this.accessContractId != null &&
       !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending &&
       !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
     const isOtherAuditValid = (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' ||
       this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
-      !this.accessContractSelect.invalid && !this.accessContractSelect.pending &&
+      this.accessContractId != null &&
       !this.form.get('auditType').invalid && !this.form.get('auditType').pending &&
       !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
     return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
@@ -152,7 +157,11 @@ export class AuditCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-    this.auditService.create(this.form.value, new HttpHeaders({'X-Access-Contract-Id': this.accessContractSelect.value})).subscribe(
+
+    this.auditService.create(
+      this.form.value, 
+      new HttpHeaders({'X-Access-Contract-Id': this.accessContractId}))
+    .subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
       },
