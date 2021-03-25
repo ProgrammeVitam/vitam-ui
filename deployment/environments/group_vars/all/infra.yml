@@ -14,7 +14,7 @@ smtp:
     timeout: 8000
   cas:
     sender: "serveur-cas@noreply.com"
-    expiration: 10 # in minutes
+    expiration: 1440 # 1 Day : 24 * 60 Minutes to reset password
 
 sms:
   enabled: true
