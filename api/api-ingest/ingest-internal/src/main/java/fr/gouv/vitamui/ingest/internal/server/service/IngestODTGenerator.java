@@ -173,9 +173,9 @@ public class IngestODTGenerator {
             tableTwoRowThree.getCell(0).setWidth("3000");
             tableTwoRowThree.getCell(1).removeParagraph(0);
             tableTwoRowThree.getCell(1).addParagraph().createRun().setText(
-                "date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
+                "date de début : " + getStartedDate(getArchiveUnitStartDatesList(archiveUnitDtoList)));
             tableTwoRowThree.getCell(1).addParagraph().createRun().setText("date de fin : " +
-                transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
+                getEndDate(getArchiveUnitEndDatesList(archiveUnitDtoList)));
             tableTwoRowThree.getCell(1).setWidth("7000");
         }
 
@@ -565,6 +565,20 @@ public class IngestODTGenerator {
         else {
             return date;
         }
+    }
+
+    private String getStartedDate(List<String> listOfDate) {
+        if(listOfDate.size() > 0) {
+            return transformDate(listOfDate.get(0).split("T")[0]);
+        }
+        return "_ _ _ _";
+    }
+
+    private String getEndDate(List<String> listOfDate) {
+        if(listOfDate.size() > 0) {
+            return transformDate(listOfDate.get(listOfDate.size() - 1).split("T")[0]);
+        }
+        return "_ _ _ _";
     }
 
 }
