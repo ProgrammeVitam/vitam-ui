@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.doc;
 
 import fr.gouv.vitamui.archives.search.service.AccessContractTempService;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
+import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -60,5 +61,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private AccessContractTempService accessContractTempService;
+
+    @MockBean
+    private SearchCriteriaHistoryService searchCriteriaHistoryService;
 
 }

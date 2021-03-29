@@ -106,12 +106,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
        if (facets && facets.length > 0) {
          for(const node of this.nestedDataSourceFull.data) {
            this.recursiveByNode(node, facets);
-         } 
+         }
       } else {
         for (const node of this.nestedDataSourceFull.data) {
           node.count = 0;
           node.hidden = true;
-        }        
+        }
       }
       this.filterNodes();
     });
@@ -193,6 +193,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
         this.loadingHolding = false;
         this.filtered = false;
         this.archiveSharedDataServiceService.emitEntireNodes(this.convertNodesToList(nodes));
+        this.archiveSharedDataServiceService.emitFilingHoldingNodes(nodes);
       });
   }
 
@@ -217,7 +218,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       let filtredNode: FilingHoldingSchemeNode = { count: node.count, id: node.id, label: node.label, title: node.title, type: node.type, children: null, parents: null, vitamId:  node.vitamId, checked: node.checked};
       if(node.children && node.children.length > 0){
         let filtredChildren = [];
-       
+
         for(const child of node.children) {
           let childFiltred = this.buildrecursiveTree(child);
           if(childFiltred) {
@@ -226,12 +227,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       }
       if(filtredChildren && filtredChildren.length > 0){
         filtredNode.children = filtredChildren;
-      }      
-    }      
+      }
+    }
       return filtredNode;
     }
   }
- 
+
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;
 
   emitNode(node: FilingHoldingSchemeNode) {

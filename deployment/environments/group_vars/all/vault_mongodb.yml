@@ -37,3 +37,8 @@ mongodb:
         user: versioning
         password: versioning
         roles: '[{ role: "readWrite", db: "versioning" }]'
+    archivesearch:
+      db: archivesearch
+      user: "api-archive-search"
+      password: "api-archive-search"
+      roles: '[{ role: "readWrite", db: "archivesearch" }]'

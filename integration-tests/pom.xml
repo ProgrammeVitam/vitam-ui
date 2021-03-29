@@ -31,6 +31,10 @@
 			<groupId>fr.gouv.vitamui</groupId>
 			<artifactId>referential-external-client</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-external-client</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>fr.gouv.vitamui.commons</groupId>
 			<artifactId>commons-api</artifactId>
@@ -47,6 +51,10 @@
 			<groupId>fr.gouv.vitamui</groupId>
 			<artifactId>referential-commons</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-commons</artifactId>
+        </dependency>
 
 		<!-- Spring-Boot -->
 		<dependency>
@@ -315,6 +323,12 @@
 				<test.runners>**/runners/PortalIntegrationTest.java</test.runners>
 			</properties>
 		</profile>
+        <profile>
+            <id>archivesearch</id>
+            <properties>
+                <test.runners>**/runners/ArchiveSearchIntegrationTest.java</test.runners>
+            </properties>
+        </profile>
 		<profile>
 			<id>front</id>
 			<properties>

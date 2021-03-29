@@ -41,6 +41,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {  SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { SearchResponse } from '../../archive/models/search-response.interface';
+import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 
 
 
@@ -99,4 +100,19 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' });
   }
 
+  getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
+    return this.http.get<SearchCriteriaHistory[]>(`${this.apiUrl}/searchcriteriahistory`);
+  }
+
+  saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory`, searchCriteriaHistory);
+  }
+
+  deleteSearchCriteriaHistory(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/searchcriteriahistory/${id}`);
+  }
+
+  updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
+    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+  }
 }

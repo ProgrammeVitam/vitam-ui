@@ -27,7 +27,11 @@
 package fr.gouv.vitamui.archive.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
+import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
+import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -92,4 +96,12 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
         return new UnitService(client);
     }
 
+    @Bean
+    public SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService(
+        final CustomSequenceRepository sequenceRepository,
+        final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
+        final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
+        final InternalSecurityService internalSecurityService) {
+        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository, searchCriteriaHistoryConverter, internalSecurityService);
+    }
 }

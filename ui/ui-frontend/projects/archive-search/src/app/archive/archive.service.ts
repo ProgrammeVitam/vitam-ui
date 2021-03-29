@@ -47,7 +47,6 @@ import { SearchResponse } from './models/search-response.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -210,7 +209,6 @@ export class ArchiveService extends SearchService<any> {
   findArchiveUnit(id : string, headers?: HttpHeaders) {
       return this.archiveApiService.findArchiveUnit(id, headers);
     }
-
 }
 
 function idExists(units: Unit[], id: string): boolean {
