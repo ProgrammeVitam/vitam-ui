@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
+import fr.gouv.vitamui.ingest.common.enums.Extension;
 import org.apache.commons.io.FileUtils;
 import org.odftoolkit.odfdom.type.Color;
 import org.odftoolkit.simple.TextDocument;
@@ -99,7 +100,7 @@ public class IngestGeneratorODTFile {
         Resource customerLogo) throws IOException, URISyntaxException {
 
         String imgFile;
-        String imageExtension;
+
         Border border = new Border(Color.WHITE, 1.0, StyleTypeDefinitions.SupportedLinearMeasure.PT);
 
         Table headerTable = document.addTable(1, 2);
@@ -111,14 +112,16 @@ public class IngestGeneratorODTFile {
         headerTable.getCellByPosition(0,0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
         headerTable.getCellByPosition(1,0).setBorders(StyleTypeDefinitions.CellBordersType.NONE, border);
 
-        Cell cell = headerTable.getCellByPosition(0,0);
-        cell.addParagraph(myCustomer.getName());
-        cell.addParagraph(myCustomer.getCompanyName());
-        cell.addParagraph("");
-        cell.addParagraph(myCustomer.getAddress().getStreet());
-        cell.addParagraph(myCustomer.getAddress().getCity());
-        cell.addParagraph(myCustomer.getAddress().getZipCode());
-        cell.addParagraph(myCustomer.getAddress().getCountry());
+        if(myCustomer != null) {
+            Cell cell = headerTable.getCellByPosition(0,0);
+            cell.addParagraph(myCustomer.getName());
+            cell.addParagraph(myCustomer.getCompanyName());
+            cell.addParagraph("");
+            cell.addParagraph(myCustomer.getAddress().getStreet());
+            cell.addParagraph(myCustomer.getAddress().getCity());
+            cell.addParagraph(myCustomer.getAddress().getZipCode());
+            cell.addParagraph(myCustomer.getAddress().getCountry());
+        }
 
         if (myCustomer.isHasCustomGraphicIdentity() && customerLogo != null) {
 
@@ -128,69 +131,24 @@ public class IngestGeneratorODTFile {
                 .getDecoder()
                 .decode(customerLogoBase64Image);
 
-            switch (customerLogoBase64Image.charAt(0)) {
-                case '/':
-                    imageExtension = "jpg";
-                    imgFile = "src/main/resources/logo_ministere." + imageExtension;
-                    FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
-                    headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
-                    break;
-
-                case 'i':
-                    imageExtension = "png";
-                    imgFile = "src/main/resources/logo_ministere." + imageExtension;
-                    FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
-                    headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
-                    break;
-
-                case 'R':
-                    imageExtension = "gif";
-                    imgFile = "src/main/resources/logo_ministere." + imageExtension;
-                    FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
-                    headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
-                    break;
-
-                case 'U':
-                    imageExtension = "webp";
-                    imgFile = "src/main/resources/logo_ministere." + imageExtension;
-                    FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
-                    headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
-                    break;
-
-                default:
-                    LOGGER.error("Unexpected value : {}", customerLogoBase64Image.charAt(0));
-                    throw new IllegalStateException("Unexpected value: " + customerLogoBase64Image.charAt(0));
-            }
+            imgFile = "src/main/resources/logo_ministere." + getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
+            FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
+            headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
 
             FileUtils.forceDelete(new File(imgFile));
         }
 
         addSpace(document);
 
-
     }
     public void generateFirstTitle(TextDocument document) {
-
         addSpace(document);
-        Paragraph paragraph = document.addParagraph(FIRST_TITLE);
-        paragraph.setHorizontalAlignment(StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
-        Font font = paragraph.getFont();
-        font.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
-        font.setSize(22);
-        paragraph.setFont(font);
-        addSpace(document);
+        generateTile(document, 22, FIRST_TITLE, StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
 
     }
 
     public void generateSecondtTitle(TextDocument document) {
-
-        Paragraph paragraph = document.addParagraph(SECOND_TITLE);
-        Font font = paragraph.getFont();
-        font.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
-        font.setSize(14);
-        paragraph.setFont(font);
-        addSpace(document);
-
+        generateTile(document, 14, SECOND_TITLE, StyleTypeDefinitions.HorizontalAlignmentType.LEFT);
     }
 
     /*
@@ -199,7 +157,7 @@ public class IngestGeneratorODTFile {
      * Le service producteur et le service versant
      *
      * */
-    public void generateTableOne(TextDocument document, Document manifest, JSONObject jsonObject)
+    public void generateServicesTable(TextDocument document, Document manifest, JSONObject jsonObject)
         throws JSONException {
 
         addSpace(document);
@@ -220,7 +178,7 @@ public class IngestGeneratorODTFile {
             cellTwo.setFont(fontCellTwo);
 
             table.getColumnByIndex(1).getCellByIndex(0)
-                .setStringValue(getServiceProducteur(manifest));
+                .setStringValue(getManifestPrincipalData(manifest,"OriginatingAgencyIdentifier"));
             table.getColumnByIndex(1).getCellByIndex(1)
                 .setStringValue(getServiceVersant(jsonObject));
 
@@ -239,7 +197,7 @@ public class IngestGeneratorODTFile {
      * Numéro du versement, Présentation du contenu, Dates extrêmes et l'historique de conservation
      *
      * */
-    public void generateTableTwo(TextDocument document, Document manifest, List<ArchiveUnitDto> archiveUnitDtoList) {
+    public void generateDepositDataTable(TextDocument document, Document manifest, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         addSpace( document);
         Table table = document.addTable(4, 2);
@@ -270,13 +228,13 @@ public class IngestGeneratorODTFile {
         tableCellFour.setFont(fontCellFour);
 
 
-        table.getColumnByIndex(1).getCellByIndex(0).setStringValue(getNumVersement(manifest));
-        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getComment(manifest));
+        table.getColumnByIndex(1).getCellByIndex(0).setStringValue(getManifestPrincipalData(manifest,"MessageIdentifier"));
+        table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getManifestPrincipalData(manifest,"Comment"));
         if(!archiveUnitDtoList.isEmpty() && archiveUnitDtoList != null) {
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
-                "Date de début : " + transformDate(getArchiveUnitStartDatesList(archiveUnitDtoList).get(0).split("T")[0]));
+                "Date de début : " + getStartedDate(getArchiveUnitStartDatesList(archiveUnitDtoList)));
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
-                "Date de fin : " + transformDate(getArchiveUnitEndDatesList(archiveUnitDtoList).get(getArchiveUnitEndDatesList(archiveUnitDtoList).size() - 1).split("T")[0]));
+                "Date de fin : " + getEndDate(getArchiveUnitEndDatesList(archiveUnitDtoList)));
         }
           table.getColumnByIndex(1).getCellByIndex(3).setStringValue(getCustodialHistory(manifest));
 
@@ -290,7 +248,7 @@ public class IngestGeneratorODTFile {
      * Nombre de fichiers binaires et Identifiant de l’opération d’entrée
      *
      * */
-    public void generateTableThree(TextDocument document, Document manifest, String id) {
+    public void generateOperationDataTable(TextDocument document, Document manifest, String id) {
 
         addSpace( document);
         Table table = document.addTable(2, 2);
@@ -323,7 +281,7 @@ public class IngestGeneratorODTFile {
      * Date de signature, Le responsable du versement et Le responsable du service d'archives
      *
      * */
-    public void generateTableFour(TextDocument document) {
+    public void generateResponsibleSignatureTable(TextDocument document) {
 
         addSpace( document);
         Border border = new Border(Color.WHITE, 1.0, StyleTypeDefinitions.SupportedLinearMeasure.PT);
@@ -361,7 +319,7 @@ public class IngestGeneratorODTFile {
      * Identifiant SAE VAS, Titre, date de début et date de fin
      *
      * */
-    public void generateDynamicTable(TextDocument document, List<ArchiveUnitDto> archiveUnitDtoList) {
+    public void generateArchiveUnitDetailsTable(TextDocument document, List<ArchiveUnitDto> archiveUnitDtoList) {
 
         Table dynamicTable = document.addTable(1,4);
 
@@ -507,17 +465,9 @@ public class IngestGeneratorODTFile {
         return jsonObject.get("originatingAgency").toString();
     }
 
-    private String getServiceProducteur(Document document) {
+    private String getManifestPrincipalData(Document document, String tageName) {
         document.getDocumentElement().normalize();
-        return document.getElementsByTagName("OriginatingAgencyIdentifier").item(0).getTextContent();
-    }
-
-    private String getNumVersement(Document document) {
-        return document.getElementsByTagName("MessageIdentifier").item(0).getTextContent();
-    }
-
-    private String getComment(Document document) {
-        return document.getElementsByTagName("Comment").item(0).getTextContent();
+        return document.getElementsByTagName(tageName).item(0).getTextContent();
     }
 
     private String getCustodialHistory(Document document) {
@@ -555,5 +505,37 @@ public class IngestGeneratorODTFile {
     private void addSpace(TextDocument document) {
 
         document.addParagraph("");
+    }
+
+    private String getExtensionByCustomerLogo(String customerLogoBase64Image) {
+
+       return Extension.findExtensionFromValue(Character
+           .toString(customerLogoBase64Image.charAt(0)))
+           .toString();
+    }
+
+    private void generateTile(TextDocument document, int size, String tilte, StyleTypeDefinitions.HorizontalAlignmentType horizontalAlignmentType) {
+
+        Paragraph paragraph = document.addParagraph(tilte);
+        paragraph.setHorizontalAlignment(horizontalAlignmentType);
+        Font font = paragraph.getFont();
+        font.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
+        font.setSize(size);
+        paragraph.setFont(font);
+        addSpace(document);
+    }
+
+    private String getStartedDate(List<String> listOfDate) {
+        if(listOfDate.size() > 0) {
+            return transformDate(listOfDate.get(0).split("T")[0]);
+        }
+        return "_ _ _ _";
+    }
+
+    private String getEndDate(List<String> listOfDate) {
+        if(listOfDate.size() > 0) {
+            return transformDate(listOfDate.get(listOfDate.size() - 1).split("T")[0]);
+        }
+        return "_ _ _ _";
     }
 }
