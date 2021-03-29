@@ -279,19 +279,19 @@ public class IngestInternalService {
 
             ingestGeneratorODTFile.generateFirstTitle(document);
 
-            ingestGeneratorODTFile.generateTableOne(document,manifest,jsonObject);
+            ingestGeneratorODTFile.generateServicesTable(document,manifest,jsonObject);
 
-            ingestGeneratorODTFile.generateTableTwo(document,manifest,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateDepositDataTable(document,manifest,archiveUnitDtoList);
 
-            ingestGeneratorODTFile.generateTableThree(document,manifest,id);
+            ingestGeneratorODTFile.generateOperationDataTable(document,manifest,id);
 
-            ingestGeneratorODTFile.generateTableFour(document);
+            ingestGeneratorODTFile.generateResponsibleSignatureTable(document);
 
             document.addPageBreak();
 
             ingestGeneratorODTFile.generateSecondtTitle(document);
 
-            ingestGeneratorODTFile.generateDynamicTable(document,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateArchiveUnitDetailsTable(document,archiveUnitDtoList);
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
