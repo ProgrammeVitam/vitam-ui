@@ -47,7 +47,6 @@ import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
 
-
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
@@ -70,6 +69,7 @@ export class ArchiveSearchComponent implements OnInit {
   accessContract: string;
   nbQueryCriteria: number = 0;
   subscriptionNodes: Subscription;
+  subscriptionEntireNodes: Subscription;
   currentPage: number = 0;
   pageNumbers: number = 0;
   totalResults: number = 0;
@@ -127,9 +127,16 @@ emptyForm = {
   show = true;
   showUnitPreviewBlock = false;
 
+  entireNodesIds: string[];
+
   constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
               private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe
     ) {
+
+    this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe(nodes => {
+      this.entireNodesIds = nodes;
+    });
+
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe(node => {
       if(node.checked){
         this.addCriteria("NODE", "NODE", node.id, node.title, true);
@@ -314,6 +321,7 @@ emptyForm = {
       this.submited = false;
       this.showCriteriaPanel = true;
       this.archiveUnits = [];
+      this.archiveExchangeDataService.emitNodeTarget(null);
     }
   }
 
@@ -350,9 +358,12 @@ emptyForm = {
         if(!values || values.length === 0){
           values = [];
         }
-        values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED, translated: translated} );
-        criteria.values = values;
-        this.searchCriterias.set(keyElt, criteria);
+        let filtredValues = values.filter(elt => elt.value === valueElt);
+        if(filtredValues.length === 0){
+          values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED, translated: translated} );
+          criteria.values = values;
+          this.searchCriterias.set(keyElt, criteria);
+        }
       }else {
         let values = [];
         values.push({ value: valueElt, label: labelElt, valueShown: true, status: SearchCriteriaStatusEnum.NOT_INCLUDED, translated: translated} );
@@ -379,13 +390,18 @@ emptyForm = {
 
   buildNodesListForQUery(): String[] {
     let nodesIdList: String[] = [];
+    let hasNodeSelected = false;
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if(criteria.key === 'NODE') {
+        hasNodeSelected = true;
         criteria.values.forEach((elt) => {
           nodesIdList.push(elt.value);
         });
       }
     });
+    if(!hasNodeSelected){
+      nodesIdList = this.entireNodesIds;
+    }
     return nodesIdList;
   }
 
@@ -430,8 +446,6 @@ emptyForm = {
     let sortingCriteria = { criteria: this.orderBy , sorting: this.direction}
     this.archiveService.searchArchiveUnitsByCriteria({ "nodes": nodesIds, "criteriaList": criteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria }, headers).subscribe(
       (pagedResult: PagedResult) => {
-
-
         if (this.currentPage === 0 ) {
           this.archiveUnits = pagedResult.results;
           this.archiveExchangeDataService.emitFacets(pagedResult.facets);
@@ -449,7 +463,7 @@ emptyForm = {
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
         this.pending = false;
-        console.log("Errors : ", error.message);
+        console.log("error : ", error.message);
         this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       })

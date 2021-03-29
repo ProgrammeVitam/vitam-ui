@@ -89,9 +89,10 @@ public class VitamQueryHelper {
     private static final String PUID = "PUID";
     private static final String EV_TYPE_PROC = "evTypeProc";
     private static final String STATUS = "Status";
-    private static final String EV_TYPE ="evType";
+    private static final String EV_TYPE = "evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
+
     /**
      * create a valid VITAM DSL Query from a map of criteria
      *
@@ -110,7 +111,8 @@ public class VitamQueryHelper {
         //Handle roots
         if (nodes != null && !nodes.isEmpty()) {
             select.addRoots(nodes.toArray(new String[nodes.size()]));
-            select.addFacets(FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, nodes.size() * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
+            select.addFacets(
+                FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, nodes.size() * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
 
@@ -147,7 +149,7 @@ public class VitamQueryHelper {
                         break;
                     case TITLE:
                     case DESCRIPTION:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.MATCH, searchKey, entry.getValue());
+                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
                         break;
                     case START_DATE:
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.GE, searchKey, entry.getValue());
@@ -156,7 +158,7 @@ public class VitamQueryHelper {
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.LE, searchKey, entry.getValue());
                         break;
                     case TITLE_OR_DESCRIPTION:
-                        query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.MATCH));
+                        query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
                         break;
                     default:
                         LOGGER.info("adding other field from not listed fields for key: {},", searchKey);
@@ -244,7 +246,8 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber, final Integer size,
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
+        final Integer size,
         final Optional<String> orderBy, final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, InvalidCreateOperationException {
 
