@@ -51,6 +51,11 @@ mongodb:
     user: "mongod_dbuser_versioning"
     password: "mongod_dbpwd_versioning"
     roles: '[{ role: "readWrite", db: "versioning" }]'
+  archivesearch:
+    db: archivesearch
+    user: "mongod_dbuser_archivesearch"
+    password: "mongod_dbpwd_archivesearch"
+    roles: '[{ role: "readWrite", db: "archivesearch" }]'
 
 mongod_replicaset_name: "rs0"
 

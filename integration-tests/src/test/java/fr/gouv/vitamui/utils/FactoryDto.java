@@ -7,7 +7,12 @@ import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
-import fr.gouv.vitamui.referential.common.dto.*;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +77,9 @@ public class FactoryDto {
         else if (clazz.equals(SecurityProfileDto.class)) {
             dto = (T) buildSecurityProfileDto();
         }
+        else if (clazz.equals(SearchCriteriaHistoryDto.class)) {
+            dto = (T) buildSearchCriteriaHistoryDto();
+        }
         else {
             throw new InvalidArgumentException("build method not implemented for class " + clazz);
         }
@@ -122,7 +130,7 @@ public class FactoryDto {
     private static RuleDto buildRuleDto() {
         return ReferentialDtoBuilder.buildRuleDto(null, randomString(), "StorageRule", "Rule value", "Rule Description", "1", "DAY");
     }
-    
+
     private static AccessContractDto buildAccessContractDto() {
         return ReferentialDtoBuilder.buildAccessContractDto(null);
     }
@@ -135,4 +143,7 @@ public class FactoryDto {
         return ReferentialDtoBuilder.buildSecurityProfileDto(null);
     }
 
+    private static SearchCriteriaHistoryDto buildSearchCriteriaHistoryDto() {
+        return ArchiveSearchDtoBuilder.buildSearchCriteriaHistoryDto(null);
+    }
 }

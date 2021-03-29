@@ -1,0 +1,136 @@
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ *
+ * contact@programmevitam.fr
+ *
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ *
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
+ */
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { Direction } from 'ui-frontend-common';
+import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
+import {ConfirmActionComponent} from '../../shared/confirm-action/confirm-action.component';
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { SearchCriteriaListService } from './search-criteria-list.service';
+
+@Component({
+  selector: 'app-search-criteria-list',
+  templateUrl: './search-criteria-list.component.html',
+  styleUrls: ['./search-criteria-list.component.css'],
+})
+export class SearchCriteriaListComponent implements OnInit {
+
+  @Output()
+  searchCriteriaHistoryLength = new EventEmitter<number>();
+  @Output()
+  storedSearchCriteriaHistory = new EventEmitter<any>();
+
+  @Output()
+  clearFilters = new EventEmitter<boolean>();
+
+  searchCriteriaHistory: SearchCriteriaHistory[];
+  private readonly orderChange = new Subject<string>();
+  direction: Direction = Direction.ASCENDANT;
+
+  subscriptionSearchCriteriaHistory: Subscription;
+  keyPressSubscription: Subscription;
+
+  pending = false;
+
+  constructor(private searchCriteriaListService: SearchCriteriaListService,
+              private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
+              public dialog: MatDialog, private snackBar: VitamUISnackBar) {
+
+    // tslint:disable-next-line:max-line-length
+    this.subscriptionSearchCriteriaHistory = this.archiveSharedDataServiceService.getSearchCriteriaHistoryShared().subscribe(searchCriteriaHistoryResults => {
+      if (searchCriteriaHistoryResults) {
+        this.searchCriteriaHistory.push(searchCriteriaHistoryResults);
+        this.archiveSharedDataServiceService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+      }
+    });
+               }
+
+  ngOnInit() {
+    this.getSearchCriteriaHistory();
+    this.direction = Direction.ASCENDANT;
+  }
+
+  emitOrderChange() {
+    this.orderChange.next();
+  }
+
+  getSearchCriteriaHistory() {
+    this.pending = true;
+    this.searchCriteriaListService.getSearchCriteriaHistory().subscribe(data => {
+      this.searchCriteriaHistory = data;
+      this.archiveSharedDataServiceService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+      this.searchCriteriaHistoryLength.emit(data.length);
+      this.archiveSharedDataServiceService.emitAllSearchCriteriaHistory(data);
+      this.pending = false;
+    });
+  }
+
+  deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
+
+    const dialog = this.dialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+
+    dialog.componentInstance.objectType = 'recherche sauvegardée';
+    dialog.componentInstance.objectName = searchCriteriaHistory.name;
+    dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;
+
+    dialog.afterClosed().pipe(
+      filter((result) => !!result)
+    ).subscribe(() => {
+      this.searchCriteriaListService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
+        this.clearElement(searchCriteriaHistory.id);
+        this.searchCriteriaHistoryLength.emit(this.searchCriteriaHistory.length);
+        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          data: {type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name},
+          duration: 10000
+        });
+        this.clearFilters.emit(true);
+      });
+    });
+  }
+
+  clearElement(id: string) {
+    for (let i = 0; i < this.searchCriteriaHistory.length; i++) {
+      if (this.searchCriteriaHistory[i].id === id) {
+        this.searchCriteriaHistory.splice(i, 1);
+      }
+    }
+  }
+}

@@ -463,7 +463,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_searcharchiveunitsbycriteriausingpost">2.1.5. searchArchiveUnitsByCriteria</a></li>
 </ul>
 </li>
-<li><a href="#_access-contract-temp-external-controller-mockito-mock-1530607306_resource">2.2. Access-contract-temp-external-controller-$-mockito-mock-$1530607306</a>
+<li><a href="#_access-contract-temp-external-controller-mockito-mock-959214949_resource">2.2. Access-contract-temp-external-controller-$-mockito-mock-$959214949</a>
 <ul class="sectlevel3">
 <li><a href="#_getallusingget">2.2.1. getAll</a></li>
 </ul>
@@ -477,6 +477,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_errorhtmlusingpatch">2.3.5. errorHtml</a></li>
 <li><a href="#_errorhtmlusinghead">2.3.6. errorHtml</a></li>
 <li><a href="#_errorhtmlusingoptions">2.3.7. errorHtml</a></li>
+</ul>
+</li>
+<li><a href="#_searchcriteriahistory_resource">2.4. SearchCriteriaHistory</a>
+<ul class="sectlevel3">
+<li><a href="#_createusingpost">2.4.1. create</a></li>
+<li><a href="#_getsearchcriteriahistoryusingget">2.4.2. getSearchCriteriaHistory</a></li>
+<li><a href="#_updateusingput">2.4.3. Update Search criteria history</a></li>
+<li><a href="#_deleteusingdelete">2.4.4. delete</a></li>
 </ul>
 </li>
 </ul>
@@ -517,18 +525,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_rulecategorydto">3.32. RuleCategoryDto</a></li>
 <li><a href="#_ruledto">3.33. RuleDto</a></li>
 <li><a href="#_searchcriteriadto">3.34. SearchCriteriaDto</a></li>
-<li><a href="#_searchcriteriaeltdto">3.35. SearchCriteriaEltDto</a></li>
-<li><a href="#_searchcriteriasort">3.36. SearchCriteriaSort</a></li>
-<li><a href="#_storagedto">3.37. StorageDto</a></li>
-<li><a href="#_storagejson">3.38. StorageJson</a></li>
-<li><a href="#_titledto">3.39. TitleDto</a></li>
-<li><a href="#_versionsdto">3.40. VersionsDto</a></li>
-<li><a href="#_view">3.41. View</a></li>
-<li><a href="#_vitamsearchrequestdto">3.42. VitamSearchRequestDto</a></li>
-<li><a href="#_vitamuiarchiveunitresponsedto">3.43. VitamUIArchiveUnitResponseDto</a></li>
-<li><a href="#_vitamuisearchresponsedto">3.44. VitamUISearchResponseDto</a></li>
-<li><a href="#_vtagdto">3.45. VtagDto</a></li>
-<li><a href="#_xtagdto">3.46. XtagDto</a></li>
+<li><a href="#_searchcriteriaelementsdto">3.35. SearchCriteriaElementsDto</a></li>
+<li><a href="#_searchcriteriaeltdto">3.36. SearchCriteriaEltDto</a></li>
+<li><a href="#_searchcriteriahistorydto">3.37. SearchCriteriaHistoryDto</a></li>
+<li><a href="#_searchcriteriasort">3.38. SearchCriteriaSort</a></li>
+<li><a href="#_searchcriteriasdto">3.39. SearchCriteriasDto</a></li>
+<li><a href="#_storagedto">3.40. StorageDto</a></li>
+<li><a href="#_storagejson">3.41. StorageJson</a></li>
+<li><a href="#_titledto">3.42. TitleDto</a></li>
+<li><a href="#_versionsdto">3.43. VersionsDto</a></li>
+<li><a href="#_view">3.44. View</a></li>
+<li><a href="#_vitamsearchrequestdto">3.45. VitamSearchRequestDto</a></li>
+<li><a href="#_vitamuiarchiveunitresponsedto">3.46. VitamUIArchiveUnitResponseDto</a></li>
+<li><a href="#_vitamuisearchresponsedto">3.47. VitamUISearchResponseDto</a></li>
+<li><a href="#_vtagdto">3.48. VtagDto</a></li>
+<li><a href="#_xtagdto">3.49. XtagDto</a></li>
 </ul>
 </li>
 </ul>
@@ -574,13 +585,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>Archives search : Archives Search External Controller $ Mockito Mock $1406665724</p>
+<p>Archives search : Archives Search External Controller $ Mockito Mock $522464242</p>
 </li>
 <li>
-<p>access-contract-temp-external-controller-$-mockito-mock-$1530607306 : Access Contract Temp External Controller $ Mockito Mock $1530607306</p>
+<p>access-contract-temp-external-controller-$-mockito-mock-$959214949 : Access Contract Temp External Controller $ Mockito Mock $959214949</p>
 </li>
 <li>
 <p>basic-error-controller : Basic Error Controller</p>
+</li>
+<li>
+<p>searchCriteriaHistory : Search Criteria History External Controller $ Mockito Mock $108068997</p>
 </li>
 </ul>
 </div>
@@ -603,7 +617,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_archives_search_resource"><a class="anchor" href="#_archives_search_resource"></a><a class="link" href="#_archives_search_resource">2.1. Archives Search</a></h3>
 <div class="paragraph">
-<p>Archives Search External Controller $ Mockito Mock $1406665724</p>
+<p>Archives Search External Controller $ Mockito Mock $522464242</p>
 </div>
 <div class="sect3">
 <h4 id="_findunitbyidusingget"><a class="anchor" href="#_findunitbyidusingget"></a><a class="link" href="#_findunitbyidusingget">2.1.1. findUnitById</a></h4>
@@ -1677,9 +1691,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_access-contract-temp-external-controller-mockito-mock-1530607306_resource"><a class="anchor" href="#_access-contract-temp-external-controller-mockito-mock-1530607306_resource"></a><a class="link" href="#_access-contract-temp-external-controller-mockito-mock-1530607306_resource">2.2. Access-contract-temp-external-controller-$-mockito-mock-$1530607306</a></h3>
+<h3 id="_access-contract-temp-external-controller-mockito-mock-959214949_resource"><a class="anchor" href="#_access-contract-temp-external-controller-mockito-mock-959214949_resource"></a><a class="link" href="#_access-contract-temp-external-controller-mockito-mock-959214949_resource">2.2. Access-contract-temp-external-controller-$-mockito-mock-$959214949</a></h3>
 <div class="paragraph">
-<p>Access Contract Temp External Controller $ Mockito Mock $1530607306</p>
+<p>Access Contract Temp External Controller $ Mockito Mock $959214949</p>
 </div>
 <div class="sect3">
 <h4 id="_getallusingget"><a class="anchor" href="#_getallusingget"></a><a class="link" href="#_getallusingget">2.2.1. getAll</a></h4>
@@ -2377,6 +2391,374 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   },
   "viewName" : "string"
 }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_searchcriteriahistory_resource"><a class="anchor" href="#_searchcriteriahistory_resource"></a><a class="link" href="#_searchcriteriahistory_resource">2.4. SearchCriteriaHistory</a></h3>
+<div class="paragraph">
+<p>Search Criteria History External Controller $ Mockito Mock $108068997</p>
+</div>
+<div class="sect3">
+<h4 id="_createusingpost"><a class="anchor" href="#_createusingpost"></a><a class="link" href="#_createusingpost">2.4.1. create</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>POST /searchcriteriahistory</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_6"><a class="anchor" href="#_paramètres_6"></a><a class="link" href="#_paramètres_6">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>param0</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">param0</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_14"><a class="anchor" href="#_réponses_14"></a><a class="link" href="#_réponses_14">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_8"><a class="anchor" href="#_consomme_8"></a><a class="link" href="#_consomme_8">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_14"><a class="anchor" href="#_exemple_de_requête_http_14"></a><a class="link" href="#_exemple_de_requête_http_14">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_14"><a class="anchor" href="#_requête_path_14"></a><a class="link" href="#_requête_path_14">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/searchcriteriahistory</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_3"><a class="anchor" href="#_requête_body_3"></a><a class="link" href="#_requête_body_3">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_14"><a class="anchor" href="#_exemple_de_réponse_http_14"></a><a class="link" href="#_exemple_de_réponse_http_14">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_14"><a class="anchor" href="#_réponse_200_14"></a><a class="link" href="#_réponse_200_14">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsearchcriteriahistoryusingget"><a class="anchor" href="#_getsearchcriteriahistoryusingget"></a><a class="link" href="#_getsearchcriteriahistoryusingget">2.4.2. getSearchCriteriaHistory</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>GET /searchcriteriahistory/me</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_réponses_15"><a class="anchor" href="#_réponses_15"></a><a class="link" href="#_réponses_15">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a> &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_15"><a class="anchor" href="#_exemple_de_requête_http_15"></a><a class="link" href="#_exemple_de_requête_http_15">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_15"><a class="anchor" href="#_requête_path_15"></a><a class="link" href="#_requête_path_15">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/searchcriteriahistory/me</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_15"><a class="anchor" href="#_exemple_de_réponse_http_15"></a><a class="link" href="#_exemple_de_réponse_http_15">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_15"><a class="anchor" href="#_réponse_200_15"></a><a class="link" href="#_réponse_200_15">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.4.3. Update Search criteria history</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>PUT /searchcriteriahistory/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_7"><a class="anchor" href="#_paramètres_7"></a><a class="link" href="#_paramètres_7">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>param0</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">param0</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_16"><a class="anchor" href="#_réponses_16"></a><a class="link" href="#_réponses_16">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_9"><a class="anchor" href="#_consomme_9"></a><a class="link" href="#_consomme_9">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_16"><a class="anchor" href="#_exemple_de_requête_http_16"></a><a class="link" href="#_exemple_de_requête_http_16">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_16"><a class="anchor" href="#_requête_path_16"></a><a class="link" href="#_requête_path_16">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/searchcriteriahistory/{id}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_4"><a class="anchor" href="#_requête_body_4"></a><a class="link" href="#_requête_body_4">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deleteusingdelete"><a class="anchor" href="#_deleteusingdelete"></a><a class="link" href="#_deleteusingdelete">2.4.4. delete</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>DELETE /searchcriteriahistory/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_8"><a class="anchor" href="#_paramètres_8"></a><a class="link" href="#_paramètres_8">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_17"><a class="anchor" href="#_réponses_17"></a><a class="link" href="#_réponses_17">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_17"><a class="anchor" href="#_exemple_de_requête_http_17"></a><a class="link" href="#_exemple_de_requête_http_17">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_17"><a class="anchor" href="#_requête_path_17"></a><a class="link" href="#_requête_path_17">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/searchcriteriahistory/string</pre>
 </div>
 </div>
 </div>
@@ -4245,7 +4627,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_searchcriteriaeltdto"><a class="anchor" href="#_searchcriteriaeltdto"></a><a class="link" href="#_searchcriteriaeltdto">3.35. SearchCriteriaEltDto</a></h3>
+<h3 id="_searchcriteriaelementsdto"><a class="anchor" href="#_searchcriteriaelementsdto"></a><a class="link" href="#_searchcriteriaelementsdto">3.35. SearchCriteriaElementsDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4276,7 +4658,87 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_searchcriteriasort"><a class="anchor" href="#_searchcriteriasort"></a><a class="link" href="#_searchcriteriasort">3.36. SearchCriteriaSort</a></h3>
+<h3 id="_searchcriteriaeltdto"><a class="anchor" href="#_searchcriteriaeltdto"></a><a class="link" href="#_searchcriteriaeltdto">3.36. SearchCriteriaEltDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>values</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "string" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; string &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_searchcriteriahistorydto"><a class="anchor" href="#_searchcriteriahistorydto"></a><a class="link" href="#_searchcriteriahistorydto">3.37. SearchCriteriaHistoryDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>name</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>savingDate</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string (date-time)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>searchCriteriaList</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "<a href="#_searchcriteriasdto">SearchCriteriasDto</a>" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriasdto">SearchCriteriasDto</a> &gt; array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>userId</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_searchcriteriasort"><a class="anchor" href="#_searchcriteriasort"></a><a class="link" href="#_searchcriteriasort">3.38. SearchCriteriaSort</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4307,7 +4769,38 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_storagedto"><a class="anchor" href="#_storagedto"></a><a class="link" href="#_storagedto">3.37. StorageDto</a></h3>
+<h3 id="_searchcriteriasdto"><a class="anchor" href="#_searchcriteriasdto"></a><a class="link" href="#_searchcriteriasdto">3.39. SearchCriteriasDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteriaList</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "<a href="#_searchcriteriaelementsdto">SearchCriteriaElementsDto</a>" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriaelementsdto">SearchCriteriaElementsDto</a> &gt; array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>nodes</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "string" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; string &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_storagedto"><a class="anchor" href="#_storagedto"></a><a class="link" href="#_storagedto">3.40. StorageDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4332,7 +4825,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_storagejson"><a class="anchor" href="#_storagejson"></a><a class="link" href="#_storagejson">3.38. StorageJson</a></h3>
+<h3 id="_storagejson"><a class="anchor" href="#_storagejson"></a><a class="link" href="#_storagejson">3.41. StorageJson</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4369,7 +4862,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_titledto"><a class="anchor" href="#_titledto"></a><a class="link" href="#_titledto">3.39. TitleDto</a></h3>
+<h3 id="_titledto"><a class="anchor" href="#_titledto"></a><a class="link" href="#_titledto">3.42. TitleDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4400,7 +4893,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_versionsdto"><a class="anchor" href="#_versionsdto"></a><a class="link" href="#_versionsdto">3.40. VersionsDto</a></h3>
+<h3 id="_versionsdto"><a class="anchor" href="#_versionsdto"></a><a class="link" href="#_versionsdto">3.43. VersionsDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4509,7 +5002,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_view"><a class="anchor" href="#_view"></a><a class="link" href="#_view">3.41. View</a></h3>
+<h3 id="_view"><a class="anchor" href="#_view"></a><a class="link" href="#_view">3.44. View</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4534,7 +5027,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_vitamsearchrequestdto"><a class="anchor" href="#_vitamsearchrequestdto"></a><a class="link" href="#_vitamsearchrequestdto">3.42. VitamSearchRequestDto</a></h3>
+<h3 id="_vitamsearchrequestdto"><a class="anchor" href="#_vitamsearchrequestdto"></a><a class="link" href="#_vitamsearchrequestdto">3.45. VitamSearchRequestDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4577,7 +5070,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_vitamuiarchiveunitresponsedto"><a class="anchor" href="#_vitamuiarchiveunitresponsedto"></a><a class="link" href="#_vitamuiarchiveunitresponsedto">3.43. VitamUIArchiveUnitResponseDto</a></h3>
+<h3 id="_vitamuiarchiveunitresponsedto"><a class="anchor" href="#_vitamuiarchiveunitresponsedto"></a><a class="link" href="#_vitamuiarchiveunitresponsedto">3.46. VitamUIArchiveUnitResponseDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4620,7 +5113,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_vitamuisearchresponsedto"><a class="anchor" href="#_vitamuisearchresponsedto"></a><a class="link" href="#_vitamuisearchresponsedto">3.44. VitamUISearchResponseDto</a></h3>
+<h3 id="_vitamuisearchresponsedto"><a class="anchor" href="#_vitamuisearchresponsedto"></a><a class="link" href="#_vitamuisearchresponsedto">3.47. VitamUISearchResponseDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4663,7 +5156,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_vtagdto"><a class="anchor" href="#_vtagdto"></a><a class="link" href="#_vtagdto">3.45. VtagDto</a></h3>
+<h3 id="_vtagdto"><a class="anchor" href="#_vtagdto"></a><a class="link" href="#_vtagdto">3.48. VtagDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4694,7 +5187,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_xtagdto"><a class="anchor" href="#_xtagdto"></a><a class="link" href="#_xtagdto">3.46. XtagDto</a></h3>
+<h3 id="_xtagdto"><a class="anchor" href="#_xtagdto"></a><a class="link" href="#_xtagdto">3.49. XtagDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4729,7 +5222,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-06 14:28:03 +0100
+Last updated 2020-09-17 17:33:41 +0200
 </div>
 </div>
 </body>

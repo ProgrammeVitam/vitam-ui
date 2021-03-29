@@ -1,0 +1,8 @@
+db = db.getSiblingDB('archivesearch')
+
+print("START 06_create_search_criteria_history.js");
+
+db.searchCriteriaHistories.remove({});
+db.createCollection('searchCriteriaHistories', {autoIndexId: true});
+
+print("END 06_create_search_criteria_history.js");

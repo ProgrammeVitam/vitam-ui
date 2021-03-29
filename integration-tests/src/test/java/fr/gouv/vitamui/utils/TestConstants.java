@@ -121,6 +121,7 @@ public class TestConstants {
 
     public static final String SECURITY_PROFILE_NAME = "admin-security-profile";
 
+    public static final String SEARCH_CRITERIA_NAME = "Search Name";
 
     private TestConstants() {
         // do nothing

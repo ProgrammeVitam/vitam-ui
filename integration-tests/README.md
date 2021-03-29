@@ -23,7 +23,9 @@ Les instances docker sont démarrées et arrêtées automatiquement via l'utilis
 
 Il est nécessaire de démarrer les services utilisés par les tests d'intégration avant leur exécution en local.
 
-Par exemple, l'exécution des tests d'intégration Referential back-end nécessite : Referential external, Referential internal, IAM external, IAM internal, CAS, et Security
+ ##### Exemple:
+  - l'exécution des tests d'intégration Referential back-end nécessite : Referential external, Referential internal, IAM external, IAM internal, CAS, et Security
+  - l'exécution des tests d'intégration ArchiveSearch back-end nécessite : ArchiveSearch external, ArchiveSearch internal, IAM external, IAM internal, CAS, et Security
 
 ## Execution en développement
 

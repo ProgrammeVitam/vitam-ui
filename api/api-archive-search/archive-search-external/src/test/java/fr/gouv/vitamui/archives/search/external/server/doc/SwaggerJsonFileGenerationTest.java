@@ -27,6 +27,7 @@ package fr.gouv.vitamui.archives.search.external.server.doc;
 
 import fr.gouv.vitamui.archives.search.external.server.rest.AccessContractTempExternalController;
 import fr.gouv.vitamui.archives.search.external.server.rest.ArchivesSearchExternalController;
+import fr.gouv.vitamui.archives.search.external.server.rest.SearchCriteriaHistoryExternalController;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -60,5 +61,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private AccessContractTempExternalController accessContractTempExternalController;
+
+    @MockBean
+    private SearchCriteriaHistoryExternalController searchCriteriaHistoryExternalController;
 
 }

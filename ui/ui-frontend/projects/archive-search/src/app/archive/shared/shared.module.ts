@@ -37,15 +37,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import {ConfirmActionModule} from './confirm-action/confirm-action.module';
 import { VitamUISnackBarModule } from './vitamui-snack-bar';
 
 @NgModule({
   imports: [
     CommonModule,
-    VitamUISnackBarModule
+    VitamUISnackBarModule,
+    ConfirmActionModule
   ],
   exports: [
-    VitamUISnackBarModule
+    VitamUISnackBarModule,
+    ConfirmActionModule
   ]
 })
 export class SharedModule { }

@@ -81,6 +81,31 @@
     "DOCUMENT": "Document",
     "ARCHIVE_PREVIEW": {
       "INFORMATION": "Informations"
+    },
+    "SEARCH_CRITERIA_SAVER": {
+      "NEW_SAVE_MENU": "Nouvelle Sauvegarde",
+      "NEW_SAVE_IN_POPUP": "Sauvegarder vos critères de recherche",
+      "ACTIVE_FILTERS": "Filtres actifs",
+      "NAME": "Nom",
+      "NEW_SAVE_LABEL": "Sauvegarder sous...",
+      "NEW_SAVE_REPLACE_LABEL": "Sauvegarde existante (remplacer la sauvegarde)",
+      "NEW_SAVE_BUTTON": "CRÉER UNE NOUVELLE SAUVEGARDE",
+      "SAVE_NOT_POSSIBLE_ALERT": "Enregistrement impossible:",
+      "SAVE_NOT_POSSIBLE_MESSAGE": "Vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherche depuis la page d’accueil.",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Limite de caractères atteinte",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "Vous avez atteint le nombre de caractère maximal autorisé.",
+      "SAVE_REPLACE_CONFIRM_MESSAGE": "Etes-vous sûr de vouloir remplacer la sauvegarde suivante ?",
+      "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRMER",
+      "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
+      "SAVE_DELETE_CRITERIA_LABEL": "Suppression de la",
+      "SAVE_DELETE_CRITERIA_MESSGE": "Voulez-vous supprimer la sauvegarde enregistrée ?",
+      "NO_RESULTS": "Pas de critères enregistrées!",
+      "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom ",
+      "DELETED_WITH_SUCCESS_1": "Votre sauvegarde sous le nom  ",
+      "DELETED_WITH_SUCCESS_2": "  a bien été supprimée.",
+      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
+      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé."
+      
     }
   }
 }

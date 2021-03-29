@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cucumber.common.context;
 
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -76,7 +77,7 @@ public class TestContext {
     public OwnerDto ownerDto;
 
     public OwnerDto savedOwnerDto;
-    
+
     public ContextDto contextDto;
 
     public ContextDto savedContextDto;
@@ -84,7 +85,7 @@ public class TestContext {
     public RuleDto ruleDto;
 
     public RuleDto savedRuleDto;
-    
+
     public AccessContractDto accessContractDto;
 
     public AccessContractDto savedAccessContractDto;
@@ -96,6 +97,10 @@ public class TestContext {
     public SecurityProfileDto securityProfileDto;
 
     public SecurityProfileDto savedSecurityProfileDto;
+
+    public SearchCriteriaHistoryDto searchCriteriaHistoryDto;
+
+    public SearchCriteriaHistoryDto savedSearchCriteriaHistoryDto;
 
     public void reset() {
         exception = null;
@@ -137,5 +142,6 @@ public class TestContext {
         savedIngestContractDto = null;
         securityProfileDto = null;
         savedSecurityProfileDto = null;
+        savedSearchCriteriaHistoryDto = null;
     }
 }

@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archive.internal.server.doc;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.AccessContractTempInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
@@ -81,4 +82,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
+
+    @MockBean
+    private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 }

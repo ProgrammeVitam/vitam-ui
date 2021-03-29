@@ -47,6 +47,11 @@ import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaHistory, SearchCriterias, SearchCriteriaEltements } from '../models/search-criteria-history.interface';
+import {FilingHoldingSchemeNode} from '../models/node.interface';
+import {NodeData} from '../models/nodedata.interface';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
@@ -71,10 +76,12 @@ export class ArchiveSearchComponent implements OnInit {
   nbQueryCriteria: number = 0;
   subscriptionNodes: Subscription;
   subscriptionEntireNodes: Subscription;
+  subscriptionFilingHoldingSchemeNodes: Subscription;
   currentPage: number = 0;
   pageNumbers: number = 0;
   totalResults: number = 0;
   pending: boolean = false;
+  included: boolean = false;
   canLoadMore: boolean = false;
   tenantIdentifier: string;
   form: FormGroup;
@@ -83,6 +90,7 @@ export class ArchiveSearchComponent implements OnInit {
   otherCriteriaValueEnabled: boolean = false;
   otherCriteriaValueType: string = 'DATE';
   showCriteriaPanel: boolean = true;
+  showSearchCriteriaPanel: boolean = false;
   selectedValueOntolonogy: any;
   archiveUnits: Unit[];
   ontologies: any;
@@ -96,6 +104,10 @@ export class ArchiveSearchComponent implements OnInit {
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
 
+  searchCriteriaHistory: SearchCriteriaHistory[] = [];
+  searchCriteriaHistoryToSave: Map<string, SearchCriteriaHistory>;
+  searchCriteriaHistoryLength: number = null;
+  hasResults = false;
   previousValue: {
     archiveCriteria: '',
     title: '',
@@ -130,11 +142,14 @@ emptyForm = {
 
   show = true;
   showUnitPreviewBlock = false;
+  nodeArray: FilingHoldingSchemeNode[] = [];
+  nodeData: NodeData;
 
   entireNodesIds: string[];
 
   constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService, private translateService: TranslateService,
-              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe
+              private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe,
+              public dialog: MatDialog
     ) {
 
     this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe(nodes => {
@@ -289,26 +304,44 @@ emptyForm = {
     this.filterChange.next(this.filterMapType);
   }
 
-  showHidePanel(){
+  showHidePanel() {
     this.showCriteriaPanel = !this.showCriteriaPanel;
   }
 
+  checkLength(event: number) {
+    this.searchCriteriaHistoryLength = event;
+  }
 
-  emitOrderChange(){
+  clearFilters(event: boolean) {
+    if (event) {
+      this.clearCriterias();
+      this.nbQueryCriteria = 0;
+    }
+  }
+
+  showStoredSearchCriteria(event: SearchCriteriaHistory) {
+    if (this.searchCriterias.size > 0) {
+      this.searchCriterias = new Map();
+      this.included = false;
+    }
+    this.reMapSearchCriteriaFromSearchCriteriaHistory(event);
+  }
+
+  emitOrderChange() {
     this.orderChange.next();
   }
 
 
-  removeCriteria(keyElt: string, valueElt: string){
+  removeCriteria(keyElt: string, valueElt: string) {
 
-    if(this.searchCriterias && this.searchCriterias.size > 0){
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
       this.searchCriterias.forEach((val, key) => {
-        if(key === keyElt){
+        if (key === keyElt) {
           let values = val.values;
           values = values.filter(item => item.value !== valueElt);
-          if(values.length === 0 ){
+          if (values.length === 0 ) {
             this.searchCriterias.delete(keyElt);
-          }else {
+          } else {
             val.values = values;
             this.searchCriterias.set(keyElt, val);
         }
@@ -316,14 +349,15 @@ emptyForm = {
         this.nbQueryCriteria--;
 
         }
-        if(key === 'NODE'){
+        if (key === 'NODE') {
           this.archiveExchangeDataService.emitNodeTarget(valueElt);
         }
       });
     }
-    if(this.searchCriterias && this.searchCriterias.size === 0) {
+    if (this.searchCriterias && this.searchCriterias.size === 0) {
       this.submited = false;
       this.showCriteriaPanel = true;
+      this.showSearchCriteriaPanel = false;
       this.archiveUnits = [];
       this.archiveExchangeDataService.emitNodeTarget(null);
     }
@@ -382,6 +416,7 @@ emptyForm = {
     this.pending = true;
     this.submited = true;
     this.showCriteriaPanel = false;
+    this.showSearchCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
     this.searchedCriteriaList = this.buildCriteriaListForQUery();
@@ -390,6 +425,18 @@ emptyForm = {
       this.callVitamApiService();
     }
 
+  }
+
+  getNodesId(): string[] {
+    const nodesIdList: string[] = [];
+    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+      if (criteria.key === 'NODE') {
+        criteria.values.forEach((elt) => {
+          nodesIdList.push(elt.value);
+        });
+      }
+    });
+    return nodesIdList;
   }
 
   buildNodesListForQUery(): string[] {
@@ -443,9 +490,9 @@ emptyForm = {
   }
 
   private callVitamApiService()  {
-    
+
     this.pending = true;
- 
+
     let sortingCriteria = { criteria: this.orderBy , sorting: this.direction}
     let searchCriteria = { "nodes": this.searchedCriteriaNodesList , "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
@@ -453,9 +500,11 @@ emptyForm = {
         if (this.currentPage === 0 ) {
           this.archiveUnits = pagedResult.results;
           this.archiveExchangeDataService.emitFacets(pagedResult.facets);
+          this.hasResults = true;
         } else {
           if (pagedResult.results) {
-            pagedResult.results.forEach(elt => this.archiveUnits.push(elt));
+              this.hasResults = true;
+              pagedResult.results.forEach(elt => this.archiveUnits.push(elt));
           }
         }
         this.pageNumbers = pagedResult.pageNumbers;
@@ -463,6 +512,7 @@ emptyForm = {
         this.canLoadMore = (this.currentPage < (this.pageNumbers - 1) );
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.INCLUDED);
         this.pending = false;
+        this.included = true;
       },
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
@@ -471,9 +521,171 @@ emptyForm = {
         this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       })
-    
+
   }
 
+    public mapSearchCriteriaHistory() {
+
+      let _searchCriteriaHistory: SearchCriteriaHistory;
+
+      let _searchCriteriaList: SearchCriterias[] = [];
+
+      let _criteriaList: SearchCriteriaEltements[] = [];
+
+      this.searchCriterias.forEach((criteria: SearchCriteria) => {
+
+        // construct the element other than tree nodes
+        // Construct SearchCriteriaEltements
+        const strValues: string[] = [];
+        if (criteria.key !== 'NODE') {
+          criteria.values.forEach((elt) => {
+            strValues.push(elt.value);
+          });
+          _criteriaList.push({ criteria: criteria.key, values : strValues});
+        }
+      });
+
+      // construct SearchCriteria
+      const nodesId = this.getNodesId();
+      _searchCriteriaList.push({criteriaList: _criteriaList, nodes: nodesId});
+
+      _searchCriteriaHistory = {
+        id: null,
+        name: '',
+        savingDate: new Date().toISOString(),
+        searchCriteriaList: _searchCriteriaList
+      };
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.panelClass = 'vitamui-modal';
+      dialogConfig.disableClose = false;
+      dialogConfig.data = {
+        searchCriteriaHistory: _searchCriteriaHistory,
+        originalSearchCriteria: this.searchCriterias,
+        nbCriterias: this.archiveExchangeDataService.nbFilters(_searchCriteriaHistory)
+         };
+
+      const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                  // activate clean criteria if necessary
+                  // this.clearCriterias();
+                }
+            });
+
+    }
+
+  fillNodeTitle(nodeArray: FilingHoldingSchemeNode[], nodeId: string) {
+
+    nodeArray.forEach(node => {
+      if (node.id === nodeId) {
+        node.checked = true;
+        node.hidden = false;
+        this.addCriteria('NODE', 'NODE', nodeId, node.title, true);
+      } else if (node.children.length > 0) {
+        // node.checked = false;
+        this.fillNodeTitle(node.children, nodeId);
+      }
+    });
+  }
+  setFilingHoldingScheme() {
+    this.subscriptionFilingHoldingSchemeNodes = this.archiveExchangeDataService.getFilingHoldingNodes().subscribe(nodes => {
+      this.nodeArray = nodes;
+    });
+  }
+
+  checkAllNodes(show: boolean) {
+    this.recursiveCheck(this.nodeArray, show);
+  }
+
+  recursiveCheck(nodes: FilingHoldingSchemeNode[], show: boolean) {
+    if (nodes.length === 0) {return; }
+    for (const node of nodes) {
+      node.hidden = false;
+      node.checked = show;
+      this.recursiveCheck(node.children, show);
+    }
+  }
+
+  public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
+    this.setFilingHoldingScheme();
+    this.checkAllNodes(false);
+    storedSearchCriteriaHistory.searchCriteriaList.forEach((searchCriteriaList: SearchCriterias) => {
+      if (searchCriteriaList.nodes.length > 0 ) {
+          searchCriteriaList.nodes.forEach((nodeId) => {
+            this.fillNodeTitle(this.nodeArray, nodeId);
+        });
+          this.nodeArray = null;
+          this.archiveExchangeDataService.emitToggle(true);
+      }
+
+      if (searchCriteriaList.criteriaList.length > 0) {
+        searchCriteriaList.criteriaList.forEach((criteria) => {
+          const c = criteria.criteria;
+          criteria.values.forEach((value) => {
+            // nodesIds.push(node);
+            const keyLabel = this.getKeyLabel(c);
+            if (keyLabel !== 'ONTOLOGY_TYPE') {
+
+              if (keyLabel.includes('DATE')) {
+                // tslint:disable-next-line:max-line-length
+                const specifiDate = keyLabel === 'START_DATE' ? 'Date de début' : 'Date de fin';
+                this.addCriteria(c, specifiDate, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
+              } else {
+                this.addCriteria(c, keyLabel, value, value, true);
+              }
+            } else {
+              const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === c);
+
+              if (ontologyElt.Type === 'DATE') {
+              // tslint:disable-next-line:max-line-length
+                this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
+            } else {
+              // tslint:disable-next-line:max-line-length
+                this.addCriteria(ontologyElt.Value, ontologyElt.Label, value , value, false);
+            }
+          }
+          });
+        });
+      }
+    });
+  }
+
+  getKeyLabel(keyElement: string) {
+    switch (keyElement) {
+      case 'titleAndDescription':
+        return 'TITLE_OR_DESCRIPTION';
+      case 'Title':
+        return 'TITLE';
+      case 'Description':
+        return 'DESCRIPTION';
+      case 'StartDate':
+        return 'START_DATE';
+      case 'EndDate':
+        return 'END_DATE';
+      case '#originating_agency':
+        return 'SP_CODE';
+      case 'originating_agency_label':
+        return 'SP_LABEL';
+      case '#id':
+        return 'ID';
+      case '#opi':
+        return 'GUID';
+      case 'serviceProdCommunicability':
+        return 'SP_COMM';
+      case 'serviceProdCommunicabilityDt':
+        return 'SP_COMM_DT';
+      default:
+        return 'ONTOLOGY_TYPE';
+    }
+  }
+  clearCriterias() {
+    this.searchCriterias = new Map();
+    this.included = false;
+    this.nbQueryCriteria = 0;
+    this.setFilingHoldingScheme();
+    this.checkAllNodes(false);
+  }
 
   updateCriteriaStatus(oldStatusFilter: SearchCriteriaStatusEnum, newStatus: SearchCriteriaStatusEnum){
     this.searchCriterias.forEach((value: SearchCriteria) => {
@@ -527,9 +739,9 @@ emptyForm = {
   }
 
 
-  
+
   exportArchiveUnitsToCsvFile() {
-    
+
     if((this.searchedCriteriaList && this.searchedCriteriaList.length > 0) || (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)) {
       let sortingCriteria = { criteria: this.orderBy, sorting: this.direction }
     let searchCriteria = { "nodes": this.searchedCriteriaNodesList, "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria, 'language': this.translateService.currentLang };

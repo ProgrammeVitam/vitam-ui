@@ -69,6 +69,9 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
+import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
+import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
  
 @NgModule({
   imports: [
@@ -95,11 +98,12 @@ import { TranslateService } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     TableFilterModule,
     VitamUILibraryModule,
-    MatIconModule, 
-    MatTabsModule,
+    MatIconModule,
+    MatTabsModule
     
   ],
-  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService, TranslateService] ,
+  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService, TranslateService,
+              SearchCriteriaSaverService] ,
   declarations: [
     ArchiveComponent,
     FilingHoldingNodeComponent,
@@ -108,6 +112,8 @@ import { TranslateService } from '@ngx-translate/core';
     AccessContractComponent,
     ArchivePreviewComponent,
     ArchiveSearchPopupComponent,
+    SearchCriteriaSaverComponent,
+    SearchCriteriaListComponent,
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
