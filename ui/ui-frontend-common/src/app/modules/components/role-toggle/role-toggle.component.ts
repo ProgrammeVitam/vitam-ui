@@ -56,7 +56,7 @@ export const ROLE_TOGGLE_VALUE_ACCESSOR: any = {
 })
 export class RoleToggleComponent implements OnInit, ControlValueAccessor, AfterContentChecked, AfterContentInit {
 
-  @ContentChildren(RoleComponent) roleComponents: QueryList<RoleComponent>;
+  @ContentChildren(RoleComponent, { descendants: true }) roleComponents: QueryList<RoleComponent>;
 
   onChange: (_: any) => void;
   onTouched: () => void;
