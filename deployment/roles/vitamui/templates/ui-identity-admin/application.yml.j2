@@ -83,7 +83,7 @@ ui-identity:
     vitamui-header-footer: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_header_footer }}"
     vitamui-background: "{{ vitamui_platform_informations.theme.theme_colors.vitamui_background }}"
   portal-categories:
-{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+{% for id, category in vitamui_defaults.portal_categories.items() %}
     {{ id }}:
       title: "{{ category.title }}"
       displayTitle: {{ category.displayTitle }}

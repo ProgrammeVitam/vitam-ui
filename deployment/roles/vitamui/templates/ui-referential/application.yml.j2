@@ -109,7 +109,7 @@ ui-referential:
     referential: "{{ url_prefix }}/referential"
 {% endif %}
   portal-categories:
-{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+{% for id, category in vitamui_defaults.portal_categories.items() %}
     {{ id }}:
       title: "{{ category.title }}"
       displayTitle: {{ category.displayTitle }}

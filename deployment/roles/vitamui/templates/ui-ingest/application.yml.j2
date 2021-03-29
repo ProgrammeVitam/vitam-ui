@@ -104,7 +104,7 @@ ui-ingest:
     ingest: "{{ url_prefix }}/ingest"
 {% endif %}
   portal-categories:
-{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+{% for id, category in vitamui_defaults.portal_categories.items() %}
     {{ id }}:
       title: "{{ category.title }}"
       displayTitle: {{ category.displayTitle }}

@@ -102,7 +102,7 @@ ui-archive-search:
     archive-search: "{{ url_prefix }}/archive-search"
 {% endif %}
   portal-categories:
-{% for id, category in vitamui_defaults.portal_categories.iteritems() %}
+{% for id, category in vitamui_defaults.portal_categories.items() %}
     {{ id }}:
       title: "{{ category.title }}"
       displayTitle: {{ category.displayTitle }}
