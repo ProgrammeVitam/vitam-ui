@@ -1,0 +1,38 @@
+print("Start 315_security.populate_certificates_ref.js");
+// For multi scaling purposes, This will re-insert the certificates of every service that we have in our topology
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START 315_security.populate_certificates_ref.js");
+
+{% macro insertCertificate(pemFile, contextId, host) -%}
+db.certificates.remove(
+    {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{% macro process(keyPath, contextId, groupName) -%}
+    {% for host in groups[groupName] %}
+        {{ insertCertificate(keyPath | replace('%host%', host), contextId, host) }}
+    {% endfor %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-referential.pem', 'ui_referential_context', 'hosts_ui_referential') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-ingest.pem', 'ui_ingest_context', 'hosts_ui_ingest') }}
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-archive-search.pem', 'ui_archive_search_context', 'hosts_ui_archive_search') }}
+
+print("END 315_security.populate_certificates_ref.js");
+
