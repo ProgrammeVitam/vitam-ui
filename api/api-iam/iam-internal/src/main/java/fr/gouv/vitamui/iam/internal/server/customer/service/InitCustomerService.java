@@ -101,9 +101,9 @@ public class InitCustomerService {
     public static final String EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX =
         "default_ac_";
     public static final String EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX =
-        "default access contract for customer id ";
+        "Profil pour la gestion des paramétrages externes ";
     public static final String EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT =
-        "Default access contract";
+        "Profil pour la gestion des paramétrages externes ";
 
     @Autowired
     private CustomerRepository customerRepository;
