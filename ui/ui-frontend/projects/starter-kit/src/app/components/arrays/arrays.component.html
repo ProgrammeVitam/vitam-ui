@@ -1,33 +1,23 @@
 <div>
-  <h4>{{'ARRAY.BASIC_TITLE' | translate}}</h4>
+  <h4>{{ 'ARRAY.BASIC_TITLE' | translate }}</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2">
         <i class="vitamui-icon vitamui-icon-gestion-de-profil"></i>
       </div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">
-        Nom du profil administrateur
-      </div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
       <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">
-        Description
-      </div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
       <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
     </div>
 
     <div class="vitamui-table-body">
-      <div
-        class="vitamui-table-rows"
-        *ngFor="let profile of dataSource"
-        (click)="handleClick(profile)"
-      >
+      <div class="vitamui-table-rows" *ngFor="let profile of dataSource" (click)="handleClick(profile)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-2">
             <i
               class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]="
-                profile?.enabled ? 'status-badge-green' : 'status-badge-grey'
-              "
+              [ngClass]="profile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
             ></i>
           </div>
           <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
@@ -41,22 +31,16 @@
 </div>
 
 <div>
-  <h4>{{'ARRAY.FILTER_TITLE' | translate}}</h4>
+  <h4>{{ 'ARRAY.FILTER_TITLE' | translate }}</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2 d-flex align-items-center">
-        <button
-          class="vitamui-filter-button"
-          [vitamuiCommonTableFilter]="statusFilterTemplate"
-        >
+        <button class="vitamui-filter-button" [vitamuiCommonTableFilter]="statusFilterTemplate">
           <i class="material-icons vitamui-row-icon">filter_list</i>
         </button>
 
         <ng-template #statusFilterTemplate>
-          <vitamui-common-table-filter
-            [(filter)]="this.filterMap['status']"
-            (filterChange)="onFilterChange('status', $event)"
-          >
+          <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon" i18n="@@groupStatusEnabled">
                 <span class="badge-state">Actif</span>
@@ -71,43 +55,24 @@
         </ng-template>
 
         <i class="vitamui-icon vitamui-icon-keys vitamui-row-icon"></i>
-        <vitamui-common-order-by-button
-          orderByKey="status"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-        >
+        <vitamui-common-order-by-button orderByKey="status" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
         <span i18n="Group name@@profileGroupListHeaderName">Nom du groupe</span>
-        <vitamui-common-order-by-button
-          orderByKey="name"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-        >
-        </vitamui-common-order-by-button>
+        <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction"> </vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
         <span>{{ 'COMMON.ID' | translate }}</span>
-        <vitamui-common-order-by-button
-          orderByKey="identifier"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-        >
+        <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span i18n="Description@@profileGroupListHeaderDescription"
-          >Description</span
-        >
-        <vitamui-common-order-by-button
-          orderByKey="description"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-        >
+        <span i18n="Description@@profileGroupListHeaderDescription">Description</span>
+        <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
 
@@ -134,35 +99,21 @@
         </ng-template>
 
         <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
-        <vitamui-common-order-by-button
-          orderByKey="level"
-          [(orderBy)]="orderBy"
-          [(direction)]="direction"
-        >
+        <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction">
         </vitamui-common-order-by-button>
       </div>
     </div>
 
     <div class="vitamui-table-body">
-      <div
-        class="vitamui-table-rows"
-        *ngFor="let group of dataSource"
-        (click)="handleClick(group)"
-      >
+      <div class="vitamui-table-rows" *ngFor="let group of dataSource" (click)="handleClick(group)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="col-2 d-flex align-items-center">
-            <i
-              class="vitamui-icon vitamui-icon-keys pl-4"
-              [ngClass]="
-                group?.enabled ? 'status-badge-green' : 'status-badge-grey'
-              "
-            >
-            </i>
+            <i class="vitamui-icon vitamui-icon-keys pl-4" [ngClass]="group?.enabled ? 'status-badge-green' : 'status-badge-grey'"> </i>
           </div>
-          <div class="col-3 text ellipsis">{{ group.name }}</div>
-          <div class="col-2 text ellipsis">{{ group.identifier }}</div>
-          <div class="col-3 text ellipsis">{{ group.description }}</div>
-          <div class="col-2 text ellipsis">{{ group.level }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ group.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ group.identifier }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ group.description }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ group.level }}</div>
         </div>
       </div>
     </div>
@@ -170,17 +121,13 @@
 </div>
 
 <div>
-  <h4>{{'ARRAY.SUBTABLE_TITLE' | translate}}</h4>
+  <h4>{{ 'ARRAY.SUBTABLE_TITLE' | translate }}</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-2"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">
-        Nom du profil administrateur
-      </div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
       <div class="col-2">{{ 'COMMON.ID' | translate }}</div>
-      <div class="col-3" i18n="Description@@profileListHeaderDescription">
-        Description
-      </div>
+      <div class="col-3" i18n="Description@@profileListHeaderDescription">Description</div>
       <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
     </div>
 
@@ -195,17 +142,9 @@
             (click)="handleClick(customer)"
           >
             <div class="d-flex align-items-center clickable">
-              <div
-                class="col-2 d-flex"
-                (click)="$event.stopPropagation(); row.toggle()"
-              >
+              <div class="col-2 d-flex" (click)="$event.stopPropagation(); row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
-                <i
-                  class="material-icons caret ml-1"
-                  [style.fontSize.px]="20"
-                  [@rotateAnimation]="row.state"
-                  >keyboard_arrow_up</i
-                >
+                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
               </div>
               <div [style.display]="'contents'">
                 <div class="col-3" vitamuiCommonEllipsis>{{ customer?.name }}</div>
@@ -230,7 +169,7 @@
 </div>
 
 <div>
-  <h4>{{'ARRAY.DIALOG_TITLE' | translate}}</h4>
+  <h4>{{ 'ARRAY.DIALOG_TITLE' | translate }}</h4>
   <div class="vitamui-table">
     <div class="vitamui-table-head p-0 py-3 d-flex align-items-center">
       <div class="pl-4">Groupe de profil</div>
@@ -245,16 +184,12 @@
             [vitamuiCommonCollapse]
             #row="vitamuiCommonCollapse"
           >
-            <div
-              class="d-flex justify-content-between align-items-center clickable" (click)="handleClick(group)"
-            >
+            <div class="d-flex justify-content-between align-items-center clickable" (click)="handleClick(group)">
               <div class="row-label align-items-center" vitamuiCommonEllipsis>
                 {{ group?.name }}
               </div>
               <button class="btn link underline" (click)="$event.stopPropagation(); row.toggle()">
-                {{
-                  row.state === "collapsed" ? "Voir detail" : "Masquer detail"
-                }}
+                {{ row.state === 'collapsed' ? 'Voir detail' : 'Masquer detail' }}
               </button>
             </div>
             <div *ngIf="row.state === 'expanded'; then dialogSubArray"></div>
@@ -278,13 +213,8 @@
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
         <ng-container *ngFor="let tenant of dataSource">
-          <div
-            class="vitamui-row d-flex align-items-center clickable"
-            (click)="handleClick(tenant)"
-          >
-            <div
-              class="col-3 d-flex justify-content-center align-items-end"
-            ></div>
+          <div class="vitamui-row d-flex align-items-center clickable" (click)="handleClick(tenant)">
+            <div class="col-3 d-flex justify-content-center align-items-end"></div>
             <div class="col-2" vitamuiCommonEllipsis>{{ tenant.identifier }}</div>
             <div class="col-3" vitamuiCommonEllipsis>{{ tenant.name }}</div>
             <div class="col-2" vitamuiCommonEllipsis>{{ tenant.description }}</div>
@@ -293,9 +223,7 @@
       </div>
 
       <div class="footer-action">
-        <span class="clickable" i18n="Add owner@@OwnerListAddOwnerButton">
-          Ajouter un propriétaire
-        </span>
+        <span class="clickable" i18n="Add owner@@OwnerListAddOwnerButton"> Ajouter un propriétaire </span>
       </div>
     </div>
   </div>
