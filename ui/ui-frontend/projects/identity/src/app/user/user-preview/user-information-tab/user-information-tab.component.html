@@ -103,10 +103,16 @@
 
   <div class="row">
     <div class="col-6 form-control">
+      <vitamui-common-editable-input formControlName="centerCode" [label]="'USER.INFORMATIONS.CENTER_CODE' | translate">
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6 form-control">
       <vitamui-common-editable-input formControlName="siteCode" [label]="'USER.INFORMATIONS.SITE_CODE' | translate">
       </vitamui-common-editable-input>
     </div>
+  </div>
 
+  <div class="row">
     <div class="col-6 form-control">
       <vitamui-common-editable-input formControlName="internalCode" [label]="'USER.INFORMATIONS.INTERNAL_CODE' | translate" [maxlength]="20">
       </vitamui-common-editable-input>

@@ -279,6 +279,7 @@
         "MOBILE": "Phone number",
         "FIX": "Home phone number"
       },
+      "CENTER_CODE":"Center code",
       "SITE_CODE": "Site code",
       "INTERNAL_CODE": "Internal code",
       "DEFAULT_LANGUAGE": "Interface language",
