@@ -55,6 +55,9 @@ export class ArchiveSharedDataServiceService {
 
   private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
 
+  private entireNodes = new BehaviorSubject<string[]>([]);
+
+
   currentNode = this.sourceNode.asObservable();
   currentNodeTarget = this.targetNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
@@ -64,8 +67,20 @@ export class ArchiveSharedDataServiceService {
 
   toggleArchiveUnitObservable = this.toggleArchiveUnitSubject.asObservable();
 
+
+  entireNodesObservable = this.entireNodes.asObservable();
+
+
   constructor() { }
 
+  emitEntireNodes(nodes: string[]) {
+    this.entireNodes.next(nodes);
+  }
+
+  getEntireNodes(): Observable<string[]> {
+    return this.entireNodes.asObservable();
+  }
+  
   emitNode(node: NodeData) {
     this.sourceNode.next(node);
   }

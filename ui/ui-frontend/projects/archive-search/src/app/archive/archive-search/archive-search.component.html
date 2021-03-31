@@ -1,6 +1,6 @@
 <div class="archive-search-section">
   <form [formGroup]="form">
-    <div class="row">    
+    <div class="row">
       <h5>{{'ARCHIVE_SEARCH.TITLE_SEARCH' | translate}} </h5>
     </div>
 
@@ -19,8 +19,8 @@
         </button>
       </div>
     </div>
-
-    <div class="row">
+ 
+    <div class="row area-criteria">
       <div class=" btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
         <ng-container
           *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last">
@@ -180,15 +180,18 @@
             <div class="col-2 form-control"></div>
             <div class="col-4 form-control">
               <mat-form-field class="vitamui-mat-select search-input-criteria">
-                <mat-select formControlName="otherCriteria" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);"                           
+                <mat-select formControlName="otherCriteria"
+                            style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);"
                             placeholder="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate}}"
-                          
+
                             (valueChange)="onSelectOtherCriteria()">
-                  <mat-option value=""style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' |
+                  <mat-option value="" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);">
+                    {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' |
                     translate}}
                   </mat-option>
                   <ng-container *ngFor="let ontology of this.ontologies">
-                    <mat-option  style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);" value="{{ontology.Value}}" matTooltip="{{ontology?.Value}}" 
+                    <mat-option style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);"
+                                value="{{ontology.Value}}" matTooltip="{{ontology?.Value}}"
                                 matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">{{ontology.Label}}
                     </mat-option>
                   </ng-container>
@@ -272,7 +275,8 @@
                                        (filterChange)="onFilterChange('Type', $event)">
             <vitamui-common-table-filter-option value="Folder">
               <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> {{'ARCHIVE_SEARCH.FOLDER' |
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> {{'ARCHIVE_SEARCH.FOLDER'
+                |
                 translate}}
               </div>
             </vitamui-common-table-filter-option>

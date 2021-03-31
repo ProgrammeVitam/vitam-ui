@@ -159,8 +159,8 @@ describe('FilingHoldingSchemeComponent', () => {
       }];
 
       nodes = [rootNode];
-      component.nestedDataSource.data = nodes;
-      component.nestedTreeControl.dataNodes = nodes;
+      component.nestedDataSourceFull.data = nodes;
+      component.nestedTreeControlFull.dataNodes = nodes;
     });
 
     describe('emitNode', () => {
@@ -179,7 +179,7 @@ describe('FilingHoldingSchemeComponent', () => {
     describe('showAllTreeNodes', () => {
       it('should check all nodes when select root node', () => {
         component.showAllTreeNodes();
-        component.nestedDataSource.data.forEach(node => {
+        component.nestedDataSourceFull.data.forEach(node => {
           expect(node.hidden).toBeFalsy();
         });
       });
