@@ -1,37 +1,10 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.AdditionalAnswers;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -61,11 +34,38 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.InitVitamTenantService
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.config.name=iam-internal-application" })
-@Import({ TestMongoConfig.class })
+@TestPropertySource(properties = {"spring.config.name=iam-internal-application"})
+@Import({TestMongoConfig.class})
 @ActiveProfiles(value = "test")
 public class InitCustomerServiceIntegrationTest {
 
@@ -78,8 +78,8 @@ public class InitCustomerServiceIntegrationTest {
     private static final String LEVEL_2 = "2";
     private static final String DESCRIPTION_1 = "desc1";
     private static final String DESCRIPTION_2 = "desc2";
-    private static final String DESCRIPTION_3= "desc3";
-    private static final String DESCRIPTION_4= "desc4";
+    private static final String DESCRIPTION_3 = "desc3";
+    private static final String DESCRIPTION_4 = "desc4";
     private static final String APP_NAME_1 = "app1";
 
     private static final String APP_NAME_2 = "app2";
@@ -155,9 +155,11 @@ public class InitCustomerServiceIntegrationTest {
         initSeq();
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
+            .thenReturn(Optional.ofNullable(tenant));
         Mockito.when(tenantRepository.save(ArgumentMatchers.any())).thenReturn(tenant);
-        Mockito.when(initVitamTenantService.init(ArgumentMatchers.any(Tenant.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(initVitamTenantService.init(ArgumentMatchers.any(Tenant.class), ArgumentMatchers.any(
+            ExternalParametersDto.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
 
         customerRepository.deleteAll();
     }
@@ -208,33 +210,39 @@ public class InitCustomerServiceIntegrationTest {
         customerDta.setTenantName("tenantName");
         customerInternalService.create(customerDta);
 
-        Criteria criteria = Criteria.where("obId").is(customerDta.getCustomerDto().getIdentifier()).and("obIdReq").is(MongoDbCollections.CUSTOMERS)
-                .and("evType").is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
+        Criteria criteria = Criteria.where("obId").is(customerDta.getCustomerDto().getIdentifier()).and("obIdReq")
+            .is(MongoDbCollections.CUSTOMERS)
+            .and("evType").is(EventType.EXT_VITAMUI_CREATE_CUSTOMER);
         List<Event> ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.OWNERS).and("evType").is(EventType.EXT_VITAMUI_CREATE_OWNER);
+        criteria = Criteria.where("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_OWNER);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.TENANTS).and("evType").is(EventType.EXT_VITAMUI_CREATE_TENANT);
+        criteria = Criteria.where("obIdReq").is(MongoDbCollections.TENANTS).and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_TENANT);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(1);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType").is(EventType.EXT_VITAMUI_CREATE_PROFILE);
+        criteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
-        assertThat(ev).hasSize(9);
+        assertThat(ev).hasSize(10);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.GROUPS).and("evType").is(EventType.EXT_VITAMUI_CREATE_GROUP);
+        criteria = Criteria.where("obIdReq").is(MongoDbCollections.GROUPS).and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_GROUP);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);
 
-        criteria = Criteria.where("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER);
+        criteria =
+            Criteria.where("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_CREATE_USER);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
         assertThat(ev).hasSize(2);
@@ -242,30 +250,40 @@ public class InitCustomerServiceIntegrationTest {
         final Optional<Customer> customer = customerRepository.findByCode(CUSTOMER_CODE);
         assertThat(customer).isPresent();
 
-        final Profile profile1 = profileRepository.findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_1 + " " + TENANT_IDENTIFIER, LEVEL_1, TENANT_IDENTIFIER);
+        final Profile profile1 = profileRepository
+            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_1 + " " + TENANT_IDENTIFIER, LEVEL_1,
+                TENANT_IDENTIFIER);
         assertThat(profile1).isNotNull();
         assertThat(profile1.getDescription()).isEqualTo(DESCRIPTION_1);
         assertThat(profile1.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile1.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(profile1.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(ROLE_1, ROLE_2, ROLE_3);
+        assertThat(profile1.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
+            .contains(ROLE_1, ROLE_2, ROLE_3);
 
-        final Profile profile2 = profileRepository.findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_2 + " " + TENANT_IDENTIFIER, LEVEL_2, TENANT_IDENTIFIER);
+        final Profile profile2 = profileRepository
+            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_2 + " " + TENANT_IDENTIFIER, LEVEL_2,
+                TENANT_IDENTIFIER);
         assertThat(profile2).isNotNull();
         assertThat(profile2.getDescription()).isEqualTo(DESCRIPTION_2);
         assertThat(profile2.getLevel()).isEqualTo(LEVEL_2);
         assertThat(profile2.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile2.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(ROLE_2, ROLE_3);
+        assertThat(profile2.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
+            .contains(ROLE_2, ROLE_3);
 
-        final Profile profile3 = profileRepository.findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_3 + " " + TENANT_IDENTIFIER, LEVEL_1, TENANT_IDENTIFIER);
+        final Profile profile3 = profileRepository
+            .findByNameAndLevelAndTenantIdentifier(PROFILE_NAME_3 + " " + TENANT_IDENTIFIER, LEVEL_1,
+                TENANT_IDENTIFIER);
         assertThat(profile3).isNotNull();
         assertThat(profile3.getDescription()).isEqualTo(DESCRIPTION_4);
         assertThat(profile3.getLevel()).isEqualTo(LEVEL_1);
         assertThat(profile3.getApplicationName()).isEqualTo(APP_NAME_2);
-        assertThat(profile3.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(ROLE_1, ROLE_2, ROLE_3);
+        assertThat(profile3.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
+            .contains(ROLE_1, ROLE_2, ROLE_3);
 
         final List<Group> groups = groupRepository.findByCustomerId(customer.get().getId());
         assertThat(groups).isNotEmpty();
-        final Map<String, Group> groupByName = groups.stream().collect(Collectors.toMap(Group::getName, Function.identity()));
+        final Map<String, Group> groupByName =
+            groups.stream().collect(Collectors.toMap(Group::getName, Function.identity()));
         final Group group = groupByName.get(GROUP_NAME_1);
         assertThat(group).isNotNull();
         assertThat(group.getDescription()).isEqualTo(DESCRIPTION_3);
@@ -275,11 +293,13 @@ public class InitCustomerServiceIntegrationTest {
         final Group adminGroup = groupByName.get(ApiIamInternalConstants.ADMIN_CLIENT_ROOT + " " + CUSTOMER_CODE);
         assertThat(adminGroup).isNotNull();
         final List<Profile> adminProfiles = profileRepository.findAllByIdIn(adminGroup.getProfileIds());
-        final Map<String, Profile> profileByName = adminProfiles.stream().collect(Collectors.toMap(Profile::getName, Function.identity()));
+        final Map<String, Profile> profileByName =
+            adminProfiles.stream().collect(Collectors.toMap(Profile::getName, Function.identity()));
         final Profile customProfileAdmin = profileByName.get(PROFILE_NAME_4 + " " + TENANT_IDENTIFIER);
         assertThat(customProfileAdmin).isNotNull();
         assertThat(customProfileAdmin.getApplicationName()).isEqualTo(APP_NAME_1);
-        assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList())).contains(ROLE_3);
+        assertThat(customProfileAdmin.getRoles().stream().map(r -> r.getName()).collect(Collectors.toList()))
+            .contains(ROLE_3);
 
         final User user = userRepository.findByEmail(EMAIl);
         assertThat(user).isNotNull();

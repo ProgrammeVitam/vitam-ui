@@ -20,6 +20,9 @@ import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
@@ -64,13 +67,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 /**
- *
  * Class for test InternalTenantService with a real repository
- *
- *
  */
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { TenantRepository.class, CustomSequenceRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {TenantRepository.class,
+    CustomSequenceRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     private static final String USER_TOKEN = "userToken";
@@ -150,18 +151,31 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
     @MockBean
     private CustomerInitConfig customerInitConfig;
 
+    @MockBean
+    private ExternalParametersRepository externalParametersRepository;
+
+    @MockBean
+    private ExternalParametersInternalService externalParametersInternalService;
+
     @Before
     public void setup() {
-        internalGroupService = new GroupInternalService(sequenceRepository, groupRepository, customerRepository, internalProfileService, userRepository,
+        internalGroupService =
+            new GroupInternalService(sequenceRepository, groupRepository, customerRepository, internalProfileService,
+                userRepository,
                 internalSecurityService, repository, iamLogbookService, groupConverter, null);
 
-        internalProfileService = new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository, repository,
+        internalProfileService =
+            new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository,
+                repository,
                 userRepository, internalSecurityService, iamLogbookService, profileConverter, null);
 
         repository.deleteAll();
-        service = new TenantInternalService(sequenceRepository, repository, customerRepository, ownerRepository, groupRepository, profileRepository,
-                userRepository, internalGroupService, internalUserService, internalOwnerService, internalProfileService, internalSecurityService,
-                iamLogbookService, tenantConverter, initVitamTenantService, logbookService, customerInitConfig);
+        service = new TenantInternalService(sequenceRepository, repository, customerRepository, ownerRepository,
+            groupRepository, profileRepository,
+            userRepository, internalGroupService, internalUserService, internalOwnerService, internalProfileService,
+            internalSecurityService,
+            iamLogbookService, tenantConverter, initVitamTenantService, logbookService, customerInitConfig,
+            externalParametersRepository, externalParametersInternalService);
 
         Mockito.reset(internalCustomerService);
 
@@ -225,17 +239,20 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         owner.setIdentifier("identifier_" + owner.getId());
 
         when(groupRepository.findOne(any(Query.class))).thenReturn(Optional.of(IamServerUtilsTest.buildGroup()));
-        when(customerRepository.findById(IamServerUtilsTest.CUSTOMER_ID)).thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(IamServerUtilsTest.CUSTOMER_ID))
+            .thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
         when(ownerRepository.findById(IamServerUtilsTest.OWNER_ID)).thenReturn(Optional.of(owner));
         final Profile profile = IamServerUtilsTest.buildProfile();
         profile.setIdentifier("1");
         when(profileRepository.save(any(Profile.class))).thenReturn(profile);
-        final InternalHttpContext internalHttpContext = new InternalHttpContext(IamServerUtilsTest.TENANT_IDENTIFIER, USER_TOKEN,
+        final InternalHttpContext internalHttpContext =
+            new InternalHttpContext(IamServerUtilsTest.TENANT_IDENTIFIER, USER_TOKEN,
                 IamServerUtilsTest.CUSTOMER_ID, USER_LEVEL, APPLICATION_ID, IDENTITY, REQUEST_ID, ACCESS_CONTRACT);
         when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         when(internalSecurityService.getLevel()).thenReturn("");
         when(internalSecurityService.getUser()).thenReturn(new AuthUserDto());
-        when(internalUserService.getDefaultAdminUser(IamServerUtilsTest.CUSTOMER_ID)).thenReturn(IamServerUtilsTest.buildUserDto());
+        when(internalUserService.getDefaultAdminUser(IamServerUtilsTest.CUSTOMER_ID))
+            .thenReturn(IamServerUtilsTest.buildUserDto());
         Mockito.when(internalSecurityService.getProofTenantIdentifier()).thenReturn(10001);
         final Tenant tenantProof = new Tenant();
         tenantProof.setCustomerId(IamServerUtilsTest.CUSTOMER_ID);
@@ -247,16 +264,24 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         TenantDto tenant = IamServerUtilsTest.buildTenantDto();
         tenant.setId(null);
 
+        when(externalParametersRepository.findByIdentifier(Mockito.anyString()))
+            .thenReturn(Optional.of(buildExternalParameter()));
+
+
         tenant = service.create(tenant);
 
-        final Criteria tenantCriteriaCreation = Criteria.where("obId").is("" + tenant.getIdentifier()).and("obIdReq").is(MongoDbCollections.TENANTS)
+        final Criteria tenantCriteriaCreation =
+            Criteria.where("obId").is("" + tenant.getIdentifier()).and("obIdReq").is(MongoDbCollections.TENANTS)
                 .and("evType").is(EventType.EXT_VITAMUI_CREATE_TENANT);
         final Optional<Event> evTenantCreation = eventRepository.findOne(Query.query(tenantCriteriaCreation));
         assertThat(evTenantCreation).isPresent();
-        final Criteria profileCriteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType").is(EventType.EXT_VITAMUI_CREATE_PROFILE);
+        final Criteria profileCriteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType")
+            .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
         final List<Event> evProfileCreation = eventRepository.findAll(Query.query(profileCriteria));
         assertThat(evProfileCreation).isNotNull().isNotEmpty().hasSize(1);
-        final Criteria groupUpdateCriteria = Criteria.where("obId").is("" + IamServerUtilsTest.GROUP_IDENTIFIER).and("obIdReq").is(MongoDbCollections.GROUPS)
+        final Criteria groupUpdateCriteria =
+            Criteria.where("obId").is("" + IamServerUtilsTest.GROUP_IDENTIFIER).and("obIdReq")
+                .is(MongoDbCollections.GROUPS)
                 .and("evType").is(EventType.EXT_VITAMUI_UPDATE_GROUP);
         final List<Event> evGroupUpdate = eventRepository.findAll(Query.query(groupUpdateCriteria));
         assertThat(evGroupUpdate).isNotNull().isNotEmpty().hasSize(1);
@@ -271,18 +296,30 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         final OwnerDto oldOwner = IamServerUtilsTest.buildOwnerDto();
         oldOwner.setIdentifier("identifier_" + oldOwner.getId());
         when(internalOwnerService.getOne(IamServerUtilsTest.OWNER_ID, Optional.empty())).thenReturn(oldOwner);
-        final OwnerDto newOwner = IamDtoBuilder.buildOwnerDto(NEW_OWNER_ID, IamServerUtilsTest.OWNER_NAME, IamServerUtilsTest.CUSTOMER_ID);
+        final OwnerDto newOwner =
+            IamDtoBuilder.buildOwnerDto(NEW_OWNER_ID, IamServerUtilsTest.OWNER_NAME, IamServerUtilsTest.CUSTOMER_ID);
         newOwner.setIdentifier("identifier_" + newOwner.getId());
         when(internalOwnerService.getOne(NEW_OWNER_ID, Optional.empty())).thenReturn(newOwner);
 
         tenant = service.patch(partialDto);
 
-        final Criteria tenantCriteriaUpdate = Criteria.where("obId").is("" + tenant.getIdentifier()).and("obIdReq").is(MongoDbCollections.TENANTS).and("evType")
+        final Criteria tenantCriteriaUpdate =
+            Criteria.where("obId").is("" + tenant.getIdentifier()).and("obIdReq").is(MongoDbCollections.TENANTS)
+                .and("evType")
                 .is(EventType.EXT_VITAMUI_UPDATE_TENANT);
         final Optional<Event> evTenantUpdate = eventRepository.findOne(Query.query(tenantCriteriaUpdate));
         assertThat(evTenantUpdate).isPresent();
         assertThat(evTenantUpdate.get().getEvDetData())
-                .isEqualTo("{\"diff\":{\"-Nom\":\"tenantName\"," + "\"+Nom\":\"" + NEW_NAME + "\"," + "\"-Identifiant du propriétaire\":\"identifier_ownerId\","
-                        + "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," + "\"+Activé\":\"false\"" + "}}");
+            .isEqualTo("{\"diff\":{\"-Nom\":\"tenantName\"," + "\"+Nom\":\"" + NEW_NAME + "\"," +
+                "\"-Identifiant du propriétaire\":\"identifier_ownerId\","
+                + "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," +
+                "\"+Activé\":\"false\"" + "}}");
+    }
+
+    public ExternalParameters buildExternalParameter() {
+        ExternalParameters externalParameters = new ExternalParameters();
+        externalParameters.setIdentifier("identifierdefault_ac_customerId");
+        externalParameters.setName("identifierdefault_ac_customerId");
+        return externalParameters;
     }
 }

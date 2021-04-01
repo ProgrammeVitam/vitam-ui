@@ -1,24 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.Optional;
-
-import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -29,8 +10,12 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
@@ -46,11 +31,28 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link TenantInternalController}.
- *
- *
  */
 public final class TenantCrudControllerTest implements InternalCrudControllerTest {
 
@@ -110,6 +112,12 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
     @Mock
     protected CustomerInitConfig customerInitConfig;
+    @Mock
+    protected ExternalParametersRepository externalParametersRepository;
+
+    @Mock
+    protected ExternalParametersInternalService externalParametersInternalService;
+
 
     @Before
     public void setup() {
@@ -131,24 +139,29 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         userProfile.setId("userId");
 
         when(tenantRepository.findByIdentifier(tenantDto.getIdentifier())).thenReturn(null);
-        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId())).thenReturn(Optional.of(proofTenant));
+        when(tenantRepository.findByCustomerIdAndProofIsTrue(tenantDto.getCustomerId()))
+            .thenReturn(Optional.of(proofTenant));
         when(tenantRepository.existsById(any())).thenReturn(true);
         when(tenantRepository.save(any())).thenReturn(buildTenant());
 
-        when(tenantRepository.findByIdAndCustomerId(tenantDto.getId(), tenantDto.getCustomerId())).thenReturn(Optional.of(buildTenant()));
+        when(tenantRepository.findByIdAndCustomerId(tenantDto.getId(), tenantDto.getCustomerId()))
+            .thenReturn(Optional.of(buildTenant()));
 
-        when(customerRepository.findById(tenantDto.getCustomerId())).thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
+        when(customerRepository.findById(tenantDto.getCustomerId()))
+            .thenReturn(Optional.of(IamServerUtilsTest.buildCustomer()));
 
         when(internalCustomerService.getMany(tenantDto.getCustomerId())).thenReturn(Arrays.asList(new CustomerDto()));
 
-        when(customSequenceRepository.incrementSequence(anyString(), anyInt())).thenReturn(Optional.of(new CustomSequence()));
+        when(customSequenceRepository.incrementSequence(anyString(), anyInt()))
+            .thenReturn(Optional.of(new CustomSequence()));
 
         when(internalProfileService.create(any())).thenReturn(profileDto);
         when(internalProfileService.internalConvertFromEntityToDto(any())).thenReturn(profileDto);
 
         when(internalOwnerService.getOne(tenantDto.getOwnerId(), Optional.empty())).thenReturn(buildOwnerDto());
 
-        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(buildGroupDto());
+        when(internalGroupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty()))
+            .thenReturn(buildGroupDto());
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
 
         when(internalOwnerService.getMany(any(String.class))).thenReturn(Arrays.asList(buildOwnerDto()));
@@ -156,7 +169,16 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
         when(internalUserService.getDefaultAdminUser(proofTenant.getCustomerId())).thenReturn(buildUserDto());
         when(internalUserService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildUserDto()));
+        when(externalParametersRepository.findByIdentifier(anyString()))
+            .thenReturn(Optional.of(buildExternalParameter()));
 
+    }
+
+    public ExternalParameters buildExternalParameter() {
+        ExternalParameters externalParameters = new ExternalParameters();
+        externalParameters.setIdentifier("identifierdefault_ac_customerId");
+        externalParameters.setName("identifierdefault_ac_customerId");
+        return externalParameters;
     }
 
     @Test
@@ -164,7 +186,10 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     public void testCreationOK() throws Exception {
         final TenantDto dto = buildTenantDto();
         dto.setId(null);
-        when(customerInitConfig.getTenantProfiles()).thenReturn(Arrays.asList(new CustomerInitConfig.ProfileInitConfig[]{new CustomerInitConfig.ProfileInitConfig(APP_NAME, DESCRIPTION, LEVEL, APP_NAME, Arrays.asList(new String[]{ROLE}))}));
+        when(customerInitConfig.getTenantProfiles()).thenReturn(Arrays.asList(
+            new CustomerInitConfig.ProfileInitConfig[] {
+                new CustomerInitConfig.ProfileInitConfig(APP_NAME, DESCRIPTION, LEVEL, APP_NAME,
+                    Arrays.asList(new String[] {ROLE}))}));
         when(profileRepository.save(any())).thenReturn(IamServerUtilsTest.buildProfile());
 
         prepareServices();
@@ -181,8 +206,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must be null for creation.", e.getMessage());
         }
     }
@@ -199,8 +223,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to create tenant " + dto.getName() + ": customer does not exist", e.getMessage());
         }
     }
@@ -216,9 +239,9 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.create(dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create tenant " + dto.getName() + ": owner " + dto.getOwnerId() + " does not exist", e.getMessage());
+        } catch (final IllegalArgumentException e) {
+            assertEquals("Unable to create tenant " + dto.getName() + ": owner " + dto.getOwnerId() + " does not exist",
+                e.getMessage());
         }
     }
 
@@ -239,8 +262,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.update(dto.getId() + "x", dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }
 
@@ -260,9 +282,10 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.update(dto.getId(), dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
-            assertEquals("Unable to update tenant " + dto.getId() + ": tenant identifiers " + tenant.getIdentifier() + " and " + dto.getIdentifier()
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to update tenant " + dto.getId() + ": tenant identifiers " + tenant.getIdentifier() + " and " +
+                    dto.getIdentifier()
                     + " are not equals", e.getMessage());
         }
     }
@@ -284,8 +307,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
         try {
             controller.update(dto.getId(), dto);
             fail("should fail");
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertEquals("Unable to update tenant tenantId: customer does not exist", e.getMessage());
         }
 

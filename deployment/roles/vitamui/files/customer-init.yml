@@ -36,60 +36,60 @@ customer-init:
       app-name: ACCESS_APP
       level:
       roles:
-       - ROLE_GET_ACCESS_CONTRACTS
-       - ROLE_CREATE_ACCESS_CONTRACTS
-       - ROLE_UPDATE_ACCESS_CONTRACTS
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_CREATE_ACCESS_CONTRACTS
+        - ROLE_UPDATE_ACCESS_CONTRACTS
 
     - name: Profil pour la gestion des contrats d'entrée
       description: Gestion des contrats d'entrée dans Vitam
       app-name: INGEST_APP
       level:
       roles:
-       - ROLE_GET_INGEST_CONTRACTS
-       - ROLE_CREATE_INGEST_CONTRACTS
-       - ROLE_UPDATE_INGEST_CONTRACTS
+        - ROLE_GET_INGEST_CONTRACTS
+        - ROLE_CREATE_INGEST_CONTRACTS
+        - ROLE_UPDATE_INGEST_CONTRACTS
 
     - name: Profil pour les services agents
       description: Gestion des services agents dans Vitam
       app-name: AGENCIES_APP
       level:
       roles:
-       - ROLE_GET_AGENCIES
-       - ROLE_CREATE_AGENCIES
-       - ROLE_UPDATE_AGENCIES
-       - ROLE_DELETE_AGENCIES
-       - ROLE_EXPORT_AGENCIES
-       - ROLE_IMPORT_AGENCIES
+        - ROLE_GET_AGENCIES
+        - ROLE_CREATE_AGENCIES
+        - ROLE_UPDATE_AGENCIES
+        - ROLE_DELETE_AGENCIES
+        - ROLE_EXPORT_AGENCIES
+        - ROLE_IMPORT_AGENCIES
 
     - name: Profil pour la gestion des Audits
       description: Gestion des audits dans Vitam
       app-name: AUDIT_APP
       level:
       roles:
-       - ROLE_GET_AUDITS
-       - ROLE_RUN_AUDITS
+        - ROLE_GET_AUDITS
+        - ROLE_RUN_AUDITS
 
     - name: Profil pour la gestion des opérations de sécurisation
       description: Gestion des opérations de sécurisation dans Vitam
       app-name: SECURE_APP
       level:
       roles:
-       - ROLE_GET_OPERATIONS
+        - ROLE_GET_OPERATIONS
 
     - name: Profil de gestion des valeurs probantes
       description: Gestion des valeurs probantes dans Vitam
       app-name: PROBATIVE_VALUE_APP
       level:
       roles:
-       - ROLE_GET_OPERATIONS
-       - ROLE_RUN_PROBATIVE_VALUE
+        - ROLE_GET_OPERATIONS
+        - ROLE_RUN_PROBATIVE_VALUE
 
     - name: Profil pour la lecture des formats de fichiers
       description: Lecture des formats de fichiers dans Vitam
       app-name: FILE_FORMATS_APP
       level:
       roles:
-       - ROLE_GET_FILE_FORMATS
+        - ROLE_GET_FILE_FORMATS
 
     - name: Profil Journal des Opérations
       description: Gestion des applications des Journaux des Opérations
