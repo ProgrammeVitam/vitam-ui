@@ -6,7 +6,7 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${random.long}
+        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
 server:
   host: {{ vitamui.archive_search.host }}
