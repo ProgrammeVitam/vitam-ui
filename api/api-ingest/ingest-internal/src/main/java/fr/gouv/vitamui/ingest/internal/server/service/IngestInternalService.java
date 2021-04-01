@@ -43,6 +43,7 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -56,20 +57,22 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import java.io.ByteArrayOutputStream;
 
+import org.odftoolkit.simple.TextDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
 import org.w3c.dom.Document;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +98,7 @@ public class IngestInternalService {
 
     private final CustomerInternalRestClient customerInternalRestClient;
 
-    private final IngestODTGenerator ingestODTGenerator;
+    private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
 
     @Autowired
@@ -103,7 +106,7 @@ public class IngestInternalService {
         final LogbookService logbookService, final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestODTGenerator ingestODTGenerator)
+        final IngestGeneratorODTFile ingestGeneratorODTFile)
     {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
@@ -111,7 +114,7 @@ public class IngestInternalService {
         this.objectMapper = objectMapper;
         this.ingestService = ingestService;
         this.customerInternalRestClient = customerInternalRestClient;
-        this.ingestODTGenerator = ingestODTGenerator;
+        this.ingestGeneratorODTFile = ingestGeneratorODTFile;
 
     }
 
@@ -217,12 +220,14 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestODTGenerator.resourceAsString(resource);
+                manifest = ingestGeneratorODTFile.resourceAsString(resource);
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
+
         } catch (VitamClientException e) {
-            throw new InternalServerException("Unable to find ATR", e);
+            LOGGER.error("Unable to find the Manifest {}", e.getMessage());
+            throw new InternalServerException("Unable to find the Manifest", e);
         }
     }
 
@@ -234,17 +239,19 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                atr = ingestODTGenerator.resourceAsString(resource);
+                atr = ingestGeneratorODTFile.resourceAsString(resource);
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return atr;
 
         } catch (VitamClientException e) {
+            LOGGER.error("Unable to find ATR {}", e.getMessage());
             throw new InternalServerException("Unable to find ATR", e);
         }
     }
 
-    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws JSONException, IOException {
+    public byte[] generateODTReport(VitamContext vitamContext, final String id)
+        throws IOException, JSONException, URISyntaxException, IngestFileGenerationException {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -252,41 +259,56 @@ public class IngestInternalService {
         Resource customerLogo = null;
 
         try {
-            Document atr = ingestODTGenerator.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
-            Document manifest = ingestODTGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
-            XWPFDocument document = new XWPFDocument();
+            Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
+            TextDocument document;
+            try {
+                document = TextDocument.newTextDocument();
+            } catch (Exception e) {
+                LOGGER.error("Error to initialize the document : {} " , e.getMessage());
+                throw new IngestFileGenerationException("Error to initialize the document : {} " , e);
+            }
+
             if(myCustomer.isHasCustomGraphicIdentity()) {
                 customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
-            List<ArchiveUnitDto> archiveUnitDtoList = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
+            List<ArchiveUnitDto> archiveUnitDtoList = ingestGeneratorODTFile.getValuesForDynamicTable(atr,manifest);
 
-            ingestODTGenerator.generateDocHeader(document,myCustomer,customerLogo);
+            ingestGeneratorODTFile.generateDocumentHeader(document,myCustomer,customerLogo);
 
-            ingestODTGenerator.generateFirstTitle(document);
+            ingestGeneratorODTFile.generateFirstTitle(document);
 
-            ingestODTGenerator.generateTableOne(document,manifest,jsonObject);
+            ingestGeneratorODTFile.generateServicesTable(document,manifest,jsonObject);
 
-            ingestODTGenerator.generateTableTwo(document,manifest,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateDepositDataTable(document,manifest,archiveUnitDtoList);
 
-            ingestODTGenerator.generateTableThree(document,manifest,id);
+            ingestGeneratorODTFile.generateOperationDataTable(document,manifest,id);
 
-            ingestODTGenerator.generateTableFour(document);
+            ingestGeneratorODTFile.generateResponsibleSignatureTable(document);
 
-            ingestODTGenerator.generateSecondtTitle(document);
+            document.addPageBreak();
 
-            ingestODTGenerator.generateDynamicTable(document,archiveUnitDtoList);
+            ingestGeneratorODTFile.generateSecondtTitle(document);
+
+            ingestGeneratorODTFile.generateArchiveUnitDetailsTable(document,archiveUnitDtoList);
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
-            document.write(result);
+            try {
+                document.save(result);
+            } catch (Exception e) {
+                LOGGER.error("Error to save the document : {} " , e.getMessage());
+                throw new IngestFileGenerationException("Error to save the document : {} " , e);
+            }
+
             return result.toByteArray();
 
-        } catch (IOException | JSONException e) {
+        } catch (IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} " , e.getMessage());
-            throw new IOException("Unable to generate the ingest report ", e);
-
+            throw new IngestFileGenerationException("Unable to generate the ingest report ", e) ;
         }
+
     }
 
 }
