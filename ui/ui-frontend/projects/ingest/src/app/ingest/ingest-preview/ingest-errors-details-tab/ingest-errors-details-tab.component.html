@@ -1,0 +1,68 @@
+<div class="tree-ingest-details">
+  <mat-tree [dataSource]="ingestErrorsTreeDataSource" [treeControl]="ingestErrorsTreeControl"
+    class="tree-ingest-errors-details">
+
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+      <li class="mat-tree-node ingest-error-tree-node">
+
+        <button mat-icon-button disabled><i class="material-icons mat-icon-rtl-mirror">chevron_right</i></button>
+        <ng-container [ngSwitch]="getEventStatus(node)">
+          <div *ngSwitchCase="'OK'">
+            <span class="ingest-message-text" [ngStyle]="{'color' : 'black'}">{{node.eventData.outMessg}}</span>
+          </div>
+          <div *ngSwitchCase="'KO'">
+            <span class="ingest-message-text" [ngStyle]="{'color' : 'red'}">{{node.eventData.outMessg}}</span>
+          </div>
+          <div *ngSwitchCase="'FATAL'">
+            <span class="ingest-message-text" [ngStyle]="{'color' : 'grey'}">{{node.eventData.outMessg}}</span>
+          </div>
+          <div *ngSwitchCase="'WARNING'">
+            <span class="ingest-message-text" [ngStyle]="{'color' : 'orange'}">{{node.eventData.outMessg}}</span>
+          </div>
+        </ng-container>
+
+        <i class="material-icons" [ngClass]="{'ko-icon' : getEventStatus(node)=== 'KO',
+        'ok-icon' : getEventStatus(node)=== 'OK',
+        'warning-icon' : getEventStatus(node)=== 'WARNING',
+        'fatal-icon' : getEventStatus(node)=== 'FATAL'}">
+          {{isStepOK(node) ? 'done' : 'report_problem'}}</i>
+      </li>
+    </mat-tree-node>
+
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <li>
+        <div class="mat-tree-node ingest-error-tree-node">
+          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.eventData.outMessg">
+
+            <i
+              class="material-icons mat-icon-rtl-mirror">{{ingestErrorsTreeControl.isExpanded(node) ? 'expand_less' : 'chevron_right'}}</i>
+          </button>
+
+          <ng-container [ngSwitch]="getEventStatus(node)">
+            <div *ngSwitchCase="'OK'">
+              <span class="ingest-message-text" [ngStyle]="{'color' : 'black'}">{{node.eventData.outMessg}}</span>
+            </div>
+            <div *ngSwitchCase="'KO'">
+              <span class="ingest-message-text" [ngStyle]="{'color' : 'red'}">{{node.eventData.outMessg}}</span>
+            </div>
+            <div *ngSwitchCase="'FATAL'">
+              <span class="ingest-message-text" [ngStyle]="{'color' : 'grey'}">{{node.eventData.outMessg}}</span>
+            </div>
+            <div *ngSwitchCase="'WARNING'">
+              <span class="ingest-message-text" [ngStyle]="{'color' : 'orange'}">{{node.eventData.outMessg}}</span>
+            </div>
+          </ng-container>
+          <i class="material-icons" [ngClass]="{'ko-icon' : getEventStatus(node)=== 'KO',
+          'ok-icon' : getEventStatus(node)=== 'OK',
+          'warning-icon' : getEventStatus(node)=== 'WARNING',
+          'fatal-icon' : getEventStatus(node)=== 'FATAL'}">
+            {{isStepOK(node) ? 'done' : 'report_problem'}}</i>
+
+        </div>
+        <ul [class.tree-ingest-errors-details-invisible]="!ingestErrorsTreeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </li>
+    </mat-nested-tree-node>
+  </mat-tree>
+</div>

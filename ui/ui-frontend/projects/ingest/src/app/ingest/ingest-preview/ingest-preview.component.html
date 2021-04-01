@@ -26,5 +26,9 @@
     <mat-tab label="{{'INGEST_DETAIL.DETAILS' | translate}}">
       <app-ingest-information-tab [ingest]="ingest"></app-ingest-information-tab>
     </mat-tab>
+    <mat-tab label="{{'INGEST_DETAIL.INGEST_ERROR_DETAIL' | translate}}">
+      <app-ingest-errors-details-tab [ingest]="ingest"></app-ingest-errors-details-tab>
+    </mat-tab>
+    
   </mat-tab-group>
 </div>

@@ -44,6 +44,34 @@ export class EventDisplayHelperService {
 
   constructor() { }
 
+  getAllEvents(ingest: any): any[] {
+    let events = [];
+    let rootEvent = null;
+    let actionEvent = null;
+    
+    if (ingest.length > 0) {
+
+      for (let event of ingest) {
+        this.eventData = this.getEventData(event);
+        if (event.evParentId === null) {
+          rootEvent = new Event(this.eventData, [])
+          events.push(rootEvent);
+        }
+        else {
+          if (event.evParentId === rootEvent.eventData.evId) {
+            actionEvent = new Event(this.eventData, []);
+            rootEvent.subEvents.push(actionEvent);
+          } else {
+            if (event.evParentId === actionEvent.eventData.evId) {
+              actionEvent.subEvents.push(new Event(this.eventData, []));
+            }
+          }
+        }
+      }
+    }
+    return events;
+  }
+
   initEvents(logbook: any): any[] {
     // tslint:disable-next-line:prefer-const
     let events = [];

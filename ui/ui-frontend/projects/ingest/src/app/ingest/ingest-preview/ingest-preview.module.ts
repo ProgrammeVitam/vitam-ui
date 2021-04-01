@@ -46,6 +46,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTreeModule} from '@angular/material/tree';
 
 import { IngestPreviewComponent } from './ingest-preview.component';
 import { VitamUICommonModule } from 'ui-frontend-common';
@@ -53,6 +54,7 @@ import { IngestInformationTabComponent } from './ingest-information-tab/ingest-i
 import { IngestEventDetailComponent } from './ingest-information-tab/ingest-event-detail/ingest-event-detail.component';
 import { EventDisplayHelperService } from './event-display-helper.service';
 import { EventDisplayComponent } from './ingest-information-tab/ingest-event-detail/event-display/event-display.component';
+import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 
 
 @NgModule({
@@ -60,7 +62,8 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
     IngestPreviewComponent,
     IngestInformationTabComponent,
     IngestEventDetailComponent,
-    EventDisplayComponent],
+    EventDisplayComponent,
+    IngestErrorsDetailsTabComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -74,7 +77,8 @@ import { EventDisplayComponent } from './ingest-information-tab/ingest-event-det
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTreeModule
   ],
   exports: [
     IngestPreviewComponent,
