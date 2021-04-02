@@ -8,6 +8,7 @@
   },
   "scripts": {
     "ng": "ng",
+    "postinstall": "ngcc",
     "start": "ng serve --aot --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "build": "ng build --prod --build-optimizer=false --optimization=false",
     "build:dev": "ng build --prod --sourceMap=false --build-optimizer=false --optimization=false",
