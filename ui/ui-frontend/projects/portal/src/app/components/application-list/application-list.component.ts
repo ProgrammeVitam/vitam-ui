@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { Application, ApplicationId, ApplicationService, Category, StartupService } from 'ui-frontend-common';
+import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-application-list',
@@ -46,18 +46,6 @@ import { Application, ApplicationId, ApplicationService, Category, StartupServic
 export class ApplicationsListComponent {
 
   @Input() appMap: Map<Category, Application[]>;
-
-  // Array containing the existing application icons.
-  // TODO : remove this when all icons will be availiable
-  public availiableIcons = [
-    ApplicationId.GROUPS_APP,
-    ApplicationId.ACCOUNTS_APP,
-    ApplicationId.SUBROGATIONS_APP,
-    ApplicationId.HIERARCHY_PROFILE_APP,
-    ApplicationId.USERS_APP,
-    ApplicationId.CUSTOMERS_APP,
-    ApplicationId.PROFILES_APP,
-  ];
 
   constructor(
     private router: Router,

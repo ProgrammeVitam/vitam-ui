@@ -285,8 +285,8 @@
 	.sbrg268{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
 	.sbrg269{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SBRG_ID_10_);}
 	.sbrg270{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SBRG_ID_11_);}
-	.sbrg271{fill-rule:evenodd;clip-rule:evenodd;fill:#9830B1;}
-	.sbrg272{fill-rule:evenodd;clip-rule:evenodd;fill:#CB7EDD;}
+	.sbrg271{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.sbrg272{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-300);}
 	.sbrg273{fill-rule:evenodd;clip-rule:evenodd;fill:#E4E3E3;}
 	.sbrg274{fill-rule:evenodd;clip-rule:evenodd;fill:#E3E2E2;}
 	.sbrg275{fill-rule:evenodd;clip-rule:evenodd;fill:#E2E1E1;}
