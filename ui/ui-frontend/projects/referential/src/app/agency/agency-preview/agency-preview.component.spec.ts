@@ -4,7 +4,6 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {AgencyService} from '../agency.service';
 import {AgencyPreviewComponent} from './agency-preview.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AgencyPreviewComponent', () => {
   let component: AgencyPreviewComponent;
@@ -12,12 +11,7 @@ describe('AgencyPreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        AgencyPreviewComponent
-      ],
+      declarations: [AgencyPreviewComponent],
       providers: [
         {provide: MatDialog, useValue: {}},
         {provide: AgencyService, useValue: {}}

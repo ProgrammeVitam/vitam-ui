@@ -5,10 +5,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FilingPlanMode} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option, ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
+
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ProbativeValueService} from '../probative-value.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -26,8 +26,9 @@ export class ProbativeValueCreateComponent implements OnInit {
   allServices = new FormControl(true);
   allNodes = new FormControl(true);
   selectedNodes = new FormControl();
-  accessContractId: string;
+  accessContractSelect = new FormControl(null, Validators.required);
 
+  accessContracts: Option[];
   usages: Option[] = [
     {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
     {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
@@ -49,28 +50,18 @@ export class ProbativeValueCreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private probativeValueService: ProbativeValueService,
-    private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    protected accessContractService: AccessContractService
   ) {
   }
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractId = accessContratId;
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
-          null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
-      }
+    this.accessContractService.getAll().subscribe((value) => {
+      this.accessContracts = value.map(x => ({key: x.identifier, label: x.name}));
     });
 
     this.form = this.formBuilder.group({
       unitId: [null, Validators.required],
+      accessContract: this.accessContractSelect,
       usage: [null, Validators.required],
       version: [null, Validators.required]
     });
@@ -94,11 +85,8 @@ export class ProbativeValueCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
-
     this.probativeValueService.create(
-      this.createDsl(this.form.value), 
-      new HttpHeaders({'X-Access-Contract-Id': this.accessContractId})
-    ).subscribe(
+      this.createDsl(this.form.value), new HttpHeaders({'X-Access-Contract-Id': this.accessContractSelect.value})).subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
       },

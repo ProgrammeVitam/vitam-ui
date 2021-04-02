@@ -192,7 +192,7 @@ public class IngestContractInternalService {
 
     private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
 
-    	ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+            ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
 
         // Transform Vitam-UI fields into Vitam fields
         if (partialDto.get("name") != null) {
@@ -212,18 +212,6 @@ public class IngestContractInternalService {
         }
         if (partialDto.get("status") != null) {
             propertiesToUpdate.put("Status", (String) partialDto.get("status"));
-        }
-        if (partialDto.get("activationDate") != null) {
-            propertiesToUpdate.put("ActivationDate", (String) partialDto.get("activationDate"));
-        }
-        if (partialDto.get("deactivationDate") != null) {
-            propertiesToUpdate.put("DeactivationDate", (String) partialDto.get("deactivationDate"));
-        }
-        if (partialDto.get("lastUpdate") != null) {
-            propertiesToUpdate.put("LastUpdate", (String) partialDto.get("lastUpdate"));
-        }
-        if (partialDto.get("creationDate") != null) {
-            propertiesToUpdate.put("CreationDate", (String) partialDto.get("creationDate"));
         }
         if (partialDto.get("masterMandatory") != null) {
             propertiesToUpdate.put("MasterMandatory", (boolean) partialDto.get("masterMandatory"));
