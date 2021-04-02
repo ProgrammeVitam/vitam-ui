@@ -108,7 +108,7 @@ public class IngestInternalController {
 
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
-        throws Exception {
+        throws IOException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
       try {
           LOGGER.debug("export ODT report for operation with id :{}", id);

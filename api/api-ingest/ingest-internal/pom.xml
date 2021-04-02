@@ -21,6 +21,17 @@
 
     <dependencies>
 
+        <!-- APACHE -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+
         <!-- VITAMUI -->
 
         <dependency>
@@ -193,20 +204,6 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-internal</artifactId>
         </dependency>
-
-        <!-- APACHE ODFtoolKit-->
-        <dependency>
-            <groupId>org.odftoolkit</groupId>
-            <artifactId>odfdom-java</artifactId>
-            <version>0.8.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.odftoolkit</groupId>
-            <artifactId>simple-odf</artifactId>
-            <version>0.8.2-incubating</version>
-        </dependency>
-        <!-- APACHE ODFtoolKit-->
-
     </dependencies>
 
     <build>
