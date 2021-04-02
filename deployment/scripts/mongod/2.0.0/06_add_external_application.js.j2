@@ -1,0 +1,21 @@
+db = db.getSiblingDB('iam')
+
+print("START 06_add_external_application.js.j2");
+
+// -------- VITAM ADMINISTRATION add EXTERNAL_PARAMS fictif application without category -----
+
+db.applications.insert({
+    "identifier" : "EXTERNAL_PARAMS",
+    "url": "{{ vitamui.portal.base_url|default(url_prefix) }}",
+    "icon": "vitamui-icon vitamui-icon-user",
+    "name": "Paramétrages externes",
+    "position": NumberInt(10),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Paramétrages externes",
+    "target": "_self"
+});
+
+
+print("END 06_add_external_application.js.j2");
