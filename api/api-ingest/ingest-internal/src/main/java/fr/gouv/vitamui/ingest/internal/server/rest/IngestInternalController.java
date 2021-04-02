@@ -106,7 +106,7 @@ public class IngestInternalController {
         return ingestInternalService.upload(path, contextId, action);
     }
 
-    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    @GetMapping(RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
         throws IOException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
