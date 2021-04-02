@@ -80,30 +80,25 @@
         </div>
 
         <div class="col-10 form-control">
-            <vitamui-library-input placeholder="Date d'activation" 
-                *ngIf="ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate"
+            <vitamui-library-input placeholder="Date d'activation"
                 i18n-placeholder="activationDate@@ingestContractPreviewLabelActivationDate"
                 [value]="ingestContract?.activationDate | date: 'dd/MM/yyyy'" disabled>
-            </vitamui-library-input>
-            <vitamui-library-input placeholder="Date d'activation" 
-                *ngIf="ingestContract?.status !== 'ACTIVE' || !ingestContract?.activationDate"
-                i18n-placeholder="activationDate@@ingestContractPreviewLabelActivationDate"
-                [value]="" disabled>
             </vitamui-library-input>
         </div>
 
         <div class="col-10 form-control">
-            <vitamui-library-input placeholder="Date de désactivation" *ngIf="ingestContract?.deactivationDate"
+            <vitamui-library-input placeholder="Date de désactivation"
                 i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
                 [value]="ingestContract?.deactivationDate | date: 'dd/MM/yyyy'" disabled>
-            </vitamui-library-input>
-            <vitamui-library-input placeholder="Date d'activation" *ngIf="!ingestContract?.deactivationDate"
-                i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
-                [value]="" disabled>
             </vitamui-library-input>
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-10">
+            <span>Date de création</span> : {{ingestContract?.creationDate | date: 'dd/MM/yyyy'}}
+        </div>
+    </div>
     <div class="row bottom">
         <button type="submit" class="btn secondary"
             [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>

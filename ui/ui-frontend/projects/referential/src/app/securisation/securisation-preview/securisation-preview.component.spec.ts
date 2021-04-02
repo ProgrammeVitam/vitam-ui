@@ -3,11 +3,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {SecurisationService} from '../securisation.service';
 import {SecurisationPreviewComponent} from './securisation-preview.component';
-import { ExternalParametersService } from 'ui-frontend-common';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SecurisationPreviewComponent', () => {
   let component: SecurisationPreviewComponent;
@@ -61,9 +59,9 @@ describe('SecurisationPreviewComponent', () => {
   };
 
   beforeEach(waitForAsync(() => {
-    const parameters: Map<string, string> = new Map<string, string>();
-    const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+
+    const accessContractServiceMock = {
+      getAllForTenant: () => of([])
     };
 
     const activatedRouteMock = {
@@ -71,14 +69,10 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        MatSnackBarModule
-      ],
       declarations: [SecurisationPreviewComponent],
       providers: [
         {provide: SecurisationService, useValue: {}},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
         {provide: ActivatedRoute, useValue: activatedRouteMock}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
