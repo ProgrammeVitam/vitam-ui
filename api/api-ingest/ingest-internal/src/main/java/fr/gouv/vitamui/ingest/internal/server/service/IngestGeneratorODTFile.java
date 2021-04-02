@@ -37,7 +37,6 @@
 
 package fr.gouv.vitamui.ingest.internal.server.service;
 
-import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -158,7 +157,6 @@ public class IngestGeneratorODTFile {
                     break;
 
                 default:
-                    LOGGER.error("Unexpected value : {}", customerLogoBase64Image.charAt(0));
                     throw new IllegalStateException("Unexpected value: " + customerLogoBase64Image.charAt(0));
             }
 
@@ -187,7 +185,7 @@ public class IngestGeneratorODTFile {
         Paragraph paragraph = document.addParagraph(SECOND_TITLE);
         Font font = paragraph.getFont();
         font.setFontStyle(StyleTypeDefinitions.FontStyle.BOLD);
-        font.setSize(14);
+        font.setSize(12);
         paragraph.setFont(font);
         addSpace(document);
 
@@ -228,7 +226,7 @@ public class IngestGeneratorODTFile {
 
         } catch (JSONException e) {
             LOGGER.error("Unable to get the data from the JsonObject : {}", e.getMessage());
-            throw new JSONException("Unable to get the data from the JsonObject " + e.getMessage());
+            throw new JSONException("Unable to get the data from the JsonObject " + e);
         }
 
     }
@@ -374,11 +372,10 @@ public class IngestGeneratorODTFile {
         dynamicTable.getCellByPosition(3,0).addParagraph("Date de fin").setHorizontalAlignment(
             StyleTypeDefinitions.HorizontalAlignmentType.CENTER);
 
-        // the Width of each row is 170
-        dynamicTable.getColumnByIndex(0).setWidth(46.5);
-        dynamicTable.getColumnByIndex(1).setWidth(77.5);
-        dynamicTable.getColumnByIndex(2).setWidth(23);
-        dynamicTable.getColumnByIndex(3).setWidth(23);
+        dynamicTable.getColumnByIndex(0).setWidth(45.5);
+        dynamicTable.getColumnByIndex(1).setWidth(73.5);
+        dynamicTable.getColumnByIndex(2).setWidth(25.5);
+        dynamicTable.getColumnByIndex(3).setWidth(25.5);
 
 
 
@@ -390,7 +387,7 @@ public class IngestGeneratorODTFile {
             row.getCellByIndex(0).setFont(fontCellOne);
 
             Font fontCellTwo = row.getCellByIndex(1).getFont();
-            fontCellTwo.setSize(9.5);
+            fontCellTwo.setSize(10);
             row.getCellByIndex(1).setFont(fontCellTwo);
 
             row.getCellByIndex(0).addParagraph(archiveUnitDto.getSystemId());
@@ -462,23 +459,22 @@ public class IngestGeneratorODTFile {
     public Document convertStringToXMLDocument(String xmlString) {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
+        DocumentBuilder builder = null;
         try {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
             return doc;
         } catch (Exception e) {
-            LOGGER.error("Error while converting string to XML Document {}", e.getMessage());
-            throw new IngestFileGenerationException("Error while converting string to XML Document {}", e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     public String resourceAsString(Resource resource) {
         try (Reader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
             return FileCopyUtils.copyToString(reader);
         } catch (IOException e) {
-            LOGGER.error("Error while converting string to Resource Document {}", e.getMessage());
-            throw new UncheckedIOException("Error while converting string to Resource Document",e);
+            throw new UncheckedIOException(e);
         }
     }
 

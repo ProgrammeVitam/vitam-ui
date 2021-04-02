@@ -43,7 +43,6 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
-import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -69,10 +68,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.w3c.dom.Document;
 
+
+
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,10 +224,8 @@ public class IngestInternalService {
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
-
         } catch (VitamClientException e) {
-            LOGGER.error("Unable to find the Manifest {}", e.getMessage());
-            throw new InternalServerException("Unable to find the Manifest", e);
+            throw new InternalServerException("Unable to find ATR", e);
         }
     }
 
@@ -245,13 +243,11 @@ public class IngestInternalService {
             return atr;
 
         } catch (VitamClientException e) {
-            LOGGER.error("Unable to find ATR {}", e.getMessage());
             throw new InternalServerException("Unable to find ATR", e);
         }
     }
 
-    public byte[] generateODTReport(VitamContext vitamContext, final String id)
-        throws IOException, JSONException, URISyntaxException, IngestFileGenerationException {
+    public byte[] generateODTReport(VitamContext vitamContext, final String id) throws Exception {
 
         LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
@@ -262,14 +258,8 @@ public class IngestInternalService {
 
             Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
-            TextDocument document;
-            try {
-                document = TextDocument.newTextDocument();
-            } catch (Exception e) {
-                LOGGER.error("Error to initialize the document : {} " , e.getMessage());
-                throw new IngestFileGenerationException("Error to initialize the document : {} " , e);
-            }
 
+            TextDocument document = TextDocument.newTextDocument();
             if(myCustomer.isHasCustomGraphicIdentity()) {
                 customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
             }
@@ -295,20 +285,14 @@ public class IngestInternalService {
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
-            try {
-                document.save(result);
-            } catch (Exception e) {
-                LOGGER.error("Error to save the document : {} " , e.getMessage());
-                throw new IngestFileGenerationException("Error to save the document : {} " , e);
-            }
-
+            document.save(result);
             return result.toByteArray();
 
-        } catch (IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
+        } catch (IOException | JSONException e) {
             LOGGER.error("Error with generating Report : {} " , e.getMessage());
-            throw new IngestFileGenerationException("Unable to generate the ingest report ", e) ;
-        }
+            throw new IOException("Unable to generate the ingest report ", e);
 
+        }
     }
 
 }
