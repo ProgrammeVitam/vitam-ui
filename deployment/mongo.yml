@@ -8,6 +8,8 @@
             role: mongo_init,
             mongod_source_template_dir: "{{playbook_dir}}/scripts/mongod/",
             tags: mongo_init
+            when: mongo_rs_bootstrap is defined and mongo_rs_bootstrap|lower == 'true'
           }
         - mongo_configure
         - { role: mongo-express, when: "mongo_express is defined and mongo_express|lower == 'true'"}
+
