@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule, BrowserTransferStateModule, Title, TransferState } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { BASE_URL, ENVIRONMENT,
@@ -55,6 +55,7 @@ import { BASE_URL, ENVIRONMENT,
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ApplicationSvgLoader } from './application-svg-loader';
 import { PortalModule } from './portal';
 
 registerLocaleData(localeFr, 'fr');
@@ -64,6 +65,10 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     { prefix: './assets/shared-i18n/', suffix: '.json' },
     { prefix: './assets/i18n/', suffix: '.json' }
   ]);
+}
+
+export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState: TransferState) {
+  return new ApplicationSvgLoader(transferState, new HttpClient(handler), { prefix: './assets/app-icons/', suffix: '.svg' });
 }
 
 @NgModule({
@@ -91,7 +96,14 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
       }
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    AngularSvgIconModule.forRoot()
+    AngularSvgIconModule.forRoot({
+      loader: {
+        provide: SvgLoader,
+        useFactory: ApplicationSvgLoaderFactory,
+        deps: [ HttpBackend, TransferState ],
+      }
+    }),
+    BrowserTransferStateModule
   ],
   providers: [
     Title,
