@@ -6,16 +6,16 @@
       </button>
     </div>
 
-    <div *ngIf="!loading; else spinner" class="title">
-      <i class="vitamui-icon {{icon}}"
-         [ngClass]="{
+    <div *ngIf="!loading; else spinner">
+      <div class="title">
+        <i class="vitamui-icon {{icon}}" [ngClass]="{
           'status-badge-red': badge === 'red',
           'status-badge-green': badge === 'green',
           'status-badge-grey': badge === 'grey',
           'status-badge-orange': badge === 'orange',
           'status-badge-black': badge === 'black'
         }">
-      </i>
+        </i>
 
       <div *ngIf="hasToolTipOnTitle && toolTipTitleText && toolTipTitleDuration" matTooltip="{{toolTipTitleText}}"
            matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="toolTipTitleDuration">
@@ -23,11 +23,16 @@
         <p class="text large light m-0">{{subtitle}}</p>
       </div>
       <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText || !toolTipTitleDuration">
-        <h5 class="m-0">{{title}}</h5>
-        <p class="text medium m-0">{{subtitle}}</p>
+          <h5 class="m-0">{{title}}</h5>
+          <p class="text medium m-0">{{subtitle}}</p>
+        </div>
+      <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
+          <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
+        </div>
       </div>
-      <div class="d-flex align-items-end justify-content-end actions">
-        <ng-content></ng-content>
+
+      <div *ngIf="actionsBelowTitle" class="title-actions">
+        <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
       </div>
     </div>
   </div>
@@ -37,4 +42,9 @@
   <div class="d-flex justify-content-center">
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
+</ng-template>
+
+
+<ng-template #actionButtons>
+  <ng-content></ng-content>
 </ng-template>
