@@ -31,6 +31,7 @@ PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
 RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f -d "$(DEPENDENCIES)" --description "$(DESCRIPTION)"
@@ -38,13 +39,9 @@ FPM_PACK_META               = --license "$(COPYRIGHT)" -n "vitamui-$(NAME)" -v $
 FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-install.sh" --after-install "$(TEMPLATE_TMP_DIR)/after-install.sh"
 FPM_PACK_REMOVE_SCRIPTS     = --before-remove "$(TEMPLATE_TMP_DIR)/before-remove.sh" --after-remove "$(TEMPLATE_TMP_DIR)/after-remove.sh"
 
-
 #
 # Imports from packaging Makefiles
 #
-
-clean:
-	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) RPM_OUTPUT_PATH=$(RPM_OUTPUT_PATH) $@
 
 stage:
 	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) STAGING_ROOT=$(STAGING_ROOT) $@
@@ -94,6 +91,9 @@ install: stage vitamui-dirs template-files
 	@install -m 644 $(TEMPLATE_TMP_DIR)/vitamui-nginx.service  $(abspath $(STAGING_ROOT)/$(SYSTEMD_DIR)/vitamui-nginx.service)
 
 
+deb: install
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+
 
 rpm: install
 	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
@@ -102,7 +102,4 @@ rpm: install
 # COTS Packaging
 #ec
 
-.PHONY: clean stage vitamui-dirs source template-files build install reset
-
-
-
+.PHONY: stage vitamui-dirs source template-files build rpm deb install reset

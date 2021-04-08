@@ -1652,6 +1652,45 @@
             </build>
         </profile>
 
+        <!-- TEST DEB WITH FPM -->
+        <profile>
+            <id>deb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deb-package</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${main.basedir}/tools/packaging/Makefile</argument>
+                                        <argument>deb</argument>
+                                        <argument>NAME=${project.artifactId}</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <argument>USER=vitamui</argument>
+                                        <!-- If you want to changes default dependencies (only systemd),
+                                        define them as a comma separated list of packages -->
+                                        <argument>DEPENDENCIES=systemd,openjdk-11-jdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- This profile is used to build rpm package.-->
         <profile>
             <id>rpm-publish</id>
