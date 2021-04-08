@@ -25,3 +25,28 @@
     - log
     - script
     - tmp
+
+- name: "install openjdk from {{ ansible_distribution_release }}-backports only when Debian"
+  apt:
+    name: openjdk-11-jre-headless
+    state: latest
+    default_release: "{{ ansible_distribution_release }}-backports"
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  when:
+    - ansible_os_family == "Debian"
+    - disable_internet_repositories_install == false
+
+- name: "install openjdk only when Debian"
+  apt:
+    name: openjdk-11-jre-headless
+    state: latest
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  when:
+    - ansible_os_family == "Debian"
+    - disable_internet_repositories_install == true
