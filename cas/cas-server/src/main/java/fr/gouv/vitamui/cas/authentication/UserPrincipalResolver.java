@@ -39,6 +39,7 @@ package fr.gouv.vitamui.cas.authentication;
 import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;
@@ -101,22 +102,31 @@ public class UserPrincipalResolver implements PrincipalResolver {
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
         val principal = optPrincipal.get();
-        String userId = principal.getId();
+        val userId = principal.getId();
         val requestContext = RequestContextHolder.getRequestContext();
 
-        boolean surrogationCall;
-        String username;
-        String superUsername;
+        final boolean surrogationCall;
+        final String username;
+        final String superUsername;
+        final String userProviderId;
+        final Optional<String> technicalUserId;
         if (credential instanceof SurrogateUsernamePasswordCredential) {
+            // login/password + surrogation
             val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
             username = surrogationCredential.getSurrogateUsername();
             superUsername = surrogationCredential.getUsername();
+            userProviderId = null;
+            technicalUserId = Optional.empty();
             surrogationCall = true;
         } else if (credential instanceof UsernamePasswordCredential) {
+            // login/password
             username = userId;
             superUsername = null;
+            userProviderId = null;
+            technicalUserId = Optional.empty();
             surrogationCall = false;
-        } else { // ClientCredential
+        } else {
+            // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             val webContext = new JEEContext(request, response, sessionStore);
@@ -124,6 +134,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             val providerName = clientCredential.getClientName();
             val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
             val mailAttribute = provider.getMailAttribute();
+            String email = userId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
                 if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
@@ -132,17 +143,21 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 } else {
                     val mail = (String) mails.get(0);
                     LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
-                    userId = mail;
+                    email = mail;
                 }
             }
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
             if (surrogateInSession != null) {
                 username = (String) surrogateInSession;
-                superUsername = userId;
+                superUsername = email;
+                userProviderId = null;
+                technicalUserId = Optional.empty();
                 surrogationCall = true;
             } else {
-                username = userId;
+                username = email;
                 superUsername = null;
+                userProviderId = provider.getId();
+                technicalUserId = Optional.of(userId);
                 surrogationCall = false;
             }
         }
@@ -156,7 +171,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             embedded += "," + API_PARAMETER;
         }
         LOGGER.debug("Computed embedded: {}", embedded);
-        final UserDto user = casExternalRestClient.getUserByEmail(utils.buildContext(username), username, Optional.ofNullable(embedded));
+        final UserDto user = casExternalRestClient.getUser(utils.buildContext(username), username, userProviderId, technicalUserId, Optional.ofNullable(embedded));
         if (user == null) {
             LOGGER.debug("No user resolved for: {}", username);
             return null;
@@ -195,7 +210,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
-            final UserDto superUser = casExternalRestClient.getUserByEmail(utils.buildContext(superUsername), superUsername, Optional.empty());
+            final UserDto superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
