@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { makeStateKey, StateKey, TransferState } from '@angular/platform-browser';
 import { SvgHttpLoader, SvgLoader } from 'angular-svg-icon';
-import { Observable, of, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 export class ApplicationSvgLoader implements SvgLoader {
@@ -17,7 +17,7 @@ export class ApplicationSvgLoader implements SvgLoader {
           observer.complete();
         });
       } else {
-        return new SvgHttpLoader(this.http).getSvg(url).pipe(catchError(() => of('')));
+        return new SvgHttpLoader(this.http).getSvg(url).pipe(catchError(() => EMPTY));
       }
     }
   }

@@ -87,3 +87,12 @@ Bellow and example to manage code format for Visual studio code using settings.j
 "**/dist": true,
 },
 }
+
+
+## How to add application icons to the portal
+
+Place you new svg icon file in the `ui/ui-frontend/projects/portal/src/assets/app-icons` folder.
+
+> Attention: Make sure your svg icon file name corresponds to the concerned application identifier (ex: PORTAL_APP.svg), you can find your application identifier by checking database.
+
+Replace each static hex/rgb colors inside the svg file by the right css variable theme colors.
