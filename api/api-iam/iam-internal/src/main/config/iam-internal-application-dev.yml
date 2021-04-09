@@ -82,4 +82,37 @@ logging:
     # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
     fr.gouv.vitamui.iam.security: INFO
 
+provisioning-client:
+  identity-providers:
+    - idp-identifier: 1
+      client:
+        server-host: ${vitamui-server-host}.teamdlab.com
+        server-port: 6201
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: ../../../dev-deployment/environment/keystores/server/localhost/keystore_archive-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: ../../../dev-deployment/environment/keystores/server/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+    - idp-identifier: 2
+      client:
+        server-host: ${vitamui-server-host}.teamdlab.com
+        server-port: 6201
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: ../../../dev-deployment/environment/keystores/server/localhost/keystore_archive-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: ../../../dev-deployment/environment/keystores/server/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+
 gdpr_alert_readonly: true

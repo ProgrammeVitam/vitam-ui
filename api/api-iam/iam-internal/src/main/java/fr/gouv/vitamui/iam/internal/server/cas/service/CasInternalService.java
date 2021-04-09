@@ -299,13 +299,14 @@ public class CasInternalService {
         try {
             final UserDto user = internalUserService.findUserByEmail(email);
             if (identityProvider.isAutoProvisioningEnabled() && user.isAutoProvisioningEnabled()) {
-                updateUser(user, provisioningInternalService.getUserInformation(email, idp, userIdentifier));
+                // TODO : quelle unité envoyer ?
+                updateUser(user, provisioningInternalService.getUserInformation(email, idp, Optional.of(user.getGroupId()), Optional.empty(), userIdentifier));
             }
         } catch (NotFoundException e) {
             if (!identityProvider.isAutoProvisioningEnabled()) {
                 throw e;
             }
-            createNewUser(provisioningInternalService.getUserInformation(email, idp, userIdentifier));
+            createNewUser(provisioningInternalService.getUserInformation(email, idp, Optional.empty(), Optional.empty(), userIdentifier));
         }
 
         return getUserByEmail(email, optEmbedded);
