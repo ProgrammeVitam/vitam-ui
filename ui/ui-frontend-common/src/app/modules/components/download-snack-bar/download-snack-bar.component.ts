@@ -53,6 +53,16 @@ export class DownloadSnackBarComponent implements OnInit {
   total: number;
   notDownloadable: number;
 
+  public downloadCountMap: { [k: string]: string } = {
+    '=1': 'DOWNLOAD.FILE_COMPRESSION.SINGULAR',
+    other: 'DOWNLOAD.FILE_COMPRESSION.PLURAL',
+  };
+
+  public downloadCountOverTotalMap: { [k: string]: string } = {
+    '=1': 'DOWNLOAD.FILE_COMPRESSION_TOTAL.SINGULAR',
+    other: 'DOWNLOAD.FILE_COMPRESSION_TOTAL.PLURAL',
+  };
+
   // tslint:disable-next-line:variable-name
   private readonly _cancel = new Subject<void>();
 

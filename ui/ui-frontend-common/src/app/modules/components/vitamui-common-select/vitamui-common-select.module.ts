@@ -38,6 +38,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonModule } from '../../vitamui-common.module';
 import { VitamuiCommonSelectComponent } from './vitamui-common-select.component';
 
 @NgModule({
@@ -46,6 +48,7 @@ import { VitamuiCommonSelectComponent } from './vitamui-common-select.component'
     CommonModule,
     MatSelectModule,
     FormsModule,
+    TranslateModule
   ],
   exports: [VitamuiCommonSelectComponent]
 })

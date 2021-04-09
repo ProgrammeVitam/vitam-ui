@@ -12,12 +12,12 @@
               <vitamui-common-emails-input
                 class="domains-input-mini"
                 [formControl]="control"
-                placeholder="nom@domaine.xyz" i18n-placeholder="Email input placeholder@@emailInputPlaceholder"
+                [placeholder]="'MULTIPLE_EMAILS_INPUT.PLACEHOLDER' | translate"
                 spinnerDiameter="18"
                 (click)="onEmailInputClick()"
               ></vitamui-common-emails-input>
             </div>
-            <div class="text-error" *ngIf="control?.value?.length === 0" i18n="at least one email@@atLeastOneEmailError">Vous devez saisir au moins une adresse email</div>
+            <div class="text-error" *ngIf="control?.value?.length === 0">{{'MULTIPLE_EMAILS_INPUT.ERROR' | translate}}</div>
         </div>
         <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
         <div class="vitamui-input-errors" *ngIf="showSpinner">

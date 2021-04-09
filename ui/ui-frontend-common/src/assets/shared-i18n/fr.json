@@ -64,6 +64,10 @@
           "ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
         }
       }
+    },
+    "BANNER": {
+      "MESSAGE": "Subrogation de l'utilisateur {{ email }} jusqu'à {{ endDate }}",
+      "STOP_LABEL" : "Arrêter la subrogation"
     }
   },
   "APPLICATION": {
@@ -281,6 +285,9 @@
   "MENU": {
     "GRAB_APPLICATION": "Saisir le nom de l'application",
     "MY_APPLICATIONS": "Mes applications",
+    "APPLICATION_TITLE": "Applications",
+    "CUSTOMER_TITLE": "Organisations",
+    "TENANT_TITLE": "Coffres",
     "RESULT": "Résultat(s)",
     "settings": "Paramétrage",
     "administrators": "Management",
@@ -299,6 +306,7 @@
     "ENTER_APPLICATION": "Entrée pour lancer l'application"
   },
   "SELECT_TENANT": {
+    "MY_TENANTS": "Mes coffres",
     "SELECTED": "Coffre sélectionné",
     "SELECT": "Sélectionner un coffre",
     "DIALOG_TITLE": "Bienvenue sur ",
@@ -340,5 +348,45 @@
     "SPAIN": "Espagne",
     "BELGIUM": "Belgique",
     "PORTUGAL": "Portugal"
+  },
+  "DOWNLOAD" : {
+    "CANCELLED" : "Téléchargement annulé",
+    "CANCEL_ACTION" : "Annuler le téléchargement",
+    "CONFIRM_CANCEL_ACTION" : "Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?",
+    "FILE_COMPRESSION": {
+      "SINGULAR": "Compression du fichier : 1 élément",
+      "PLURAL": "Compression du fichier : {{ count }} éléments"
+    },
+    "FILE_COMPRESSION_TOTAL": {
+      "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
+      "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
+    },
+    "FILE_GENERATION" : "Génération du fichier"
+  },
+  "EDITABLE_SELECT": {
+    "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"
+  },
+  "EMAILS_INPUT": {
+    "WRONG_FORMAT": "Format incorrect (nom@domaine.xyz)",
+    "INVALID_USER": "Utilisateur non valide"
+  },
+   "MULTIPLE_EMAILS_INPUT": {
+    "PLACEHOLDER": "nom@domaine.xyz",
+    "ERROR": "Vous devez saisir au moins une adresse email"
+  },
+  "COMMON_SELECT": {
+    "DEFAULT_LABEL": "(Défaul)"
+  },
+  "SNACKBAR": {
+    "UPDATED_ACCOUNT" :"Les informations ont été mises à jour",
+    "FINISHED_SUBROGATION": "Le mode subrogation est arrêté",
+    "ACTIVATED_SUBROGATION": "Le mode subrogation est activé pour {{ duration }} minutes, jusqu'à {{ hours }}h{{ minutes }}. Veuillez ne pas changer d'application.",
+    "ASK_SUBROGATION": "L'utilisateur {{ user }} demande un accès temporaire à vos droits",
+    "ACCEPT_SUBROGATION": "Accepter",
+    "DECLINE_SUBROGATION": "Refuser"
+  },
+  "ERROR_DIALOG": {
+    "TITLE": "Erreur serveur interne (500)",
+    "MESSAGE": "Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste."
   }
 }

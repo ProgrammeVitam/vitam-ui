@@ -38,6 +38,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule, MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
@@ -52,6 +53,7 @@ describe('SubrogationSnackBarComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
+        VitamUICommonTestModule
       ],
       declarations: [ SubrogationSnackBarComponent ],
       providers: [

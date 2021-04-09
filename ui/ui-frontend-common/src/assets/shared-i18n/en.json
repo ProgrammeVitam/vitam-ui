@@ -64,6 +64,10 @@
           "ASK_SUBROGATION": "You ask a user to subrogate"
         }
       }
+    },
+    "BANNER": {
+      "MESSAGE": "Subrogation of user {{email}} until {{endDate}}",
+      "STOP_LABEL" : "Stop the subrogation"
     }
   },
   "APPLICATION": {
@@ -261,6 +265,9 @@
   "MENU": {
     "GRAB_APPLICATION": "Grab application name",
     "MY_APPLICATIONS": "My applications",
+    "APPLICATION_TITLE": "Applications",
+    "CUSTOMER_TITLE": "Organizations",
+    "TENANT_TITLE": "Safes",
     "RESULT": "Result",
     "settings": "Settings",
     "administrators": "Management",
@@ -279,6 +286,7 @@
     "ENTER_APPLICATION": "Enter to launch the application"
   },
   "SELECT_TENANT": {
+    "MY_TENANTS": "My safes",
     "SELECTED": "Selected tenant",
     "SELECT": "Select a tenant",
     "DIALOG_TITLE": "Welcome to ",
@@ -320,5 +328,45 @@
     "SPAIN": "Spain",
     "BELGIUM": "Belgium",
     "PORTUGAL": "Portugal"
+  },
+  "DOWNLOAD": {
+    "CANCELLED": "Download cancelled",
+    "CANCEL_ACTION": "Cancel download",
+    "CONFIRM_CANCEL_ACTION": "Are you sure you want to cancel the file download?",
+    "FILE_COMPRESSION": {
+      "SINGULAR": "File compression : 1 element",
+      "PLURAL": "File compression : {{ count }} elements"
+    },
+    "FILE_COMPRESSION_TOTAL": {
+      "SINGULAR": "on {{ total }} (1 element not downloaded)",
+      "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
+    },
+    "FILE_GENERATION": "File generation"
+  },
+  "EDITABLE_SELECT": {
+    "CONFIM_UPDATE": "Are you sure you want to make this change?"
+  },
+  "EMAILS_INPUT": {
+    "WRONG_FORMAT": "Incorrect format (name@domain.xyz)",
+    "INVALID_USER": "Invalid user"
+  },
+  "MULTIPLE_EMAILS_INPUT": {
+    "PLACEHOLDER": "name@domain.xyz",
+    "ERROR": "You must enter at least one email address"
+  },
+  "COMMON_SELECT": {
+    "DEFAULT_LABEL": "(Default)"
+  },
+  "SNACKBAR": {
+    "UPDATED_ACCOUNT" :"Information has been updated",
+    "FINISHED_SUBROGATION": "The subrogation mode is stopped",
+    "ACTIVATED_SUBROGATION": "The subrogation mode is activated for {{ duration }} minutes, up to {{ hours }}h{{ minutes }}. Please do not change application.",
+    "ASK_SUBROGATION": "The user {{ user }} requests a temporary access to your rights",
+    "ACCEPT_SUBROGATION": "Accept",
+    "DECLINE_SUBROGATION": "Decline"
+  },
+  "ERROR_DIALOG": {
+    "TITLE": "Internal server error (500)",
+    "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   }
 }

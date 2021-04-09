@@ -38,6 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
+import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { CustomerSelectionService } from '../../../customer-selection.service';
 
 import { CustomerMenuComponent } from './customer-menu.component';
@@ -48,7 +49,7 @@ describe('CustomerMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ MatDialogModule ],
+      imports: [ MatDialogModule, VitamUICommonTestModule ],
       declarations: [ CustomerMenuComponent ],
       providers: [
         { provide: ActivatedRoute, useValue: { paramMap: EMPTY } },
