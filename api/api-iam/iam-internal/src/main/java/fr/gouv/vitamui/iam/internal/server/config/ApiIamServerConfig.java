@@ -42,8 +42,8 @@ import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
@@ -81,6 +81,7 @@ import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
+import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
 import fr.gouv.vitamui.iam.internal.server.security.IamApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.internal.server.security.IamAuthentificationService;
 import fr.gouv.vitamui.iam.internal.server.subrogation.converter.SubrogationConverter;
@@ -98,6 +99,7 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
+import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -113,6 +115,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, ConverterConfig.class,
@@ -143,6 +146,12 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @ConfigurationProperties(value = "cas-client")
     public RestClientConfiguration casClientProperties() {
         return new RestClientConfiguration();
+    }
+
+    @Bean
+    @ConfigurationProperties(value = "provisioning-client")
+    public ProvisioningClientConfiguration provisioningClientProperties() {
+        return new ProvisioningClientConfiguration();
     }
 
     @Bean
@@ -322,6 +331,11 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final RestClientConfiguration casClientProperties) {
         final BaseRestClientFactory factory = new BaseRestClientFactory(casClientProperties, restTemplateBuilder);
         return new UserEmailInternalService(factory);
+    }
+
+    @Bean
+    public ProvisioningInternalService provisioningService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration) {
+        return new ProvisioningInternalService(webClientBuilder, provisioningClientConfiguration);
     }
 
     @Bean
