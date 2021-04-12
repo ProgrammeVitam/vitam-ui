@@ -90,22 +90,30 @@
 .left-arround {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    border: 1px solid #9D9D9D;
+
 }
 
 .left-not-arround {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
+    border: 1px solid #9D9D9D;
+
 }
 
 
 .right-arround {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+      border: 1px solid #9D9D9D;
+
 }
 
 .right-not-arround {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
+        border: 1px solid #9D9D9D;
+
 }
 
 
@@ -116,6 +124,7 @@
     border-left-width: 0px;
     height: 60px;
     font-weight: bold;
+
 }
 
 .button-content {
@@ -125,6 +134,8 @@
     max-width: 400px;
     font-weight: bold;
     height: 60px;
+        border: 1px solid #9D9D9D;
+
 }
 
 
@@ -134,6 +145,8 @@
     border-left-width: 1px;
     height: 60px;
     font-weight: bold;
+        border: 1px solid #9D9D9D;
+
 }
 
 .hide-ink {
