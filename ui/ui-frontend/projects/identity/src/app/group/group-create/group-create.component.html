@@ -61,6 +61,23 @@
         <app-profiles-form formControlName="profileIds" [level]="form.get('level').value"></app-profiles-form>
 
         <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{'COMMON.NEXT' | translate}}</button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        </div>
+
+        <button type="button" class="btn link" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+           <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
+        </button>
+      </div>
+    </cdk-step>
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold" >{{'GROUP.INFORMATIONS.MODAL.UNITS_INFORMATION' | translate}} </div>
+        
+        <app-units-form formControlName="units"></app-units-form>
+
+        <div class="actions">
           <button type="submit" class="btn primary" [disabled]="formValid()">{{'COMMON.SUBMIT' | translate}}</button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>

@@ -58,4 +58,13 @@ export class GroupValidators {
       };
     }
 
+    unitExists = (unitToIgnore: string[] = []): AsyncValidatorFn => {
+      return (control: AbstractControl) => {
+        return timer(this.debounceTime).pipe(
+          switchMap(() => !unitToIgnore.includes(control.value) ? this.groupService.unitExists(control.value.trim()) : of(false)),
+          take(1),
+          map((exists: boolean) => exists ? { unitExists: true } : null)
+        );
+      };
+    }
 }

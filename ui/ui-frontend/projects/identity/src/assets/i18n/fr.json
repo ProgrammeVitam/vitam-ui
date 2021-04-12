@@ -280,7 +280,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fix"
       },
-      "CENTER_CODE": "Code du centre",
+      "CENTER_CODE":"Code du centre",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",
@@ -410,7 +410,8 @@
         "TITLE": "Création d'un groupe de profils",
         "EXISTING_NAME": "Nom déjà utilisé",
         "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
-        "PROVISIONNING_GROUP": "Provisionnement du groupe"
+        "PROVISIONNING_GROUP": "Provisionnement du groupe",
+        "UNITS_INFORMATION": "Saisie des unités d'appartenance"
       }
     },
     "PROFILE": {
@@ -420,6 +421,11 @@
         "SAFE": "Coffre",
         "PROFILE": "Profil"
       }
+  },
+    "UNITS_FORM": {
+      "INPUT_PLACEHOLDER": "Unité d'appartenances",
+      "UNIT_ALREADY_EXIST": "Unité déjà associée à un groupe",
+      "UNIT_ALREADY_ADDED": "Unité déjà ajoutée"
     }
   },
   "HIERARCHY": {

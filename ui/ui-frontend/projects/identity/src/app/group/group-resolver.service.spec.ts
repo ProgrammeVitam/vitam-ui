@@ -52,6 +52,7 @@ const expectedGroup: Group = {
   usersCount: 0,
   profileIds: [],
   profiles: [],
+  units: [],
   readonly : false
 };
 
