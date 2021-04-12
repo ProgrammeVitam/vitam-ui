@@ -72,7 +72,7 @@
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
-        <bouncycastle.version>1.65</bouncycastle.version>
+        <bouncycastle.version>1.68</bouncycastle.version>
         <cas.version>6.1.6</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
@@ -140,7 +140,7 @@
 		<xerces.version>2.12.0</xerces.version>
         <esapi.version>2.1.0.1</esapi.version>
         <antisamy.version>1.5.8</antisamy.version>
-        <json-sanitize.version>1.2.0</json-sanitize.version>
+        <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
 
         <!-- Web Pack -->
