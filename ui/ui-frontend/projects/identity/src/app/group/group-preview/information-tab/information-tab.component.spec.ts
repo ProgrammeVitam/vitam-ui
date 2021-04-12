@@ -88,6 +88,7 @@ describe('Profile Group InformationTabComponent', () => {
       usersCount: 0,
       profileIds: [],
       profiles: [],
+      units: [],
       readonly : false
     };
 

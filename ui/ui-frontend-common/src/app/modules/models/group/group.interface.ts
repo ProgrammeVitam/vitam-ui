@@ -48,4 +48,5 @@ export interface Group extends Id {
   profiles: Profile[];
   readonly: boolean;
   usersCount: number;
+  units: string[];
 }

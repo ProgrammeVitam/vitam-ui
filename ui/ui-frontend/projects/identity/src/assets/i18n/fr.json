@@ -410,7 +410,8 @@
         "TITLE": "Création d'un groupe de profils",
         "EXISTING_NAME": "Nom déjà utilisé",
         "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
-        "PROVISIONNING_GROUP": "Provisionnement du groupe"
+        "PROVISIONNING_GROUP": "Provisionnement du groupe",
+        "UNITS_INFORMATION": "Saisie des unités d'appartenance"
       }
     },
     "PROFILE": {
@@ -438,6 +439,11 @@
     "SELECT_ACCESS_CONTRACT": "Sélectionner un contrat d'accès",
     "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "Le profil paramétrage externe {{ name }} a bien été créé",
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié"
+    },
+    "UNITS_FORM": {
+      "INPUT_PLACEHOLDER": "Unité d'appartenances",
+      "UNIT_ALREADY_EXIST": "Unité déjà associée à un groupe",
+      "UNIT_ALREADY_ADDED": "Unité déjà ajoutée"
     }
   },
   "HIERARCHY": {

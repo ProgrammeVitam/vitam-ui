@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,65 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.domain;
+/* tslint:disable: no-magic-numbers max-file-line-count max-classes-per-file */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { UnitsFormComponent } from './units-form.component';
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.validator.constraints.Length;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-/**
- * The DTO v1 for a profile group.
- *
- *
- */
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class GroupDto extends CustomerIdDto {
-
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
-    private String identifier;
-
-    @NotNull
-    @Length(min = 2, max = 100)
-    private String name;
-
-    @NotNull
-    @Length(min = 4, max = 100)
-    private String description;
-
-    @NotNull
-    @Size(min = 1)
-    private List<String> profileIds = new ArrayList<>();
-
-    private boolean enabled = true;
-
-    private boolean readonly = false;
-
-    @Length(max = 250)
-    private String level = StringUtils.EMPTY;
-
-    // Embedded
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<ProfileDto> profiles = null;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long usersCount;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<String> units;
-}
+@NgModule({
+  imports: [
+    CommonModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatTooltipModule,
+    VitamUICommonModule,
+  ],
+  declarations: [
+    UnitsFormComponent,
+  ],
+  exports: [
+    UnitsFormComponent,
+  ]
+})
+export class UnitsFormModule { }

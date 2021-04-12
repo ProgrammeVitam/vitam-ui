@@ -58,7 +58,7 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   public stepIndex = 0;
-  public stepCount = 2;
+  public stepCount = 3;
   subLevelIsRequired: boolean;
 
 
@@ -81,7 +81,8 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
       level : ['', buildValidators(this.authService.user)],
       description: [null, Validators.required],
       profileIds: [null, Validators.required],
-      customerId: [this.authService.user.customerId]
+      customerId: [this.authService.user.customerId],
+      units: [null]
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -111,6 +112,10 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   firstStepInvalid(): boolean {
     return this.form.get('name').invalid ||
       this.form.get('description').invalid || this.form.get('level').invalid;
+  }
+
+  secondStepInvalid(): boolean {
+    return this.form.get('profileIds').invalid;
   }
 
   formValid(): boolean {

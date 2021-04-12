@@ -98,6 +98,7 @@ describe('GroupListComponent', () => {
         level : '',
         profileIds: [],
         profiles: [],
+        units: [],
         readonly : false
       },
       {
@@ -109,6 +110,7 @@ describe('GroupListComponent', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
+        units: [],
         readonly : false
       },
     ];

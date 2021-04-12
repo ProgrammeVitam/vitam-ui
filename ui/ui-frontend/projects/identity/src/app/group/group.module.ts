@@ -67,7 +67,7 @@ import { GroupService } from './group.service';
     GroupRoutingModule
   ],
   declarations: [
-    GroupComponent,
+    GroupComponent
   ],
   providers: [
     GroupResolver,

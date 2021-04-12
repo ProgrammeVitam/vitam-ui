@@ -410,7 +410,8 @@
         "TITLE": "Create profile groups",
         "EXISTING_NAME": "Name already exists",
         "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
-        "PROVISIONNING_GROUP": "Group Provisioning"
+        "PROVISIONNING_GROUP": "Group Provisioning",
+        "UNITS_INFORMATION": "Entering the membership units"
       }
     },
     "PROFILE": {
@@ -420,6 +421,11 @@
         "SAFE": "Safe",
         "PROFILE": "Profile"
       }
+    },
+    "UNITS_FORM": {
+      "INPUT_PLACEHOLDER": "Unit of belonging",
+      "UNIT_ALREADY_EXIST": "Unit already associated with a group",
+      "UNIT_ALREADY_ADDED": "Unit already added"
   },
   "EXTERNAL_PARAM_PROFILE": {
     "CREATE_EXTERNAL_PARAM_PROFILE": "CREATE AN EXTERNAL PARAMETERS PROFILE",
