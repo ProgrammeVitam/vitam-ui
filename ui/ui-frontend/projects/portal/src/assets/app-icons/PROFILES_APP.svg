@@ -203,10 +203,10 @@
 	.prfl186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#PRFL_ID_2_);}
 	.prfl187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#PRFL_ID_3_);}
 	.prfl188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#PRFL_ID_4_);}
-	.prfl189{fill-rule:evenodd;clip-rule:evenodd;fill:#130005;}
-	.prfl190{fill-rule:evenodd;clip-rule:evenodd;fill:#702381;}
-	.prfl191{fill-rule:evenodd;clip-rule:evenodd;fill:#9830B1;}
-	.prfl192{fill-rule:evenodd;clip-rule:evenodd;fill:#CB7EDD;}
+	.prfl189{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-800);}
+	.prfl190{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-700);}
+	.prfl191{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.prfl192{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-400);}
 	.prfl193{fill:url(#PRFL_ID_5_);}
 	.prfl194{fill:url(#PRFL_ID_6_);}
 	.prfl195{fill:url(#PRFL_ID_7_);}
