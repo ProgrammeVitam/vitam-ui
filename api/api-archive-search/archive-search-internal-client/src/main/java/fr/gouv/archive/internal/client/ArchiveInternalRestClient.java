@@ -125,17 +125,29 @@ public class ArchiveInternalRestClient
     }
 
     public ResponseEntity<Resource> downloadObjectFromUnit(String id, final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 
-    public ResponseEntity<ResultsDto> findUnitById(String id , final InternalHttpContext context) {
+    public ResponseEntity<ResultsDto> findUnitById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
+    public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query,
+        final InternalHttpContext context) {
+        LOGGER.info("Calling exportCsvArchiveUnitsByCriteria with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<Resource> response =
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
+                request, Resource.class);
+        checkResponse(response);
+        return response.getBody();
 
+    }
 }

@@ -26,8 +26,10 @@
 
 package fr.gouv.vitamui.archives.search.service;
 
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Assert;
@@ -36,12 +38,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
 
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 public class ArchivesSearchServiceTest {
+    public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
     private ArchivesSearchService archivesSearchService;
 
@@ -70,5 +79,18 @@ public class ArchivesSearchServiceTest {
         when(archiveSearchExternalRestClient.getFilingHoldingScheme(ArgumentMatchers.any())).thenReturn(
             new VitamUISearchResponseDto());
         Assert.assertNotNull(archivesSearchService.findFilingHoldingScheme(null));
+    }
+
+    @Test
+    public void testExportCsv() throws IOException {
+        Resource resource = new ByteArrayResource(ArchivesSearchServiceTest.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        SearchCriteriaDto query = new SearchCriteriaDto();
+
+        when(archiveSearchExternalRestClient
+            .exportCsvArchiveUnitsByCriteria(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(
+            (new ResponseEntity<>(resource, HttpStatus.OK)));
+        Assert.assertNotNull(archivesSearchService.exportCsvArchiveUnitsByCriteria(query, context));
     }
 }

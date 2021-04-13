@@ -121,17 +121,30 @@ public class ArchiveSearchExternalRestClient
         return headers;
     }
 
-    public ResponseEntity<ResultsDto> findUnitById(String id , ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+    public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id , ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
+    public ResponseEntity<Resource> downloadObjectFromUnit(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
     }
 
 
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(SearchCriteriaDto query,
+        ExternalHttpContext context) {
+        LOGGER.debug("Calling export to csv search archives units by criteria");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<Resource> response =
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
+                request, Resource.class);
+        return response;
+    }
 }

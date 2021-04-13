@@ -37,7 +37,6 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -68,7 +67,7 @@ public class ArchiveSearchInternalControllerTest {
     @MockBean
     private RestExceptionHandler restExceptionHandler;
 
-    @InjectMocks
+    @MockBean
     private ArchiveSearchInternalService archiveSearchInternalService;
 
     @BeforeClass

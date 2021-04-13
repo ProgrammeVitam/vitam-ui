@@ -92,4 +92,4 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
         return new UnitService(client);
     }
 
-  }
+}

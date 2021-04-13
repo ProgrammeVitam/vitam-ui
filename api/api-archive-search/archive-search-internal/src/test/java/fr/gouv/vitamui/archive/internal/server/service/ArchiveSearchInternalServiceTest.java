@@ -78,6 +78,9 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "agencyService")
     private AgencyService agencyService;
 
+    @MockBean(name = "archiveSearchAgenciesInternalService")
+    private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
+
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
@@ -86,7 +89,8 @@ public class ArchiveSearchInternalServiceTest {
     @Before
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveSearchInternalService = new ArchiveSearchInternalService(objectMapper, unitService, agencyService);
+        archiveSearchInternalService =
+            new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService);
     }
 
     @Test(expected = InvalidParseOperationException.class)
@@ -128,5 +132,6 @@ public class ArchiveSearchInternalServiceTest {
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
+
 
 }

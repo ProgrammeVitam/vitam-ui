@@ -1,0 +1,56 @@
+{
+  "$roots": [
+    "aeaqaaaaaegoneqvaalokalxa5enn4yaaacq",
+    "aeaqaaaaaegoneqvaalokalxa5keqriaaaaq"
+  ],
+  "$query": [
+    {
+      "$and": [
+        {
+          "$eq": {
+            "#unitType": "INGEST"
+          }
+        },
+        {
+          "$or": [
+            {
+              "$eq": {
+                "DescriptionLevel": "RecordGrp"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "File"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Item"
+              }
+            }
+          ]
+        },
+        {
+          "$eq": {
+            "Title": "dossier"
+          }
+        }
+      ],
+      "$depth": 30
+    }
+  ],
+  "$filter": {
+    "$limit": 1
+  },
+  "$projection": {},
+  "$facets": [
+    {
+      "$name": "COUNT_BY_NODE",
+      "$terms": {
+        "$field": "#allunitups",
+        "$size": 20,
+        "$order": "ASC"
+      }
+    }
+  ]
+}

@@ -118,6 +118,10 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
         <!-- TESTS -->
 
         <dependency>
@@ -152,6 +156,7 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+
 
     </dependencies>
 

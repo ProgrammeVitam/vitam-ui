@@ -99,7 +99,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Find the Archive Unit Details")
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id){
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
     }
@@ -108,10 +108,25 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
-        LOGGER.debug("Donwload the Archive Unit Object with ID {}", id);
+        LOGGER.debug("Download the Archive Unit Object with ID {}", id);
         Resource body = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext()).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
             .body(body);
+    }
+
+
+    @ApiOperation(value = "export into csv format archive units by criteria")
+    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(@RequestBody final SearchCriteriaDto searchQuery) {
+        LOGGER.debug("Export search archives Units by criteria into csv format = {}", searchQuery);
+        Resource exportedCsvResult =
+            archivesSearchService.exportCsvArchiveUnitsByCriteria(searchQuery, buildUiHttpContext()).getBody();
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
+            .body(exportedCsvResult);
     }
 }

@@ -34,6 +34,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,4 +51,5 @@ public class SearchCriteriaDto implements Serializable {
     private SearchCriteriaSort sortingCriteria;
     private Integer pageNumber;
     private Integer size;
+    private String language = Locale.FRENCH.getLanguage();
 }

@@ -48,9 +48,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
@@ -61,6 +65,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchivesSearchExter
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchExternalControllerTest.class);
+
+    public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
     @MockBean
     private ArchivesSearchExternalService archivesSearchExternalService;
@@ -159,4 +165,24 @@ public class ArchivesSearchExternalControllerTest extends ApiArchivesSearchExter
         Assertions.assertThat(filingHoldingSchemeResults).isEqualTo(expectedResponse);
     }
 
+
+
+    @Test
+    public void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws IOException {
+        // Given
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+
+        Resource resource = new ByteArrayResource(ArchivesSearchExternalControllerTest.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+
+        when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(Mockito.eq(query)))
+            .thenReturn(resource);
+        // When
+        Resource responseCsv =
+            archivesSearchExternalController.exportCsvArchiveUnitsByCriteria(query);
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        Assertions.assertThat(responseCsv).isEqualTo(resource);
+    }
 }
