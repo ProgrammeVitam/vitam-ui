@@ -58,6 +58,31 @@ Dans cet exemple, il est prévu pour respecter les contraintes de flux inter-zon
 * les services de toutes les zones communiquent avec les services déployés dans la zone INFRA 
 * les exploitants techniques accédent aux services de la zone EXPLOITATION puis intervenir dans toutes les zones
 
+#### Les différentes zones:
+ ##### zone IHM:
+ La zone IHM se compose de plusieurs services:
+ - UI Identity
+ - UI Portal
+ - UI Referential
+ - UI Ingest
+ - UI Archive Search
+ ##### zone API-EXTERNAL:
+ La zone API-EXTERNAL se compose de plusieurs services:
+- IAM EXTERNAL
+- REFERENTIAL EXTERNAL
+- INGEST EXTERNAL
+- ARCHIVE SEARCH EXTERNAL
+ ##### zone API-INTERNAL:
+ La zone API-INTERNAL se compose de plusieurs services:
+ - IAM INTERNAL
+ - REFERENTIAL INTERNAL
+ - INGEST INTERNAL
+ - ARCHIVE SEARCH INTERNAL
+ ##### zone DATA:
+ La zone stockage: MongoDB
+ ##### zone INFRA:
+ Les services consul, kibana, elk etc..
+
 Tous les serveurs cibles doivent avoir accès aux dépôts de binaires contenant les paquets des logiciels VITAMUI et des composants externes requis pour l’installation. Les autres éléments d’installation (playbook ansible, ...) doivent être disponibles sur la machine ansible orchestrant le déploiement de la solution dans la zone INFRA.
 
     Schéma de zoning :

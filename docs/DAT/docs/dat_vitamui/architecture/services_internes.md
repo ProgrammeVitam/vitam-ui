@@ -31,17 +31,46 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 ### Service referential-internal
 
 * Description : service interne pour la gestion des référentiels de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service de référentiel interne reçoit les requtes du client référentiel externe, et communique avec VITAM via les clients Admin/Access pour la récupération des données.
+Le service de référentiel interne est composé de plusieurs points d'APIs:
+ - API des contrats d'accès (/referential/accesscontract)
+ - API des contrats d'entrées (/referential/ingestcontract)
+ - API des contrats de gestion (/referential/managementcontract)
+ - API des services agents (/referential/agency)
+ - API des formats (/referential/fileformat)
+ - API des ontologies (/referential/ontology)
+ - API des profils d'archivages (/referential/profile)
+ - API des règles de gestion (/referential/profile)
+ - API des profils de sécurité (/referential/security-profile)
+ - API des contexts applicatifs (/referential/context)
+ - API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
+ 
+ pour plus d'information: voir la documentation des [référentiels](https://www.programmevitam.fr/pages/documentation/pour_archiviste/)
 
 ### Service ingest-internal
 
 * Description : service interne pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service d'ingest interne a pour responsabilité la réception, et la communication sécurisée avec les couches externes de VITAM.
+Le service d'ingest interne est composé de plusieurs points d'APIs:
+ - API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
+ - API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
+ - API de visualisation détaillé d'un journal d'une opération d'entrées (/v1/ingest/{id})
+ - API permettant le téléchargement d'un rapport sous forme ODT d'une opération d'entrée (/v1/ingest/odtreport/{id})
+ - API commune est utilisé pour le téléchargement du Manifest et de l'ATR (Archival Transfer Reply) d'une opération d'entrée. (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
+ 
+Ce service est configuré pour qu'il puisse communiquer avec la zone d'accès de la solution logicielle VITAM.
+Pour aller plus loin: [1](https://www.programmevitam.fr/ressources/DocCourante/raml/externe/ingest.html), [2](https://www.programmevitam.fr/ressources/DocCourante/html/archi/archi-applicative/20-services-list.html#api-externes-ingest-external-et-access-external)
 
 ### Service archive-search-internal
 
 * Description : service interne pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service d'archive interne a pour responsabilité la réception, et la communication sécurisée avec les couches externes VITAM.
+Le service d'archive interne est composé de plusieurs points d'APIs:
+ - API de recherche des archive par requetes (/archive-search/search)
+ - API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
+ - API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
+ - API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
+ - API d'export des résultats sous format csv (/export-csv-search)

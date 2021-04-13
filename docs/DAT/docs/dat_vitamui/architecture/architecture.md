@@ -37,4 +37,4 @@ La solution VITAMUI popose des applications web accessibles depuis un portail. L
  
     Schéma de l’architecture fonctionnelle VITAMUI:
 
-![Architecture fonctionnelle](../images/dat_archi_generale.png)
+![Architecture fonctionnelle](../images/dat_architecture_generale.png)
