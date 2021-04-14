@@ -4,17 +4,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.common.enums.ApplicationEnum;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
-import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
-import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
-import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
-import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
-import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
-import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +12,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,29 +27,24 @@ import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegr
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 
 @RunWith(SpringRunner.class)
-//@Import({ TestMongoConfig.class })
 @EnableMongoRepositories(
-	basePackageClasses =  {ExternalParametersRepository.class, CustomSequenceRepository.class, GroupRepository.class,
-        OwnerRepository.class, ProfileRepository.class, UserRepository.class, TenantRepository.class },
+	basePackageClasses =  {ExternalParametersRepository.class, CustomSequenceRepository.class }, 
 	repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegrationTest {
-
+	
 	private ExternalParametersInternalService service;
-
+	
     @MockBean
     private ExternalParametersRepository externalParametersRepository;
-
+    
     @Autowired
     private CustomSequenceRepository sequenceRepository;
-
+	
     @Autowired
     private ExternalParametersConverter externalParametersConverter;
-
+    
     @Autowired
     private InternalSecurityService internalSecurityService;
-
-    @MockBean
-    private SpMetadataGenerator spMetadataGenerator;
 
 
     private static final String ID = "ID";
@@ -69,18 +52,15 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Before
     public void setup() {
         service = new ExternalParametersInternalService(
-        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService);
+        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService);    
     }
 
     @Test
     public void testGetOne() {
-        final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.getProfileGroup().getProfiles().get(0).setApplicationName(ApplicationEnum.EXTERNAL_PARAMS.toString());
         ExternalParameters externalParameters = new ExternalParameters();
         externalParameters.setId(ID);
 
     	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(externalParameters));
-        when(internalSecurityService.getUser()).thenReturn(user);
 
         ExternalParametersDto res = this.service.getMyExternalParameters();
         Assert.assertNotNull("ExternalParameters should be returned.", res);

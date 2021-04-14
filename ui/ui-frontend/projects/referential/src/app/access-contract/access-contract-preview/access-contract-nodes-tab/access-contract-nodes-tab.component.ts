@@ -37,10 +37,10 @@
 import {HttpHeaders} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AccessContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 import {AccessContractNodeUpdateComponent} from './access-contract-nodes-update/access-contract-node-update.component';
 import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import {MatSnackBar} from '@angular/material';
 import '@angular/localize/init';
 
 @Component({

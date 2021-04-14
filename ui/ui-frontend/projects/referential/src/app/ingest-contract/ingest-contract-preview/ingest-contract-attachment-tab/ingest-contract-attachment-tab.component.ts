@@ -2,11 +2,11 @@
 import {HttpHeaders} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AccessContract, IngestContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
 
 import {IngestContractNodeUpdateComponent} from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import {MatSnackBar} from '@angular/material';
 import '@angular/localize/init';
 
 @Component({

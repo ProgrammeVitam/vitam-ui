@@ -26,7 +26,7 @@ public class ExternalParametersConverterTest {
         externalParameters.setId("id");
         externalParameters.setIdentifier("identifier");
         externalParameters.setName("name");
-
+        
         List<Parameter> parameters = new ArrayList<Parameter>();
         Parameter parameter = new Parameter();
         parameter.setKey("key");
@@ -35,7 +35,7 @@ public class ExternalParametersConverterTest {
         externalParameters.setParameters(parameters);
 
         ExternalParametersDto dto = externalParametersConverter.convertEntityToDto(externalParameters);
-        assertThat(externalParameters).isEqualToIgnoringGivenFields(dto, "customerId");
+        assertThat(externalParameters).isEqualToIgnoringGivenFields(dto);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ExternalParametersConverterTest {
         dto.setId("id");
         dto.setIdentifier("identifier");
         dto.setName("name");
-
+        
         List<ParameterDto> parametersDto = new ArrayList<ParameterDto>();
         ParameterDto parameterDto = new ParameterDto();
         parameterDto.setKey("key");
@@ -62,7 +62,7 @@ public class ExternalParametersConverterTest {
         dto.setId("id");
         dto.setIdentifier("identifier");
         dto.setName("name");
-
+        
         List<ParameterDto> parametersDto = new ArrayList<ParameterDto>();
         ParameterDto parameterDto = new ParameterDto();
         parameterDto.setKey("key");
@@ -74,7 +74,7 @@ public class ExternalParametersConverterTest {
 
         assertThat(json).isNotBlank();
         JsonNode jsonNode = JsonHandler.getFromString(json);
-
+        
         assertThat(jsonNode.get(ExternalParametersConverter.ID_KEY)).isNotNull();
         assertThat(jsonNode.get(ExternalParametersConverter.IDENTIFIER_KEY)).isNotNull();
         assertThat(jsonNode.get(ExternalParametersConverter.NAME_KEY)).isNotNull();

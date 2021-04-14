@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule} from '@angular/material';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService, ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';

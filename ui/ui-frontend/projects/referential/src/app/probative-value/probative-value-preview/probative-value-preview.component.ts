@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
 import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ProbativeValueService} from '../probative-value.service';
 import {ExternalParametersService, ExternalParameters, AccessContract} from 'ui-frontend-common';
+import {MatSnackBar} from '@angular/material';
 import '@angular/localize/init';
 
 @Component({
