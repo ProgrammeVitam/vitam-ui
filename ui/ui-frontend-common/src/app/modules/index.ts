@@ -71,8 +71,6 @@ export * from './subrogation/index';
 export * from './tenant-selection.guard';
 export * from './theme.service';
 export * from './utils/index';
-export * from './externalParameters.enum';
-export * from './externalParameters.service';
 
 export * from './components/application-select-content/index';
 export * from './components/blank/blank.component';

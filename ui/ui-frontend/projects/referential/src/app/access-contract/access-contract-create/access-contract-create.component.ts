@@ -38,14 +38,12 @@ import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option, ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
+import { ConfirmDialogService, Option } from 'ui-frontend-common';
 
 import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { AgencyService } from '../../agency/agency.service';
-import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { MatSnackBar } from '@angular/material';
-import '@angular/localize/init';
 import { AccessContractService } from '../access-contract.service';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -80,12 +78,10 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<AccessContractCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-    private accessContractCreateValidators: AccessContractCreateValidators,
     private accessContractService: AccessContractService,
+    private accessContractCreateValidators: AccessContractCreateValidators,
     private agencyService: AgencyService,
-    private confirmDialogService: ConfirmDialogService,
-    private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private confirmDialogService: ConfirmDialogService
   ) {
   }
 
@@ -97,6 +93,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   accessContractSelect = new FormControl(null, Validators.required);
 
   originatingAgencies: Option[] = [];
+  accessContracts: AccessContract[];
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
@@ -119,23 +116,13 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
-          null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
-      }
-    });
-
     this.agencyService.getAll().subscribe(agencies =>
       this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
     );
+
+    this.accessContractService.getAll().subscribe((value) => {
+      this.accessContracts = value;
+    });
 
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],

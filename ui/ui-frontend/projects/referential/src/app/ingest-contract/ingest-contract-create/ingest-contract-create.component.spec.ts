@@ -2,9 +2,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBarModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
+import {ConfirmDialogService} from 'ui-frontend-common';
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
 import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
 import {FileFormatService} from '../../file-format/file-format.service';
@@ -25,12 +26,9 @@ describe('IngestContractCreateComponent', () => {
       }
     );
 
-    const parameters: Map<string, string> = new Map<string, string>();
-    parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
-    const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
+    const accessContractServiceMock = {
+      getAll: () => of([])
     };
-
     const fileFormatServiceMock = {
       getAllForTenant: () => of([])
     };
@@ -45,9 +43,6 @@ describe('IngestContractCreateComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [IngestContractCreateComponent],
-      imports: [
-        MatSnackBarModule
-      ],
       providers: [
         FormBuilder,
         {provide: MatDialogRef, useValue: {}},
@@ -58,7 +53,7 @@ describe('IngestContractCreateComponent', () => {
         {provide: FileFormatService, useValue: fileFormatServiceMock},
         {provide: ManagementContractApiService, useValue: managementContractApiServiceMock},
         {provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+        {provide: AccessContractService, useValue: accessContractServiceMock}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

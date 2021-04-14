@@ -21,7 +21,6 @@ import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.customer.service.CustomerInternalService;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
@@ -108,8 +107,5 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ApplicationInternalService applicationInternalService;
-    
-    @MockBean
-    private ExternalParametersInternalService externalParametersInternalService;
 
 }
