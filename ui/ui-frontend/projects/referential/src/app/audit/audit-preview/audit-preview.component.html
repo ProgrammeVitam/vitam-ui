@@ -5,6 +5,13 @@
         <div class="title">
             <h2>{{audit?.id}}</h2>
         </div>
+      <mat-form-field class="vitamui-mat-select">
+        <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="updateAccessContractId($event)">
+          <mat-option *ngFor='let accessContract of accessContracts'
+                      [value]="accessContract.identifier">{{accessContract.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
     </div>
     <div class="vitamui-sidepanel-body">

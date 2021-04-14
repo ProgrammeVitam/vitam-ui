@@ -44,10 +44,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParametersService} from 'ui-frontend-common';
+import {ConfirmDialogService} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {AgencyService} from '../../agency/agency.service';
@@ -102,12 +101,6 @@ describe('AccessContractCreateComponent', () => {
         uniqueIdentifier: () => of(null), identifierToIgnore: ''
       }
     );
-
-    const parameters: Map<string, string> = new Map<string, string>();
-    const externalParametersServiceMock = {
-      getUserExternalParameters: () => of(parameters)
-    };
-
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -115,7 +108,6 @@ describe('AccessContractCreateComponent', () => {
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        MatSnackBarModule,
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
@@ -128,9 +120,8 @@ describe('AccessContractCreateComponent', () => {
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: AgencyService, useValue: agencyServiceSpy},
         {provide: AccessContractService, useValue: accessContractServiceSpy},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
         {provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}}
+        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

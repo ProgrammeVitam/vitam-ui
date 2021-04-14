@@ -56,7 +56,6 @@ import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.CasInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.CustomerInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.CustomerInternalWebClient;
-import fr.gouv.vitamui.iam.internal.client.ExternalParametersInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.GroupInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.IamInternalWebClientFactory;
@@ -199,10 +198,4 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
-    
-    @Bean
-    public ExternalParametersInternalRestClient externalParametersInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
-        return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
-    }
-
 }

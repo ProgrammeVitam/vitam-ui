@@ -40,7 +40,6 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
@@ -170,10 +169,5 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     @Bean
     public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
     	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
-    }
-    
-    @Bean
-    public ExternalParametersExternalRestClient externalParametersExternalRestClient(final IamExternalRestClientFactory factory) {
-        return factory.getExternalParametersExternalRestClient();
     }
 }

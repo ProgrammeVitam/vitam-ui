@@ -37,11 +37,9 @@
 import {HttpHeaders} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {AccessContract, SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
+import {AccessContractService} from '../../access-contract.service';
 import {AccessContractNodeUpdateComponent} from './access-contract-nodes-update/access-contract-node-update.component';
-import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
-import '@angular/localize/init';
 
 @Component({
   selector: 'app-access-contract-nodes-tab',
@@ -55,36 +53,20 @@ export class AccessContractNodesTabComponent implements OnInit {
 
   titles: any = {};
 
+  accessContracts: AccessContract[];
   searchAccessContractId: string;
 
-  constructor(
-    private unitService: SearchUnitApiService, 
-    private externalParameterService: ExternalParametersService,
-    private dialog: MatDialog, 
-    private snackBar: MatSnackBar) {
+  constructor(private dialog: MatDialog, private unitService: SearchUnitApiService, private accessContractService: AccessContractService) {
   }
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-
-        this.searchAccessContractId = accessContratId;
-        this.initTitles();
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
-          null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
-      }
-    });
+    this.accessContractService.getAll().subscribe(accessContracts => this.accessContracts = accessContracts);
   }
 
-  initTitles() {
+  initTitles(event: any) {
+    this.searchAccessContractId = event.value;
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.searchAccessContractId);
+    headers = headers.append('X-Access-Contract-Id', event.value);
     this.unitService.getByDsl(null, this.getDslForRootNodes(), headers).subscribe(
       response => {
         if (response.httpCode === 200) {

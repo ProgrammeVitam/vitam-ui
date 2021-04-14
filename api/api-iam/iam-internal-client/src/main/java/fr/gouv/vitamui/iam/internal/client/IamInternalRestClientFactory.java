@@ -108,9 +108,4 @@ public class IamInternalRestClientFactory extends BaseRestClientFactory {
     public LogbookInternalRestClient<InternalHttpContext> getLogbookInternalRestClient() {
         return new LogbookInternalRestClient<>(getRestTemplate(), getBaseUrl());
     }
-    
-    public ExternalParametersInternalRestClient getExternalParametersInternalRestClient() {
-        return new ExternalParametersInternalRestClient(getRestTemplate(), getBaseUrl());
-    }
-
 }

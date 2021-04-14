@@ -379,11 +379,6 @@ public class ServicesData {
 
     public static final String ROLE_GET_UNITS = GET_ROLE_PREFIX + SERVICE_UNITS;
     
-    //------------------------------------ EXTERNAL PARAMETERS -------------------------------------------
-    public static final String SERVICE_EXTERNAL_PARAMS = "EXTERNAL_PARAMS";
-    
-    public static final String ROLE_GET_EXTERNAL_PARAMS = GET_ROLE_PREFIX + SERVICE_EXTERNAL_PARAMS;
-    
     //@formatter:off
 
     /**
@@ -481,9 +476,7 @@ public class ServicesData {
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
             
-            ROLE_GET_UNITS,
-            
-            ROLE_GET_EXTERNAL_PARAMS
+            ROLE_GET_UNITS
             );
 
     /**
@@ -604,9 +597,7 @@ public class ServicesData {
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
 
-            ROLE_GET_UNITS,
-            
-            ROLE_GET_EXTERNAL_PARAMS
+            ROLE_GET_UNITS
             );
     //@formatter:on
 

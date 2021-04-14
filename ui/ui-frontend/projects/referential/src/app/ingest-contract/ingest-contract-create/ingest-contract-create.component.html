@@ -234,6 +234,19 @@
                                         matTooltip="Ajouter si nécessaire la position de rattachement auquel on souhaite rattacher le SIP"
                                         matTooltipClass="vitamui-tooltip">info</i></h4>
 
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
+                      panelclass="vitamui-mat-select" required>
+            <mat-option *ngFor='let accessContract of accessContracts'
+                        [value]="accessContract.identifier">{{accessContract.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+
         <div class="form-group">
           <vitamui-library-filing-plan [formControl]="linkParentIdControl"
                                        [tenantIdentifier]="tenantIdentifier"
@@ -295,6 +308,19 @@
         <h4> Contrôle des rattachements<i class="material-icons field-tooltip"
                                           matTooltip="Sélection des positions de l'arbre"
                                           matTooltipClass="vitamui-tooltip">info</i></h4>
+
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
+                      panelclass="vitamui-mat-select" required>
+            <mat-option *ngFor='let accessContract of accessContracts'
+                        [value]="accessContract.identifier">{{accessContract.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
 
         <div class="form-group">
           <vitamui-library-filing-plan [formControl]="checkParentIdControl"

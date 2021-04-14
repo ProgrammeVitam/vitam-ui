@@ -38,17 +38,16 @@ import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import {FileFormat, FilingPlanMode, IngestContract} from 'projects/vitamui-library/src/public-api';
+import {AccessContract, FileFormat, FilingPlanMode, IngestContract} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option, ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
 import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
 import {FileFormatService} from '../../file-format/file-format.service';
 import {IngestContractService} from '../ingest-contract.service';
 import {IngestContractCreateValidators} from './ingest-contract-create.validators';
-import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -88,8 +87,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private fileFormatService: FileFormatService,
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
-    private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private accessContractService: AccessContractService
   ) {
   }
 
@@ -101,6 +99,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   formatTypeList: FileFormat[];
   managementContracts: any[];
   archiveProfiles: any[];
+  accessContracts: AccessContract[];
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -143,18 +142,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       this.formatTypeList = files;
     });
 
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
-          null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
-      }
+    this.accessContractService.getAll().subscribe((value) => {
+      this.accessContracts = value;
     });
 
     const params = new HttpParams().set('embedded', 'ALL');
