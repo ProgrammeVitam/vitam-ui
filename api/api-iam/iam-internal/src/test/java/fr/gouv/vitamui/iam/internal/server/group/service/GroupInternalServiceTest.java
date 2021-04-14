@@ -128,6 +128,7 @@ public class GroupInternalServiceTest {
         final Group other = IamServerUtilsTest.buildGroup();
 
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);
+        partialDto.put("units", new ArrayList(other.getUnits()));
 
         internalGroupService.processPatch(entity, partialDto);
 

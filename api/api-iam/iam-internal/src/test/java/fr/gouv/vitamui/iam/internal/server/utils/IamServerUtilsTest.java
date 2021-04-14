@@ -18,7 +18,6 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
-import fr.gouv.vitamui.iam.internal.server.common.builder.ExternalParamProfileDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
@@ -33,6 +32,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 
@@ -261,6 +261,7 @@ public final class IamServerUtilsTest {
         group.setIdentifier(identifier);
         group.setEnabled(true);
         group.setLevel(level);
+        group.setUnits(Set.of("unit1"));
         return group;
     }
 

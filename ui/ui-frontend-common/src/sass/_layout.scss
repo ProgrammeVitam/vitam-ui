@@ -92,3 +92,8 @@ html {
 .vitamui-body {
     min-height: calc(100vh - #{$header-height + $footer-height});
 }
+
+.vitamui-separator {
+    border-bottom: 1px solid var(--vitamui-grey-300);
+    margin: 1.25rem 0;
+}
