@@ -59,18 +59,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExternalParametersInternalService extends VitamUICrudService<ExternalParametersDto, ExternalParameters> {
-
+	
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersInternalService.class);
-
+	
     private final ExternalParametersRepository externalParametersRepository;
-
+    
     private final ExternalParametersConverter externalParametersConverter;
-
-    private final InternalSecurityService internalSecurityService;
+    
+    private InternalSecurityService internalSecurityService;
 
     @Autowired
     public ExternalParametersInternalService(
-    		final CustomSequenceRepository sequenceRepository,
+    		final CustomSequenceRepository sequenceRepository, 
     		final ExternalParametersRepository externalParametersRepository,
     		final ExternalParametersConverter externalParametersConverter,
     		final InternalSecurityService internalSecurityService) {
@@ -79,7 +79,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
         this.externalParametersConverter = externalParametersConverter;
         this.internalSecurityService = internalSecurityService;
     }
-
+    
     /**
      * Retrieve the external parameters associated to the authenticated user.
      * @return
@@ -89,14 +89,14 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     	AuthUserDto authUserDto = internalSecurityService.getUser();
 
     	if (authUserDto != null && authUserDto.getProfileGroup() != null && authUserDto.getProfileGroup().getProfiles() != null) {
-
-    		Optional<ProfileDto> externalParametersProfile = authUserDto.getProfileGroup().getProfiles().stream()
+    		
+    		Optional<ProfileDto> externalParametersProfile = authUserDto.getProfileGroup().getProfiles().stream()    
     				.filter(p -> Application.EXTERNAL_PARAMS.toString().equalsIgnoreCase(p.getApplicationName())).findFirst();
     		if (!externalParametersProfile.isEmpty() && externalParametersProfile.isPresent()) {
     			return this.getOne(externalParametersProfile.get().getExternalParamId());
     		}
     	}
-
+    	
     	return null;
     }
 
@@ -107,7 +107,7 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
 	protected ExternalParametersRepository getRepository() {
 		return externalParametersRepository;
 	}
-
+	
     /**
      * {@inheritDoc}
      */
@@ -131,12 +131,12 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
 	protected Class<ExternalParameters> getEntityClass() {
 	      return ExternalParameters.class;
 	}
-
+	
     @Override
     protected String getObjectName() {
         return "externalParameters";
     }
-
+	
 
     @Override
     protected Converter<ExternalParametersDto, ExternalParameters> getConverter() {

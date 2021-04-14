@@ -46,7 +46,7 @@ import lombok.ToString;
 
 /**
  *
- * The DTO v1 for the external Parameter.
+ * Class.
  *
  *
  */
@@ -57,9 +57,12 @@ import lombok.ToString;
 @ToString
 public class ParameterDto implements Serializable {
 
+    /**
+	 * 
+	 */
 	private static final long serialVersionUID = -3137972847122776634L;
 
 	private String key;
-
+    
     private String value;
 }

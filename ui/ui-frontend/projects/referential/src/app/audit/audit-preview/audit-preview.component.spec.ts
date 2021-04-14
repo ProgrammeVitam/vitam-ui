@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {of} from 'rxjs';
 import {AuditService} from '../audit.service';
 import {AuditPreviewComponent} from './audit-preview.component';
 import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
+import { MatSnackBarModule } from '@angular/material';
 
 describe('AuditPreviewComponent', () => {
   let component: AuditPreviewComponent;

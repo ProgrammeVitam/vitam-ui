@@ -36,16 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.externalParameters.converter;
 
-import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ParameterDto;
-import fr.gouv.vitamui.commons.api.utils.ApiUtils;
-import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,25 +43,36 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
+import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
 public class ExternalParametersConverter implements Converter<ExternalParametersDto, ExternalParameters> {
-
+	
     public static final String ID_KEY = "Id";
-
+	
     public static final String IDENTIFIER_KEY = "Identifiant";
 
     public static final String NAME_KEY = "Nom";
 
     public static final String PARAMETERS_KEY = "Paramètres";
-
+    
     public static final String PARAMETER_KEY = "Clé";
-
+    
     public static final String PARAMETER_VALUE_KEY = "Valeur";
-
+    
     public ExternalParametersConverter() {
     }
-
+    
     @Override
     public String convertToLogbook(final ExternalParametersDto dto) {
         final Map<String, String> logbookData = new LinkedHashMap<>();
@@ -91,7 +92,7 @@ public class ExternalParametersConverter implements Converter<ExternalParameters
     public ExternalParametersDto convertEntityToDto(final ExternalParameters entity) {
         return VitamUIUtils.copyProperties(entity, new ExternalParametersDto());
     }
-
+    
     public String convertParametersToLogbook(final Collection<ParameterDto> parameterDtos) {
         List<String> parameters = StreamSupport.stream(parameterDtos.spliterator(), false).map(param -> {
             final Map<String, String> data = new LinkedHashMap<>();

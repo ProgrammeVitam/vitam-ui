@@ -36,15 +36,9 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -53,27 +47,35 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
 
+		
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ExternalParametersExternalController.class })
 public class ExternalParametersExternalControllerTest extends ApiIamControllerTest<ExternalParametersDto> {
-
+	
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersExternalControllerTest.class);
 
 	@MockBean
 	private ExternalParametersExternalService service;
 
 	private ExternalParametersExternalController mockedController = MvcUriComponentsBuilder.on(ExternalParametersExternalController.class);
-
+	
     @Test
     public void getMyExternalParameters_thenOk() throws Exception {
         LOGGER.debug("getMyExternalParameters_thenOk");
         Mockito.when(service.getMyExternalParameters()).thenReturn(new ExternalParametersDto());
-
+        
         ResultActions result = super.performGet(CommonConstants.PATH_ME);
         result.andExpect(MockMvcResultMatchers.handler().methodCall(mockedController.getMyExternalParameters()));
     }
-
+	
 	@Override
 	protected ExternalParametersDto buildDto() {
 	    return new ExternalParametersDto();

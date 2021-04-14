@@ -36,14 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import java.util.List;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -51,7 +45,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 
 /**
  * A REST client to check existence, read, create, update and delete the external parameters.
@@ -61,11 +63,11 @@ import java.util.List;
 public class ExternalParametersInternalRestClient extends BasePaginatingAndSortingRestClient<ExternalParametersDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParametersInternalRestClient.class);
-
+	
     public ExternalParametersInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
-
+    
     /**
      * Retrieve the external parameters associated to the authenticated user.
      * @param context
@@ -97,7 +99,7 @@ public class ExternalParametersInternalRestClient extends BasePaginatingAndSorti
         return new ParameterizedTypeReference<List<ExternalParametersDto>>() {
         };
     }
-
+    
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ExternalParametersDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<PaginatedValuesDto<ExternalParametersDto>>() {

@@ -36,24 +36,26 @@
  */
 package fr.gouv.vitamui.iam.internal.server.externalParameters.dao;
 
-import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 
 /**
  * Tests for {@link ExternalParametersRepository}
@@ -74,21 +76,22 @@ public class ExternalParametersRepositoryTest {
     public void cleanUp() {
         repository.deleteById(EXTERNAL_PARAMETERS_ID);
     }
-
+    
     @Test
     public void testSave() {
     	final ExternalParameters parameters = new ExternalParameters();
     	parameters.setId(EXTERNAL_PARAMETERS_ID);
-
+    	
         final ExternalParameters created  = repository.save(parameters);
         assertThat(created.getId()).isEqualTo(EXTERNAL_PARAMETERS_ID);
     }
 
     @Test
     public void testFindById() {
+        // Find parameters by id
     	Query query = new Query();
         query.addCriteria(Criteria.where("id").is(EXTERNAL_PARAMETERS_ID));
-
+    	
         final Optional<ExternalParameters> externalParameters = repository.findOne(query);
 
         assertNotNull(externalParameters);
