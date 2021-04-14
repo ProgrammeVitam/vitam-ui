@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.common.enums.Application;
+import fr.gouv.vitamui.iam.common.enums.ApplicationEnum;
 import fr.gouv.vitamui.iam.internal.server.TestMongoConfig;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
@@ -75,7 +75,7 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Test
     public void testGetOne() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
-        user.getProfileGroup().getProfiles().get(0).setApplicationName(Application.EXTERNAL_PARAMS.toString());
+        user.getProfileGroup().getProfiles().get(0).setApplicationName(ApplicationEnum.EXTERNAL_PARAMS.toString());
         ExternalParameters externalParameters = new ExternalParameters();
         externalParameters.setId(ID);
 
