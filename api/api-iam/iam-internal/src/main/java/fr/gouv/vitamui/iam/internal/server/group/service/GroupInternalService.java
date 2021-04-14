@@ -272,8 +272,9 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                     group.setProfileIds(profileIds);
                     break;
                 case "units" :
-                    final Set<String> units = CastUtils.castValue(entry.getValue(), Set.class);
-                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertProfileIdsToLogbook(group.getUnits()),
+                    final Collection<String> unitsDto = CollectionUtils.emptyIfNull(CastUtils.toList(entry.getValue()));
+                    final Set<String> units = new HashSet<String>(unitsDto);
+                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertProfileIdsToLogbook(CollectionUtils.emptyIfNull(group.getUnits())),
                             groupConverter.convertUnitsToLogbook(units)));
                     group.setUnits(units);
                     break;

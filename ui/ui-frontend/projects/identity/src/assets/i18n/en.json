@@ -404,6 +404,8 @@
       "LEVEL": "Level",
       "SUBLEVEL": "Sub level",
       "SUBLEVEL_TOOLTIP": "This group has profiles",
+      "MODIF_UNITS_BUTTON": "Change membership units",
+      "UNITS_TABLE_TITLE": "Home units",
       "EXISTING_NAME": "Name already exists",
       "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
       "MODAL": {
@@ -411,7 +413,8 @@
         "EXISTING_NAME": "Name already exists",
         "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
         "PROVISIONNING_GROUP": "Group Provisioning",
-        "UNITS_INFORMATION": "Entering the membership units"
+        "UNITS_INFORMATION": "Entering the membership units",
+        "UPDATE_UNITS": "Editing membership units of"
       }
     },
     "PROFILE": {

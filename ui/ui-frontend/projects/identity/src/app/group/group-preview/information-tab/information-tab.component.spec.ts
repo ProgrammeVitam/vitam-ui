@@ -38,6 +38,7 @@
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
 
 import { AuthService, Group } from 'ui-frontend-common';
@@ -75,6 +76,8 @@ describe('Profile Group InformationTabComponent', () => {
     'GroupValidators', { nameExists: () => of(null) }
   );
   const authServiceMock = { user : { level: ''}};
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   beforeEach(waitForAsync(() => {
     expectedGroup = {
@@ -103,6 +106,7 @@ describe('Profile Group InformationTabComponent', () => {
         MatTooltipStubDirective,
       ],
       providers: [
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: GroupService, useValue: groupServiceSpy },
         { provide: GroupValidators, useValue: groupValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock},

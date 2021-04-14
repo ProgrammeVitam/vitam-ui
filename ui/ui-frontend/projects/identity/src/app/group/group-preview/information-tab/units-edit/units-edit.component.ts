@@ -34,49 +34,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../../shared/shared.module';
-import { GroupValidators } from '../group.validators';
-import { UnitsFormModule } from '../units-form/units-form.module';
-import { GroupPopupComponent } from './group-popup.component';
-import { GroupPreviewComponent } from './group-preview.component';
-import { InformationTabComponent } from './information-tab/information-tab.component';
-import { UnitsEditComponent } from './information-tab/units-edit/units-edit.component';
-import { ProfilesEditComponent } from './profiles-tab/profiles-edit/profiles-edit.component';
-import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
+import { ConfirmDialogService, Group } from 'ui-frontend-common';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule,
-    MatMenuModule,
-    MatTabsModule,
-    MatTooltipModule,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    UnitsFormModule
-  ],
-  declarations: [
-    GroupPopupComponent,
-    GroupPreviewComponent,
-    InformationTabComponent,
-    ProfilesTabComponent,
-    ProfilesEditComponent,
-    UnitsEditComponent,
-  ],
-  exports: [GroupPreviewComponent],
-  providers: [GroupValidators],
-  entryComponents: [ProfilesEditComponent]
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import { GroupService } from '../../../group.service';
+
+@Component({
+  selector: 'app-units-edit',
+  templateUrl: './units-edit.component.html',
+  styleUrls: ['./units-edit.component.css']
 })
-export class GroupPreviewModule { }
+export class UnitsEditComponent implements OnInit, OnDestroy {
+
+  form: FormGroup;
+
+  private keyPressSubscription: Subscription;
+
+  constructor(
+    public dialogRef: MatDialogRef<UnitsEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { group: Group },
+    private groupService: GroupService,
+    private confirmDialogService: ConfirmDialogService,
+    formBuilder: FormBuilder
+    ) {
+      this.form = formBuilder.group({
+        units: [this.data.group.units]
+      });
+     }
+
+    ngOnInit() {
+      this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    }
+
+    ngOnDestroy() {
+      this.keyPressSubscription.unsubscribe();
+    }
+
+    onSubmit() {
+      if (this.form.pristine || this.form.invalid) { return; }
+      this.groupService.patch({ id: this.data.group.id, units: this.form.value.units}).pipe(take(1)).subscribe(
+        (response) => this.dialogRef.close(response),
+        (error) => {
+          console.error(error);
+        });
+    }
+
+    onCancel() {
+      this.form.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
+    }
+
+}

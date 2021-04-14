@@ -404,6 +404,8 @@
       "LEVEL": "Niveau",
       "SUBLEVEL": "Sous niveau",
       "SUBLEVEL_TOOLTIP": "Ce groupe possède des profils",
+      "MODIF_UNITS_BUTTON": "Modifier les unités d'appartenance",
+      "UNITS_TABLE_TITLE": "Unités d'appartenance",
       "EXISTING_NAME": "Nom déjà utilisé",
       "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
       "MODAL": {
@@ -411,7 +413,8 @@
         "EXISTING_NAME": "Nom déjà utilisé",
         "WRONG_FORMAT": "Format incorrect (caractères alphanumériques séparés par le caractères .)",
         "PROVISIONNING_GROUP": "Provisionnement du groupe",
-        "UNITS_INFORMATION": "Saisie des unités d'appartenance"
+        "UNITS_INFORMATION": "Saisie des unités d'appartenance",
+        "UPDATE_UNITS": "Modification des unités de"
       }
     },
     "PROFILE": {

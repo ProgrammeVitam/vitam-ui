@@ -32,7 +32,9 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 
@@ -261,6 +263,7 @@ public final class IamServerUtilsTest {
         group.setIdentifier(identifier);
         group.setEnabled(true);
         group.setLevel(level);
+        group.setUnits(Set.of("unit1"));
         return group;
     }
 

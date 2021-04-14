@@ -37,6 +37,7 @@
 
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -45,6 +46,7 @@ import { AuthService, buildValidators, diff, Group } from 'ui-frontend-common';
 
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';
+import { UnitsEditComponent } from './units-edit/units-edit.component';
 
 const DEBOUNCE_TIME = 200;
 
@@ -76,6 +78,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
     private groupService: GroupService,
     private groupValidators: GroupValidators,
     public authService: AuthService,
+    private dialog: MatDialog
   ) {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
@@ -138,6 +141,17 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.updateSub.unsubscribe();
+  }
+
+  openEditUnitsDialog() {
+    this.dialog.open(UnitsEditComponent, {
+      data: {
+        group: this.group,
+      },
+      autoFocus: false,
+      disableClose: true,
+      panelClass: 'vitamui-modal'
+    });
   }
 
 }
