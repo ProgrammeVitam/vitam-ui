@@ -377,7 +377,7 @@
   "GROUP": {
     "HOME": {
       "TITLE": "Set up profile groups",
-      "TITLE_PLACEHOLDER": "Group name, Id",
+      "TITLE_PLACEHOLDER": "Group name, Id, Description, Membership unit",
       "ACTION_BUTTON": "Create a Group",
       "RESULTS_TABLE": {
         "NAME": "Group name",
