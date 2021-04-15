@@ -100,6 +100,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   managementContracts: any[];
   archiveProfiles: any[];
   accessContracts: AccessContract[];
+  accesscontractselected : string;
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -240,6 +241,10 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+
+  getaccessContract(event : AccessContract) {
+    this.accesscontractselected = event.name;
   }
 
 }

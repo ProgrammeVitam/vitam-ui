@@ -237,7 +237,7 @@
         <mat-form-field class="vitamui-mat-select">
           <mat-select [formControl]="accessContractSelect" placeholder="Selectionnez un contrat d'accès"
                       panelclass="vitamui-mat-select" required>
-            <mat-option *ngFor='let accessContract of accessContracts'
+            <mat-option (click)="getaccessContract(accessContract)" *ngFor='let accessContract of accessContracts'
                         [value]="accessContract.identifier">{{accessContract.name}}
             </mat-option>
           </mat-select>
@@ -310,7 +310,7 @@
                                           matTooltipClass="vitamui-tooltip">info</i></h4>
 
         <mat-form-field class="vitamui-mat-select">
-          <mat-select [formControl]="accessContractSelect" placeholder= "{{ accessContractSelect.value }}"
+          <mat-select [formControl]="accessContractSelect" placeholder= "{{ accesscontractselected }}"
                       panelclass="vitamui-mat-select">
             <mat-option *ngFor='let accessContract of accessContracts'
                         [value]="accessContract.identifier">{{accessContract.name}}
