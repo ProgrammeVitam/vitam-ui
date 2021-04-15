@@ -377,7 +377,7 @@
   "GROUP": {
     "HOME": {
       "TITLE": "Paramétrer les groupes de profils",
-      "TITLE_PLACEHOLDER": "Nom du groupe, Identifiant",
+      "TITLE_PLACEHOLDER": "Nom du groupe, Identifiant, Description, Unité d'appartenance",
       "ACTION_BUTTON": "Créer un Groupe",
       "RESULTS_TABLE": {
         "NAME": "Nom du groupe",
