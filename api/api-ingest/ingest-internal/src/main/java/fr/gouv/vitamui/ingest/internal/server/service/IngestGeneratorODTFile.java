@@ -440,6 +440,19 @@ public class IngestGeneratorODTFile {
         }
     }
 
+    private String getEndDate(List<String> listOfDate) {
+        if(listOfDate.size() > 0) {
+
+            String lastEndDate = listOfDate.stream().map(
+                endDate -> endDate.substring(0, endDate.indexOf("T")))
+                .sorted().collect(Collectors.toList())
+                .get(listOfDate.size()-1);
+
+            return transformDate(lastEndDate);
+        }
+        return "_ _ _ _";
+    }
+
     private Map<String, String> getSystemIdValues(Document document) {
 
         Map<String, String> map = new HashMap<>();
@@ -527,14 +540,12 @@ public class IngestGeneratorODTFile {
 
     private String getStartedDate(List<String> listOfDate) {
         if(listOfDate.size() > 0) {
-            return transformDate(listOfDate.get(0).split("T")[0]);
-        }
-        return "_ _ _ _";
-    }
 
-    private String getEndDate(List<String> listOfDate) {
-        if(listOfDate.size() > 0) {
-            return transformDate(listOfDate.get(listOfDate.size() - 1).split("T")[0]);
+           String firstStartDate =  listOfDate.stream().map(
+               startDate -> startDate.substring(0, startDate.indexOf("T")))
+               .sorted().findFirst().get();
+
+            return transformDate(firstStartDate);
         }
         return "_ _ _ _";
     }
