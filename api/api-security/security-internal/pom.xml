@@ -154,7 +154,7 @@
                 <configuration>
                     <jvmArguments>-Xmx1024m</jvmArguments>
                     <executable>true</executable>
-                    <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
+                    <attach>true</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.security.server.ApiSecurityServerApplication</mainClass>
                    	<jvmArguments>-Xmx512m</jvmArguments>
                     <arguments>

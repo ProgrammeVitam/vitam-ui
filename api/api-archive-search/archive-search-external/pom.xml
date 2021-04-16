@@ -196,7 +196,7 @@
                 </executions>
                 <configuration>
                     <executable>true</executable>
-                    <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
+                    <attach>true</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>
                         fr.gouv.vitamui.archives.search.external.server.ApiArchivesSearchExternalServerApplication
                     </mainClass>
