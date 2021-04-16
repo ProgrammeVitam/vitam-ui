@@ -76,7 +76,7 @@ let expectedUser: User = {
   },
   siteCode: '001',
   disablingDate : null,
-  centerCode: '000001'
+  centerCode: '000001',
   autoProvisioningEnabled: false
 };
 
@@ -191,7 +191,7 @@ describe('UserInfoTabComponent', () => {
       },
       siteCode: '001',
       disablingDate : null,
-      centerCode: '000001'
+      centerCode: '000001',
       autoProvisioningEnabled: false
     };
     expectedCustomer = {

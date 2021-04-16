@@ -423,7 +423,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
         final Collection<Event> events = eventRepository
                 .findAll(Query.query(Criteria.where("obId").is(user.getIdentifier()).and("evType").is(EventType.EXT_VITAMUI_UPDATE_USER)));
-        assertThat(events).hasSize(13);
+        assertThat(events).hasSize(14);
 
     }
 
