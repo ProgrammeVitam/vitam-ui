@@ -113,7 +113,6 @@ hosts_ui_referential
 hosts_ui_ingest
 hosts_ui_archive_search
 
-localhost
 
 [hosts_ui_portal]
 localhost
