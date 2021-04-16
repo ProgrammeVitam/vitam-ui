@@ -10,7 +10,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>commons-parent</artifactId>
-        <version>4.4.0-SNAPSHOT</version>
+        <version>4.4.0-jar-with-dependencies</version>
     </parent>
 
     <dependencies>
