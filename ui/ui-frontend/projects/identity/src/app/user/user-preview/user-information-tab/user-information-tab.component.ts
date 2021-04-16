@@ -89,7 +89,7 @@ export class UserInfoTabComponent implements OnChanges {
     },
     siteCode: string,
     centerCode: string,
-    internalCode: string
+    internalCode: string,
     autoProvisioningEnabled: boolean
   };
 
