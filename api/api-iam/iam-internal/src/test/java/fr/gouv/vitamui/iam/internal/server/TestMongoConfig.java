@@ -1,20 +1,13 @@
 package fr.gouv.vitamui.iam.internal.server;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.CustomConversions;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -23,15 +16,13 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
-import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
-import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 
 @Configuration
 @EnableMongoRepositories(basePackages = { "fr.gouv.vitamui.commons.mongo.repository" }, repositoryBaseClass = VitamUIRepositoryImpl.class)
 @Import({ ServerIdentityAutoConfiguration.class })
-public class TestMongoConfig extends AbstractMongoConfiguration {
+public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
 
@@ -69,19 +60,6 @@ public class TestMongoConfig extends AbstractMongoConfiguration {
     @Override
     protected String getDatabaseName() {
         return MONGO_DB_NAME;
-    }
-
-    @Override
-    public MongoClient mongoClient() {
-        return new MongoClient(MONGO_HOST, port);
-    }
-
-    @Override
-    public CustomConversions customConversions() {
-        final List<Converter<?, ?>> converterList = new ArrayList<>();
-        converterList.add(new OffsetDateTimeToStringConverter());
-        converterList.add(new StringToOffsetDateTimeConverter());
-        return new MongoCustomConversions(converterList);
     }
 
 }

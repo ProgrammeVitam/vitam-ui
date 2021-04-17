@@ -38,14 +38,14 @@ package fr.gouv.vitamui.security.server.config;
 
 import javax.annotation.PostConstruct;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
+import org.bson.Document;
 
 import fr.gouv.vitamui.security.server.common.domain.MongoDbCollections;
 
@@ -58,7 +58,7 @@ import fr.gouv.vitamui.security.server.common.domain.MongoDbCollections;
 public class MongoDbConfig {
 
     @Autowired
-    private MongoDbFactory mongoDbFactory;
+    private MongoDatabaseFactory mongoDbFactory;
 
     @PostConstruct
     public void afterPropertiesSet() {
@@ -67,13 +67,13 @@ public class MongoDbConfig {
     }
 
     private void setUpCertificateIndexOnData() {
-        final DB db = mongoDbFactory.getLegacyDb();
-        final DBCollection tenantsCollection = db.getCollection(MongoDbCollections.CERTIFICATES);
-        final DBObject index = new BasicDBObject();
-        index.put("data", "hashed");
-        final DBObject options = new BasicDBObject();
-        options.put("background", true);
-        options.put("name", "idx_certificate_data");
-        tenantsCollection.createIndex(index, options);
+        final MongoDatabase db = mongoDbFactory.getMongoDatabase();
+        final MongoCollection tenantsCollection = db.getCollection(MongoDbCollections.CERTIFICATES);
+        Document doc = new Document();
+        doc.append("data", "hashed");
+        IndexOptions options = new IndexOptions();
+        options.background(true);
+        options.name("idx_certificate_data");
+        tenantsCollection.createIndex(doc, options);
     }
 }

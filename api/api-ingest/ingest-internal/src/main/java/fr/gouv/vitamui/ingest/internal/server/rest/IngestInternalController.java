@@ -41,11 +41,12 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
+
 import io.swagger.annotations.Api;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,8 +58,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
@@ -120,7 +121,7 @@ public class IngestInternalController {
        byte[] response =  this.ingestInternalService.generateODTReport(vitamContext, id);
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
-       catch(IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
+       catch(IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} " , e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
       }

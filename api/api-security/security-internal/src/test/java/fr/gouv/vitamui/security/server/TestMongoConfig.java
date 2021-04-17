@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.security.server;
 
-import com.mongodb.MongoClient;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -9,13 +8,13 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Configuration
-public class TestMongoConfig extends AbstractMongoConfiguration {
+public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
 
@@ -50,11 +49,6 @@ public class TestMongoConfig extends AbstractMongoConfiguration {
     @Override
     protected String getDatabaseName() {
         return MONGO_DB_NAME;
-    }
-
-    @Override
-    public MongoClient mongoClient() {
-        return new MongoClient(MONGO_HOST, port) ;
     }
 
 }

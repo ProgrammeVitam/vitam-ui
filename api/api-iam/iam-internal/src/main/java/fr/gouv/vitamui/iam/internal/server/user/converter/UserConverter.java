@@ -38,10 +38,13 @@ package fr.gouv.vitamui.iam.internal.server.user.converter;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.gouv.vitamui.commons.api.converter.Converter;
@@ -148,12 +151,23 @@ public class UserConverter implements Converter<UserDto, User> {
     @Override
     public UserDto convertEntityToDto(final User user) {
         final UserDto userDto = new UserDto();
+        AnalyticsDto analyticsDto = new AnalyticsDto();
         VitamUIUtils.copyProperties(user, userDto);
         if (user.getAddress() != null) {
             userDto.setAddress(VitamUIUtils.copyProperties(user.getAddress(), new AddressDto()));
         }
         if (user.getAnalytics() != null) {
-            userDto.setAnalytics(VitamUIUtils.copyProperties(user.getAnalytics(), new AnalyticsDto()));
+            List<ApplicationAnalyticsDto> applicationAnalyticsDtoList = new ArrayList<>();
+            user.getAnalytics().getApplications().forEach(application -> {
+                ApplicationAnalyticsDto applicationAnalyticsDto = new ApplicationAnalyticsDto();
+                applicationAnalyticsDto.setApplicationId(application.getApplicationId());
+                applicationAnalyticsDto.setLastAccess(application.getLastAccess());
+                applicationAnalyticsDto.setAccessCounter(application.getAccessCounter());
+                applicationAnalyticsDtoList.add(applicationAnalyticsDto);
+            });
+            analyticsDto.setApplications(applicationAnalyticsDtoList);
+            analyticsDto.setLastTenantIdentifier(user.getAnalytics().getLastTenantIdentifier());
+            userDto.setAnalytics(analyticsDto);
         }
         return userDto;
     }
