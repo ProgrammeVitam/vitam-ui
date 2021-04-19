@@ -62,7 +62,7 @@
     </button>
     <div class="align-items-center "> 
       <div class="text small primary mb-2">{{'GROUP.INFORMATIONS.UNITS_TABLE_TITLE' | translate}}</div>
-      <div *ngFor="let unit of group.units" class="text medium">{{ unit}}</div>
+      <div *ngFor="let unit of getUnits(group)" class="text medium">{{ unit}}</div>
     </div>
   </div>
 </form>

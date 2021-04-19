@@ -444,7 +444,7 @@
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié"
     },
     "UNITS_FORM": {
-      "INPUT_PLACEHOLDER": "Unité d'appartenances",
+      "INPUT_PLACEHOLDER": "Unité d'appartenance",
       "UNIT_ALREADY_EXIST": "Unité déjà associée à un groupe",
       "UNIT_ALREADY_ADDED": "Unité déjà ajoutée"
     }
