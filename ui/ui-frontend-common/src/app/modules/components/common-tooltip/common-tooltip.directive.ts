@@ -110,9 +110,9 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
       }
       case TooltipType.BOTTOM:
         return {
-          originX: 'center',
+          originX: 'start',
           originY: 'bottom',
-          overlayX: 'center',
+          overlayX: 'start',
           overlayY: 'top',
         };
       case TooltipType.LEFT:
