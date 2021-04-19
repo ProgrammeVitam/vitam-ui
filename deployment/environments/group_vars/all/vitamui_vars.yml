@@ -420,3 +420,13 @@ mongo_backup_reinstall:
     collections: [ "customers","users","profiles", "groups" ]
   #- db: "admin"
   #  collections: []
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: false
+    log_spans: true
+    expand_exception_logs: true
+    udp_sender:
+      host: changeme
+      port: changeme

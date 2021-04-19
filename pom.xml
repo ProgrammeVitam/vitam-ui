@@ -94,6 +94,7 @@
         <http.core.version>4.4.13</http.core.version>
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
         <jackson.version>2.11.0.rc1</jackson.version>
+        <jaeger.tracing.version>3.2.2</jaeger.tracing.version>
         <jakarta.xml.binding.version>2.3.2</jakarta.xml.binding.version>
         <javax.el.version.version>3.0.1-b06</javax.el.version.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
@@ -522,6 +523,11 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+                <version>${jaeger.tracing.version}</version>
             </dependency>
 
             <!-- Security -->

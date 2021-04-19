@@ -120,3 +120,12 @@ cas:
     trust-store-password: {{ password_truststore }}
     hostname-verification: {{ vitamui.cas_server.hostname_verification }}
 {% endif %}
+
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}

@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.20
+    ports:
+      - "8090:16686"
+      - "6831:6831/udp"
