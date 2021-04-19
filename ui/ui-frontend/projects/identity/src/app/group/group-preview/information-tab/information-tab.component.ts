@@ -154,4 +154,8 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
     });
   }
 
+  getUnits(group: Group): string[] {
+    return group?.units?.sort((a: any, b: any) => a.localeCompare(b));
+  }
+
 }
