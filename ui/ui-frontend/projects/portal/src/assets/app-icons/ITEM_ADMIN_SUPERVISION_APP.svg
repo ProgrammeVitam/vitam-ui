@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.itas0{fill-rule:evenodd;clip-rule:evenodd;}
+	.itas1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.itas2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.itas3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.itas4{fill:#E5E4E4;}
+	.itas5{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_1_);}
+	.itas6{fill-rule:evenodd;clip-rule:evenodd;fill:#353535;}
+	.itas7{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+	.itas8{fill:var(--vitamui-secondary);}
+	.itas9{fill:var(--vitamui-secondary-400);}
+	.itas10{fill:var(--vitamui-primary-300);}
+	.itas11{fill:url(#ITAS_ID_2_);}
+	.itas12{fill:url(#ITAS_ID_3_);}
+	.itas13{fill:var(--vitamui-primary);}
+	.itas14{fill:url(#ITAS_ID_4_);}
+	.itas15{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_5_);}
+	.itas16{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_6_);}
+	.itas17{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_7_);}
+	.itas18{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_8_);}
+	.itas19{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_9_);}
+	.itas20{fill:#9B9A9B;}
+	.itas21{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_10_);}
+	.itas22{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_11_);}
+	.itas23{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_12_);}
+	.itas24{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_13_);}
+	.itas25{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_14_);}
+	.itas26{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
+	.itas27{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_15_);}
+	.itas28{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_16_);}
+	.itas29{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_17_);}
+	.itas30{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_18_);}
+	.itas31{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_19_);}
+	.itas32{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITAS_ID_20_);}
+	.itas33{fill:#4C4C4C;}
+	.itas34{fill:#353535;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="150.3" width="169.3" x="13.6" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<g>
+			<path class="itas0" d="M100.3,141.5c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+				C17.5,150,54.6,141.5,100.3,141.5z"/>
+			<path class="itas1" d="M100.3,141.8c43.6,0,79,8.4,79,18.8s-35.4,18.8-79,18.8s-79-8.4-79-18.8C21.3,150.1,56.6,141.8,100.3,141.8z
+				"/>
+			<path class="itas2" d="M100.3,139.6c43.6,0,79,8.4,79,18.8c0,10.4-35.4,18.8-79,18.8s-79-8.4-79-18.8
+				C21.3,147.9,56.6,139.6,100.3,139.6z"/>
+			<path class="itas1" d="M100.3,138.5c43.6,0,79,8.4,79,18.8c0,10.4-35.4,18.8-79,18.8s-79-8.4-79-18.8
+				C21.3,146.8,56.6,138.5,100.3,138.5z"/>
+			<path class="itas3" d="M100.1,138.5c22.9,0,43.4,2.3,57.9,6C127.8,142.6,45.4,147,25,163c-2.5-1.8-3.8-3.8-3.8-5.7
+				C21.1,146.8,56.6,138.5,100.1,138.5z"/>
+			<path class="itas2" d="M21.3,157.1c0-10.4,35.4-18.8,79-18.8s79,8.4,79,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.9-17.7
+				s-76.7,7.9-78.9,17.7C21.3,157.8,21.3,157.5,21.3,157.1z"/>
+		</g>
+	</g>
+	<path class="itas4" d="M40.7,150.8c0,0-2-3.8-12.4-1.3c4.8-2,9.3-4.2,10.8-4.2c1.5,1.6,1.5,1.6,1.5,1.6V150.8z"/>
+	<g>
+		<g>
+			
+				<linearGradient id="ITAS_ID_1_" gradientUnits="userSpaceOnUse" x1="-9899.0732" y1="7349.0591" x2="-9817.5469" y2="7246.3447" gradientTransform="matrix(-1 0 0 1 -9758.3652 -7143.3135)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<rect x="47.2" y="147.3" class="itas5" width="105.4" height="14.1"/>
+			<polygon class="itas6" points="59.1,128.2 47.3,147.3 152.8,147.3 141,128.2 			"/>
+			<rect x="47.7" y="161.4" class="itas7" width="104.4" height="1.4"/>
+			<rect x="48" y="80.6" class="itas7" width="104.4" height="1.4"/>
+			<g>
+				<g>
+					<polygon class="itas8" points="60.5,156.3 60.5,154.4 64.3,154.4 64.3,154 60.3,154 60.3,156.7 64.3,156.7 64.3,156.3 					"/>
+					<polygon class="itas9" points="60.7,155.9 60.7,155 64.3,155 64.3,154.4 60.5,154.4 60.5,156.3 64.3,156.3 64.3,155.9 					"/>
+					<rect x="60.7" y="155" class="itas10" width="3.5" height="0.9"/>
+				</g>
+				<g>
+					<polygon class="itas8" points="69.8,154.4 69.8,156.1 66,156.1 66,156.7 70,156.7 70,154 66,154 66,154.4 					"/>
+					<polygon class="itas9" points="69.5,154.8 69.5,155.7 66,155.7 66,156.1 69.8,156.1 69.8,154.4 66,154.4 66,154.8 					"/>
+					<rect x="66" y="154.8" class="itas10" width="3.5" height="0.9"/>
+				</g>
+			</g>
+			<g>
+				<g>
+					<polygon class="itas8" points="72.7,156.3 72.7,154.4 76.5,154.4 76.5,154 72.5,154 72.5,156.7 76.5,156.7 76.5,156.3 					"/>
+					<polygon class="itas9" points="72.9,155.9 72.9,155 76.5,155 76.5,154.4 72.7,154.4 72.7,156.3 76.5,156.3 76.5,155.9 					"/>
+					<rect x="72.9" y="155" class="itas10" width="3.5" height="0.9"/>
+				</g>
+				<g>
+					<polygon class="itas8" points="82,154.4 82,156.1 78.2,156.1 78.2,156.7 82.1,156.7 82.1,154 78.2,154 78.2,154.4 					"/>
+					<polygon class="itas9" points="81.7,154.8 81.7,155.7 78.2,155.7 78.2,156.1 82,156.1 82,154.4 78.2,154.4 78.2,154.8 					"/>
+					<rect x="78.2" y="154.8" class="itas10" width="3.5" height="0.9"/>
+				</g>
+			</g>
+			<path class="itas0" d="M135.5,90.6c0-1.8,0-3.6,0-5.4c-4.6-2.4-7.6-2.4-12.2,0c0,1.8,0,3.7,0,5.5c-2.5-0.9-4.6-1-7.1-0.1
+				c0-1.8,0-3.6,0-5.4c-4.6-2.4-7.6-2.4-12.2,0c0,1.8,0,3.7,0,5.5c-2.5-0.9-4.6-1-7.1-0.1c0-1.8,0-3.6,0-5.4
+				c-4.6-2.4-7.6-2.4-12.2,0c0,1.8,0,3.7,0,5.5c-2.5-0.9-4.6-1-7.1-0.1c0-1.8,0-3.6,0-5.4c-4.6-2.4-7.6-2.4-12.2,0
+				c0,1.8,0,3.7,0,5.5c-3.4-1.2-6.1-0.9-9.9,1c0,16.3,0,32.6,0,48.9c4.6,2.4,7.6,2.4,12.2,0c0-1.8,0-3.7,0-5.5
+				c2.5,0.9,4.6,1,7.1,0.1c0,1.8,0,3.6,0,5.4c4.6,2.4,7.6,2.4,12.2,0c0-1.8,0-3.7,0-5.5c2.5,0.9,4.6,1,7.1,0.1c0,1.8,0,3.6,0,5.4
+				c4.6,2.4,7.6,2.4,12.2,0c0-1.8,0-3.7,0-5.5c2.5,0.9,4.6,1,7.1,0.1c0,1.8,0,3.6,0,5.4c4.6,2.4,7.6,2.4,12.2,0c0-1.8,0-3.7,0-5.5
+				c2.5,0.9,4.6,1,7.1,0.1c0,1.8,0,3.6,0,5.4c4.6,2.4,7.6,2.4,12.2,0c0-16.3,0-32.6,0-48.9C141.4,89.9,138.7,89.5,135.5,90.6z"/>
+			
+				<linearGradient id="ITAS_ID_2_" gradientUnits="userSpaceOnUse" x1="749.2546" y1="1202.5574" x2="782.6334" y2="1224.8763" gradientTransform="matrix(2.938466e-07 -1 -1 -3.485107e-07 1248.439 903.6242)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="itas11" d="M19.7,106.6l9.5,0.1l0.1,0l-0.1-0.1h5.3c3.4,0,6.1,2.1,6.1,4.7v2.8l0,7l0,17.6l0,12.1
+				c0-2.6-2.7-4.7-6.1-4.7l-9.5-0.1l-5.3,0.1c-3.4,0-6.1-2.1-6.1-4.7l0-2.8l0-7l0-17.6l0-12.1C13.6,104.5,16.3,106.6,19.7,106.6z"/>
+			<g>
+				<g>
+					
+						<linearGradient id="ITAS_ID_3_" gradientUnits="userSpaceOnUse" x1="21.6136" y1="-267.0592" x2="77.0784" y2="-267.0592" gradientTransform="matrix(1 0 0 -1 0 -147.904)">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas12" d="M25.1,97.2L25.1,97.2L25.1,97.2l-5.3-0.1c-3.4,0-6.1,2.1-6.1,4.7v2.8v7v17.6v12.1c0-2.6,2.7-4.7,6.1-4.7
+						l43.5-0.1V97.1L25.1,97.2z"/>
+				</g>
+				<g>
+					<g>
+						
+							<rect x="42.2" y="121.6" transform="matrix(-8.951056e-11 -1 1 -8.951056e-11 -70.0277 173.9362)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="48.7" y="103.4" transform="matrix(-9.068473e-11 -1 1 -9.068473e-11 -51.8463 155.7548)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+					<g>
+						
+							<rect x="33.4" y="121.6" transform="matrix(-8.932404e-11 -1 1 -8.932404e-11 -78.7901 165.1738)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="39.9" y="103.4" transform="matrix(-9.040407e-11 -1 1 -9.040407e-11 -60.6087 146.9924)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+					<g>
+						
+							<rect x="24.6" y="121.6" transform="matrix(-8.978945e-11 -1 1 -8.978945e-11 -87.5525 156.4114)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="31.2" y="103.4" transform="matrix(-9.096539e-11 -1 1 -9.096539e-11 -69.3711 138.23)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+					<g>
+						
+							<rect x="15.9" y="121.6" transform="matrix(-8.913841e-11 -1 1 -8.913841e-11 -96.3149 147.649)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="22.4" y="103.4" transform="matrix(-8.914285e-11 -1 1 -8.914285e-11 -78.1335 129.4676)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+				</g>
+			</g>
+			<g>
+				<g>
+					<linearGradient id="ITAS_ID_4_" gradientUnits="userSpaceOnUse" x1="155.1512" y1="115.788" x2="186.0971" y2="155.1229">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas14" d="M160.2,97.2L160.2,97.2L160.2,97.2l5.3-0.1c3.4,0,6.1,2.1,6.1,4.7v2.8v7v17.6v12.1c0-2.6-2.7-4.7-6.1-4.7
+						l-22.6-0.1V97.1L160.2,97.2z"/>
+				</g>
+				<g>
+					<g>
+						
+							<rect x="141" y="121.6" transform="matrix(4.477847e-11 -1 1 4.477847e-11 28.8223 272.7862)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="147.6" y="103.4" transform="matrix(4.737461e-11 -1 1 4.737461e-11 47.0037 254.6048)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+					<g>
+						
+							<rect x="149.8" y="121.6" transform="matrix(4.440721e-11 -1 1 4.440721e-11 37.5847 281.5486)" class="itas13" width="19.6" height="0.7"/>
+						
+							<rect x="156.3" y="103.4" transform="matrix(4.513196e-11 -1 1 4.513196e-11 55.7661 263.3672)" class="itas13" width="6.5" height="0.7"/>
+					</g>
+				</g>
+			</g>
+			<g>
+				
+					<linearGradient id="ITAS_ID_5_" gradientUnits="userSpaceOnUse" x1="-9894.5225" y1="7400.5708" x2="-9877.2305" y2="7400.5708" gradientTransform="matrix(-1 0 0 1 -9822.0322 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="itas15" d="M55.5,90.8c4.6-2.4,7.6-2.4,12.2,0c0,16.3,0,32.6,0,48.9c-4.6,2.4-7.6,2.4-12.2,0
+					C55.5,123.4,55.5,107.1,55.5,90.8z"/>
+			</g>
+			<g>
+				
+					<linearGradient id="ITAS_ID_6_" gradientUnits="userSpaceOnUse" x1="-9913.8477" y1="7400.5708" x2="-9896.5566" y2="7400.5708" gradientTransform="matrix(-1 0 0 1 -9822.0322 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="itas16" d="M74.8,90.8c4.6-2.4,7.6-2.4,12.2,0c0,16.3,0,32.6,0,48.9c-4.6,2.4-7.6,2.4-12.2,0
+					C74.8,123.4,74.8,107.1,74.8,90.8z"/>
+			</g>
+			<g>
+				
+					<linearGradient id="ITAS_ID_7_" gradientUnits="userSpaceOnUse" x1="-9933.1729" y1="7400.5708" x2="-9915.8818" y2="7400.5708" gradientTransform="matrix(-1 0 0 1 -9822.0322 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="itas17" d="M94.1,90.8c4.6-2.4,7.6-2.4,12.2,0c0,16.3,0,32.6,0,48.9c-4.6,2.4-7.6,2.4-12.2,0
+					C94.1,123.4,94.1,107.1,94.1,90.8z"/>
+			</g>
+			<g>
+				
+					<linearGradient id="ITAS_ID_8_" gradientUnits="userSpaceOnUse" x1="-9952.499" y1="7400.5708" x2="-9935.207" y2="7400.5708" gradientTransform="matrix(-1 0 0 1 -9822.0322 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="itas18" d="M113.5,90.8c4.6-2.4,7.6-2.4,12.2,0c0,16.3,0,32.6,0,48.9c-4.6,2.4-7.6,2.4-12.2,0
+					C113.5,123.4,113.5,107.1,113.5,90.8z"/>
+			</g>
+			<g>
+				
+					<linearGradient id="ITAS_ID_9_" gradientUnits="userSpaceOnUse" x1="-9971.8242" y1="7400.5708" x2="-9954.5332" y2="7400.5708" gradientTransform="matrix(-1 0 0 1 -9822.0322 -7285.293)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="itas19" d="M132.8,90.8c4.6-2.4,7.6-2.4,12.2,0c0,16.3,0,32.6,0,48.9c-4.6,2.4-7.6,2.4-12.2,0
+					C132.8,123.4,132.8,107.1,132.8,90.8z"/>
+			</g>
+			<path class="itas20" d="M132.8,89.8c0,2,0,3.9,0,5.8H145c0-2,0-3.9,0-5.8C140.4,87.4,137.5,87.4,132.8,89.8z"/>
+			<path class="itas20" d="M113.5,89.8c0,2,0,3.9,0,5.8h12.2c0-2,0-3.9,0-5.8C121.1,87.4,118.1,87.4,113.5,89.8z"/>
+			<path class="itas20" d="M94.1,89.8c0,2,0,3.9,0,5.8h12.2c0-2,0-3.9,0-5.8C101.8,87.4,98.7,87.4,94.1,89.8z"/>
+			<path class="itas20" d="M74.8,89.8c0,2,0,3.9,0,5.8h12.2c0-2,0-3.9,0-5.8C82.5,87.4,79.4,87.4,74.8,89.8z"/>
+			<path class="itas20" d="M55.5,89.8c0,2,0,3.9,0,5.8h12.2c0-2,0-3.9,0-5.8C63.1,87.4,60.1,87.4,55.5,89.8z"/>
+			
+				<linearGradient id="ITAS_ID_10_" gradientUnits="userSpaceOnUse" x1="-9897.3213" y1="7279.3877" x2="-9819.3848" y2="7181.1958" gradientTransform="matrix(-1 0 0 1 -9758.3652 -7143.3135)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<rect x="47.2" y="82" class="itas21" width="105.4" height="9.7"/>
+			<polygon class="itas0" points="59.7,66.3 48,80.6 152.4,80.6 140.9,66.3 			"/>
+			
+				<linearGradient id="ITAS_ID_11_" gradientUnits="userSpaceOnUse" x1="42.9774" y1="144.4663" x2="157.5408" y2="144.4663" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<polygon class="itas22" points="100.3,35.4 43,73 43,79.5 157.5,79.5 157.4,73 			"/>
+			<polygon class="itas7" points="100.3,39.2 48.9,72.8 151.5,72.8 			"/>
+			
+				<linearGradient id="ITAS_ID_12_" gradientUnits="userSpaceOnUse" x1="64.1746" y1="169.1159" x2="122.5787" y2="104.2223" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<polygon class="itas23" points="100.3,43.3 54.7,72.8 145.7,72.8 			"/>
+			
+				<linearGradient id="ITAS_ID_13_" gradientUnits="userSpaceOnUse" x1="64.6801" y1="162.7388" x2="277.8153" y2="121.2383" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<polygon class="itas24" points="157.4,73 145.5,61.5 100.3,30.4 100.3,35.4 			"/>
+			
+				<linearGradient id="ITAS_ID_14_" gradientUnits="userSpaceOnUse" x1="41.8915" y1="173.3235" x2="117.6679" y2="114.4993" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<polygon class="itas25" points="43,73 55.1,61.5 100.3,30.4 100.3,35.4 			"/>
+			<g>
+				<g>
+					<path class="itas26" d="M52.7,153.4c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1c-1.2,0-2.1-0.9-2.1-2.1S51.5,153.4,52.7,153.4z"/>
+					<path class="itas0" d="M52.7,153.2c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1c-1.2,0-2.1-0.9-2.1-2.1S51.5,153.2,52.7,153.2z"/>
+					<path class="itas26" d="M52.7,153.6c0.9,0,1.7,0.8,1.7,1.7c0,0.9-0.8,1.7-1.7,1.7c-0.9,0-1.7-0.8-1.7-1.7
+						C50.9,154.4,51.6,153.6,52.7,153.6z"/>
+					<path class="itas6" d="M52.7,153.8c0.9,0,1.6,0.7,1.6,1.6c0,0.9-0.7,1.2-1.6,1.2c-0.9,0-1.6-0.4-1.6-1.2
+						C51.1,154.4,51.7,153.8,52.7,153.8z"/>
+					
+						<linearGradient id="ITAS_ID_15_" gradientUnits="userSpaceOnUse" x1="52.6539" y1="48.1926" x2="52.6539" y2="45.6819" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas27" d="M52.7,153.8c0.8,0,1.4,0.7,1.4,1.4s-0.7,1.1-1.4,1.1c-0.8,0-1.4-0.3-1.4-1.1S51.9,153.8,52.7,153.8z"/>
+					<path class="itas3" d="M53.3,156.5l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C53.4,156.7,53.3,156.7,53.3,156.5z"/>
+					<path class="itas0" d="M53.3,156.4l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C53.4,156.5,53.3,156.5,53.3,156.4z"/>
+				</g>
+				<g>
+					<path class="itas26" d="M147.2,153.4c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1S146,153.4,147.2,153.4z"/>
+					<path class="itas0" d="M147.2,153.2c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1S146,153.2,147.2,153.2z"/>
+					<path class="itas26" d="M147.2,153.6c0.9,0,1.7,0.8,1.7,1.7c0,0.9-0.8,1.7-1.7,1.7s-1.7-0.8-1.7-1.7
+						C145.5,154.4,146.1,153.6,147.2,153.6z"/>
+					<path class="itas6" d="M147.2,153.8c0.9,0,1.6,0.7,1.6,1.6c0,0.9-0.7,1.2-1.6,1.2s-1.6-0.4-1.6-1.2
+						C145.6,154.4,146.3,153.8,147.2,153.8z"/>
+					
+						<linearGradient id="ITAS_ID_16_" gradientUnits="userSpaceOnUse" x1="147.1973" y1="48.1926" x2="147.1973" y2="45.6819" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas28" d="M147.2,153.8c0.8,0,1.4,0.7,1.4,1.4s-0.7,1.1-1.4,1.1c-0.8,0-1.4-0.3-1.4-1.1S146.4,153.8,147.2,153.8z"
+						/>
+					<path class="itas3" d="M147.9,156.5l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C148,156.7,147.9,156.7,147.9,156.5z"/>
+					<path class="itas0" d="M147.9,156.4l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C148,156.5,147.9,156.5,147.9,156.4z"/>
+				</g>
+			</g>
+			<g>
+				<g>
+					<path class="itas26" d="M52.7,85c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1c-1.2,0-2.1-0.9-2.1-2.1S51.5,85,52.7,85z"/>
+					<path class="itas0" d="M52.7,84.9c1.2,0,2.1,0.9,2.1,2.1c0,1.2-0.9,2.1-2.1,2.1c-1.2,0-2.1-0.9-2.1-2.1
+						C50.6,85.8,51.5,84.9,52.7,84.9z"/>
+					<path class="itas26" d="M52.7,85.3c0.9,0,1.7,0.8,1.7,1.7s-0.8,1.7-1.7,1.7c-0.9,0-1.7-0.8-1.7-1.7S51.6,85.3,52.7,85.3z"/>
+					<path class="itas6" d="M52.7,85.4c0.9,0,1.6,0.7,1.6,1.6s-0.7,1.2-1.6,1.2c-0.9,0-1.6-0.4-1.6-1.2C51.1,86,51.7,85.4,52.7,85.4z"
+						/>
+					
+						<linearGradient id="ITAS_ID_17_" gradientUnits="userSpaceOnUse" x1="52.6539" y1="116.5758" x2="52.6539" y2="114.0652" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas29" d="M52.7,85.4c0.8,0,1.4,0.7,1.4,1.4s-0.7,1.1-1.4,1.1c-0.8,0-1.4-0.3-1.4-1.1S51.9,85.4,52.7,85.4z"/>
+					<path class="itas3" d="M53.3,88.1l-0.7-0.7L52,88.1c-0.1,0.1-0.3,0.1-0.3,0L51.6,88c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						L53,87.1l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C53.4,88.3,53.3,88.3,53.3,88.1z"/>
+					<path class="itas0" d="M53.3,88l-0.7-0.7L52,88c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						L53,87l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3L53.6,88C53.4,88.1,53.3,88.1,53.3,88z"/>
+				</g>
+				<g>
+					<path class="itas26" d="M147.2,85c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1S146,85,147.2,85z"/>
+					<path class="itas0" d="M147.2,84.9c1.2,0,2.1,0.9,2.1,2.1c0,1.2-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1
+						C145.1,85.8,146,84.9,147.2,84.9z"/>
+					<path class="itas26" d="M147.2,85.3c0.9,0,1.7,0.8,1.7,1.7s-0.8,1.7-1.7,1.7s-1.7-0.8-1.7-1.7S146.1,85.3,147.2,85.3z"/>
+					<path class="itas6" d="M147.2,85.4c0.9,0,1.6,0.7,1.6,1.6s-0.7,1.2-1.6,1.2s-1.6-0.4-1.6-1.2C145.6,86,146.3,85.4,147.2,85.4z"/>
+					
+						<linearGradient id="ITAS_ID_18_" gradientUnits="userSpaceOnUse" x1="147.1973" y1="116.5758" x2="147.1973" y2="114.0652" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas30" d="M147.2,85.4c0.8,0,1.4,0.7,1.4,1.4s-0.7,1.1-1.4,1.1c-0.8,0-1.4-0.3-1.4-1.1S146.4,85.4,147.2,85.4z"/>
+					<path class="itas3" d="M147.9,88.1l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C148,88.3,147.9,88.3,147.9,88.1z"/>
+					<path class="itas0" d="M147.9,88l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C148,88.1,147.9,88.1,147.9,88z"/>
+				</g>
+				<g>
+					<path class="itas26" d="M100.2,49.1c1.2,0,2.1,0.9,2.1,2.1s-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1S99,49.1,100.2,49.1z"/>
+					<path class="itas0" d="M100.2,49c1.2,0,2.1,0.9,2.1,2.1c0,1.2-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1C98.1,49.9,99,49,100.2,49z"/>
+					<path class="itas26" d="M100.2,49.4c0.9,0,1.7,0.8,1.7,1.7c0,0.9-0.8,1.7-1.7,1.7s-1.7-0.8-1.7-1.7
+						C98.5,50.2,99.1,49.4,100.2,49.4z"/>
+					<path class="itas6" d="M100.2,49.5c0.9,0,1.6,0.7,1.6,1.6c0,0.9-0.7,1.2-1.6,1.2s-1.6-0.4-1.6-1.2
+						C98.6,50.2,99.3,49.5,100.2,49.5z"/>
+					
+						<linearGradient id="ITAS_ID_19_" gradientUnits="userSpaceOnUse" x1="100.1934" y1="152.4426" x2="100.1934" y2="149.9319" gradientTransform="matrix(1 0 0 -1 0 201.9369)">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+						<stop  offset="1" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+					<path class="itas31" d="M100.2,49.5c0.8,0,1.4,0.7,1.4,1.4S101,52,100.2,52s-1.4-0.3-1.4-1.1S99.4,49.5,100.2,49.5z"/>
+					<path class="itas3" d="M100.9,52.3l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0l-0.1-0.1c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C101,52.4,100.9,52.4,100.9,52.3z"/>
+					<path class="itas0" d="M100.9,52.1l-0.7-0.7l-0.7,0.7c-0.1,0.1-0.3,0.1-0.3,0L99.1,52c-0.1-0.1-0.1-0.3,0-0.3l0.7-0.7l-0.7-0.7
+						c-0.1-0.1-0.1-0.3,0-0.3l0.1-0.1c0.1-0.1,0.3-0.1,0.3,0l0.7,0.7l0.7-0.7c0.1-0.1,0.3-0.1,0.3,0l0.1,0.1c0.1,0.1,0.1,0.3,0,0.3
+						l-0.7,0.7l0.7,0.7c0.1,0.1,0.1,0.3,0,0.3l-0.1,0.1C101,52.3,100.9,52.3,100.9,52.1z"/>
+				</g>
+			</g>
+			<rect x="48.9" y="72.7" class="itas20" width="102.6" height="0.3"/>
+			<linearGradient id="ITAS_ID_20_" gradientUnits="userSpaceOnUse" x1="99.9256" y1="169.4164" x2="99.9256" y2="164.0867">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<rect x="47.7" y="163.4" class="itas32" width="104.4" height="6.3"/>
+		</g>
+	</g>
+	<polygon points="53.8,136.5 52.3,139.2 55.5,139.2 55.5,136.5 	"/>
+	<rect x="145" y="97.1" class="itas20" width="3.4" height="39.4"/>
+	<polygon points="145,136.5 145,138.5 147.4,138.5 146.2,136.6 	"/>
+	<rect x="67.7" y="97.1" class="itas33" width="7.1" height="39.4"/>
+	<rect x="87.1" y="97.1" class="itas33" width="7.1" height="39.4"/>
+	<rect x="106.4" y="97.1" class="itas33" width="7.1" height="39.4"/>
+	<rect x="125.7" y="97.1" class="itas33" width="7.1" height="39.4"/>
+	<g>
+		
+			<rect x="61.5" y="121.6" transform="matrix(-8.941730e-11 -1 1 -8.941730e-11 -50.6921 193.2718)" class="itas34" width="19.6" height="0.7"/>
+		
+			<rect x="68" y="103.4" transform="matrix(-8.942352e-11 -1 1 -8.942352e-11 -32.5107 175.0904)" class="itas34" width="6.5" height="0.7"/>
+	</g>
+	<g>
+		
+			<rect x="80.8" y="121.6" transform="matrix(-8.946349e-11 -1 1 -8.946349e-11 -31.3793 212.5846)" class="itas34" width="19.6" height="0.7"/>
+		
+			<rect x="87.4" y="103.4" transform="matrix(-8.942352e-11 -1 1 -8.942352e-11 -13.1979 194.4032)" class="itas34" width="6.5" height="0.7"/>
+	</g>
+	<g>
+		
+			<rect x="100.1" y="121.6" transform="matrix(-9.020689e-11 -1 1 -9.020689e-11 -12.0664 231.8975)" class="itas34" width="19.6" height="0.7"/>
+		
+			<rect x="106.7" y="103.4" transform="matrix(-8.914285e-11 -1 1 -8.914285e-11 6.115 213.7161)" class="itas34" width="6.5" height="0.7"/>
+	</g>
+	<g>
+		
+			<rect x="119.4" y="121.6" transform="matrix(-9.048578e-11 -1 1 -9.048578e-11 7.2464 251.2103)" class="itas34" width="19.6" height="0.7"/>
+		
+			<rect x="126" y="103.4" transform="matrix(-8.942352e-11 -1 1 -8.942352e-11 25.4278 233.0289)" class="itas34" width="6.5" height="0.7"/>
+	</g>
+</g>
+</svg>
