@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.barc0{fill-rule:evenodd;clip-rule:evenodd;}
+	.barc1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.barc2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.barc3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.barc4{fill:#4C4C4C;}
+	.barc5{fill:url(#BARC_ID_1_);}
+	.barc6{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_2_);}
+	.barc7{fill-rule:evenodd;clip-rule:evenodd;fill:#F3F3F3;}
+	.barc8{fill-rule:evenodd;clip-rule:evenodd;fill:#F2F2F2;}
+	.barc9{fill-rule:evenodd;clip-rule:evenodd;fill:#F0F0F0;}
+	.barc10{fill-rule:evenodd;clip-rule:evenodd;fill:#EFEFEF;}
+	.barc11{fill-rule:evenodd;clip-rule:evenodd;fill:#EDEDED;}
+	.barc12{fill-rule:evenodd;clip-rule:evenodd;fill:#ECECEC;}
+	.barc13{fill-rule:evenodd;clip-rule:evenodd;fill:#EAEAEA;}
+	.barc14{fill-rule:evenodd;clip-rule:evenodd;fill:#E9E8E9;}
+	.barc15{fill-rule:evenodd;clip-rule:evenodd;fill:#E7E7E7;}
+	.barc16{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E5E5;}
+	.barc17{fill-rule:evenodd;clip-rule:evenodd;fill:#E4E4E4;}
+	.barc18{fill-rule:evenodd;clip-rule:evenodd;fill:#E2E2E2;}
+	.barc19{fill-rule:evenodd;clip-rule:evenodd;fill:#E1E1E1;}
+	.barc20{fill-rule:evenodd;clip-rule:evenodd;fill:#DFDFDF;}
+	.barc21{fill-rule:evenodd;clip-rule:evenodd;fill:#DEDDDE;}
+	.barc22{fill-rule:evenodd;clip-rule:evenodd;fill:#DCDCDC;}
+	.barc23{fill-rule:evenodd;clip-rule:evenodd;fill:#DBDADB;}
+	.barc24{fill-rule:evenodd;clip-rule:evenodd;fill:#D9D9D9;}
+	.barc25{fill-rule:evenodd;clip-rule:evenodd;fill:#D8D7D8;}
+	.barc26{fill-rule:evenodd;clip-rule:evenodd;fill:#D6D6D6;}
+	.barc27{fill-rule:evenodd;clip-rule:evenodd;fill:#D4D4D4;}
+	.barc28{fill-rule:evenodd;clip-rule:evenodd;fill:#D3D2D3;}
+	.barc29{fill-rule:evenodd;clip-rule:evenodd;fill:#D1D1D1;}
+	.barc30{fill-rule:evenodd;clip-rule:evenodd;fill:#D0CFD0;}
+	.barc31{fill-rule:evenodd;clip-rule:evenodd;fill:#CECECE;}
+	.barc32{fill-rule:evenodd;clip-rule:evenodd;fill:#CDCCCD;}
+	.barc33{fill-rule:evenodd;clip-rule:evenodd;fill:#CBCBCB;}
+	.barc34{fill-rule:evenodd;clip-rule:evenodd;fill:#CAC9CA;}
+	.barc35{fill-rule:evenodd;clip-rule:evenodd;fill:#C8C8C8;}
+	.barc36{fill-rule:evenodd;clip-rule:evenodd;fill:#C6C6C6;}
+	.barc37{fill-rule:evenodd;clip-rule:evenodd;fill:#C5C4C5;}
+	.barc38{fill-rule:evenodd;clip-rule:evenodd;fill:#C3C3C3;}
+	.barc39{fill-rule:evenodd;clip-rule:evenodd;fill:#C2C1C2;}
+	.barc40{fill-rule:evenodd;clip-rule:evenodd;fill:#C0C0C0;}
+	.barc41{fill-rule:evenodd;clip-rule:evenodd;fill:#BFBEBF;}
+	.barc42{fill-rule:evenodd;clip-rule:evenodd;fill:#BDBDBD;}
+	.barc43{fill-rule:evenodd;clip-rule:evenodd;fill:#BCBBBC;}
+	.barc44{fill-rule:evenodd;clip-rule:evenodd;fill:#BAB9BA;}
+	.barc45{fill-rule:evenodd;clip-rule:evenodd;fill:#B8B8B8;}
+	.barc46{fill-rule:evenodd;clip-rule:evenodd;fill:#B7B6B7;}
+	.barc47{fill-rule:evenodd;clip-rule:evenodd;fill:#B5B5B5;}
+	.barc48{fill-rule:evenodd;clip-rule:evenodd;fill:#B4B3B4;}
+	.barc49{fill-rule:evenodd;clip-rule:evenodd;fill:#B2B2B2;}
+	.barc50{fill-rule:evenodd;clip-rule:evenodd;fill:#B1B0B1;}
+	.barc51{fill-rule:evenodd;clip-rule:evenodd;fill:#AFAEAF;}
+	.barc52{fill-rule:evenodd;clip-rule:evenodd;fill:#AEADAE;}
+	.barc53{fill-rule:evenodd;clip-rule:evenodd;fill:#ACABAC;}
+	.barc54{fill-rule:evenodd;clip-rule:evenodd;fill:#ABAAAB;}
+	.barc55{fill-rule:evenodd;clip-rule:evenodd;fill:#A9A8A9;}
+	.barc56{fill-rule:evenodd;clip-rule:evenodd;fill:#A7A7A7;}
+	.barc57{fill-rule:evenodd;clip-rule:evenodd;fill:#A6A5A6;}
+	.barc58{fill-rule:evenodd;clip-rule:evenodd;fill:#A4A3A4;}
+	.barc59{fill-rule:evenodd;clip-rule:evenodd;fill:#A3A2A3;}
+	.barc60{fill-rule:evenodd;clip-rule:evenodd;fill:#A1A0A1;}
+	.barc61{fill-rule:evenodd;clip-rule:evenodd;fill:#A09FA0;}
+	.barc62{fill-rule:evenodd;clip-rule:evenodd;fill:#9E9D9E;}
+	.barc63{fill-rule:evenodd;clip-rule:evenodd;fill:#9D9C9D;}
+	.barc64{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
+	.barc65{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_3_);}
+	.barc66{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_4_);}
+	.barc67{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_5_);}
+	.barc68{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_6_);}
+	.barc69{fill:#E5E4E4;}
+	.barc70{fill-rule:evenodd;clip-rule:evenodd;fill:#E9E9E9;}
+	.barc71{fill-rule:evenodd;clip-rule:evenodd;fill:#E6E6E6;}
+	.barc72{fill-rule:evenodd;clip-rule:evenodd;fill:#E3E3E3;}
+	.barc73{fill-rule:evenodd;clip-rule:evenodd;fill:#E0E0E0;}
+	.barc74{fill-rule:evenodd;clip-rule:evenodd;fill:#DDDDDD;}
+	.barc75{fill-rule:evenodd;clip-rule:evenodd;fill:#DADADA;}
+	.barc76{fill-rule:evenodd;clip-rule:evenodd;fill:#D7D7D7;}
+	.barc77{fill-rule:evenodd;clip-rule:evenodd;fill:#B9B8B9;}
+	.barc78{fill-rule:evenodd;clip-rule:evenodd;fill:#B6B5B6;}
+	.barc79{fill-rule:evenodd;clip-rule:evenodd;fill:#B3B2B3;}
+	.barc80{fill-rule:evenodd;clip-rule:evenodd;fill:#B0AFB0;}
+	.barc81{fill-rule:evenodd;clip-rule:evenodd;fill:#ADACAD;}
+	.barc82{fill-rule:evenodd;clip-rule:evenodd;fill:#AAA9AA;}
+	.barc83{fill-rule:evenodd;clip-rule:evenodd;fill:#A7A6A7;}
+	.barc84{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_7_);}
+	.barc85{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_8_);}
+	.barc86{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_9_);}
+	.barc87{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_10_);}
+	.barc88{fill:url(#BARC_ID_11_);}
+	.barc89{fill:url(#BARC_ID_12_);}
+	.barc90{fill:url(#BARC_ID_13_);}
+	.barc91{fill-rule:evenodd;clip-rule:evenodd;fill:#F1F1F1;}
+	.barc92{fill-rule:evenodd;clip-rule:evenodd;fill:#EEEEEE;}
+	.barc93{fill-rule:evenodd;clip-rule:evenodd;fill:#E2E1E2;}
+	.barc94{fill-rule:evenodd;clip-rule:evenodd;fill:#DEDEDE;}
+	.barc95{fill-rule:evenodd;clip-rule:evenodd;fill:#D9D8D9;}
+	.barc96{fill-rule:evenodd;clip-rule:evenodd;fill:#D5D5D5;}
+	.barc97{fill-rule:evenodd;clip-rule:evenodd;fill:#D3D3D3;}
+	.barc98{fill-rule:evenodd;clip-rule:evenodd;fill:#D2D1D2;}
+	.barc99{fill-rule:evenodd;clip-rule:evenodd;fill:#D0D0D0;}
+	.barc100{fill-rule:evenodd;clip-rule:evenodd;fill:#CCCCCC;}
+	.barc101{fill-rule:evenodd;clip-rule:evenodd;fill:#CBCACB;}
+	.barc102{fill-rule:evenodd;clip-rule:evenodd;fill:#C9C8C9;}
+	.barc103{fill-rule:evenodd;clip-rule:evenodd;fill:#C7C7C7;}
+	.barc104{fill-rule:evenodd;clip-rule:evenodd;fill:#C5C5C5;}
+	.barc105{fill-rule:evenodd;clip-rule:evenodd;fill:#C4C3C4;}
+	.barc106{fill-rule:evenodd;clip-rule:evenodd;fill:#C0BFC0;}
+	.barc107{fill-rule:evenodd;clip-rule:evenodd;fill:#BEBEBE;}
+	.barc108{fill-rule:evenodd;clip-rule:evenodd;fill:#BDBCBD;}
+	.barc109{fill-rule:evenodd;clip-rule:evenodd;fill:#BBBABB;}
+	.barc110{fill-rule:evenodd;clip-rule:evenodd;fill:#B7B7B7;}
+	.barc111{fill-rule:evenodd;clip-rule:evenodd;fill:#B2B1B2;}
+	.barc112{fill-rule:evenodd;clip-rule:evenodd;fill:#AEAEAE;}
+	.barc113{fill-rule:evenodd;clip-rule:evenodd;fill:#A2A1A2;}
+	.barc114{fill-rule:evenodd;clip-rule:evenodd;fill:#9F9E9F;}
+	.barc115{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_14_);}
+	.barc116{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_15_);}
+	.barc117{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_16_);}
+	.barc118{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_17_);}
+	.barc119{fill-rule:evenodd;clip-rule:evenodd;fill:#EBEBEB;}
+	.barc120{fill-rule:evenodd;clip-rule:evenodd;fill:#DBDBDB;}
+	.barc121{fill-rule:evenodd;clip-rule:evenodd;fill:#CFCFCF;}
+	.barc122{fill-rule:evenodd;clip-rule:evenodd;fill:#CDCDCD;}
+	.barc123{fill-rule:evenodd;clip-rule:evenodd;fill:#C9C9C9;}
+	.barc124{fill-rule:evenodd;clip-rule:evenodd;fill:#C7C6C7;}
+	.barc125{fill-rule:evenodd;clip-rule:evenodd;fill:#C3C2C3;}
+	.barc126{fill-rule:evenodd;clip-rule:evenodd;fill:#C1C0C1;}
+	.barc127{fill-rule:evenodd;clip-rule:evenodd;fill:#B5B4B5;}
+	.barc128{fill-rule:evenodd;clip-rule:evenodd;fill:#A5A4A5;}
+	.barc129{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_18_);}
+	.barc130{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_19_);}
+	.barc131{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_20_);}
+	.barc132{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_21_);}
+	.barc133{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_22_);}
+	.barc134{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_23_);}
+	.barc135{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_24_);}
+	.barc136{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_25_);}
+	.barc137{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_26_);}
+	.barc138{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_27_);}
+	.barc139{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_28_);}
+	.barc140{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_29_);}
+	.barc141{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_30_);}
+	.barc142{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_31_);}
+	.barc143{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_32_);}
+	.barc144{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_33_);}
+	.barc145{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_34_);}
+	.barc146{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_35_);}
+	.barc147{fill-rule:evenodd;clip-rule:evenodd;fill:url(#BARC_ID_36_);}
+	.barc148{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.barc149{fill:var(--vitamui-primary);}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="125.5" width="165.4" x="17.3" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="barc0" d="M100,141.5c45.6,0,82.7,8.6,82.7,19.1c0,10.5-37.1,20.2-82.7,20.2s-82.7-9.7-82.7-20.2
+			C17.2,150,54.2,141.5,100,141.5z"/>
+		<path class="barc1" d="M100,141.9c43.7,0,79.1,8.4,79.1,18.8c0,10.4-35.4,18.8-79.1,18.8s-79.1-8.4-79.1-18.8
+			C20.9,150.1,56.3,141.9,100,141.9z"/>
+		<path class="barc2" d="M100,139.7c43.7,0,79.1,8.4,79.1,18.8s-35.4,18.8-79.1,18.8s-79.1-8.4-79.1-18.8
+			C20.9,147.9,56.3,139.7,100,139.7z"/>
+		<path class="barc1" d="M100,138.5c43.7,0,79.1,8.4,79.1,18.8s-35.4,18.8-79.1,18.8s-79.1-8.4-79.1-18.8
+			C20.9,146.8,56.3,138.5,100,138.5z"/>
+		<path class="barc3" d="M99.9,138.5c22.9,0,43.4,2.3,57.9,6C127.6,142.6,45,147,24.7,163c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,146.8,56.3,138.5,99.9,138.5z"/>
+		<path class="barc2" d="M20.9,157.1c0-10.4,35.4-18.8,79.1-18.8s79.1,8.4,79.1,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.9-36.7-17.8-78.9-17.8
+			s-76.7,7.9-78.9,17.8C20.9,157.8,20.9,157.5,20.9,157.1z"/>
+	</g>
+</g>
+<g>
+	<path class="barc4" d="M134,113.9H68.8c-2.2,0-4-1.8-4-4v-21c0-2.2,1.8-4,4-4H134c2.2,0,4,1.8,4,4v21C138,112,136.2,113.9,134,113.9z
+		"/>
+	<linearGradient id="BARC_ID_1_" gradientUnits="userSpaceOnUse" x1="101.3866" y1="77.2737" x2="101.3866" y2="106.1152">
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+	</linearGradient>
+	<path class="barc5" d="M133.5,113H69.3c-2.2,0-4-1.8-4-4V88.7c0-2.2,1.8-4,4-4h64.2c2.2,0,4,1.8,4,4v20.4
+		C137.4,111.3,135.7,113,133.5,113z"/>
+	<polygon class="barc3" points="142.5,100 57.5,100 43.8,113 43.8,157.1 156.2,157.1 156.1,113 	"/>
+	<linearGradient id="BARC_ID_2_" gradientUnits="userSpaceOnUse" x1="2.6496" y1="0.7733" x2="178.6197" y2="244.8271">
+		<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+	</linearGradient>
+	<polygon class="barc6" points="156.1,113 43.8,113 43.8,119.5 43.8,158.4 156.2,158.4 156.2,119.5 	"/>
+	<polygon class="barc4" points="143,158.4 126.4,157.5 73.5,157.5 57,158.4 57,130.6 143,130.6 	"/>
+	<g>
+		<g>
+			<g>
+				<circle class="barc2" cx="50.8" cy="151.6" r="3.6"/>
+				<circle class="barc7" cx="50.8" cy="151.6" r="3.6"/>
+				<circle class="barc8" cx="50.8" cy="151.5" r="3.6"/>
+				<circle class="barc9" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc10" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc11" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc12" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc13" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc14" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc15" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc16" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc17" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc18" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc19" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc20" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc21" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc22" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc23" cx="50.8" cy="151.5" r="3.5"/>
+				<circle class="barc24" cx="50.8" cy="151.4" r="3.5"/>
+				<circle class="barc25" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc26" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc27" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc28" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc29" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc30" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc31" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc32" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc33" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc34" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc35" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc36" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc37" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc38" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc39" cx="50.8" cy="151.4" r="3.4"/>
+				<circle class="barc40" cx="50.8" cy="151.3" r="3.4"/>
+				<circle class="barc41" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc42" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc43" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc44" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc45" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc46" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc47" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc48" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc49" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc50" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc51" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc52" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc53" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc54" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc55" cx="50.8" cy="151.3" r="3.3"/>
+				<circle class="barc56" cx="50.8" cy="151.2" r="3.3"/>
+				<circle class="barc57" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc58" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc59" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc60" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc61" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc62" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc63" cx="50.8" cy="151.2" r="3.2"/>
+				<circle class="barc64" cx="50.8" cy="151.2" r="3.2"/>
+			</g>
+			<linearGradient id="BARC_ID_3_" gradientUnits="userSpaceOnUse" x1="48.2873" y1="147.9666" x2="56.7257" y2="157.8499">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<circle class="barc65" cx="50.8" cy="151" r="3.1"/>
+			<linearGradient id="BARC_ID_4_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="146.4047" x2="50.8427" y2="153.0851">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc66" cx="50.8" cy="151" r="2.8"/>
+			<circle class="barc0" cx="50.8" cy="151" r="2.7"/>
+			<linearGradient id="BARC_ID_5_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="146.0738" x2="50.8427" y2="164.5153">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc67" cx="50.8" cy="151" r="2.6"/>
+			<linearGradient id="BARC_ID_6_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="146.0738" x2="50.8427" y2="164.5153">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc68" cx="50.8" cy="151" r="2.6"/>
+			<g>
+				<path class="barc69" d="M50.8,148.1c0.9,0,1.7,0.4,2.1,0.9c-0.4-0.6-1.2-1-2.1-1c-0.9,0-1.7,0.4-2.1,1
+					C49.2,148.4,49.9,148.1,50.8,148.1z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g>
+				<circle class="barc2" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc8" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc10" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc12" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc70" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc71" cx="50.8" cy="143.1" r="1.8"/>
+				<circle class="barc72" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc73" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc74" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc75" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc76" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc27" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc29" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc31" cx="50.8" cy="143.1" r="1.7"/>
+				<circle class="barc33" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc35" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc37" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc39" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc41" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc43" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc77" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc78" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc79" cx="50.8" cy="143" r="1.7"/>
+				<circle class="barc80" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc81" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc82" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc83" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc58" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc60" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc62" cx="50.8" cy="143" r="1.6"/>
+				<circle class="barc64" cx="50.8" cy="142.9" r="1.6"/>
+			</g>
+			<linearGradient id="BARC_ID_7_" gradientUnits="userSpaceOnUse" x1="49.565" y1="141.3326" x2="53.7842" y2="146.2743">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<circle class="barc84" cx="50.8" cy="142.8" r="1.5"/>
+			<linearGradient id="BARC_ID_8_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="140.5517" x2="50.8427" y2="143.8919">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc85" cx="50.8" cy="142.8" r="1.4"/>
+			<circle class="barc0" cx="50.8" cy="142.8" r="1.3"/>
+			<linearGradient id="BARC_ID_9_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="140.3862" x2="50.8427" y2="149.607">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc86" cx="50.8" cy="142.8" r="1.3"/>
+			<linearGradient id="BARC_ID_10_" gradientUnits="userSpaceOnUse" x1="50.8427" y1="140.3862" x2="50.8427" y2="149.607">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<circle class="barc87" cx="50.8" cy="142.8" r="1.3"/>
+			<g>
+				<path class="barc69" d="M50.8,141.4c0.4,0,0.8,0.2,1.1,0.5C51.7,141.5,51.3,141.3,50.8,141.4c-0.5-0.1-0.9,0.2-1.1,0.5
+					C50,141.6,50.4,141.4,50.8,141.4z"/>
+			</g>
+		</g>
+	</g>
+	<polygon class="barc4" points="142.5,130.9 57.5,130.9 57.5,158.4 72.6,157.5 127.3,157.5 142.5,158.4 	"/>
+	<g>
+		<linearGradient id="BARC_ID_11_" gradientUnits="userSpaceOnUse" x1="99.9999" y1="118.9593" x2="99.9999" y2="167.1712">
+			<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+			<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="barc88" points="142.5,158.4 142.5,132.2 142.5,132.2 142.5,130.9 57.5,130.9 57.5,132.2 57.5,132.2 57.5,158.4 
+			73.5,158.4 73.5,132.2 126.4,132.2 126.4,158.4 		"/>
+		
+			<linearGradient id="BARC_ID_12_" gradientUnits="userSpaceOnUse" x1="-1678.0844" y1="-3477.325" x2="-1678.0844" y2="-3462.6741" gradientTransform="matrix(-1 0 0 -1 -1577.3915 -3325.8044)">
+			<stop  offset="0" style="stop-color:#000000"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="barc89" points="62,137.1 139.4,137.1 139.4,149.1 62,149.1 		"/>
+	</g>
+	<linearGradient id="BARC_ID_13_" gradientUnits="userSpaceOnUse" x1="74.0689" y1="90.0057" x2="155.6395" y2="187.0936">
+		<stop  offset="0" style="stop-color:#BCB9BA"/>
+		<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+	</linearGradient>
+	<rect x="43.8" y="113" class="barc90" width="112.2" height="15.5"/>
+	<polygon class="barc0" points="56.9,111.3 57.5,111.7 150.9,111.7 151.4,111.5 140.2,100.9 66.2,100.9 	"/>
+	<rect x="43.8" y="158.4" width="112.4" height="1.4"/>
+	<g>
+		<g>
+			<g>
+				<ellipse class="barc2" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc7" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc91" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc9" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc92" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc12" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc13" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc70" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc15" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc16" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc72" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc93" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc73" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc94" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc22" cx="57.8" cy="105.5" rx="3.1" ry="0.5"/>
+				<ellipse class="barc23" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc95" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc76" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc96" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc97" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc98" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc99" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc31" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc100" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc101" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc102" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc103" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc104" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc105" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc39" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc106" cx="57.8" cy="105.5" rx="3" ry="0.5"/>
+				<ellipse class="barc107" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc108" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc109" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc77" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc110" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc47" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc48" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc111" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc80" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc112" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc81" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc54" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc55" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc83" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc57" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc58" cx="57.8" cy="105.5" rx="2.9" ry="0.5"/>
+				<ellipse class="barc113" cx="57.8" cy="105.5" rx="2.8" ry="0.5"/>
+				<ellipse class="barc61" cx="57.8" cy="105.5" rx="2.8" ry="0.5"/>
+				<ellipse class="barc114" cx="57.8" cy="105.5" rx="2.8" ry="0.5"/>
+				<ellipse class="barc63" cx="57.8" cy="105.5" rx="2.8" ry="0.5"/>
+				<ellipse class="barc64" cx="57.8" cy="105.5" rx="2.8" ry="0.5"/>
+			</g>
+			<linearGradient id="BARC_ID_14_" gradientUnits="userSpaceOnUse" x1="56.2981" y1="103.7069" x2="61.2165" y2="109.4675">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<ellipse class="barc115" cx="57.8" cy="105.5" rx="2.7" ry="0.5"/>
+			<linearGradient id="BARC_ID_15_" gradientUnits="userSpaceOnUse" x1="57.7875" y1="104.7635" x2="57.7875" y2="105.7724">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc116" cx="57.8" cy="105.5" rx="2.4" ry="0.4"/>
+			<ellipse class="barc0" cx="57.8" cy="105.5" rx="2.4" ry="0.4"/>
+			<linearGradient id="BARC_ID_16_" gradientUnits="userSpaceOnUse" x1="57.7875" y1="104.7135" x2="57.7875" y2="107.4988">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc117" cx="57.8" cy="105.5" rx="2.3" ry="0.4"/>
+			<linearGradient id="BARC_ID_17_" gradientUnits="userSpaceOnUse" x1="57.7875" y1="104.7135" x2="57.7875" y2="107.4988">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc118" cx="57.8" cy="105.5" rx="2.3" ry="0.4"/>
+			<g>
+				<path class="barc69" d="M57.8,105c0.8,0,1.5,0.1,1.9,0.1C59.3,105.1,58.6,105,57.8,105c-0.8,0-1.5,0-1.9,0.1
+					C56.3,105.1,57,105,57.8,105z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g>
+				<ellipse class="barc2" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc7" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc91" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc10" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc11" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc119" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc70" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc15" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc16" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc72" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc19" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc20" cx="59.7" cy="103.3" rx="2.7" ry="0.5"/>
+				<ellipse class="barc74" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc120" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc24" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc76" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc96" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc97" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc29" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc121" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc122" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc33" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc123" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc124" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc37" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc125" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc126" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc41" cx="59.7" cy="103.2" rx="2.6" ry="0.5"/>
+				<ellipse class="barc108" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc109" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc77" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc46" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc127" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc79" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc50" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc51" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc81" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc54" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc55" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc83" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc128" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc59" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc60" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc114" cx="59.7" cy="103.2" rx="2.5" ry="0.5"/>
+				<ellipse class="barc63" cx="59.7" cy="103.2" rx="2.4" ry="0.5"/>
+				<ellipse class="barc64" cx="59.7" cy="103.2" rx="2.4" ry="0.5"/>
+			</g>
+			<linearGradient id="BARC_ID_18_" gradientUnits="userSpaceOnUse" x1="58.3583" y1="101.6518" x2="62.6486" y2="106.6767">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<ellipse class="barc129" cx="59.7" cy="103.2" rx="2.4" ry="0.5"/>
+			<linearGradient id="BARC_ID_19_" gradientUnits="userSpaceOnUse" x1="59.6575" y1="102.4855" x2="59.6575" y2="103.4945">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc130" cx="59.7" cy="103.2" rx="2.1" ry="0.4"/>
+			<ellipse class="barc0" cx="59.7" cy="103.2" rx="2" ry="0.4"/>
+			<linearGradient id="BARC_ID_20_" gradientUnits="userSpaceOnUse" x1="59.6575" y1="102.4356" x2="59.6575" y2="105.2209">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc131" cx="59.7" cy="103.2" rx="2" ry="0.4"/>
+			<linearGradient id="BARC_ID_21_" gradientUnits="userSpaceOnUse" x1="59.6575" y1="102.4356" x2="59.6575" y2="105.2209">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc132" cx="59.7" cy="103.2" rx="2" ry="0.4"/>
+			<g>
+				<path class="barc69" d="M59.7,102.7c0.7,0,1.3,0.1,1.6,0.1C61,102.8,60.4,102.7,59.7,102.7c-0.7,0-1.3,0-1.6,0.1
+					C58.4,102.8,59,102.7,59.7,102.7z"/>
+			</g>
+		</g>
+	</g>
+	<linearGradient id="BARC_ID_22_" gradientUnits="userSpaceOnUse" x1="101.0942" y1="62.2127" x2="101.0942" y2="189.4837">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+	</linearGradient>
+	<rect x="72.5" y="55.3" class="barc133" width="57.2" height="44.7"/>
+	<linearGradient id="BARC_ID_23_" gradientUnits="userSpaceOnUse" x1="101.0942" y1="97.5472" x2="101.0942" y2="105.8952">
+		<stop  offset="0" style="stop-color:#BCB9BA"/>
+		<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+	</linearGradient>
+	<rect x="72.5" y="97.1" class="barc134" width="57.2" height="2.9"/>
+	<rect x="129.7" y="84.7" class="barc64" width="1" height="15.3"/>
+	<g>
+		<rect x="62" y="149.1" width="77.4" height="9.3"/>
+		<polygon points="62,132.2 66.7,134.9 66.7,149.1 62,149.1 		"/>
+		<polygon points="139.4,132.2 134.7,134.9 134.7,149.1 139.4,149.1 		"/>
+		<rect x="62" y="132.2" width="77.4" height="5"/>
+	</g>
+	<linearGradient id="BARC_ID_24_" gradientUnits="userSpaceOnUse" x1="68.1401" y1="71.5223" x2="134.228" y2="145.5269">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+		<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+		<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+		<stop  offset="0.4107" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+		<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+		<stop  offset="0.92" style="stop-color:var(--vitamui-primary-300)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+	</linearGradient>
+	<polygon class="barc135" points="57.1,111.7 150.9,111.7 140.1,101.3 66.4,101.3 	"/>
+	<linearGradient id="BARC_ID_25_" gradientUnits="userSpaceOnUse" x1="100.6927" y1="126.5412" x2="100.6927" y2="184.6773">
+		<stop  offset="0" style="stop-color:#BCB9BA"/>
+		<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+	</linearGradient>
+	<polygon class="barc136" points="131.7,149.4 69.7,149.4 56.7,165.1 56.7,170.3 144.7,170.3 144.6,165.1 	"/>
+	<rect x="56.7" y="165.1" class="barc0" width="88" height="5.2"/>
+	<g>
+		<g>
+			<g>
+				<ellipse class="barc64" cx="59.5" cy="167.6" rx="0.9" ry="1.1"/>
+			</g>
+			<linearGradient id="BARC_ID_26_" gradientUnits="userSpaceOnUse" x1="58.7134" y1="166.5273" x2="61.4077" y2="169.683">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<ellipse class="barc137" cx="59.5" cy="167.5" rx="0.8" ry="1.1"/>
+			<linearGradient id="BARC_ID_27_" gradientUnits="userSpaceOnUse" x1="59.5293" y1="165.895" x2="59.5293" y2="168.224">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc138" cx="59.5" cy="167.5" rx="0.8" ry="1"/>
+			<ellipse class="barc0" cx="59.5" cy="167.5" rx="0.7" ry="0.9"/>
+			<linearGradient id="BARC_ID_28_" gradientUnits="userSpaceOnUse" x1="59.5293" y1="165.7797" x2="59.5293" y2="172.2088">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc139" cx="59.5" cy="167.5" rx="0.7" ry="0.9"/>
+			<linearGradient id="BARC_ID_29_" gradientUnits="userSpaceOnUse" x1="59.5293" y1="165.7797" x2="59.5293" y2="172.2088">
+				<stop  offset="6.600599e-02" style="stop-color:#BCB9BA"/>
+				<stop  offset="0.6694" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<ellipse class="barc140" cx="59.5" cy="167.5" rx="0.7" ry="0.9"/>
+			<g>
+				<path class="barc69" d="M59.5,166.5c0.2,0,0.5,0.1,0.6,0.3C60,166.6,59.8,166.4,59.5,166.5c-0.3,0-0.5,0.1-0.6,0.3
+					C59.1,166.6,59.3,166.5,59.5,166.5z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<polygon class="barc64" points="127.4,147.1 104.5,147.1 97.1,147.1 74.2,147.1 62.8,162.2 97.5,162.2 104.6,162.2 139.3,162.2 		
+			"/>
+		<linearGradient id="BARC_ID_30_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="148.7442" x2="101.0454" y2="191.8499">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc141" points="127.4,146.4 104.5,146.4 97.1,146.4 74.2,146.4 62.7,161.6 97.5,161.6 104.6,161.6 139.4,161.6 		
+			"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,145.4 104.5,145.4 97.1,145.4 74.2,145.4 62.8,160.5 97.5,160.5 104.6,160.5 139.3,160.5 		"/>
+		<linearGradient id="BARC_ID_31_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="147.0997" x2="101.0454" y2="190.2054">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc142" points="127.4,144.8 104.5,144.8 97.1,144.8 74.2,144.8 62.7,159.9 97.5,159.9 104.6,159.9 139.4,159.9 		
+			"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,143.8 104.5,143.8 97.1,143.8 74.2,143.8 62.8,158.9 97.5,158.9 104.6,158.9 139.3,158.9 		"/>
+		<linearGradient id="BARC_ID_32_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="145.4552" x2="101.0454" y2="188.5609">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc143" points="127.4,143.1 104.5,143.1 97.1,143.1 74.2,143.1 62.7,158.3 97.5,158.3 104.6,158.3 139.4,158.3 		
+			"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,142.1 104.5,142.1 97.1,142.1 74.2,142.1 62.8,157.2 97.5,157.2 104.6,157.2 139.3,157.2 		"/>
+		<linearGradient id="BARC_ID_33_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="143.8107" x2="101.0454" y2="186.9164">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc144" points="127.4,141.5 104.5,141.5 97.1,141.5 74.2,141.5 62.7,156.6 97.5,156.6 104.6,156.6 139.4,156.6 		
+			"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,140.5 104.5,140.5 97.1,140.5 74.2,140.5 62.8,155.6 97.5,155.6 104.6,155.6 139.3,155.6 		"/>
+		<linearGradient id="BARC_ID_34_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="142.1661" x2="101.0454" y2="185.2718">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc145" points="127.4,139.8 104.5,139.8 97.1,139.8 74.2,139.8 62.7,155 97.5,155 104.6,155 139.4,155 		"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,138.8 104.5,138.8 97.1,138.8 74.2,138.8 62.8,153.9 97.5,153.9 104.6,153.9 139.3,153.9 		"/>
+		<linearGradient id="BARC_ID_35_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="140.5216" x2="101.0454" y2="183.6273">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc146" points="127.4,138.2 104.5,138.2 97.1,138.2 74.2,138.2 62.7,153.3 97.5,153.3 104.6,153.3 139.4,153.3 		
+			"/>
+	</g>
+	<g>
+		<polygon class="barc1" points="127.4,137.2 104.5,137.2 97.1,137.2 74.2,137.2 62.8,152.3 97.5,152.3 104.6,152.3 139.3,152.3 		"/>
+		<linearGradient id="BARC_ID_36_" gradientUnits="userSpaceOnUse" x1="101.0454" y1="138.8771" x2="101.0454" y2="181.9828">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<polygon class="barc147" points="127.4,136.5 104.5,136.5 97.1,136.5 74.2,136.5 62.7,151.7 97.5,151.7 104.6,151.7 139.4,151.7 		
+			"/>
+	</g>
+</g>
+<g>
+	<g>
+		<rect x="83.5" y="65.1" class="barc148" width="4.4" height="20.1"/>
+		<rect x="95.3" y="65.1" class="barc148" width="3.2" height="20.1"/>
+		<rect x="89.7" y="65.1" class="barc148" width="1" height="20.1"/>
+		<rect x="100.3" y="65.1" class="barc148" width="1.5" height="20.1"/>
+		<rect x="112.1" y="65.1" class="barc148" width="6.1" height="20.1"/>
+		<rect x="120.8" y="65.1" class="barc148" width="0.5" height="20.1"/>
+		<rect x="104.7" y="65.1" class="barc148" width="2.8" height="20.1"/>
+		<rect x="109.3" y="65.1" class="barc148" width="1" height="20.1"/>
+	</g>
+	<g>
+		<path class="barc149" d="M86.6,89v0.6c0,0.4-0.1,0.7-0.3,1.1c-0.2,0.3-0.5,0.5-0.9,0.5c-0.2,0-0.4-0.1-0.6-0.2
+			c-0.2-0.1-0.3-0.3-0.5-0.6c-0.1-0.3-0.2-0.6-0.2-0.9V89c0-0.4,0.1-0.7,0.3-1.1c0.2-0.3,0.5-0.5,0.9-0.5c0.2,0,0.4,0.1,0.6,0.2
+			c0.2,0.1,0.3,0.3,0.5,0.6C86.6,88.4,86.6,88.6,86.6,89z M86.1,89c0-0.3-0.1-0.6-0.3-0.8c-0.1-0.1-0.2-0.2-0.4-0.2
+			c-0.2,0-0.3,0.1-0.4,0.2c-0.2,0.2-0.2,0.5-0.2,0.8v0.6c0,0.3,0.1,0.6,0.3,0.8c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2
+			c0.2-0.2,0.2-0.5,0.2-0.8V89z"/>
+		<path class="barc149" d="M89.7,87.5v2.2c0.1,0,0.2,0,0.3,0.1C90,89.8,90,89.9,90,90c0,0.1,0,0.2-0.1,0.2c-0.1,0.1-0.1,0.1-0.3,0.1
+			v0.2c0.1,0,0.2,0,0.3,0.1s0.1,0.1,0.1,0.2c0,0.1,0,0.2-0.1,0.2c-0.1,0.1-0.2,0.1-0.3,0.1h-0.8c-0.1,0-0.2,0-0.3-0.1
+			s-0.1-0.1-0.1-0.2c0-0.1,0-0.2,0.1-0.2c0.1-0.1,0.2-0.1,0.3-0.1h0.2v-0.2h-1.6v-0.5l1.4-2.3H89.7z M89.1,89.7v-1.4l-0.8,1.4H89.1z
+			"/>
+		<path class="barc149" d="M96.9,89v0.6c0,0.4-0.1,0.7-0.3,1.1c-0.2,0.3-0.5,0.5-0.9,0.5c-0.2,0-0.4-0.1-0.6-0.2
+			c-0.2-0.1-0.3-0.3-0.5-0.6c-0.1-0.3-0.2-0.6-0.2-0.9V89c0-0.4,0.1-0.7,0.3-1.1c0.2-0.3,0.5-0.5,0.9-0.5c0.2,0,0.4,0.1,0.6,0.2
+			c0.2,0.1,0.3,0.3,0.5,0.6S96.9,88.6,96.9,89z M96.3,89c0-0.3-0.1-0.6-0.3-0.8c-0.1-0.1-0.2-0.2-0.4-0.2c-0.2,0-0.3,0.1-0.4,0.2
+			C95.1,88.4,95,88.6,95,89v0.6c0,0.3,0.1,0.6,0.3,0.8c0.1,0.1,0.2,0.2,0.4,0.2c0.2,0,0.3-0.1,0.4-0.2c0.2-0.2,0.2-0.5,0.2-0.8V89z"
+			/>
+		<path class="barc149" d="M99.9,89.2c0.1,0.1,0.3,0.2,0.3,0.4c0.1,0.1,0.1,0.3,0.1,0.5c0,0.2,0,0.4-0.1,0.5c-0.1,0.2-0.2,0.3-0.4,0.4
+			c-0.2,0.1-0.4,0.1-0.7,0.1c-0.2,0-0.5,0-0.7-0.1s-0.3-0.2-0.4-0.4c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.2,0-0.3,0.1-0.5
+			c0.1-0.1,0.2-0.3,0.3-0.4c-0.1-0.1-0.2-0.2-0.3-0.4c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.3,0.1-0.5,0.3-0.8c0.2-0.2,0.5-0.3,0.9-0.3
+			c0.3,0,0.6,0.1,0.9,0.3c0.2,0.2,0.3,0.5,0.3,0.8c0,0.2,0,0.3-0.1,0.4C100.1,89,100,89.1,99.9,89.2z M99.8,90.1
+			c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.4c0,0.1,0.1,0.2,0.2,0.3
+			c0.1,0.1,0.3,0.1,0.5,0.1c0.2,0,0.4,0,0.5-0.1C99.7,90.4,99.8,90.3,99.8,90.1z M99.7,88.5c0-0.1-0.1-0.3-0.2-0.4
+			c-0.1-0.1-0.3-0.1-0.4-0.1c-0.2,0-0.3,0-0.4,0.1c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4c0.1,0.1,0.3,0.1,0.4,0.1
+			c0.2,0,0.3,0,0.4-0.1C99.6,88.7,99.7,88.6,99.7,88.5z"/>
+		<path class="barc149" d="M102,90.5h1.2c0.1-0.1,0.1-0.1,0.2-0.1c0.1,0,0.2,0,0.2,0.1c0.1,0.1,0.1,0.2,0.1,0.3v0.3h-2.6v-0.6
+			c1-0.8,1.6-1.4,1.9-1.6c0.1-0.1,0.2-0.2,0.2-0.4c0-0.1-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2
+			c-0.1,0.1-0.1,0.2-0.2,0.3c0,0.1-0.1,0.1-0.1,0.2c0,0-0.1,0.1-0.2,0.1c-0.1,0-0.1,0-0.2-0.1c-0.1-0.1-0.1-0.1-0.1-0.2
+			c0-0.1,0.1-0.3,0.2-0.4c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.4-0.2,0.6-0.2c0.4,0,0.7,0.1,0.9,0.3c0.2,0.2,0.3,0.5,0.3,0.8
+			c0,0.2,0,0.3-0.1,0.4c-0.1,0.1-0.2,0.3-0.5,0.6C102.9,89.7,102.5,90,102,90.5z"/>
+		<path class="barc149" d="M106.2,87.4v3.1h0.6c0.1,0,0.2,0,0.3,0.1c0.1,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.2-0.1,0.2
+			c-0.1,0.1-0.2,0.1-0.3,0.1h-1.7c-0.1,0-0.2,0-0.3-0.1s-0.1-0.1-0.1-0.2c0-0.1,0-0.2,0.1-0.2c0.1-0.1,0.2-0.1,0.3-0.1h0.6v-2.4
+			l-0.5,0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2-0.1c-0.1-0.1-0.1-0.1-0.1-0.2c0-0.1,0-0.1,0.1-0.2c0,0,0.1-0.1,0.2-0.1L106.2,87.4
+			z"/>
+		<path class="barc149" d="M113.6,89.2c0.1,0.1,0.3,0.2,0.3,0.4s0.1,0.3,0.1,0.5c0,0.2,0,0.4-0.1,0.5c-0.1,0.2-0.2,0.3-0.4,0.4
+			c-0.2,0.1-0.4,0.1-0.7,0.1s-0.5,0-0.7-0.1c-0.2-0.1-0.3-0.2-0.4-0.4c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.2,0-0.3,0.1-0.5
+			c0.1-0.1,0.2-0.3,0.3-0.4c-0.1-0.1-0.2-0.2-0.3-0.4c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.3,0.1-0.5,0.3-0.8c0.2-0.2,0.5-0.3,0.9-0.3
+			s0.6,0.1,0.9,0.3c0.2,0.2,0.3,0.5,0.3,0.8c0,0.2,0,0.3-0.1,0.4C113.8,89,113.7,89.1,113.6,89.2z M113.5,90.1
+			c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.4c0,0.1,0.1,0.2,0.2,0.3
+			c0.1,0.1,0.3,0.1,0.5,0.1c0.2,0,0.4,0,0.5-0.1C113.4,90.4,113.5,90.3,113.5,90.1z M113.4,88.5c0-0.1-0.1-0.3-0.2-0.4
+			c-0.1-0.1-0.3-0.1-0.4-0.1c-0.2,0-0.3,0-0.4,0.1c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4c0.1,0.1,0.3,0.1,0.4,0.1
+			c0.2,0,0.3,0,0.4-0.1C113.3,88.7,113.4,88.6,113.4,88.5z"/>
+		<path class="barc149" d="M117,89.2c0.1,0.1,0.3,0.2,0.3,0.4s0.1,0.3,0.1,0.5c0,0.2,0,0.4-0.1,0.5c-0.1,0.2-0.2,0.3-0.4,0.4
+			c-0.2,0.1-0.4,0.1-0.7,0.1c-0.2,0-0.5,0-0.7-0.1c-0.2-0.1-0.3-0.2-0.4-0.4c-0.1-0.2-0.1-0.3-0.1-0.5c0-0.2,0-0.3,0.1-0.5
+			c0.1-0.1,0.2-0.3,0.3-0.4c-0.1-0.1-0.2-0.2-0.3-0.4c-0.1-0.1-0.1-0.3-0.1-0.4c0-0.3,0.1-0.5,0.3-0.8c0.2-0.2,0.5-0.3,0.9-0.3
+			c0.3,0,0.6,0.1,0.9,0.3c0.2,0.2,0.3,0.5,0.3,0.8c0,0.2,0,0.3-0.1,0.4C117.2,89,117.1,89.1,117,89.2z M116.9,90.1
+			c0-0.2-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2c-0.1,0.1-0.2,0.3-0.2,0.4c0,0.1,0.1,0.2,0.2,0.3
+			c0.1,0.1,0.3,0.1,0.5,0.1c0.2,0,0.4,0,0.5-0.1C116.8,90.4,116.9,90.3,116.9,90.1z M116.8,88.5c0-0.1-0.1-0.3-0.2-0.4
+			c-0.1-0.1-0.3-0.1-0.4-0.1c-0.2,0-0.3,0-0.4,0.1c-0.1,0.1-0.2,0.2-0.2,0.4c0,0.1,0.1,0.3,0.2,0.4c0.1,0.1,0.3,0.1,0.4,0.1
+			c0.2,0,0.3,0,0.4-0.1C116.8,88.7,116.8,88.6,116.8,88.5z"/>
+		<path class="barc149" d="M119.1,90.5h1.2c0.1-0.1,0.1-0.1,0.2-0.1c0.1,0,0.2,0,0.2,0.1c0.1,0.1,0.1,0.2,0.1,0.3v0.3h-2.6v-0.6
+			c1-0.8,1.6-1.4,1.9-1.6c0.1-0.1,0.2-0.2,0.2-0.4c0-0.1-0.1-0.3-0.2-0.4c-0.1-0.1-0.3-0.2-0.5-0.2c-0.2,0-0.4,0.1-0.5,0.2
+			c-0.1,0.1-0.1,0.2-0.2,0.3c0,0.1-0.1,0.1-0.1,0.2c0,0-0.1,0.1-0.2,0.1c-0.1,0-0.1,0-0.2-0.1c-0.1-0.1-0.1-0.1-0.1-0.2
+			c0-0.1,0.1-0.3,0.2-0.4c0.1-0.2,0.3-0.3,0.5-0.4c0.2-0.1,0.4-0.2,0.6-0.2c0.4,0,0.7,0.1,0.9,0.3c0.2,0.2,0.3,0.5,0.3,0.8
+			c0,0.2,0,0.3-0.1,0.4c-0.1,0.1-0.2,0.3-0.5,0.6C120,89.7,119.7,90,119.1,90.5z"/>
+	</g>
+</g>
+</svg>
