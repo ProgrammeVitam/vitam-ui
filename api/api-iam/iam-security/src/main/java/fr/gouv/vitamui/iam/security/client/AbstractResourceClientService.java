@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.security.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -45,6 +46,9 @@ import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
@@ -136,6 +140,14 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
                 .collect(Collectors.toList()), result.getPageNum(), result.getPageSize(), result.isHasMore());
     }
 
+    protected ResultsDto<E> getAllRequest(final RequestParamDto requestParamDto) {
+        ParameterChecker.checkPagination(requestParamDto.getSize(), requestParamDto.getPage());
+        requestParamDto.setCriteria(checkRequestAuthorization(requestParamDto));
+        final ResultsDto<I> result = getClient().getAllRequest(getInternalHttpContext(), requestParamDto);
+        return new ResultsDto<>(result.getValues().stream().map(element -> converterToExternalDto(element))
+                .collect(Collectors.toList()), result);
+    }
+
     /**
      * Check the criteria. <br>
      *
@@ -147,6 +159,28 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      */
     protected Optional<String> checkAuthorization(final Optional<String> criteria) throws InvalidFormatException {
         return addAccessRestriction(QueryDto.fromJson(criteria)).toOptionalJson();
+    }
+
+    /**
+     * Check the request. <br>
+     *
+     * Convert Json to CriteriaWrapper <br>
+     * Check if the criteria keys are allowed
+     * Check if the groups fields keys are allowed
+     * Check if the aggregation operator is allowed
+     * @param requestParamDto
+     * @return
+     * @throws InvalidFormatException
+     */
+    protected Optional<String> checkRequestAuthorization(RequestParamDto requestParamDto) throws InvalidFormatException {
+        if (requestParamDto.getGroups().isPresent()) {
+            RequestParamGroupDto requestParamGroupDto = requestParamDto.getGroups().get();
+            for(String field: requestParamGroupDto.getFields()){
+                if(!getAllowedAggregationKeys().contains(field))
+                    throw new ForbiddenException(String.format("Not allowed to get aggregation %s values", field));
+            }
+        }
+        return addAccessRestriction(QueryDto.fromJson(requestParamDto.getCriteria())).toOptionalJson();
     }
 
     /**
@@ -295,6 +329,16 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends I
      * @return
      */
     protected Collection<String> getAllowedKeys() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * The Collection contains keys allowed for aggregation.
+     * By default the collection is null and all keys are authorized
+     * Function as a whitelist
+     * @return
+     */
+    protected Collection<String> getAllowedAggregationKeys() {
         return Collections.emptyList();
     }
 

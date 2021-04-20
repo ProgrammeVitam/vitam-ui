@@ -3,9 +3,17 @@ package fr.gouv.vitamui.iam.internal.server.user.service;
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +36,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
@@ -35,6 +44,9 @@ import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamGroupDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -213,8 +225,9 @@ public final class UserInternalServiceTest {
     @Test
     public void testGetUsersGenericByCustomer() {
         final String customerId = "customerId";
-        when(userRepository.getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any())).thenReturn(buildPageable(buildUser("id")));
+        when(userRepository
+                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .thenReturn(buildPageable(buildUser("id")));
 
         final Customer customer = new Customer();
         customer.setId("ID");
@@ -230,16 +243,51 @@ public final class UserInternalServiceTest {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         Mockito.when(internalSecurityService.getUser()).thenReturn(user);
 
-        final PaginatedValuesDto<UserDto> subrogateUsers = internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(),
-                Optional.empty());
+        final PaginatedValuesDto<UserDto> subrogateUsers =
+                internalUserService.getAllPaginated(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty());
         assertThat(subrogateUsers.getValues()).isNotEmpty();
         assertThat(subrogateUsers.getValues().size()).isEqualTo(1);
     }
 
     @Test
+    public void testGetResultsUsersGenericByCustomer() {
+        final String customerId = "customerId";
+        when(userRepository
+                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .thenReturn(buildPageable(buildUser("id")));
+        when(userRepository
+                .aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
+
+        final Customer customer = new Customer();
+        customer.setId("ID");
+        customer.setCode("code");
+        customer.setName("name");
+        customer.setSubrogeable(true);
+        when(customerRepository.findById(ArgumentMatchers.anyString())).thenReturn(Optional.of(customer));
+
+        final QueryDto criteriaWrapper = new QueryDto();
+        criteriaWrapper.addCriterion(new Criterion(customerId, customer.getId(), CriterionOperator.EQUALS));
+        criteriaWrapper.addCriterion(new Criterion("type", "GENERIC", CriterionOperator.EQUALS));
+
+        final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
+        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
+
+        final RequestParamGroupDto groups = new RequestParamGroupDto(Arrays.asList("type"), AggregationRequestOperator.COUNT);
+        final RequestParamDto requestParamDto =
+                new RequestParamDto(0, 20, criteriaWrapper.toOptionalJson(), Optional.empty(), Optional.empty(), Optional.of(groups));
+        final ResultsDto<UserDto> subrogateUsers = internalUserService.getAllRequest(requestParamDto);
+        assertThat(subrogateUsers.getValues()).hasSize(1);
+        assertThat(subrogateUsers.getGroups()).hasSize(1);
+        assertThat(subrogateUsers.getGroups().containsKey("type")).isEqualTo(true);
+        assertThat(((List)subrogateUsers.getGroups().get("type")).get(0)).isEqualTo("DISTINCT");
+    }
+
+    @Test
     public void testGetUsersGenericByCustomerNotSubreogable() {
-        when(userRepository.getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any())).thenReturn(buildPageable(buildUser("id")));
+        when(userRepository
+                .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+                .thenReturn(buildPageable(buildUser("id")));
         final String customerId = "customerId";
         final Customer customer = new Customer();
         customer.setId("ID");

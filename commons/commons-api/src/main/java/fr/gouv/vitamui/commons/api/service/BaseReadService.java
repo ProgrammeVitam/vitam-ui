@@ -43,6 +43,8 @@ import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 
 /**
  * Service allowing to read entities.
@@ -100,4 +102,16 @@ public interface BaseReadService<D extends IdDto, E extends BaseIdDocument> {
      */
     PaginatedValuesDto<D> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
             final Optional<String> orderBy, final Optional<DirectionDto> direction);
+
+    /**
+     * Method allowing to get paginated entities according to the given criteria.
+     * AggregationResults can be retrieved when aggregation param are given.
+     * Beware : the param criteria must include the security filters.
+     * @param requestParam
+     * @return the resultsDto.
+     */
+    default ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
+        return new ResultsDto<D>(getAllPaginated(requestParam.getPage(), requestParam.getSize(), requestParam.getCriteria(), requestParam.getOrderBy(),
+                requestParam.getDirection()));
+    }
 }

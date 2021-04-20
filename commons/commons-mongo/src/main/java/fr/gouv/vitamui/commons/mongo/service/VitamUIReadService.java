@@ -57,6 +57,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -222,6 +223,35 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
                 .collect(Collectors.toList());
         return new PaginatedValuesDto<>(valuesDto, entititesValues.getPageNum(), entititesValues.getPageSize(),
                 entititesValues.isHasMore());
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResultsDto<D> getAllRequest(final RequestParamDto requestParam) {
+
+        final Query query = getQuerySecured(requestParam.getCriteria());
+        final PaginatedValuesDto<E> entitiesValues = getRepository().getPaginatedValues(requestParam.getPage(), requestParam.getSize(), Optional.of(query),
+                requestParam.getOrderBy(), requestParam.getDirection());
+
+        final List<D> valuesDto = entitiesValues.getValues().stream().map(this::convertFromEntityToDto)
+                .collect(Collectors.toList());
+        // get aggregation results if request param group was given.
+        Map<String, Object> groups = null;
+        if(requestParam.getGroups().isPresent()) {
+            RequestParamGroupDto requestParamGroups = requestParam.getGroups().get();
+            final Collection<CriteriaDefinition> criteria = convertCriteriaJsonToMongoCriteria(requestParam.getCriteria());
+            groups = getRepository()
+                .aggregation(requestParamGroups.getFields(),
+                             criteria,
+                             requestParamGroups.getOperator(),
+                             requestParam.getOrderBy(),
+                             requestParam.getDirection());
+        }
+        return new ResultsDto(valuesDto, entitiesValues.getPageNum(), entitiesValues.getPageSize(),
+                entitiesValues.isHasMore(), groups);
     }
 
     /**

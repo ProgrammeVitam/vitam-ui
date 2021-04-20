@@ -41,8 +41,11 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.RequestParamDto;
+import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.utils.ParameterizedTypeReferenceFactory;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.http.client.utils.URIBuilder;
@@ -100,6 +103,29 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         return response.getBody();
     }
 
+    public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {
+        LOGGER.debug("search {}", requestParam);
+
+        final URIBuilder builder = getUriBuilderFromUrl();
+        builder.addParameter("page", requestParam.getPage().toString());
+        builder.addParameter("size", requestParam.getSize().toString());
+        requestParam.getCriteria().ifPresent(o -> builder.addParameter("criteria", o));
+        requestParam.getOrderBy().ifPresent(o -> builder.addParameter("orderBy", o));
+        requestParam.getDirection().ifPresent(o -> builder.addParameter("direction", o.toString()));
+
+        requestParam.getGroups().ifPresent(group -> {
+            for (var field: group.getFields()) {
+                builder.addParameter("fields", field);
+            }
+            builder.addParameter("operator", group.getOperator().name());
+        });
+
+        final HttpEntity<D> request = new HttpEntity<>(buildHeaders(context));
+        final var response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, this.getResultDtoClass());
+        checkResponse(response);
+        return (ResultsDto<D>) response.getBody();
+    }
+
     protected abstract ParameterizedTypeReference<PaginatedValuesDto<D>> getDtoPaginatedClass();
 
     protected MultiValueMap<String, String> buildSearchHeaders(final ExternalHttpContext context) {
@@ -128,4 +154,8 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         }
         return headers;
     }
+    protected ParameterizedTypeReference<ResultsDto<D>> getResultDtoClass(){
+        return ParameterizedTypeReferenceFactory.createFromInstance(ResultsDto.class, this);
+    }
+
 }

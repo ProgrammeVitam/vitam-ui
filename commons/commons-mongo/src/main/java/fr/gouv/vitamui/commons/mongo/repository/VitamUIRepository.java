@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -55,6 +56,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.client.result.UpdateResult;
 
+import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -142,4 +144,20 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
 
     UpdateResult upsert(Query query, Update update);
 
+    /**
+     *
+     * Applies an aggregation operation (provided in operationType) on a list of fields.
+     *
+     * @param fields Array of field names.
+     * @param criteria List of criteria.
+     * @param operationType type of the aggregation operation to apply.
+     * @param orderBy
+     * @param direction
+     * @return Map<String, Object> aggregation results.
+     */
+    Map<String, Object> aggregation(Iterable<String> fields,
+                                    final Iterable<CriteriaDefinition> criteria,
+                                    AggregationRequestOperator operationType,
+                                    Optional<String> orderBy,
+                                    Optional<DirectionDto> direction);
 }
