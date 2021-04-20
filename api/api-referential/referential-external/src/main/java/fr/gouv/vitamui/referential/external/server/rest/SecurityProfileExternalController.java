@@ -105,6 +105,7 @@ public class SecurityProfileExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get security profile identifier={}");
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return securityProfileExternalService.getOne(identifier);
     }
 
@@ -128,6 +129,7 @@ public class SecurityProfileExternalController {
     @Secured(ServicesData.ROLE_UPDATE_SECURITY_PROFILES)
     public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return securityProfileExternalService.patch(partialDto);
     }

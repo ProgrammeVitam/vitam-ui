@@ -80,6 +80,7 @@ public class AccessContractTempController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+        RestUtils.checkCriteria(criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return accessContractTempService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }

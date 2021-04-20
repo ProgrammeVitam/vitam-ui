@@ -45,6 +45,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -111,6 +112,7 @@ public class SecurityProfileInternalController {
     public SecurityProfileDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get security profile identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return securityProfileInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -132,6 +134,7 @@ public class SecurityProfileInternalController {
     @PatchMapping(CommonConstants.PATH_ID)
     public SecurityProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return securityProfileInternalService.patch(vitamContext, partialDto);
@@ -140,6 +143,7 @@ public class SecurityProfileInternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         securityProfileInternalService.delete(vitamContext, id);
     }
@@ -148,6 +152,7 @@ public class SecurityProfileInternalController {
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for accessContract with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return securityProfileInternalService.findHistoryByIdentifier(vitamContext, id);
     }
 

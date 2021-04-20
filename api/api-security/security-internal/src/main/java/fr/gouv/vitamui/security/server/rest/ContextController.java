@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.security.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -90,6 +91,7 @@ public class ContextController implements CrudController<ContextDto> {
     @GetMapping
     public List<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get ALL");
+        RestUtils.checkCriteria(criteria);
         return contextService.getAll(criteria).stream().collect(Collectors.toList());
     }
 
@@ -97,6 +99,7 @@ public class ContextController implements CrudController<ContextDto> {
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         LOGGER.debug("Check exists {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final List<ContextDto> dto = contextService.getMany(id);
         return RestUtils.buildBooleanResponse(dto != null && !dto.isEmpty());
     }
@@ -104,12 +107,15 @@ public class ContextController implements CrudController<ContextDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public ContextDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        RestUtils.checkCriteria(criteria);
         return contextService.getOne(id, criteria);
     }
 
     @PostMapping(value = RestApi.FINDBYCERTIFICATE_PATH)
     public ContextDto findByCertificate(final @Valid @RequestBody String data) {
         LOGGER.info("Request data {} ", data);
+        ParameterChecker.checkParameter("The request data is a mandatory parameter: ", data);
         return contextService.findByCertificate(data);
     }
 
@@ -117,6 +123,7 @@ public class ContextController implements CrudController<ContextDto> {
     @PostMapping
     public ContextDto create(final @Valid @RequestBody ContextDto dto) {
         LOGGER.debug("Create {}", dto);
+        ParameterChecker.checkParameter("The context is a mandatory parameter: ", dto);
         return contextService.create(dto);
     }
 
@@ -124,6 +131,7 @@ public class ContextController implements CrudController<ContextDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public ContextDto update(final @PathVariable("id") String id, final @Valid @RequestBody ContextDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        ParameterChecker.checkParameter("The Identifier and the context are mandatory parameters: ", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()),
             "The DTO identifier must match the path identifier for update.");
         return contextService.update(dto);
@@ -134,6 +142,7 @@ public class ContextController implements CrudController<ContextDto> {
     public ContextDto addTenant(final @PathVariable("id") String id,
         final @PathVariable("tenantIdentifier") Integer tenantIdentifier) {
         LOGGER.debug("Update {} with {}", id, tenantIdentifier);
+        ParameterChecker.checkParameter("The Identifier and the tenant ID are mandatory parameters: ", id, tenantIdentifier);
         final ContextDto contextDto = contextService.addTenant(id, tenantIdentifier);
 
         return contextDto;
@@ -143,6 +152,7 @@ public class ContextController implements CrudController<ContextDto> {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         contextService.delete(id);
     }
 }

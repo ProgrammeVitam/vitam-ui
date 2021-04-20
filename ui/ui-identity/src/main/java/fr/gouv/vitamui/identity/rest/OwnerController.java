@@ -90,6 +90,7 @@ public class OwnerController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public OwnerDto getOne(final @PathVariable String id) {
         LOGGER.debug("Get owner={}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 

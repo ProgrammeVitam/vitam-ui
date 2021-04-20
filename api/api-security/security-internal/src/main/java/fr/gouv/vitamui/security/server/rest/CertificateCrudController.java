@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.security.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -85,6 +86,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @RequestMapping(path = CommonConstants.PATH_ID, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @PathVariable("id") String id) {
         LOGGER.debug("Check exists {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final List<CertificateDto> dto = certificateCrudService.getMany(id);
         return RestUtils.buildBooleanResponse(dto != null && !dto.isEmpty());
     }
@@ -92,6 +94,8 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @GetMapping(CommonConstants.PATH_ID)
     public CertificateDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
+        RestUtils.checkCriteria(criteria);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return certificateCrudService.getOne(id, criteria);
     }
 
@@ -106,6 +110,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @PutMapping(CommonConstants.PATH_ID)
     public CertificateDto update(final @PathVariable("id") String id, final @Valid @RequestBody CertificateDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        ParameterChecker.checkParameter("The Identifier and the certificate are mandatory parameters: ", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return certificateCrudService.update(dto);
     }
@@ -114,6 +119,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         certificateCrudService.delete(id);
     }
 }

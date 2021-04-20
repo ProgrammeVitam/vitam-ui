@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.identity.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -120,6 +121,7 @@ public class ProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ProfileDto patch(@RequestBody final Map<String, Object> profile, @PathVariable final String id) {
         LOGGER.debug("Update partially provider id={} with partialDto={}", id, profile);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.patch(buildUiHttpContext(), profile, id);
     }
 
@@ -150,6 +152,7 @@ public class ProfileController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for profile with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 

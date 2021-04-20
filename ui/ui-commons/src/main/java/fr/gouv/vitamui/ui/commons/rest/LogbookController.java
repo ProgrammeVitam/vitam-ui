@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ui.commons.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -88,6 +89,8 @@ public class LogbookController extends AbstractUiRestController {
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
+        LOGGER.info("Get Logbook operation by id : {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return logbookService.findOperationById(buildUiHttpContext(), id);
     }
 
@@ -95,6 +98,8 @@ public class LogbookController extends AbstractUiRestController {
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
+        LOGGER.info("Get logbook unit lifecycle by archive unit id : {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return logbookService.findUnitLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
@@ -102,12 +107,15 @@ public class LogbookController extends AbstractUiRestController {
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
+        LOGGER.info("Get logbook object lifecycle by archive unit id : {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return logbookService.findObjectLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook operations by json select")
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) {
+        ParameterChecker.checkParameter("The Parameter is a mandatory parameter: ", select);
         return logbookService.findOperations(buildUiHttpContext(), select);
     }
 
@@ -116,6 +124,7 @@ public class LogbookController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id, @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final ResponseEntity<Resource> response = logbookService.downloadManifest(buildUiHttpContext(), id);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }
@@ -136,6 +145,7 @@ public class LogbookController extends AbstractUiRestController {
                                                    @PathVariable final String downloadType,
                                                    @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
+        ParameterChecker.checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
         final ResponseEntity<Resource> response = logbookService.downloadReport(buildUiHttpContext(), id, downloadType);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }

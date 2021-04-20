@@ -47,6 +47,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,7 @@ public class RuleInternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public RuleDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get rule identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ruleInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
@@ -130,6 +132,7 @@ public class RuleInternalController {
     @PatchMapping(CommonConstants.PATH_ID)
     public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ruleInternalService.patch(vitamContext, partialDto);
@@ -137,6 +140,7 @@ public class RuleInternalController {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for rule with id :{}", id);
         return ruleInternalService.findHistoryByIdentifier(vitamContext, id);
@@ -145,6 +149,7 @@ public class RuleInternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ruleInternalService.delete(vitamContext, id);
     }

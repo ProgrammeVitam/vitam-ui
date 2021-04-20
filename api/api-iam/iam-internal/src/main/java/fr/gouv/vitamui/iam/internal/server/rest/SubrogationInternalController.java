@@ -90,6 +90,7 @@ public class SubrogationInternalController implements CrudController<Subrogation
     @Override
     @GetMapping
     public List<SubrogationDto> getAll(@RequestParam final Optional<String> criteria) {
+        RestUtils.checkCriteria(criteria);
         return internalSubrogationService.getAll(criteria);
     }
 

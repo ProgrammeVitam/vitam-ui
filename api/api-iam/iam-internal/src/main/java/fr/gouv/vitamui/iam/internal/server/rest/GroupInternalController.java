@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -133,6 +134,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping(CommonConstants.PATH_ID)
     public GroupDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalGroupService.getOne(id, criteria, embedded);
     }
@@ -175,6 +177,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalGroupService.patch(partialDto);
     }
@@ -182,6 +185,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for group with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalGroupService.findHistoryById(id);
     }
 

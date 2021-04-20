@@ -42,6 +42,8 @@ import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unit
 import java.io.IOException;
 import java.util.Optional;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,6 +100,7 @@ public class UnitInternalController {
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
             @PathVariable final String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return unitInternalService.findUnitById(id, vitamContext);
     }
  
@@ -109,6 +112,7 @@ public class UnitInternalController {
             @PathVariable final Optional<String> id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
     }
     
@@ -119,6 +123,8 @@ public class UnitInternalController {
             @PathVariable final String id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitInternalService.findObjectMetadataById(id, dsl, vitamContext);
     }
 

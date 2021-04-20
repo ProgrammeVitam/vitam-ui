@@ -102,6 +102,7 @@ public class IngestExternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public LogbookOperationDto getOne(@PathVariable("id") final String id) {
         LOGGER.debug("get One Ingest id={}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return ingestExternalService.getOne(id);
     }
 

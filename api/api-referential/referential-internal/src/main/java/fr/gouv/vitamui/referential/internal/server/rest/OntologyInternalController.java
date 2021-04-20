@@ -40,7 +40,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -114,6 +116,7 @@ public class OntologyInternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public OntologyDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get ontology identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ontologyInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
@@ -130,6 +133,7 @@ public class OntologyInternalController {
     @PatchMapping(CommonConstants.PATH_ID)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ontologyInternalService.patch(vitamContext, partialDto);
@@ -138,12 +142,14 @@ public class OntologyInternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         ontologyInternalService.delete(vitamContext, id);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for ontology with id :{}", id);
         return ontologyInternalService.findHistoryByIdentifier(vitamContext, id);
@@ -152,6 +158,7 @@ public class OntologyInternalController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importOntology(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("import ontology file {}", fileName);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
         return ontologyInternalService.importOntologies(vitamContext, fileName, file);
     }

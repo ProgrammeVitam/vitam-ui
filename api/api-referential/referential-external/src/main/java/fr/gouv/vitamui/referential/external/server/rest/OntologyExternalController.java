@@ -101,6 +101,7 @@ public class OntologyExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public OntologyDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get ontology identifier={}");
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ontologyExternalService.getOne(identifier);
     }
 
@@ -116,6 +117,7 @@ public class OntologyExternalController {
     @Secured(ServicesData.ROLE_UPDATE_AGENCIES)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ontologyExternalService.patch(partialDto);
     }

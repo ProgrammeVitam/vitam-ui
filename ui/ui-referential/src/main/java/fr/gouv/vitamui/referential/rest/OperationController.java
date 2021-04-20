@@ -41,6 +41,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -118,6 +119,7 @@ public class OperationController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for operation with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -125,6 +127,7 @@ public class OperationController extends AbstractUiRestController {
     @GetMapping(value = CommonConstants.PATH_ID + "/download/{type}")
     public ResponseEntity<Resource> export(final @PathVariable("id") String id, final @PathVariable("type") ReportType type) {
         LOGGER.debug("export {} operation with id :{}", type, id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Resource body = service.export(buildUiHttpContext(), id, type).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
@@ -164,6 +167,7 @@ public class OperationController extends AbstractUiRestController {
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
     public LogbookOperationsResponseDto checkTraceabilityOperation(final @PathVariable String id) {
         LOGGER.debug("Launch check traceability operation with id = {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.checkTraceabilityOperation(buildUiHttpContext(), id);
     }
 
@@ -178,6 +182,7 @@ public class OperationController extends AbstractUiRestController {
     @GetMapping(value = "/probativeValue" + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable String id) {
         LOGGER.debug("export probative value with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Resource body = service.exportProbativeValue(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")

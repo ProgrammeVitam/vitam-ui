@@ -136,6 +136,7 @@ public class FileFormatExternalController {
     @Secured(ServicesData.ROLE_UPDATE_FILE_FORMATS)
     public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return fileFormatExternalService.patch(partialDto);
     }

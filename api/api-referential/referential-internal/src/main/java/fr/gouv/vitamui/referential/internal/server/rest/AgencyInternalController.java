@@ -49,6 +49,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -183,6 +184,7 @@ public class AgencyInternalController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("import agency file {}", fileName);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
         return agencyInternalService.importAgencies(vitamContext, fileName, file);
     }

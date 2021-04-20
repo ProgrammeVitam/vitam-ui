@@ -39,6 +39,7 @@ package fr.gouv.vitamui.iam.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -119,6 +120,7 @@ public class ProfileExternalController implements CrudController<ProfileDto> {
     @Secured(ServicesData.ROLE_GET_PROFILES)
     public ProfileDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get {}, embedded={}", id, embedded);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.check(id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return profileExternalService.getOne(id, embedded);
@@ -164,6 +166,7 @@ public class ProfileExternalController implements CrudController<ProfileDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for user with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return profileExternalService.findHistoryById(id);
     }
 

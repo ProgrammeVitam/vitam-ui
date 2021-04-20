@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -79,6 +80,7 @@ public class UnitController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public VitamUISearchResponseDto searchUnitById(@PathVariable final String id) {
         LOG.debug("searchUnits by id = {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return searchService.searchById(id, buildUiHttpContext());
     }
 
@@ -89,6 +91,7 @@ public class UnitController extends AbstractUiRestController {
     public JsonNode findByDsl(final @PathVariable Optional<String> id, @RequestBody final JsonNode dsl) {
         LOG.debug("searchUnits by dsl = {}", dsl);
         LOG.debug("id = {}", id);
+        ParameterChecker.checkParameter("The Custom DSL is a mandatory parameter: ", dsl);
         return searchService.findByDsl(id, dsl, buildUiHttpContext());
     }
     
@@ -98,6 +101,7 @@ public class UnitController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public JsonNode findObjectMetadataById(final @PathVariable String id, @RequestBody final JsonNode dsl) {
         LOG.debug("searchUnitObjects by id {} and dsl = {}", id, dsl);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return searchService.findObjectMetadataById(id, dsl, buildUiHttpContext());
     }
 

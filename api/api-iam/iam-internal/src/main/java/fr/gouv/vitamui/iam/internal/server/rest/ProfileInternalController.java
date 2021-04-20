@@ -180,6 +180,7 @@ public class ProfileInternalController implements CrudController<ProfileDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for profile with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalProfileService.findHistoryById(id);
     }
 

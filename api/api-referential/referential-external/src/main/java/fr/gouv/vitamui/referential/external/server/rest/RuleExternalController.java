@@ -42,6 +42,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,7 @@ public class RuleExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public RuleDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get rule identifier={}");
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ruleExternalService.getOne(identifier);
     }
 
@@ -125,6 +127,7 @@ public class RuleExternalController {
     @Secured(ServicesData.ROLE_UPDATE_RULES)
     public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ruleExternalService.patch(partialDto);
     }
@@ -133,6 +136,7 @@ public class RuleExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return ruleExternalService.findHistoryById(id);
     }
 
@@ -140,6 +144,7 @@ public class RuleExternalController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete fileFormat with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         ruleExternalService.delete(id);
     }
 

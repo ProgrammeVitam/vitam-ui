@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -101,6 +102,7 @@ public class IngestContractInternalController {
     public IngestContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get ingestContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ingestContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -134,12 +136,14 @@ public class IngestContractInternalController {
     public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ingestContractInternalService.patch(vitamContext, partialDto);
     }
 
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for ingestContract with id :{}", id);
         return ingestContractInternalService.findHistoryByIdentifier(vitamContext, id);
