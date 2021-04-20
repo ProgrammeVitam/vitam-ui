@@ -1,0 +1,53 @@
+.tree-ingest-errors-details {
+    display: contents;
+}
+
+.tree-ingest-errors-details-invisible {
+    display: none;    
+  }
+  
+.tree-ingest-errors-details ul, li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+
+  }
+
+.ingest-error-tree-node {
+  border-bottom: 1px solid rgba(151, 151, 151, 0.3);
+}
+  
+.ko-icon {
+  color: red;
+  position: absolute;
+  right: 5px;
+}
+
+.ok-icon {
+  color: green;
+  position: absolute;
+  right: 5px;
+}
+
+.warning-icon {
+  color: #FFA610;
+  position: absolute;
+  right: 5px;
+}
+
+.fatal-icon {
+  color: grey;
+  position: absolute;
+  right: 5px;
+}
+
+.ingest-message-text {
+  font-size: 14px;
+    color: var(--vitamui-grey-900);
+    font-weight: 700;
+    display: block;
+    box-sizing: inherit;
+    display: block;
+    font-family: Mulish;
+    visibility: visible;
+}

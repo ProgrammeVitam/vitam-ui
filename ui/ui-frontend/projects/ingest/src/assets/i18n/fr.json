@@ -81,7 +81,8 @@
     "ARCHIVING_PROFIL": "Profil d'archivage",
     "STATUS": "Statut légal",
     "MESSAGE": "Message",
-    "OPERATION_DETAILS": "Informations complémentaires sur l’opération"
+    "OPERATION_DETAILS": "Informations complémentaires sur l’opération",
+    "INGEST_ERROR_DETAIL" : "Détails"
   },
   "FILLING_HOLDING_SCHEME": {
     "TITLE": "Importer ou modifier des arbres et plans",

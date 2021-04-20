@@ -83,7 +83,8 @@
     "ARCHIVING_PROFIL": "Archiving profil",
     "STATUS": "Legal status",
     "MESSAGE": "Message",
-    "OPERATION_DETAILS": "Additional information about the operation"
+    "OPERATION_DETAILS": "Additional information about the operation",
+    "INGEST_ERROR_DETAIL" : "Details"
   },
   "FILLING_HOLDING_SCHEME": {
     "TITLE": "Import or modify holding scheme",
