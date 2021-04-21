@@ -66,6 +66,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,38 +107,33 @@ public class ArchiveSearchInternalService {
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext)
         throws VitamClientException, IOException {
-        try {
-            archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
-            LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
-            List<String> archiveUnitsTypes = Arrays.asList(INGEST_ARCHIVE_TYPE);
-            JsonNode response = searchUnits(mapRequestToDslQuery(archiveUnitsTypes, searchQuery), vitamContext);
-            final VitamUISearchResponseDto archivesOriginResponse =
-                objectMapper.treeToValue(response, VitamUISearchResponseDto.class);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
+        List<String> archiveUnitsTypes = Arrays.asList(INGEST_ARCHIVE_TYPE);
+        JsonNode response = searchUnits(mapRequestToDslQuery(archiveUnitsTypes, searchQuery), vitamContext);
+        final VitamUISearchResponseDto archivesOriginResponse =
+            objectMapper.treeToValue(response, VitamUISearchResponseDto.class);
 
-            Set<String> originesAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-                archiveUnit -> archiveUnit.getOriginatingAgency()).collect(Collectors.toSet());
-            List<AgencyModelDto> originAgenciesFound =
-                archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originesAgenciesCodes);
-            Map<String, AgencyModelDto> agenciesMapByIdentifier =
-                originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
+        Set<String> originesAgenciesCodes = archivesOriginResponse.getResults().stream().map(
+            archiveUnit -> archiveUnit.getOriginatingAgency()).collect(Collectors.toSet());
+        List<AgencyModelDto> originAgenciesFound =
+            archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originesAgenciesCodes);
+        Map<String, AgencyModelDto> agenciesMapByIdentifier =
+            originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
 
-            List<ArchiveUnit> archivesFilled = new ArrayList<>();
-            if (archivesOriginResponse != null) {
-                archivesFilled = archivesOriginResponse.getResults().stream().map(
-                    archiveUnit -> archiveSearchAgenciesInternalService
-                        .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-                ).collect(Collectors.toList());
-            }
-            VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
-            responseFilled.setContext(archivesOriginResponse.getContext());
-            responseFilled.setFacetResults(archivesOriginResponse.getFacetResults());
-            responseFilled.setResults(archivesFilled);
-            responseFilled.setHits(archivesOriginResponse.getHits());
-            return new ArchiveUnitsDto(responseFilled);
-        } catch (InvalidParseOperationException ioe) {
-            LOGGER.error("Unable to find archive units with pagination " + ioe.getMessage());
-            throw new BadRequestException("Unable to find archive units with pagination", ioe);
+        List<ArchiveUnit> archivesFilled = new ArrayList<>();
+        if (archivesOriginResponse != null) {
+            archivesFilled = archivesOriginResponse.getResults().stream().map(
+                archiveUnit -> archiveSearchAgenciesInternalService
+                    .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
+            ).collect(Collectors.toList());
         }
+        VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
+        responseFilled.setContext(archivesOriginResponse.getContext());
+        responseFilled.setFacetResults(archivesOriginResponse.getFacetResults());
+        responseFilled.setResults(archivesFilled);
+        responseFilled.setHits(archivesOriginResponse.getHits());
+        return new ArchiveUnitsDto(responseFilled);
     }
 
     /**
@@ -146,8 +142,8 @@ public class ArchiveSearchInternalService {
      * @param searchQuery
      * @return
      */
-    public JsonNode mapRequestToDslQuery(List<String> archiveUnits, SearchCriteriaDto searchQuery) {
-
+    public JsonNode mapRequestToDslQuery(List<String> archiveUnits, SearchCriteriaDto searchQuery)
+        throws VitamClientException {
         Optional<String> orderBy = Optional.empty();
         Optional<DirectionDto> direction = Optional.empty();
         Map<String, List<String>> vitamCriteria = new HashMap<>();
@@ -167,12 +163,10 @@ public class ArchiveSearchInternalService {
                 .createQueryDSL(archiveUnits, searchQuery.getNodes(), vitamCriteria, searchQuery.getPageNumber(),
                     searchQuery.getSize(), orderBy,
                     direction);
-        } catch (InvalidParseOperationException ioe) {
-            LOGGER.error("Unable to find archive units with pagination " + ioe.getMessage());
-            throw new BadRequestException("Unable to find archive units with pagination", ioe);
-        } catch (InvalidCreateOperationException e) {
-            LOGGER.error("Can't parse criteria as Vitam query" + e.getMessage());
-            throw new BadRequestException("Can't parse criteria as Vitam query", e);
+        } catch (InvalidCreateOperationException ioe) {
+            throw new VitamClientException("Unable to find archive units with pagination", ioe);
+        } catch (InvalidParseOperationException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
         }
         return query;
     }
@@ -183,7 +177,6 @@ public class ArchiveSearchInternalService {
     }
 
     public ResultsDto findUnitById(String id, VitamContext vitamContext) throws VitamClientException {
-
         try {
             LOGGER.info("Archive Unit Infos {}",
                 unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS));
@@ -191,7 +184,7 @@ public class ArchiveSearchInternalService {
                 .chop(unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS).toString()
                     .substring(1));
             return objectMapper.readValue(re, ResultsDto.class);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             LOGGER.error("Can not get the archive unit {} ", e);
             throw new VitamClientException("Unable to find the UA", e);
         }
@@ -212,13 +205,8 @@ public class ArchiveSearchInternalService {
         throws VitamClientException {
 
         LOGGER.info("Download Archive Unit Object with id {} ", id);
-        try {
-            return unitService
-                .getObjectStreamByUnitId(id, getUsage(id, vitamContext), getVersion(id, vitamContext), vitamContext);
-        } catch (VitamClientException e) {
-            LOGGER.error("Unable to find the Archive Unit Object with id {} ", e);
-            throw new VitamClientException("Unable to find the Archive Unit Object with id", e);
-        }
+        return unitService
+            .getObjectStreamByUnitId(id, getUsage(id, vitamContext), getVersion(id, vitamContext), vitamContext);
     }
 
     /**
@@ -259,7 +247,7 @@ public class ArchiveSearchInternalService {
             List<ArchiveUnitCsv> unitCsvList = exportArchiveUnitsByCriteriaToCsvFile(searchQuery, vitamContext);
             // create a write
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Writer writer = new OutputStreamWriter(outputStream);
+            Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8.name());
             // header record
             String[] headerRecordFr =
                 exportSearchResultParam.getHeaders().toArray(new String[exportSearchResultParam.getHeaders().size()]);
@@ -303,8 +291,7 @@ public class ArchiveSearchInternalService {
             writer.close();
             Resource generatedResult = new ByteArrayResource(outputStream.toByteArray());
             return generatedResult;
-        } catch (IOException | InvalidParseOperationException ex) {
-            LOGGER.error("Unable to export csv file " + ex.getMessage());
+        } catch (IOException ex) {
             throw new BadRequestException("Unable to export csv file ", ex);
         }
     }
@@ -312,7 +299,7 @@ public class ArchiveSearchInternalService {
 
     public List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext)
-        throws VitamClientException, IOException {
+        throws VitamClientException {
         try {
             LOGGER.info("Calling exporting  export ArchiveUnits to CSV with criteria {}", searchQuery);
             checkSizeLimit(vitamContext, searchQuery);
@@ -338,8 +325,7 @@ public class ArchiveSearchInternalService {
                 ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit)).collect(Collectors.toList());
             }
             return archivesFilled;
-        } catch (InvalidParseOperationException e) {
-            LOGGER.error("Can't parse criteria as Vitam query" + e.getMessage());
+        } catch (IOException e) {
             throw new BadRequestException("Can't parse criteria as Vitam query", e);
         }
     }
@@ -383,7 +369,6 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
         Integer nbResults = archivesOriginResponse.getHits().getTotal();
-        LOGGER.info("Nb results found is {} ", nbResults);
         if (nbResults > EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
             LOGGER.error("The archives units result found is greater than allowed {} ",
                 EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
