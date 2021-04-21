@@ -25,33 +25,3 @@ button, textarea, input {
 * {
     box-sizing: border-box;
 }
-
-.clickable {
-    cursor: pointer;
-}
-
-.hidden {
-    visibility: hidden!important;
-}
-
-.underline {
-    text-decoration: underline;
-}
-
-.bg-primary {
-    background-color: var(--vitamui-primary)!important;
-}
-
-.bg-secondary {
-    background-color: var(--vitamui-secondary)!important;
-}
-
-.no-hover {
-    &:hover {
-      background-color: transparent!important;
-    }
-}
-
-.w-100 {
-    width: 100%;
-}

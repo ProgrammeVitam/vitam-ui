@@ -1,0 +1,38 @@
+.clickable {
+    cursor: pointer;
+}
+
+.hidden {
+    visibility: hidden!important;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.bg-primary {
+    background-color: var(--vitamui-primary)!important;
+}
+
+.bg-secondary {
+    background-color: var(--vitamui-secondary)!important;
+}
+
+.no-hover {
+    &:hover {
+      background-color: transparent!important;
+    }
+}
+
+.w-100 {
+    width: 100%;
+}
+
+$vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
+@each $color in $vitamui-colors {
+  @for $i from 1 to 9 {
+    .#{$color}-#{$i * 100} {
+      color: var(--#{$color}-#{$i * 100});
+    }
+  }
+}
