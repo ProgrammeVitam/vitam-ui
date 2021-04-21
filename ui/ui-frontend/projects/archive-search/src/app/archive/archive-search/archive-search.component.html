@@ -260,7 +260,7 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-8" *ngIf="totalResults > 1 || totalResults === 0 ">{{totalResults}} {{'ARCHIVE_SEARCH.RESULTS' | translate}}</div>
+      <div class="col-8" *ngIf="totalResults > 1 || totalResults === 0 ">{{totalResults}} {{'ARCHIVE_SEARCH.EXPORT_CSV.RESULTS' | translate}}</div>
       <div class="col-8" *ngIf="totalResults === 1">{{totalResults}} {{'ARCHIVE_SEARCH.RESULT' | translate}}</div>
       <div class="col-4 area-download" >
         <a class="hide-ink" (click)="exportArchiveUnitsToCsvFile()"

@@ -7,8 +7,12 @@
       <br/>
       <span> (Merci de ne pas éteindre votre navigateur pendant le processus)</span>
     </ng-container>
+    <ng-container *ngSwitchCase="'exportCsvLimitReached'">      
+      <span> {{'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED' | translate}} </span>
+    </ng-container>
 
   </span>
+  
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
 

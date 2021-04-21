@@ -531,17 +531,14 @@ emptyForm = {
   exportArchiveUnitsToCsvFile() {
     
     if((this.searchedCriteriaList && this.searchedCriteriaList.length > 0) || (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)) {
-      this.callVitamApiServiceToExport();
+      let sortingCriteria = { criteria: this.orderBy, sorting: this.direction }
+    let searchCriteria = { "nodes": this.searchedCriteriaNodesList, "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria, 'language': this.translateService.currentLang };
+    this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
     }
   }
 
 
 
-  private callVitamApiServiceToExport() {
-    let sortingCriteria = { criteria: this.orderBy, sorting: this.direction }
-    let searchCriteria = { "nodes": this.searchedCriteriaNodesList, "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria, 'language': this.translateService.currentLang };
-    this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
-  }
 
 
   get uaid() { return this.form.controls.uaid }

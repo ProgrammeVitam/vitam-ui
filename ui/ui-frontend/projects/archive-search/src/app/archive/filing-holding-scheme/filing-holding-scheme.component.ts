@@ -173,7 +173,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initFilingHoldingSchemeTree();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -248,14 +247,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     this.filtered = false;
   }
 
-  showOnlyParentTreeNodes() {
-
-    this.initFilingHoldingSchemeTree();
-    this.linkOneToNotKeep = false;
-    this.linkTwoToNotKeep = true;
-
-  }
-
   recursiveShow(nodes: FilingHoldingSchemeNode[], show: boolean) {
     if (nodes.length === 0) { return; }
     for (const node of nodes) {
@@ -266,15 +257,19 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     }
   }
 
-  recursiveShowById(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string) {
-    if (nodes.length === 0) { return; }
+  recursiveShowById(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
+    let found = false; 
+    if (nodes.length !== 0){
     for (const node of nodes) {
       if (node.id === nodeId) {
         node.checked = checked;
+        found= true;
       }
-      if(node.children){
-        this.recursiveShowById(node.children, checked, nodeId);
+      if(!found && node.children){
+        found = this.recursiveShowById(node.children, checked, nodeId);
       }
+    }
+      return found;
     }
   }
 

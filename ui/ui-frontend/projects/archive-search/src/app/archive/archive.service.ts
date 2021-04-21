@@ -44,6 +44,8 @@ import { FilingHoldingSchemeNode } from './models/node.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { SearchResponse } from './models/search-response.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 
 @Injectable({
@@ -54,7 +56,8 @@ export class ArchiveService extends SearchService<any> {
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,
-    @Inject(LOCALE_ID) private locale: string
+    @Inject(LOCALE_ID) private locale: string,
+    private snackBar: MatSnackBar,
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -136,7 +139,13 @@ export class ArchiveService extends SearchService<any> {
       },
       (errors: HttpErrorResponse) => {
         if(errors.status === 413){
-          console.log("Please update filter to reduce size of response" + errors.message)
+          console.log("Please update filter to reduce size of response" + errors.message);
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'exportCsvLimitReached'},
+            duration: 10000
+          });
         }
       }
     );

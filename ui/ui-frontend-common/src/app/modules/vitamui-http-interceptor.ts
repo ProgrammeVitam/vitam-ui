@@ -58,7 +58,6 @@ const HTTP_STATUS_CODE_BAD_REQUEST = 400;
 const HTTP_STATUS_CODE_UNAUTHORIZED = 401;
 const HTTP_STATUS_CODE_FORBIDDEN = 403;
 const HTTP_STATUS_CODE_NOT_FOUND = 404;
-const HTTP_STATUS_CODE_PAYLOAD_TOO_LARGE = 413;
 const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 const HTTP_STATUS_CODE_SERVICE_UNAVAILABLE = 503;
 const HTTP_STATUS_CODE_GATEWAY_TIMEOUT = 504;
@@ -180,13 +179,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
                 panelClass: 'vitamui-snack-bar',
                 duration: NOTIFICATION_DELAY_MS,
               });
-            } else if (response.status === HTTP_STATUS_CODE_PAYLOAD_TOO_LARGE) {
-                  this.snackBar.open('Erreur : Le seuil des résultats autorisés est dépassé, Veuillez affiner les filtres', null, {
-                    panelClass: 'vitamui-snack-bar',
-                    duration: NOTIFICATION_DELAY_MS,
-                  });
-              }
-             else if (response.status >= CLIENT_ERROR_START) {
+            } else if (response.status >= CLIENT_ERROR_START) {
               this.snackBar.open('Une erreur technique est survenue : requête invalide', null, {
                 panelClass: 'vitamui-snack-bar',
                 duration: NOTIFICATION_DELAY_MS,

@@ -72,6 +72,9 @@
       "SHOW_ENTIRE_TREE": "Show the entire tree",
       "SHOW_TREE_PARENT": "Collapse the tree"
     },
+    "EXPORT_CSV": {
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
+    },
     "RESULTS": "Results",
     "RESULT": "Result",
     "FOLDER": "Folder",

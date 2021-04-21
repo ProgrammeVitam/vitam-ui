@@ -77,9 +77,7 @@
       </div>
       <a *ngIf="filtered && !loadingHolding && nestedDataSourceFull.data.length > 0 && !linkOneToNotKeep "
          class="tree-show-link" (click)="showAllTreeNodes()"> {{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_ENTIRE_TREE' |
-        translate}}</a>
-      <a *ngIf="!loadingHolding && nestedDataSourceFull.data.length > 0 && !linkTwoToNotKeep" class="tree-show-link"
-         (click)="showOnlyParentTreeNodes()">{{'ARCHIVE_SEARCH.FILING_SHCEMA.SHOW_TREE_PARENT' | translate}}</a>
+        translate}}</a>      
     </div>
 
     <div class="" *ngIf="loadingHolding">
