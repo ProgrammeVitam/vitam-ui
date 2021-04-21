@@ -136,7 +136,7 @@ public class BaseWebClientFactory implements WebClientFactory {
     private BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
         final String webClientBaseUrl, final boolean useBaseUrl) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
-        webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig);
+        webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig));
         if(useBaseUrl) {
             // Build or retrieve the baseUrl provided
             String baseUrl = StringUtils.isBlank(webClientBaseUrl) ? buildBaseUrl(restClientConfig, restClientConfig.isSecure()) : webClientBaseUrl;
