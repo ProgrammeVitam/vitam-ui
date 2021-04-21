@@ -36,12 +36,8 @@
  */
 package fr.gouv.vitamui.commons.rest.converter;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpStatus;
-
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
@@ -49,17 +45,18 @@ import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpStatus;
 
 /**
- *
  * VITAMUI Error to VITAMUI Exception.
- *
- *
  */
 public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIException> {
 
@@ -70,37 +67,40 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
         VitamUIException exception = null;
         final HttpStatus status = HttpStatus.valueOf(source.getStatus());
         switch (status) {
-            case INTERNAL_SERVER_ERROR :
+            case INTERNAL_SERVER_ERROR:
                 exception = new InternalServerException(source.getMessage(), source.getError());
                 break;
-            case BAD_REQUEST :
+            case BAD_REQUEST:
                 exception = new InvalidFormatException(source.getMessage(), source.getError(), source.getArgs());
                 break;
-            case NOT_FOUND :
+            case NOT_FOUND:
                 exception = new NotFoundException(source.getMessage(), source.getError());
                 break;
-            case FORBIDDEN :
+            case FORBIDDEN:
                 exception = new ForbiddenException(source.getMessage(), source.getError());
                 break;
-            case UNAUTHORIZED :
+            case UNAUTHORIZED:
                 exception = new InvalidAuthenticationException(source.getMessage(), source.getError());
                 break;
-            case NOT_IMPLEMENTED :
+            case NOT_IMPLEMENTED:
                 exception = new NotImplementedException(source.getMessage(), source.getError());
                 break;
-            case TOO_MANY_REQUESTS :
+            case TOO_MANY_REQUESTS:
                 exception = new TooManyRequestsException(source.getMessage(), source.getError());
                 break;
-            case SERVICE_UNAVAILABLE :
+            case SERVICE_UNAVAILABLE:
                 exception = new UnavailableServiceException(source.getMessage(), source.getError());
                 break;
-            case CONFLICT :
+            case CONFLICT:
                 exception = new ConflictException(source.getMessage(), source.getError());
                 break;
-            case PRECONDITION_FAILED :
+            case PRECONDITION_FAILED:
                 exception = new PreconditionFailedException(source.getMessage(), source.getError());
                 break;
-            default :
+            case PAYLOAD_TOO_LARGE:
+                exception = new RequestEntityTooLargeException(source.getMessage(), source.getError());
+                break;
+            default:
                 LOGGER.error("Error Source {}", source);
                 exception = new ApplicationServerException(source.getMessage());
                 break;

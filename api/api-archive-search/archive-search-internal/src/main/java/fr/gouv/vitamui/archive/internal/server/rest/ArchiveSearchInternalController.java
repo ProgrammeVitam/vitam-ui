@@ -82,25 +82,27 @@ public class ArchiveSearchInternalController {
     private static final String[] FILING_PLAN_PROJECTION =
         new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
 
-    private ArchiveSearchInternalService archiveInternalService;
+    private final ArchiveSearchInternalService archiveInternalService;
 
-    private InternalSecurityService securityService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final InternalSecurityService securityService;
+
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public ArchiveSearchInternalController(final ArchiveSearchInternalService archiveInternalService,
-        final InternalSecurityService securityService) {
+        final InternalSecurityService securityService, final ObjectMapper objectMapper) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping(RestApi.SEARCH_PATH)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final SearchCriteriaDto searchQuery) throws VitamClientException, IOException {
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException, IOException, InvalidParseOperationException {
         LOGGER.info("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
@@ -136,15 +138,17 @@ public class ArchiveSearchInternalController {
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    public ResultsDto findUnitById(final @PathVariable("id") String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
+    public ResultsDto findUnitById(final @PathVariable("id") String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
         LOGGER.info("UA Details  {}", id);
-        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.findUnitById(id,vitamContext);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.findUnitById(id, vitamContext);
     }
 
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadObjectFromUnit( final @PathVariable("id") String id,
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
 
@@ -152,13 +156,28 @@ public class ArchiveSearchInternalController {
 
         LOGGER.info("Access Contract {} ", accessContractId);
         LOGGER.info("Download Archive Unit Object with id  {}", id);
-       final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        Response response =  archiveInternalService.downloadObjectFromUnit(id, vitamContext);
-              Object entity = response.getEntity();
-              if (entity instanceof InputStream) {
-                  Resource resource = new InputStreamResource((InputStream) entity);
-                  result = new ResponseEntity<>(resource, HttpStatus.OK);
-              }
-              return result;
-}
+        final VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        Response response = archiveInternalService.downloadObjectFromUnit(id, vitamContext);
+        Object entity = response.getEntity();
+        if (entity instanceof InputStream) {
+            Resource resource = new InputStreamResource((InputStream) entity);
+            result = new ResponseEntity<>(resource, HttpStatus.OK);
+        }
+        return result;
+    }
+
+    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        LOGGER.info("Export to CSV file Archive Units by criteria {}", searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        Resource exportedResult =
+            archiveInternalService.exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
+        return new ResponseEntity<>(exportedResult, HttpStatus.OK);
+    }
+
 }

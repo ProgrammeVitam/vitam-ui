@@ -40,12 +40,13 @@ import { PagedResult, SearchCriteria, SearchCriteriaEltDto, SearchCriteriaStatus
 import { merge,  Subject,  Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff, Direction } from 'ui-frontend-common';
-import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
@@ -89,6 +90,9 @@ export class ArchiveSearchComponent implements OnInit {
     status: ['Folder', 'Document']
   };
   shouldShowPreviewArchiveUnit = false;
+  searchedCriteriaList: SearchCriteriaEltDto[] = [];
+  searchedCriteriaNodesList: string[] = [];
+
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
 
@@ -129,7 +133,7 @@ emptyForm = {
 
   entireNodesIds: string[];
 
-  constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService,
+  constructor(private formBuilder: FormBuilder, private archiveService: ArchiveService, private translateService: TranslateService,
               private route: ActivatedRoute, private archiveExchangeDataService: ArchiveSharedDataServiceService, private datePipe: DatePipe
     ) {
 
@@ -380,16 +384,16 @@ emptyForm = {
     this.showCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
-    let queriesList = this.buildCriteriaListForQUery();
-    let nodesQueriesList = this.buildNodesListForQUery();
-    if((queriesList && queriesList.length > 0) || (nodesQueriesList && nodesQueriesList.length > 0)) {
-      this.callVitamApiService(nodesQueriesList, queriesList);
+    this.searchedCriteriaList = this.buildCriteriaListForQUery();
+    this.searchedCriteriaNodesList = this.buildNodesListForQUery();
+    if((this.searchedCriteriaList && this.searchedCriteriaList.length > 0) || (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)) {
+      this.callVitamApiService();
     }
 
   }
 
-  buildNodesListForQUery(): String[] {
-    let nodesIdList: String[] = [];
+  buildNodesListForQUery(): string[] {
+    let nodesIdList: string[] = [];
     let hasNodeSelected = false;
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if(criteria.key === 'NODE') {
@@ -438,13 +442,13 @@ emptyForm = {
     return criteriaList;
   }
 
-  private callVitamApiService(nodesIds: String[], criteriaList: SearchCriteriaEltDto[])  {
+  private callVitamApiService()  {
+    
     this.pending = true;
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-     headers = headers.append('X-Access-Contract-Id', this.accessContract);
-
+ 
     let sortingCriteria = { criteria: this.orderBy , sorting: this.direction}
-    this.archiveService.searchArchiveUnitsByCriteria({ "nodes": nodesIds, "criteriaList": criteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria }, headers).subscribe(
+    let searchCriteria = { "nodes": this.searchedCriteriaNodesList , "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria };
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
         if (this.currentPage === 0 ) {
           this.archiveUnits = pagedResult.results;
@@ -456,7 +460,7 @@ emptyForm = {
         }
         this.pageNumbers = pagedResult.pageNumbers;
         this.totalResults = pagedResult.totalResults;
-        this.canLoadMore = (this.currentPage < this.pageNumbers - 1);
+        this.canLoadMore = (this.currentPage < (this.pageNumbers - 1) );
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.INCLUDED);
         this.pending = false;
       },
@@ -467,6 +471,7 @@ emptyForm = {
         this.archiveExchangeDataService.emitFacets([]);
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       })
+    
   }
 
 
@@ -498,14 +503,16 @@ emptyForm = {
     return subText;
   }
 
-  loadMore(){
-    if(this.canLoadMore) {
+  loadMore()
+  {
+    this.canLoadMore = (this.currentPage < (this.pageNumbers - 1));
+    if(this.canLoadMore && !this.pending) {
       this.submited = true;
-      this.currentPage = this.currentPage + 1 ;
-      let queriesList = this.buildCriteriaListForQUery();
-      let nodesQueriesList = this.buildNodesListForQUery();
-      if((queriesList && queriesList.length > 0) || (nodesQueriesList && nodesQueriesList.length > 0)){
-        this.callVitamApiService(nodesQueriesList, queriesList);
+      this.currentPage = this.currentPage + 1;
+      this.searchedCriteriaList = this.buildCriteriaListForQUery();
+      this.searchedCriteriaNodesList  = this.buildNodesListForQUery();
+      if((this.searchedCriteriaList && this.searchedCriteriaList.length > 0) || (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList .length > 0)){
+        this.callVitamApiService();
       }
     }
   }
@@ -519,6 +526,22 @@ emptyForm = {
     this.subscriptionNodes.unsubscribe();
   }
 
+
+  
+  exportArchiveUnitsToCsvFile() {
+    
+    if((this.searchedCriteriaList && this.searchedCriteriaList.length > 0) || (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)) {
+      this.callVitamApiServiceToExport();
+    }
+  }
+
+
+
+  private callVitamApiServiceToExport() {
+    let sortingCriteria = { criteria: this.orderBy, sorting: this.direction }
+    let searchCriteria = { "nodes": this.searchedCriteriaNodesList, "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria, 'language': this.translateService.currentLang };
+    this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
+  }
 
 
   get uaid() { return this.form.controls.uaid }

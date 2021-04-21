@@ -65,6 +65,7 @@ export interface SearchCriteriaDto{
     size: number;
     nodes?: String[];
     sortingCriteria?: SearchCriteriaSort;
+    language?: string;
 }
 
 

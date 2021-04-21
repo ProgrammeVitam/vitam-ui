@@ -8,6 +8,7 @@
     "SEARCH_CRITERIA_OR": "OU",
     "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "EXPORT_SEARCHS":"Exporter les résultats",
     "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
     "NO_MORE_RESULTS": "Fin des résultats",
     "SEARCH_CRITERIA_FILTER": {

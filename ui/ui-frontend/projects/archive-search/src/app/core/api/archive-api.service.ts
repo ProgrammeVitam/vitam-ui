@@ -78,7 +78,15 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     return this.http.post<SearchResponse>( `${this.apiUrl}/search`, criteriaDto, {headers});
   }
 
-  // Its a temporary api => to be removed when access contracts bill be delivered
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> { 
+  return  this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
+      responseType: 'blob',
+      headers: headers
+    });
+  }
+
+
+// Its a temporary api => to be removed when access contracts bill be delivered
   getAllAccessContracts(params: HttpParams, headers?: HttpHeaders): Observable<any[]> {
     return this.http.get<any>(`${this.apiUrl}/accesscontracts`, { params, headers });
   }

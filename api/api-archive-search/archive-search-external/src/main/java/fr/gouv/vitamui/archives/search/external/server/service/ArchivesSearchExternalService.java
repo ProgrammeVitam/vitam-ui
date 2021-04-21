@@ -82,9 +82,12 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public VitamUISearchResponseDto getFilingHoldingScheme() {
         return archiveInternalRestClient.getFilingHoldingScheme(getInternalHttpContext());
     }
+
     public ResponseEntity<Resource> downloadObjectFromUnit(String id) {
         return archiveInternalRestClient.downloadObjectFromUnit(id, getInternalHttpContext());
     }
 
-
+    public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
+        return archiveInternalRestClient.exportCsvArchiveUnitsByCriteria(query, getInternalHttpContext());
+    }
 }

@@ -40,12 +40,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
@@ -56,6 +60,8 @@ public class ArchiveSearchExternalRestClientTest extends AbstractServerIdentityB
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchExternalRestClientTest.class);
+
+    public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
 
     private ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
@@ -109,6 +115,27 @@ public class ArchiveSearchExternalRestClientTest extends AbstractServerIdentityB
             archiveSearchExternalRestClient.getFilingHoldingScheme(context);
 
         Assert.assertEquals(response, responseEntity);
+    }
+
+
+    @Test
+    public void whenGetexportCsvArchiveUnitsByCriteria_Srvc_ok_ThenShouldReturnOK() throws IOException {
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        MultiValueMap<String, String> headers = archiveSearchExternalRestClient.buildSearchHeaders(context);
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+
+        Resource resource = new ByteArrayResource(ArchiveSearchExternalRestClientTest.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+
+        when(restTemplate.exchange(anyString(), eq(HttpMethod.POST),
+            eq(request), eq(Resource.class))).thenReturn(new ResponseEntity<>(resource, HttpStatus.OK));
+
+        ResponseEntity<Resource> response =
+            archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
+
+
+        Assert.assertEquals(response.getBody(), resource);
     }
 }
 

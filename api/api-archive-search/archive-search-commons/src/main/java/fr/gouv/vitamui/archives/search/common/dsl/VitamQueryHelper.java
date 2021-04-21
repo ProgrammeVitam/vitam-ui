@@ -145,8 +145,6 @@ public class VitamQueryHelper {
                     case GUID:
                     case IDENTIFIER:
                     case PRODUCER_SERVICE:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
-                        break;
                     case TITLE:
                     case DESCRIPTION:
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
@@ -282,10 +280,19 @@ public class VitamQueryHelper {
                     case ID:
                     case PUID:
                     case EV_TYPE_PROC:
-                        // string equals operation
-                        final String stringValue = (String) entry.getValue();
-                        queryOr.add(eq(searchKey, stringValue));
-                        haveOrParameters = true;
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String elt : stringsValues) {
+                                queryOr.add(eq(searchKey, elt));
+                            }
+                            haveOrParameters = true;
+                        } else if (entry.getValue() instanceof String) {
+                            // string equals operation
+                            final String stringValue = (String) entry.getValue();
+                            queryOr.add(eq(searchKey, stringValue));
+                            haveOrParameters = true;
+                        }
+
                         break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]

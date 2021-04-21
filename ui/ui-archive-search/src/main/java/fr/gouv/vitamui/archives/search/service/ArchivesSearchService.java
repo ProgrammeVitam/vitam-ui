@@ -95,5 +95,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.findUnitById(id, context);
     }
 
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
+        ExternalHttpContext context) {
+        LOGGER.info("export search archives Units by criteria into csv format with criteria {}", searchQuery);
+        return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
+    }
 
 }

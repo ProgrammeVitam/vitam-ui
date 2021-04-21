@@ -104,4 +104,13 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.findUnitById(id);
     }
 
+    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
+        LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query);
+    }
+
 }
