@@ -46,11 +46,11 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -87,7 +87,12 @@ public class BaseWebClientFactory implements WebClientFactory {
 
     private final WebClient webClient;
 
-    private final String baseUrl;
+    /**
+     *  baseUrl is not mandatory.
+     *  We can build webClient with no specific baseUrl.
+     *  The caller is in charged to determine the URI
+     */
+    private String baseUrl;
 
     /**
      * This method don't use WebBuilder configured by spring boot
@@ -108,18 +113,40 @@ public class BaseWebClientFactory implements WebClientFactory {
         this(restClientConfiguration, httpPoolConfig, WebClient.builder());
     }
 
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder, final String baseUrl) {
+        this(restClientConfiguration, null, webClientBuilder);
+    }
+
     public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
         this(restClientConfiguration, null, webClientBuilder);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+        this(restClientConfiguration, null, webClientBuilder, null, true);
+    }
+
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder, final boolean useBaseUrl) {
+        this(restClientConfiguration, null, webClientBuilder, null, useBaseUrl);
+    }
+
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder, final String webClientBaseUrl) {
+        this(restClientConfiguration, null, webClientBuilder, webClientBaseUrl, true);
+    }
+
+    private BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
+        final String webClientBaseUrl, final boolean useBaseUrl) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
-        final boolean useSSL = restClientConfig.isSecure();
-        baseUrl = RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
+        webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig);
+        if(useBaseUrl) {
+            // Build or retrieve the baseUrl provided
+            String baseUrl = StringUtils.isBlank(webClientBaseUrl) ? buildBaseUrl(restClientConfig, restClientConfig.isSecure()) : webClientBaseUrl;
+            webClientBuilder.baseUrl(baseUrl);
+        }
+        webClient = webClientBuilder.build();;
+    }
 
-        final ClientHttpConnector httpConnector = createClientHttpConnector(restClientConfig);
-
-        webClient = webClientBuilder.baseUrl(baseUrl).clientConnector(httpConnector).build();
+    private String buildBaseUrl(final RestClientConfiguration restClientConfig, final boolean useSSL) {
+        return RestUtils.getScheme(useSSL) + restClientConfig.getServerHost() + ":" + restClientConfig.getServerPort();
     }
 
     private ClientHttpConnector createClientHttpConnector(final RestClientConfiguration restClientConfig) {
