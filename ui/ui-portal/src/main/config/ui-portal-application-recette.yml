@@ -3,7 +3,7 @@ spring:
     active: dev,swagger
 
   cloud:
-    consul:  #disable for dev
+    consul: #disable for dev
       enabled: false
       discovery:
         enabled: false
@@ -17,6 +17,9 @@ server:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-portal.jks
     key-store-password: changeme
     key-password: changeme
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
@@ -98,9 +101,9 @@ cas:
 
 debug: false
 logging:
-    level:
-        fr.gouv.vitamui: DEBUG
-        org.springframework.web: INFO
+  level:
+    fr.gouv.vitamui: DEBUG
+    org.springframework.web: INFO
 # Uncomment if you want to use you specific logback config.
 #logging:
 #  config: src/main/config/logback.xml

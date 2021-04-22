@@ -1,6 +1,6 @@
 spring:
   cloud:
-    consul:  #disabled for dev
+    consul: #disabled for dev
       enabled: false
       discovery:
         enabled: false
@@ -12,6 +12,9 @@ server:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_cas-server.jks
     key-store-password: changeme
     key-password: changeme
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
   host: dev.vitamui.com
   port: 8080
   servlet:
@@ -142,7 +145,7 @@ ip.header: X-Real-IP
 api.token.ttl: 28800
 
 
-server-identity :
+server-identity:
   identityName: CAS
   identityRole: SSO
   identityServerId: 1
@@ -150,10 +153,10 @@ server-identity :
 
 # Example to override theme colors, logo, favicon, platform name ...
 theme:
-#  vitamui-platform-name: VITAM-UI
-#  vitamui-favicon: /absolute/path/to/favicon.ico
-#  vitam-logo: /absolute/path/to/logo.png
-#  vitamui-logo-large: /absolute/path/to/logo.png
+  #  vitamui-platform-name: VITAM-UI
+  #  vitamui-favicon: /absolute/path/to/favicon.ico
+  #  vitam-logo: /absolute/path/to/logo.png
+  #  vitamui-logo-large: /absolute/path/to/logo.png
   primary: '#702382'
   secondary: '#241f63'
   background: '#0F0D2D'
@@ -180,6 +183,6 @@ logging:
 # Cas CORS (necessary for mobile app)
 cas.httpWebRequest.cors.enabled: true
 cas.httpWebRequest.cors.allowCredentials: false
-cas.httpWebRequest.cors.allowOrigins: ['*']
-cas.httpWebRequest.cors.allowMethods: ['*']
-cas.httpWebRequest.cors.allowHeaders: ['*']
+cas.httpWebRequest.cors.allowOrigins: [ '*' ]
+cas.httpWebRequest.cors.allowMethods: [ '*' ]
+cas.httpWebRequest.cors.allowHeaders: [ '*' ]
