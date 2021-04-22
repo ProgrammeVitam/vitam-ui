@@ -46,7 +46,7 @@ Ce choix simplifie l'exploitation de la solution car il n'est pas nécessaire de
 
 La [documentation de CAS](https://www.apereo.org/projects/cas) est disponible sur internet. CAS est livré sous licence Apache 2.0.
 
-#### Intégration CAS dans VITAMUI
+### Intégration CAS dans VITAMUI
 
 Les principes généraux de l'implémentation de CAS dans VITAMUI sont les suivants :
 
@@ -82,7 +82,7 @@ Dans le cas d'un utilisateur n'utilisant pas le SSO :
 
 ![Intégration CAS](../images/dat_cas_2.png)
 
-#### Authentification d'un utilisateur non authentifié
+### Authentification d'un utilisateur non authentifié
 
 Pour un utilisateur, non préalablement authentifiés, l'authentification dans CAS se fait en plusieurs étapes :
 
@@ -106,7 +106,7 @@ Pour un utilisateur, non préalablement authentifiés, l'authentification dans C
 
 ![Protocole détaillé CAS](../images/dat_cas_4.png)
 
-#### Authentification d'un utilisateur préalablement authentifié
+### Authentification d'un utilisateur préalablement authentifié
 
 Si l'utilisateur est déjà authentifié auprès du CAS, aucune page de login ne s'affiche et l'utilisateur est redirigé vers l'application souhaitée, en étant authentifié dans cette application. Suivant les utilisateurs / applications demandées, une authentification multi-facteurs peut être jouée.
 
@@ -146,7 +146,7 @@ En production, le serveur CAS sera composé de plusieurs noeuds. Il est nécessa
 * une définition de services (dans MongoDB) propres aux URLs de production
 * une configuration Hazelcast adéquate (stockage des sessions SSO).
 
-#### Activation de la sécurité
+### Activation de la sécurité
 
 ##### Configuration des propriétés de sécurité
 
@@ -212,11 +212,11 @@ management.security.enabled: false
 
 Cette dernière configuration est sans importance du moment que l’URL /status du serveur CAS n’est pas mappée en externe.
 
-#### Définition des services supportés
+### Définition des services supportés
 
 Il est nécessaire de fournir lors du déploiement de la solution VITAMUI, la liste des services autorisés à interagir avec CAS en tant que Service Provider. Cette liste permet à CAS de s'assuer que le service est connu avant d'effectuer le callback. La liste des services est stockée lors du déploiement dans la base MongoDB de VITAM UI est accessible uniqument par CAS.  
 
-#### Configuration Hazelcast
+### Configuration Hazelcast
 
 Par défaut, les noeuds Hazelcast s’auto-découvrent et les tickets sont partitionnés entre tous les noeuds et chaque ticket a un backup. Il est néanmoins possible de configurer dans CAS des propriétés permettant d'affiner le réglage d’Hazelcast :
 
@@ -255,7 +255,7 @@ cas.ticket.registry.hazelcast.cluster.multicastTimeToLive: 32
 
 La documentation pour la génération des clés pour le cluster CAS est disponible [ici](https://dacurry-tns.github.io/deploying-apereo-cas/building_server_configure-server-properties.html#configure-ticket-granting-cookie-encryption).
 
-#### Fonctionnalités
+### Fonctionnalités
 
 Le serveur CAS VITAMUI est construit sur le serveur CAS Open Source v6.1.x via un mécanisme d'overlay Maven.
 

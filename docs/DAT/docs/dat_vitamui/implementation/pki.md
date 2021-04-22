@@ -27,7 +27,7 @@ Les principes de fonctionnement de la PKI sont les suivants :
   ![PKI](../images/dat_pki_1.png)  
 
 
-## Explication avancée du fonctionnement
+### Explication avancée du fonctionnement
 
 Le fonctionnement de la PKI de la solution *VitamUI* est basée à celle de Vitam - la logique d'architecture reste identique.
 
@@ -78,7 +78,7 @@ Par défaut, on retrouvera trois zones (une par autorité):
 - client-vitam: certificats utilisés par l'application pour communiquer avec Vitam. Avec le script **generate_certs.sh** fournis par la PKI, un certificat sera généré pour s'interfacer avec Vitam.
 - client-external: certificats des clients autorisés à solliciter les API externes
 
-## Cas pratiques
+### Cas pratiques
 
 - Instaurer la communication entre la solution VitamUI <-> Vitam
 

@@ -33,7 +33,7 @@
 
     3.4. [Services d’infrastructure](architecture/services_infrastructures.md)  
     
-    3.5. [Service d'archivage](architecture/service_archivage.md)  
+    3.5. [Service d'archivage VITAM](architecture/service_archivage.md)  
     
     3.6. [Service d'authentification](architecture/service_authentification.md)  
         3.6.1. [Authentification des applications externes](architecture/service_authentification.md#authentification-des-applications-externes)  
@@ -51,13 +51,13 @@
 
     3.7. [Sessions applicatives](architecture/sessions_applicatives.md#sessions-applicatives)  
         3.7.1. [Liste des sessions](architecture/sessions_applicatives.md#liste-des-sessions)  
-        3.7.1. [Séquence de création des sessions](architecture/sessions_applicatives.md#squence-de-cration-des-sessions)  
-        3.7.1. [Session applicative Web](architecture/sessions_applicatives.md#sessions-applicatives)  
-        3.7.1. [Session des services API](architecture/sessions_applicatives.md#session-des-services-api)  
-        3.7.1. [Session CAS](architecture/sessions_applicatives.md#session-cas)  
-        3.7.1. [Session des IDP](architecture/sessions_applicatives.md#session-des-idp)  
-        3.7.1. [Expiration et cloture des sessions](architecture/sessions_applicatives.md#expiration-et-cloture-des-sessions)  
-        3.7.1. [Paramétrages des sessions](architecture/sessions_applicatives.md#paramtrages-des-sessions)  
+        3.7.2. [Séquence de création des sessions](architecture/sessions_applicatives.md#squence-de-cration-des-sessions)  
+        3.7.3. [Session applicative Web](architecture/sessions_applicatives.md#sessions-applicatives)  
+        3.7.4. [Session des services API](architecture/sessions_applicatives.md#session-des-services-api)  
+        3.7.5. [Session CAS](architecture/sessions_applicatives.md#session-cas)  
+        3.7.6. [Session des IDP](architecture/sessions_applicatives.md#session-des-idp)  
+        3.7.7. [Expiration et cloture des sessions](architecture/sessions_applicatives.md#expiration-et-cloture-des-sessions)  
+        3.7.8. [Paramétrages des sessions](architecture/sessions_applicatives.md#paramtrages-des-sessions)  
 
     3.8. [Profils et rôles](architecture/profils_roles.md)  
         3.8.1. [Groupe de profils](architecture/profils_roles.md#groupe-de-profils)  
@@ -67,13 +67,18 @@
         3.8.5. [Matrice des droits](architecture/profils_roles.md#matrice-des-droits)  
         3.8.6. [Sécurisation des ressources](architecture/profils_roles.md#scurisation-des-ressources)  
 
-    3.9. [Journalisation](architecture/journalisation.md)  
-
+    3.9. [Journalisation](architecture/journalisation.md) 
+        3.9.1. [Objectifs](architecture/journalisation.md#Objectifs)
+        3.9.2. [Événement](architecture/journalisation.md#Événement)
+        3.9.3. [Application dans VITAMUI](architecture/journalisation.md#Application-dans-VITAMUI)
+        3.9.4. [Création](architecture/journalisation.md#Création)
+        3.9.5. [Sauvegarde](architecture/journalisation.md#Sauvegarde)
+   
     3.10. [Modèle de données](architecture/mdd.md)  
-        3.10.1 [Liste des bases](architecture/mdd.md#liste-des-bases)  
-        3.10.2 [Base IAM](architecture/mdd.md#base-iam)  
-        3.10.3 [Base Security](architecture/mdd.md#base-security)  
-        3.10.4 [Base CAS](architecture/mdd.md#base-cas)  
+         3.10.1. [Liste des bases](architecture/mdd.md#liste-des-bases)  
+         3.10.2. [Base IAM](architecture/mdd.md#Base-IAM)  
+         3.10.3. [Base security](architecture/mdd.md#base-security)  
+         3.10.4. [Base Cas](architecture/mdd.md#base-cas)  
 
 4. [Implémentation](implementation/composants.md)
 
@@ -81,12 +86,10 @@
         4.1.1. [Briques techniques](implementation/composants.md#briques-techniques)  
         4.1.2. [COTS](implementation/composants.md#cots)  
 
-    4.2. [Services](implementation/services.md#services)  
-        4.2.1. [Architecture micro-services](implementation/services.md#services)  
-        4.2.2. [Identification des services](implementation/services.md#identification-des-services)  
-        4.2.3. [Communications inter-services](implementation/services.md#communications-inter-services)  
-        4.2.4. [Cloisonnement des services](implementation/services.md#cloisonnement-des-services)  
-        4.2.5. [Multi instanciation des micro services](implementation/multi_instanciation.md)
+    4.2. [Services](implementation/services.md#services)
+        4.2.1. [Identification des services](implementation/services.md#identification-des-services)  
+        4.2.2. [Communications inter-services](implementation/services.md#communications-inter-services)  
+        4.2.3. [Cloisonnement des services](implementation/services.md#cloisonnement-des-services)  
 
     4.3. [Intégration système](implementation/integration.md)  
         4.3.1. [Utilisateurs et groupes d’exécution](implementation/integration.md#utilisateurs-et-groupes-dexcution)  
@@ -107,11 +110,11 @@
 
     4.5. [Certificats et PKI](implementation/pki.md)  
         4.5.1. [Principes de fonctionnement PKI de VITAMUI](implementation/pki.md#principes-de-fonctionnement-pki-de-vitamui)  
-        4.5.2. [PKI de test](implementation/pki.md#pki-de-test)  
-        4.5.3. [Liste des certificats utilisés](implementation/pki.md#liste-des-certificats-utiliss)  
-        4.5.4. [Génération des certificats](implementation/pki.md#gnration-des-certificats)  
-        4.5.5. [Configuration du client VITAMUI vers VITAM](implementation/pki.md#configuration-du-client-vitamui-vers-vitam)  
-        4.5.6. [Génération des stores](implementation/pki.md#gnration-des-stores)  
+        4.5.2. [Explication avancée du fonctionnement](implementation/pki.md#Explication-avancée-du-fonctionnement)  
+        4.5.3. [Génération des certificats](implementation/pki.md#gnration-des-certificats)
+        4.5.4. [Cas pratiques](implementation/pki.md#Cas-pratiques)
+        4.5.5. [PKI de test](implementation/pki.md#pki-de-test)
+        4.5.6. [Liste des certificats utilisés](implementation/pki.md#liste-des-certificats-utiliss)  
         4.5.7. [Procédure d’ajout d’un certificat client externe](implementation/pki.md#procdure-dajout-dun-certificat-client-externe)  
 
     4.6. [Clusterisation](implementation/clusterisation.md)
@@ -119,12 +122,18 @@
     4.7. [Détail des services](implementation/detail_services.md)
 
     4.8. [Détail des COTS](implementation/detail_cots.md)  
+        4.8.1. [CAS](implementation/detail_cots.md#CAS)
+        4.8.2. [Annuaire de services Consul](implementation/detail_cots.md#Annuaire-de-services-Consul)
+        4.8.3. [Base NOSQL MongoDB](implementation/detail_cots.md#Base-NOSQL-MongoDB)
+
+    4.9. [Multi instanciation des micro services](implementation/multi_instanciation.md)
+        4.9.1. [Multi instanciation](implementation/multi_instanciation.md#Multi-instanciation)
+        4.9.2. [Mono instanciation](implementation/multi_instanciation.md#Mono-instanciation)
 
 5. [Gestion du système](exploitation/chaine_deploiement.md#exploitation)  
     5.1. [Chaîne de déploiement](exploitation/chaine_deploiement.md#chane-de-dploiement)  
     5.2. [Cloisonnement](exploitation/chaine_deploiement.md#cloisonnement)  
-    5.3. [Supervision](exploitation/chaine_deploiement.md#supervision)  
-    5.4. [Métriques](exploitation/chaine_deploiement.md#mtriques)  
-    5.5. [Logs techniques](exploitation/chaine_deploiement.md#logs-techniques)  
-    5.6. [Sauvegarde](exploitation/chaine_deploiement.md#sauvegarde)  
-    5.7. [PRA](exploitation/chaine_deploiement.md#pra)  
+    5.3. [Logs techniques](exploitation/chaine_deploiement.md#logs-techniques)
+    5.4. [Supervision](exploitation/chaine_deploiement.md#supervision)
+    5.5. [Métriques](exploitation/chaine_deploiement.md#mtriques)
+    5.6. [PRA](exploitation/chaine_deploiement.md#pra)  
