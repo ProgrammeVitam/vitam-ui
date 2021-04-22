@@ -131,7 +131,7 @@
         <spring.version>5.2.5.RELEASE</spring.version>
         <spring.cloud.consul.version>2.2.2.RELEASE</spring.cloud.consul.version>
         <spring.security.version>5.3.1.RELEASE</spring.security.version>
-        <swagger.version>2.9.2</swagger.version>
+        <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
         <vitam.version>3.0.1</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
