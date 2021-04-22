@@ -48,6 +48,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,7 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public RuleDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -134,6 +136,7 @@ public class RuleController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier, the partialEntity are mandatory parameters: ", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
@@ -142,6 +145,7 @@ public class RuleController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for rule with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -149,6 +153,7 @@ public class RuleController extends AbstractUiRestController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable String id) {
         LOGGER.debug("delete rule with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         service.delete(buildUiHttpContext(), id);
     }
 

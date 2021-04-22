@@ -147,6 +147,7 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType) {
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
+        ParameterChecker.checkParameter("The Identifier and the download type are mandatory parameters: ", id, downloadType);
         final ResponseEntity<Resource> response = logbookExternalService.downloadReport(id, downloadType);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }

@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -110,6 +111,7 @@ public class IdentityProviderInternalController implements CrudController<Identi
     public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria,
             final @RequestParam Optional<String> embedded) {
         LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
         return internalIdentityProviderService.getOne(id, criteria, embedded);
     }
@@ -148,6 +150,7 @@ public class IdentityProviderInternalController implements CrudController<Identi
     @PatchMapping(CommonConstants.PATH_ID)
     public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalIdentityProviderService.patch(partialDto);
     }

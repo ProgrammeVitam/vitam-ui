@@ -38,7 +38,9 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -148,6 +150,7 @@ public class UserInternalController implements CrudController<UserDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalUserService.update(dto);
     }
@@ -159,6 +162,7 @@ public class UserInternalController implements CrudController<UserDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalUserService.patch(partialDto);
     }
@@ -166,6 +170,7 @@ public class UserInternalController implements CrudController<UserDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for users with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalUserService.findHistoryById(id);
     }
 

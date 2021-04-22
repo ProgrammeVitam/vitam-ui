@@ -38,7 +38,9 @@ import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalServ
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -105,6 +107,8 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, IOException, InvalidParseOperationException {
         LOGGER.info("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
             accessContractId, searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker.checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ", tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return archiveInternalService.searchArchiveUnitsByCriteria(searchQuery, vitamContext);
     }
@@ -115,6 +119,7 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException, IOException {
         LOGGER.debug("Get filing plan");
+        ParameterChecker.checkParameter("The tenant Id, the accessContract Id  are mandatory parameters: ", tenantId, accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         final JsonNode holdingQuery = createQueryForHoldingUnit();
         return objectMapper.treeToValue(archiveInternalService.searchUnits(holdingQuery, vitamContext),
@@ -142,9 +147,9 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
         LOGGER.info("UA Details  {}", id);
-        VitamContext vitamContext =
-            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.findUnitById(id, vitamContext);
+        ParameterChecker.checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.findUnitById(id,vitamContext);
     }
 
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
@@ -155,6 +160,7 @@ public class ArchiveSearchInternalController {
         ResponseEntity<Resource> result = null;
 
         LOGGER.info("Access Contract {} ", accessContractId);
+        ParameterChecker.checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
         LOGGER.info("Download Archive Unit Object with id  {}", id);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);

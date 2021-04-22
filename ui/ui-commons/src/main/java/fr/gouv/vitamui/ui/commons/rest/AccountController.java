@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ui.commons.rest;
 
 import java.util.Map;
 
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -69,6 +70,7 @@ public class AccountController extends AbstractUiRestController {
     @PatchMapping(CommonConstants.PATH_ME)
     public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch me with {}", partialDto);
+        ParameterChecker.checkParameter("The User Entity is a mandatory parameter: ", partialDto);
         return service.patchMe(buildUiHttpContext(), partialDto);
     }
 }

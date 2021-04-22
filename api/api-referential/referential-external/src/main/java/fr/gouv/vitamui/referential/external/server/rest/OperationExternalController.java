@@ -99,6 +99,7 @@ public class OperationExternalController {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for audit with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return operationExternalService.findHistoryById(id);
     }
 
@@ -124,6 +125,7 @@ public class OperationExternalController {
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
     public JsonNode checkTraceabilityOperation(final @PathVariable String id) {
         LOGGER.debug("Launch check traceability operation with id = {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return operationExternalService.checkTraceabilityOperation(id);
     }
 

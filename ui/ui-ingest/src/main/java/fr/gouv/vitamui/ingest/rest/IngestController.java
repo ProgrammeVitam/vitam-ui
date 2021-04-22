@@ -114,6 +114,7 @@ public class IngestController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationDto getOne(final @PathVariable("id") String id ) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.error("Get Ingest={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
@@ -121,6 +122,7 @@ public class IngestController extends AbstractUiRestController {
     @ApiOperation(value = "download ODT Report for an ingest operation")
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("download ODT report for the ingest with id :{}", id);
         byte[] bytes = service.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()

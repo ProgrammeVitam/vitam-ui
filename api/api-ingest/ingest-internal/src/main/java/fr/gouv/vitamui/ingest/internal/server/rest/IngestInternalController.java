@@ -93,6 +93,7 @@ public class IngestInternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
         LOGGER.debug("get Ingest Entities for id={} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestInternalService.getOne(vitamContext, id);
     }
@@ -104,6 +105,7 @@ public class IngestInternalController {
         @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile path)
         throws IngestExternalException {
         LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
+        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId);
         SanityChecker.isValidFileName(path.getOriginalFilename());
         return ingestInternalService.upload(path, contextId, action);
     }

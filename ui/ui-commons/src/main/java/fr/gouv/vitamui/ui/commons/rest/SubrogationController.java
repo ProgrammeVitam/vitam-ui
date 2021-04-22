@@ -39,6 +39,7 @@ package fr.gouv.vitamui.ui.commons.rest;
 import java.util.Collection;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -92,6 +93,7 @@ public class SubrogationController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     public SubrogationDto getOne(final @PathVariable String id) {
         LOGGER.debug("get subrogation id={}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.getOne(buildUiHttpContext(), id, Optional.empty());
     }
 
@@ -99,6 +101,8 @@ public class SubrogationController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Collection<SubrogationDto> getAll(@RequestParam final Optional<String> criteria) {
+        LOGGER.info("get all subrogation");
+        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -107,6 +111,7 @@ public class SubrogationController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable final String id) {
         LOGGER.debug("Delete {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         service.delete(buildUiHttpContext(), id);
     }
 
@@ -115,6 +120,7 @@ public class SubrogationController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public SubrogationDto accept(@PathVariable final String id) {
         LOGGER.debug("Accepte subrogation id={}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.accept(buildUiHttpContext(), id);
     }
 
@@ -123,6 +129,7 @@ public class SubrogationController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public void decline(@PathVariable final String id) {
         LOGGER.debug("Decline subrogation id={}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         service.decline(buildUiHttpContext(), id);
     }
 
@@ -152,7 +159,8 @@ public class SubrogationController extends AbstractUiRestController {
 
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
     public GroupDto getGroupById(final @PathVariable("id") String id) {
-        LOGGER.debug("Get group {}", id);
+        LOGGER.debug("Get a group by ID  {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.getGroupById(buildUiHttpContext(), id);
     }
 

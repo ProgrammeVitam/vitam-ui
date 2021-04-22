@@ -99,6 +99,7 @@ public class UserExternalController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_GET_USERS)
     public UserDto getOne(final @PathVariable("id") String id) {
         LOGGER.debug("Get {}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return userExternalService.getOne(id);
     }
 

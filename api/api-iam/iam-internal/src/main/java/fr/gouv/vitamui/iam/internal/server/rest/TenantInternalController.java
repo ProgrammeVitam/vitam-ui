@@ -168,6 +168,7 @@ public class TenantInternalController implements CrudController<TenantDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for tenant with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalTenantService.findHistoryById(id);
     }
 }

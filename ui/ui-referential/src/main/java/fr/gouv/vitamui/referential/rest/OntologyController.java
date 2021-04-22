@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.rest;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -113,6 +114,7 @@ public class OntologyController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public OntologyDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -143,6 +145,7 @@ public class OntologyController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
         LOGGER.debug("get logbook for ontology with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -151,6 +154,7 @@ public class OntologyController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch Ontology {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier, the OntologyEntity are mandatory parameters: ", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch ontology: the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
@@ -159,6 +163,7 @@ public class OntologyController extends AbstractUiRestController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable String id) {
         LOGGER.debug("delete ontology with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         service.delete(buildUiHttpContext(), id);
     }
     

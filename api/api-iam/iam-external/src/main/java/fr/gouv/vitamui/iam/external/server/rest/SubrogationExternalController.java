@@ -166,6 +166,7 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @DeleteMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_DELETE_SUBROGATIONS)
     public void delete(@PathVariable final String id) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         subrogationExternalService.delete(id);
     }
 }

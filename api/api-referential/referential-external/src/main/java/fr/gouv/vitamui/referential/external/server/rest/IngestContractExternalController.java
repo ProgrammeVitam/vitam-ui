@@ -97,6 +97,7 @@ public class IngestContractExternalController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public IngestContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get ingestcontract  identifier={}", identifier);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return ingestContractExternalService.getOne(identifier);
     }
 
@@ -120,6 +121,7 @@ public class IngestContractExternalController {
     @Secured(ServicesData.ROLE_UPDATE_INGEST_CONTRACTS)
     public IngestContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return ingestContractExternalService.patch(partialDto);
     }

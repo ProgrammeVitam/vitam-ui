@@ -38,6 +38,7 @@ package fr.gouv.vitamui.identity.rest;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -90,6 +91,7 @@ public class UserController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public UserDto getOne(final @PathVariable String id) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Get user={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }

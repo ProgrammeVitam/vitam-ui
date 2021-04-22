@@ -119,6 +119,7 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto) {
         LOGGER.debug("Update {} with {}", id, dto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.update(dto);
     }
@@ -130,6 +131,7 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.patch(partialDto);
     }
@@ -137,6 +139,7 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         LOGGER.debug("get logbook for owner with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return internalOwnerService.findHistoryById(id);
     }
 }
