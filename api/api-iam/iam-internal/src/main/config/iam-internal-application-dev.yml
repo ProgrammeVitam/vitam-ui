@@ -84,33 +84,31 @@ logging:
 
 provisioning-client:
   identity-providers:
-    - idp-identifier: 1
+    - idp-identifier: system_idp
+      uri: https://localhost:8090/provisioning/v1/users
       client:
-        server-host: ${vitamui-server-host}.teamdlab.com
-        server-port: 6201
         secure: true
         ssl-configuration:
           keystore:
-            key-path: ../../../dev-deployment/environment/keystores/server/localhost/keystore_archive-internal.jks
+            key-path: src/main/config/keystore_provisioning-users.jks
             key-password: changeme
             type: JKS
           truststore:
-            key-path: ../../../dev-deployment/environment/keystores/server/truststore_server.jks
+            key-path: src/main/config/truststore_server.jks
             key-password: changeme
             type: JKS
           hostname-verification: false
     - idp-identifier: 2
       client:
-        server-host: ${vitamui-server-host}.teamdlab.com
-        server-port: 6201
+        uri: https://localhost:8090/provisioning/v1/users
         secure: true
         ssl-configuration:
           keystore:
-            key-path: ../../../dev-deployment/environment/keystores/server/localhost/keystore_archive-internal.jks
+            key-path: src/main/config/keystore_provisioning-users.jks
             key-password: changeme
             type: JKS
           truststore:
-            key-path: ../../../dev-deployment/environment/keystores/server/truststore_server.jks
+            key-path: src/main/config/truststore_server.jks
             key-password: changeme
             type: JKS
           hostname-verification: false

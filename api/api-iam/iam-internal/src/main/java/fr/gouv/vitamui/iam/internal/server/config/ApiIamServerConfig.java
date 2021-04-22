@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.ProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -334,8 +334,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ProvisioningInternalService provisioningService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration) {
-        return new ProvisioningInternalService(webClientBuilder, provisioningClientConfiguration);
+    public ProvisioningInternalService provisioningService(final WebClient.Builder webClientBuilder, final ProvisioningClientConfiguration provisioningClientConfiguration, final InternalSecurityService internalSecurityService) {
+        return new ProvisioningInternalService(webClientBuilder, provisioningClientConfiguration, internalSecurityService);
     }
 
     @Bean

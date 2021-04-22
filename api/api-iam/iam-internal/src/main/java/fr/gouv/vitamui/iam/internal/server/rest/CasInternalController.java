@@ -191,8 +191,8 @@ public class CasInternalController {
     }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING, params = { "email", "idp" })
-    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam final Optional<String> userIdentifier,
-            final @RequestParam Optional<String> embedded) {
+    public UserDto getUser(@RequestParam final String email, @RequestParam final String idp, @RequestParam(required = false) final String userIdentifier,
+            @RequestParam(required = false) final String embedded) {
         LOGGER.debug("getUser - email : {}, idp : {}, userIdentifier : {}, embedded options : {}", email, idp, userIdentifier, embedded);
         return casService.getUser(email, idp, userIdentifier, embedded);
     }
