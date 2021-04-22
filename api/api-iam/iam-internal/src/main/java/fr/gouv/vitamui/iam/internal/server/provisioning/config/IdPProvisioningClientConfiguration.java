@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.rest.client.configuration;
+package fr.gouv.vitamui.iam.internal.server.provisioning.config;
 
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +48,7 @@ import lombok.ToString;
 @ToString
 public class IdPProvisioningClientConfiguration {
 
-    private Integer idpIdentifier;
+    private String idpIdentifier;
 
     private String uri;
 

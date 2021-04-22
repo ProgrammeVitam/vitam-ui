@@ -66,7 +66,7 @@ import javax.validation.constraints.NotNull;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.commons.api.domain.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -293,24 +293,52 @@ public class CasInternalService {
         }
     }
 
+    /**
+     * Method to retrieve the user informations
+     * @param email email of the user
+     * @param idp can be null
+     * @param userIdentifier can be null
+     * @param optEmbedded
+     * @return
+     */
     @Transactional
-    public UserDto getUser(final String email, final String idp, final Optional<String> userIdentifier, final Optional<String> optEmbedded) {
-        final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
-        try {
-            final UserDto user = internalUserService.findUserByEmail(email);
-            if (identityProvider.isAutoProvisioningEnabled() && user.isAutoProvisioningEnabled()) {
-                // TODO : quelle unité envoyer ?
-                updateUser(user, provisioningInternalService.getUserInformation(email, idp, Optional.of(user.getGroupId()), Optional.empty(), userIdentifier));
-            }
-        } catch (NotFoundException e) {
-            if (!identityProvider.isAutoProvisioningEnabled()) {
-                throw e;
-            }
-            createNewUser(provisioningInternalService.getUserInformation(email, idp, Optional.empty(), Optional.empty(), userIdentifier));
+    public UserDto getUser(final String email, final String idp, final String userIdentifier, final String optEmbedded) {
+       // if the user depends on an external idp
+        if(StringUtils.isNotBlank(idp)) {
+            this.provisionUser(email, idp, userIdentifier);
         }
 
-        return getUserByEmail(email, optEmbedded);
+        return getUserByEmail(email, Optional.ofNullable(optEmbedded));
     }
+
+    /**
+     * Method to perform auto provisioning
+     * @param email
+     * @param idp
+     * @param userIdentifier
+     */
+    public void provisionUser(final String email, final String idp, final String userIdentifier) {
+        final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
+
+        // Do nothing is autoProvisioning is disabled
+        if(!identityProvider.isAutoProvisioningEnabled()) {
+            return;
+        }
+
+        final boolean userExist = userRepository.existsByEmail(email);
+        // Try to update user
+        if(userExist) {
+            final UserDto user = internalUserService.findUserByEmail(email);
+            if(user.isAutoProvisioningEnabled()) {
+                updateUser(user, provisioningInternalService.getUserInformation(idp, email, user.getGroupId(), null, userIdentifier));
+            }
+        }
+        // Try to create a new user
+        else {
+            createNewUser(provisioningInternalService.getUserInformation(idp, email, null, null, null));
+        }
+    }
+
 
     private void createNewUser(final ProvidedUserDto providedUserInfo) {
         final UserDto user = new UserDto();
