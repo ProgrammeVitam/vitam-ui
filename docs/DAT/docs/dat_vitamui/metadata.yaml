@@ -1,0 +1,15 @@
+---
+#documentclass: extarticle
+documentclass: article
+title:  Dossier d'architecture technique VITAMUI
+author:
+  - Vitam
+date: Mars 2021
+fontsize: 11pt
+fontfamily: arev
+papersize: a4
+geometry: margin=1in
+linkcolor : cyan
+toc: true
+#lang: fr-CA
+---
