@@ -91,6 +91,15 @@ public class ArchiveSearchInternalService {
     private static final String ARCHIVE_UNIT_USAGE = "qualifier";
     private static final String ARCHIVE_UNIT_VERSION = "DataObjectVersion";
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
+    public static final String SEMI_COLON = ";";
+    public static final String COMMA = ",";
+    public static final String DOUBLE_QUOTE = "\"";
+    public static final String SINGLE_QUOTE = "'";
+    public static final String NEW_LINE = "\n";
+    public static final String NEW_TAB = "\t";
+    public static final String NEW_LINE_1 = "\r\n";
+
+    public static final String SPACE = " ";
 
     private final ObjectMapper objectMapper;
     private final UnitService unitService;
@@ -297,6 +306,7 @@ public class ArchiveSearchInternalService {
     }
 
 
+
     public List<ArchiveUnitCsv> exportArchiveUnitsByCriteriaToCsvFile(final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext)
         throws VitamClientException {
@@ -330,6 +340,26 @@ public class ArchiveSearchInternalService {
         }
     }
 
+    private String getArchiveUnitTitle(ArchiveUnit archiveUnit) {
+        String title = null;
+        if (archiveUnit != null) {
+            if (StringUtils.isEmpty(archiveUnit.getTitle()) || StringUtils.isBlank(archiveUnit.getTitle())) {
+                if (archiveUnit.getTitle_() != null) {
+                    if (StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) ||
+                        StringUtils.isBlank(archiveUnit.getTitle_().getFr())) {
+                        title = archiveUnit.getTitle_().getFr();
+                    } else {
+                        title = archiveUnit.getTitle_().getEn();
+                    }
+                }
+            } else {
+                title = archiveUnit.getTitle();
+            }
+        }
+        return title;
+    }
+
+
     private ArchiveUnitCsv cleanAndMapArchiveUnitResult(ArchiveUnit archiveUnit) {
         if (archiveUnit == null) {
             return null;
@@ -337,17 +367,23 @@ public class ArchiveSearchInternalService {
         ArchiveUnitCsv archiveUnitCsv = new ArchiveUnitCsv();
         BeanUtils.copyProperties(archiveUnit, archiveUnitCsv);
         archiveUnitCsv.setDescription(
-            archiveUnit.getDescription() != null ? archiveUnit.getDescription().replaceAll(";", ",") : null);
+            archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null);
         archiveUnitCsv.setDescriptionLevel(
-            archiveUnit.getDescriptionLevel() != null ? archiveUnit.getDescriptionLevel().replaceAll(";", ",") : null);
-        archiveUnitCsv.setTitle(
-            archiveUnit.getTitle() != null ? archiveUnit.getTitle().replaceAll(";", ",") : null);
+            archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null);
+        archiveUnitCsv.setTitle(cleanString(getArchiveUnitTitle(archiveUnit)));
         archiveUnitCsv.setOriginatingAgencyName(
-            archiveUnit.getOriginatingAgencyName() != null ?
-                archiveUnit.getOriginatingAgencyName().replaceAll(";", ",") :
+            archiveUnit.getOriginatingAgencyName() != null ? cleanString(archiveUnit.getOriginatingAgencyName()) :
                 null);
         return archiveUnitCsv;
+    }
 
+    private String cleanString(String initialValue) {
+        if (initialValue == null)
+            return null;
+        return initialValue.replaceAll(SEMI_COLON, COMMA).replaceAll(DOUBLE_QUOTE, SINGLE_QUOTE)
+            .replaceAll(NEW_LINE, SPACE)
+            .replaceAll(NEW_LINE_1, SPACE)
+            .replaceAll(NEW_TAB, SPACE);
     }
 
     /**
