@@ -31,17 +31,41 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 ### Service referential-external
 
 * Description : service externe pour la gestion des référentiels de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service de référentiel externe a pour responsabilité la réception, la sécurisation des resources internes de gestion des référentiels, et la communication sécurisée avec les couches internes.
+Le service de référentiel externe est composé de plusieurs points d'APIs:
+ - API des contrats d'accès (/referential/accesscontract)
+ - API des contrats d'entrées (/referential/ingestcontract)
+ - API des contrats de gestion (/referential/managementcontract)
+ - API des services agents (/referential/agency)
+ - API des formats (/referential/fileformat)
+ - API des ontologies (/referential/ontology)
+ - API des profils d'archivages (/referential/profile)
+ - API des règles de gestion (/referential/profile)
+ - API des profils de sécurité (/referential/security-profile)
+ - API des contexts applicatifs (/referential/context)
+ - API des opérations permettant le lancement différents audits (cohérence, valeur probante ...).
 
 ### Service ingest-external
 
 * Description : service externe pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service d'ingest externe a pour responsabilité la réception, la sécurisation des resources internes de versement, et la communication sécurisée avec les couches internes.
+Le service d'ingest externe est composé de plusieurs points d'APIs:
+ - API de versement des archives permettant la consommation des flux d'archives (/v1/ingest/upload)
+ - API de visualisation des journaux d'opération des opérations d'entrées (API /v1/ingest)
+ - API de visualisation détaillé d'un journal d'une opération d'entrées (/v1/ingest/{id})
+ - API permettant le téléchargement d'un rapport sous forme ODT d'une opération d'entrée (/v1/ingest/odtreport/{id})
+ - API commune est utilisé pour le téléchargement du Manifest et de l'ATR (Archival Transfer Reply) d'une opération d'entrée. (Manifest: /logbooks/operations/{id}/download/manifest, ATR: /logbooks/operations/{id}/download/atr)
 
 ### Service archive-search-external
 
 * Description : service externe pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
-* Contraintes
-* API swagger
+
+Le service d'archive externe a pour responsabilité la réception, la sécurisation des resources internes, et la communication sécurisée avec les couches internes d'accès aux archives.
+Le service d'archive externe est composé de plusieurs points d'APIs:
+ - API de recherche des archive par requetes (/archive-search/search)
+ - API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
+ - API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
+ - API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
+ - API d'export des résultats sous format csv (/export-csv-search)

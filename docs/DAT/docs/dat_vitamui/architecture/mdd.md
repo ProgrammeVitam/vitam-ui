@@ -1,13 +1,14 @@
-# Modèle de données
-## Liste des bases
+## Modèle de données
+
+### Liste des bases
 
     iam
     security
     cas
 
-## Base IAM
+### Base IAM
 
-##### Collections
+###### Collections
     customers
     events
     groups
@@ -286,7 +287,8 @@ Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seul
 | synchronizedVitamDate    |   OffsetDateTime  | |   |
 
 Pour aller plus loin, le modèle de données Vitam concernant les journaux d'archives est accessible par [ici](http://www.programmevitam.fr/ressources/DocCourante/autres/fonctionnel/VITAM_Modele_de_donnees.pdf#%5B%7B%22num%22%3A45%2C%22gen%22%3A0%7D%2C%7B%22name%22%3A%22XYZ%22%7D%2C56.7%2C748.3%2C0%5D)
-## Base security
+
+### Base security
 
 * _Collection Context_
 
@@ -333,8 +335,9 @@ La liste des noms de séquences :
 - provider_identifier
 - customer_identifier
 - owner_identifier
+
 	
-## Base Cas
+### Base Cas
 
 Cette base est initialisée à la création de l'environnement. Elle est uniquement utilisée par CAS en lecture seule.
 

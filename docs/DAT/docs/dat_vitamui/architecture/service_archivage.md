@@ -1,5 +1,5 @@
 
-## Service d'archivage
+## Service d'archivage VITAM
 
 Le service d'archivage se base sur le socle logiciel VITAM a pour fonction de gérer l'archivage des documents. Il apporte une forte garantie de sécurité et de disponibilité pour les archives. 
 
