@@ -139,7 +139,7 @@ public class BaseWebClientFactory implements WebClientFactory {
         webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig));
         if(useBaseUrl) {
             // Build or retrieve the baseUrl provided
-            String baseUrl = StringUtils.isBlank(webClientBaseUrl) ? buildBaseUrl(restClientConfig, restClientConfig.isSecure()) : webClientBaseUrl;
+            this.baseUrl = StringUtils.isBlank(webClientBaseUrl) ? buildBaseUrl(restClientConfig, restClientConfig.isSecure()) : webClientBaseUrl;
             webClientBuilder.baseUrl(baseUrl);
         }
         webClient = webClientBuilder.build();;
