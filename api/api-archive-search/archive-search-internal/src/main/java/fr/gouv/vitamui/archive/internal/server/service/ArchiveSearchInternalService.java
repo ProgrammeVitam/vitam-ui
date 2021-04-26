@@ -345,8 +345,8 @@ public class ArchiveSearchInternalService {
         if (archiveUnit != null) {
             if (StringUtils.isEmpty(archiveUnit.getTitle()) || StringUtils.isBlank(archiveUnit.getTitle())) {
                 if (archiveUnit.getTitle_() != null) {
-                    if (StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) ||
-                        StringUtils.isBlank(archiveUnit.getTitle_().getFr())) {
+                    if (!StringUtils.isEmpty(archiveUnit.getTitle_().getFr()) &&
+                        !StringUtils.isBlank(archiveUnit.getTitle_().getFr())) {
                         title = archiveUnit.getTitle_().getFr();
                     } else {
                         title = archiveUnit.getTitle_().getEn();
@@ -405,7 +405,7 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
         Integer nbResults = archivesOriginResponse.getHits().getTotal();
-        if (nbResults > EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
+        if (nbResults >= EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS) {
             LOGGER.error("The archives units result found is greater than allowed {} ",
                 EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS);
             throw new RequestEntityTooLargeException(
