@@ -379,6 +379,79 @@
         "tags": [
           "Cas"
         ],
+        "summary": "Récupération d'un utilisateur avec gestion du provisioning",
+        "operationId": "getUserByIdUsingGETWithProvisioning",
+        "parameters": [
+          {
+            "$ref": "#/parameters/x-tenant-id"
+          },
+          {
+            "$ref": "#/parameters/x-user-token"
+          },
+          {
+            "$ref": "#/parameters/x-application-id"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email de l'utilisateur",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idp",
+            "in": "query",
+            "description": "Identifiant technique de l'idp de l'utilisateur",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userIdentifier",
+            "in": "query",
+            "description": "Identifiant technique de l'utilisateur",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "embedded",
+            "in": "query",
+            "description": "value authtoken pour générer un token d'authentification, surrogation pour signifier que c'est une connexion par subrogation",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "authtoken",
+                "surrogation"
+              ]
+            },
+            "collectionFormat": "csv"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserDto"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/cas/users": {
+      "get": {
+        "tags": [
+          "Cas"
+        ],
         "summary": "Récupération d'un utilisateur",
         "operationId": "getUserByIdUsingGET",
         "parameters": [
