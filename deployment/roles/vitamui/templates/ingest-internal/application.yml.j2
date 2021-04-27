@@ -59,6 +59,16 @@ clients:
       hostname-verification: false
 {% endif %}
 
+opentracing:
+  jaeger:
+    enabled: {{ opentracing.jaeger.enabled }}
+    logSpans: {{ opentracing.jaeger.log_spans }}
+    expandExceptionLogs: {{opentracing.jaeger.expand_exception_logs}}
+    udp-sender:
+      host: {{ opentracing.jaeger.udp_sender.host }}
+      port: {{ opentracing.jaeger.udp_sender.port }}
+
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:

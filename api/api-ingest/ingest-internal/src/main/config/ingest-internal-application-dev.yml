@@ -5,7 +5,7 @@ spring:
     active: swagger
 
   cloud:
-    consul:  #disabled for dev
+    consul: #disabled for dev
       enabled: false
       discovery:
         enabled: false
@@ -41,7 +41,17 @@ clients:
     server-port: 7083
 
 swagger:
- file-path: file:../../../tools/swagger/docs/api-internal/ingest-internal/swagger.json
+  file-path: file:../../../tools/swagger/docs/api-internal/ingest-internal/swagger.json
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
 
 logging:
   level:
