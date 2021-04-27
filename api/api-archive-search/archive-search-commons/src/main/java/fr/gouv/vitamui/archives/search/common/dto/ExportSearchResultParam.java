@@ -14,7 +14,7 @@ public class ExportSearchResultParam {
     private static final String FR_ORIGINATING_AGENCY_FIELD_HEADER_NAME = "Service producteur de l'UA";
     private static final String FR_DESCRIPTION_LEVEL_FIELD_HEADER_NAME = "Niveau de description";
     private static final String FR_ARCHIVE_UNIT_NAME_FIELD_HEADER_NAME = "Nom de l’UA";
-    private static final String FR_BEGIN_DATE_FIELD_HEADER_NAME = "Date de debut de l’UA";
+    private static final String FR_BEGIN_DATE_FIELD_HEADER_NAME = "Date de début de l’UA";
     private static final String FR_END_DATE_FIELD_HEADER_NAME = "Date de fin de l’UA";
     private static final String FR_DESCRIPTION_FIELD_HEADER_NAME = "Description de l'UA";
 
@@ -27,8 +27,8 @@ public class ExportSearchResultParam {
     private static final String EN_END_DATE_FIELD_HEADER_NAME = "Archive unit end date";
     private static final String EN_DESCRIPTION_FIELD_HEADER_NAME = "Archive unit Description";
     //Date patterns
-    private static final String FR_PATTERN_DATE = "dd/MM/yyyy";
-    private static final String EN_PATTERN_DATE = "MM/dd/yyyy";
+    private static final String FR_PATTERN_DATE = "dd-MM-yyyy";
+    private static final String EN_PATTERN_DATE = "MM-dd-yyyy";
 
 
     private Map<String, String> descriptionLevelMap;
@@ -48,17 +48,9 @@ public class ExportSearchResultParam {
                 FR_DESCRIPTION_FIELD_HEADER_NAME);
             this.patternDate = FR_PATTERN_DATE;
             this.descriptionLevelMap = Map.of(
-                "File", "Dossier",
+                "File", "Document",
                 "Item", "Document",
-                "RecordGrp", "Dossier",
-                "Fonds", "Fonds",
-                "Subfonds", "Subfonds",
-                "Class", "Class",
-                "Collection", "Collection",
-                "Serie", "Serie",
-                "Subseries", "Subseries",
-                "SubGrp :SubGrp",
-                "OtherLevel :OtherLevel"
+                "RecordGrp", "Dossier"
             );
         } else if (locale.equals(Locale.ENGLISH)) {
             this.headers = List.of(
@@ -71,17 +63,9 @@ public class ExportSearchResultParam {
                 EN_DESCRIPTION_FIELD_HEADER_NAME);
             this.patternDate = EN_PATTERN_DATE;
             this.descriptionLevelMap = Map.of(
-                "File", "File",
-                "File", "File",
-                "RecordGrp", "RecordGrp",
-                "Fonds", "Fonds",
-                "Subfonds", "Subfonds",
-                "Class", "Class",
-                "Collection", "Collection",
-                "Serie", "Serie",
-                "Subseries", "Subseries",
-                "SubGrp :SubGrp",
-                "OtherLevel :OtherLevel"
+                "File", "Document",
+                "Item", "Document",
+                "RecordGrp", "Folder"
             );
         }
     }

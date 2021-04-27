@@ -18,10 +18,10 @@
           {{'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate}}
         </button>
 
-        
+
       </div>
     </div>
- 
+
     <div class="row area-criteria">
       <div class=" btn-group criteria-group" role="group" *ngFor="let criteria of searchCriterias | keyvalue  ">
         <ng-container
@@ -260,12 +260,14 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-8" *ngIf="totalResults > 1 || totalResults === 0 ">{{totalResults}} {{'ARCHIVE_SEARCH.RESULTS' | translate}}</div>
+      <div class="col-8" *ngIf="totalResults > 1 || totalResults === 0 ">{{totalResults}}
+        {{'ARCHIVE_SEARCH.EXPORT_CSV.RESULTS' | translate}}
+      </div>
       <div class="col-8" *ngIf="totalResults === 1">{{totalResults}} {{'ARCHIVE_SEARCH.RESULT' | translate}}</div>
-      <div class="col-4 area-download" >
+      <div class="col-4 area-download">
         <a class="hide-ink" (click)="exportArchiveUnitsToCsvFile()"
-        *ngIf="totalResults > 0 "
-        >{{'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_SEARCHS' | translate}}
+           *ngIf="totalResults > 0 "
+        >{{'ARCHIVE_SEARCH.EXPORT_SEARCHS' | translate}}
           <i class="vitamui-icon vitamui-icon-download-basic vitamui-row-icon icon-download"></i>
         </a>
       </div>

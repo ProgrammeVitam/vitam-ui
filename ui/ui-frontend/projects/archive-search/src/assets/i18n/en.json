@@ -8,6 +8,7 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SHOW_SEARCH_CRITERIA": "Show the search filters",
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
+    "EXPORT_SEARCHS": "Export results",
     "SHOW_MORE_RESULTS": "Show more results...",
     "NO_MORE_RESULTS": "No more results",
     "SEARCH_CRITERIA_FILTER": {
@@ -72,7 +73,6 @@
       "SHOW_TREE_PARENT": "Collapse the tree"
     },
     "EXPORT_CSV": {
-      "EXPORT_SEARCHS": "Export results",
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     },
     "RESULTS": "Results",
