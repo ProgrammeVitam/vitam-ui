@@ -90,7 +90,7 @@ public class ArchiveSearchInternalService {
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
     private static final String ARCHIVE_UNIT_USAGE = "qualifier";
     private static final String ARCHIVE_UNIT_VERSION = "DataObjectVersion";
-    private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
+    private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10;
     public static final String SEMI_COLON = ";";
     public static final String COMMA = ",";
     public static final String DOUBLE_QUOTE = "\"";
