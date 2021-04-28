@@ -72,7 +72,7 @@ public class ExportSearchResultParam {
             this.patternDate = EN_PATTERN_DATE;
             this.descriptionLevelMap = Map.of(
                 "File", "File",
-                "File", "File",
+                "Item", "File",
                 "RecordGrp", "RecordGrp",
                 "Fonds", "Fonds",
                 "Subfonds", "Subfonds",
