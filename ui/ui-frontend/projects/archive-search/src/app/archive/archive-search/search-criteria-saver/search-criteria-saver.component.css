@@ -174,17 +174,21 @@ background: #EEEEEE;
     padding-left: 0px;  
 }
 .btn-ok {
-    padding-top: 160px;
+    padding-top: 186px;
     padding-left: 40px;
 }
 .input-width{
     width: 450px;
 }
-.btn-close-it {
+.btn-close-it-no-results {
     padding-left: 480px;
     padding-top: 0px;
 }
 
+.btn-close-it {
+    padding-left: 480px;
+    padding-top: 0px;
+}
 
 .pad5 {
     padding-bottom: 10px;

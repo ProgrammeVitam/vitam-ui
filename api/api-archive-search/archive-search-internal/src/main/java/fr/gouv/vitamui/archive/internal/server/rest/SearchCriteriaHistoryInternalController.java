@@ -41,6 +41,7 @@ import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -69,7 +70,7 @@ import java.util.List;
 @Getter
 @Setter
 @Api(tags = "searchcriteriahistory", value = "Search Criteria History")
-public class SearchCriteriaHistoryInternalController implements CrudController<SearchCriteriaHistoryDto> {
+public class SearchCriteriaHistoryInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
         SearchCriteriaHistoryInternalController.class);
@@ -87,32 +88,24 @@ public class SearchCriteriaHistoryInternalController implements CrudController<S
         return searchCriteriaHistoryInternalService.getSearchCriteriaHistoryDtos();
     }
 
-    @Override
-    public ResponseEntity<Void> checkExist(String criteria) {
-        return null;
-    }
-
     @PostMapping
-    @Override
     public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto) {
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
         return searchCriteriaHistoryInternalService.create(dto);
     }
 
-    @Override
-    public SearchCriteriaHistoryDto update(String id,
-        SearchCriteriaHistoryDto dto) {
-        return null;
-    }
-
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.check(id);
         searchCriteriaHistoryInternalService.delete(id);
     }
+
     @PutMapping(CommonConstants.PATH_ID)
     public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto) {
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
+        ParameterChecker.checkParameter("Identifier is mandatory : " , dto.getId());
         SanityChecker.check(dto.getId());
         return searchCriteriaHistoryInternalService.update(dto);
     }

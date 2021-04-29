@@ -59,7 +59,7 @@ import java.util.List;
 public class SearchCriteriaHistoryDto extends IdDto {
 
     @NotNull
-    @Length(min = 2, max = 100)
+    @Length(min = 1, max = 150)
     private String name;
 
     private String userId;

@@ -39,6 +39,8 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -101,6 +103,8 @@ public class SearchCriteriaHistoryExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public void delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        SanityChecker.check(id);
         searchCriteriaHistoryExternalService.delete(id);
     }
 
@@ -109,6 +113,8 @@ public class SearchCriteriaHistoryExternalController {
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
     public void update(@RequestBody final SearchCriteriaHistoryDto entity) {
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
+        ParameterChecker.checkParameter("Identifier is mandatory : " , entity.getId());
+        SanityChecker.check(entity.getId());
         searchCriteriaHistoryExternalService.update(entity);
     }
 }

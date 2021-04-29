@@ -73,7 +73,7 @@
         </form>
     </div>
     <div class="col-1 btn-ok" *ngIf="ToUpdate !== null && !ToUpdate">
-            <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === ''">OK</button>
+            <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > 149">OK</button>
     </div>
 
 
