@@ -88,7 +88,8 @@
             </button>
 
             <mat-menu #menu="matMenu" class="my-menu">
-              <button mat-menu-item [disabled]="!searchCriterias || searchCriterias.size <= 0" (click)="mapSearchCriteriaHistory()">
+              <button mat-menu-item [disabled]="!searchCriterias || searchCriterias.size <= 0" (click)="mapSearchCriteriaHistory()" class="btn-new-save">
+                <i class="material-icons btn-add">add</i>
                 {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate}}
               </button>
               <app-search-criteria-list 
