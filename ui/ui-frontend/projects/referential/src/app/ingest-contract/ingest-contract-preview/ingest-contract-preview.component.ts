@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ConfirmActionComponent, IngestContract} from 'projects/vitamui-library/src/public-api';
@@ -13,7 +13,7 @@ import {IngestContractObjectTabComponent} from './ingest-contract-object-tab/ing
   templateUrl: './ingest-contract-preview.component.html',
   styleUrls: ['./ingest-contract-preview.component.scss']
 })
-export class IngestContractPreviewComponent implements OnInit {
+export class IngestContractPreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() ingestContract: IngestContract;
@@ -41,10 +41,7 @@ export class IngestContractPreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private ingestContractService: IngestContractService) {
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.formatsTab;

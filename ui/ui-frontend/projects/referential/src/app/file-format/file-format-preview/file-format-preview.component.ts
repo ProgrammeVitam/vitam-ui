@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {FileFormat} from 'projects/vitamui-library/src/lib/models/file-format';
@@ -48,7 +48,7 @@ import {FileFormatInformationTabComponent} from './file-format-information-tab/f
   templateUrl: './file-format-preview.component.html',
   styleUrls: ['./file-format-preview.component.scss']
 })
-export class FileFormatPreviewComponent implements OnInit {
+export class FileFormatPreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() fileFormat: FileFormat;
@@ -71,10 +71,7 @@ export class FileFormatPreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private fileFormatService: FileFormatService) {
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
