@@ -315,7 +315,6 @@ emptyForm = {
   clearFilters(event: boolean) {
     if (event) {
       this.clearCriterias();
-      this.nbQueryCriteria = 0;
     }
   }
 
@@ -534,8 +533,6 @@ emptyForm = {
 
       this.searchCriterias.forEach((criteria: SearchCriteria) => {
 
-        // construct the element other than tree nodes
-        // Construct SearchCriteriaEltements
         const strValues: string[] = [];
         if (criteria.key !== 'NODE') {
           criteria.values.forEach((elt) => {
@@ -545,7 +542,6 @@ emptyForm = {
         }
       });
 
-      // construct SearchCriteria
       const nodesId = this.getNodesId();
       _searchCriteriaList.push({criteriaList: _criteriaList, nodes: nodesId});
 
@@ -583,7 +579,6 @@ emptyForm = {
         node.hidden = false;
         this.addCriteria('NODE', 'NODE', nodeId, node.title, true);
       } else if (node.children.length > 0) {
-        // node.checked = false;
         this.fillNodeTitle(node.children, nodeId);
       }
     });
@@ -623,12 +618,10 @@ emptyForm = {
         searchCriteriaList.criteriaList.forEach((criteria) => {
           const c = criteria.criteria;
           criteria.values.forEach((value) => {
-            // nodesIds.push(node);
             const keyLabel = this.getKeyLabel(c);
             if (keyLabel !== 'ONTOLOGY_TYPE') {
 
               if (keyLabel.includes('DATE')) {
-                // tslint:disable-next-line:max-line-length
                 const specifiDate = keyLabel === 'START_DATE' ? 'Date de début' : 'Date de fin';
                 this.addCriteria(c, specifiDate, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
               } else {
@@ -638,10 +631,8 @@ emptyForm = {
               const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === c);
 
               if (ontologyElt.Type === 'DATE') {
-              // tslint:disable-next-line:max-line-length
                 this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
             } else {
-              // tslint:disable-next-line:max-line-length
                 this.addCriteria(ontologyElt.Value, ontologyElt.Label, value , value, false);
             }
           }

@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Direction, Logger } from 'ui-frontend-common';
+import { ConfirmDialogService, Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { SearchCriteria } from '../../models/search.criteria';
@@ -77,8 +77,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     private searchCriteriaSaverService: SearchCriteriaSaverService,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
     private confirmDialogService: ConfirmDialogService,
-    private snackBar: MatSnackBar,
-    public logger: Logger
+    private snackBar: MatSnackBar
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
@@ -114,6 +113,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     this.searchCriteriaHistory.name = this.searchCriteriaForm.value.name;
     this.searchCriteriaSaverService.saveSearchCriteriaHistory(this.searchCriteriaHistory).subscribe(
       (response) => {
+        this.searchCriteriaHistory.id = response.id;
         this.archiveExchangeDataService.emitSearchCriteriaHistory(this.searchCriteriaHistory);
         this.dialogRef.close(true);
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
@@ -169,6 +169,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
   createNewCriteria() {
     this.ToUpdate = false;
   }
+
   cancel() {
     this.updateConfirm = false;
     this.criteriaToUpdate = null;
@@ -179,8 +180,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     this.criteriaToUpdate.searchCriteriaList = this.searchCriteriaHistory.searchCriteriaList;
     this.criteriaToUpdate.savingDate = new Date().toISOString();
     this.searchCriteriaSaverService.updateSearchCriteriaHistory(this.criteriaToUpdate).subscribe(
-      (response) => {
-        console.log(response);
+      () => {
         this.dialogRef.close(true);
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
@@ -200,12 +200,11 @@ export class SearchCriteriaSaverComponent implements OnInit {
   getNbFilters(criteria: SearchCriteriaHistory): number {
     return this.archiveExchangeDataService.nbFilters(criteria);
   }
+
   closeIt() {
     this.dialogRef.close(true);
   }
-  hasName(): boolean {
-    return this.nameControl !== '';
-  }
+
   over(eventType: string) {
     switch (eventType) {
       case 'scroll-results':
