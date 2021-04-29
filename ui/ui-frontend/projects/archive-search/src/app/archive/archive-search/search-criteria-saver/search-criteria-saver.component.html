@@ -47,7 +47,7 @@
 
     <div class="col-5 width-save-form" *ngIf="ToUpdate !== null && !ToUpdate">
         <div class="row">
-            <button class="btn link cancel">
+            <button class="btn link cancel" (click)="closeIt()">
                 <i class="vitamui-icon vitamui-icon-close btn-close-it" (click)="closeIt()"></i>
             </button>
         </div>
@@ -132,7 +132,7 @@
         </div>
         <div class="row triangle"></div>
         <div class="sauvegarde-text pad5"> {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate}} </div>
-        <div class="div-update scroll-results" >
+        <div class="div-update no-scroll-results" >
             <div class="border-results pink-color pad-results hover-div">
                 <button mat-menu-item class="boutton btn-result-update">
                     <i class="material-icons save-icon">save</i>
