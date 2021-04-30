@@ -7,7 +7,7 @@
 NAME                := logstash
 VERSION             := 0.0.0
 LOGSTASH_VERSION    := 7.6.0
-DEPENDENCIES        := systemd,java-11-openjdk
+DEPENDENCIES        := systemd,openjdk-11-jdk
 
 
 # Src configuration:
@@ -35,11 +35,12 @@ DESCRIPTION         = $(NAME) package for vitamui solution. Made from logstash v
 
 # Install params
 SYSTEMD_DIR         := /usr/lib/systemd/system/
-VITAMUI_DIRS           =  app bin lib script conf log data tmp run defaults
+VITAMUI_DIRS         =  app bin lib script conf log data tmp run defaults
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
 RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).deb
 
 
 # fpm packaging default args
@@ -53,9 +54,6 @@ FPM_PACK_REMOVE_SCRIPTS     = --before-remove "$(TEMPLATE_TMP_DIR)/before-remove
 # Imports from packaging Makefiles
 #
 
-clean:
-	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) RPM_OUTPUT_PATH=$(RPM_OUTPUT_PATH) $@
-
 stage:
 	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) STAGING_ROOT=$(STAGING_ROOT) $@
 
@@ -64,7 +62,6 @@ vitamui-dirs:
 
 reset: clean
 	@rm -Rf src/
-
 
 #
 # COTS src fetching:
@@ -78,7 +75,7 @@ $(SRC_DIR):
 $(SRC_DIR)/$(SRC_ARCHIVE): $(SRC_DIR)
 	@[ -f $(SRC_DIR)/$(SRC_ARCHIVE) ] || curl --silent --fail $(SRC_URL) -o $(SRC_DIR)/$(SRC_ARCHIVE) || echo "Download $(SRC_URL) in $(SRC_DIR)/$(SRC_ARCHIVE) failed  "
 
-# Extract RPM to get pre  staged install files from logstash
+# Extract pkg to get pre  staged install files from logstash
 $(BIN): $(SRC_DIR)/$(SRC_ARCHIVE)
 	@cd $(SRC_DIR) ; tar xvzf $(SRC_ARCHIVE)
 
@@ -108,7 +105,7 @@ template-files:
 	done
 
 install: source stage vitamui-dirs template-files
-	# Installing usr/ directory of logstash RPM in package stage root
+	# Installing usr/ directory of logstash DEB in package stage root
 	@cp -Ru $(SRC_DIR)/logstash-$(LOGSTASH_VERSION)/* $(abspath $(STAGING_ROOT)/vitamui/app/$(NAME))
 	# Install config files
 	@mkdir   -p -m 750 $(abspath $(STAGING_ROOT)/vitamui/conf/$(NAME)/conf.d)
@@ -127,11 +124,14 @@ install: source stage vitamui-dirs template-files
 rpm: install
 	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
+
+deb: install
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+
 #
 # COTS Packaging
-#ec
 
-.PHONY: clean stage vitamui-dirs source template-files build install reset
+.PHONY: stage vitamui-dirs source rpm deb template-files build install reset
 
 
 
