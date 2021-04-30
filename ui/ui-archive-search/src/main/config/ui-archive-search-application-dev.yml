@@ -113,3 +113,14 @@ management.endpoints.web.exposure.include: "*"
 # Uncomment if you want to use you specific logback config.
 #logging:
 #  config: src/main/config/logback.xml
+
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831

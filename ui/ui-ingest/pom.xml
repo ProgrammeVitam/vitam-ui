@@ -57,6 +57,10 @@
             <type>pom</type>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
 
         <!-- SPRING BOOT -->
         <dependency>
@@ -217,7 +221,8 @@
                         <phase>process-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>run build -- --project=ingest --output-path=${project.basedir}/target/www --base-href=${angular.base.href} --deploy-url=${angular.base.href}
+                            <arguments>run build -- --project=ingest --output-path=${project.basedir}/target/www
+                                --base-href=${angular.base.href} --deploy-url=${angular.base.href}
                             </arguments>
                         </configuration>
                     </execution>

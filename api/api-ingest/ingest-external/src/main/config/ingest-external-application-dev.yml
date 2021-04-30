@@ -5,7 +5,7 @@ spring:
     active: swagger
 
   cloud:
-    consul:  #disabled for dev
+    consul: #disabled for dev
       enabled: false
       discovery:
         enabled: false
@@ -52,6 +52,16 @@ ingest-external:
     server-host: localhost
     server-port: 7088
     secure: false
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
 
 logging:
   level:

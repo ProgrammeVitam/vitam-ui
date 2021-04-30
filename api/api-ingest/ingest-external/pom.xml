@@ -20,6 +20,8 @@
     </properties>
 
     <dependencies>
+
+
         <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
@@ -147,6 +149,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
+
 
         <!--TEST -->
         <dependency>
