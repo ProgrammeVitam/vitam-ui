@@ -111,7 +111,10 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
     const format: FileFormat = this.form.value;
     format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
-    format.extensions = [this.form.value.extensions];
+    if (this.form.value.extensions) {
+      // The extensions property must be an array of string, not a string
+      format.extensions = this.form.value.extensions.replace(/\s/g, '').split(',');
+    }
 
     // Disable the submit button to prevent double submit
     this.isCreationPending = true;
