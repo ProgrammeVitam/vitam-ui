@@ -45,7 +45,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -63,8 +62,6 @@ import java.util.Optional;
 
 /**
  * External WebClient for Ingest operations.
- *
- *
  */
 public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
@@ -81,7 +78,8 @@ public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> 
             throw new FileOperationException("There is an error in uploaded file !");
         }
 
-        final Path tmpFilePath = Paths.get(FileUtils.getTempDirectoryPath(), context.getRequestId());
+        final Path tmpFilePath =
+            Paths.get(System.getProperty(CommonConstants.VITAMUI_TEMP_DIRECTORY), context.getRequestId());
         int length = 0;
         try {
             length = in.available();
