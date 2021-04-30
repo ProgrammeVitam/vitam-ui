@@ -104,18 +104,21 @@ public class IngestController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Get entities paginated")
-    @GetMapping(params = { "page", "size" })
+    @GetMapping(params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction) {
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
+            orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get one ingest operation details")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookOperationDto getOne(final @PathVariable("id") String id ) {
+    public LogbookOperationDto getOne(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.error("Get Ingest={}", id);
         return service.getOne(buildUiHttpContext(), id);
@@ -128,14 +131,13 @@ public class IngestController extends AbstractUiRestController {
         LOGGER.debug("download ODT report for the ingest with id :{}", id);
         byte[] bytes = service.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
-             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
-             .body(bytes);
+            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
+            .body(bytes);
 
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @Produces(MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PostMapping(CommonConstants.INGEST_UPLOAD)
     public ResponseEntity<Void> ingest(
         @RequestHeader(value = CommonConstants.X_REQUEST_ID_HEADER) String requestId,
