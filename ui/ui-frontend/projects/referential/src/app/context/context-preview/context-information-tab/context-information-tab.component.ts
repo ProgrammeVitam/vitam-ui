@@ -45,6 +45,7 @@ import {extend, isEmpty} from 'underscore';
 import {ContextService} from '../../context.service';
 
 import {SecurityProfileService} from '../../../security-profile/security-profile.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -172,8 +173,8 @@ export class ContextInformationTabComponent {
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
-          this.submited = false;
-          this.context = response;
+          this.submited = false;  
+          this.context = extend(this.context, response);
         }
       );
     }, () => {
