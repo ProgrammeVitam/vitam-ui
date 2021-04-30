@@ -38,8 +38,6 @@ package fr.gouv.vitamui.commons.api;
 
 /**
  * Global definition of constants like usual paths, values ...
- *
- *
  */
 public class CommonConstants {
 
@@ -62,7 +60,7 @@ public class CommonConstants {
     public static final String PATH_CUSTOMER = "/{customerId}";
 
     public static final String PATH_ME = "/me";
-    
+
     public static final String PATH_OBJECTS = "/objects";
 
     public static final String GDPR_STATUS = "/gdpr-status";
@@ -304,6 +302,9 @@ public class CommonConstants {
     /**
      * Constants of ingest operations
      */
+
+    public static final String VITAMUI_TEMP_DIRECTORY = "vitam.tmp.folder";
+
     public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
     public static final String INGEST_UPLOAD = "/upload";
     public static final String X_ACTION = "X-Action";
