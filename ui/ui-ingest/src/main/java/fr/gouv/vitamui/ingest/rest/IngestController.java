@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.ingest.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -47,10 +49,10 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.service.IngestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -75,6 +77,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -113,15 +116,17 @@ public class IngestController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationDto getOne(final @PathVariable("id") String id ) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.error("Get Ingest={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 
-    @ApiOperation(value = "download Docx Report for an ingest operation")
-    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> genereateDocX(final @PathVariable("id") String id) {
-        LOGGER.debug("download Docx report for the ingest with id :{}", id);
-        byte[] bytes = service.generateDocX(buildUiHttpContext(), id).getBody();
+    @ApiOperation(value = "download ODT Report for an ingest operation")
+    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("download ODT report for the ingest with id :{}", id);
+        byte[] bytes = service.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
              .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
              .body(bytes);
@@ -139,10 +144,13 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_CHUNK_OFFSET) final String chunkOffset,
         @RequestHeader(value = CommonConstants.X_SIZE_TOTAL) final String totalSize,
-        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
-
-        ParameterChecker.checkParameter("The requestId, tenantId, xAction and contextId are mandatory parameters : ", requestId, tenantId, xAction, contextId);
+        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file)
+        throws InvalidParseOperationException {
+        ParameterChecker
+            .checkParameter("The requestId, tenantId, xAction and contextId are mandatory parameters : ", requestId,
+                tenantId, xAction, contextId);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.checkParameter(requestId);
         LOGGER.debug("[{}] Upload File : {} - {} bytes", requestId, file.getOriginalFilename(), totalSize);
         if (StringUtils.isEmpty(requestId)) {
             throw new BadRequestException("Unable to start the upload of the file: request identifer is not set.");
@@ -157,7 +165,7 @@ public class IngestController extends AbstractUiRestController {
         final long offset = Long.parseLong(chunkOffset);
 
         InputStream in = null;
-        Path tmpFilePath = Paths.get(FileUtils.getTempDirectoryPath(), requestId);
+        Path tmpFilePath = Paths.get(System.getProperty(CommonConstants.VITAMUI_TEMP_DIRECTORY), requestId);
         FileChannel fileChannel = null;
         try (RandomAccessFile randomAccessFile = new RandomAccessFile(tmpFilePath.toString(), "rw")) {
             fileChannel = randomAccessFile.getChannel();
@@ -171,7 +179,21 @@ public class IngestController extends AbstractUiRestController {
                 in = new FileInputStream(tmpFilePath.toFile());
             }
 
+            LOGGER.debug("Total upload : {} {} ...", writtenDataSize, size);
+            if (writtenDataSize >= size) {
+                LOGGER.debug("Start uploading file ...");
+                service.upload(buildUiHttpContext(), in, contextId, xAction, file.getOriginalFilename());
+            }
+            final HttpHeaders headers = new HttpHeaders();
+            headers.add(CommonConstants.X_REQUEST_ID_HEADER, requestId);
+            return new ResponseEntity<>(headers, HttpStatus.OK);
         } catch (final IOException exception) {
+            try {
+                LOGGER.info("Try to delete temp file {} ", tmpFilePath);
+                Files.deleteIfExists(tmpFilePath);
+            } catch (IOException e) {
+                LOGGER.error("Error deleting temp file {} error {} ", tmpFilePath, e.getMessage());
+            }
             final String message = String.format(
                 "An error occurred during the upload [Request id: %s - ChunkOffset : %s - Total size : %s] : %s",
                 requestId,
@@ -180,17 +202,5 @@ public class IngestController extends AbstractUiRestController {
 
         }
 
-        LOGGER.debug("Total upload : {} {} ...", writtenDataSize, size);
-        if (writtenDataSize >= size) {
-            LOGGER.debug("Start uploading file ...");
-
-            service
-                .upload(buildUiHttpContext(), in, contextId, xAction, tmpFilePath.toFile().getName());
-
-        }
-
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add(CommonConstants.X_REQUEST_ID_HEADER, requestId);
-        return new ResponseEntity<>(headers, HttpStatus.OK);
     }
 }
