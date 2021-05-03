@@ -76,7 +76,10 @@ public class ProvisioningInternalService {
 
         var webClient = buildWebClient(idpProvisioningClient);
 
-        return webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, technicalUserId);
+        final ProvidedUserDto providedUser = webClient.getProvidedUser(securityService.getHttpContext(), email, groupId, unit, technicalUserId);
+        // FIXME : override email for testing. To remove for production.
+        providedUser.setEmail(email);
+        return providedUser;
     }
 
     /**
