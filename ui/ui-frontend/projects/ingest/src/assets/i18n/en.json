@@ -64,7 +64,7 @@
     "ADD_FILE_DESCRIPTION_1": "(Accepted formats: .zip, .tar, .tar.gz, .tar.bz2",
     "ADD_FILE_DESCRIPTION_2": "Max size: 10 GB ) ",
     "CONFIRME": "Confirme the deposit",
-    "ALERTE_MESSAGE": "One or more installment (s) are downloading",
+    "ALERTE_MESSAGE": "One or more installment (s) are downloading ",
     "SECOND_ALERTE_MESSAGE": " (Please do not leave this page during the deposit process and open a new tab if necessary)"
   },
   "INGEST_DETAIL": {
@@ -83,7 +83,8 @@
     "ARCHIVING_PROFIL": "Archiving profil",
     "STATUS": "Legal status",
     "MESSAGE": "Message",
-    "OPERATION_DETAILS": "Additional information about the operation"
+    "OPERATION_DETAILS": "Additional information about the operation",
+    "INGEST_ERROR_DETAIL": "Details"
   },
   "FILLING_HOLDING_SCHEME": {
     "TITLE": "Import or modify holding scheme",
