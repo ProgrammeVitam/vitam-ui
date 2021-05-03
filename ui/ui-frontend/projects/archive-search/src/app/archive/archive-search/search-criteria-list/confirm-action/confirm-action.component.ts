@@ -1,3 +1,4 @@
+/* tslint:disable:component-selector */
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,30 +35,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {Component, Input, OnInit} from '@angular/core';
 
-import {ConfirmActionComponent} from './confirm-action.component';
+@Component({
+  selector: 'vitamui-confirm-action',
+  templateUrl: './confirm-action.component.html'
+})
+export class ConfirmActionComponent implements OnInit {
+  // delete or changeTab
+  @Input() dialogType = 'delete';
 
-describe('ClosePopupDialogComponent', () => {
-  let component: ConfirmActionComponent;
-  let fixture: ComponentFixture<ConfirmActionComponent>;
+  // delete message values
+  @Input() objectName: string;
+  @Input() objectType: string;
+  @Input() objectDate: string;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ConfirmActionComponent],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  }));
+  constructor() {
+  }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmActionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  ngOnInit() {
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+}

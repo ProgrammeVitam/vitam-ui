@@ -308,10 +308,6 @@ emptyForm = {
     this.showCriteriaPanel = !this.showCriteriaPanel;
   }
 
-  checkLength(event: number) {
-    this.searchCriteriaHistoryLength = event;
-  }
-
   clearFilters(event: boolean) {
     if (event) {
       this.clearCriterias();
@@ -331,7 +327,7 @@ emptyForm = {
   }
 
 
-  removeCriteria(keyElt: string, valueElt: string) {
+  removeCriteria(keyElt: string, valueElt: string){
 
     if (this.searchCriterias && this.searchCriterias.size > 0) {
       this.searchCriterias.forEach((val, key) => {
@@ -533,8 +529,9 @@ emptyForm = {
 
       this.searchCriterias.forEach((criteria: SearchCriteria) => {
 
-        const strValues: string[] = [];
-        if (criteria.key !== 'NODE') {
+      const strValues: string[] = [];
+
+      if (criteria.key !== 'NODE') {
           criteria.values.forEach((elt) => {
             strValues.push(elt.value);
           });
@@ -552,24 +549,26 @@ emptyForm = {
         searchCriteriaList: _searchCriteriaList
       };
 
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.panelClass = 'vitamui-modal';
-      dialogConfig.disableClose = false;
-      dialogConfig.data = {
-        searchCriteriaHistory: _searchCriteriaHistory,
-        originalSearchCriteria: this.searchCriterias,
-        nbCriterias: this.archiveExchangeDataService.nbFilters(_searchCriteriaHistory)
-         };
-
-      const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
-      dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                  // activate clean criteria if necessary
-                  // this.clearCriterias();
-                }
-            });
-
+      this.openCriteriaPopup(_searchCriteriaHistory);
     }
+
+
+  openCriteriaPopup(searchCriteriaHistory$: SearchCriteriaHistory) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.panelClass = 'vitamui-modal';
+    dialogConfig.disableClose = false;
+    dialogConfig.data = {
+      searchCriteriaHistory: searchCriteriaHistory$,
+      originalSearchCriteria: this.searchCriterias,
+      nbCriterias: this.archiveExchangeDataService.nbFilters(searchCriteriaHistory$)
+    };
+
+    const dialogRef = this.dialog.open(SearchCriteriaSaverComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+      }
+    });
+  }
 
   fillNodeTitle(nodeArray: FilingHoldingSchemeNode[], nodeId: string) {
 
@@ -605,22 +604,18 @@ emptyForm = {
   public reMapSearchCriteriaFromSearchCriteriaHistory(storedSearchCriteriaHistory: SearchCriteriaHistory) {
     this.setFilingHoldingScheme();
     this.checkAllNodes(false);
+
     storedSearchCriteriaHistory.searchCriteriaList.forEach((searchCriteriaList: SearchCriterias) => {
-      if (searchCriteriaList.nodes.length > 0 ) {
-          searchCriteriaList.nodes.forEach((nodeId) => {
-            this.fillNodeTitle(this.nodeArray, nodeId);
-        });
-          this.nodeArray = null;
-          this.archiveExchangeDataService.emitToggle(true);
-      }
+      this.fillTreeNodeAsSearchCriteriaHistory(searchCriteriaList);
 
       if (searchCriteriaList.criteriaList.length > 0) {
         searchCriteriaList.criteriaList.forEach((criteria) => {
           const c = criteria.criteria;
           criteria.values.forEach((value) => {
             const keyLabel = this.getKeyLabel(c);
+            console.log('label = ', keyLabel);
             if (keyLabel !== 'ONTOLOGY_TYPE') {
-
+              // Standard Filters other than ontology criteria
               if (keyLabel.includes('DATE')) {
                 const specifiDate = keyLabel === 'START_DATE' ? 'Date de début' : 'Date de fin';
                 this.addCriteria(c, specifiDate, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
@@ -628,13 +623,7 @@ emptyForm = {
                 this.addCriteria(c, keyLabel, value, value, true);
               }
             } else {
-              const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === c);
-
-              if (ontologyElt.Type === 'DATE') {
-                this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
-            } else {
-                this.addCriteria(ontologyElt.Value, ontologyElt.Label, value , value, false);
-            }
+              this.addOntologyFilter(c, value);
           }
           });
         });
@@ -642,34 +631,45 @@ emptyForm = {
     });
   }
 
-  getKeyLabel(keyElement: string) {
-    switch (keyElement) {
-      case 'titleAndDescription':
-        return 'TITLE_OR_DESCRIPTION';
-      case 'Title':
-        return 'TITLE';
-      case 'Description':
-        return 'DESCRIPTION';
-      case 'StartDate':
-        return 'START_DATE';
-      case 'EndDate':
-        return 'END_DATE';
-      case '#originating_agency':
-        return 'SP_CODE';
-      case 'originating_agency_label':
-        return 'SP_LABEL';
-      case '#id':
-        return 'ID';
-      case '#opi':
-        return 'GUID';
-      case 'serviceProdCommunicability':
-        return 'SP_COMM';
-      case 'serviceProdCommunicabilityDt':
-        return 'SP_COMM_DT';
-      default:
-        return 'ONTOLOGY_TYPE';
+  addOntologyFilter(criteriaValue: string, value: string): any {
+    const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === criteriaValue);
+    if (ontologyElt.Type === 'DATE') {
+      this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
+    } else {
+      this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, value, false);
     }
   }
+
+  fillTreeNodeAsSearchCriteriaHistory(searchCriteriaList: SearchCriterias) {
+    if (searchCriteriaList.nodes.length > 0) {
+      searchCriteriaList.nodes.forEach((nodeId) => {
+        this.fillNodeTitle(this.nodeArray, nodeId);
+      });
+      this.nodeArray = null;
+      this.archiveExchangeDataService.emitToggle(true);
+    }
+
+  }
+
+  getKeyLabel(keyElement: string) {
+
+    const keyLabels: {[index: string]: string} = {
+      '#id': 'ID',
+      '#opi': 'GUID',
+      '#originating_agency': 'SP_CODE',
+      titleAndDescription: 'TITLE_OR_DESCRIPTION',
+      Title: 'TITLE',
+      Description: 'DESCRIPTION',
+      StartDate: 'START_DATE',
+      EndDate: 'END_DATE',
+      originating_agency_label: 'SP_LABEL',
+      serviceProdCommunicability: 'SP_COMM',
+      serviceProdCommunicabilityDt: 'SP_COMM_DT',
+      ONTOLOGY_TYPE: 'ONTOLOGY_TYPE'
+    };
+    return (keyLabels[keyElement] || keyLabels.ONTOLOGY_TYPE);
+  }
+
   clearCriterias() {
     this.searchCriterias = new Map();
     this.included = false;

@@ -96,25 +96,10 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
         return searchCriteriaHistoryDtoList;
     }
 
-    @Transactional
-    public SearchCriteriaHistoryDto create(final SearchCriteriaHistoryDto dto) {
-        beforeCreate(dto);
-        AuthUserDto authUserDto = internalSecurityService.getUser();
-        dto.setUserId(authUserDto.getIdentifier());
-        return super.create(dto);
-    }
-
-    public void delete(final String id) {
-        super.delete(id);
-    }
-
-    public SearchCriteriaHistoryDto update(final SearchCriteriaHistoryDto dto) {
-        LOGGER.debug("Update SearchCriteriaHistory {}", dto);
-        return super.update(dto);
-    }
-
     @Override
     protected void beforeCreate(final SearchCriteriaHistoryDto dto) {
+        AuthUserDto authUserDto = internalSecurityService.getUser();
+        dto.setUserId(authUserDto.getIdentifier());
         List<SearchCriteriaHistoryDto> list = getSearchCriteriaHistoryDtos();
         Assert.isTrue(list != null && list.size() < 10, "L’enregistrement n'est pas possible car vous avez atteint le nombre limite de recherches enregistrées. Veuillez supprimer au moins une de vos recherches.");
     }
@@ -126,22 +111,6 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
 	protected SearchCriteriaHistoryRepository getRepository() {
 		return searchCriteriaHistoryRepo;
 	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SearchCriteriaHistory internalConvertFromDtoToEntity(final SearchCriteriaHistoryDto dto) {
-        return super.internalConvertFromDtoToEntity(dto);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SearchCriteriaHistoryDto internalConvertFromEntityToDto(final SearchCriteriaHistory group) {
-        return super.internalConvertFromEntityToDto(group);
-    }
 
     /**
      * {@inheritDoc}
