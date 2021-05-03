@@ -41,6 +41,7 @@ export interface Application extends Id {
   identifier: string;
   name: string;
   url: string;
+  serviceId : string;
   icon: string;
   category: string;
   position: number;

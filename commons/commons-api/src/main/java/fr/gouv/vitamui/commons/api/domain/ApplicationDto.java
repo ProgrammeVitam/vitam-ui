@@ -70,6 +70,10 @@ public class ApplicationDto extends IdDto {
     private String url;
 
     @NotNull
+    @Length(max = 100)
+    private String serviceId;
+
+    @NotNull
     @Length(max = 50)
     private String icon;
 
