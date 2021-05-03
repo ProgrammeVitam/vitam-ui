@@ -670,14 +670,6 @@ emptyForm = {
     return (keyLabels[keyElement] || keyLabels.ONTOLOGY_TYPE);
   }
 
-  clearCriterias() {
-    this.searchCriterias = new Map();
-    this.included = false;
-    this.nbQueryCriteria = 0;
-    this.setFilingHoldingScheme();
-    this.checkAllNodes(false);
-  }
-
   updateCriteriaStatus(oldStatusFilter: SearchCriteriaStatusEnum, newStatus: SearchCriteriaStatusEnum){
     this.searchCriterias.forEach((value: SearchCriteria) => {
       value.values.forEach((elt) => {
@@ -738,6 +730,15 @@ emptyForm = {
     let searchCriteria = { "nodes": this.searchedCriteriaNodesList, "criteriaList": this.searchedCriteriaList, "pageNumber": this.currentPage, size: PAGE_SIZE, 'sortingCriteria': sortingCriteria, 'language': this.translateService.currentLang };
     this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
     }
+  }
+
+
+  clearCriterias() {
+    this.searchCriterias = new Map();
+    this.included = false;
+    this.nbQueryCriteria = 0;
+    this.setFilingHoldingScheme();
+    this.checkAllNodes(false);
   }
 
 
