@@ -7,9 +7,19 @@ db.applications.update({
     "category": "users",
 }, {
     $set: {
-        "category": "ingest_and_consultation"
+        "category": "organization_and_user_rights"
     },
 });
+
+db.applications.update({
+    "identifier" : "CONTEXTS_APP",
+    "category": "referential",
+}, {
+    $set: {
+        "category": "security_and_application_rights"
+    },
+});
+
 
 db.applications.update({
     "identifier" : "PROFILES_APP",
