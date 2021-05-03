@@ -1,22 +1,3 @@
-.some-margin {
-    margin-left: 30px;
-    margin-right: -50px;
-}
-.neg-margin-head-table {
-    margin-left: -30px;
-}
-
-.margin-border{
-    margin-left: 6px;
-    margin-right: 6px;
-}
-
-.max-height {
-   height: 200px;
-   overflow: overlay;
-   vertical-align: middle;
-}
-
 .center-spinner {
     text-align: -webkit-center;
 }
@@ -45,8 +26,6 @@
 .criteria-date {
 font-size: 13px;
 line-height: 16px;
-/* identical to box height, or 133% */
-
 align-items: center;
 letter-spacing: -0.2px;
 
@@ -58,12 +37,7 @@ font-style: normal;
 font-weight: normal;
 font-size: 15px;
 line-height: 22px;
-/* identical to box height, or 157% */
-
 align-items: center;
 letter-spacing: 0.1px;
-
-/* X_Grey/Grey-900 */
-
 color: #212121;
 }

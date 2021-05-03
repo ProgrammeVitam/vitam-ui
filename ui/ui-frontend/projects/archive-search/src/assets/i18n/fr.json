@@ -104,8 +104,8 @@
       "DELETED_WITH_SUCCESS_1": "Votre sauvegarde sous le nom  ",
       "DELETED_WITH_SUCCESS_2": "  a bien été supprimée.",
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
-      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé."
-      
+      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
+      "OBJECT_TYPE": "recherche sauvegardée"
     }
   }
 }

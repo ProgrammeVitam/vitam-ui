@@ -36,13 +36,14 @@
  */
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import {ConfirmActionComponent} from '../../shared/confirm-action/confirm-action.component';
 import { VitamUISnackBar, VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
 @Component({
@@ -52,8 +53,6 @@ import { SearchCriteriaListService } from './search-criteria-list.service';
 })
 export class SearchCriteriaListComponent implements OnInit {
 
-  @Output()
-  searchCriteriaHistoryLength = new EventEmitter<number>();
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
@@ -69,10 +68,12 @@ export class SearchCriteriaListComponent implements OnInit {
 
   pending = false;
 
-  constructor(private searchCriteriaListService: SearchCriteriaListService,
-              private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
-              public dialog: MatDialog, private snackBar: VitamUISnackBar) {
+  constructor( private searchCriteriaListService: SearchCriteriaListService,
+               private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
+               public dialog: MatDialog, private snackBar: VitamUISnackBar,
+               private translateService: TranslateService ) {}
 
+  ngOnInit() {
     // tslint:disable-next-line:max-line-length
     this.subscriptionSearchCriteriaHistory = this.archiveSharedDataServiceService.getSearchCriteriaHistoryShared().subscribe(searchCriteriaHistoryResults => {
       if (searchCriteriaHistoryResults) {
@@ -80,9 +81,6 @@ export class SearchCriteriaListComponent implements OnInit {
         this.archiveSharedDataServiceService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
       }
     });
-               }
-
-  ngOnInit() {
     this.getSearchCriteriaHistory();
     this.direction = Direction.ASCENDANT;
   }
@@ -96,7 +94,6 @@ export class SearchCriteriaListComponent implements OnInit {
     this.searchCriteriaListService.getSearchCriteriaHistory().subscribe(data => {
       this.searchCriteriaHistory = data;
       this.archiveSharedDataServiceService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
-      this.searchCriteriaHistoryLength.emit(data.length);
       this.archiveSharedDataServiceService.emitAllSearchCriteriaHistory(data);
       this.pending = false;
     });
@@ -105,8 +102,7 @@ export class SearchCriteriaListComponent implements OnInit {
   deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
 
     const dialog = this.dialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
-
-    dialog.componentInstance.objectType = 'recherche sauvegardée';
+    dialog.componentInstance.objectType = this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.OBJECT_TYPE');
     dialog.componentInstance.objectName = searchCriteriaHistory.name;
     dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;
 
@@ -115,7 +111,6 @@ export class SearchCriteriaListComponent implements OnInit {
     ).subscribe(() => {
       this.searchCriteriaListService.deleteSearchCriteriaHistory(searchCriteriaHistory.id).subscribe(() => {
         this.clearElement(searchCriteriaHistory.id);
-        this.searchCriteriaHistoryLength.emit(this.searchCriteriaHistory.length);
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
           data: {type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name},

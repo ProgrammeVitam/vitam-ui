@@ -93,21 +93,13 @@
                 {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate}}
               </button>
               <app-search-criteria-list 
-                        (searchCriteriaHistoryLength)="checkLength($event)" 
                         (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"
                         (clearFilters)="clearFilters($event)">
               </app-search-criteria-list>
             </mat-menu>
 
         </div>
-
-        <div *ngIf="searchCriterias && searchCriterias.size > 0 " class="d-flex justify-content-end div-btn-delete">
-            <button class="mat-boutton">
-              <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
-                <i class="material-icons primary-save-icon">delete</i>
-              </button>
-            </button>
-        </div>
+        <!-- delete criterias button here -->
     </div>
 
     <div class="row justify-content-around">
