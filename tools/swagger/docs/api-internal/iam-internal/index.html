@@ -532,7 +532,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_profiles_resource">2.9. Profiles</a>
 <ul class="sectlevel3">
 <li><a href="#_createusingpost_4">2.9.1. create</a></li>
-<li><a href="#_getallusingget_4">2.9.2. getAll</a></li>
+<li><a href="#_getallpaginatedusingget_2">2.9.2. getAllPaginated</a></li>
 <li><a href="#_checkexistusinghead_4">2.9.3. checkExist</a></li>
 <li><a href="#_getlevelsusingget_1">2.9.4. getLevels</a></li>
 <li><a href="#_getoneusingget_4">2.9.5. getOne</a></li>
@@ -835,6 +835,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   "identifier" : "string",
   "name" : "string",
   "position" : 0,
+  "serviceId" : "string",
   "target" : "string",
   "tooltip" : "string",
   "url" : "string"
@@ -6376,7 +6377,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getallusingget_4"><a class="anchor" href="#_getallusingget_4"></a><a class="link" href="#_getallusingget_4">2.9.2. getAll</a></h4>
+<h4 id="_getallpaginatedusingget_2"><a class="anchor" href="#_getallpaginatedusingget_2"></a><a class="link" href="#_getallpaginatedusingget_2">2.9.2. getAllPaginated</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /iam/v1/profiles</pre>
@@ -6409,9 +6410,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>direction</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">direction</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">enum (ASC, DESC)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>embedded</strong><br>
-<em>requis</em></p></td>
+<em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">embedded</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>orderBy</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">orderBy</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>page</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>size</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">size</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -6436,7 +6465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_profiledto">ProfileDto</a> &gt; array</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_e51b988aa8a67aab3dca331aa87e2924">PaginatedValuesDtoÂ«ProfileDtoÂ»</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -6457,7 +6486,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "criteria" : "string",
-  "embedded" : "string"
+  "direction" : "string",
+  "embedded" : "string",
+  "orderBy" : "string",
+  "page" : "string",
+  "size" : "string"
 }</code></pre>
 </div>
 </div>
@@ -6469,26 +6502,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_réponse_200_36"><a class="anchor" href="#_réponse_200_36"></a><a class="link" href="#_réponse_200_36">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">[ {
-  "applicationName" : "string",
-  "customerId" : "string",
-  "description" : "string",
-  "enabled" : true,
-  "externalParamId" : "string",
-  "externalParamIdentifier" : "string",
-  "groupsCount" : 0,
-  "id" : "string",
-  "identifier" : "string",
-  "level" : "string",
-  "name" : "string",
-  "readonly" : true,
-  "roles" : [ {
-    "name" : "string"
-  } ],
-  "tenantIdentifier" : 0,
-  "tenantName" : "string",
-  "usersCount" : 0
-} ]</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "hasMore" : true,
+  "pageNum" : 0,
+  "pageSize" : 0,
+  "values" : [ {
+    "applicationName" : "string",
+    "customerId" : "string",
+    "description" : "string",
+    "enabled" : true,
+    "externalParamId" : "string",
+    "externalParamIdentifier" : "string",
+    "groupsCount" : 0,
+    "id" : "string",
+    "identifier" : "string",
+    "level" : "string",
+    "name" : "string",
+    "readonly" : true,
+    "roles" : [ {
+      "name" : "string"
+    } ],
+    "tenantIdentifier" : 0,
+    "tenantName" : "string",
+    "usersCount" : 0
+  } ]
+}</code></pre>
 </div>
 </div>
 </div>
@@ -10673,6 +10711,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>serviceId</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>target</strong><br>
 <em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
@@ -12896,7 +12940,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-06 14:28:03 +0100
+Last updated 2020-12-17 16:14:05 +0100
 </div>
 </div>
 </body>

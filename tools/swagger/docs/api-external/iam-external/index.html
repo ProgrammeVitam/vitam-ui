@@ -466,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_logoutusingget">2.2.2. logout</a></li>
 <li><a href="#_changepasswordusingpost">2.2.3. changePassword</a></li>
 <li><a href="#_getsubrogationsbysuperuseridusingget">2.2.4. getSubrogationsBySuperUserId</a></li>
-<li><a href="#_getuserbyemailusingget">2.2.5. getUserByEmail</a></li>
+<li><a href="#_getuserbyidusingget">2.2.5. getUserById</a></li>
 </ul>
 </li>
 <li><a href="#_customers_resource">2.3. Customers</a>
@@ -830,6 +830,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   "identifier" : "string",
   "name" : "string",
   "position" : 0,
+  "serviceId" : "string",
   "target" : "string",
   "tooltip" : "string",
   "url" : "string"
@@ -950,6 +951,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   "identifier" : "string",
   "name" : "string",
   "position" : 0,
+  "serviceId" : "string",
   "target" : "string",
   "tooltip" : "string",
   "url" : "string"
@@ -1405,7 +1407,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getuserbyemailusingget"><a class="anchor" href="#_getuserbyemailusingget"></a><a class="link" href="#_getuserbyemailusingget">2.2.5. getUserByEmail</a></h4>
+<h4 id="_getuserbyidusingget"><a class="anchor" href="#_getuserbyidusingget"></a><a class="link" href="#_getuserbyidusingget">2.2.5. getUserById</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /iam/v1/cas/users</pre>
@@ -1431,16 +1433,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>email</strong><br>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
 <em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">email</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>embedded</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">embedded</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -1485,8 +1480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
-  "email" : "string",
-  "embedded" : "string"
+  "id" : "string"
 }</code></pre>
 </div>
 </div>
@@ -10345,6 +10339,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>serviceId</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>target</strong><br>
 <em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
@@ -12141,7 +12141,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-06 14:28:03 +0100
+Last updated 2020-12-17 16:14:05 +0100
 </div>
 </div>
 </body>

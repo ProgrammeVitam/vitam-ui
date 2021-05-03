@@ -457,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_customers_resource">2.1. Customers</a>
 <ul class="sectlevel3">
 <li><a href="#_createusingpost">2.1.1. Create entity</a></li>
-<li><a href="#_getallusingget">2.1.2. Get all entities</a></li>
+<li><a href="#_getallpaginatedusingget">2.1.2. Get entities paginated</a></li>
 <li><a href="#_checkexistusinghead">2.1.3. Check entity exist by criteria</a></li>
 <li><a href="#_getgdprsettingstatususingget">2.1.4. getGdprSettingStatus</a></li>
 <li><a href="#_getmycustomerusingget">2.1.5. getMyCustomer</a></li>
@@ -471,7 +471,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_groups_resource">2.2. Groups</a>
 <ul class="sectlevel3">
 <li><a href="#_createusingpost_1">2.2.1. Create entity</a></li>
-<li><a href="#_getallpaginatedusingget_1">2.2.2. Get entities paginated</a></li>
+<li><a href="#_getallusingget_1">2.2.2. Get all entities</a></li>
 <li><a href="#_checkexistusinghead_1">2.2.3. Check entity exist by criteria</a></li>
 <li><a href="#_getlevelsusingget">2.2.4. getLevels</a></li>
 <li><a href="#_getoneusingget_1">2.2.5. Get entity, can be filter by enabled value</a></li>
@@ -1065,7 +1065,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getallusingget"><a class="anchor" href="#_getallusingget"></a><a class="link" href="#_getallusingget">2.1.2. Get all entities</a></h4>
+<h4 id="_getallpaginatedusingget"><a class="anchor" href="#_getallpaginatedusingget"></a><a class="link" href="#_getallpaginatedusingget">2.1.2. Get entities paginated</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /identity-api/customers</pre>
@@ -1092,8 +1092,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
-<em>optionnel</em></p></td>
+<em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>direction</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">direction</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">enum (ASC, DESC)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>orderBy</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">orderBy</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>page</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">page</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>size</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">size</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -1118,7 +1146,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_customerdto">CustomerDto</a> &gt; array</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_1d5f5236104dd2e2a671a030633de0c6">PaginatedValuesDtoÂ«CustomerDtoÂ»</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -1138,7 +1166,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
-  "criteria" : "string"
+  "criteria" : "string",
+  "direction" : "string",
+  "orderBy" : "string",
+  "page" : "string",
+  "size" : "string"
 }</code></pre>
 </div>
 </div>
@@ -1150,28 +1182,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_réponse_200"><a class="anchor" href="#_réponse_200"></a><a class="link" href="#_réponse_200">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">[ {
-  "address" : {
-    "city" : "string",
-    "country" : "string",
-    "street" : "string",
-    "zipCode" : "string"
-  },
-  "code" : "string",
-  "companyName" : "string",
-  "defaultEmailDomain" : "string",
-  "emailDomains" : [ "string" ],
-  "enabled" : true,
-  "gdprAlert" : true,
-  "gdprAlertDelay" : 0,
-  "hasCustomGraphicIdentity" : true,
-  "id" : "string",
-  "identifier" : "string",
-  "internalCode" : "string",
-  "language" : "string",
-  "name" : "string",
-  "otp" : "string",
-  "owners" : [ {
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "hasMore" : true,
+  "pageNum" : 0,
+  "pageSize" : 0,
+  "values" : [ {
     "address" : {
       "city" : "string",
       "country" : "string",
@@ -1180,22 +1195,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     },
     "code" : "string",
     "companyName" : "string",
-    "customerId" : "string",
+    "defaultEmailDomain" : "string",
+    "emailDomains" : [ "string" ],
+    "enabled" : true,
+    "gdprAlert" : true,
+    "gdprAlertDelay" : 0,
+    "hasCustomGraphicIdentity" : true,
     "id" : "string",
     "identifier" : "string",
     "internalCode" : "string",
+    "language" : "string",
     "name" : "string",
-    "readonly" : true
-  } ],
-  "passwordRevocationDelay" : 0,
-  "portalMessage" : "string",
-  "portalTitle" : "string",
-  "readonly" : true,
-  "subrogeable" : true,
-  "themeColors" : {
-    "string" : "string"
-  }
-} ]</code></pre>
+    "otp" : "string",
+    "owners" : [ {
+      "address" : {
+        "city" : "string",
+        "country" : "string",
+        "street" : "string",
+        "zipCode" : "string"
+      },
+      "code" : "string",
+      "companyName" : "string",
+      "customerId" : "string",
+      "id" : "string",
+      "identifier" : "string",
+      "internalCode" : "string",
+      "name" : "string",
+      "readonly" : true
+    } ],
+    "passwordRevocationDelay" : 0,
+    "portalMessage" : "string",
+    "portalTitle" : "string",
+    "readonly" : true,
+    "subrogeable" : true,
+    "themeColors" : {
+      "string" : "string"
+    }
+  } ]
+}</code></pre>
 </div>
 </div>
 </div>
@@ -2354,7 +2391,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getallpaginatedusingget_1"><a class="anchor" href="#_getallpaginatedusingget_1"></a><a class="link" href="#_getallpaginatedusingget_1">2.2.2. Get entities paginated</a></h4>
+<h4 id="_getallusingget_1"><a class="anchor" href="#_getallusingget_1"></a><a class="link" href="#_getallusingget_1">2.2.2. Get all entities</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /identity-api/groups</pre>
@@ -2390,43 +2427,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>direction</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">direction</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">enum (ASC, DESC)</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>embedded</strong><br>
 <em>requis</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">embedded</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><code>"ALL"</code></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>orderBy</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">orderBy</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>page</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">page</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-middle"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>size</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">size</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-<td class="tableblock halign-left valign-middle"></td>
 </tr>
 </tbody>
 </table>
@@ -2450,7 +2455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_b89009c0e14b822accf7f9353937221d">PaginatedValuesDtoÂ«GroupDtoÂ»</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_groupdto">GroupDto</a> &gt; array</p></td>
 </tr>
 </tbody>
 </table>
@@ -2471,11 +2476,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "criteria" : "string",
-  "direction" : "string",
-  "embedded" : "string",
-  "orderBy" : "string",
-  "page" : "string",
-  "size" : "string"
+  "embedded" : "string"
 }</code></pre>
 </div>
 </div>
@@ -2487,43 +2488,38 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_réponse_200_9"><a class="anchor" href="#_réponse_200_9"></a><a class="link" href="#_réponse_200_9">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "hasMore" : true,
-  "pageNum" : 0,
-  "pageSize" : 0,
-  "values" : [ {
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "customerId" : "string",
+  "description" : "string",
+  "enabled" : true,
+  "id" : "string",
+  "identifier" : "string",
+  "level" : "string",
+  "name" : "string",
+  "profileIds" : [ "string" ],
+  "profiles" : [ {
+    "applicationName" : "string",
     "customerId" : "string",
     "description" : "string",
     "enabled" : true,
+    "externalParamId" : "string",
+    "externalParamIdentifier" : "string",
+    "groupsCount" : 0,
     "id" : "string",
     "identifier" : "string",
     "level" : "string",
     "name" : "string",
-    "profileIds" : [ "string" ],
-    "profiles" : [ {
-      "applicationName" : "string",
-      "customerId" : "string",
-      "description" : "string",
-      "enabled" : true,
-      "externalParamId" : "string",
-      "externalParamIdentifier" : "string",
-      "groupsCount" : 0,
-      "id" : "string",
-      "identifier" : "string",
-      "level" : "string",
-      "name" : "string",
-      "readonly" : true,
-      "roles" : [ {
-        "name" : "string"
-      } ],
-      "tenantIdentifier" : 0,
-      "tenantName" : "string",
-      "usersCount" : 0
-    } ],
     "readonly" : true,
+    "roles" : [ {
+      "name" : "string"
+    } ],
+    "tenantIdentifier" : 0,
+    "tenantName" : "string",
     "usersCount" : 0
-  } ]
-}</code></pre>
+  } ],
+  "readonly" : true,
+  "usersCount" : 0
+} ]</code></pre>
 </div>
 </div>
 </div>
@@ -8609,7 +8605,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-06 14:28:03 +0100
+Last updated 2020-12-17 16:14:05 +0100
 </div>
 </div>
 </body>
