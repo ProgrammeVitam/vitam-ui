@@ -613,7 +613,6 @@ emptyForm = {
           const c = criteria.criteria;
           criteria.values.forEach((value) => {
             const keyLabel = this.getKeyLabel(c);
-            console.log('label = ', keyLabel);
             if (keyLabel !== 'ONTOLOGY_TYPE') {
               // Standard Filters other than ontology criteria
               if (keyLabel.includes('DATE')) {
