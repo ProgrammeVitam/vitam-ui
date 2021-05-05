@@ -142,8 +142,22 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.error("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
+                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
                     email = mail;
+                }
+            }
+
+            val identifierAttribute = provider.getIdentifierAttribute();
+            String identifier = userId;
+            if (CommonHelper.isNotBlank(identifierAttribute)) {
+                val identifiers = principal.getAttributes().get(identifierAttribute);
+                if (identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))) {
+                    LOGGER.error("Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value", providerName, identifierAttribute);
+                    return NullPrincipal.getInstance();
+                } else {
+                    val identifierAttr = (String) identifiers.get(0);
+                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, userId, identifierAttr);
+                    identifier = identifierAttr;
                 }
             }
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
@@ -157,7 +171,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 username = email;
                 superUsername = null;
                 userProviderId = provider.getId();
-                technicalUserId = Optional.of(userId);
+                technicalUserId = Optional.of(identifier);
                 surrogationCall = false;
             }
         }
