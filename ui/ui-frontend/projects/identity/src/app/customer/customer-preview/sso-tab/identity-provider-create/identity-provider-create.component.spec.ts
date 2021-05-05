@@ -139,6 +139,7 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
+        identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true
       });
@@ -178,6 +179,7 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
+        identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true
       });
@@ -230,6 +232,7 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
+        identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
         autoProvisioningEnabled: true
       });

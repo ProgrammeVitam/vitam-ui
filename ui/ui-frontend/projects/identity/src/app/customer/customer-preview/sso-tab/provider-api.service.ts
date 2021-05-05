@@ -62,6 +62,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
       patterns: identityProvider.patterns,
       enabled: identityProvider.enabled,
       mailAttribute: identityProvider.mailAttribute,
+      identifierAttribute: identityProvider.identifierAttribute,
       authnRequestBinding: identityProvider.authnRequestBinding,
       autoProvisioningEnabled: identityProvider.autoProvisioningEnabled
     }));

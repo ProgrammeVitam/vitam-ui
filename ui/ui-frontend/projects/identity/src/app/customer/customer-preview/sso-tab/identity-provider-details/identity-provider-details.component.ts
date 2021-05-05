@@ -123,6 +123,7 @@ export class IdentityProviderDetailsComponent implements OnInit {
       internal: [{ value: false, disabled: true }, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],
+      identifierAttribute: [null],
       authnRequestBinding: [null, Validators.required],
       autoProvisioningEnabled: [null, Validators.required],
     });

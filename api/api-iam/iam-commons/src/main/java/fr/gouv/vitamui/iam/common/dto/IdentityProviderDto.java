@@ -101,6 +101,8 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private String mailAttribute;
 
+    private String identifierAttribute;
+
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
     private boolean autoProvisioningEnabled;

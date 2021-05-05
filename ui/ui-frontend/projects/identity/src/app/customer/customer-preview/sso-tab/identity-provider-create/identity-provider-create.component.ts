@@ -73,6 +73,7 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       keystorePassword: [null, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],
+      identifierAttribute: [null],
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       autoProvisioningEnabled: [false, Validators.required],
     });

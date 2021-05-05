@@ -149,9 +149,11 @@
       "METADATA": "Metadata CAS",
       "RETURN": "Return to the IDP list",
       "ACTIVE_SWITCH": "Active IDP",
+      "IDP_NAME": "IDP name",
       "KEYSTORE": "Keystore of CAS",
       "IDP_METADATA": "IDP Metadata",
-      "MAIL_ATTRIBUTE": "Mail attribute",
+      "MAIL_ATTRIBUTE": "Attribute of the email",
+      "IDENTIFIER_ATTRIBUTE": "Attribute of the identifier",
       "MODAL": {
         "TITLE": "IDP Creation for",
         "KEYSTORE_PWD": "Keystore password",
