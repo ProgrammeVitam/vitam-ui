@@ -109,6 +109,7 @@ class TestHostComponent {
     idpMetadata: null,
     readonly : false,
     mailAttribute: 'mailAttribute',
+    identifierAttribute: 'identifierAttribute',
     authnRequestBinding: AuthnRequestBindingEnum.POST,
     autoProvisioningEnabled: false
   };
@@ -167,6 +168,7 @@ describe('IdentityProviderDetailsComponent', () => {
         name: testhost.provider.name,
         patterns: testhost.provider.patterns,
         mailAttribute: testhost.provider.mailAttribute,
+        identifierAttribute: testhost.provider.identifierAttribute,
         authnRequestBinding: testhost.provider.authnRequestBinding,
         autoProvisioningEnabled: testhost.provider.autoProvisioningEnabled
       });
@@ -190,6 +192,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('internal')).not.toBeNull();
       expect(testhost.component.form.get('patterns')).not.toBeNull();
       expect(testhost.component.form.get('mailAttribute')).not.toBeNull();
+      expect(testhost.component.form.get('identifierAttribute')).not.toBeNull();
       expect(testhost.component.form.get('authnRequestBinding')).not.toBeNull();
       expect(testhost.component.form.get('autoProvisioningEnabled')).not.toBeNull();
     });
@@ -203,6 +206,7 @@ describe('IdentityProviderDetailsComponent', () => {
         internal: null,
         patterns: null,
         mailAttribute: null,
+        identifierAttribute: null,
         authnRequestBinding: null,
         autoProvisioningEnabled: null
       });
@@ -228,6 +232,7 @@ describe('IdentityProviderDetailsComponent', () => {
         internal: testhost.provider.internal,
         patterns: testhost.provider.patterns,
         mailAttribute: testhost.provider.mailAttribute,
+        identifierAttribute: testhost.provider.identifierAttribute,
         authnRequestBinding: testhost.provider.authnRequestBinding,
         autoProvisioningEnabled: false
       });
