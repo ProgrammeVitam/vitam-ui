@@ -275,9 +275,9 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     entity.setMailAttribute(CastUtils.toString(entry.getValue()));
                     break;
                 case "identifierAttribute" :
-                logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
-                entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
-                break;
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
+                    break;
                 case "authnRequestBinding" :
                     final String authnRequestBindingAsString = CastUtils.toString(entry.getValue());
                     final AuthnRequestBindingEnum newAuthnRequestBinding = EnumUtils.stringToEnum(AuthnRequestBindingEnum.class, authnRequestBindingAsString);
