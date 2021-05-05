@@ -36,6 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
 
@@ -43,7 +44,8 @@ import { EventTypeLabelComponent } from './event-type-label.component';
   declarations: [EventTypeLabelComponent],
   exports: [EventTypeLabelComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule,
   ]
 })
 export class EventTypeLabelModule { }
