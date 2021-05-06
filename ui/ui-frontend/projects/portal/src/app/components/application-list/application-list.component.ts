@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
 
-const UNKNOW_APP_FILE_NAME = "UNKNOWN_APP"
+const UNKNOW_APP_FILE_NAME = 'UNKNOWN_APP';
 
 @Component({
   selector: 'app-application-list',
