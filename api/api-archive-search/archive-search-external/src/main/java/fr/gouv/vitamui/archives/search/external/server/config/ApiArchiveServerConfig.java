@@ -31,6 +31,8 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClientFactory;
 import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
 import fr.gouv.archive.internal.client.ArchiveInternalWebClientFactory;
+import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
+import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -131,5 +133,12 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     public AccessContractTempInternalRestClient accessContractInternalRestClient(
         final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
         return archiveInternalRestClientFactory.getAccessContractTempInternalRestClient();
+    }
+
+
+    @Bean
+    public SearchCriteriaHistoryInternalRestClient searchCriteriaHistoryInternalRestClient(
+        final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
+        return archiveInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
 }

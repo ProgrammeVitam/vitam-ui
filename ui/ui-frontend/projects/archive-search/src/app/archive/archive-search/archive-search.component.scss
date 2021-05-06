@@ -77,13 +77,6 @@
     box-sizing: border-box;
     border-radius: 5px;
 }
-.after-search-launched-button{
-    color: #fff;
-    background-color: #2C76C9;
-    border: 1px solid #2C76C9;
-    box-sizing: border-box;
-    border-radius: 5px;
-}
 .criteria-group {
     padding: 10px
 }
@@ -200,4 +193,97 @@ color: var(--vitamui-primary);
 padding-right: 10px;
 padding-left: 10px;
 font-size: 22px;
+}
+
+
+.search-criterias{
+    font-size: large;
+    font-weight: bold;
+    margin-top: 50px;
+}
+
+
+.left-margin{
+    margin-left: 30%;
+}
+.show-panel {
+    display: none;
+}
+.hide-panel {
+    display: block;
+}
+
+::ng-deep .my-menu {
+    max-width: 380px;
+}
+
+.circle {
+
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 13px;
+position: static;
+width: 50px;
+height: 50px;
+left: 0px;
+top: 0px;
+
+background: var(--vitamui-secondary);
+border-radius: 50px;
+
+
+flex: none;
+order: 0;
+flex-grow: 0;
+margin: 0px 20px;
+border: none;
+}
+
+.circle:focus{
+    border:none;
+    outline: -webkit-focus-ring-color auto 0px;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0px;
+}
+
+.primary-save-icon {
+    color: white;
+}
+
+.mat-boutton {
+    border: none;
+    background: #f5f7fc;
+}
+.mat-boutton:hover .mat-boutton:focus{
+    background: #f5f7fc;
+    border:none;
+}
+
+.mat-boutton:focus{
+    background: #f5f7fc;
+    border:none;
+    outline: -webkit-focus-ring-color auto 0px;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0px;
+}
+
+.mat-boutton:active{
+    background: #f5f7fc;
+    border:none;
+}
+.div-btn-delete {
+    width:78px;
+}
+
+.btn-add {
+    color: #757575;
+    font-size: 37x;
+}
+
+.btn-new-save {
+    font-size: 16px;
 }

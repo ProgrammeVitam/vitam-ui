@@ -54,4 +54,8 @@ public class ArchiveSearchExternalRestClientFactory extends BaseRestClientFactor
     public AccessContractTempExternalRestClient getAccessContractTempExternalRestClient() {
         return new AccessContractTempExternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+    public SearchCriteriaHistoryExternalRestClient getSearchCriteriaHistoryExternalRestClient() {
+        return new SearchCriteriaHistoryExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

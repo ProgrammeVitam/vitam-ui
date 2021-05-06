@@ -456,12 +456,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_archives_search_resource">2.1. Archives Search</a>
 <ul class="sectlevel3">
-<li><a href="#_getallpaginatedusingget">2.1.1. Get entities paginated</a></li>
+<li><a href="#_getallusingget">2.1.1. Get entity</a></li>
 <li><a href="#_findunitbyidusingget">2.1.2. Find the Archive Unit Details</a></li>
 <li><a href="#_downloadobjectfromunitusingget">2.1.3. Download Object from the Archive Unit</a></li>
 <li><a href="#_exportcsvarchiveunitsbycriteriausingpost">2.1.4. export into csv format archive units by criteria</a></li>
 <li><a href="#_findfilingholdingschemeusingget">2.1.5. Get filing plan</a></li>
 <li><a href="#_searcharchiveunitsusingpost">2.1.6. find archive units by criteria</a></li>
+</ul>
+</li>
+<li><a href="#_searchcriteriahistory_resource">2.2. Searchcriteriahistory</a>
+<ul class="sectlevel3">
+<li><a href="#_createusingpost">2.2.1. Create search criteria history</a></li>
+<li><a href="#_getsearchcritriahistoryusingget">2.2.2. Get the search criteria history</a></li>
+<li><a href="#_updateusingput">2.2.3. Update Search criteria history</a></li>
+<li><a href="#_deleteusingdelete">2.2.4. delete Search criteria history</a></li>
 </ul>
 </li>
 </ul>
@@ -474,41 +482,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_facetbucketdto">3.4. FacetBucketDto</a></li>
 <li><a href="#_facetresultsdto">3.5. FacetResultsDto</a></li>
 <li><a href="#_fieldsdto">3.6. FieldsDto</a></li>
-<li><a href="#_file">3.7. File</a></li>
-<li><a href="#_fileinfodto">3.8. FileInfoDto</a></li>
-<li><a href="#_fileinfomodel">3.9. FileInfoModel</a></li>
-<li><a href="#_filterdto">3.10. FilterDto</a></li>
-<li><a href="#_formatidentificationmodel">3.11. FormatIdentificationModel</a></li>
-<li><a href="#_hitsdto">3.12. HitsDto</a></li>
-<li><a href="#_inheritedpropertydto">3.13. InheritedPropertyDto</a></li>
-<li><a href="#_inheritedrulecategorydto">3.14. InheritedRuleCategoryDto</a></li>
-<li><a href="#_inheritedrulesdto">3.15. InheritedRulesDto</a></li>
-<li><a href="#_inputstream">3.16. InputStream</a></li>
-<li><a href="#_jsonnode">3.17. JsonNode</a></li>
-<li><a href="#_keyworddto">3.18. KeywordDto</a></li>
-<li><a href="#_managementdto">3.19. ManagementDto</a></li>
-<li><a href="#_measurementmodel">3.20. MeasurementModel</a></li>
-<li><a href="#_metadatamodel">3.21. MetadataModel</a></li>
-<li><a href="#_orderbydto">3.22. OrderbyDto</a></li>
-<li><a href="#_0dc84c7e15f62d0c1fecb28653cc504a">3.23. PaginatedValuesDtoÂ«AccessContractDtoÂ»</a></li>
-<li><a href="#_physicaldimensionsmodel">3.24. PhysicalDimensionsModel</a></li>
-<li><a href="#_projectiondto">3.25. ProjectionDto</a></li>
-<li><a href="#_qualifiersdto">3.26. QualifiersDto</a></li>
-<li><a href="#_querydto">3.27. QueryDTO</a></li>
-<li><a href="#_queryfilter">3.28. QueryFilter</a></li>
-<li><a href="#_queryprojection">3.29. QueryProjection</a></li>
-<li><a href="#_resource">3.30. Resource</a></li>
-<li><a href="#_resultsdto">3.31. ResultsDto</a></li>
-<li><a href="#_rulecategorydto">3.32. RuleCategoryDto</a></li>
-<li><a href="#_ruledto">3.33. RuleDto</a></li>
-<li><a href="#_searchcriteriadto">3.34. SearchCriteriaDto</a></li>
+<li><a href="#_fileinfodto">3.7. FileInfoDto</a></li>
+<li><a href="#_fileinfomodel">3.8. FileInfoModel</a></li>
+<li><a href="#_filterdto">3.9. FilterDto</a></li>
+<li><a href="#_formatidentificationmodel">3.10. FormatIdentificationModel</a></li>
+<li><a href="#_hitsdto">3.11. HitsDto</a></li>
+<li><a href="#_inheritedpropertydto">3.12. InheritedPropertyDto</a></li>
+<li><a href="#_inheritedrulecategorydto">3.13. InheritedRuleCategoryDto</a></li>
+<li><a href="#_inheritedrulesdto">3.14. InheritedRulesDto</a></li>
+<li><a href="#_inputstream">3.15. InputStream</a></li>
+<li><a href="#_jsonnode">3.16. JsonNode</a></li>
+<li><a href="#_keyworddto">3.17. KeywordDto</a></li>
+<li><a href="#_managementdto">3.18. ManagementDto</a></li>
+<li><a href="#_measurementmodel">3.19. MeasurementModel</a></li>
+<li><a href="#_metadatamodel">3.20. MetadataModel</a></li>
+<li><a href="#_orderbydto">3.21. OrderbyDto</a></li>
+<li><a href="#_0dc84c7e15f62d0c1fecb28653cc504a">3.22. PaginatedValuesDtoÂ«AccessContractDtoÂ»</a></li>
+<li><a href="#_physicaldimensionsmodel">3.23. PhysicalDimensionsModel</a></li>
+<li><a href="#_projectiondto">3.24. ProjectionDto</a></li>
+<li><a href="#_qualifiersdto">3.25. QualifiersDto</a></li>
+<li><a href="#_querydto">3.26. QueryDTO</a></li>
+<li><a href="#_queryfilter">3.27. QueryFilter</a></li>
+<li><a href="#_queryprojection">3.28. QueryProjection</a></li>
+<li><a href="#_resource">3.29. Resource</a></li>
+<li><a href="#_resultsdto">3.30. ResultsDto</a></li>
+<li><a href="#_rulecategorydto">3.31. RuleCategoryDto</a></li>
+<li><a href="#_ruledto">3.32. RuleDto</a></li>
+<li><a href="#_searchcriteriadto">3.33. SearchCriteriaDto</a></li>
+<li><a href="#_searchcriteriaelementsdto">3.34. SearchCriteriaElementsDto</a></li>
 <li><a href="#_searchcriteriaeltdto">3.35. SearchCriteriaEltDto</a></li>
-<li><a href="#_searchcriteriasort">3.36. SearchCriteriaSort</a></li>
-<li><a href="#_storagedto">3.37. StorageDto</a></li>
-<li><a href="#_storagejson">3.38. StorageJson</a></li>
-<li><a href="#_titledto">3.39. TitleDto</a></li>
-<li><a href="#_uri">3.40. URI</a></li>
-<li><a href="#_url">3.41. URL</a></li>
+<li><a href="#_searchcriteriahistorydto">3.36. SearchCriteriaHistoryDto</a></li>
+<li><a href="#_searchcriteriasort">3.37. SearchCriteriaSort</a></li>
+<li><a href="#_searchcriteriasdto">3.38. SearchCriteriasDto</a></li>
+<li><a href="#_storagedto">3.39. StorageDto</a></li>
+<li><a href="#_storagejson">3.40. StorageJson</a></li>
+<li><a href="#_titledto">3.41. TitleDto</a></li>
 <li><a href="#_versionsdto">3.42. VersionsDto</a></li>
 <li><a href="#_vitamsearchrequestdto">3.43. VitamSearchRequestDto</a></li>
 <li><a href="#_vitamuiarchiveunitresponsedto">3.44. VitamUIArchiveUnitResponseDto</a></li>
@@ -562,6 +570,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>archives Search : Access Contract Temp Controller</p>
 </li>
+<li>
+<p>searchcriteriahistory : Search Criteria History Controller</p>
+</li>
 </ul>
 </div>
 </div>
@@ -586,7 +597,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>Access Contract Temp Controller</p>
 </div>
 <div class="sect3">
-<h4 id="_getallpaginatedusingget"><a class="anchor" href="#_getallpaginatedusingget"></a><a class="link" href="#_getallpaginatedusingget">2.1.1. Get entities paginated</a></h4>
+<h4 id="_getallusingget"><a class="anchor" href="#_getallusingget"></a><a class="link" href="#_getallusingget">2.1.1. Get entity</a></h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /archive-search-api/archive-search/accesscontracts</pre>
@@ -611,59 +622,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
 <em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">criteria</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>direction</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">direction</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">enum (ASC, DESC)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>orderBy</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">orderBy</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>page</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">page</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Query</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>size</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">size</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
 </tr>
 </tbody>
@@ -688,22 +650,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_0dc84c7e15f62d0c1fecb28653cc504a">PaginatedValuesDtoÂ«AccessContractDtoÂ»</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvÃ©e</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_accesscontractdto">AccessContractDto</a> &gt; array</p></td>
 </tr>
 </tbody>
 </table>
@@ -719,23 +666,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect5">
-<h6 id="_requête_header"><a class="anchor" href="#_requête_header"></a><a class="link" href="#_requête_header">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect5">
 <h6 id="_requête_query"><a class="anchor" href="#_requête_query"></a><a class="link" href="#_requête_query">Requête query</a></h6>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
-  "criteria" : "string",
-  "direction" : "string",
-  "orderBy" : "string",
-  "page" : "string",
-  "size" : "string"
+  "criteria" : "string"
 }</code></pre>
 </div>
 </div>
@@ -747,33 +682,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h6 id="_réponse_200"><a class="anchor" href="#_réponse_200"></a><a class="link" href="#_réponse_200">Réponse 200</a></h6>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
-  "hasMore" : true,
-  "pageNum" : 0,
-  "pageSize" : 0,
-  "values" : [ {
-    "accessLog" : "string",
-    "activationDate" : "string",
-    "creationDate" : "string",
-    "dataObjectVersion" : [ "string" ],
-    "description" : "string",
-    "everyDataObjectVersion" : true,
-    "everyOriginatingAgency" : true,
-    "excludedRootUnits" : [ "string" ],
-    "id" : "string",
-    "identifier" : "string",
-    "lastUpdate" : "string",
-    "name" : "string",
-    "originatingAgencies" : [ "string" ],
-    "rootUnits" : [ "string" ],
-    "ruleCategoryToFilter" : [ "string" ],
-    "status" : "string",
-    "tenant" : 0,
-    "version" : 0,
-    "writingPermission" : true,
-    "writingRestrictedDesc" : true
-  } ]
-}</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "accessLog" : "string",
+  "activationDate" : "string",
+  "creationDate" : "string",
+  "dataObjectVersion" : [ "string" ],
+  "description" : "string",
+  "everyDataObjectVersion" : true,
+  "everyOriginatingAgency" : true,
+  "excludedRootUnits" : [ "string" ],
+  "id" : "string",
+  "identifier" : "string",
+  "lastUpdate" : "string",
+  "name" : "string",
+  "originatingAgencies" : [ "string" ],
+  "rootUnits" : [ "string" ],
+  "ruleCategoryToFilter" : [ "string" ],
+  "status" : "string",
+  "tenant" : 0,
+  "version" : 0,
+  "writingPermission" : true,
+  "writingRestrictedDesc" : true
+} ]</code></pre>
 </div>
 </div>
 </div>
@@ -805,27 +735,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
 <em>requis</em></p></td>
@@ -856,21 +765,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_resultsdto">ResultsDto</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvÃ©e</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -881,14 +775,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre>/archive-search-api/archive-search/archiveunit/string</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_2"><a class="anchor" href="#_requête_header_2"></a><a class="link" href="#_requête_header_2">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
 </div>
 </div>
 </div>
@@ -1101,27 +987,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
 <em>requis</em></p></td>
@@ -1152,21 +1017,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_resource">Resource</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvÃ©e</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1180,14 +1030,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
-<div class="sect5">
-<h6 id="_requête_header_3"><a class="anchor" href="#_requête_header_3"></a><a class="link" href="#_requête_header_3">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
-</div>
-</div>
-</div>
 </div>
 <div class="sect4">
 <h5 id="_exemple_de_réponse_http_3"><a class="anchor" href="#_exemple_de_réponse_http_3"></a><a class="link" href="#_exemple_de_réponse_http_3">Exemple de réponse HTTP</a></h5>
@@ -1197,75 +1039,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "description" : "string",
-  "file" : {
-    "absolute" : true,
-    "absoluteFile" : {
-      "absolute" : true,
-      "absoluteFile" : "...",
-      "absolutePath" : "string",
-      "canonicalFile" : "...",
-      "canonicalPath" : "string",
-      "directory" : true,
-      "file" : true,
-      "freeSpace" : 0,
-      "hidden" : true,
-      "name" : "string",
-      "parent" : "string",
-      "parentFile" : "...",
-      "path" : "string",
-      "totalSpace" : 0,
-      "usableSpace" : 0
-    },
-    "absolutePath" : "string",
-    "canonicalFile" : "...",
-    "canonicalPath" : "string",
-    "directory" : true,
-    "file" : true,
-    "freeSpace" : 0,
-    "hidden" : true,
-    "name" : "string",
-    "parent" : "string",
-    "parentFile" : "...",
-    "path" : "string",
-    "totalSpace" : 0,
-    "usableSpace" : 0
-  },
+  "file" : "file",
   "filename" : "string",
   "inputStream" : { },
   "open" : true,
   "readable" : true,
-  "uri" : {
-    "absolute" : true,
-    "authority" : "string",
-    "fragment" : "string",
-    "host" : "string",
-    "opaque" : true,
-    "path" : "string",
-    "port" : 0,
-    "query" : "string",
-    "rawAuthority" : "string",
-    "rawFragment" : "string",
-    "rawPath" : "string",
-    "rawQuery" : "string",
-    "rawSchemeSpecificPart" : "string",
-    "rawUserInfo" : "string",
-    "scheme" : "string",
-    "schemeSpecificPart" : "string",
-    "userInfo" : "string"
-  },
-  "url" : {
-    "authority" : "string",
-    "content" : "object",
-    "defaultPort" : 0,
-    "file" : "string",
-    "host" : "string",
-    "path" : "string",
-    "port" : 0,
-    "protocol" : "string",
-    "query" : "string",
-    "ref" : "string",
-    "userInfo" : "string"
-  }
+  "uri" : "string",
+  "url" : "string"
 }</code></pre>
 </div>
 </div>
@@ -1298,27 +1078,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>searchQuery</strong><br>
 <em>requis</em></p></td>
@@ -1349,16 +1108,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_resource">Resource</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1379,14 +1128,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre>/archive-search-api/archive-search/export-csv-search</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_4"><a class="anchor" href="#_requête_header_4"></a><a class="link" href="#_requête_header_4">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
 </div>
 </div>
 </div>
@@ -1421,75 +1162,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
   "description" : "string",
-  "file" : {
-    "absolute" : true,
-    "absoluteFile" : {
-      "absolute" : true,
-      "absoluteFile" : "...",
-      "absolutePath" : "string",
-      "canonicalFile" : "...",
-      "canonicalPath" : "string",
-      "directory" : true,
-      "file" : true,
-      "freeSpace" : 0,
-      "hidden" : true,
-      "name" : "string",
-      "parent" : "string",
-      "parentFile" : "...",
-      "path" : "string",
-      "totalSpace" : 0,
-      "usableSpace" : 0
-    },
-    "absolutePath" : "string",
-    "canonicalFile" : "...",
-    "canonicalPath" : "string",
-    "directory" : true,
-    "file" : true,
-    "freeSpace" : 0,
-    "hidden" : true,
-    "name" : "string",
-    "parent" : "string",
-    "parentFile" : "...",
-    "path" : "string",
-    "totalSpace" : 0,
-    "usableSpace" : 0
-  },
+  "file" : "file",
   "filename" : "string",
   "inputStream" : { },
   "open" : true,
   "readable" : true,
-  "uri" : {
-    "absolute" : true,
-    "authority" : "string",
-    "fragment" : "string",
-    "host" : "string",
-    "opaque" : true,
-    "path" : "string",
-    "port" : 0,
-    "query" : "string",
-    "rawAuthority" : "string",
-    "rawFragment" : "string",
-    "rawPath" : "string",
-    "rawQuery" : "string",
-    "rawSchemeSpecificPart" : "string",
-    "rawUserInfo" : "string",
-    "scheme" : "string",
-    "schemeSpecificPart" : "string",
-    "userInfo" : "string"
-  },
-  "url" : {
-    "authority" : "string",
-    "content" : "object",
-    "defaultPort" : 0,
-    "file" : "string",
-    "host" : "string",
-    "path" : "string",
-    "port" : 0,
-    "protocol" : "string",
-    "query" : "string",
-    "ref" : "string",
-    "userInfo" : "string"
-  }
+  "uri" : "string",
+  "url" : "string"
 }</code></pre>
 </div>
 </div>
@@ -1502,48 +1181,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre>GET /archive-search-api/archive-search/filingholdingscheme</pre>
 </div>
-</div>
-<div class="sect4">
-<h5 id="_paramètres_5"><a class="anchor" href="#_paramètres_5"></a><a class="link" href="#_paramètres_5">Paramètres</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Type</th>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect4">
 <h5 id="_réponses_5"><a class="anchor" href="#_réponses_5"></a><a class="link" href="#_réponses_5">Réponses</a></h5>
@@ -1566,21 +1203,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_vitamuisearchresponsedto">VitamUISearchResponseDto</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>404</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Non trouvÃ©e</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1591,14 +1213,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre>/archive-search-api/archive-search/filingholdingscheme</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_5"><a class="anchor" href="#_requête_header_5"></a><a class="link" href="#_requête_header_5">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
 </div>
 </div>
 </div>
@@ -1839,7 +1453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect4">
-<h5 id="_paramètres_6"><a class="anchor" href="#_paramètres_6"></a><a class="link" href="#_paramètres_6">Paramètres</a></h5>
+<h5 id="_paramètres_5"><a class="anchor" href="#_paramètres_5"></a><a class="link" href="#_paramètres_5">Paramètres</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -1856,27 +1470,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Application-Id</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant unique transfÃ©rer utilisÃ© dans la gÃ©nÃ©ration des logs et des journaux VITAM</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-Tenant-Id</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant du tenant sur lequel doit Ãªtre exÃ©cutÃ©e la requÃªte</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Header</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>X-User-Token</strong><br>
-<em>requis</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Identifiant technique du token gÃ©nÃ©rÃ© par le serveur CAS lors de l&#8217;autentification</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>searchQuery</strong><br>
@@ -1908,16 +1501,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_vitamuiarchiveunitresponsedto">VitamUIArchiveUnitResponseDto</a></p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>401</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">La requÃªte n&#8217;est pas autorisÃ©e. Le X-User-Token n&#8217;est pas valide</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>403</strong></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">L&#8217;utilisateur ne possÃ¨de pas les droits pour effectuer cette opÃ©ration</p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1938,14 +1521,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre>/archive-search-api/archive-search/search</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_requête_header_6"><a class="anchor" href="#_requête_header_6"></a><a class="link" href="#_requête_header_6">Requête header</a></h6>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">"string"</code></pre>
 </div>
 </div>
 </div>
@@ -2196,6 +1771,397 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     "originating_agencyName" : "string"
   } ]
 }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_searchcriteriahistory_resource"><a class="anchor" href="#_searchcriteriahistory_resource"></a><a class="link" href="#_searchcriteriahistory_resource">2.2. Searchcriteriahistory</a></h3>
+<div class="paragraph">
+<p>Search Criteria History Controller</p>
+</div>
+<div class="sect3">
+<h4 id="_createusingpost"><a class="anchor" href="#_createusingpost"></a><a class="link" href="#_createusingpost">2.2.1. Create search criteria history</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>POST /archive-search-api/archive-search/searchcriteriahistory</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_6"><a class="anchor" href="#_paramètres_6"></a><a class="link" href="#_paramètres_6">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>entityDto</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">entityDto</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_7"><a class="anchor" href="#_réponses_7"></a><a class="link" href="#_réponses_7">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>201</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Created</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_3"><a class="anchor" href="#_consomme_3"></a><a class="link" href="#_consomme_3">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_7"><a class="anchor" href="#_exemple_de_requête_http_7"></a><a class="link" href="#_exemple_de_requête_http_7">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_7"><a class="anchor" href="#_requête_path_7"></a><a class="link" href="#_requête_path_7">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/archive-search-api/archive-search/searchcriteriahistory</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_3"><a class="anchor" href="#_requête_body_3"></a><a class="link" href="#_requête_body_3">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_7"><a class="anchor" href="#_exemple_de_réponse_http_7"></a><a class="link" href="#_exemple_de_réponse_http_7">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_201"><a class="anchor" href="#_réponse_201"></a><a class="link" href="#_réponse_201">Réponse 201</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getsearchcritriahistoryusingget"><a class="anchor" href="#_getsearchcritriahistoryusingget"></a><a class="link" href="#_getsearchcritriahistoryusingget">2.2.2. Get the search criteria history</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>GET /archive-search-api/archive-search/searchcriteriahistory</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_réponses_8"><a class="anchor" href="#_réponses_8"></a><a class="link" href="#_réponses_8">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a> &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_8"><a class="anchor" href="#_exemple_de_requête_http_8"></a><a class="link" href="#_exemple_de_requête_http_8">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_8"><a class="anchor" href="#_requête_path_8"></a><a class="link" href="#_requête_path_8">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/archive-search-api/archive-search/searchcriteriahistory</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_8"><a class="anchor" href="#_exemple_de_réponse_http_8"></a><a class="link" href="#_exemple_de_réponse_http_8">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_7"><a class="anchor" href="#_réponse_200_7"></a><a class="link" href="#_réponse_200_7">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">[ {
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_updateusingput"><a class="anchor" href="#_updateusingput"></a><a class="link" href="#_updateusingput">2.2.3. Update Search criteria history</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>PUT /archive-search-api/archive-search/searchcriteriahistory/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_7"><a class="anchor" href="#_paramètres_7"></a><a class="link" href="#_paramètres_7">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Body</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>entity</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">entity</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_9"><a class="anchor" href="#_réponses_9"></a><a class="link" href="#_réponses_9">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_searchcriteriahistorydto">SearchCriteriaHistoryDto</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_consomme_4"><a class="anchor" href="#_consomme_4"></a><a class="link" href="#_consomme_4">Consomme</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/json</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_9"><a class="anchor" href="#_exemple_de_requête_http_9"></a><a class="link" href="#_exemple_de_requête_http_9">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_9"><a class="anchor" href="#_requête_path_9"></a><a class="link" href="#_requête_path_9">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/archive-search-api/archive-search/searchcriteriahistory/{id}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_requête_body_4"><a class="anchor" href="#_requête_body_4"></a><a class="link" href="#_requête_body_4">Requête body</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_réponse_http_9"><a class="anchor" href="#_exemple_de_réponse_http_9"></a><a class="link" href="#_exemple_de_réponse_http_9">Exemple de réponse HTTP</a></h5>
+<div class="sect5">
+<h6 id="_réponse_200_8"><a class="anchor" href="#_réponse_200_8"></a><a class="link" href="#_réponse_200_8">Réponse 200</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "id" : "string",
+  "name" : "string",
+  "savingDate" : "string",
+  "searchCriteriaList" : [ {
+    "criteriaList" : [ {
+      "criteria" : "string",
+      "values" : [ "string" ]
+    } ],
+    "nodes" : [ "string" ]
+  } ],
+  "userId" : "string"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deleteusingdelete"><a class="anchor" href="#_deleteusingdelete"></a><a class="link" href="#_deleteusingdelete">2.2.4. delete Search criteria history</a></h4>
+<div class="literalblock">
+<div class="content">
+<pre>DELETE /archive-search-api/archive-search/searchcriteriahistory/{id}</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_paramètres_8"><a class="anchor" href="#_paramètres_8"></a><a class="link" href="#_paramètres_8">Paramètres</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Type</th>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Path</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>requis</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_réponses_10"><a class="anchor" href="#_réponses_10"></a><a class="link" href="#_réponses_10">Réponses</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Code HTTP</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>200</strong></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">OK</p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">Pas de contenu</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_exemple_de_requête_http_10"><a class="anchor" href="#_exemple_de_requête_http_10"></a><a class="link" href="#_exemple_de_requête_http_10">Exemple de requête HTTP</a></h5>
+<div class="sect5">
+<h6 id="_requête_path_10"><a class="anchor" href="#_requête_path_10"></a><a class="link" href="#_requête_path_10">Requête path</a></h6>
+<div class="listingblock">
+<div class="content">
+<pre>/archive-search-api/archive-search/searchcriteriahistory/string</pre>
 </div>
 </div>
 </div>
@@ -2748,116 +2714,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_file"><a class="anchor" href="#_file"></a><a class="link" href="#_file">3.7. File</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 61.1111%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>absolute</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>absoluteFile</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_file">File</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_file">File</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>absolutePath</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>canonicalFile</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_file">File</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_file">File</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>canonicalPath</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>directory</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>file</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>freeSpace</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int64)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>hidden</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>name</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>parent</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>parentFile</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_file">File</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_file">File</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>path</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>totalSpace</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int64)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>usableSpace</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int64)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_fileinfodto"><a class="anchor" href="#_fileinfodto"></a><a class="link" href="#_fileinfodto">3.8. FileInfoDto</a></h3>
+<h3 id="_fileinfodto"><a class="anchor" href="#_fileinfodto"></a><a class="link" href="#_fileinfodto">3.7. FileInfoDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -2918,7 +2775,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_fileinfomodel"><a class="anchor" href="#_fileinfomodel"></a><a class="link" href="#_fileinfomodel">3.9. FileInfoModel</a></h3>
+<h3 id="_fileinfomodel"><a class="anchor" href="#_fileinfomodel"></a><a class="link" href="#_fileinfomodel">3.8. FileInfoModel</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -2979,7 +2836,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_filterdto"><a class="anchor" href="#_filterdto"></a><a class="link" href="#_filterdto">3.10. FilterDto</a></h3>
+<h3 id="_filterdto"><a class="anchor" href="#_filterdto"></a><a class="link" href="#_filterdto">3.9. FilterDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3010,7 +2867,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_formatidentificationmodel"><a class="anchor" href="#_formatidentificationmodel"></a><a class="link" href="#_formatidentificationmodel">3.11. FormatIdentificationModel</a></h3>
+<h3 id="_formatidentificationmodel"><a class="anchor" href="#_formatidentificationmodel"></a><a class="link" href="#_formatidentificationmodel">3.10. FormatIdentificationModel</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3053,7 +2910,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_hitsdto"><a class="anchor" href="#_hitsdto"></a><a class="link" href="#_hitsdto">3.12. HitsDto</a></h3>
+<h3 id="_hitsdto"><a class="anchor" href="#_hitsdto"></a><a class="link" href="#_hitsdto">3.11. HitsDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3096,7 +2953,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_inheritedpropertydto"><a class="anchor" href="#_inheritedpropertydto"></a><a class="link" href="#_inheritedpropertydto">3.13. InheritedPropertyDto</a></h3>
+<h3 id="_inheritedpropertydto"><a class="anchor" href="#_inheritedpropertydto"></a><a class="link" href="#_inheritedpropertydto">3.12. InheritedPropertyDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3127,7 +2984,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_inheritedrulecategorydto"><a class="anchor" href="#_inheritedrulecategorydto"></a><a class="link" href="#_inheritedrulecategorydto">3.14. InheritedRuleCategoryDto</a></h3>
+<h3 id="_inheritedrulecategorydto"><a class="anchor" href="#_inheritedrulecategorydto"></a><a class="link" href="#_inheritedrulecategorydto">3.13. InheritedRuleCategoryDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3158,7 +3015,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_inheritedrulesdto"><a class="anchor" href="#_inheritedrulesdto"></a><a class="link" href="#_inheritedrulesdto">3.15. InheritedRulesDto</a></h3>
+<h3 id="_inheritedrulesdto"><a class="anchor" href="#_inheritedrulesdto"></a><a class="link" href="#_inheritedrulesdto">3.14. InheritedRulesDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3183,19 +3040,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_inputstream"><a class="anchor" href="#_inputstream"></a><a class="link" href="#_inputstream">3.16. InputStream</a></h3>
+<h3 id="_inputstream"><a class="anchor" href="#_inputstream"></a><a class="link" href="#_inputstream">3.15. InputStream</a></h3>
 <div class="paragraph">
 <p><em>Type</em> : object</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsonnode"><a class="anchor" href="#_jsonnode"></a><a class="link" href="#_jsonnode">3.17. JsonNode</a></h3>
+<h3 id="_jsonnode"><a class="anchor" href="#_jsonnode"></a><a class="link" href="#_jsonnode">3.16. JsonNode</a></h3>
 <div class="paragraph">
 <p><em>Type</em> : object</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_keyworddto"><a class="anchor" href="#_keyworddto"></a><a class="link" href="#_keyworddto">3.18. KeywordDto</a></h3>
+<h3 id="_keyworddto"><a class="anchor" href="#_keyworddto"></a><a class="link" href="#_keyworddto">3.17. KeywordDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3226,7 +3083,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_managementdto"><a class="anchor" href="#_managementdto"></a><a class="link" href="#_managementdto">3.19. ManagementDto</a></h3>
+<h3 id="_managementdto"><a class="anchor" href="#_managementdto"></a><a class="link" href="#_managementdto">3.18. ManagementDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3251,7 +3108,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_measurementmodel"><a class="anchor" href="#_measurementmodel"></a><a class="link" href="#_measurementmodel">3.20. MeasurementModel</a></h3>
+<h3 id="_measurementmodel"><a class="anchor" href="#_measurementmodel"></a><a class="link" href="#_measurementmodel">3.19. MeasurementModel</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3288,7 +3145,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_metadatamodel"><a class="anchor" href="#_metadatamodel"></a><a class="link" href="#_metadatamodel">3.21. MetadataModel</a></h3>
+<h3 id="_metadatamodel"><a class="anchor" href="#_metadatamodel"></a><a class="link" href="#_metadatamodel">3.20. MetadataModel</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3337,7 +3194,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_orderbydto"><a class="anchor" href="#_orderbydto"></a><a class="link" href="#_orderbydto">3.22. OrderbyDto</a></h3>
+<h3 id="_orderbydto"><a class="anchor" href="#_orderbydto"></a><a class="link" href="#_orderbydto">3.21. OrderbyDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3362,7 +3219,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_0dc84c7e15f62d0c1fecb28653cc504a"><a class="anchor" href="#_0dc84c7e15f62d0c1fecb28653cc504a"></a><a class="link" href="#_0dc84c7e15f62d0c1fecb28653cc504a">3.23. PaginatedValuesDtoÂ«AccessContractDtoÂ»</a></h3>
+<h3 id="_0dc84c7e15f62d0c1fecb28653cc504a"><a class="anchor" href="#_0dc84c7e15f62d0c1fecb28653cc504a"></a><a class="link" href="#_0dc84c7e15f62d0c1fecb28653cc504a">3.22. PaginatedValuesDtoÂ«AccessContractDtoÂ»</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3405,7 +3262,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_physicaldimensionsmodel"><a class="anchor" href="#_physicaldimensionsmodel"></a><a class="link" href="#_physicaldimensionsmodel">3.24. PhysicalDimensionsModel</a></h3>
+<h3 id="_physicaldimensionsmodel"><a class="anchor" href="#_physicaldimensionsmodel"></a><a class="link" href="#_physicaldimensionsmodel">3.23. PhysicalDimensionsModel</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3484,7 +3341,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_projectiondto"><a class="anchor" href="#_projectiondto"></a><a class="link" href="#_projectiondto">3.25. ProjectionDto</a></h3>
+<h3 id="_projectiondto"><a class="anchor" href="#_projectiondto"></a><a class="link" href="#_projectiondto">3.24. ProjectionDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3509,7 +3366,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_qualifiersdto"><a class="anchor" href="#_qualifiersdto"></a><a class="link" href="#_qualifiersdto">3.26. QualifiersDto</a></h3>
+<h3 id="_qualifiersdto"><a class="anchor" href="#_qualifiersdto"></a><a class="link" href="#_qualifiersdto">3.25. QualifiersDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3540,7 +3397,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_querydto"><a class="anchor" href="#_querydto"></a><a class="link" href="#_querydto">3.27. QueryDTO</a></h3>
+<h3 id="_querydto"><a class="anchor" href="#_querydto"></a><a class="link" href="#_querydto">3.26. QueryDTO</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3583,7 +3440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_queryfilter"><a class="anchor" href="#_queryfilter"></a><a class="link" href="#_queryfilter">3.28. QueryFilter</a></h3>
+<h3 id="_queryfilter"><a class="anchor" href="#_queryfilter"></a><a class="link" href="#_queryfilter">3.27. QueryFilter</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3622,7 +3479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_queryprojection"><a class="anchor" href="#_queryprojection"></a><a class="link" href="#_queryprojection">3.29. QueryProjection</a></h3>
+<h3 id="_queryprojection"><a class="anchor" href="#_queryprojection"></a><a class="link" href="#_queryprojection">3.28. QueryProjection</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3649,7 +3506,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_resource"><a class="anchor" href="#_resource"></a><a class="link" href="#_resource">3.30. Resource</a></h3>
+<h3 id="_resource"><a class="anchor" href="#_resource"></a><a class="link" href="#_resource">3.29. Resource</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3673,8 +3530,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>file</strong><br>
 <em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_file">File</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_file">File</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"file"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">file</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>filename</strong><br>
@@ -3703,20 +3560,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>uri</strong><br>
 <em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_uri">URI</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_uri">URI</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string (uri)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>url</strong><br>
 <em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"<a href="#_url">URL</a>"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><a href="#_url">URL</a></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string (url)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_resultsdto"><a class="anchor" href="#_resultsdto"></a><a class="link" href="#_resultsdto">3.31. ResultsDto</a></h3>
+<h3 id="_resultsdto"><a class="anchor" href="#_resultsdto"></a><a class="link" href="#_resultsdto">3.30. ResultsDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -3993,7 +3850,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_rulecategorydto"><a class="anchor" href="#_rulecategorydto"></a><a class="link" href="#_rulecategorydto">3.32. RuleCategoryDto</a></h3>
+<h3 id="_rulecategorydto"><a class="anchor" href="#_rulecategorydto"></a><a class="link" href="#_rulecategorydto">3.31. RuleCategoryDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4024,7 +3881,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_ruledto"><a class="anchor" href="#_ruledto"></a><a class="link" href="#_ruledto">3.33. RuleDto</a></h3>
+<h3 id="_ruledto"><a class="anchor" href="#_ruledto"></a><a class="link" href="#_ruledto">3.32. RuleDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4061,7 +3918,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_searchcriteriadto"><a class="anchor" href="#_searchcriteriadto"></a><a class="link" href="#_searchcriteriadto">3.34. SearchCriteriaDto</a></h3>
+<h3 id="_searchcriteriadto"><a class="anchor" href="#_searchcriteriadto"></a><a class="link" href="#_searchcriteriadto">3.33. SearchCriteriaDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4122,6 +3979,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
+<h3 id="_searchcriteriaelementsdto"><a class="anchor" href="#_searchcriteriaelementsdto"></a><a class="link" href="#_searchcriteriaelementsdto">3.34. SearchCriteriaElementsDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteria</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>values</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "string" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; string &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
 <h3 id="_searchcriteriaeltdto"><a class="anchor" href="#_searchcriteriaeltdto"></a><a class="link" href="#_searchcriteriaeltdto">3.35. SearchCriteriaEltDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -4153,7 +4041,56 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_searchcriteriasort"><a class="anchor" href="#_searchcriteriasort"></a><a class="link" href="#_searchcriteriasort">3.36. SearchCriteriaSort</a></h3>
+<h3 id="_searchcriteriahistorydto"><a class="anchor" href="#_searchcriteriahistorydto"></a><a class="link" href="#_searchcriteriahistorydto">3.36. SearchCriteriaHistoryDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>id</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>name</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>savingDate</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string (date-time)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>searchCriteriaList</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "<a href="#_searchcriteriasdto">SearchCriteriasDto</a>" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriasdto">SearchCriteriasDto</a> &gt; array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>userId</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_searchcriteriasort"><a class="anchor" href="#_searchcriteriasort"></a><a class="link" href="#_searchcriteriasort">3.37. SearchCriteriaSort</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4184,7 +4121,38 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_storagedto"><a class="anchor" href="#_storagedto"></a><a class="link" href="#_storagedto">3.37. StorageDto</a></h3>
+<h3 id="_searchcriteriasdto"><a class="anchor" href="#_searchcriteriasdto"></a><a class="link" href="#_searchcriteriasdto">3.38. SearchCriteriasDto</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 61.1111%;">
+<col style="width: 22.2223%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Nom</th>
+<th class="tableblock halign-left valign-middle">Description</th>
+<th class="tableblock halign-left valign-middle">Schéma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>criteriaList</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "<a href="#_searchcriteriaelementsdto">SearchCriteriaElementsDto</a>" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; <a href="#_searchcriteriaelementsdto">SearchCriteriaElementsDto</a> &gt; array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>nodes</strong><br>
+<em>optionnel</em></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>[ "string" ]</code></p></td>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">&lt; string &gt; array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_storagedto"><a class="anchor" href="#_storagedto"></a><a class="link" href="#_storagedto">3.39. StorageDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4209,7 +4177,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_storagejson"><a class="anchor" href="#_storagejson"></a><a class="link" href="#_storagejson">3.38. StorageJson</a></h3>
+<h3 id="_storagejson"><a class="anchor" href="#_storagejson"></a><a class="link" href="#_storagejson">3.40. StorageJson</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4246,7 +4214,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_titledto"><a class="anchor" href="#_titledto"></a><a class="link" href="#_titledto">3.39. TitleDto</a></h3>
+<h3 id="_titledto"><a class="anchor" href="#_titledto"></a><a class="link" href="#_titledto">3.41. TitleDto</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
@@ -4269,212 +4237,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>fr</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_uri"><a class="anchor" href="#_uri"></a><a class="link" href="#_uri">3.40. URI</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 61.1111%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>absolute</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>authority</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>fragment</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>host</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>opaque</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>true</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">boolean</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>path</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>port</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>query</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawAuthority</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawFragment</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawPath</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawQuery</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawSchemeSpecificPart</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>rawUserInfo</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>scheme</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>schemeSpecificPart</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>userInfo</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_url"><a class="anchor" href="#_url"></a><a class="link" href="#_url">3.41. URL</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 61.1111%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Nom</th>
-<th class="tableblock halign-left valign-middle">Description</th>
-<th class="tableblock halign-left valign-middle">Schéma</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>authority</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>content</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"object"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">object</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>defaultPort</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>file</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>host</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>path</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>port</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>0</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">integer (int32)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>protocol</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>query</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>ref</strong><br>
-<em>optionnel</em></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>userInfo</strong><br>
 <em>optionnel</em></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock"><strong>Exemple</strong> : <code>"string"</code></p></td>
 <td class="tableblock halign-left valign-middle"><p class="tableblock">string</p></td>
@@ -4787,7 +4549,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-06 14:28:03 +0100
+Last updated 2020-09-17 17:33:41 +0200
 </div>
 </div>
 </body>

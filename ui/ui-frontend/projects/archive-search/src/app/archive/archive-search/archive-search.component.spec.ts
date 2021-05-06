@@ -202,6 +202,15 @@ describe('ArchiveSearchComponent', () => {
         });
       });
     });
+    describe('clearCriteria', () => {
+      it('should clear all criterias ', () => {
+        component.clearCriterias();
+        expect(component.searchCriterias.size).toEqual(0);
+        expect(component.nbQueryCriteria).toEqual(0);
+        expect(component.included).toBeFalsy();
+      });
+
+    });
   });
 
 });

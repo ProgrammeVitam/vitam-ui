@@ -37,8 +37,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NodeData } from '../archive/models/nodedata.interface';
+import {SearchCriteriaHistory, SearchCriterias} from '../archive/models/search-criteria-history.interface';
 import { ResultFacet } from '../archive/models/search.criteria';
 import { Unit } from '../archive/models/unit.interface';
+import {FilingHoldingSchemeNode} from '../archive/models/node.interface';
+import {Direction} from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'
@@ -46,14 +49,15 @@ import { Unit } from '../archive/models/unit.interface';
 export class ArchiveSharedDataServiceService {
 
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
+  private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private targetNode = new BehaviorSubject<string>('');
   private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
   private toggleSubject = new BehaviorSubject<boolean>(true);
   private toggleReverseSubject = new BehaviorSubject<boolean>(true);
-
   private archiveUnitTpPreviewSubject = new BehaviorSubject<Unit>(null);
-
   private toggleArchiveUnitSubject = new BehaviorSubject<boolean>(true);
+  private storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
+  private allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
 
   private entireNodes = new BehaviorSubject<string[]>([]);
 
@@ -64,8 +68,10 @@ export class ArchiveSharedDataServiceService {
   toggleObservable = this.toggleSubject.asObservable();
   toggleReverseObservable = this.toggleReverseSubject.asObservable();
   archiveUnitToPreviewObservable = this.archiveUnitTpPreviewSubject.asObservable();
-
   toggleArchiveUnitObservable = this.toggleArchiveUnitSubject.asObservable();
+  storedSearchCriteriaHistoryObservable = this.storedSearchCriteriaHistorySubject.asObservable();
+  allSearchCriteriaHistoryObservable = this.allSearchCriteriaHistorySubject.asObservable();
+  filingHoldingNodes = this.filingHoldingNodesSubject.asObservable();
 
 
   entireNodesObservable = this.entireNodes.asObservable();
@@ -80,7 +86,15 @@ export class ArchiveSharedDataServiceService {
   getEntireNodes(): Observable<string[]> {
     return this.entireNodes.asObservable();
   }
-  
+
+  emitFilingHoldingNodes(node: FilingHoldingSchemeNode[]) {
+    this.filingHoldingNodesSubject.next(node);
+  }
+
+  getFilingHoldingNodes(): Observable<FilingHoldingSchemeNode[]> {
+    return this.filingHoldingNodesSubject.asObservable();
+  }
+
   emitNode(node: NodeData) {
     this.sourceNode.next(node);
   }
@@ -89,16 +103,14 @@ export class ArchiveSharedDataServiceService {
     return this.sourceNode.asObservable();
   }
 
-
   emitNodeTarget(nodeId: string) {
     this.targetNode.next(nodeId);
   }
 
   getNodesTarget(): Observable<string> {
     return this.targetNode.asObservable();
-  } 
-  
-  
+  }
+
   emitFacets(facets: ResultFacet[]) {
     this.facetsSubject.next(facets);
   }
@@ -113,6 +125,59 @@ export class ArchiveSharedDataServiceService {
 
   getToggle(): Observable<boolean> {
     return this.toggleSubject.asObservable();
+  }
+
+  emitSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
+    this.storedSearchCriteriaHistorySubject.next(searchCriteriaHistory);
+  }
+
+  getSearchCriteriaHistoryShared(): Observable<SearchCriteriaHistory> {
+    return this.storedSearchCriteriaHistorySubject.asObservable();
+  }
+
+  emitAllSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory[]) {
+    this.allSearchCriteriaHistorySubject.next(searchCriteriaHistory);
+  }
+
+  getAllSearchCriteriaHistoryShared(): Observable<SearchCriteriaHistory[]> {
+    return this.allSearchCriteriaHistorySubject.asObservable();
+  }
+
+  nbFilters(searchCriteriaHistory: SearchCriteriaHistory): number {
+    let sum = 0;
+    searchCriteriaHistory.searchCriteriaList.forEach((searchCriteriaList: SearchCriterias) => {
+
+      if (searchCriteriaList.nodes.length > 0) {
+        sum += searchCriteriaList.nodes.length;
+      }
+
+      if (searchCriteriaList.criteriaList.length > 0) {
+        searchCriteriaList.criteriaList.forEach((criteria) => {
+          sum += criteria.values.length;
+        });
+      }
+    });
+    return sum;
+  }
+
+  sort(direction: Direction, searchCriteriaHistory: SearchCriteriaHistory[]): SearchCriteriaHistory[] {
+    switch (direction) {
+      case Direction.ASCENDANT:
+        searchCriteriaHistory.sort((a, b) => {
+          // tslint:disable-next-line:no-angle-bracket-type-assertion
+          return <any> new Date(b.savingDate) - <any> new Date(a.savingDate);
+        });
+        break;
+      case Direction.DESCENDANT:
+        searchCriteriaHistory.sort((a, b) => {
+          // tslint:disable-next-line:no-angle-bracket-type-assertion
+          return <any> new Date(a.savingDate) - <any> new Date(b.savingDate);
+        });
+        break;
+      default:
+        break;
+    }
+    return searchCriteriaHistory;
   }
 }
 

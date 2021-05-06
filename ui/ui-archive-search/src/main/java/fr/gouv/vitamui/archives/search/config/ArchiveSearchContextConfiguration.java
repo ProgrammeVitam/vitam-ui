@@ -30,9 +30,12 @@ import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRest
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClientFactory;
+import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
@@ -91,5 +94,10 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
     public AccessContractTempExternalRestClient accessContractTempExternalRestClient(
         final ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory) {
         return archiveSearchExternalRestClientFactory.getAccessContractTempExternalRestClient();
+    }
+
+    @Bean
+    public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(final ArchiveSearchExternalRestClientFactory factory) {
+        return factory.getSearchCriteriaHistoryExternalRestClient();
     }
 }

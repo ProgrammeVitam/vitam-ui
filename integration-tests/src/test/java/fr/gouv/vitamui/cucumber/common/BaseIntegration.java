@@ -6,6 +6,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import fr.gouv.vitamui.RegisterRestQueryInterceptor;
 import fr.gouv.vitamui.TestContextConfiguration;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
+import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
@@ -86,6 +88,8 @@ public abstract class BaseIntegration {
 
     private ReferentialExternalRestClientFactory restReferentialClientFactory;
 
+    private ArchiveSearchExternalRestClientFactory archiveSearchExternalRestClientFactory;
+
     private ReferentialExternalWebClientFactory webReferentialClientFactory;
 
     private CustomerExternalRestClient customerClient;
@@ -119,7 +123,7 @@ public abstract class BaseIntegration {
     private ContextExternalRestClient contextRestClient;
 
     private RuleExternalRestClient ruleRestClient;
-    
+
     private ExternalParametersExternalRestClient externalParametersExternalRestClient;
 
     private UnitExternalRestClient unitRestClient;
@@ -130,9 +134,13 @@ public abstract class BaseIntegration {
 
     private SecurityProfileExternalRestClient securityProfileRestClient;
 
+    private SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient;
+
     private static MongoClient mongoClientIam;
 
     private static MongoClient mongoClientSecurity;
+
+    private static MongoClient mongoClientArchiveSearch;
 
     private MongoDatabase iamDatabase;
 
@@ -144,6 +152,8 @@ public abstract class BaseIntegration {
 
     private MongoCollection<Document> profilesCollection;
 
+    private MongoCollection<Document> searchCriteriaHistoryCollection;
+
     private MongoCollection<Document> groupsCollection;
 
     private MongoCollection<Document> usersCollection;
@@ -151,6 +161,8 @@ public abstract class BaseIntegration {
     private MongoCollection<Document> tokensCollection;
 
     private MongoCollection<Document> subrogationsCollection;
+
+    private MongoDatabase archiveSearchDatabase;
 
     @Value("${certs-folder}")
     protected String certsFolder;
@@ -163,6 +175,9 @@ public abstract class BaseIntegration {
 
     @Value("${mongo.iam.uri}")
     private String mongoIamUri;
+
+    @Value("${mongo.archivesearch.uri}")
+    private String mongoArchiveSearchUri;
 
     @Value("${mongo.security.uri}")
     private String mongoSecurityUri;
@@ -208,6 +223,24 @@ public abstract class BaseIntegration {
 
     @Value("${referential-client.ssl.truststore.password}")
     protected String referentialTruststorePassword;
+
+    @Value("${archive-search-client.host}")
+    protected String archiveSearchServerHost;
+
+    @Value("${archive-search-client.port}")
+    protected Integer archiveSearchServerPort;
+
+    @Value("${archive-search-client.ssl.keystore.path}")
+    private String archiveSearchKeystoreFilePath;
+
+    @Value("${archive-search-client.ssl.truststore.path}")
+    protected String archiveSearchTrustStoreFilePath;
+
+    @Value("${archive-search-client.ssl.keystore.password}")
+    protected String archiveSearchKeystorePassword;
+
+    @Value("${archive-search-client.ssl.truststore.password}")
+    protected String archiveSearchTruststorePassword;
 
     @Value("${user.admin.password}")
     protected String adminPassword;
@@ -358,6 +391,19 @@ public abstract class BaseIntegration {
         return restReferentialClientFactory;
     }
 
+    private ArchiveSearchExternalRestClientFactory getArchiveSearchRestClientFactory() {
+        if (archiveSearchExternalRestClientFactory == null) {
+            LOGGER.debug("Instantiating referential rest client [host={}, port:{}, referentialKeystoreFilePath:{}]", archiveSearchServerHost, archiveSearchServerPort, archiveSearchKeystoreFilePath);
+            archiveSearchExternalRestClientFactory = new ArchiveSearchExternalRestClientFactory(getRestClientConfiguration(archiveSearchServerHost, archiveSearchServerPort, true,
+                getSSLConfiguration(archiveSearchKeystoreFilePath, archiveSearchKeystorePassword, archiveSearchTrustStoreFilePath, archiveSearchTruststorePassword)), restTemplateBuilder);
+            final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+            interceptors.add(new RegisterRestQueryInterceptor());
+            archiveSearchExternalRestClientFactory.setRestClientInterceptor(interceptors);
+        }
+        return archiveSearchExternalRestClientFactory;
+    }
+
+
     private ReferentialExternalWebClientFactory getReferentialWebClientFactory() {
         if (webReferentialClientFactory == null) {
             LOGGER.debug("Instantiating referential web client [host={}, port:{}, referentialKeystoreFilePath:{}]", referentialServerHost, referentialServerPort, referentialKeystoreFilePath);
@@ -428,6 +474,12 @@ public abstract class BaseIntegration {
         return BaseIntegration.mongoClientSecurity;
     }
 
+    protected MongoClient getMongoArchiveSearch() {
+        if (BaseIntegration.mongoClientArchiveSearch == null) {
+            BaseIntegration.mongoClientArchiveSearch = new MongoClient(new MongoClientURI(mongoArchiveSearchUri));
+        }
+        return BaseIntegration.mongoClientIam;
+    }
     protected MongoDatabase getIamDatabase() {
         if (iamDatabase == null) {
             iamDatabase = getMongoIam().getDatabase("iam");
@@ -440,6 +492,13 @@ public abstract class BaseIntegration {
             securityDatabase = getMongoSecurity().getDatabase("security");
         }
         return securityDatabase;
+    }
+
+    protected MongoDatabase getArchiveSearchDatabase() {
+        if (archiveSearchDatabase == null) {
+            archiveSearchDatabase = getMongoArchiveSearch().getDatabase("archivesearch");
+        }
+        return archiveSearchDatabase;
     }
 
     protected MongoCollection<Document> getContextsCollection() {
@@ -690,10 +749,24 @@ public abstract class BaseIntegration {
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getExternalParametersExternalRestClient();
     }
 
+    protected SearchCriteriaHistoryExternalRestClient getSearchCriteriaHistoryExternalRestClient() {
+        if (searchCriteriaHistoryExternalRestClient == null) {
+            searchCriteriaHistoryExternalRestClient = getArchiveSearchRestClientFactory().getSearchCriteriaHistoryExternalRestClient();
+        }
+        return searchCriteriaHistoryExternalRestClient;
+    }
+
 
     protected MongoCollection<Document> getProfilesCollection() {
         if (profilesCollection == null) {
             profilesCollection = getIamDatabase().getCollection("profiles");
+        }
+        return profilesCollection;
+    }
+
+    protected MongoCollection<Document> getSearchCriteriaHistoriesCollection() {
+        if (searchCriteriaHistoryCollection == null) {
+            searchCriteriaHistoryCollection = getArchiveSearchDatabase().getCollection("searchCriteriaHistories");
         }
         return profilesCollection;
     }

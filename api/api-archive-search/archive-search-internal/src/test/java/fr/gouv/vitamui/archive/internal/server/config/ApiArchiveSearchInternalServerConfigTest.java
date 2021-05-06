@@ -29,6 +29,8 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
+import fr.gouv.vitamui.archive.internal.server.TestMongoConfig;
+import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import org.junit.Assert;
 import org.junit.Test;

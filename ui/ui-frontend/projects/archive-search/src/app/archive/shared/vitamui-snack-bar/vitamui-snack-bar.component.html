@@ -6,11 +6,17 @@
       <i class="vitamui-icon vitamui-icon-archive-ingest"></i> Un ou plusieurs versement(s) sont en cours
       <br/>
       <span> (Merci de ne pas éteindre votre navigateur pendant le processus)</span>
+      </ng-container>
+    <ng-container *ngSwitchCase="'searchCriteriaHistoryCreated'">
+      {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVED_WITH_SUCCESS' | translate}} "<strong>{{ data?.name }}</strong>"
     </ng-container>
     <ng-container *ngSwitchCase="'exportCsvLimitReached'">      
       <span> {{'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_CSV_LIMIT_REACHED' | translate}} </span>
     </ng-container>
 
+    <ng-container *ngSwitchCase="'searchCriteriaHistoryDeleted'">
+      {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_1' | translate}} "<strong>{{ data?.name }}</strong> " {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_2' | translate}}
+    </ng-container>
   </span>
   
 

@@ -22,7 +22,7 @@ iam-client:
     truststore:
       path: ${certs-folder}/truststore_server.jks
       password: ${jks-password}
-      
+
 # Referential client configuration
 referential-client:
   host: localhost
@@ -35,13 +35,25 @@ referential-client:
       path: ${certs-folder}/truststore_server.jks
       password: ${jks-password}
 
+# Archive search externalclient configuration
+archive-search-client:
+  host: localhost
+  port: 8089
+  ssl:
+    keystore:
+      path: ${certs-folder}/keystore_ui-archive-search.jks
+      password: ${jks-password}
+    truststore:
+      path: ${certs-folder}/truststore_server.jks
+      password: ${jks-password}
+
 # Mongo
 mongo:
   host: localhost
   port: 27018
   iam.uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
   security.uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
-
+  archivesearch.uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_security@localhost:27018/archivesearch?connectTimeoutMS=2000
 # Workspace configuration
 workspace:
   workspace.path: /tmp/workspace-vitamui

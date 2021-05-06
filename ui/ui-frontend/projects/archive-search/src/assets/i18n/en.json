@@ -81,6 +81,31 @@
     "DOCUMENT": "Document",
     "ARCHIVE_PREVIEW": {
       "INFORMATION": "Informations"
+    },
+    "SEARCH_CRITERIA_SAVER": {
+      "NEW_SAVE_MENU": "New Criteria Save",
+      "NEW_SAVE_IN_POPUP": "Save your search criterias",
+      "ACTIVE_FILTERS": "Active filters",
+      "NAME": "Name",
+      "NEW_SAVE_LABEL": "Save as...",
+      "NEW_SAVE_REPLACE_LABEL": "Existant criteria save(replace the save)",
+      "NEW_SAVE_BUTTON": "CREATE NEW CRITERIA SAVE",
+      "SAVE_NOT_POSSIBLE_ALERT": "Impossible to save new criterias:",
+      "SAVE_NOT_POSSIBLE_MESSAGE": "You have reached the limit on the number of saved searches. Please delete at least one of your searches from the home page.",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_LABEL": "Character limit reached",
+      "SAVE_CRITERIA_NAME_EXEEDS_LIMIT_MESSAGE": "You have reached the maximum number of characters allowed. ",
+      "SAVE_REPLACE_CONFIRM_MESSAGE": "Are you sure you want to overwrite the next save? ",
+      "SAVE_REPLACE_CONFIRM_BUTTON": "CONFIRM",
+      "SAVE_REPLACE_CANCEL_BUTTON": "CANCEL",
+      "SAVE_DELETE_CRITERIA_LABEL": "Deletion of",
+      "SAVE_DELETE_CRITERIA_MESSGE": "Do you want to delete the saved criterias ?",
+      "NO_RESULTS": "No save results found",
+      "SAVED_WITH_SUCCESS": "Your search criteria have been correctly saved under the name  ",
+      "DELETED_WITH_SUCCESS_1": "Your search criteria nemed  ",
+      "DELETED_WITH_SUCCESS_2": " is correctly deleted.",
+      "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
+      "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
+      "OBJECT_TYPE": "Saved Criterias Searches"
     }
   }
 }

@@ -5,6 +5,7 @@
     iam
     security
     cas
+    archivesearch
 
 ### Base IAM
 
@@ -351,3 +352,39 @@ Cette base est initialisée à la création de l'environnement. Elle est uniquem
   | attributeReleasePolicy    |     |  |  Stratégie des attributs |
 
 
+### Base archivesearch
+
+Cette base est utilisé pour stocker les critères de filtres de recherche des utilisateurs, Aujourd'hui, elle est utilisée uniquement par le service Archive-Search, en particulier l'application de consultation et de recherche d'archives.
+
+
+###### Collections
+
+    searchCriteriaHistories
+
+   * _Collection searchCriteriaHistories_
+
+
+
+  | Nom    | Type | Contrainte(s) | Remarque(s) |
+  | -------- | -------- | ------ | ------  |
+  | _id | String     |  Clé Primaire |   |
+  | name | String    | Not Null, minimum = 1, maximum = 150 |  nom de la recherche sauvegardée |
+  | userId | String    | Not Null  | l'identifiant de l'utilisateur  |
+  | date    |  Date   |   | date de la sauvegarde des critères de recherche |
+  | searchCriteriaList    |   List<_SearchCriteriasDto_>  |  | liste des critères de recherches sauvegardées incluant les critères d'arbres et plan  |
+  
+     * SearchCriteriasDto (Embarqué)
+  
+  | Nom    | Type | Contrainte(s) | Remarque(s) |
+  | -------- | -------- | ------ | ------  |
+  | nodes    |   List<_String_>  |  | liste des identifiants des noeuds d'arbre de positionnement/ plans de classemnt|
+  | criteriaList    |   List<_SearchCriteriaElementsDto_>  |  | liste des critères de recherches sauvegardées  |
+  
+  
+     * SearchCriteriaElementsDto (Embarqué)
+    
+  | Nom    | Type | Contrainte(s) | Remarque(s) |
+  | -------- | -------- | ------ | ------  |
+  | criteria    |   String  |  | le nom du critère de recherche (eg: Title, StartDate, #opi, #id ...) |
+  | values    |   List<_String_>  |  | liste des valeurs du critère de filtre |
+  

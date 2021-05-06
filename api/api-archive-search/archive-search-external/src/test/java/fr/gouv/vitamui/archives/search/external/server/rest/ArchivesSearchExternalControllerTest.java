@@ -61,7 +61,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = {ArchivesSearchExternalController.class})
-public class ArchivesSearchExternalControllerTest extends ApiArchivesSearchExternalControllerTest<IdDto> {
+public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalControllerTest<IdDto> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchExternalControllerTest.class);
