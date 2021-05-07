@@ -96,9 +96,10 @@ export class GroupService extends SearchService<Group> {
     return this.groupApi.checkExistsByParam(params);
   }
 
-  unitExists(unit: string): Observable<any> {
+  unitExists(customerId: string, unit: string): Observable<any> {
     const criteria: Criterion[] = [];
     criteria.push({ key: 'units', value: unit, operator: Operators.equalsIgnoreCase });
+    criteria.push({ key: 'customerId', value: customerId, operator: Operators.equals });
     const query: SearchQuery = { criteria };
     const params = [{key : 'criteria', value: JSON.stringify(query)}];
 

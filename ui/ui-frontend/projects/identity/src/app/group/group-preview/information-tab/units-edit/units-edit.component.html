@@ -8,7 +8,7 @@
             <div class="content">
                 <div class="text large bold">{{'GROUP.INFORMATIONS.MODAL.UPDATE_UNITS' | translate}} "{{ data?.group?.name }}"</div>
         
-                <app-units-form formControlName="units"></app-units-form>
+                <app-units-form [customer]="data?.group?.customerId" formControlName="units"></app-units-form>
                 <div class="actions">
                     <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
                     <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>

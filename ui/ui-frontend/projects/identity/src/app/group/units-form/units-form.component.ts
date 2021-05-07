@@ -37,7 +37,7 @@
 /* tslint:disable: no-magic-numbers max-file-line-count max-classes-per-file */
 /* tslint:disable: no-use-before-declare */
 
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors, Validators } from '@angular/forms';
 import { GroupValidators } from '../group.validators';
 
@@ -62,6 +62,8 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
 
   unitControl: FormControl;
 
+  @Input() customer: string;
+
   constructor(
     private groupValidators: GroupValidators,
     ) { }
@@ -82,7 +84,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
   }
 
   ngOnInit(): void {
-    this.unitControl = new FormControl(null, [Validators.required, this.unitAlreadyAdd.bind(this)], this.groupValidators.unitExists());
+    this.unitControl = new FormControl(null, [Validators.required, this.unitAlreadyAdd.bind(this)], this.groupValidators.unitExists(this.customer));
   }
 
   /**
