@@ -30,6 +30,7 @@ import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.junit.Assert;
@@ -67,6 +68,7 @@ public class ArchivesSearchServiceTest {
     public void init() {
         archivesSearchService = new ArchivesSearchService(commonService, archiveSearchExternalRestClient,
             archiveSearchExternalWebClient);
+        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
     @Test
