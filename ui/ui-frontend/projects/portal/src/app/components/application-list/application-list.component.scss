@@ -53,6 +53,12 @@ a {
 
 :host::ng-deep {
 
+    .mat-tab-body-wrapper {
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
     .mat-card-image:first-child {
         margin: 0;
     }

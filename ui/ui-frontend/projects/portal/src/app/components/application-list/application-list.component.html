@@ -1,14 +1,13 @@
 <mat-tab-group>
   <div *ngFor="let category of appMap | keyvalue">
     <mat-tab label="{{'MENU.' + category.key.identifier | translate}}">
+      <ng-template matTabContent>
       <div class="row category">
         <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let application of category.value">
           <mat-card>
             <a href="{{ getApplicationUrl(application) }}" (click)="openApplication(application)">
               <div mat-card-image class="appIcon">
-                  <svg-icon src="{{application.identifier}}" [svgStyle]="{ 'width.%':60 }">
-                    <svg-icon src="{{unknownAppName}}" [svgStyle]="{ 'width.%':60 }"></svg-icon>
-                  </svg-icon>
+                  <svg-icon src="{{application.identifier}}" [svgStyle]="{ 'width.%':60 }"></svg-icon>
               </div>
             </a>
             <mat-card-header>
@@ -18,6 +17,7 @@
           </mat-card>
           </div>
         </div>
+      </ng-template>
     </mat-tab>
   </div>
 </mat-tab-group>
