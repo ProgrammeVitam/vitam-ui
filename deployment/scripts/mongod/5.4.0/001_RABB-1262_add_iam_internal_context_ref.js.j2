@@ -1,0 +1,14 @@
+print("START 001_RABB-1262_add_iam_internal_context_ref.js");
+
+db = db.getSiblingDB('security')
+
+// Add context
+db.contexts.insert({
+    "_id" : "iam_internal_context",
+    "name": "Context Iam Internal",
+    "fullAccess" : true,
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "roleNames" : []
+});
+
+print("END 001_RABB-1262_add_iam_internal_context_ref.js");
