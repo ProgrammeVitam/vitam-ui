@@ -308,7 +308,7 @@
           "PHONE_FIELD_FORMAT": "Format international (+336XXXXXXXX) obligatoire"
         }
       },
-      "ACTIVATE_AUTO_PROVISIONING": "Activer la mise à jour automatique"
+      "ACTIVATE_AUTO_PROVISIONING": "Mise à jour automatique via SSO"
     },
     "GROUP": {
       "GROUP": "Groupe attribué",

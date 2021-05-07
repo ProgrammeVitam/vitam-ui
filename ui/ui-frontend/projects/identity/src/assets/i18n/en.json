@@ -308,7 +308,7 @@
           "PHONE_FIELD_FORMAT": "International format required"
         }
       },
-      "ACTIVATE_AUTO_PROVISIONING": "Activate auto update"
+      "ACTIVATE_AUTO_PROVISIONING": "Automatic update via SSO"
     },
     "GROUP": {
       "GROUP": "Assigned group",
