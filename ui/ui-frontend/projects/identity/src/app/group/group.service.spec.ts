@@ -247,14 +247,17 @@ describe('GroupService', () => {
   });
 
   it('should return true if the group exists', () => {
-    groupService.unitExists('unit1').subscribe(
+    groupService.unitExists('customerId', 'unit1').subscribe(
       (found) => {
         expect(found).toBeTruthy();
       },
       fail
     );
 
-    const criterionArray: any[] = [{ key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase }];
+    const criterionArray: any[] = [
+      { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
+      { key: 'customerId', value: 'customerId', operator: Operators.equals }
+    ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');
@@ -262,13 +265,16 @@ describe('GroupService', () => {
   });
 
   it('should return false if the group does not exist', () => {
-    groupService.unitExists('unit1').subscribe(
+    groupService.unitExists('customerId', 'unit1').subscribe(
       (found) => {
         expect(found).toBeFalsy();
       },
       fail
     );
-    const criterionArray: any[] = [{ key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase }];
+    const criterionArray: any[] = [
+      { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
+      { key: 'customerId', value: 'customerId', operator: Operators.equals }
+  ];
     const query: SearchQuery = { criteria: criterionArray };
     const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
     expect(req.request.method).toEqual('HEAD');

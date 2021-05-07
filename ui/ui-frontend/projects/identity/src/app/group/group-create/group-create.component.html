@@ -75,7 +75,7 @@
       <div class="content">
         <div class="text large bold" >{{'GROUP.INFORMATIONS.MODAL.UNITS_INFORMATION' | translate}} </div>
         
-        <app-units-form formControlName="units"></app-units-form>
+        <app-units-form [customer]="authService.user.customerId" formControlName="units"></app-units-form>
 
         <div class="actions">
           <button type="submit" class="btn primary" [disabled]="formValid()">{{'COMMON.SUBMIT' | translate}}</button>
