@@ -29,6 +29,10 @@ server:
     key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
+    enabled-protocols: {{ssl_setting.enabled_protocols}}
+    ciphers: {{ssl_setting.ciphers}}
+
+
 {% endif %}
   tomcat:
     accesslog:

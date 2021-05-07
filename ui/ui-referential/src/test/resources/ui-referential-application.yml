@@ -45,7 +45,7 @@ ui-referential:
     portal: "https://localhost:4200"
     referential: "${ui.url}"
 
-ui-prefix : referential-api
+ui-prefix: referential-api
 
 server-identity:
   identityName: vitamui
@@ -63,6 +63,8 @@ server:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
     key-store-password: changeme
     key-password: changeme
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
 controller:
   subrogation:
