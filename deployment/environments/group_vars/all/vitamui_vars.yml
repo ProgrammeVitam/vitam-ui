@@ -417,7 +417,7 @@ vitamui_platform_informations:
 mongo_dump_folder: /backup/mongod/
 mongo_backup_reinstall:
   - db: "iam"
-    collections: [ "customers","users","profiles", "groups" ]
+    collections: [ "customers","externalParameters","groups","owners","profiles","sequences","tenants","users","providers" ]
   #- db: "admin"
   #  collections: []
 
@@ -430,3 +430,7 @@ opentracing:
     udp_sender:
       host: changeme
       port: changeme
+
+java_prerequisites:
+  debian: "openjdk-11-jre-headless"
+  redhat: "java-11-openjdk-headless"
