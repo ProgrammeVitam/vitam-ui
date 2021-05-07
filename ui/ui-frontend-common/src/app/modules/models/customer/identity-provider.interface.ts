@@ -51,7 +51,7 @@ export interface IdentityProvider extends Id {
   idpMetadataUrl?: string;
   readonly: boolean;
   mailAttribute?: string;
-  identiferAttribute?: string;
+  identifierAttribute?: string;
   authnRequestBinding: AuthnRequestBindingEnum;
   autoProvisioningEnabled: boolean;
 }
