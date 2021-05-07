@@ -1,0 +1,29 @@
+print("START 002_RABB-1262_add_iam_internal.populate_certificates_ref.js");
+
+db = db.getSiblingDB('security')
+
+{% macro insertCertificate(pemFile, contextId, host) -%}
+db.certificates.remove(
+    {"_id" : "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ host }}_{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+
+{%- endmacro %}
+
+{% macro process(keyPath, contextId, groupName) -%}
+    {% for host in groups[groupName] %}
+        {{ insertCertificate(keyPath | replace('%host%', host), contextId, host) }}
+    {% endfor %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/iam-internal.pem', 'iam_internal_context', 'hosts_vitamui_iam_internal') }}
+
+print("END 002_RABB-1262_add_iam_internal.populate_certificates_ref.js");
