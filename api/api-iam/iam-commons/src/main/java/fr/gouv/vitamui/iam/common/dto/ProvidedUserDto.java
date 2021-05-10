@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.common.dto;
 
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
+@ToString
 public class ProvidedUserDto {
 
     @NotNull

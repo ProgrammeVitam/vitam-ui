@@ -87,7 +87,7 @@ public class ProvisioningInternalService {
     protected IdPProvisioningClientConfiguration getProvisioningClientConfiguration(final String idp) {
         return provisioningClientConfiguration.getIdentityProviders()
             .stream()
-            .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equals(idp))
+            .filter(provisioningClient -> provisioningClient.getIdpIdentifier().equalsIgnoreCase(idp))
             .findFirst().orElseThrow(() -> new NotFoundException(String.format("Provisioning client configuration not found for IdP : %S", idp)));
     }
 
