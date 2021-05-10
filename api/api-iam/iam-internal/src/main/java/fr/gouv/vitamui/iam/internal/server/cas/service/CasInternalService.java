@@ -335,7 +335,7 @@ public class CasInternalService {
         }
         // Try to create a new user
         else {
-            createNewUser(provisioningInternalService.getUserInformation(idp, email, null, null, null));
+            createNewUser(provisioningInternalService.getUserInformation(idp, email, null, null, userIdentifier));
         }
     }
 
@@ -352,16 +352,18 @@ public class CasInternalService {
         user.setAddress(providedUserInfo.getAddress());
         user.setInternalCode(providedUserInfo.getInternalCode());
         user.setSiteCode(providedUserInfo.getSiteCode());
-        user.setGroupId(getGroupByUnit(providedUserInfo.getUnit()));
+        GroupDto groupDto = getGroupByUnit(providedUserInfo.getUnit());
+        user.setGroupId(groupDto.getId());
+        user.setCustomerId(groupDto.getCustomerId());
 
         internalUserService.create(user);
     }
 
-    private String getGroupByUnit(final String unit) {
-        QueryDto criteria = QueryDto.criteria("units", unit, CriterionOperator.IN);
+    private GroupDto getGroupByUnit(final String unit) {
+        QueryDto criteria = QueryDto.criteria("units", List.of(unit), CriterionOperator.IN);
         final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
         Assert.notEmpty(groups, String.format("No group found for the given unit : %s", unit));
-        return groups.get(0).getId();
+        return groups.get(0);
     }
 
     private void updateUser(final UserDto userDto, final ProvidedUserDto userProvidedInfo) {
@@ -397,7 +399,7 @@ public class CasInternalService {
     }
 
     private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
-        QueryDto criteria = QueryDto.criteria("units", userInfo.getUnit(), CriterionOperator.IN);
+        QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
         final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
         Assert.notEmpty(groups, String.format("No group found for the given unit : %s", userInfo.getUnit()));
         if (!StringUtils.equals(userDto.getGroupId(), groups.get(0).getId())) {

@@ -123,7 +123,7 @@ public class CasExternalRestClient extends BaseRestClient<ExternalHttpContext> {
         uriBuilder.queryParam("email", email);
         uriBuilder.queryParam("idp", idp);
         if (userIdentifier.isPresent()) {
-            uriBuilder.queryParam("userIdentifier", userIdentifier);
+            uriBuilder.queryParam("userIdentifier", userIdentifier.get());
         }
         if (embedded.isPresent()) {
             uriBuilder.queryParam("embedded", embedded.get());
