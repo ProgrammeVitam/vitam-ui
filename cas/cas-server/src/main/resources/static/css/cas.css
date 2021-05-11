@@ -327,6 +327,16 @@
     color: red;
     margin-left: 20px; }
 
+@media only screen and (max-width: 801px) {
+  /* Styles pour cette Media Queries */
+  h3 {
+    font-size: 35px !important; }
+  .login-box {
+    width: 95vw;
+    padding: 15px 20px; }
+    .login-box input[type=text], .login-box input[type=email], .login-box input[type=password] {
+      padding: 0 10px; } }
+
 .login {
   position: fixed;
   height: 100%;
