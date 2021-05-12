@@ -371,6 +371,8 @@ public class CasInternalService {
         updateUserMandatoryInformation(userDto, userProvidedInfo, userUpdate);
         updateUserOptionalInformation(userDto, userProvidedInfo, userUpdate);
         if (!userUpdate.isEmpty()) {
+            userUpdate.put("id", userDto.getId());
+            userUpdate.put("customerId", userDto.getCustomerId());
             internalUserService.patch(userUpdate);
         }
     }
