@@ -79,6 +79,7 @@
          3.10.2. [Base IAM](architecture/mdd.md#Base-IAM)  
          3.10.3. [Base security](architecture/mdd.md#base-security)  
          3.10.4. [Base Cas](architecture/mdd.md#base-cas)  
+         3.10.5. [Base archivesearch](architecture/mdd.md#Base-archivesearch)
 
 4. [Implémentation](implementation/composants.md)
 
