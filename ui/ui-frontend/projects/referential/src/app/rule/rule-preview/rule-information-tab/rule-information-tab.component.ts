@@ -74,9 +74,6 @@ export class RuleInformationTabComponent {
   set rule(rule: Rule) {
     this._rule = rule;
     this.resetForm(this.rule);
-
-    console.log('rule : ', this.rule);
-
     this.updated.emit(false);
   }
 

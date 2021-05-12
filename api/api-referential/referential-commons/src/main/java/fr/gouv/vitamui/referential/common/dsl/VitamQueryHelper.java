@@ -68,6 +68,7 @@ public class VitamQueryHelper {
     private static final String NAME = "Name";
     private static final String SHORT_NAME = "ShortName";
     private static final String PUID = "PUID";
+    private static final String RULE_ID = "RuleId";
     private static final String RULE_VALUE = "RuleValue";
     private static final String RULE_TYPE = "RuleType";
     private static final String EV_TYPE_PROC = "evTypeProc";
@@ -118,6 +119,7 @@ public class VitamQueryHelper {
                     case IDENTIFIER:
                     case ID:
                     case PUID:
+                    case RULE_ID:
                     case RULE_VALUE:
                     case RULE_TYPE:
                         // string equals operation
