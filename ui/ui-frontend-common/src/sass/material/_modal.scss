@@ -13,7 +13,7 @@ $footer-height: 100px !default;
 .vitamui-modal .mat-dialog-container {
 
     @extend %mat-dialog-container;
-    
+
     .header {
             padding: 20px 60px 0 60px;
         }
@@ -44,7 +44,6 @@ $footer-height: 100px !default;
 
         .vitamui-table {
             overflow: auto;
-            max-height: 43vh;
 
             &::-webkit-scrollbar {
                 display: none;
@@ -55,7 +54,7 @@ $footer-height: 100px !default;
         .form-group {
             margin-bottom: 20px;
         }
-} 
+}
 
 .vitamui-form-dual-panel .mat-dialog-container {
 
@@ -176,4 +175,4 @@ $footer-height: 100px !default;
             }
         }
     }
-} 
+}
