@@ -45,7 +45,6 @@ import {extend, isEmpty} from 'underscore';
 import {ContextService} from '../../context.service';
 
 import {SecurityProfileService} from '../../../security-profile/security-profile.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-context-information-tab',
