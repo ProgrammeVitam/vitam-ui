@@ -11,9 +11,8 @@ import java.io.PrintStream;
 
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.boot.test.rule.OutputCapture;
+
 
 public class FakeLoggerTest {
 
@@ -27,8 +26,6 @@ public class FakeLoggerTest {
 
     protected static final StringBuilder buf = new StringBuilder();
 
-    @Rule
-    public OutputCapture outputCapture = new OutputCapture();
 
     /**
      * @throws java.lang.Exception
@@ -37,7 +34,6 @@ public class FakeLoggerTest {
     @Before
     public void setUp() throws Exception {
         buf.setLength(0);
-        outputCapture.reset();
         err = new ByteArrayOutputStream();
         System.setErr(new PrintStream(err));
 

@@ -38,15 +38,14 @@ package fr.gouv.vitamui.iam.internal.server.config;
 
 import javax.annotation.PostConstruct;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
@@ -62,7 +61,7 @@ import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 public class MongoDbConfig {
 
     @Autowired
-    private MongoDbFactory mongoDbFactory;
+    private MongoDatabaseFactory mongoDbFactory;
 
     @PostConstruct
     public void afterPropertiesSet() {
@@ -71,14 +70,16 @@ public class MongoDbConfig {
     }
 
     private void setUpTenantIndexOnCustomerId() {
-        final DB db = mongoDbFactory.getLegacyDb();
-        final DBCollection tenantsCollection = db.getCollection(MongoDbCollections.TENANTS);
-        final DBObject index = new BasicDBObject();
-        index.put("customerId", -1);
-        final DBObject options = new BasicDBObject();
-        options.put("background", true);
-        options.put("name", "idx_tenant_customerId");
-        tenantsCollection.createIndex(index, options);
+
+        final MongoDatabase db = mongoDbFactory.getMongoDatabase();
+        final MongoCollection tenantsCollection = db.getCollection(MongoDbCollections.TENANTS);
+        Document doc = new Document();
+        doc.append("customerId", -1);
+        IndexOptions options = new IndexOptions();
+        options.background(true);
+        options.name("idx_tenant_customerId");
+        tenantsCollection.createIndex(doc, options);
+
     }
 
 }

@@ -57,18 +57,15 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
-import java.io.ByteArrayOutputStream;
 
 import org.odftoolkit.simple.TextDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
-
 import org.w3c.dom.Document;
 
+import java.io.ByteArrayOutputStream;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
@@ -251,10 +248,8 @@ public class IngestInternalService {
     }
 
     public byte[] generateODTReport(VitamContext vitamContext, final String id)
-        throws IOException, JSONException, URISyntaxException, IngestFileGenerationException {
+        throws IOException, URISyntaxException, IngestFileGenerationException {
 
-        LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
-        JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
         CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
         Resource customerLogo = null;
 
@@ -279,7 +274,7 @@ public class IngestInternalService {
 
             ingestGeneratorODTFile.generateFirstTitle(document);
 
-            ingestGeneratorODTFile.generateServicesTable(document,manifest,jsonObject);
+            ingestGeneratorODTFile.generateServicesTable(document,manifest);
 
             ingestGeneratorODTFile.generateDepositDataTable(document,manifest,archiveUnitDtoList);
 
@@ -304,7 +299,7 @@ public class IngestInternalService {
 
             return result.toByteArray();
 
-        } catch (IOException | JSONException | URISyntaxException | IngestFileGenerationException e) {
+        } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} " , e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report ", e) ;
         }

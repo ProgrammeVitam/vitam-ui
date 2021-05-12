@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 public class MongoConfig {
 
     @Autowired
-    MongoDbFactory mongoDbFactory;
+    MongoDatabaseFactory mongoDbFactory;
 
     @Bean
     public MongoCustomConversions customConversions() {
@@ -63,7 +63,7 @@ public class MongoConfig {
     }
 
     @Bean
-    MongoTransactionManager transactionManager(final MongoDbFactory dbFactory) {
+    MongoTransactionManager transactionManager(final MongoDatabaseFactory dbFactory) {
         return new MongoTransactionManager(dbFactory);
     }
 

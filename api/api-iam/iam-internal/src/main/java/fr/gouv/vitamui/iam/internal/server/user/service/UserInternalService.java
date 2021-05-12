@@ -927,7 +927,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             }
         });
 
-        return convertFromEntityToDto(getRepository().save(user));
+        return userConverter.convertEntityToDto(getRepository().save(user));
+
     }
 
     private User getUserById(final String id) {
