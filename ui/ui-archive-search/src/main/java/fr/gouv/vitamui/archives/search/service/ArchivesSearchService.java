@@ -28,19 +28,27 @@ package fr.gouv.vitamui.archives.search.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -85,9 +93,16 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, ExternalHttpContext context) {
+    public ObjectData downloadObjectFromUnit(String id, ExternalHttpContext context) {
         LOGGER.info("Download the Archive Unit Object with id {}", id);
-        return archiveSearchExternalRestClient.downloadObjectFromUnit(id, context);
+        ObjectData objectData = new ObjectData();
+        ResultsDto got = findObjectById(id, context).getBody();
+        String usage = getUsage(Objects.requireNonNull(got), objectData);
+        ResponseEntity<Resource> resourceResponseEntity =
+            archiveSearchExternalRestClient.downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
+        Resource resource = resourceResponseEntity.getBody();
+        objectData.setResource(resource);
+        return objectData;
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -95,10 +110,45 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.findUnitById(id, context);
     }
 
+    public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
+        LOGGER.info("Get the Object Group with Identifier {}", id);
+        return archiveSearchExternalRestClient.findObjectById(id, context);
+    }
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
         ExternalHttpContext context) {
         LOGGER.info("export search archives Units by criteria into csv format with criteria {}", searchQuery);
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
 
+    public String getUsage(ResultsDto got, ObjectData objectData) {
+        List<QualifiersDto> qualifiers = got.getQualifiers();
+        for (QualifiersDto qualifier : qualifiers) {
+            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
+                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
+            }
+            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
+                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
+            }
+            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.THUMBNAIL.getValue())) {
+                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
+            }
+        }
+        return null;
+    }
+
+    @NotNull
+    private String setObjectData(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
+        if(qualifier.getVersions().get(0).getFileInfoModel() != null) {
+            String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
+            objectData.setFilename(filename);
+        }
+        objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
+        return objectQualifierTypeEnum.getValue();
+    }
+
+    public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
+        List<VersionsDto> versions =
+            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().get().getVersions();
+        return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
+    }
 }

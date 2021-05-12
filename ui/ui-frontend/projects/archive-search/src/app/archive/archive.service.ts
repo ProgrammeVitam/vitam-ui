@@ -187,29 +187,49 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  downloadObjectFromUnit(id : string , name : string,  headers?: HttpHeaders) {
+  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
 
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
 
-      file => {
+      response => {
+        let filename = null;
+        if (response.headers.get('content-disposition').includes('filename')) {
+          filename = response.headers.get('content-disposition').split('=')[1];
+        } else {
+          filename = this.normalizeTitle(title ? title : ((title_) ? (title_.fr ? title_.fr : title_.en) : title_.en));
+        }
 
         const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download =name;
+        console.log('headers filename = ', filename);
+        element.href = window.URL.createObjectURL(response.body);
+        element.download = filename;
+        console.log('response = ', response);
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
       },
       errors => {
-        console.log('Error message : ',errors);
+        console.log('Error message : ', errors);
       }
-    ); }
+    );
+  }
 
-  findArchiveUnit(id : string, headers?: HttpHeaders) {
+  normalizeTitle(title: string): string {
+    title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
+    return title.substring(0, 218);
+  }
+
+  findArchiveUnit(id: string, headers?: HttpHeaders) {
       return this.archiveApiService.findArchiveUnit(id, headers);
     }
-}
+
+  getObjectById(id: string,headers?: HttpHeaders) {
+    return this.archiveApiService.getObjectById(id,headers);
+  }
+
+  }
+
 
 function idExists(units: Unit[], id: string): boolean {
   return !!units.find((unit) => unit['#id'] === id);

@@ -24,17 +24,26 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.rest;
+package fr.gouv.vitamui.archives.search.common.dto;
 
-public class RestApi {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-    public static final String ARCHIVE_SEARCH_PATH = "/archives-search";
-    public static final String SEARCH_PATH = "/search";
-    public static final String EXPORT_CSV_SEARCH_PATH = "/export-csv-search";
-    public static final String FILING_HOLDING_SCHEME_PATH = "/filling-holding-schema";
-    public static final String ACCESS_CONTRACT = "/accesscontracts";
-    public static final String DOWNLOAD_ARCHIVE_UNIT = "/downloadobjectfromunit";
-    public static final String ARCHIVE_UNIT_INFO = "/archiveunit";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String OBJECTGROUP = "/object";
+import java.io.Serializable;
+
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class ObjectGroupDto extends IdDto implements Serializable {
+    private VitamUIArchiveUnitResponseDto archives;
+
 }

@@ -52,7 +52,9 @@ import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.dto.QualifiersDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -187,8 +189,7 @@ public class ArchiveSearchInternalService {
 
     public ResultsDto findUnitById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
-            LOGGER.info("Archive Unit Infos {}",
-                unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS));
+            LOGGER.info("Archive Unit Id : {}", id);
             String re = StringUtils
                 .chop(unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS).toString()
                     .substring(1));
@@ -199,23 +200,27 @@ public class ArchiveSearchInternalService {
         }
     }
 
-    private String getUsage(String id, VitamContext vitamContext) throws VitamClientException {
-        return unitService.findObjectMetadataById(id, vitamContext).toJsonNode().findValue(ARCHIVE_UNIT_USAGE)
-            .textValue();
+    public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            LOGGER.info("Get Object Group");
+            String re = StringUtils
+                .chop(
+                    unitService.findObjectMetadataById(id, vitamContext).toJsonNode()
+                        .get(ARCHIVE_UNIT_DETAILS)
+                        .toString()
+                        .substring(1));
+            return objectMapper.readValue(re, ResultsDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Can not get the archive unit {} ", e);
+            throw new VitamClientException("Unable to find the UA", e);
+        }
     }
 
-    private int getVersion(String id, VitamContext vitamContext) throws VitamClientException {
-        String result = unitService.findObjectMetadataById(id, vitamContext).toJsonNode()
-            .findValue(ARCHIVE_UNIT_VERSION).textValue();
-        return Integer.valueOf(result.split("_")[1]);
-    }
-
-    public Response downloadObjectFromUnit(String id, final VitamContext vitamContext)
+    public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
-
         LOGGER.info("Download Archive Unit Object with id {} ", id);
         return unitService
-            .getObjectStreamByUnitId(id, getUsage(id, vitamContext), getVersion(id, vitamContext), vitamContext);
+            .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
 
     /**

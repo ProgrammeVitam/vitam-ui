@@ -30,6 +30,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -40,6 +41,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -107,18 +109,29 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
     }
 
+    @ApiOperation(value = "Find the Object Group by identifier")
+    @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id){
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Find the Object Group with Identifier {}", id);
+        return archivesSearchService.findObjectById(id, buildUiHttpContext());
+    }
+
     @ApiOperation(value = "Download Object from the Archive Unit ")
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Download the Archive Unit Object with ID {}", id);
-        Resource body = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext()).getBody();
+        ObjectData objectData = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext());
+        String headerValues = StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
+            : "attachment";
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
-            .body(body);
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", headerValues)
+            .body(objectData.getResource());
     }
-
 
     @ApiOperation(value = "export into csv format archive units by criteria")
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)

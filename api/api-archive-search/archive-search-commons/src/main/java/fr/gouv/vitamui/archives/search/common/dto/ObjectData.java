@@ -1,5 +1,6 @@
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,18 +24,27 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+package fr.gouv.vitamui.archives.search.common.dto;
 
-package fr.gouv.vitamui.archives.search.common.rest;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.core.io.Resource;
 
-public class RestApi {
+import java.io.Serializable;
 
-    public static final String ARCHIVE_SEARCH_PATH = "/archives-search";
-    public static final String SEARCH_PATH = "/search";
-    public static final String EXPORT_CSV_SEARCH_PATH = "/export-csv-search";
-    public static final String FILING_HOLDING_SCHEME_PATH = "/filling-holding-schema";
-    public static final String ACCESS_CONTRACT = "/accesscontracts";
-    public static final String DOWNLOAD_ARCHIVE_UNIT = "/downloadobjectfromunit";
-    public static final String ARCHIVE_UNIT_INFO = "/archiveunit";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String OBJECTGROUP = "/object";
+@Getter
+@Setter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class ObjectData implements Serializable {
+    private Resource resource;
+    private String filename;
+    /**
+    * mimeType to use to get the exacte vitam mimetype
+    **/
+    private String mimeType;
 }
