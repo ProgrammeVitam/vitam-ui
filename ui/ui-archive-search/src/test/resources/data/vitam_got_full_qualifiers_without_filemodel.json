@@ -17,23 +17,23 @@
       "#qualifiers": [
         {
           "qualifier": "BinaryMaster",
-          "#nbc": 1,
+          "_nbc": 1,
           "versions": [
             {
-              "DataObjectGroupId": "aebaaaaaaahl2zz5ab23malq4gw2cnqaaaba",
+              "_id": "aeaaaaaaaahly3l5ab7vwalzlvsew3aaaaaq",
+              "DataObjectGroupId": "aebaaaaaaehly3l5ab7vwalzlvsew5iaaaaq",
               "DataObjectVersion": "BinaryMaster_1",
               "FormatIdentification": {
                 "FormatLitteral": "Plain Text File",
                 "MimeType": "text/plain",
                 "FormatId": "x-fmt/111"
               },
+              "_opi": "aeeaaaaaaghly3l5aad6ialzlvsdclaaaaaq",
               "Size": 6,
-              "Uri": "Content/ID35.txt",
-              "MessageDigest": "664ac614a819df2a97d2a5df57dcad91d6ec38b0fffc793e80c56b4553a14ac7a5f0bce3bb71af419b0bb8f151ad3d512867454eeb818e01818a31989c13319b",
+              "Uri": "Content/ID13.txt",
+              "MessageDigest": "86c0bc701ef6b5dd21b080bc5bb2af38097baa6237275da83a52f092c9eae3e4e4b0247391620bd732fe824d18bd3bb6c37e62ec73a8cf3585c6a799399861b1",
               "Algorithm": "SHA-512",
-              "#id": "aeaaaaaaaahl2zz5ab23malq4gw2cnqaaaaq",
-              "#opi": "aeeaaaaaachf2vysaau5malrcg7nsjqaaaaq",
-              "#storage": {
+              "_storage": {
                 "strategyId": "default"
               }
             }
@@ -52,14 +52,34 @@
                 "MimeType": "image/png",
                 "FormatId": "fmt/12"
               },
-              "FileInfo": {
-                "Filename": "Gallieni pour diffusion",
-                "LastModified": "2016-06-03T15:28:00.000+02:00"
-              },
               "_opi": "aeeaaaaaachlju6xabk74alycfihj7qaaaaq",
               "Size": 57850,
               "Uri": "Content/0f1ddc38a1eb38d401e394c057db3f2ebc646fd1cd0c06e7dc680c19d89c05f74815cbf27399fafe111192bcb4c0e246186cc8cc430c6ff7fe52a7fdbd2110f7.png",
               "MessageDigest": "0f1ddc38a1eb38d401e394c057db3f2ebc646fd1cd0c06e7dc680c19d89c05f74815cbf27399fafe111192bcb4c0e246186cc8cc430c6ff7fe52a7fdbd2110f7",
+              "Algorithm": "SHA-512",
+              "_storage": {
+                "strategyId": "default"
+              }
+            }
+          ]
+        },
+        {
+          "qualifier": "Thumbnail",
+          "_nbc": 1,
+          "versions": [
+            {
+              "_id": "aeaaaaaaaahlju6xaayh6alycfih54qaaaba",
+              "DataObjectGroupId": "aebaaaaaaahlju6xaayh6alycfih5ziaaaaq",
+              "DataObjectVersion": "Thumbnail_1",
+              "FormatIdentification": {
+                "FormatLitteral": "JPEG File Interchange Format",
+                "MimeType": "image/jpeg",
+                "FormatId": "fmt/44"
+              },
+              "_opi": "aeeaaaaaachlju6xabk74alycfihj7qaaaaq",
+              "Size": 44266,
+              "Uri": "Content/04a5b5a5db9a4505d75f024af9379d0fc9b1d50f0eff8a6f1a7caa299a689639b57e4ace0f562643ab0822f7ea33e0539635fb8201a1bfacaab4210cd7236b82.jpg",
+              "MessageDigest": "04a5b5a5db9a4505d75f024af9379d0fc9b1d50f0eff8a6f1a7caa299a689639b57e4ace0f562643ab0822f7ea33e0539635fb8201a1bfacaab4210cd7236b82",
               "Algorithm": "SHA-512",
               "_storage": {
                 "strategyId": "default"

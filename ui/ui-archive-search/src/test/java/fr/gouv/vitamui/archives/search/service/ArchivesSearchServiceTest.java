@@ -197,7 +197,7 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertEquals(version, 1);
     }
 
@@ -216,7 +216,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertEquals(objectData.getFilename(), "Gallieni pour diffusion");
     }
 
@@ -238,6 +238,62 @@ public class ArchivesSearchServiceTest {
         assertNull(usage);
     }
 
+    @Test
+    public void should_return_file_name_of_dissemination_when_absent_in_binary_master()
+        throws  IOException, InvalidParseOperationException, VitamClientException {
+        // Given
+        ObjectData objectData = new ObjectData();
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot("data/vitam_got_full.json");
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+        // When
+        when(unitService.findObjectMetadataById(any(), any()))
+            .thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any()))
+            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        String usage = archivesSearchService.getUsage(resultsDto, objectData);
+
+        // Then
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(objectData.getFilename(), "titre dissemination");
+    }
+
+    @Test
+    public void should_return_file_name_of_thumbnail_when_absent_in_binary_and_dissemination()
+        throws  IOException, InvalidParseOperationException, VitamClientException {
+        // Given
+        ObjectData objectData = new ObjectData();
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot("data/vitam_got_full_with_thumbs.json");
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+        // When
+        when(unitService.findObjectMetadataById(any(), any()))
+            .thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any()))
+            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        String usage = archivesSearchService.getUsage(resultsDto, objectData);
+
+        // Then
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(objectData.getFilename(), "titre thumbnail.txt");
+    }
+
+    @Test
+    public void should_return_null_when_filemodel_is_absent_from_all_qualifiers()
+        throws  IOException, InvalidParseOperationException, VitamClientException {
+        // Given
+        ObjectData objectData = new ObjectData();
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot("data/vitam_got_full_qualifiers_without_filemodel.json");
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+        // When
+        when(unitService.findObjectMetadataById(any(), any()))
+            .thenReturn(jsonNodeRequestResponse);
+        when(archivesSearchService.findObjectById(any(), any()))
+            .thenReturn(ResponseEntity.of(Optional.of(resultsDto)));
+        String usage = archivesSearchService.getUsage(resultsDto, objectData);
+
+        // Then
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertNull(objectData.getFilename());
+    }
     private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

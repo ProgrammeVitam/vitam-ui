@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -122,23 +123,30 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     public String getUsage(ResultsDto got, ObjectData objectData) {
         List<QualifiersDto> qualifiers = got.getQualifiers();
+        String finalUsage = null;
         for (QualifiersDto qualifier : qualifiers) {
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
-                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
+                finalUsage = setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
+                if(StringUtils.isEmpty(objectData.getFilename())) {
+                    continue;
+                }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
-                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
+                setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
+                if(StringUtils.isEmpty(objectData.getFilename())) {
+                    continue;
+                }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.THUMBNAIL.getValue())) {
-                return setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
+                setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
             }
         }
-        return null;
+        return finalUsage;
     }
 
     @NotNull
     private String setObjectData(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
-        if(qualifier.getVersions().get(0).getFileInfoModel() != null) {
+        if(qualifier.getVersions().get(0).getFileInfoModel() != null && StringUtils.isEmpty(objectData.getFilename())) {
             String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
             objectData.setFilename(filename);
         }
