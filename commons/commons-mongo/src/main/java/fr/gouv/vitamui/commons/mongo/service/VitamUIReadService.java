@@ -556,7 +556,7 @@ public abstract class VitamUIReadService<D extends IdDto, E extends BaseIdDocume
      * @return
      */
     private List<D> getAll(final Query query, final Optional<String> embedded) {
-        LOGGER.debug("Get all {}s", getObjectName());
+        LOGGER.debug("Get all {}s query={} embedded={}", getObjectName(), query, embedded);
         final Iterable<E> entities = (query == null) ? getRepository().findAll() : getRepository().findAll(query);
         final List<D> dtos = convertIterableToList(entities);
         loadExtraInformations(dtos, embedded);
