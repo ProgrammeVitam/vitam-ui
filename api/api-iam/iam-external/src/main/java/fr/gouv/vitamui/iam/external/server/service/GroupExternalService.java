@@ -81,6 +81,7 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
     private static final String ENABLED_KEY = "enabled";
     private static final String DESCRIPTION_KEY = "description";
     private static final String UNITS_KEY = "units";
+    private static final String READONLY_KEY = "readonly";
 
     private final GroupInternalRestClient groupInternalRestClient;
 
@@ -135,7 +136,7 @@ public class GroupExternalService extends AbstractResourceClientService<GroupDto
 
     @Override
     public Collection<String> getAllowedKeys() {
-        return Arrays.asList(ID_KEY, IDENTIFIER_KEY, NAME_KEY, ENABLED_KEY, DESCRIPTION_KEY, LEVEL_KEY, CUSTOMER_ID_KEY, UNITS_KEY);
+        return Arrays.asList(ID_KEY, IDENTIFIER_KEY, NAME_KEY, ENABLED_KEY, DESCRIPTION_KEY, LEVEL_KEY, CUSTOMER_ID_KEY, UNITS_KEY, READONLY_KEY);
     }
 
     @Override
