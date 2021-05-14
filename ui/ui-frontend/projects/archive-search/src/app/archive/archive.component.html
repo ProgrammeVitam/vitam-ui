@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  
-  <mat-sidenav mode="side" [fixedInViewport]="true" opened="{{show}}" *ngIf="foundAccessContract" >
+
+  <mat-sidenav mode="side" [fixedInViewport]="true" opened="{{show}}" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar>
     <app-filing-holding-scheme (fillingSchemaClose)="closePanel()"  [accessContract]="accessContract"></app-filing-holding-scheme>
   </mat-sidenav>
 
@@ -22,7 +22,7 @@
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
           <div class="row">
-            
+
             <button *ngIf="!show" type="button" class="btn secondary right-arround left-not-arround"
               (click)="hiddenTreeBlock(show)" matTooltip="{{'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate}}"
               matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
@@ -32,7 +32,7 @@
           <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"
                               [accessContract]="accessContract">
           </app-archive-search>
-         
+
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
