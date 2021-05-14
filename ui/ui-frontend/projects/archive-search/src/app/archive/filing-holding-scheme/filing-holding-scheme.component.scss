@@ -1,15 +1,14 @@
 @import '~ui-frontend-common/sass/variables/colors';
 .tree-filing-scheme-side-panel{
-    min-width: 416px;
+    min-width: 100%;
     height: 100vh;
     background: white;
     margin-top: 90px;
-
 }
 .tree-filing-scheme{
     height:auto;
     max-height: 70vh;
-    overflow:auto;   
+    overflow:auto;
     width: 100%;
     overflow-x: auto;
     white-space: nowrap;
@@ -64,13 +63,17 @@
     font-size: 100%;
     font-weight: 700;
     line-height: 1;
-    text-align: center;
+    position: absolute;
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: 1.25rem;
-    margin-left: 20%;
+    right: 35px;
 }
 .badge-secondary {
     color: #2C76C9;
     background-color: #ABCAED;
+}
+
+.area-show-tree {
+    padding-top: 20px;
 }
