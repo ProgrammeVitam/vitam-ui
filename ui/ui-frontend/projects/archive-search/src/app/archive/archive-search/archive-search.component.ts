@@ -308,12 +308,6 @@ emptyForm = {
     this.showCriteriaPanel = !this.showCriteriaPanel;
   }
 
-  clearFilters(event: boolean) {
-    if (event) {
-      this.clearCriterias();
-    }
-  }
-
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
     if (this.searchCriterias.size > 0) {
       this.searchCriterias = new Map();
@@ -597,6 +591,7 @@ emptyForm = {
     for (const node of nodes) {
       node.hidden = false;
       node.checked = show;
+      node.count = null;
       this.recursiveCheck(node.children, show);
     }
   }
@@ -737,6 +732,7 @@ emptyForm = {
     this.included = false;
     this.nbQueryCriteria = 0;
     this.setFilingHoldingScheme();
+    this.archiveExchangeDataService.emitFilingHoldingNodes(this.nodeArray);
     this.checkAllNodes(false);
   }
 

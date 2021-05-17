@@ -99,7 +99,7 @@
       "SAVE_REPLACE_CANCEL_BUTTON": "ANNULER",
       "SAVE_DELETE_CRITERIA_LABEL": "Suppression de la",
       "SAVE_DELETE_CRITERIA_MESSGE": "Voulez-vous supprimer la sauvegarde enregistrée ?",
-      "NO_RESULTS": "Pas de critères enregistrées!",
+      "NO_RESULTS": "Pas de critères enregistrés",
       "SAVED_WITH_SUCCESS": "Vos critères de recherche ont été correctement sauvegardés sous le nom ",
       "DELETED_WITH_SUCCESS_1": "Votre sauvegarde sous le nom  ",
       "DELETED_WITH_SUCCESS_2": "  a bien été supprimée.",

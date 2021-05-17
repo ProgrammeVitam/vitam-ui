@@ -79,8 +79,11 @@
           </button>
         </ng-container>
       </div>
+    </div>
 
-        <div class="d-flex justify-content-end">
+
+    <div class="row area-criteria">
+        <div class="d-flex justify-content-end button-space">
             <button [matMenuTriggerFor]="menu" class="mat-boutton">
               <button type="button" class="circle editable-field-cancel clickable">
                 <i class="material-icons primary-save-icon">save</i>
@@ -93,30 +96,25 @@
                 {{'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_MENU' | translate}}
               </button>
               <app-search-criteria-list 
-                        (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"
-                        (clearFilters)="clearFilters($event)">
+                        (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)">
               </app-search-criteria-list>
             </mat-menu>
 
         </div>
 
-        <div *ngIf="searchCriterias && searchCriterias.size > 0 " class="d-flex justify-content-end div-btn-delete">
+        <div *ngIf="searchCriterias && searchCriterias.size > 0 " class="d-flex justify-content-end div-btn-delete button-space">
             <button class="mat-boutton">
               <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
                 <i class="material-icons primary-save-icon">delete</i>
               </button>
             </button>
         </div>
+
+        <div class="row justify-content-around">
+            <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">{{'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA'
+                | translate}}</a>
+          </div>
     </div>
-
-    <div class="row justify-content-around">
-      <div class="col-6">
-        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">{{'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA'
-          | translate}}</a>
-      </div>
-    </div>
-
-
 
     <div class="card-criteria" *ngIf="showCriteriaPanel">
       <div class="row">

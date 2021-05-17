@@ -115,8 +115,14 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       }
       this.filterNodes();
     });
-}
 
+    this.archiveSharedDataServiceService.getFilingHoldingNodes().subscribe(nodes => {
+      if (nodes) {
+      this.fullNodes = nodes;
+      this.showAllTreeNodes();
+      }
+    });
+}
   convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
     let nodeDataList : string[] = [];
     for(const node of holdingSchemas) {
