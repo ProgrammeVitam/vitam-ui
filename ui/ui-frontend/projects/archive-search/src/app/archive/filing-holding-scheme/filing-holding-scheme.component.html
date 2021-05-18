@@ -16,7 +16,9 @@
               <li class="mat-tree-node filing-holding-scheme-tree-node">
                 <app-filing-holding-node disabled [node]="node" (nodeToggle)="nestedTreeControlFull.toggle(node)"
                                          (labelClick)="emitNode(node)"></app-filing-holding-node>
+                 
                 <span *ngIf="node?.count != null  && hasResults && node?.count > 0 " class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
+                 
               </li>
             </ng-container>
           </mat-tree-node>
@@ -28,7 +30,9 @@
                   <app-filing-holding-node [node]="node" [expanded]="nestedTreeControlFull.isExpanded(node)"
                                            (nodeToggle)="nestedTreeControlFull.toggle(node)"
                                            (labelClick)="emitNode(node)"></app-filing-holding-node>
+                  
                   <span *ngIf="node?.count != null && hasResults  && node?.count > 0" class="badge badge-secondary pad">{{node?.count | number : '1.0'}}</span>
+                  
                 </div>
                 <ul [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull.isExpanded(node)">
                   <ng-container matTreeNodeOutlet></ng-container>

@@ -439,9 +439,7 @@ emptyForm = {
         });
       }
     });
-    if(!hasNodeSelected){
-      nodesIdList = this.entireNodesIds;
-    }
+
     return nodesIdList;
   }
 

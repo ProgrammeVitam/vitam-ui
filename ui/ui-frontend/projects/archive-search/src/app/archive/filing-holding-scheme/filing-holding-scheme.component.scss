@@ -26,6 +26,7 @@
 }
 
 .filing-holding-scheme-tree-node {
+    position: relative;
     border-bottom: 1px solid transparentize(#979797, 0.7);
     color: var(--vitamui-secondary-dark-5);
     cursor: pointer;
@@ -64,6 +65,7 @@
     font-weight: 700;
     line-height: 1;
     position: absolute;
+    top: 12px;
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: 1.25rem;
@@ -76,4 +78,8 @@
 
 .area-show-tree {
     padding-top: 20px;
+}
+
+.badge-parent{
+    position: relative;
 }
