@@ -116,7 +116,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
 
   unitAlreadyAdd(control: AbstractControl): ValidationErrors {
     const unit: string = control.value;
-    if (unit && this.units?.includes(unit.trim())) {
+    if (unit && this.units.map(u => u.toLocaleLowerCase()).includes(unit.trim().toLocaleLowerCase())) {
         return {
           unitAlreadyAdd: true
         };
