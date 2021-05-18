@@ -200,10 +200,8 @@ export class ArchiveService extends SearchService<any> {
         }
 
         const element = document.createElement('a');
-        console.log('headers filename = ', filename);
         element.href = window.URL.createObjectURL(response.body);
         element.download = filename;
-        console.log('response = ', response);
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
         element.click();

@@ -48,7 +48,9 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
@@ -211,8 +213,8 @@ public class ArchiveSearchInternalService {
                         .substring(1));
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Can not get the archive unit {} ", e);
-            throw new VitamClientException("Unable to find the UA", e);
+            LOGGER.error("Can not get the object group {} ", e);
+            throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
     }
 
