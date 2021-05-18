@@ -1,5 +1,5 @@
 <vitamui-common-sidenav-header
-  [badge]="user?.status === 'ENABLED' ? 'green' : (user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : 'orange')"
+  [badge]="user?.status === 'ENABLED' ? 'green' : ((user?.status === 'DISABLED' || user?.status === 'ANONYM' || user?.status === 'REMOVED') ? 'grey' : 'orange')"
   [title]="user?.lastname.toUpperCase() + ' ' + user?.firstname"
   [subtitle]="'(' +  user?.identifier + ')'"
   [icon]="'vitamui-icon-user'"
