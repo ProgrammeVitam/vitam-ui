@@ -34,26 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { Directive, Input, OnDestroy } from '@angular/core';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
-import { VitamUIAutocompleteComponent } from './vitamui-autocomplete.component';
-import {MatInputModule} from "@angular/material/input";
-import {AutocompletePositionDirectiveModule} from "../../directives/autocomplete-position/autocomplete-position.directive.module";
-
-@NgModule({
-    imports: [
-        CommonModule,
-        MatAutocompleteModule,
-        ReactiveFormsModule,
-        MatTooltipModule,
-        MatInputModule,
-        AutocompletePositionDirectiveModule
-    ],
-  declarations: [VitamUIAutocompleteComponent],
-  exports: [VitamUIAutocompleteComponent]
+@Directive({
+  selector: '[vitamuiAutocompletePosition]'
 })
-export class VitamUIAutocompleteModule { }
+export class AutocompletePositionDirective implements OnDestroy {
+  private matAutocompleteTrigger: MatAutocompleteTrigger;
+
+  @Input('vitamuiAutocompletePosition') set autocompletePosition(value: MatAutocompleteTrigger) {
+    this.matAutocompleteTrigger = value;
+    window.addEventListener('scroll', this.scrollEvent, true);
+  }
+
+  private scrollEvent = (): void => {
+    if (this.matAutocompleteTrigger == null) {
+      return;
+    }
+    if (this.matAutocompleteTrigger.panelOpen) {
+      this.matAutocompleteTrigger.updatePosition();
+    }
+  };
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.scrollEvent, true);
+  }
+}
