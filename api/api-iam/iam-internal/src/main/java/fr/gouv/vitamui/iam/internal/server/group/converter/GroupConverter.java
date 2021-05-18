@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.group.converter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -109,6 +110,6 @@ public class GroupConverter implements Converter<GroupDto, Group> {
     }
 
     public String convertUnitsToLogbook(final Set<String> units) {
-        return units != null ? units.toString() : null;
+        return units != null ? units.toString() : Collections.emptySet().toString();
     }
 }

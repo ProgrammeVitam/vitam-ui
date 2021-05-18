@@ -274,7 +274,7 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                 case "units" :
                     final Collection<String> unitsDto = CollectionUtils.emptyIfNull(CastUtils.toList(entry.getValue()));
                     final Set<String> units = new HashSet<String>(unitsDto);
-                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertProfileIdsToLogbook(CollectionUtils.emptyIfNull(group.getUnits())),
+                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertUnitsToLogbook(group.getUnits()),
                             groupConverter.convertUnitsToLogbook(units)));
                     group.setUnits(units);
                     break;
