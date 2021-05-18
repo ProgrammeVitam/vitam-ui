@@ -16,7 +16,7 @@
 
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center">
-      <button type="button" class="btn primary" (click)="add()" [disabled]="unitControl.invalid">{{'COMMON.ADD' | translate}}</button>
+      <button type="button" class="btn primary" (click)="add()" [disabled]="!unitControl?.value?.trim() || unitControl.invalid">{{'COMMON.ADD' | translate}}</button>
     </div>
   </div>
 </div>

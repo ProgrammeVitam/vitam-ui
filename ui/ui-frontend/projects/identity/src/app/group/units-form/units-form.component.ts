@@ -38,7 +38,7 @@
 /* tslint:disable: no-use-before-declare */
 
 import { Component, forwardRef, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { GroupValidators } from '../group.validators';
 
 export const UNITS_FORM_VALUE_ACCESSOR: any = {
@@ -86,7 +86,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
   }
 
   ngOnInit(): void {
-    this.unitControl = new FormControl(null, [Validators.required, this.unitAlreadyAdd.bind(this)],
+    this.unitControl = new FormControl('', [this.unitAlreadyAdd.bind(this)],
                                         this.groupValidators.unitExists(this.customer, this.removedUnits));
   }
 

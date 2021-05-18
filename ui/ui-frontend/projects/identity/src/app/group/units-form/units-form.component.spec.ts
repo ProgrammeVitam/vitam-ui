@@ -80,10 +80,6 @@ describe('UnitsFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form invalid when empty', () => {
-    expect(component.unitControl.valid).toBeFalsy();
-  });
-
   it('form valid when not empty', () => {
     component.unitControl.setValue('toto');
     const result = component.unitControl.valid;

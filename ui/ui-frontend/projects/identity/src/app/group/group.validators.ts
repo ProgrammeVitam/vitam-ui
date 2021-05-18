@@ -61,7 +61,12 @@ export class GroupValidators {
     unitExists = (customerId: string, unitToIgnore: string[] = []): AsyncValidatorFn => {
       return (control: AbstractControl) => {
         return timer(this.debounceTime).pipe(
-          switchMap(() => !unitToIgnore.includes(control.value) ? this.groupService.unitExists(customerId, control.value.trim()) : of(false)),
+          switchMap(() => { 
+            if (!control.value.trim()) {
+              return of(false);
+            }
+            return !unitToIgnore.includes(control.value) ? this.groupService.unitExists(customerId, control.value.trim()) : of(false) }
+          ),
           take(1),
           map((exists: boolean) => exists ? { unitExists: true } : null)
         );
