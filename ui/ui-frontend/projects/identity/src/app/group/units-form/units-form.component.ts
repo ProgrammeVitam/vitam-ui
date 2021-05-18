@@ -60,6 +60,8 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
 
   units: string[] = [];
 
+  removedUnits: string[] = [];
+
   unitControl: FormControl;
 
   @Input() customer: string;
@@ -84,7 +86,8 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
   }
 
   ngOnInit(): void {
-    this.unitControl = new FormControl(null, [Validators.required, this.unitAlreadyAdd.bind(this)], this.groupValidators.unitExists(this.customer));
+    this.unitControl = new FormControl(null, [Validators.required, this.unitAlreadyAdd.bind(this)],
+                                        this.groupValidators.unitExists(this.customer, this.removedUnits));
   }
 
   /**
@@ -94,6 +97,10 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
     let val = this.unitControl.value;
     this.unitControl.reset();
     val = val.trim();
+    const elementToRemoveIndex = this.removedUnits.indexOf(val);
+    if (elementToRemoveIndex > -1) {
+      this.removedUnits.splice(elementToRemoveIndex, 1);
+    }
     this.units.push(val);
     this.sortUnits();
     this.onChange(this.units);
@@ -103,6 +110,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
    * Remove unit
    */
   remove(unitToRemove: string) {
+    this.removedUnits.push(unitToRemove);
     this.units = this.units.filter((unit) => unit !== unitToRemove);
     this.onChange(this.units);
   }
