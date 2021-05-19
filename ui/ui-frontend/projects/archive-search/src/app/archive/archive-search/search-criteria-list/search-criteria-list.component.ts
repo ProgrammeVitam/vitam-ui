@@ -56,9 +56,6 @@ export class SearchCriteriaListComponent implements OnInit {
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
-  @Output()
-  clearFilters = new EventEmitter<boolean>();
-
   searchCriteriaHistory: SearchCriteriaHistory[];
   private readonly orderChange = new Subject<string>();
   direction: Direction = Direction.ASCENDANT;
@@ -116,7 +113,6 @@ export class SearchCriteriaListComponent implements OnInit {
           data: {type: 'searchCriteriaHistoryDeleted', name: searchCriteriaHistory.name},
           duration: 10000
         });
-        this.clearFilters.emit(true);
       });
     });
   }

@@ -149,6 +149,7 @@
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 10px;
+    padding-left: 30px;
 }
 
 .launch-search-btn{
@@ -233,11 +234,9 @@ top: 0px;
 background: var(--vitamui-secondary);
 border-radius: 50px;
 
-
 flex: none;
 order: 0;
 flex-grow: 0;
-margin: 0px 20px;
 border: none;
 }
 
@@ -286,4 +285,8 @@ border: none;
 
 .btn-new-save {
     font-size: 16px;
+}
+.button-space {
+    margin-left: -20px;
+    padding-left: 30px;
 }
