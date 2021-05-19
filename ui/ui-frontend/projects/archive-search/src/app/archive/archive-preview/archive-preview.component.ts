@@ -35,11 +35,11 @@ export class ArchivePreviewComponent  implements OnInit {
     }
 
 
-  onDownloadObjectFromUnit(archiveUnit : Unit){
+  onDownloadObjectFromUnit(archiveUnit: Unit) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', this.accessContract);
 
-   return  this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], archiveUnit.Title, headers);
+    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], archiveUnit?.Title , archiveUnit?.Title_, headers);
   }
 
   emitClose() {

@@ -50,6 +50,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -90,10 +91,11 @@ public class ArchivesSearchExternalController {
 
     @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version) {
         LOGGER.info("Download the Archive Unit Object with id {} ", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        return archivesSearchExternalService.downloadObjectFromUnit(id);
+        return archivesSearchExternalService.downloadObjectFromUnit(id, usage, version);
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
@@ -102,6 +104,14 @@ public class ArchivesSearchExternalController {
         LOGGER.info("the UA by id {} ", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return archivesSearchExternalService.findUnitById(id);
+    }
+
+    @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id) {
+        LOGGER.info("Find a ObjectGroup by id {} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return archivesSearchExternalService.findObjectById(id);
     }
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
