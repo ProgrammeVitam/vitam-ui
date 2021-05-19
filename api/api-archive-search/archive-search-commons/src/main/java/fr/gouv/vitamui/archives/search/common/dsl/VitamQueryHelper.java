@@ -67,7 +67,7 @@ public class VitamQueryHelper {
     }
 
 
-    private static final int DEFAULT_DEPTH = 1;
+    private static final int DEFAULT_DEPTH = 10;
     private static final int FACET_SIZE_MILTIPLIER = 100;
 
     /* Query fields */
