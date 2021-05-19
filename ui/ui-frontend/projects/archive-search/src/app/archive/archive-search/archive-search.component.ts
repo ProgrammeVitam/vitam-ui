@@ -430,10 +430,8 @@ emptyForm = {
 
   buildNodesListForQUery(): string[] {
     let nodesIdList: string[] = [];
-    let hasNodeSelected = false;
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if(criteria.key === 'NODE') {
-        hasNodeSelected = true;
         criteria.values.forEach((elt) => {
           nodesIdList.push(elt.value);
         });
