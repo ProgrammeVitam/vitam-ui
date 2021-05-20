@@ -280,7 +280,7 @@
       "PHONE_FIELD_FORMAT": "Format international (+336XXXXXXXX) obligatoire",
       "PHONE": {
         "MOBILE": "Numéro de mobile",
-        "FIX": "Numéro de fix"
+        "FIX": "Numéro de fixe"
       },
       "CENTER_CODE":"Code du centre",
       "SITE_CODE": "Code du site",

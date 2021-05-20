@@ -46,7 +46,7 @@
     "OTP_AUTH": "Authentification OTP",
     "PHONE": {
       "MOBILE": "Numéro de mobile",
-      "FIX": "Numéro de fix"
+      "FIX": "Numéro de fixe"
     },
     "DELIVERY_ADRESS": "Adresse de livraison",
     "LEVEL": "Niveau",
