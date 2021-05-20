@@ -52,3 +52,38 @@ You also need to update the `vitamui-icons.css` file. Open the `style.css` from 
 > Attention: Do not override the first part of the file (from line `1` to line `25`)
 
 Please add each new icon to the icon category in the starter-kit project.
+
+## Format front end code
+
+# Recommended Extensions for Visual studio code :
+
+- "ms-vscode.vscode-typescript-tslint-plugin" : for more information: // TsLinst, https://marketplace.visualstudio.com/items?itemName=ms-vscode.
+- "esbenp.prettier-vscode" : for more information: // Code formater Prettier, https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+- "sibiraj-s.vscode-scss-formatter" : for more information: // SCSS Formatter, https://marketplace.visualstudio.com/items?itemName=sibiraj-s.vscode-scss-formatter
+- "msjsdiag.debugger-for-chrome": for more information: // Debbuger for Chrome, https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+- "firefox-devtools.vscode-firefox-debug" : for more information: // Debbuger for Firefox, https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+
+# Visual studio code setting :
+
+Bellow and example to manage code format for Visual studio code using settings.json file :
+
+{
+"editor.formatOnSave": true,
+"[typescript]": {
+"editor.codeActionsOnSave": {
+"source.fixAll.tslint": true,
+"source.organizeImports": true
+},
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+},
+"[html]": {
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+},
+"[scss]": {
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+},
+"search.exclude": {
+"**/node_modules": true,
+"**/dist": true,
+},
+}
