@@ -1,0 +1,18 @@
+# Ignore artifacts:
+.vscode
+node_modules
+target
+
+# Ignore everything (to avoid formatting angular conf files...):
+/*
+
+# Except files in projects:
+!/projects
+
+# Ignore all given extensions files:
+*.css
+*.js
+*.json
+
+# Except json files in any assets folder
+!**/assets/**/*.json
