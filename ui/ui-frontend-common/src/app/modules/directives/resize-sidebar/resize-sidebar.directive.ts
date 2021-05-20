@@ -34,31 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Directive, ElementRef, HostListener, Inject, Input, OnInit, Renderer2} from '@angular/core';
-import {DOCUMENT} from "@angular/common";
+import { DOCUMENT } from "@angular/common";
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  OnInit,
+  Renderer2,
+} from "@angular/core";
 
 @Directive({
-  selector: '[vitamuiCommonResizeSidebar]'
+  selector: "[vitamuiCommonResizeSidebar]",
 })
 export class ResizeSidebarDirective implements OnInit {
   /**
    * Orientation du block à redimensionner, permet de positionner à droite ou à gauche la barre permettant de
    * redimensionner
-   * valeur possible: left (par défaut) ou right
+   * valeur possible: left ou right (par défaut)
    */
-  @Input('vitamuiCommonResizeSidebar') orientation: 'right'|'left' = 'left';
+  @Input("vitamuiCommonResizeSidebar") orientation: "right" | "left" = "right";
 
   /**
    * largeur de la barre permettant de redimensionner
    * valeur par défaut : 4px
    */
-  @Input() barSize: string = '4px';
+  @Input() barSize: string = "4px";
 
   /**
    * Couleur de la barre permettant de redimensionner
    * valeur par défaut #702382
    */
-  @Input() barColor: string = 'rgb(112, 35, 130)';
+  @Input() barColor: string = "rgb(112, 35, 130)";
 
   /**
    * Largeur du block à redimensionner
@@ -68,45 +76,49 @@ export class ResizeSidebarDirective implements OnInit {
 
   private status = 0;
 
-  @HostListener('window:mousemove', ['$event'])
+  @HostListener("window:mousemove", ["$event"])
   onMouseMove(event: MouseEvent) {
     let mouse = { x: event.clientX, y: event.clientY };
-    if(this.status === 1) {
+    if (this.status === 1) {
       const space = Number(mouse.x) ? mouse.x : 0;
-      if(this.orientation === 'left') {
+      if (this.orientation === "left") {
         this.width = space;
-        this.elementRef.nativeElement.style.width = this.width + 'px';
+        this.elementRef.nativeElement.style.width = this.width + "px";
       } else {
-        const {left} = this.elementRef.nativeElement.getBoundingClientRect();
+        const { left } = this.elementRef.nativeElement.getBoundingClientRect();
         this.width = left - space + this.width;
-        this.elementRef.nativeElement.style.width = this.width + 'px';
+        this.elementRef.nativeElement.style.width = this.width + "px";
       }
     }
   }
 
-  @HostListener('window:mouseup')
+  @HostListener("window:mouseup")
   onMouseUp() {
     this.status = 0;
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Inject(DOCUMENT) private document) { }
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document
+  ) {}
 
   ngOnInit(): void {
     const nativeElt = this.elementRef.nativeElement;
-    nativeElt.style.width = this.width + 'px';
+    nativeElt.style.width = this.width + "px";
     const child = this.createResizeBar();
     this.renderer.appendChild(nativeElt, child);
   }
 
   private createResizeBar() {
-    const div = this.document.createElement('div');
-    div.style.display = 'block';
-    div.style.height = '100%';
-    div.style.position = 'absolute';
-    div.className = 'vitamuiResizeSidebar';
-    div.style.zIndex = '99';
-    div.style.top = '0';
-    if(this.orientation === 'left') {
+    const div = this.document.createElement("div");
+    div.style.display = "block";
+    div.style.height = "100%";
+    div.style.position = "absolute";
+    div.className = "vitamuiResizeSidebar";
+    div.style.zIndex = "99";
+    div.style.top = "0";
+    if (this.orientation === "left") {
       div.style.left = `calc(100% - ${this.barSize})`;
       div.style.borderRight = `${this.barSize} solid ${this.barColor}`;
     } else {
@@ -114,15 +126,15 @@ export class ResizeSidebarDirective implements OnInit {
       div.style.borderLeft = `${this.barSize} solid ${this.barColor}`;
     }
 
-    div.style.cursor = 'ew-resize';
+    div.style.cursor = "ew-resize";
 
-    div.addEventListener('mousedown', event => this.setStatus(event, 1));
+    div.addEventListener("mousedown", (event) => this.setStatus(event, 1));
 
     return div;
   }
 
   private setStatus(event: MouseEvent, status: number) {
-    if(status === 1) {
+    if (status === 1) {
       event.stopPropagation();
     }
     this.status = status;
