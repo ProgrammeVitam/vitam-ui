@@ -1191,22 +1191,6 @@
     </dependencyManagement>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>*.cer</exclude>
-                    <exclude>*.jks</exclude>
-                </excludes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <!-- Security check for dependencies -->
@@ -1633,6 +1617,10 @@
                 <resources>
                     <resource>
                         <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>/dev/</exclude>
+                            <exclude>application-*.yml</exclude>
+                        </excludes>
                     </resource>
                     <resource>
                         <directory>target/www/</directory>

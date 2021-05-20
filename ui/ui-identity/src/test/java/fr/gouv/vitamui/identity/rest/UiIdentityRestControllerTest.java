@@ -16,7 +16,6 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
 @Import(value = { IdentityApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class,
         RestExceptionHandler.class })
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public abstract class UiIdentityRestControllerTest<T extends IdDto> extends UIControllerTest<T> {
 
 }

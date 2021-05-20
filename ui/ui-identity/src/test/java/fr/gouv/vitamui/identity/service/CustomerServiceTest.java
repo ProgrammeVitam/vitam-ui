@@ -33,7 +33,6 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class CustomerServiceTest extends UIIdentityServiceTest<CustomerDto> {
 
     private CustomerService service;

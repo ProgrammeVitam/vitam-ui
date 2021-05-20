@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev,swagger
+    active: swagger
 
   cloud:
     consul: #disable for dev
@@ -29,63 +29,54 @@ ui-identity:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-identity.jks
+        key-path: src/main/resources/dev/keystore_ui-identity-admin.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-path: src/main/resources/dev/truststore_server.jks
         key-password: changeme
       hostname-verification: false
   base-url:
-    portal: "https://dev.vitamui.com:9000"
-    admin-identity: "https://dev.vitamui.com:9001/identity"
-    identity: "https://dev.vitamui.com:9001/identity"
+    portal: "https://dev.vitamui.com:4200"
+    admin-identity: "https://dev.vitamui.com:4201/"
+    identity: "https://dev.vitamui.com:4201/"
   customer:
     technical-referent-email: contact@programmevitam.fr
     website-url: http://www.programmevitam.fr
   portal-categories:
-    users:
-      title: "Utilisateur"
-      displayTitle: false
+    ingest_and_consultation:
+      title: "Versement & consultation"
+      displayTitle: true
       order: 1
-    administrators:
-      title: "Management"
-      displayTitle: true
-      order: 2
-    settings:
-      title: "Paramétrage"
-      displayTitle: true
-      order: 3
     referential:
       title: "Référentiels"
       displayTitle: true
+      order: 2
+    supervision_and_audits:
+      title: "Supervision & Audits"
+      displayTitle: true
+      order: 3
+    security_and_application_rights:
+      title: "Sécurité & droits applicatifs"
+      displayTitle: true
       order: 4
-    opaudit:
-      title: "Audits et opérations"
+    organization_and_user_rights:
+      title: "Organisation & droits utilisateurs"
       displayTitle: true
       order: 5
-    techadmin:
-      title: "Administration technique"
-      displayTitle: true
-      order: 6
-    ingests:
-      title: "Suivi des Versements"
-      displayTitle: true
-      order: 7
 
 server:
   host: dev.vitamui.com
   port: 9001
-  servlet.context-path: /identity
   scheme: https
   ssl:
-    key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-identity.jks
+    key-store: src/main/resources/dev/keystore_ui-identity-admin.jks
     key-store-password: changeme
     key-password: changeme
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
-  servlet.session.cookie.path: /identity
+  servlet.session.cookie.path: /identity-api
   compression:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
@@ -99,24 +90,35 @@ management:
       enabled: false
 
 ui:
-  url: "https://dev.vitamui.com:9001/identity"
-  redirect-url: ${ui.url}/${ui-prefix}
+  url: "https://dev.vitamui.com:4201"
+  redirect-url: https://dev.vitamui.com:9001/${ui-prefix}
 
 cas:
   internal-url: https://dev.vitamui.com:8080/cas
   external-url: https://dev.vitamui.com:8080/cas
   callback-url: ${ui.url}/identity-api/callback
   ssl:
-    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
 
-management.endpoints.web.exposure.include: "*"
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+# Uncomment if you want to use you specific logback config.
+#logging:
+# config: src/main/resources/dev/logback.xml
+
 debug: false
 logging:
   level:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.commons.rest.AbstractRestController: INFO
 
-# Uncomment if you want to use you specific logback config.
-#logging:
-#  config: src/main/config/logback.xml
+management.endpoints.web.exposure.include: "*"

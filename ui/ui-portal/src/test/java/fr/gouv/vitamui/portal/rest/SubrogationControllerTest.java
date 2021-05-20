@@ -29,7 +29,6 @@ import static org.mockito.ArgumentMatchers.any;
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
 @WebMvcTest(controllers = { SubrogationController.class })
 @Import(value = { PortalApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=ui-portal-application" })
 public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> {
 
     @Value("${ui-portal.prefix}")

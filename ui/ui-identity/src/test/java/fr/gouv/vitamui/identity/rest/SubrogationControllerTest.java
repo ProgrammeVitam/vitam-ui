@@ -30,7 +30,6 @@ import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
 @WebMvcTest(controllers = { SubrogationController.class })
 @Import(value = { IdentityApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> {
 
     @Value("${ui-identity.prefix}")

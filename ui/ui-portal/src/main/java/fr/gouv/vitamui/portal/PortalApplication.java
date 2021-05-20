@@ -57,14 +57,13 @@ public class PortalApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PortalApplication.class);
 
     public static void main(final String[] args) {
-        SpringApplication app = new SpringApplicationBuilder(PortalApplication.class).properties("spring.config.name:ui-portal-application").build();
+        SpringApplication app = new SpringApplicationBuilder(PortalApplication.class).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
         LOGGER.debug("VITAMUI SpringBoot Application started:");
-        LOGGER.debug("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 

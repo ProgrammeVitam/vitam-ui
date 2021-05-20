@@ -25,11 +25,11 @@ ui-portal:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-portal.jks
+        key-path: src/main/resources/dev/keystore_ui-portal.jks
         key-password: changeme
         type: JKS
       truststore:
-        key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+        key-path: src/main/resources/dev/truststore_server.jks
         key-password: changeme
       hostname-verification: false
 
@@ -61,7 +61,7 @@ cas:
   external-url: https://dev.vitamui.com:8080
   callback-url: ${ui.url}/callback
   ssl:
-    trust-store: ../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
 
 logging:

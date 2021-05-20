@@ -15,7 +15,6 @@ import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class ProfileServiceTest extends UIIdentityServiceTest<ProfileDto> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileServiceTest.class);
