@@ -10,6 +10,8 @@
 ### Base IAM
 
 ###### Collections
+
+    applications    
     customers
     events
     groups
@@ -23,28 +25,44 @@
     users
 
 
-   * _Collection Customer_
+  * _Collection applications_
 
+| Nom                           | Type            | Contrainte(s)                             | Remarque(s)                                                             |
+| :---------------------------  | :-------------  | :---------------------------------------- | :---------------------------------------------------------------------  |
+| _id                           |   String        | Clé Primaire                              |                                                                         |
+| identifier                    |   String        | minimum = 1, maximum = 100                | L'identifiant (unique) de l'application                                 |
+| url                           |   String        | minimum = 1, maximum = 100                |                                                                         |
+| serviceId                     |   String        | minimum = 1, maximum = 100                | Le meme serviceId que nous avons  au niveau de la collection services   |
+| icon                          |   String        | minimum = 1, maximum = 50                 | Logo de l'application                                                   |
+| name                          |   String        | minimum = 1, maximum = 50                 | Nom  de l'application                                                   |
+| category                      |   String        | minimum = 1, maximum = 12                 | La catégorie de l'application                                           |
+| position                      |   int           | Non null                                  | L'ordre d'affichage dans la liste des applications                      |
+| hasCustomerList               |   boolean       | default=false                             |                                                                         |
+| hasTenantList                 |   boolean       | default=false                             | Pour pouvoir changer le tenant au niveau de l'application               |
+| hasHighlight                  |   boolean       | default=false                             |                                                                         |
+| tooltip                       |   String        | minimum = 1, maximum = 100                | Un texte pour décrire l'application                                     |
+| target                        |   String        |  maximum = 25                             |                                                                         |
 
-| Nom    | Type | Contrainte(s) | Remarque(s) |
-| -------- | -------- | ------ | ------  |
-| _id  | String     | Clé Primaire  |   |
-| identifier    |   String  | minimum = 1, maximum = 12   |   |
-| code | String    | minimum = 6, maximum = 20  |   |
-| companyName    |   String  | maximum = 250  |   |
-| language    |   String  | Non null, valeurs = [FRENCH,ENGLISH]|   |
-| passwordRevocationDelay    |   Integer  |  Non null |  exprimé en jour |
-| otp    |   Enum  |  Non null, valeurs = [OPTIONAL,DISABLED,MANDATORY] |   |
-| emailDomains    | List<_String_>    |  Non null, Non vide |   |
-| defaultEmailDomain    |   String  | Non null  |   |
-| address    |   Address  |  Non null |   |
-| name    |   String  | maximum = 100  |   |
-| subrogeable    |  boolean   |  default=false |   |
-| readonly    |  boolean   | default=false  |   |
-| graphicIdentity    |  GraphicIdentity   |  |   |
-|gdprAlert| true,
-| gdprAlert    |  boolean   | default=false  |   |
-| gdprAlertDelay    |  int   | minimum=1  |   |
+  * _Collection customers_
+
+| Nom                           | Type             | Contrainte(s)                                         | Remarque(s)           |
+| :---------------------------  | :--------------  | :---------------------------------------------------- | :-------------------  |
+| _id                           |   String         | Clé Primaire                                          |                       |
+| identifier                    |   String         | minimum = 1, maximum = 12                             |                       |
+| code                          |   String         | minimum = 6, maximum = 20                             |                       |
+| companyName                   |   String         | maximum = 250                                         |                       |
+| language                      |   String         | Non null, valeurs = [FRENCH,ENGLISH]                  |                       |
+| passwordRevocationDelay       |   Integer        | Non null                                              |  exprimé en jour      |
+| otp                           |   Enum           | Non null, valeurs = [OPTIONAL,DISABLED,MANDATORY]     |                       |
+| emailDomains                  |   List<_String_> | Non null, Non vide                                    |                       |
+| defaultEmailDomain            |   String         | Non null                                              |                       |
+| address                       |   Address        | Non null                                              |                       |
+| name                          |   String         | maximum = 100                                         |                       |
+| subrogeable                   |   boolean        | default=false                                         |                       |
+| readonly                      |   boolean        | default=false                                         |                       |
+| graphicIdentity               |   GraphicIdentity|                                                       |                       |
+| gdprAlert                     |   boolean        | default=false                                         |                       |
+| gdprAlertDelay                |   int            | minimum=1                                             |                       |
 
    * GraphicIdentity (Embarqué)
 
@@ -67,7 +85,7 @@
 | vitamui-header-footer | String     | hexadeciaml color like  |   |
 | vitamui-background | String     | hexadeciaml color like  |   |
         
-   * _Collection Tenants_
+   * _Collection tenants_
 
 Le tenant correspond à un container (ie. espace de travail) logique.
 Chaque tenant est unique dans le système et appartient à un seul et unique client.
@@ -92,7 +110,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | accessContractLogbookIdentifier    |   String  |  Non null |  contrat d’accès pour le logbook |
 | enabled    |   Boolean  | Non null  |   |
 
-   * _Collection Owner_
+   * _Collection owners_
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -141,7 +159,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | readonly    |   Boolean  | |   |
 
 
-* _Collection User_
+* _Collection users_
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |
@@ -187,7 +205,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 | lastAccess | OffsetDateTime    |  |  ex: YYYY-MM-ddTHH:mm:ss.ssssssZ |
 
 
-* _Collection externalParameters
+* _Collection externalParameters_
 
 La collection qui définit un contrat d'accès par défaut
 
@@ -205,7 +223,7 @@ La collection qui définit un contrat d'accès par défaut
 | key | String     |  |  exemple: PARAM_ACCESS_CONTRACT |
 | value | String    |  | exemple: AC-000001  |
 
-* _Collection Groups_
+* _Collection groups_
 
 Le groupe de profil définit un ensemble de profils.
 Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. Par exemple : “profil(app1:tenant1), profil(app1:tenant2), profil(app2:tenant1)” est autorisé.
@@ -222,7 +240,7 @@ Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. P
 | readonly    |   Boolean  |  |   |
 | enabled    |   Boolean  | |   |
 
-* _Collection Profils_
+* _Collection profiles_
 
 Le profil définit les permissions (rôles) données à un utilisateur et l’accès à une application (applicationName), généralement une IHM qui regroupe un ensemble de fonctionnalités selon une logique métier et appelant des API backoffice.
 Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seule et unique profile par tenant, applicationName dans un groupe.
@@ -262,7 +280,7 @@ Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seul
 | refId    |  String   | not null |  |
 | surrogation    |  Boolean   |  |   |
 
-* _Collection Events_
+* _Collection events_
 
 | Nom    | Type | Contrainte(s) | Remarque(s) |
 | -------- | -------- | ------ | ------  |

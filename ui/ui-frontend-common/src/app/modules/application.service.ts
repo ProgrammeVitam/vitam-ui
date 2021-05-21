@@ -37,36 +37,39 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
 import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
-import { ApplicationInfo } from './models/application/application.interface';
-import { Application } from './models/application/application.interface';
+import { Application, ApplicationInfo } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
 import { Tenant } from './models/customer/tenant.interface';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 import { TenantSelectionService } from './tenant-selection.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApplicationService {
-
   /**
    * Applications list of the authenticated user.
    */
-  set applications(apps: Application[]) { this._applications = apps; }
+  set applications(apps: Application[]) {
+    this._applications = apps;
+  }
 
-  get applications(): Application[] { return this._applications; }
+  get applications(): Application[] {
+    return this._applications;
+  }
 
   // tslint:disable-next-line:variable-name
   _applications: Application[];
 
-  get applicationsAnalytics(): ApplicationAnalytics[] { return this._applicationsAnalytics; }
+  get applicationsAnalytics(): ApplicationAnalytics[] {
+    return this._applicationsAnalytics;
+  }
 
   set applicationsAnalytics(apps: ApplicationAnalytics[]) {
     this._applicationsAnalytics = apps;
@@ -86,16 +89,24 @@ export class ApplicationService {
   /*
    * Categories of the application.
    */
-  set categories(categories: { [categoryId: string]: Category }) { this._categories = categories; }
-  get categories(): { [categoryId: string]: Category } { return this._categories; }
+  set categories(categories: { [categoryId: string]: Category }) {
+    this._categories = categories;
+  }
+  get categories(): { [categoryId: string]: Category } {
+    return this._categories;
+  }
 
   // tslint:disable-next-line:variable-name
   _categories: { [categoryId: string]: Category };
 
   private appMap$ = new BehaviorSubject(undefined);
 
-  constructor(private applicationApi: ApplicationApiService, private authService: AuthService,
-              private tenantService: TenantSelectionService, private globalEventService: GlobalEventService) { }
+  constructor(
+    private applicationApi: ApplicationApiService,
+    private authService: AuthService,
+    private tenantService: TenantSelectionService,
+    private globalEventService: GlobalEventService
+  ) {}
 
   /**
    * Get Applications list for an user and save it in a property.
@@ -104,7 +115,7 @@ export class ApplicationService {
     const params = new HttpParams().set('filterApp', 'true');
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.applicationApi.getAllByParams(params, headers).pipe(
-      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {}})),
+      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
         this._categories = applicationInfo.CATEGORY_CONFIGURATION;
@@ -149,9 +160,9 @@ export class ApplicationService {
     const apps: Application[] = [];
     const tenantsByApp = this.authService.user.tenantsByApp;
     if (tenantsByApp && tenant) {
-      tenantsByApp.forEach((element: { name: string, tenants: Tenant[] }) => {
-        const index = element.tenants.findIndex(value => value.identifier === tenant.identifier);
-        const items = this.applications.find(value => value.identifier === element.name);
+      tenantsByApp.forEach((element: { name: string; tenants: Tenant[] }) => {
+        const index = element.tenants.findIndex((value) => value.identifier === tenant.identifier);
+        const items = this.applications.find((value) => value.identifier === element.name);
 
         if (items) {
           if (index !== -1) {
@@ -173,33 +184,29 @@ export class ApplicationService {
 
   public openApplication(app: Application, router: Router, uiUrl: string, tenantIdentifier?: number): void {
     this.tenantService.saveTenantIdentifier(tenantIdentifier).subscribe((identifier: number) => {
-      console.log('uiUrl was ignored as a quick fix: ', uiUrl);
-      // FIXME: Find a better solution to handle redirections when some domain are prefix of other domain
-      // If called app is in the same server...
-      /* if (app.url.includes(uiUrl)) {
-        // If application requires a tenant identifier, then provide the current active tenant
+      if (app.serviceId.includes(uiUrl)) {
         if (app.hasTenantList) {
           router.navigate([app.url.replace(uiUrl, ''), 'tenant', identifier]);
         } else {
           router.navigate([app.url.replace(uiUrl, '')]);
         }
-      } else { */
-        // If application on other domain requires a tenant identifier, then provide the current active tenant
-      if (app.hasTenantList) {
-        window.location.href = app.url + '/tenant/' + identifier;
-      } else {
-        window.location.href = app.url;
       }
-      // }
+      if (!app.serviceId.includes(uiUrl) || router.url === '/') {
+        if (app.hasTenantList) {
+          window.location.href = app.url + '/tenant/' + identifier;
+        } else {
+          window.location.href = app.url;
+        }
+      }
     });
   }
 
   private sortMapByCategory(appMap: Map<Category, Application[]>): Map<Category, Application[]> {
-    return new Map([...appMap.entries()].sort((a, b) => a[0].order < b[0].order ? -1 : 1));
+    return new Map([...appMap.entries()].sort((a, b) => (a[0].order < b[0].order ? -1 : 1)));
   }
 
   public getAppById(identifier: string): Application {
-    return this.applications.find(value => value.identifier === identifier);
+    return this.applications.find((value) => value.identifier === identifier);
   }
 
   /**
@@ -211,7 +218,7 @@ export class ApplicationService {
         if (appId === ApplicationId.PORTAL_APP) {
           observer.next(true);
         } else {
-          const app = this.applications.find(value => value.identifier === appId);
+          const app = this.applications.find((value) => value.identifier === appId);
           app ? observer.next(app.hasTenantList) : observer.next(false);
         }
       });
@@ -235,7 +242,11 @@ export class ApplicationService {
   }
 
   /* tslint:disable:max-line-length */
-  private getLastUsedApps(categoriesByIds: { [categoryId: string]: Category }, applications: Application[], max = 8): { category: Category, apps: Application[] } {
+  private getLastUsedApps(
+    categoriesByIds: { [categoryId: string]: Category },
+    applications: Application[],
+    max = 8
+  ): { category: Category; apps: Application[] } {
     let dataSource: ApplicationAnalytics[];
     if (this.applicationsAnalytics) {
       dataSource = this.applicationsAnalytics;
@@ -288,13 +299,11 @@ export class ApplicationService {
   }
 
   isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
-
     return this.applicationApi.isApplicationExternalIdentifierEnabled(id).pipe(
       catchError(() => of([])),
       map((result: boolean) => {
         return result;
       })
     );
-
   }
 }
