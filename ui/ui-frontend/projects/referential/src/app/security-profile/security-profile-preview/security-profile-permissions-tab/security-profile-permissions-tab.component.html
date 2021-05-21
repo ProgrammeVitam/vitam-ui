@@ -1,8 +1,5 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
-  <div *ngIf="form.value.fullAccess">
-    Tous les accès sont autorisés.
-  </div>
+  <div *ngIf="form.value.fullAccess">Tous les accès sont autorisés.</div>
 
   <div *ngIf="!form.value.fullAccess">
     <app-security-profile-edit-permission formControlName="permissions" [small]="true"></app-security-profile-edit-permission>

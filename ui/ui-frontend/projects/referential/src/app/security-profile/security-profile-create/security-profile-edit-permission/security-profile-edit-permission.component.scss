@@ -1,7 +1,5 @@
 .permissionTable {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 24vw;
+  overflow: hidden;
   display: block;
 }
 
@@ -10,15 +8,19 @@
 }
 
 .smallServiceCol {
-  min-width: 200px;  max-width: 200px;
+  min-width: 200px;
+  max-width: 200px;
 }
 .smallToggleCol {
-  min-width: 75px;  max-width: 75px;
+  min-width: 75px;
+  max-width: 75px;
 }
 
 .serviceCol {
-  min-width: 400px;  max-width: 400px;
+  min-width: 400px;
+  max-width: 400px;
 }
 .toggleCol {
-  min-width: 100px;  max-width: 100px;
+  min-width: 100px;
+  max-width: 100px;
 }
