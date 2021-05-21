@@ -1,0 +1,234 @@
+<div>
+  <div class="row row-data">
+    <div class="col-5 title-text">
+      <span>{{ 'LOGBOOK_OPERATION_LIST.STATE' | translate }}</span>
+      <div class="row row-data">
+        <div class="col-4 title-text" (click)="getOperationsByGlobalState(operationsList, 'RUNNING')">
+          <div class="layout-data clickable">
+            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.IN_PROGRESS' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByState(operationsList, 'RUNNING') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-4 title-text" (click)="getOperationsByGlobalState(operationsList, 'PAUSE')">
+          <div class="layout-data clickable">
+            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.BREAK' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByState(operationsList, 'PAUSE') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-4 title-text clickable" (click)="getOperationsByGlobalState(operationsList, 'COMPLETED')">
+          <div class="layout-data">
+            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.FINISHED' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByState(operationsList, 'COMPLETED') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-7 title-text">
+      <span>{{ 'LOGBOOK_OPERATION_LIST.STATUS' | translate }}</span>
+      <div class="row row-data">
+        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'OK')">
+          <div class="layout-data clickable">
+            <span class="status-text text-green">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.SUCCESS' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByStatus(operationsList, 'OK') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'WARNING')">
+          <div class="layout-data clickable">
+            <span class="status-text text-orange">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.WARNING' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByStatus(operationsList, 'WARNING') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'KO')">
+          <div class="layout-data clickable">
+            <span class="status-text text-red">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.ERROR' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByStatus(operationsList, 'KO') }}
+            </div>
+          </div>
+        </div>
+        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'FATAL')">
+          <div class="layout-data clickable">
+            <span class="status-text text-red-fatal">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.FATAL' | translate }}</span>
+            <div class="result-text">
+              {{ getTotalResultsByStatus(operationsList, 'FATAL') }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row row-data">
+    <div class="col-12 title-text">
+      <div class="result-layout">
+        <span class="result-number">{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.RESULTS' | translate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vitamui-table" [ngStyle]="{ 'margin-top': '10px' }">
+    <div class="vitamui-table-head">
+      <div class="col-3">
+        <span>{{ 'LOGBOOK_OPERATION_LIST.OPERATION_ID' | translate }}</span>
+        <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('operationId', 'Identifier')">{{
+          filtredByIdentifier ? 'expand_less' : 'expand_more'
+        }}</i>
+      </div>
+      <div class="col-2">
+        <span>{{ 'LOGBOOK_OPERATION_LIST.OPERATION_CATEGORY' | translate }}</span>
+        <button
+          class="vitamui-filter-button"
+          [vitamuiCommonTableFilter]="categoriesFilterTemplate"
+          [class.active]="filterMap['categories'] && filterMap['categories'].length > 0"
+        >
+          <i class="material-icons vitamui-row-icon">filter_list</i>
+        </button>
+        <ng-template #categoriesFilterTemplate>
+          <vitamui-common-table-filter [(filter)]="filterMap['categories']">
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Entrée') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Entrée</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Sécurisation') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Sécurisation</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Sauvegarde des journaux des écritures') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Sauvegarde des journaux des écritures</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Audit') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Audit</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Données de base') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Données de base</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Élimination des unités archivistiques') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Élimination des unités archivistiques</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Vérification des journaux sécurisés') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Vérification des journaux sécurisés</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Mise à jour') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Mise à jour</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Export du DIP') }}" (click)="filterByOerationCategory()">
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Export du DIP</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Modification d&#8217;arborescence des unités archivistiques') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Modification d'arborescence des unités archivistiques</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Processus global de préservation') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Processus global de préservation</div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option
+              value="{{ getProcessTypeByValue('Journalisation d&#8217;événements externes') }}"
+              (click)="filterByOerationCategory()"
+            >
+              <div class="table-filter-icon" i18n="@@userStatusEnabled">Journalisation d'événements externes</div>
+            </vitamui-common-table-filter-option>
+          </vitamui-common-table-filter>
+        </ng-template>
+      </div>
+      <div class="col-2">
+        <div>
+          <span>{{ 'LOGBOOK_OPERATION_LIST.START_DATE' | translate }}</span>
+
+          <br />
+          <span class="date">{{ 'LOGBOOK_OPERATION_LIST.HOUR' | translate }}</span>
+        </div>
+
+        <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('processDate', 'Date')">{{
+          filtredByDate ? 'expand_less' : 'expand_more'
+        }}</i>
+      </div>
+      <div class="col-2">
+        <div>
+          <span>{{ 'LOGBOOK_OPERATION_LIST.STEP_STATUS' | translate }}</span>
+
+          <br />
+          <span class="date">{{ 'LOGBOOK_OPERATION_LIST.STATE' | translate }}</span>
+        </div>
+        <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('stepStatus', 'Status')">{{
+          filtredByStatus ? 'expand_less' : 'expand_more'
+        }}</i>
+      </div>
+      <div class="col-3">
+        <span>{{ 'LOGBOOK_OPERATION_LIST.LAST_STEP' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let operation of results">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-3">
+            <span matTooltip="{{ operation.operationId }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              {{ operation.operationId | truncate: 30 }}
+            </span>
+          </div>
+          <div class="col-2">
+            <div class="vitamui-cell-content" [ngClass]="operation">
+              <vitamui-common-event-type-label [key]="operation.processType"> </vitamui-common-event-type-label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div>{{ operation.processDate | date: 'dd/MM/yyyy' }}</div>
+            <span class="date">
+              {{ operation.processDate | date: 'hh:mm:ss' }}
+            </span>
+          </div>
+
+          <div class="col-2">
+            <span
+              [ngClass]="
+                operationStatus(operation) === 'OK'
+                  ? 'text-green'
+                  : operationStatus(operation) === 'KO'
+                  ? 'text-red'
+                  : operationStatus(operation) === 'WARNING'
+                  ? 'text-orange'
+                  : 'text-red-fatal'
+              "
+              >{{ 'STATUS_VALUE.' + operation.stepStatus | translate }}</span
+            >
+            <br />
+            <span>{{ 'STATE_VALUE.' + operation.globalState | translate }}</span>
+          </div>
+          <div class="col-3">
+            <div class="vitamui-cell-content" [ngClass]="operation">
+              <vitamui-common-event-type-label [key]="operation.previousStep"> </vitamui-common-event-type-label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w3-clear nextprev">
+  <button class="btn primary w3-left" (click)="previous()" [disabled]="!hasPrevious">
+    ❮ {{ 'LOGBOOK_OPERATION_LIST.PREVIOUS' | translate }}
+  </button>
+  <button class="btn primary w3-right" (click)="next()" [disabled]="!hasNext">{{ 'LOGBOOK_OPERATION_LIST.NEXT' | translate }} ❯</button>
+</div>

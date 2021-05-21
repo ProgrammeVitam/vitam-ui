@@ -61,6 +61,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
 public class ServicesData {
 
     //------------------------------------ USERS -------------------------------------------
+
     public static final String SERVICE_USERS = "USERS";
 
     public static final String ROLE_GET_USERS = GET_ROLE_PREFIX + SERVICE_USERS;
@@ -189,7 +190,6 @@ public class ServicesData {
 
     public static final String ROLE_CHECK_USERS = CHECK_ROLE_PREFIX + SERVICE_USERS;
 
-
     //------------------------------------ ACCOUNTS -------------------------------------------
 
     public static final String SERVICE_ACCOUNTS = "ACCOUNTS";
@@ -277,7 +277,6 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
-
     //-------------------------------- SECURITY PROFILE ---------------------------------------
 
     public static final String SERVICE_SECURITY_PROFILES = "SECURITY_PROFILES";
@@ -289,7 +288,6 @@ public class ServicesData {
     public static final String ROLE_UPDATE_SECURITY_PROFILES = UPDATE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
-
 
     //--------------------------------- REGLES DE GESTION -------------------------------------
 
@@ -335,7 +333,6 @@ public class ServicesData {
 
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
 
-
     /** Management Contracts and Profiles are used in IngestContract forms **/
     //----------------------------------- MANAGEMENT CONTRACTS --------------------------------------
 
@@ -353,15 +350,13 @@ public class ServicesData {
     public static final String ROLE_GET_INGEST = GET_ROLE_PREFIX + SERVICE_INGEST;
     public static final String ROLE_GET_ALL_INGEST = GET_ROLE_PREFIX + "ALL_" + SERVICE_INGEST;
 
-
-    //------------------------------------ ARCHIVES -----------------------------------------
+    //------------------------------------ ARCHIVE SEARCH -----------------------------------------
 
     public static final String SERVICE_ARCHIVE = "ARCHIVE_SEARCH";
 
     public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
-
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -371,19 +366,25 @@ public class ServicesData {
     public static final String ROLE_GET_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
     public static final String ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE = GET_ROLE_PREFIX + "ALL_" + SERVICE_HOLDING_FILLING_SCHEME_ROLE;
 
-
-    
     //------------------------------------ UNITS -----------------------------------------
 
     public static final String SERVICE_UNITS = "UNITS";
 
     public static final String ROLE_GET_UNITS = GET_ROLE_PREFIX + SERVICE_UNITS;
-    
+
     //------------------------------------ EXTERNAL PARAMETERS -------------------------------------------
     public static final String SERVICE_EXTERNAL_PARAMS = "EXTERNAL_PARAMS";
-    
+
     public static final String ROLE_GET_EXTERNAL_PARAMS = GET_ROLE_PREFIX + SERVICE_EXTERNAL_PARAMS;
-    
+
+    //------------------------------------ LOGBOOK MANAGEMENT OPERATION -----------------------------------------
+
+    public static final String SERVICE_LOGBOOK_OPERATION = "LOGBOOK_OPERATION";
+
+    public static final String ROLE_UPDATE_LOGBOOK_OPERATION = UPDATE_ROLE_PREFIX + SERVICE_LOGBOOK_OPERATION;
+    public static final String ROLE_GET_LOGBOOK_OPERATION = GET_ROLE_PREFIX + SERVICE_LOGBOOK_OPERATION;
+    public static final String ROLE_GET_ALL_LOGBOOK_OPERATION = GET_ROLE_PREFIX + "ALL_" + SERVICE_LOGBOOK_OPERATION;
+
     //@formatter:off
 
     /**
@@ -480,10 +481,15 @@ public class ServicesData {
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
-            
+
             ROLE_GET_UNITS,
-            
-            ROLE_GET_EXTERNAL_PARAMS
+
+            ROLE_GET_EXTERNAL_PARAMS,
+
+            ROLE_UPDATE_LOGBOOK_OPERATION,
+            ROLE_GET_LOGBOOK_OPERATION ,
+            ROLE_GET_ALL_LOGBOOK_OPERATION
+
             );
 
     /**
@@ -605,8 +611,12 @@ public class ServicesData {
             ROLE_GET_ALL_HOLDING_FILLING_SCHEME_ROLE,
 
             ROLE_GET_UNITS,
-            
-            ROLE_GET_EXTERNAL_PARAMS
+
+            ROLE_GET_EXTERNAL_PARAMS,
+
+            ROLE_UPDATE_LOGBOOK_OPERATION,
+            ROLE_GET_LOGBOOK_OPERATION ,
+            ROLE_GET_ALL_LOGBOOK_OPERATION
             );
     //@formatter:on
 

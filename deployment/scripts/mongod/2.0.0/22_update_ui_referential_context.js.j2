@@ -1,0 +1,17 @@
+db = db.getSiblingDB('security')
+
+//----------- Update the context UI--------------
+
+db.contexts.updateOne( {
+	"_id": "ui_referential_context"
+}, {
+    $addToSet: {
+        "roleNames":  {
+            $each: [
+				"ROLE_UPDATE_LOGBOOK_OPERATION",
+				"ROLE_GET_ALL_LOGBOOK_OPERATION",
+				"ROLE_GET_LOGBOOK_OPERATION"
+        	]
+        }
+    }
+});

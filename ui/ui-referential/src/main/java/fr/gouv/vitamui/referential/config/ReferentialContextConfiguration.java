@@ -73,7 +73,7 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public ReferentialExternalRestClientFactory referentialRestClientFactory(final ReferentialApplicationProperties uiProperties, RestTemplateBuilder restTemplateBuilder) {
         return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(), restTemplateBuilder);
     }
-    
+
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
@@ -121,7 +121,7 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public TenantExternalRestClient tenantCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
         return iamExternalRestClientFactory.getTenantExternalRestClient();
     }
-    
+
     @Bean
     public CustomerExternalRestClient customerCrudRestClient(final IamExternalRestClientFactory iamExternalRestClientFactory) {
         return iamExternalRestClientFactory.getCustomerExternalRestClient();
@@ -156,24 +156,29 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public RuleExternalRestClient ruleExternalRestClient(final ReferentialExternalRestClientFactory factory) {
         return factory.getRuleExternalRestClient();
     }
-    
+
     @Bean
     public AgencyExternalWebClient agencyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
     	return referentialExternalWebClientFactory.getAgencyExternalWebClient();
     }
-    
+
     @Bean
     public FileFormatExternalWebClient fileFormatWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
     	return referentialExternalWebClientFactory.getFileFormatExternalWebClient();
     }
-    
+
     @Bean
     public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
     	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
     }
-    
+
     @Bean
     public ExternalParametersExternalRestClient externalParametersExternalRestClient(final IamExternalRestClientFactory factory) {
         return factory.getExternalParametersExternalRestClient();
+    }
+
+    @Bean
+    public LogbookManagementOperationExternalRestClient logbookManagementOperationExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+        return referentialExternalRestClientFactory.getLogbookManagementOperationExternalRestClient();
     }
 }

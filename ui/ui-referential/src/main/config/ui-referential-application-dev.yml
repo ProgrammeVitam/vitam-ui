@@ -36,9 +36,9 @@ ui-referential:
   portal-message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
   portal-title: "Portail des applications de l'archivage"
   theme-colors:
-    vitamui-primary: "#604379"
-    vitamui-secondary: "#65B2E4"
-    vitamui-tertiary: "#E7304D"
+    vitamui-primary: "#702382"
+    vitamui-secondary: "#2563A9"
+    vitamui-tertiary: "#C22A40"
     vitamui-header-footer: "#ffffff"
     vitamui-background: "#F5F7FC"
   assets: src/main/resources/assets
@@ -70,9 +70,7 @@ ui-referential:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-  customer:
-    technical-referent-email: contact@programmevitam.fr
-    website-url: http://www.programmevitam.fr
+
   portal-categories:
     ingest_and_consultation:
       title: "Versement & consultation"
