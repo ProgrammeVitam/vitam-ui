@@ -115,6 +115,11 @@ public class VitamRuleService {
         if (ruleType != null) {
             ruleToPatch.setRuleType(ruleType);
         }
+        
+        final String ruleValue = fieldsToApply.getRuleValue();
+        if (ruleValue != null) {
+            ruleToPatch.setRuleType(ruleValue);
+        }
 
         final String ruleDuration = fieldsToApply.getRuleDuration();
         if (ruleDuration != null) {
