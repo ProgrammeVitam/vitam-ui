@@ -79,8 +79,11 @@ server {
         sub_filter /identity/ https://{{ vitamui.identity_admin.server_name }}/;
         sub_filter_once off;
 
+        proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
+
         proxy_set_header Host            $host;
-    	proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
 
     }
 
@@ -100,6 +103,9 @@ server {
         proxy_set_header Host            $host;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
+
+        proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
 
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
@@ -140,10 +146,12 @@ server {
         sub_filter_once off;
 
         proxy_set_header Host            $host;
-    	proxy_set_header X-Forwarded-For $remote_addr;
+    	  proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
 
         proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
+
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -202,10 +210,12 @@ server {
         sub_filter_once off;
 
         proxy_set_header Host            $host;
-    	proxy_set_header X-Forwarded-For $remote_addr;
+    	  proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
 
         proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
+
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -243,10 +253,12 @@ server {
     location ~ ^/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0|clientredirect) {
         proxy_pass https://cas;
         proxy_set_header Host            $host;
-    	proxy_set_header X-Forwarded-For $remote_addr;
+    	  proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
 
         proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
+
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -279,10 +291,12 @@ server {
         proxy_pass https://ui_portal;
 
         proxy_set_header Host            $host;
-    	proxy_set_header X-Forwarded-For $remote_addr;
+    	  proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Authorization $http_authorization;
 
         proxy_hide_header X-Frame-Options;
+        add_header X-Frame-Options deny always;
+
         proxy_set_header  X-Forwarded-Ssl on;
         proxy_set_header  X-Real-IP $remote_addr;
         proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
