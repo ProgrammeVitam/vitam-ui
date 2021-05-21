@@ -1,0 +1,55 @@
+{
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "SUBMIT": "Submit",
+    "UPDATE": "Update",
+    "APPLY_UPDATE": "Apply changes"
+  },
+  "LOGBOOK_OPERATION_LIST": {
+    "HOUR" : "Hour",
+    "NEXT" : "Next",
+    "PREVIOUS" : "Previous",
+    "STATE": "State",
+    "STATUS": "Status",
+    "RESULTS": "Results",
+    "OPERATION_ID": "Operation identifier",
+    "OPERATION_CATEGORY": "Operation category",
+    "START_DATE": "Start date",
+    "STEP_STATUS": "Step status",
+    "LAST_STEP": "Last step played",
+    "RESULT_STATUS": {
+      "SUCCESS": "Success",
+      "WARNING": "Warning",
+      "ERROR": "Error",
+      "FATAL": "Technical error"
+    },
+    "RESULT_STATE": {
+      "FINISHED": "Finished",
+      "BREAK": "On break",
+      "IN_PROGRESS": "In progress"
+    }
+  },
+  "LOGBOOK_OPERATION_PAGE": {
+    "TITLE": "Operations management",
+    "SEARCH": "Search by operation identifier",
+    "REFRESH": "Refresh",
+    "ToolTip_Refresh": "Refresh the list of operations",
+    "FILTER_BY_DATE": "Filter by start date of operation between : ",
+    "OPERATION_DATE": "Operation date",
+    "AND": "and the :",
+    "ADD_INTREVAL": "ADD INTERVAL",
+    "DELETE_INTERVAL": "DELETE INTERVAL"
+  },
+    "STATE_VALUE": {
+    "COMPLETED" :"Completed",
+    "PAUSE" : "On break",
+    "RUNNING" : "Running"
+  },
+  "STATUS_VALUE":{
+    "KO" : "Error",
+    "OK" : "Success",
+    "FATAL" : "Technical error",
+    "WARNING" : "Warning"
+  }
+
+}

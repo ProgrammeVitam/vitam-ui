@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.referential.internal.server.config;
 
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +52,6 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
@@ -170,5 +171,10 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public VitamBatchReportService vitamBatchReportService(final AdminExternalClient adminExternalClient) {
         return new VitamBatchReportService(adminExternalClient);
+    }
+
+    @Bean
+    public VitamOperationService vitamOperationService(final AdminExternalClient adminExternalClient) {
+        return new VitamOperationService(adminExternalClient);
     }
 }

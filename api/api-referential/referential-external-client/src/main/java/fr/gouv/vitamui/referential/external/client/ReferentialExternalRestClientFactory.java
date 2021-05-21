@@ -107,8 +107,12 @@ public class ReferentialExternalRestClientFactory extends BaseRestClientFactory 
     public ProfileExternalRestClient getProfileExternalRestClient() {
         return new ProfileExternalRestClient(getRestTemplate(), getBaseUrl());
     }
-    
+
     public RuleExternalRestClient getRuleExternalRestClient() {
         return new RuleExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
+    public LogbookManagementOperationExternalRestClient getLogbookManagementOperationExternalRestClient() {
+        return new LogbookManagementOperationExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 }

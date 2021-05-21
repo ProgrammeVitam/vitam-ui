@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
+import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitam.common.model.processing.ProcessDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -56,5 +58,10 @@ public class VitamOperationService {
     public RequestResponse<ItemStatus> getOperationDetailsById(VitamContext vitamContext, String idOp)
             throws VitamClientException {
         return adminExternalClient.getOperationProcessExecutionDetails(vitamContext, idOp);
+    }
+
+    public RequestResponse<ProcessDetail> listOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery)
+        throws VitamClientException {
+        return adminExternalClient.listOperationsDetails(vitamContext, processQuery);
     }
 }

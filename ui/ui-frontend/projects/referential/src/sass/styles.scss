@@ -1,25 +1,22 @@
-@import "~ui-frontend-common/sass/icons/vitamui-icons.css";
-@import "~ui-frontend-common/sass/theme";
+@import '~ui-frontend-common/sass/icons/vitamui-icons.css';
+@import '~ui-frontend-common/sass/theme';
 @import '~bootstrap/scss/bootstrap-grid';
 
 @import '~ui-frontend-common/sass/fonts/font-styles.css';
 
+@import 'form';
+@import 'sidepanel';
+@import 'login';
+@import 'profile-tag';
+@import 'vitamui-tab-group';
+@import 'tooltip';
+@import 'text';
 
-@import "form";
-@import "login";
-@import "sidepanel";
-@import "profile-tag";
-@import "vitamui-tab-group";
-@import "tooltip";
-@import "text";
-
-
-@import '../../../../dist/sass/icons/vitamui-icons.css';
+//@import '../../../../dist/sass/icons/vitamui-icons.css';
 @import '../../../../dist/sass/styles';
 
-
 vitamui-common-slide-toggle {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .form-control {
@@ -33,22 +30,22 @@ vitamui-common-slide-toggle {
 .mat-tab-body-wrapper {
   flex-grow: 1;
 }
-.preview-tab-group{
+.preview-tab-group {
   height: 100%;
 }
-.vitamui-mat-select{
+.vitamui-mat-select {
   padding-bottom: 30px;
 }
-.btn.more-actions{
+.btn.more-actions {
   background-color: transparent;
   color: var(--vitamui-secondary);
   border-color: var(--vitamui-secondary) !important;
 }
-.btn-container{
+.btn-container {
   display: flex;
 }
-.custom-flex-controls{
-  .btn{
+.custom-flex-controls {
+  .btn {
     background-color: transparent;
     color: var(--vitamui-secondary);
     border-color: var(--vitamui-secondary) !important;
@@ -59,9 +56,9 @@ vitamui-common-slide-toggle {
   color: var(--vitamui-grey-900);
   border: 1px solid transparent;
 }
-.vitamui-container{
-    position: relative;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 40px;
+.vitamui-container {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
