@@ -1618,6 +1618,8 @@
                     <resource>
                         <directory>src/main/resources</directory>
                         <excludes>
+                            <!-- Vitam configuration files -->
+                            <exclude>*.conf</exclude>
                             <exclude>/dev/</exclude>
                             <exclude>application-*.yml</exclude>
                         </excludes>
