@@ -137,6 +137,11 @@ $footer-height: 100px !default;
         .vitamui-form-right-panel {
             padding: 50px 70px;
 
+            &-header {
+                margin-top: -30px;
+                margin-bottom: 30px;
+            }
+
             &-title {
                 margin-bottom: 30px;
                 font-weight: bold;
