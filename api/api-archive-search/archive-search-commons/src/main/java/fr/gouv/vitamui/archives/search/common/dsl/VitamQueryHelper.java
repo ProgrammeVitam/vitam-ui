@@ -67,8 +67,8 @@ public class VitamQueryHelper {
     }
 
 
-    private static final int DEFAULT_DEPTH = 30;
-    private static final int FACET_SIZE_MILTIPLIER = 10;
+    private static final int DEFAULT_DEPTH = 10;
+    private static final int FACET_SIZE_MILTIPLIER = 100;
 
     /* Query fields */
     private static final String IDENTIFIER = "Identifier";
@@ -111,10 +111,11 @@ public class VitamQueryHelper {
         //Handle roots
         if (nodes != null && !nodes.isEmpty()) {
             select.addRoots(nodes.toArray(new String[nodes.size()]));
-            select.addFacets(
-                FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, nodes.size() * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
+
+        select.addFacets(
+            FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, (nodes.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
 
         if (unitTypes == null || unitTypes.isEmpty()) {
             LOGGER.error("Error on validation of criteria , units types is mandatory ");
