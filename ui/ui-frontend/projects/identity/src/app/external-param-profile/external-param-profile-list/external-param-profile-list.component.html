@@ -1,0 +1,50 @@
+<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+  <div class="vitamui-table">
+    <div class="vitamui-table-head">
+      <div class="col-1">
+        <i class="vitamui-icon vitamui-icon-gestion-de-profil"></i>
+      </div>
+      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil paramètres externes</div>
+      <div class="col-4" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
+      <div class="col-4" i18n="Description@@profileListHeaderDescription">Description</div>
+    </div>
+
+    <div class="vitamui-table-body">
+      <div class="vitamui-table-rows" *ngFor="let externalParamProfile of dataSource" (click)="emitExternalProfile(externalParamProfile)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-1">
+            <i
+              class="vitamui-icon vitamui-icon-gestion-de-profil"
+              [ngClass]="externalParamProfile?.enabled ? 'status-badge-green' : 'status-badge-grey'"
+            ></i>
+          </div>
+          <div class="col-3">{{ externalParamProfile.name }}</div>
+          <div class="col-4">{{ externalParamProfile.accessContract }}</div>
+          <div class="col-4">
+            {{ externalParamProfile.description | truncate: 50 }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
+  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
+  <div *ngIf="infiniteScrollDisabled && externalParamProfileServiceService.canLoadMore && !pending; then loadMore"></div>
+</div>
+
+<ng-template #noResults>
+  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+</ng-template>
+
+<ng-template #loadMore>
+  <div class="vitamui-min-content vitamui-table-message" (click)="externalParamProfileServiceService.loadMore()">
+    <span class="clickable">Afficher plus de résultats...</span>
+  </div>
+</ng-template>
+
+<ng-template #loadingSpinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+</ng-template>

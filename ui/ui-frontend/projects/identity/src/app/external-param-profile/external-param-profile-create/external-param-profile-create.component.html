@@ -1,0 +1,43 @@
+<div class="header">
+  <vitamui-common-progress-bar [index]= "0" [count]="1"></vitamui-common-progress-bar>
+</div>
+
+<form [formGroup]="externalParamProfileForm" (ngSubmit)="onSubmit()">
+  <div class="content vitamui-form">
+    <div class="text large bold">Création d'un Profil Paramétrages Externes</div>
+
+    <div class="mb-2">
+      <vitamui-common-slide-toggle formControlName="enabled">Profil <span *ngIf="!externalParamProfileForm.get('enabled').value">in</span>actif</vitamui-common-slide-toggle>
+    </div>
+
+    <vitamui-common-input class="col-9 px-0" formControlName="description" minlength="2" maxlength="250" required placeholder="Description du profil administateur">
+      <vitamui-common-input-error *ngIf="externalParamProfileForm?.get('description')?.touched && !!externalParamProfileForm?.get('description')?.errors?.required">Champ requis</vitamui-common-input-error>
+    </vitamui-common-input>
+
+    <vitamui-common-input class="col-9 px-0" formControlName="name" minlength="2" maxlength="100" required placeholder="Nom du profil paramétrages externes">
+      <vitamui-common-input-error *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.required">Champ requis</vitamui-common-input-error>
+      <vitamui-common-input-error *ngIf="externalParamProfileForm?.get('name')?.touched && !!externalParamProfileForm?.get('name')?.errors?.nameExists">Nom déjà existant</vitamui-common-input-error>
+    </vitamui-common-input>
+
+    <mat-form-field class="vitamui-mat-select">
+      <mat-select formControlName="accessContract"
+                  placeholder="Sélectionner un contrat d'accès" required="required" panelclass="vitamui-mat-select"
+                  style="width: 100%">
+        <mat-option *ngFor='let accessContract of (accessContracts$|async)' [value]="accessContract.identifier">{{accessContract.name}}
+        </mat-option>
+      </mat-select>
+      <div class="select-arrow">
+        <i class="material-icons">keyboard_arrow_down</i>
+      </div>
+    </mat-form-field>
+
+    <div class="d-flex mt-4">
+      <button type="submit" class="btn primary mr-4" [disabled]="onValidate()">
+        Terminer
+      </button>
+      <button type="button" class="btn link cancel" (click)="onCancel()">
+        Annuler
+      </button>
+    </div>
+  </div>
+</form>

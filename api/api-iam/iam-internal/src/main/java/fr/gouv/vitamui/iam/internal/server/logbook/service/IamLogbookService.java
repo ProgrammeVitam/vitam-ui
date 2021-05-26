@@ -43,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -449,6 +452,42 @@ public class IamLogbookService {
 
         optTenant.orElseThrow(() -> new NotFoundException("No proof tenant found for customerId : " + customerId));
         return optTenant.get();
+    }
+
+    /**
+     * @param sourceEvent source de l'évènement
+     */
+    public void createExternalParametersEvent(final ExternalParametersDto sourceEvent) {
+        LOGGER.info("Create ExternalParameters {}", sourceEvent.toString());
+        create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.EXTERNAL_PARAMETERS,
+            EventType.EXT_VITAMUI_CREATE_EXTERNAL_PARAM,
+            converters.getExternalParametersConverter().convertToLogbook(sourceEvent));
+    }
+
+    public void updateExternalParametersEvent(final ExternalParametersDto externalParametersDto, final Collection<EventDiffDto> logbooks) {
+        LOGGER.info("Update ExternalParameters {}", externalParametersDto.toString());
+        update(getCurrentProofTenantIdentifier(), externalParametersDto.getIdentifier(), MongoDbCollections.EXTERNAL_PARAMETERS,
+            EventType.EXT_VITAMUI_UPDATE_EXTERNAL_PARAM, logbooks);
+    }
+
+    /**
+     * @param externalParamProfileDto source de l'évènement
+     */
+    public void createExternalParamProfileEvent(final ExternalParamProfileDto externalParamProfileDto) {
+        LOGGER.info("Create ExternalParameter Profile {}", externalParamProfileDto.toString());
+        create(getCurrentProofTenantIdentifier(), externalParamProfileDto.getProfileIdentifier(), "externalparamprofile",
+            EventType.EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE,
+            converters.getExternalParamProfileConverter().convertToLogbook(externalParamProfileDto));
+    }
+
+    /**
+     *
+     * @param externalParamProfileDto object containing infos for parameterize logbooks infos
+     * @param logbooks logbooks
+     */
+    public void updateExternalParamProfileEvent(final ExternalParamProfileDto externalParamProfileDto, final Collection<EventDiffDto> logbooks) {
+        LOGGER.info("Update Profile {}", externalParamProfileDto.toString());
+        update(getCurrentProofTenantIdentifier(), externalParamProfileDto.getProfileIdentifier(), "externalparamprofile", EventType.EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE, logbooks);
     }
 
 }

@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.server.config;
 
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
+import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -109,7 +111,7 @@ public class ConverterConfig {
     public ApplicationConverter applicationConverter() {
         return new ApplicationConverter();
     }
-    
+
     @Bean
     public ExternalParametersConverter externalParametersConverter() {
         return new ExternalParametersConverter();
@@ -119,9 +121,20 @@ public class ConverterConfig {
     public Converters converters(final UserConverter userConverter, final TenantConverter tenantConverter, final OwnerConverter ownerConverter,
             final ProfileConverter profileConverter, final ApplicationConverter applicationConverter, final GroupConverter groupConverter,
             final CustomerConverter customerConverter, final IdentityProviderConverter identityProviderConverter,
-            final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter) {
+            final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter,
+            final ExternalParamProfileConverter externalParamProfileConverter) {
         return new Converters(userConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter, identityProviderConverter,
-                subrogationConverter, externalParametersConverter);
+                subrogationConverter, externalParametersConverter, externalParamProfileConverter);
+    }
+
+    @Bean
+    public AccessContractConverter accessContractConverter() {
+        return new AccessContractConverter();
+    }
+
+    @Bean
+    public ExternalParamProfileConverter externalParamProfileConverter() {
+        return new ExternalParamProfileConverter();
     }
 
 }

@@ -1,0 +1,52 @@
+db = db.getSiblingDB('iam')
+
+print("START 316_application_ref.js");
+
+// -------- VITAM ADMINISTRATION -----
+
+db.applications.insert({
+    "identifier" : "EXTERNAL_PARAM_PROFILE_APP",
+{% if vitamui.identity.base_url is defined %}
+    "url": "{{ vitamui.identity.base_url }}/externalparamprofile",
+    "serviceId": "^{{ vitamui.identity.base_url }}/.*",
+{% else %}
+    "url": "{{ url_prefix }}/identity/externalparamprofile",
+    "serviceId": "^{{ url_prefix }}/identity/.*",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-archive",
+    "name": "Profil APP Paramétrages externes",
+    "category": "organization_and_user_rights",
+    "position": NumberInt(10),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes",
+    "target": "_self"
+});
+
+db.profiles.insert({
+  "_id": "system_access-external-param-profile",
+  "identifier" : NumberInt(88),
+  "name": "External param Profile",
+  "description": "External param Profile",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "EXTERNAL_PARAM_PROFILE_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+    "name": "ROLE_CREATE_EXTERNAL_PARAM_PROFILE"
+  },
+  {
+    "name": "ROLE_EDIT_EXTERNAL_PARAM_PROFILE"
+  },
+  {
+    "name": "ROLE_SEARCH_EXTERNAL_PARAM_PROFILE"
+  }
+   ]
+});
+
+
+print("END 316_application_ref.js");

@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.config;
 
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
@@ -70,7 +71,9 @@ public class Converters {
     private IdentityProviderConverter idpConverter;
 
     private SubrogationConverter subrogationConverter;
-    
+
     private ExternalParametersConverter externalParametersConverter;
+
+    private ExternalParamProfileConverter externalParamProfileConverter;
 
 }

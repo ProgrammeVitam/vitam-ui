@@ -54,6 +54,7 @@ import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.common.utils.EntityFactory;
+import fr.gouv.vitamui.iam.internal.server.common.utils.ProfileSequenceGenerator;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -142,7 +143,7 @@ public class InitCustomerService {
     private GroupInternalService internalGroupService;
 
     @Autowired
-    private CustomSequenceRepository sequenceRepository;
+    private ProfileSequenceGenerator profileSequenceGenerator;
 
     @Autowired
     private IamLogbookService iamLogbookService;
@@ -202,7 +203,7 @@ public class InitCustomerService {
     private OwnerDto saveOwner(final OwnerDto dto) {
         final Owner o = ownerConverter.convertDtoToEntity(dto);
         o.setId(ownerRepository.generateSuperId());
-        o.setIdentifier(generateIdentifier(SequencesConstants.OWNER_IDENTIFIER));
+        o.setIdentifier(profileSequenceGenerator.generateIdentifier(SequencesConstants.OWNER_IDENTIFIER));
         final Owner ownerSaved = ownerRepository.save(o);
         final OwnerDto ownerDto = ownerConverter.convertEntityToDto(ownerSaved);
         iamLogbookService.createOwnerEventInitCustomer(ownerDto);
@@ -248,7 +249,7 @@ public class InitCustomerService {
 
     private IdentityProvider createIdentityProvider(final String customerId, final String domain) {
         final IdentityProvider idp = new IdentityProvider();
-        idp.setIdentifier(generateIdentifier(SequencesConstants.IDP_IDENTIFIER));
+        idp.setIdentifier(profileSequenceGenerator.generateIdentifier(SequencesConstants.IDP_IDENTIFIER));
         idp.setCustomerId(customerId);
         idp.setPatterns(Arrays.asList(".*@" + domain));
         idp.setName("default");
@@ -278,7 +279,7 @@ public class InitCustomerService {
         if (customerInitConfig.getProfiles() != null) {
             customerInitConfig.getProfiles().forEach(p -> {
                 Profile profile = EntityFactory.buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
-                    generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                    profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                     p.getDescription(),
                     true,
                     p.getLevel(),
@@ -297,7 +298,7 @@ public class InitCustomerService {
         //Adding nex profile for default access contract defined in External Parameter application
         Profile defaultAccessContractProfile = EntityFactory
             .buildProfile(EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                 EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " + proofTenant.getIdentifier(),
                 true,
                 "",
@@ -314,7 +315,7 @@ public class InitCustomerService {
         if (customerInitConfig.getProfilesGroups() != null) {
             customerInitConfig.getProfilesGroups().forEach(g -> {
                 Group group = EntityFactory.buildGroup(g.getName(),
-                    generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+                    profileSequenceGenerator.generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
                     g.getDescription(),
                     true,
                     g.getLevel(), profilesAvailable.stream().filter(p -> g.getProfiles()
@@ -357,7 +358,7 @@ public class InitCustomerService {
 
         final Profile userProfile =
             EntityFactory.buildProfile(ServicesData.SERVICE_USERS + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                 ApiIamInternalConstants.USERS_PROFILE_DESCRIPTION,
                 true,
                 ApiIamInternalConstants.ADMIN_LEVEL,
@@ -369,7 +370,7 @@ public class InitCustomerService {
 
         final Profile groupProfile =
             EntityFactory.buildProfile(ServicesData.SERVICE_GROUPS + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                 ApiIamInternalConstants.GROUPS_PROFILE_DESCRIPTION,
                 true,
                 ApiIamInternalConstants.ADMIN_LEVEL,
@@ -381,7 +382,7 @@ public class InitCustomerService {
 
         final Profile profileUserProfileDto =
             EntityFactory.buildProfile(ServicesData.SERVICE_PROFILES + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                 ApiIamInternalConstants.PROFILE_DESCRIPTION,
                 true,
                 ApiIamInternalConstants.ADMIN_LEVEL,
@@ -393,7 +394,7 @@ public class InitCustomerService {
 
         final Profile accountProfile =
             EntityFactory.buildProfile(ServicesData.SERVICE_ACCOUNTS + " " + proofTenant.getIdentifier(),
-                generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                 ApiIamInternalConstants.ACCOUNT_PROFILE_DESCRIPTION,
                 true,
                 ApiIamInternalConstants.ADMIN_LEVEL,
@@ -406,7 +407,7 @@ public class InitCustomerService {
         if (customerInitConfig.getAdminProfiles() != null) {
             customerInitConfig.getAdminProfiles().forEach(p -> {
                 Profile profile = EntityFactory.buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
-                    generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                    profileSequenceGenerator.generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
                     p.getDescription(),
                     true,
                     p.getLevel(),
@@ -431,7 +432,7 @@ public class InitCustomerService {
 
     private Group createAdminGroup(final CustomerDto customerDto, final List<Profile> profiles) {
         final Group group = EntityFactory.buildGroup(getAdminClientRootName(customerDto),
-            generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
+            profileSequenceGenerator.generateIdentifier(SequencesConstants.GROUP_IDENTIFIER),
             ApiIamInternalConstants.ADMIN_CLIENT_ROOT,
             true,
             ApiIamInternalConstants.ADMIN_LEVEL,
@@ -465,11 +466,5 @@ public class InitCustomerService {
         return ApiIamInternalConstants.ADMIN_CLIENT_ROOT + " " + customerDto.getCode();
     }
 
-    protected String generateIdentifier(final String sequenceName) {
-        final Optional<CustomSequence> customSequence =
-            sequenceRepository.incrementSequence(sequenceName, CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE);
-        customSequence
-            .orElseThrow(() -> new InternalServerException("Sequence with name : " + sequenceName + " didn't exist"));
-        return String.valueOf(customSequence.get().getSequence());
-    }
+
 }

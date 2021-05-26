@@ -51,11 +51,14 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
+import fr.gouv.vitamui.iam.internal.server.common.utils.ProfileSequenceGenerator;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -105,6 +108,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
@@ -124,8 +128,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        final MultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        return commonsMultipartResolver;
+        return new CommonsMultipartResolver();
     }
 
     @SuppressWarnings("rawtypes")
@@ -363,8 +366,37 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final CustomSequenceRepository sequenceRepository,
         final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersConverter externalParametersConverter,
-        final InternalSecurityService internalSecurityService) {
+        final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService) {
         return new ExternalParametersInternalService(sequenceRepository, externalParametersRepository,
-            externalParametersConverter, internalSecurityService);
+            externalParametersConverter, internalSecurityService, iamLogbookService);
     }
+
+    @Bean
+    public ExternalParamProfileInternalService externalParamProfileInternalService(
+        final ExternalParametersInternalService externalParametersInternalService,
+        final ProfileInternalService profileInternalService,
+        final InternalSecurityService internalSecurityService,
+        final ProfileSequenceGenerator profileSequenceGenerator,
+        final IamLogbookService iamLogbookService,
+        final ExternalParamProfileRepository externalParamProfileRepository,
+        final LogbookService logbookService,
+        final ProfileConverter profileConverter) {
+
+        return new ExternalParamProfileInternalService(externalParametersInternalService,
+            profileInternalService, internalSecurityService, profileSequenceGenerator, iamLogbookService,
+            externalParamProfileRepository,logbookService, profileConverter);
+    }
+
+    @Bean
+    public ProfileSequenceGenerator profileSequenceGenerator(CustomSequenceRepository sequenceRepository) {
+        return new ProfileSequenceGenerator(sequenceRepository);
+    }
+
+
+    @Bean
+    ExternalParamProfileRepository externalParamProfileRepository(MongoOperations mongoOperations) {
+        return new ExternalParamProfileRepository(mongoOperations);
+    }
+
 }

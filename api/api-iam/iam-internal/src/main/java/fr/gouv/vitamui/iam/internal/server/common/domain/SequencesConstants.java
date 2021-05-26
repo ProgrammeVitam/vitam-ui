@@ -51,4 +51,6 @@ public class SequencesConstants {
     public static final String PROFILE_IDENTIFIER = "profileIdentifier";
 
     public static final String IDP_IDENTIFIER = "providerIdentifier";
+
+    public static final String EXTPARAM_IDENTIFIER = "externalParamIdentifier";
 }

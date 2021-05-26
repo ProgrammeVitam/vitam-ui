@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.external.server.config;
 
+import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
+import fr.gouv.vitamui.iam.internal.client.ExternalParamProfileInternalRestClient;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -71,15 +73,6 @@ import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.MultipartFilter;
 
 @Configuration
 @Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
@@ -199,10 +192,19 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
-    
+
     @Bean
     public ExternalParametersInternalRestClient externalParametersInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 
+    @Bean
+    public ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getExternalParamProfileInternalRestClient();
+    }
+
+    @Bean
+    public AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getAccessContractInternalRestClient();
+    }
 }

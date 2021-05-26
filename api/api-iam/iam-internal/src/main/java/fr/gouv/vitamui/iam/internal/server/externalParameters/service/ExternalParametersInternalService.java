@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -48,12 +49,14 @@ import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
+import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Getter
@@ -64,21 +67,22 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
         VitamUILoggerFactory.getInstance(ExternalParametersInternalService.class);
 
     private final ExternalParametersRepository externalParametersRepository;
-
     private final ExternalParametersConverter externalParametersConverter;
-
     private final InternalSecurityService internalSecurityService;
+    private final IamLogbookService iamLogbookService;
 
     @Autowired
     public ExternalParametersInternalService(
         final CustomSequenceRepository sequenceRepository,
         final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersConverter externalParametersConverter,
-        final InternalSecurityService internalSecurityService) {
+        final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService) {
         super(sequenceRepository);
         this.externalParametersRepository = externalParametersRepository;
         this.externalParametersConverter = externalParametersConverter;
         this.internalSecurityService = internalSecurityService;
+        this.iamLogbookService = iamLogbookService;
     }
 
     /**
@@ -108,6 +112,14 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     @Transactional
     public ExternalParametersDto create(final ExternalParametersDto dto) {
         final ExternalParametersDto externalParameter = super.create(dto);
+        iamLogbookService.createExternalParametersEvent(externalParameter);
+        return externalParameter;
+    }
+
+    @Transactional
+    public ExternalParametersDto update(final ExternalParametersDto dto, Collection<EventDiffDto> logbooks) {
+        final ExternalParametersDto externalParameter = super.update(dto);
+        iamLogbookService.updateExternalParametersEvent(externalParameter, logbooks);
         return externalParameter;
     }
 

@@ -1,0 +1,52 @@
+<div>
+  <form [formGroup]="form">
+    <vitamui-common-slide-toggle formControlName="enabled">
+      Profil <span *ngIf="!form.get('enabled')?.value">in</span>actif
+    </vitamui-common-slide-toggle>
+    <div class="row">
+      <div class="col-6">
+        <vitamui-common-input label="Identifiant" [value]="externalParamProfile?.profileIdentifier" disabled> </vitamui-common-input>
+      </div>
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="name"
+          maxlength="100"
+          label="Nom"
+          [validator]="form?.get('name')?.validator"
+          [asyncValidator]="form?.get('name')?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required">Champ requis</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="nameExists">Nom déjà utilisé</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <vitamui-common-editable-input
+          formControlName="description"
+          maxlength="380"
+          label="Description"
+          [validator]="form?.get('description')?.validator"
+        >
+          <vitamui-common-field-error errorKey="required">Champ requis</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select formControlName="accessContract"
+                      placeholder="Sélectionner un contrat d'accès" required="required" panelclass="vitamui-mat-select"
+                      style="width: 100%">
+            <mat-option *ngFor='let accessContract of (accessContracts$|async)' [value]="accessContract.identifier">{{accessContract.name}}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>

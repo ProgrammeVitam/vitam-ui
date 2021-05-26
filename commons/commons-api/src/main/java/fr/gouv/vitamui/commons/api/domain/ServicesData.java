@@ -61,7 +61,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
 public class ServicesData {
 
     //------------------------------------ USERS -------------------------------------------
-
     public static final String SERVICE_USERS = "USERS";
 
     public static final String ROLE_GET_USERS = GET_ROLE_PREFIX + SERVICE_USERS;
@@ -190,6 +189,7 @@ public class ServicesData {
 
     public static final String ROLE_CHECK_USERS = CHECK_ROLE_PREFIX + SERVICE_USERS;
 
+
     //------------------------------------ ACCOUNTS -------------------------------------------
 
     public static final String SERVICE_ACCOUNTS = "ACCOUNTS";
@@ -277,6 +277,7 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_CONTEXTS = UPDATE_ROLE_PREFIX + SERVICE_CONTEXTS;
 
+
     //-------------------------------- SECURITY PROFILE ---------------------------------------
 
     public static final String SERVICE_SECURITY_PROFILES = "SECURITY_PROFILES";
@@ -288,6 +289,7 @@ public class ServicesData {
     public static final String ROLE_UPDATE_SECURITY_PROFILES = UPDATE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
 
     public static final String ROLE_DELETE_SECURITY_PROFILES = DELETE_ROLE_PREFIX + SERVICE_SECURITY_PROFILES;
+
 
     //--------------------------------- REGLES DE GESTION -------------------------------------
 
@@ -333,6 +335,7 @@ public class ServicesData {
 
     public static final String ROLE_RUN_PROBATIVE_VALUE = "ROLE_RUN_" + SERVICE_PROBATIVE_VALUE;
 
+
     /** Management Contracts and Profiles are used in IngestContract forms **/
     //----------------------------------- MANAGEMENT CONTRACTS --------------------------------------
 
@@ -357,6 +360,7 @@ public class ServicesData {
     public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
+
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -384,6 +388,14 @@ public class ServicesData {
     public static final String ROLE_UPDATE_LOGBOOK_OPERATION = UPDATE_ROLE_PREFIX + SERVICE_LOGBOOK_OPERATION;
     public static final String ROLE_GET_LOGBOOK_OPERATION = GET_ROLE_PREFIX + SERVICE_LOGBOOK_OPERATION;
     public static final String ROLE_GET_ALL_LOGBOOK_OPERATION = GET_ROLE_PREFIX + "ALL_" + SERVICE_LOGBOOK_OPERATION;
+
+
+    //------------------------------------ ACCESS CONTRACT EXTERNAL PARAMETERS -------------------------------------------
+    public static final String ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = "EXTERNAL_PARAM_PROFILE";
+
+    public static final String ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = CREATE_ROLE_PREFIX + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
+    public static final String ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = "ROLE_EDIT_" + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
+    public static final String ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = "ROLE_SEARCH_" + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
 
     //@formatter:off
 
@@ -488,7 +500,11 @@ public class ServicesData {
 
             ROLE_UPDATE_LOGBOOK_OPERATION,
             ROLE_GET_LOGBOOK_OPERATION ,
-            ROLE_GET_ALL_LOGBOOK_OPERATION
+            ROLE_GET_ALL_LOGBOOK_OPERATION,
+
+            ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
+            ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
+            ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE
 
             );
 
@@ -616,7 +632,11 @@ public class ServicesData {
 
             ROLE_UPDATE_LOGBOOK_OPERATION,
             ROLE_GET_LOGBOOK_OPERATION ,
-            ROLE_GET_ALL_LOGBOOK_OPERATION
+            ROLE_GET_ALL_LOGBOOK_OPERATION,
+
+            ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
+            ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
+            ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE
             );
     //@formatter:on
 

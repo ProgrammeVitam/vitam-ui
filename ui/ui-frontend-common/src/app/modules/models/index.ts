@@ -46,6 +46,7 @@ export * from './logbook/index';
 export * from './operation/index';
 export * from './position/index';
 export * from './profile/index';
+export * from './externalparamprofile/index';
 export * from './subrogation/index';
 export * from './tree-node.interface';
 export * from './user/index';

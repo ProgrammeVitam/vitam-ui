@@ -11,6 +11,7 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalPar
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.idp.service.SpMetadataGenerator;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.AbstractLogbookIntegrationTest;
+import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.owner.dao.OwnerRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
@@ -53,6 +54,9 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Autowired
     private InternalSecurityService internalSecurityService;
 
+    @Autowired
+    private IamLogbookService iamLogbookService;
+
     @MockBean
     private SpMetadataGenerator spMetadataGenerator;
 
@@ -62,7 +66,8 @@ public class ExternalParametersInternalServiceTest extends AbstractLogbookIntegr
     @Before
     public void setup() {
         service = new ExternalParametersInternalService(
-        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService);
+        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
+            iamLogbookService);
     }
 
     @Test
