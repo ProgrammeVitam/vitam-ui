@@ -319,9 +319,9 @@
         "AUTORISATION_STEP": {
           "ATTRIBUATE_GROUP": "Groupe attribué",
           "TITLE": "Autorisations",
-          "INPUT_PLACEHOLDER": "Filtrer par Nom, Id...",
+          "INPUT_PLACEHOLDER": "Filtrer par nom ou description",
           "RESULTS_TABLE": {
-            "GROUP_LABEL": "Groupe de profil",
+            "GROUP_LABEL": "Groupes disponibles",
             "MORE_DETAIL": "Voir détail",
             "LESS_DETAIL": "Masquer détail",
             "PROFILE": "Profils"
