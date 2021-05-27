@@ -53,6 +53,9 @@ export class GroupListComponent implements OnInit {
 
   public groupName: string;
 
+  private initialGroups: GroupSelection[];
+
+  
   @Input()
   public groups: GroupSelection[];
 
@@ -73,6 +76,7 @@ export class GroupListComponent implements OnInit {
   constructor( @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
+    this.initialGroups = this.groups.slice();
   }
 
 
@@ -95,13 +99,14 @@ export class GroupListComponent implements OnInit {
   public onSearch(text?: string): void {
     this.resetgroups();
     if (text !== null && text.length > 0) {
-      this.groups = this.groups.filter((group) => group.name.includes(text) || group.description.includes(text));
+      this.groups = this.groups.filter((group) => group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) 
+      || group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()));
     }
   }
 
 
   public resetgroups(): void {
-    this.groups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX];
+    this.groups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] ? this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] : this.initialGroups;
     this.groups.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
     if (this.data[1]) {
       const selectedGroup = this.groups.find((group) => group.id === this.data[1].id);
