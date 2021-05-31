@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class ApplicationAnalyticsDto implements Serializable {
 
     private String applicationId;

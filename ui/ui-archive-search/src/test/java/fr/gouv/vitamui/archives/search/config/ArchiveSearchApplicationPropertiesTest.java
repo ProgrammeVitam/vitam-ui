@@ -30,7 +30,10 @@ package fr.gouv.vitamui.archives.search.config;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -45,6 +48,9 @@ public class ArchiveSearchApplicationPropertiesTest {
     @Autowired
     private ArchiveSearchApplicationProperties archiveSearchApplicationProperties;
 
+    @MockBean
+    BuildProperties buildProperties;
+
     @Test
     public void testApplicationProperties() {
         assertNotNull(archiveSearchApplicationProperties);
@@ -52,4 +58,5 @@ public class ArchiveSearchApplicationPropertiesTest {
         assertNotNull(archiveSearchApplicationProperties.getPrefix());
         assertEquals(archiveSearchApplicationProperties.getPrefix(), "archive-search-api");
     }
+
 }

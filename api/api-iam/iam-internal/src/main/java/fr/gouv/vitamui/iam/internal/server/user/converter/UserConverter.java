@@ -36,20 +36,10 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.converter;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
-import org.apache.commons.lang3.StringUtils;
-
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
+import fr.gouv.vitamui.commons.api.domain.ApplicationAnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
@@ -61,6 +51,15 @@ import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
 
 @Getter
 @Setter
@@ -150,6 +149,9 @@ public class UserConverter implements Converter<UserDto, User> {
 
     @Override
     public UserDto convertEntityToDto(final User user) {
+        if(user == null) {
+            return null;
+        }
         final UserDto userDto = new UserDto();
         AnalyticsDto analyticsDto = new AnalyticsDto();
         VitamUIUtils.copyProperties(user, userDto);
