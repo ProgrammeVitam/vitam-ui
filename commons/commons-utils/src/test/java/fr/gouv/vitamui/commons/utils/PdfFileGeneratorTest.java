@@ -14,8 +14,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class PdfFileGeneratorTest {
 
     public static final String GENERATED_PDF_NAME = "generated-pdf.pdf";

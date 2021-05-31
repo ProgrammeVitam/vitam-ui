@@ -103,22 +103,22 @@ public class MongoUtilsTest {
         String key = "test";
         String val = "toto.*toto";
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + val + "$");
 
         val = ".*toto.*to.*to";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + val + "$");
 
         val = "toto*toto";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + "toto.*toto" + "$");
 
         val = "*toto*toto*";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + ".*toto.*toto.*" + "$");
 
     }
@@ -128,22 +128,22 @@ public class MongoUtilsTest {
         String key = "test";
         String val = "toto.*toto";
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + val + "$");
 
         val = ".*toto.*to.*to";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + val + "$");
 
         val = "toto*toto";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + "toto.*toto" + "$");
 
         val = "*toto*toto*";
         crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
-        assertThat(crit.getCriteriaObject().toJson()).contains("regex");
+        assertThat(crit.getCriteriaObject().toJson()).contains("regularExpression");
         assertThat(crit.getCriteriaObject().toJson()).contains("^" + ".*toto.*toto.*" + "$");
 
     }

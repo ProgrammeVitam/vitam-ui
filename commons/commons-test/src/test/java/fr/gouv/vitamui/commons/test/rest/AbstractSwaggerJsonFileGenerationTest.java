@@ -39,9 +39,14 @@ public abstract class AbstractSwaggerJsonFileGenerationTest {
      */
     @Test
     public void swaggerJsonExists() throws Exception {
-        final String contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v2/api-docs").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        Writer writer = new FileWriter(new File("target/generated-sources/swagger.json"));
+        final String contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v2/api-docs")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn().getResponse().getContentAsString();
+
+        System.out.println(contentAsString);
+
+        Writer writer = new FileWriter("target/generated-sources/swagger.json");
         try (writer) {
             IOUtils.write(contentAsString, writer);
         }

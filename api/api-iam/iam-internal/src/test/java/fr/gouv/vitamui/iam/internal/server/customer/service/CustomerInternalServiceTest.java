@@ -1,27 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.query.Query;
-
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -33,6 +11,7 @@ import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AddressConverter;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
@@ -55,12 +34,32 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 public class CustomerInternalServiceTest {
 
-    private CustomerInternalService internalCustomerService;
-
-    @InjectMocks
+    @Mock
     private InitCustomerService initCustomerService;
 
     @Mock
@@ -69,7 +68,8 @@ public class CustomerInternalServiceTest {
     @Mock
     private IdentityProviderRepository identityProviderRepository;
 
-    private final OwnerRepository ownerRepository = mock(OwnerRepository.class);
+    @Mock
+    private OwnerRepository ownerRepository;
 
     @Mock
     private TenantRepository tenantRepository;
@@ -113,15 +113,15 @@ public class CustomerInternalServiceTest {
     @Mock
     private CustomSequenceRepository sequenceRepository;
 
-    private final AddressConverter addressConverter = new AddressConverter();
-
-    private final OwnerConverter ownerConverter = new OwnerConverter(addressConverter);
-
-    private final CustomerConverter customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
+    private CustomerInternalService internalCustomerService;
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+        AddressConverter addressConverter = new AddressConverter();
+        OwnerConverter ownerConverter = new OwnerConverter(addressConverter);
+        CustomerConverter customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
+
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         internalCustomerService = new CustomerInternalService(sequenceRepository, customerRepository, internalOwnerService, userInternalService,
                 internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
@@ -238,6 +238,7 @@ public class CustomerInternalServiceTest {
         when(customerRepository.findById(any())).thenReturn(Optional.of(customerCreated));
         when(customerRepository.existsById(any())).thenReturn(true);
         when(customerRepository.save(any())).thenReturn(customerV2);
+        when(ownerRepository.findAll(any(Query.class))).thenReturn(new ArrayList<>());
 
         final CustomerDto customerDtoUpdated = internalCustomerService.update(customerToUpdate);
         Assert.assertNotNull("Customer should be returned.", customerDtoUpdated);
@@ -245,21 +246,28 @@ public class CustomerInternalServiceTest {
         Assert.assertEquals("Customer id should be returned.", customerToUpdate.getId(), customerDtoUpdated.getId());
     }
 
-    @Ignore
     @Test
-    public void testProcessPatch() {
-        final Customer entity = new Customer();
-        final List<String> emailDomains = Arrays.asList("julien@vitamui.com", "pierre@vitamui.com");
-        final Customer other = IamServerUtilsTest.buildCustomer("id", "name", "0123456", emailDomains);
+    public void should_patch_customer_address_and_name_when_changes_occured() {
+        // Given
+        final Customer customer = new Customer();
+        final Customer anotherCustomer = IamServerUtilsTest.buildCustomer("id", "name", "0123456", List.of("julien@vitamui.com", "pierre@vitamui.com"));
 
-        final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);
-        partialDto.put("address", TestUtils.getMapFromObject(other.getAddress()));
-        final List<String> fieldNotModifiable = Arrays.asList("id", "readonly");
-        fieldNotModifiable.forEach(key -> partialDto.remove(key));
+        final Map<String, Object> partialDto = TestUtils.getMapFromObject(anotherCustomer);
+        partialDto.put("address", TestUtils.getMapFromObject(anotherCustomer.getAddress()));
+        Arrays.asList("id", "graphicIdentity", "gdprAlertDelay").forEach(partialDto::remove); // remove not allows keys for patch
 
-        internalCustomerService.processPatch(entity, new CustomerPatchFormData());
-        entity.setId(other.getId());
-        assertThat(entity).isEqualToComparingFieldByField(other);
+        CustomerPatchFormData customerFormData = new CustomerPatchFormData();
+        customerFormData.setPartialCustomerDto(partialDto);
+        doCallRealMethod().when(addressService).processPatch(any(), anyMap(), anyCollection(), anyBoolean());
+
+        // When
+        internalCustomerService.processPatch(customer, customerFormData);
+
+        // Then
+        assertThat(customer)
+            .usingRecursiveComparison()
+            .ignoringFields("id", "graphicIdentity", "gdprAlertDelay")
+            .isEqualTo(anotherCustomer);
     }
 
     @Test

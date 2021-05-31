@@ -87,37 +87,26 @@ public class ExternalParametersConverter implements Converter<ExternalParameters
     public ExternalParameters convertDtoToEntity(final ExternalParametersDto dto) {
         ExternalParameters externalParameters = VitamUIUtils.copyProperties(dto, new ExternalParameters());
          if(dto.getParameters() != null ) {
-            externalParameters.setParameters(dto.getParameters().stream().map(parameterDto -> {
-                 return VitamUIUtils.copyProperties(parameterDto,new Parameter());
-             }).collect(Collectors.toList()));
+            externalParameters.setParameters(dto.getParameters().stream()
+                .map(parameterDto -> VitamUIUtils.copyProperties(parameterDto,new Parameter()))
+                .collect(Collectors.toList()));
          }
          return externalParameters;
     }
 
     @Override
-    public ExternalParametersDto convertEntityToDto(final ExternalParameters entity) {
-        ExternalParametersDto externalParametersDto = new ExternalParametersDto();
-        externalParametersDto.setId(entity.getId());
-        externalParametersDto.setName(entity.getName());
-        externalParametersDto.setIdentifier(entity.getIdentifier());
-        List<ParameterDto> parametersDtoList = new ArrayList<>();
-        entity.getParameters().stream().forEach(parameter -> {
-            ParameterDto parameterDto = new ParameterDto();
-            parameterDto.setValue(parameter.getValue());
-            parameterDto.setKey(parameter.getKey());
-            parametersDtoList.add(parameterDto);
-        });
-        externalParametersDto.setParameters(parametersDtoList);
-        return externalParametersDto;
+    public ExternalParametersDto convertEntityToDto(final ExternalParameters externalParameters) {
+        ExternalParametersDto dto = VitamUIUtils.copyProperties(externalParameters, new ExternalParametersDto());
+        if(externalParameters.getParameters() != null ) {
+            dto.setParameters(externalParameters.getParameters().stream()
+                .map(parameter -> VitamUIUtils.copyProperties(parameter,new ParameterDto()))
+                .collect(Collectors.toList()));
+        }
+        return dto;
     }
 
     public String convertParametersToLogbook(final Collection<ParameterDto> parameterDtos) {
-        List<String> parameters = StreamSupport.stream(parameterDtos.spliterator(), false).map(param -> {
-            final Map<String, String> data = new LinkedHashMap<>();
-            data.put(PARAMETER_KEY, param.getKey());
-            data.put(PARAMETER_VALUE_KEY, param.getValue());
-        	return ApiUtils.toJson(param);
-        }).collect(Collectors.toList());
+        List<String> parameters = parameterDtos.stream().map(ApiUtils::toJson).collect(Collectors.toList());
         return parameters.toString();
     }
 }
