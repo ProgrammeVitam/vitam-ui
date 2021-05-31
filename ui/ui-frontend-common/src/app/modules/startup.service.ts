@@ -37,26 +37,24 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ApplicationService } from './application.service';
-
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
+import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser, Color } from './models';
-import {ThemeService} from './theme.service';
+import { AppConfiguration, AttachmentType, AuthUser } from './models';
+import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
 const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
 const CUSTOMER_WEBSITE_URL_KEY = 'website-url';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StartupService {
-
   private configurationData: AppConfiguration;
 
   userRefresh = new Subject<any>();
@@ -64,7 +62,6 @@ export class StartupService {
   CURRENT_APP_ID: ApplicationId = ApplicationId.PORTAL_APP;
 
   private CURRENT_TENANT_IDENTIFIER: string;
-
 
   constructor(
     private logger: Logger,
@@ -74,12 +71,14 @@ export class StartupService {
     private themeService: ThemeService,
     private applicationService: ApplicationService,
     @Inject(WINDOW_LOCATION) private location: any
-  ) { }
+  ) {}
 
   load(): Promise<any> {
     this.configurationData = null;
 
-    return this.applicationApi.getConfiguration().toPromise()
+    return this.applicationApi
+      .getConfiguration()
+      .toPromise()
       .then((data: any) => {
         this.configurationData = data;
         this.authService.loginUrl = this.configurationData.CAS_URL;
@@ -95,7 +94,6 @@ export class StartupService {
         this.configurationData.LOGO = data[AttachmentType.Portal];
       })
       .then(() => {
-
         let customerColorMap = null;
 
         if (this.authService.user.basicCustomer.graphicIdentity.hasCustomGraphicIdentity) {
@@ -217,6 +215,13 @@ export class StartupService {
     return null;
   }
 
+  getArchivesSearchUrl(): string {
+    if (this.configurationLoaded()) {
+      return this.configurationData.ARCHIVES_SEARCH_URL;
+    }
+
+    return null;
+  }
   getConfigStringValue(key: string): string {
     if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
       return this.configurationData[key];
@@ -234,7 +239,7 @@ export class StartupService {
    * @param url URL to be redirected to.
    */
   redirect(url?: string) {
-    setTimeout(() => this.location.href = url ? url : this.getPortalUrl(), WARNING_DURATION);
+    setTimeout(() => (this.location.href = url ? url : this.getPortalUrl()), WARNING_DURATION);
   }
 
   getPlatformName(): string {
@@ -264,5 +269,4 @@ export class StartupService {
       return customer[CUSTOMER_WEBSITE_URL_KEY];
     }
   }
-
 }

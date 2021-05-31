@@ -64,6 +64,8 @@ ui-portal:
     portal: "https://dev.vitamui.com:4200"
     admin-identity: "https://dev.vitamui.com:4201/identity"
     identity: "https://dev.vitamui.com:4201/identity"
+    archives-search: "https://dev.vitamui.com:4209/archive-search"
+    ingest: "https://dev.vitamui.com:4208/ingest"
   customer:
     technical-referent-email: contact@programmevitam.fr
     website-url: http://www.programmevitam.fr
