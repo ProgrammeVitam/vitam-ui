@@ -45,6 +45,7 @@ import java.util.Set;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -273,6 +274,7 @@ public class SwaggerConfiguration {
 
     @Bean
     @Primary
+    @ConditionalOnProperty(value="swagger.custom.enabled", havingValue = "true", matchIfMissing = true)
     public SwaggerResourcesProvider swaggerResourcesProvider() {
         return new CustomInMemorySwaggerResourcesProvider();
     }
