@@ -18,6 +18,7 @@ import fr.gouv.vitamui.iam.external.server.service.ProfileExternalService;
 import fr.gouv.vitamui.iam.external.server.service.SubrogationExternalService;
 import fr.gouv.vitamui.iam.external.server.service.TenantExternalService;
 import fr.gouv.vitamui.iam.external.server.service.UserExternalService;
+import fr.gouv.vitamui.iam.external.server.service.UserInfoExternalService;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -59,6 +60,9 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private UserExternalService userExternalService;
+
+    @MockBean
+    private UserInfoExternalService userInfoExternalService;
 
     @MockBean
     private LogbookExternalService logbookExternalService;

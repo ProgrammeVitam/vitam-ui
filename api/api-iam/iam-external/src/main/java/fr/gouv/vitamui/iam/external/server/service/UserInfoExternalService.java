@@ -34,43 +34,61 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.common.domain;
+package fr.gouv.vitamui.iam.external.server.service;
 
-/**
- * MongoDB collections of the domain objects.
- *
- *
- */
-public final class MongoDbCollections {
+import java.util.Map;
 
-    public static final String TENANTS = "tenants";
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-    public static final String CUSTOMERS = "customers";
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
+import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String PROVIDERS = "providers";
 
-    public static final String PROFILES = "profiles";
+@Getter
+@Setter
+@Service
+public class UserInfoExternalService extends AbstractResourceClientService<UserInfoDto, UserInfoDto> {
 
-    public static final String GROUPS = "groups";
+    private final UserInfoInternalRestClient userInfoInternalRestClient;
 
-    public static final String USERS = "users";
+    @Autowired
+    public UserInfoExternalService(final UserInfoInternalRestClient userInfoInternalRestClient, final ExternalSecurityService externalSecurityService) {
+        super(externalSecurityService);
+        this.userInfoInternalRestClient = userInfoInternalRestClient;
+    }
 
-    public static final String USER_INFOS = "userInfos";
+    @Override
+    public UserInfoDto create(final UserInfoDto userInfoDto) {
+        return super.create(userInfoDto);
+    }
 
-    public static final String OWNERS = "owners";
+    @Override
+    public UserInfoDto getOne(final String id) {
+        return super.getOne(id);
+    }
 
-    public static final String TOKENS = "tokens";
+    public UserInfoDto getMe() {
+        return userInfoInternalRestClient.getMe(getInternalHttpContext());
+    }
 
-    public static final String APPLICATIONS = "applications";
+    @Override
+    public UserInfoDto patch(final Map<String, Object> partialDto) {
+        return super.patch(partialDto);
+    }
 
-    public static final String SUBROGATIONS = "subrogations";
+    @Override
+    protected String getVersionApiCrtieria() {
+        return CRITERIA_VERSION_V2;
+    }
 
-    public static final String EXTERNAL_PARAMETERS = "externalParameters";
-
-    public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
-
-    private MongoDbCollections() {
-        // do nothing
+    @Override
+    protected UserInfoInternalRestClient getClient() {
+        return userInfoInternalRestClient;
     }
 
 }

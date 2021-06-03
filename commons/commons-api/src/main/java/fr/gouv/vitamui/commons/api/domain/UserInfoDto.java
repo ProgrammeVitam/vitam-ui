@@ -34,43 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.common.domain;
+package fr.gouv.vitamui.commons.api.domain;
+
+import javax.validation.constraints.NotNull;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * MongoDB collections of the domain objects.
- *
- *
+ * A user info DTO with an identifier.
  */
-public final class MongoDbCollections {
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+public class UserInfoDto extends IdDto {
 
-    public static final String TENANTS = "tenants";
-
-    public static final String CUSTOMERS = "customers";
-
-    public static final String PROVIDERS = "providers";
-
-    public static final String PROFILES = "profiles";
-
-    public static final String GROUPS = "groups";
-
-    public static final String USERS = "users";
-
-    public static final String USER_INFOS = "userInfos";
-
-    public static final String OWNERS = "owners";
-
-    public static final String TOKENS = "tokens";
-
-    public static final String APPLICATIONS = "applications";
-
-    public static final String SUBROGATIONS = "subrogations";
-
-    public static final String EXTERNAL_PARAMETERS = "externalParameters";
-
-    public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
-
-    private MongoDbCollections() {
-        // do nothing
-    }
+    @NotNull
+    private String language;
 
 }

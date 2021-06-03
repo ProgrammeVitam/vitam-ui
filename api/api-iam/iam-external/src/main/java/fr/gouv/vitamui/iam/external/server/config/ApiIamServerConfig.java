@@ -56,6 +56,7 @@ import fr.gouv.vitamui.iam.internal.client.OwnerInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.ProfileInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.SubrogationInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.TenantInternalRestClient;
+import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.ExternalAuthentificationService;
@@ -166,6 +167,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public UserInternalRestClient userInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
+
+
+    @Bean
+    public UserInfoInternalRestClient userInfoInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+        return iamInternalRestClientFactory.getUserInfoInternalRestClient();
+    }
+
 
     @Bean
     public OwnerInternalRestClient ownerInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {

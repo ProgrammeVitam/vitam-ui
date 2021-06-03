@@ -34,43 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.common.domain;
+package fr.gouv.vitamui.iam.internal.server.user.converter;
 
-/**
- * MongoDB collections of the domain objects.
- *
- *
- */
-public final class MongoDbCollections {
+import fr.gouv.vitamui.commons.api.converter.Converter;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String TENANTS = "tenants";
+@Getter
+@Setter
+public class UserInfoConverter implements Converter<UserInfoDto, UserInfo> {
 
-    public static final String CUSTOMERS = "customers";
 
-    public static final String PROVIDERS = "providers";
+    @Override
+    public String convertToLogbook(final UserInfoDto userInfoDto) {
+        throw new NotImplementedException("not implemented yet");
+    }
 
-    public static final String PROFILES = "profiles";
+    @Override
+    public UserInfo convertDtoToEntity(final UserInfoDto userInfoDto) {
+        final UserInfo userInfo = new UserInfo();
+        VitamUIUtils.copyProperties(userInfoDto, userInfo);
+        return userInfo;
+    }
 
-    public static final String GROUPS = "groups";
-
-    public static final String USERS = "users";
-
-    public static final String USER_INFOS = "userInfos";
-
-    public static final String OWNERS = "owners";
-
-    public static final String TOKENS = "tokens";
-
-    public static final String APPLICATIONS = "applications";
-
-    public static final String SUBROGATIONS = "subrogations";
-
-    public static final String EXTERNAL_PARAMETERS = "externalParameters";
-
-    public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
-
-    private MongoDbCollections() {
-        // do nothing
+    @Override
+    public UserInfoDto convertEntityToDto(final UserInfo userInfo) {
+        final UserInfoDto userDto = new UserInfoDto();
+        VitamUIUtils.copyProperties(userInfo, userDto);
+        return userDto;
     }
 
 }

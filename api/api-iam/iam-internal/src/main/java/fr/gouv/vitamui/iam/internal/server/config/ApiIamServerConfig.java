@@ -96,8 +96,11 @@ import fr.gouv.vitamui.iam.internal.server.tenant.service.InitVitamTenantService
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
+import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
+import fr.gouv.vitamui.iam.internal.server.user.dao.UserInfoRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserEmailInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.security.client.ContextRestClient;
@@ -302,6 +305,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
             iamLogbookService, userConverter,
             mongoTransactionManager, logbookService, addressService, applicationInternalService, passwordConfiguration);
+    }
+
+
+    @Bean
+    public UserInfoInternalService userInfoInternalService(final CustomSequenceRepository sequenceRepository, final UserInfoRepository userInfoRepository,
+           final InternalSecurityService internalSecurityService,
+           final UserInfoConverter userInfoConverter) {
+        return new UserInfoInternalService(sequenceRepository, userInfoRepository, internalSecurityService, userInfoConverter);
     }
 
     @Bean

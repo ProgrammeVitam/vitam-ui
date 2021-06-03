@@ -56,6 +56,7 @@ import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.subrogation.converter.SubrogationConverter;
 import fr.gouv.vitamui.iam.internal.server.tenant.converter.TenantConverter;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
+import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 
 @Configuration
@@ -65,6 +66,12 @@ public class ConverterConfig {
     public UserConverter userConverter(final GroupRepository groupRepository, final AddressConverter addressConverter) {
         return new UserConverter(groupRepository, addressConverter);
     }
+
+    @Bean
+    public UserInfoConverter userInfoConverter() {
+        return new UserInfoConverter();
+    }
+
 
     @Bean
     public TenantConverter tenantConverter(final OwnerRepository ownerRepository) {

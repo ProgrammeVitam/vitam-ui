@@ -127,4 +127,7 @@ public class UserDto extends CustomerIdDto {
     private String centerCode;
 
     private boolean autoProvisioningEnabled;
+
+    @NotNull
+    private String userInfoId;
 }

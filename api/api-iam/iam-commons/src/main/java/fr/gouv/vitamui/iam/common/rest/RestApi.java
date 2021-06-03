@@ -57,6 +57,8 @@ public abstract class RestApi {
 
     public static final String V1_USERS_URL = "/iam/v1/users";
 
+    public static final String V1_USERS_INFO_URL = "/iam/v1/userinfos";
+
     public static final String V1_ACCOUNTS_URL = "/iam/v1/accounts";
 
     public static final String V1_GROUPS_URL = "/iam/v1/groups";

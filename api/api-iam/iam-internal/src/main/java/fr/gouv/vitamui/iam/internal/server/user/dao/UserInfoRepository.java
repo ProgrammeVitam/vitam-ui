@@ -34,43 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.common.domain;
+package fr.gouv.vitamui.iam.internal.server.user.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 
 /**
- * MongoDB collections of the domain objects.
+ * MongoDB repository for the users info.
  *
  *
  */
-public final class MongoDbCollections {
-
-    public static final String TENANTS = "tenants";
-
-    public static final String CUSTOMERS = "customers";
-
-    public static final String PROVIDERS = "providers";
-
-    public static final String PROFILES = "profiles";
-
-    public static final String GROUPS = "groups";
-
-    public static final String USERS = "users";
-
-    public static final String USER_INFOS = "userInfos";
-
-    public static final String OWNERS = "owners";
-
-    public static final String TOKENS = "tokens";
-
-    public static final String APPLICATIONS = "applications";
-
-    public static final String SUBROGATIONS = "subrogations";
-
-    public static final String EXTERNAL_PARAMETERS = "externalParameters";
-
-    public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
-
-    private MongoDbCollections() {
-        // do nothing
-    }
+public interface UserInfoRepository extends VitamUIRepository<UserInfo, String> {
 
 }

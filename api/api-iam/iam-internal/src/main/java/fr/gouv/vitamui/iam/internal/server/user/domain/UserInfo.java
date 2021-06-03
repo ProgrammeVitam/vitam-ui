@@ -34,43 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.common.domain;
+package fr.gouv.vitamui.iam.internal.server.user.domain;
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
+
+import fr.gouv.vitamui.commons.mongo.IdDocument;
+import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * MongoDB collections of the domain objects.
- *
- *
+ * A user info.
  */
-public final class MongoDbCollections {
-
-    public static final String TENANTS = "tenants";
-
-    public static final String CUSTOMERS = "customers";
-
-    public static final String PROVIDERS = "providers";
-
-    public static final String PROFILES = "profiles";
-
-    public static final String GROUPS = "groups";
-
-    public static final String USERS = "users";
-
-    public static final String USER_INFOS = "userInfos";
-
-    public static final String OWNERS = "owners";
-
-    public static final String TOKENS = "tokens";
-
-    public static final String APPLICATIONS = "applications";
-
-    public static final String SUBROGATIONS = "subrogations";
-
-    public static final String EXTERNAL_PARAMETERS = "externalParameters";
-
-    public static final String SEARCH_CRITERIA_HISTORY = "searchCriteriaHistory";
-
-    private MongoDbCollections() {
-        // do nothing
-    }
+@Document(collection = MongoDbCollections.USER_INFOS)
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
+public class UserInfo extends IdDocument {
+    @NotNull
+    private String language;
 
 }

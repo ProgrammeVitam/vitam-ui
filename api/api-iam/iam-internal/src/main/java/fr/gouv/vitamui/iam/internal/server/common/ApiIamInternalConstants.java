@@ -42,10 +42,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 
 /**
- *
  * Constants for API IAM Internal.
- *
- *
  */
 public final class ApiIamInternalConstants {
 
@@ -53,18 +50,22 @@ public final class ApiIamInternalConstants {
 
     private static final List<String> ACCOUNT_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_UPDATE_ME_USERS);
 
-    private static final List<String> USERS_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CREATE_USERS,
-            ServicesData.ROLE_UPDATE_USERS, ServicesData.ROLE_UPDATE_STANDARD_USERS, ServicesData.ROLE_MFA_USERS, ServicesData.ROLE_ANONYMIZATION_USERS,
-            ServicesData.ROLE_GENERIC_USERS, ServicesData.ROLE_GET_GROUPS);
+    private static final List<String> USERS_ROLES = VitamUIUtils
+            .listOf(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CREATE_USERS, ServicesData.ROLE_UPDATE_USERS, ServicesData.ROLE_UPDATE_STANDARD_USERS,
+                    ServicesData.ROLE_MFA_USERS, ServicesData.ROLE_ANONYMIZATION_USERS, ServicesData.ROLE_GENERIC_USERS, ServicesData.ROLE_GET_GROUPS,
+                    ServicesData.ROLE_GET_USER_INFOS, ServicesData.ROLE_CREATE_USER_INFOS, ServicesData.ROLE_UPDATE_USER_INFOS);
 
-    private static final List<String> GROUPS_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_GET_GROUPS, ServicesData.ROLE_CREATE_GROUPS,
-            ServicesData.ROLE_UPDATE_GROUPS, ServicesData.ROLE_DELETE_GROUPS, ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_GET_PROFILES_ALL_TENANTS);
+    private static final List<String> GROUPS_ROLES = VitamUIUtils
+            .listOf(ServicesData.ROLE_GET_GROUPS, ServicesData.ROLE_CREATE_GROUPS, ServicesData.ROLE_UPDATE_GROUPS, ServicesData.ROLE_DELETE_GROUPS,
+                    ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_GET_PROFILES_ALL_TENANTS);
 
-    private static final List<String> PROFILES_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES,
-            ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES, ServicesData.ROLE_GET_GROUPS);
+    private static final List<String> PROFILES_ROLES = VitamUIUtils
+            .listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES,
+                    ServicesData.ROLE_GET_GROUPS);
 
-    private static final List<String> HIERARCHY_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES,
-            ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES, ServicesData.ROLE_UPDATE_ME_USERS);
+    private static final List<String> HIERARCHY_ROLES = VitamUIUtils
+            .listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES,
+                    ServicesData.ROLE_UPDATE_ME_USERS);
 
     public static final String ADMIN_CLIENT_PREFIX_EMAIL = "admin";
 
@@ -100,6 +101,7 @@ public final class ApiIamInternalConstants {
 
     /**
      * Retrieve Account ROles.
+     *
      * @return
      */
     public static List<String> getAccountRoles() {
@@ -108,6 +110,7 @@ public final class ApiIamInternalConstants {
 
     /**
      * Retrieve Users Roles.
+     *
      * @return
      */
     public static List<String> getUsersRoles() {
@@ -116,6 +119,7 @@ public final class ApiIamInternalConstants {
 
     /**
      * Retrieve Groups Roles.
+     *
      * @return
      */
     public static List<String> getGroupsRoles() {
@@ -124,6 +128,7 @@ public final class ApiIamInternalConstants {
 
     /**
      * Retrieve Profiles Roles.
+     *
      * @return
      */
     public static List<String> getProfilesRoles() {
@@ -132,6 +137,7 @@ public final class ApiIamInternalConstants {
 
     /**
      * Retrieve Hierarchy Roles.
+     *
      * @return
      */
     public static List<String> getHierarchyRoles() {
