@@ -1,4 +1,4 @@
-print('START 003_TRTLE-878_setting_up_userinfo_ref.js');
+print('START 009_TRTLE-878_setting_up_userinfo_ref.js');
 db = db.getSiblingDB('iam');
 
 db.profiles.updateMany(
@@ -10,4 +10,4 @@ db.profiles.updateMany(
                 ]}}}
 );
 
-print('END 003_TRTLE-878_setting_up_userinfo_ref.js');
+print('END 009_TRTLE-878_setting_up_userinfo_ref.js');

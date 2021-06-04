@@ -87,6 +87,7 @@ public class UserServiceTest extends UIIdentityServiceTest<UserDto> {
         user.setEmail("test@blabla.com");
         user.setIdentifier("1234");
         user.setCustomerId("1");
+        user.setUserInfoId("1");
         user.setLastname("nole");
         user.setCustomerId(ID);
         user.setStatus(UserStatusEnum.ENABLED);
