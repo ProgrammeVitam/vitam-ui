@@ -36,15 +36,15 @@
  */
 /* tslint:disable:no-use-before-declare */
 
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ContextPermission } from 'projects/vitamui-library/src/public-api';
-import { AuthService, Option } from 'ui-frontend-common';
-import { Customer, Tenant } from 'ui-frontend-common/app/modules/models/customer';
-import { AccessContractService } from '../../../access-contract/access-contract.service';
-import { CustomerApiService } from '../../../core/api/customer-api.service';
-import { TenantApiService } from '../../../core/api/tenant-api.service';
-import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
+import {Component,EventEmitter,forwardRef,Input,OnInit,Output} from '@angular/core';
+import {ControlValueAccessor,NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ContextPermission} from 'projects/vitamui-library/src/public-api';
+import {AuthService,Option} from 'ui-frontend-common';
+import {Customer,Tenant} from 'ui-frontend-common/app/modules/models/customer';
+import {AccessContractService} from '../../../access-contract/access-contract.service';
+import {CustomerApiService} from '../../../core/api/customer-api.service';
+import {TenantApiService} from '../../../core/api/tenant-api.service';
+import {IngestContractService} from '../../../ingest-contract/ingest-contract.service';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -122,7 +122,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
       accessTenants.forEach((tenant) => {
         this.accessService.getAllForTenant('' + tenant.identifier).subscribe(
           accessContracts => {
-            this.accessContracts.set('' + tenant.identifier, accessContracts.map(x => ({
+            this.accessContracts.set('' + tenant.identifier, accessContracts.filter(ac => ac.status === 'ACTIVE').map(x => ({
               label: x.name,
               key: x.identifier
             })));
@@ -136,7 +136,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
       ingestTenants.forEach((tenant) => {
         this.ingestService.getAllForTenant('' + tenant.identifier).subscribe(
           ingestContracts => {
-            this.ingestContracts.set('' + tenant.identifier, ingestContracts.map(x => ({
+            this.ingestContracts.set('' + tenant.identifier, ingestContracts.filter(ic => ic.status === 'ACTIVE').map(x => ({
               label: x.name,
               key: x.identifier
             })));
