@@ -95,6 +95,9 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit  {
    */
   add() {
     let val = this.unitControl.value;
+    if (!val || this.unitControl.pending || this.unitControl.invalid) {
+      return;
+    }
     this.unitControl.reset();
     val = val.trim();
     const elementToRemoveIndex = this.removedUnits.indexOf(val);
