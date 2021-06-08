@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center mb-3">
   <div>
     <div class="mb-9">
-        <vitamui-common-input class="col-12 p-0" [formControl]="unitControl" [placeholder]="'GROUP.UNITS_FORM.INPUT_PLACEHOLDER' | translate">
+        <vitamui-common-input (keydown.enter)="add()" class="col-12 p-0" [formControl]="unitControl" [placeholder]="'GROUP.UNITS_FORM.INPUT_PLACEHOLDER' | translate">
             <ng-container *ngIf="unitControl?.touched">
               <vitamui-common-input-error *ngIf="!!unitControl?.errors?.unitExists">
                             {{'GROUP.UNITS_FORM.UNIT_ALREADY_EXIST' | translate }}
